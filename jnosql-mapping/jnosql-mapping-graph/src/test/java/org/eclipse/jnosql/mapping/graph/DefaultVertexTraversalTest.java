@@ -149,7 +149,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     public void shouldHavePredicate() {
         List<?> result = graphTemplate.traversalVertex().has("age", P.gt(26))
                 .result()
-                .collect(toList());
+                .toList();
         assertEquals(5, result.size());
     }
 
@@ -220,7 +220,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     @Test
     public void shouldBoth() {
         List<?> entities = graphTemplate.traversalVertex().both(READS)
-                .<Person>result().collect(toList());
+                .<Person>result().toList();
         assertEquals(6, entities.size());
     }
 
@@ -232,7 +232,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldNot() {
-        List<?> result = graphTemplate.traversalVertex().hasNot("year").result().collect(toList());
+        List<?> result = graphTemplate.traversalVertex().hasNot("year").result().toList();
         assertEquals(6, result.size());
     }
 
@@ -271,7 +271,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     @Test
     public void shouldMapValuesAsStream() {
         List<Map<String, Object>> maps = graphTemplate.traversalVertex().hasLabel("Person")
-                .valueMap("name").stream().collect(toList());
+                .valueMap("name").stream().toList();
 
         assertFalse(maps.isEmpty());
         assertEquals(3, maps.size());
@@ -286,7 +286,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     @Test
     public void shouldMapValuesAsStreamLimit() {
         List<Map<String, Object>> maps = graphTemplate.traversalVertex().hasLabel("Person")
-                .valueMap("name").next(2).collect(toList());
+                .valueMap("name").next(2).toList();
 
         assertFalse(maps.isEmpty());
         assertEquals(2, maps.size());
@@ -452,7 +452,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     public void shouldReturnResultAsList() {
         List<Person> people = graphTemplate.traversalVertex().hasLabel("Person")
                 .<Person>result()
-                .collect(Collectors.toList());
+                .toList();
         assertEquals(3, people.size());
     }
 

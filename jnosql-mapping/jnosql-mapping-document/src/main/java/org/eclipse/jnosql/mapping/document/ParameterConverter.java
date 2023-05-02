@@ -87,13 +87,10 @@ enum ParameterConverter {
                           ConstructorBuilder builder);
 
     static ParameterConverter of(ParameterMetaData parameter) {
-        switch (parameter.getParamType()) {
-            case COLLECTION:
-                return COLLECTION;
-            case ENTITY:
-                return ENTITY;
-            default:
-                return DEFAULT;
-        }
+        return switch (parameter.getParamType()) {
+            case COLLECTION -> COLLECTION;
+            case ENTITY -> ENTITY;
+            default -> DEFAULT;
+        };
     }
 }

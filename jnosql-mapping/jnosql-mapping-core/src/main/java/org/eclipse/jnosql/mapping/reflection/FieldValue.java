@@ -25,19 +25,19 @@ public interface FieldValue {
      *
      * @return the instance
      */
-    Object getValue();
+    Object value();
 
     /**
      * returns the {@link FieldMapping}
      *
      * @return the {@link FieldMapping} instance
      */
-    FieldMapping getField();
+    FieldMapping field();
 
     /**
-     * Returns true if {@link FieldValue#getValue()} is different of null
+     * Returns true if {@link FieldValue#value()} is different of null
      *
-     * @return if {@link FieldValue#getValue()} is different of null
+     * @return if {@link FieldValue#value()} is different of null
      */
     boolean isNotEmpty();
 

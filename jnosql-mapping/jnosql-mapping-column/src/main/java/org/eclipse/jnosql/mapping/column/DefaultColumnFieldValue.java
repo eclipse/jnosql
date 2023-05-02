@@ -42,13 +42,13 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     }
 
     @Override
-    public Object getValue() {
-        return fieldValue.getValue();
+    public Object value() {
+        return fieldValue.value();
     }
 
     @Override
-    public FieldMapping getField() {
-        return fieldValue.getField();
+    public FieldMapping field() {
+        return fieldValue.field();
     }
 
     @Override
@@ -59,23 +59,23 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     @Override
     public <X, Y> List<Column> toColumn(ColumnEntityConverter converter, Converters converters) {
         if (EMBEDDED.equals(getType())) {
-            return converter.toColumn(getValue()).columns();
+            return converter.toColumn(value()).columns();
         } else if (ENTITY.equals(getType())) {
-            return singletonList(Column.of(getName(), converter.toColumn(getValue()).columns()));
+            return singletonList(Column.of(getName(), converter.toColumn(value()).columns()));
         } else if (isEmbeddableCollection()) {
             return singletonList(Column.of(getName(), getColumns(converter)));
         }
-        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = getField().getConverter();
+        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field().getConverter();
         if (optionalConverter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters.get(optionalConverter.get());
-            return singletonList(Column.of(getName(), attributeConverter.convertToDatabaseColumn((X) getValue())));
+            return singletonList(Column.of(getName(), attributeConverter.convertToDatabaseColumn((X) value())));
         }
-        return singletonList(Column.of(getName(), getValue()));
+        return singletonList(Column.of(getName(), value()));
     }
 
     private List<List<Column>> getColumns(ColumnEntityConverter converter) {
         List<List<Column>> columns = new ArrayList<>();
-        for (Object element : (Iterable) getValue()) {
+        for (Object element : (Iterable) value()) {
             columns.add(converter.toColumn(element).columns());
         }
         return columns;
@@ -86,15 +86,15 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     }
 
     private MappingType getType() {
-        return getField().type();
+        return field().type();
     }
 
     private String getName() {
-        return getField().name();
+        return field().name();
     }
 
     private boolean isEmbeddableElement() {
-        return ((GenericFieldMapping) getField()).isEmbeddable();
+        return ((GenericFieldMapping) field()).isEmbeddable();
     }
 
     @Override

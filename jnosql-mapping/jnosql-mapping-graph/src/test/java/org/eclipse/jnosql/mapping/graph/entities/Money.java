@@ -18,23 +18,11 @@ package org.eclipse.jnosql.mapping.graph.entities;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Money {
+public record Money(String currency, BigDecimal value) {
 
-    private final String currency;
-
-    private final BigDecimal value;
-
-    public Money(String currency, BigDecimal value) {
-        this.currency = currency;
-        this.value = value;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public BigDecimal getValue() {
-        return value;
+    @Override
+    public String toString() {
+        return currency + " " + value.toString();
     }
 
     @Override
@@ -53,11 +41,6 @@ public class Money {
     @Override
     public int hashCode() {
         return Objects.hash(currency, value.doubleValue());
-    }
-
-    @Override
-    public String toString() {
-        return currency + " " + value.toString();
     }
 
     public static Money parse(String dbData) {

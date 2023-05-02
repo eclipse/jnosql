@@ -37,7 +37,7 @@ final class GetQueryParser {
         GetQueryConverter converter  = new GetQueryConverter();
         GetQuery getQuery = converter.apply(query);
         Params params = Params.newParams();
-        List<Value> values = getQuery.keys().stream().map(k -> Values.getValue(k, params)).collect(toList());
+        List<Value> values = getQuery.keys().stream().map(k -> Values.getValue(k, params)).toList();
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }

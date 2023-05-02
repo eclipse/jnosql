@@ -110,7 +110,7 @@ public class DefaultEntityTreeTest {
 
         List<Animal> animals = trees.stream()
                 .<Animal>flatMap(EntityTree::getRoots)
-                .distinct().collect(toList());
+                .distinct().toList();
 
         assertEquals(1, animals.size());
         assertEquals(lion, animals.get(0));
@@ -124,9 +124,9 @@ public class DefaultEntityTreeTest {
                 .in("eats")
                 .tree();
 
-        List<Animal> animals = tree.<Animal>getRoots().collect(toList());
+        List<Animal> animals = tree.<Animal>getRoots().toList();
         List<Entry<Long, Animal>> parentsIds = tree.<Long, Animal>getRootsIds()
-                .collect(toList());
+                .toList();
         assertEquals(animals.size(), parentsIds.size());
 
         Animal animal = animals.get(0);
@@ -194,15 +194,15 @@ public class DefaultEntityTreeTest {
                 .out("eats")
                 .tree();
 
-        List<Animal> animals = tree.<Animal>getLeafsAtDepth(1).collect(toList());
+        List<Animal> animals = tree.<Animal>getLeafsAtDepth(1).toList();
         assertEquals(1, animals.size());
         assertEquals(lion, animals.get(0));
 
-        List<Animal> animals2 = tree.<Animal>getLeafsAtDepth(2).collect(toList());
+        List<Animal> animals2 = tree.<Animal>getLeafsAtDepth(2).toList();
         assertEquals(2, animals2.size());
         assertArrayEquals(Stream.of(zebra, giraffe).toArray(Animal[]::new), animals2.toArray(new Animal[2]));
 
-        List<Animal> animals3 = tree.<Animal>getLeafsAtDepth(3).distinct().collect(toList());
+        List<Animal> animals3 = tree.<Animal>getLeafsAtDepth(3).distinct().toList();
         assertEquals(1, animals3.size());
         assertArrayEquals(Stream.of(grass).toArray(Animal[]::new), animals3.toArray(new Animal[1]));
     }

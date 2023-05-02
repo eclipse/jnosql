@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -120,7 +119,7 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
                 pageable.size(), NoSQLPage.skip(pageable)
                 , null ,metadata.name());
 
-        List<Object> entities = getTemplate().select(query).collect(Collectors.toUnmodifiableList());
+        List<Object> entities = getTemplate().select(query).toList();
         return NoSQLPage.of(entities, pageable);
     }
 

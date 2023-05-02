@@ -49,16 +49,13 @@ final class KeyValueQueryParser {
     public Stream<Value> query(String query, BucketManager manager) {
         validation(query, manager);
         String command = query.substring(0, 3);
-        switch (command) {
-            case "get":
-                return getQueryParser.query(query, manager);
-            case "del":
-                return delQueryParser.query(query, manager);
-            case "put":
-                return putQueryParser.query(query, manager);
-            default:
-                throw new QueryException(String.format("The command was not recognized at the query %s ", query));
-        }
+        return switch (command) {
+            case "get" -> getQueryParser.query(query, manager);
+            case "del" -> delQueryParser.query(query, manager);
+            case "put" -> putQueryParser.query(query, manager);
+            default ->
+                    throw new QueryException(String.format("The command was not recognized at the query %s ", query));
+        };
     }
 
 
@@ -76,16 +73,13 @@ final class KeyValueQueryParser {
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
         validation(query, manager);
         String command = query.substring(0, 3);
-        switch (command) {
-            case "get":
-                return getQueryParser.prepare(query, manager);
-            case "del":
-                return delQueryParser.prepare(query, manager);
-            case "put":
-                return putQueryParser.prepare(query, manager);
-            default:
-                throw new QueryException(String.format("The command was not recognized at the query %s ", query));
-        }
+        return switch (command) {
+            case "get" -> getQueryParser.prepare(query, manager);
+            case "del" -> delQueryParser.prepare(query, manager);
+            case "put" -> putQueryParser.prepare(query, manager);
+            default ->
+                    throw new QueryException(String.format("The command was not recognized at the query %s ", query));
+        };
     }
 
     private void validation(String query, BucketManager manager) {

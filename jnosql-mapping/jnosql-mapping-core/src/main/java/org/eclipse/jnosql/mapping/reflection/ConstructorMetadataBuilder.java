@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.reflection;
 import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 final class ConstructorMetadataBuilder {
@@ -36,7 +35,7 @@ final class ConstructorMetadataBuilder {
 
         List<ParameterMetaData> parameters = Stream.of(constructor.getParameters())
                 .map(ParameterMetaDataBuilder::of)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
         return new ConstructorMetadata(constructor, parameters);
     }
 }

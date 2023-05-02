@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -104,7 +103,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
                 .hasLabel(metadata.type())
                 .skip(NoSQLPage.skip(pageable))
                 .limit(pageable.size()).result()
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
 
         return NoSQLPage.of(entities, pageable);
     }

@@ -25,13 +25,11 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -55,7 +53,7 @@ class DefaultDocumentQueryBuilderTest {
     }
 
     private DocumentCondition newRandomDocumentCondition() {
-        return DocumentCondition.eq(UUID.randomUUID().toString().toString(), UUID.randomUUID().toString().toString());
+        return DocumentCondition.eq(UUID.randomUUID().toString(), UUID.randomUUID().toString());
     }
 
     @BeforeEach
@@ -79,7 +77,7 @@ class DefaultDocumentQueryBuilderTest {
 
     @Test
     void shouldAcceptToSelectAnEmptyArrayOfDocuments() {
-        assertSame(builder, builder.select(new String[]{}));
+        assertSame(builder, builder.select());
     }
 
     @Test
@@ -104,7 +102,7 @@ class DefaultDocumentQueryBuilderTest {
 
     @Test
     void shouldAcceptToSortAnEmptyArrayOfSortRef() {
-        assertSame(builder, builder.sort(new Sort[]{}));
+        assertSame(builder, builder.sort());
     }
 
     @Test

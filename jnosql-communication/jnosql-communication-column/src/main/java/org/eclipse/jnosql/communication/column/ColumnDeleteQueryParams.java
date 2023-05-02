@@ -19,28 +19,18 @@ package org.eclipse.jnosql.communication.column;
 
 import org.eclipse.jnosql.communication.Params;
 
-import java.util.Objects;
-
 
 /**
- *  The result of {@link ColumnDeleteQueryParams} that has {@link ColumnDeleteQuery} and {@link Params}.
+ * The result of {@link ColumnDeleteQueryParams} that has {@link ColumnDeleteQuery} and {@link Params}.
  */
-public final class ColumnDeleteQueryParams {
-
-    private final ColumnDeleteQuery query;
-
-    private final Params params;
-
-    public ColumnDeleteQueryParams(ColumnDeleteQuery query, Params params) {
-        this.query = query;
-        this.params = params;
-    }
+public record ColumnDeleteQueryParams(ColumnDeleteQuery query, Params params) {
 
     /**
      * The {@link ColumnDeleteQuery}
      *
      * @return a {@link ColumnDeleteQuery} instance
      */
+    @Override
     public ColumnDeleteQuery query() {
         return query;
     }
@@ -50,25 +40,10 @@ public final class ColumnDeleteQueryParams {
      *
      * @return a {@link Params} instance
      */
+    @Override
     public Params params() {
         return params;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ColumnDeleteQueryParams that = (ColumnDeleteQueryParams) o;
-        return Objects.equals(query, that.query) &&
-                Objects.equals(params, that.params);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(query, params);
-    }
 }

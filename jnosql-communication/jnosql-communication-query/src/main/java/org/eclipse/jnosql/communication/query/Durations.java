@@ -23,23 +23,15 @@ final class Durations {
     static Duration get(QueryParser.TtlContext ctx) {
         long value = Long.parseLong(ctx.INT().getText());
         String unit = ctx.unit().getText();
-        switch (unit) {
-            case "day":
-                return Duration.ofDays(value);
-            case "hour":
-                return Duration.ofHours(value);
-            case "minute":
-                return Duration.ofMinutes(value);
-            case "second":
-                return Duration.ofSeconds(value);
-            case "millisecond":
-                return Duration.ofMillis(value);
-            case "nanosecond":
-                return Duration.ofNanos(value);
-                default:
-                    throw new UnsupportedOperationException("There isn't support for this unit to TTL: " + unit);
-
-        }
+        return switch (unit) {
+            case "day" -> Duration.ofDays(value);
+            case "hour" -> Duration.ofHours(value);
+            case "minute" -> Duration.ofMinutes(value);
+            case "second" -> Duration.ofSeconds(value);
+            case "millisecond" -> Duration.ofMillis(value);
+            case "nanosecond" -> Duration.ofNanos(value);
+            default -> throw new UnsupportedOperationException("There isn't support for this unit to TTL: " + unit);
+        };
     }
 
 }

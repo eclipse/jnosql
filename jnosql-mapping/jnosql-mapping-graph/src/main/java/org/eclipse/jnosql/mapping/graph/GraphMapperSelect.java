@@ -30,7 +30,6 @@ import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -159,7 +158,7 @@ final class GraphMapperSelect extends AbstractMapperQuery
     @Override
     public <T> List<T> result() {
         Stream<T> stream = stream();
-        return stream.collect(Collectors.toUnmodifiableList());
+        return stream.toList();
     }
 
     @Override

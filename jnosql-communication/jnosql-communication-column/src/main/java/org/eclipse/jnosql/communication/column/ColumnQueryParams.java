@@ -19,28 +19,18 @@ package org.eclipse.jnosql.communication.column;
 
 import org.eclipse.jnosql.communication.Params;
 
-import java.util.Objects;
-
 
 /**
  * The result of {@link org.eclipse.jnosql.communication.query.SelectQueryConverter} that has {@link ColumnQuery} and {@link Params}.
  */
-public final class ColumnQueryParams {
-
-    private final ColumnQuery query;
-
-    private final Params params;
-
-    public ColumnQueryParams(ColumnQuery query, Params params) {
-        this.query = query;
-        this.params = params;
-    }
+public record ColumnQueryParams(ColumnQuery query, Params params) {
 
     /**
      * The {@link ColumnQuery}
      *
      * @return a {@link ColumnQuery} instance
      */
+    @Override
     public ColumnQuery query() {
         return query;
     }
@@ -50,25 +40,8 @@ public final class ColumnQueryParams {
      *
      * @return a {@link Params} instance
      */
+    @Override
     public Params params() {
         return params;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ColumnQueryParams that = (ColumnQueryParams) o;
-        return Objects.equals(query, that.query) &&
-                Objects.equals(params, that.params);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(query, params);
     }
 }

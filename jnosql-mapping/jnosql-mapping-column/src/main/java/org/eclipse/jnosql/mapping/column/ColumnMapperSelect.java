@@ -31,7 +31,6 @@ import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -163,7 +162,7 @@ final class ColumnMapperSelect extends AbstractMapperQuery implements MapperFrom
     public <T> List<T> result() {
         ColumnQuery query = build();
         return this.template.<T>select(query)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     @Override

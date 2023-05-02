@@ -32,7 +32,6 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.Year;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -95,8 +94,8 @@ abstract class GraphConverterTest {
         Worker worker = getConverter().toEntity(vertex);
 
         assertEquals("James", worker.getName());
-        assertEquals("USD", worker.getSalary().getCurrency());
-        assertEquals(0, BigDecimal.valueOf(1_000).compareTo(worker.getSalary().getValue()));
+        assertEquals("USD", worker.getSalary().currency());
+        assertEquals(0, BigDecimal.valueOf(1_000).compareTo(worker.getSalary().value()));
     }
 
     @Test
@@ -246,7 +245,7 @@ abstract class GraphConverterTest {
         List<Property<?>> properties = getConverter().getProperties(worker)
                 .stream()
                 .sorted(comparing(Property::key))
-                .collect(Collectors.toList());
+                .toList();
         assertEquals(4, properties.size());
 
         assertAll(() -> {

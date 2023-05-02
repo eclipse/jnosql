@@ -47,11 +47,8 @@ final class InsertQueryParser extends ConditionQueryParser {
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        if (ttl.isPresent()) {
-            return Stream.of(manager.insert(entity, ttl.get()));
-        } else {
-            return Stream.of(manager.insert(entity));
-        }
+        return ttl.map(duration -> Stream.of(manager.insert(entity, duration)))
+                .orElseGet(() -> Stream.of(manager.insert(entity)));
     }
 
 
@@ -77,22 +74,17 @@ final class InsertQueryParser extends ConditionQueryParser {
     }
 
 
-    private static final class InsertQueryConditionSupplier implements ConditionQuerySupplier {
-        private final InsertQuery query;
-
-        private InsertQueryConditionSupplier(InsertQuery query) {
-            this.query = query;
-        }
+    private record InsertQueryConditionSupplier(InsertQuery query) implements ConditionQuerySupplier {
 
         @Override
-        public List<QueryCondition> conditions() {
-            return query.conditions();
-        }
+            public List<QueryCondition> conditions() {
+                return query.conditions();
+            }
 
-        @Override
-        public Optional<JSONQueryValue> value() {
-            return query.value();
+            @Override
+            public Optional<JSONQueryValue> value() {
+                return query.value();
+            }
         }
-    }
 
 }

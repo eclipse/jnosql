@@ -33,94 +33,68 @@ public class DocumentConfigurationMock2 implements DocumentConfiguration {
         return new DocumentManagerFactoryMock(settings);
     }
 
-    public static class DocumentManagerFactoryMock implements DocumentManagerFactory {
-
-        private final Settings settings;
-
-        public DocumentManagerFactoryMock(Settings settings) {
-            this.settings = settings;
-        }
-
-        public Settings getSettings() {
-            return settings;
-        }
+    public record DocumentManagerFactoryMock(Settings settings) implements DocumentManagerFactory {
 
         @Override
-        public DocumentManagerMock  apply(String database) {
-            return new DocumentManagerMock(database);
+            public DocumentManagerMock apply(String database) {
+                return new DocumentManagerMock(database);
+            }
+
+            @Override
+            public void close() {
+
+            }
         }
 
-        @Override
-        public void close() {
+    public record DocumentManagerMock(String name) implements DocumentManager {
+            @Override
+            public DocumentEntity insert(DocumentEntity entity) {
+                return null;
+            }
 
+            @Override
+            public DocumentEntity insert(DocumentEntity entity, Duration ttl) {
+                return null;
+            }
+
+            @Override
+            public Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities) {
+                return null;
+            }
+
+            @Override
+            public Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities, Duration ttl) {
+                return null;
+            }
+
+            @Override
+            public DocumentEntity update(DocumentEntity entity) {
+                return null;
+            }
+
+            @Override
+            public Iterable<DocumentEntity> update(Iterable<DocumentEntity> entities) {
+                return null;
+            }
+
+            @Override
+            public void delete(DocumentDeleteQuery query) {
+
+            }
+
+            @Override
+            public Stream<DocumentEntity> select(DocumentQuery query) {
+                return null;
+            }
+
+            @Override
+            public long count(String documentCollection) {
+                return 0;
+            }
+
+            @Override
+            public void close() {
+
+            }
         }
-    }
-
-    public static class DocumentManagerMock implements DocumentManager {
-
-        private final String database;
-
-        public DocumentManagerMock(String database) {
-            this.database = database;
-        }
-
-        public String getDatabase() {
-            return database;
-        }
-
-        @Override
-        public String getName() {
-            return database;
-        }
-
-        @Override
-        public DocumentEntity insert(DocumentEntity entity) {
-            return null;
-        }
-
-        @Override
-        public DocumentEntity insert(DocumentEntity entity, Duration ttl) {
-            return null;
-        }
-
-        @Override
-        public Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities) {
-            return null;
-        }
-
-        @Override
-        public Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities, Duration ttl) {
-            return null;
-        }
-
-        @Override
-        public DocumentEntity update(DocumentEntity entity) {
-            return null;
-        }
-
-        @Override
-        public Iterable<DocumentEntity> update(Iterable<DocumentEntity> entities) {
-            return null;
-        }
-
-        @Override
-        public void delete(DocumentDeleteQuery query) {
-
-        }
-
-        @Override
-        public Stream<DocumentEntity> select(DocumentQuery query) {
-            return null;
-        }
-
-        @Override
-        public long count(String documentCollection) {
-            return 0;
-        }
-
-        @Override
-        public void close() {
-
-        }
-    }
 }

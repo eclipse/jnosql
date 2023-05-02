@@ -40,7 +40,7 @@ final class ColumnPreparedStatement implements PreparedStatement {
 
     @Override
     public <T> Stream<T> result() {
-        return preparedStatement.result().map(c -> (T) converter.toEntity(c));
+        return preparedStatement.result().map(c -> converter.toEntity(c));
     }
 
     @Override

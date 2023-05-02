@@ -127,7 +127,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     public void shouldReturnBothE() {
         List<EdgeEntity> edges = graphTemplate.traversalVertex().bothE(READS)
                 .stream()
-                .collect(toList());
+                .toList();
 
         assertEquals(6, edges.size());
     }
@@ -136,7 +136,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     public void shouldReturnBothEWithSupplier() {
         List<EdgeEntity> edges = graphTemplate.traversalVertex().bothE(() -> READS)
                 .stream()
-                .collect(toList());
+                .toList();
 
         assertEquals(6, edges.size());
     }
@@ -246,7 +246,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         List<EdgeEntity> edgeEntities = graphTemplate.traversalVertex()
                 .outE(READS).hasNot("language")
                 .stream()
-                .collect(toList());
+                .toList();
 
         assertEquals(2, edgeEntities.size());
     }
@@ -286,7 +286,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     @Test
     public void shouldMapValuesAsStream() {
         List<Map<String, Object>> maps = graphTemplate.traversalVertex().inE("reads")
-                .valueMap("motivation").stream().collect(toList());
+                .valueMap("motivation").stream().toList();
 
         assertFalse(maps.isEmpty());
         assertEquals(3, maps.size());
@@ -301,7 +301,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     @Test
     public void shouldMapValuesAsStreamLimit() {
         List<Map<String, Object>> maps = graphTemplate.traversalVertex().inE("reads")
-                .valueMap("motivation").next(2).collect(toList());
+                .valueMap("motivation").next(2).toList();
 
         assertFalse(maps.isEmpty());
         assertEquals(2, maps.size());
@@ -430,7 +430,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     @Test
     public void shouldReturnResultAsList() {
         List<EdgeEntity> entities = graphTemplate.traversalEdge().result()
-                .collect(Collectors.toList());
+                .toList();
         assertEquals(3, entities.size());
     }
 

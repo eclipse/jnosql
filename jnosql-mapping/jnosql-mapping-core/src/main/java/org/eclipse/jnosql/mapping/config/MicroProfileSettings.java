@@ -77,7 +77,7 @@ public enum MicroProfileSettings implements Settings {
     public Optional<Object> getSupplier(Iterable<Supplier<String>> suppliers) {
         Objects.requireNonNull(suppliers, "supplier is required");
         List<String> keys = StreamSupport.stream(suppliers.spliterator(), false)
-                .map(Supplier::get).collect(Collectors.toUnmodifiableList());
+                .map(Supplier::get).toList();
         return get(keys);
     }
 
@@ -111,7 +111,7 @@ public enum MicroProfileSettings implements Settings {
         Objects.requireNonNull(suppliers, "suppliers is required");
         Iterable<String> prefixes = StreamSupport.stream(suppliers.spliterator(), false)
                 .map(Supplier::get)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
         return prefix(prefixes);
     }
 
@@ -120,7 +120,7 @@ public enum MicroProfileSettings implements Settings {
         Objects.requireNonNull(prefixes, "prefixes is required");
 
         List<String> values = StreamSupport.stream(prefixes.spliterator(), false)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
         if (values.isEmpty()) {
             return Collections.emptyList();
         }
@@ -155,7 +155,7 @@ public enum MicroProfileSettings implements Settings {
         Objects.requireNonNull(key, "key is required");
         Objects.requireNonNull(defaultValue, "defaultValue is required");
         Class<T> type = (Class<T>) defaultValue.getClass();
-        return (T) get(key, type).orElse(defaultValue);
+        return get(key, type).orElse(defaultValue);
     }
 
     @Override

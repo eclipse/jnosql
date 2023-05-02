@@ -18,24 +18,7 @@ package org.eclipse.jnosql.mapping.column.entities;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Money {
-
-    private final String currency;
-
-    private final BigDecimal value;
-
-    public Money(String currency, BigDecimal value) {
-        this.currency = currency;
-        this.value = value;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public BigDecimal getValue() {
-        return value;
-    }
+public record Money(String currency, BigDecimal value) {
 
     @Override
     public boolean equals(Object o) {

@@ -89,30 +89,24 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         return DynamicReturnConverter.INSTANCE.convert(this);
     }
 
-    private static class SupplierConverter implements Function<Supplier<Stream<?>>, Supplier<Optional<?>>> {
-
-        private final Method method;
-
-        SupplierConverter(Method method) {
-            this.method = method;
-        }
+    private record SupplierConverter(Method method) implements Function<Supplier<Stream<?>>, Supplier<Optional<?>>> {
 
         @Override
-        public Supplier<Optional<?>> apply(Supplier<Stream<?>> supplier) {
-            return () -> {
-                Stream<?> entities = supplier.get();
-                final Iterator<?> iterator = entities.iterator();
-                if (!iterator.hasNext()) {
-                    return Optional.empty();
-                }
-                final Object entity = iterator.next();
-                if (!iterator.hasNext()) {
-                    return Optional.ofNullable(entity);
-                }
-                throw new NonUniqueResultException("No unique result to the method: " + method);
-            };
+            public Supplier<Optional<?>> apply(Supplier<Stream<?>> supplier) {
+                return () -> {
+                    Stream<?> entities = supplier.get();
+                    final Iterator<?> iterator = entities.iterator();
+                    if (!iterator.hasNext()) {
+                        return Optional.empty();
+                    }
+                    final Object entity = iterator.next();
+                    if (!iterator.hasNext()) {
+                        return Optional.ofNullable(entity);
+                    }
+                    throw new NonUniqueResultException("No unique result to the method: " + method);
+                };
+            }
         }
-    }
 
 
     private final Class<T> classSource;

@@ -24,26 +24,7 @@ import java.util.Objects;
 /**
  * Default implementation of {@link Column}
  */
-final class DefaultColumn implements Column {
-
-    private final String name;
-
-    private final Value value;
-
-    DefaultColumn(String name, Value value) {
-        this.name = name;
-        this.value = value;
-    }
-
-    @Override
-    public String name() {
-        return name;
-    }
-
-    @Override
-    public Value value() {
-        return value;
-    }
+record DefaultColumn(String name, Value value) implements Column {
 
 
     @Override
@@ -63,30 +44,4 @@ final class DefaultColumn implements Column {
         return value.get();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (!(o instanceof Column)) {
-            return false;
-        }
-
-        Column that = (Column) o;
-        return Objects.equals(name, that.name()) &&
-                Objects.equals(value, that.value());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, value);
-    }
-
-    @Override
-    public String toString() {
-        return "Column{" + "name='" + name + '\'' +
-                ", value=" + value +
-                '}';
-    }
 }

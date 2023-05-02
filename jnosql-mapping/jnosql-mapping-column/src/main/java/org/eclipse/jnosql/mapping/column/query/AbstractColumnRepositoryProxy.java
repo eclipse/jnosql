@@ -45,26 +45,33 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
         Class<?> typeClass = getEntityMetadata().type();
 
         switch (type) {
-            case DEFAULT:
+            case DEFAULT -> {
                 return method.invoke(getRepository(), args);
-            case FIND_BY:
+            }
+            case FIND_BY -> {
                 return executeFindByQuery(method, args, typeClass, getQuery(method, args));
-            case COUNT_BY:
+            }
+            case COUNT_BY -> {
                 return executeCountByQuery(getQuery(method, args));
-            case EXISTS_BY:
+            }
+            case EXISTS_BY -> {
                 return executeExistsByQuery(getQuery(method, args));
-            case FIND_ALL:
+            }
+            case FIND_ALL -> {
                 ColumnQuery queryFindAll = ColumnQuery.select().from(getEntityMetadata().name()).build();
                 return executeFindByQuery(method, args, typeClass, updateQueryDynamically(args, queryFindAll));
-            case DELETE_BY:
+            }
+            case DELETE_BY -> {
                 ColumnDeleteQuery deleteQuery = getDeleteQuery(method, args);
                 getTemplate().delete(deleteQuery);
                 return Void.class;
-            case OBJECT_METHOD:
+            }
+            case OBJECT_METHOD -> {
                 return method.invoke(this, args);
-            case ORDER_BY:
-                throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
-            case QUERY:
+            }
+            case ORDER_BY ->
+                    throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
+            case QUERY -> {
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
                         .withArgs(args)
                         .withMethod(method)
@@ -72,9 +79,10 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
                         .withPrepareConverter(q -> getTemplate().prepare(q))
                         .withQueryConverter(q -> getTemplate().query(q)).build();
                 return methodReturn.execute();
-            default:
+            }
+            default -> {
                 return Void.class;
-
+            }
         }
     }
 

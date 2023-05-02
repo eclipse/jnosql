@@ -69,7 +69,7 @@ public enum RepositoryType {
     ORDER_BY("");
 
     private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(CrudRepository.class)
-            .or(Predicate.<Class<?>>isEqual(PageableRepository.class));
+            .or(Predicate.isEqual(PageableRepository.class));
 
     private static final Set<RepositoryType> KEY_WORLD_METHODS = EnumSet.of(FIND_BY, DELETE_BY, COUNT_BY, EXISTS_BY);
     private final String keyword;

@@ -49,5 +49,5 @@ public enum ValueType {
     /**
      * In computer science, a Boolean is a logical data type that can have only the values true or false
      */
-    BOOLEAN;
+    BOOLEAN
 }

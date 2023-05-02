@@ -240,7 +240,7 @@ public class DefaultKeyValueTemplateTest {
 
         when(manager.get(KEY)).thenReturn(Optional.of(Value.of(user)));
         List<User> userOptional = stream(template.get(singletonList(KEY), User.class).spliterator(), false)
-                .collect(toList());
+                .toList();
 
         assertFalse(userOptional.isEmpty());
         assertEquals(user, userOptional.get(0));
@@ -252,7 +252,7 @@ public class DefaultKeyValueTemplateTest {
 
         when(manager.get(KEY)).thenReturn(Optional.empty());
         List<User> userOptional = stream(template.get(singletonList(KEY), User.class).spliterator(), false)
-                .collect(toList());
+                .toList();
 
         assertTrue(userOptional.isEmpty());
     }

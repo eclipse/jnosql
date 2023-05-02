@@ -48,8 +48,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toUnmodifiableList;
-
 public abstract class BaseColumnRepository<T> {
 
     private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();
@@ -133,7 +131,7 @@ public abstract class BaseColumnRepository<T> {
     protected Function<Pageable, Page<T>> getPage(ColumnQuery query) {
         return p -> {
             Stream<T> entities = getTemplate().select(query);
-            return NoSQLPage.of(entities.collect(toUnmodifiableList()), p);
+            return NoSQLPage.of(entities.toList(), p);
         };
     }
 

@@ -72,7 +72,7 @@ public class DefaultKeyValueEntityConverterTest {
 
     @Test
     public void shouldReturnNPEWhenKeyValueIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> converter.toEntity(User.class, (KeyValueEntity) null));
+        Assertions.assertThrows(NullPointerException.class, () -> converter.toEntity(User.class, null));
     }
 
     @Test

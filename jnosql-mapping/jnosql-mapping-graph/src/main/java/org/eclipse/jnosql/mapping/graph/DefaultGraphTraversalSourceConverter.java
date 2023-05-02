@@ -34,7 +34,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 /**
  * A default implementation to GraphTraversalSourceOperation
@@ -95,7 +94,7 @@ class DefaultGraphTraversalSourceConverter extends GraphConverter {
 
         List<FieldGraph> fields = mapping.fields().stream()
                 .map(f -> to(f, entity))
-                .filter(FieldGraph::isNotEmpty).collect(toList());
+                .filter(FieldGraph::isNotEmpty).toList();
 
         Optional<FieldGraph> id = fields.stream().filter(FieldGraph::isId).findFirst();
 

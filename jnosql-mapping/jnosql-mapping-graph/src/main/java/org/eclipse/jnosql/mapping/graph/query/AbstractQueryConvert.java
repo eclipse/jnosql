@@ -39,36 +39,44 @@ abstract class AbstractQueryConvert {
         QueryValue<?> value = condition.value();
         String nativeName = parser.field(name);
         switch (operator) {
-            case EQUALS:
+            case EQUALS -> {
                 return __.has(nativeName, P.eq(graphQuery.getValue(name, value)));
-            case GREATER_THAN:
+            }
+            case GREATER_THAN -> {
                 return __.has(nativeName, P.gt(graphQuery.getValue(name, value)));
-            case GREATER_EQUALS_THAN:
+            }
+            case GREATER_EQUALS_THAN -> {
                 return __.has(nativeName, P.gte(graphQuery.getValue(name, value)));
-            case LESSER_THAN:
+            }
+            case LESSER_THAN -> {
                 return __.has(nativeName, P.lt(graphQuery.getValue(name, value)));
-            case LESSER_EQUALS_THAN:
+            }
+            case LESSER_EQUALS_THAN -> {
                 return __.has(nativeName, P.lte(graphQuery.getValue(name, value)));
-            case BETWEEN:
+            }
+            case BETWEEN -> {
                 return __.has(nativeName, P.between(graphQuery.getValue(name, value),
                         graphQuery.getValue(name, value)));
-            case IN:
+            }
+            case IN -> {
                 return __.has(nativeName, P.within(graphQuery.getInValue(name)));
-            case NOT:
+            }
+            case NOT -> {
                 QueryCondition notCondition = ((ConditionQueryValue) value).get().get(0);
                 return __.not(getPredicate(graphQuery, notCondition, parser));
-            case AND:
+            }
+            case AND -> {
                 return ((ConditionQueryValue) value).get().stream()
                         .map(c -> getPredicate(graphQuery, c, parser)).reduce(GraphTraversal::and)
                         .orElseThrow(() -> new UnsupportedOperationException("There is an inconsistency at the AND operator"));
-            case OR:
+            }
+            case OR -> {
                 return ((ConditionQueryValue) value).get().stream()
                         .map(c -> getPredicate(graphQuery, c, parser)).reduce(GraphTraversal::or)
                         .orElseThrow(() -> new UnsupportedOperationException("There is an inconsistency at the OR operator"));
-            default:
-                throw new UnsupportedOperationException("There is not support to the type " + operator + " in graph");
-
-
+            }
+            default ->
+                    throw new UnsupportedOperationException("There is not support to the type " + operator + " in graph");
         }
     }
 

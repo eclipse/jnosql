@@ -65,7 +65,7 @@ class DocumentManagerSupplier implements Supplier<DocumentManager> {
     }
 
     public void close(@Disposes DocumentManager manager) {
-        LOGGER.log(Level.FINEST, "Closing DocumentManager resource, database name: " + manager.getName());
+        LOGGER.log(Level.FINEST, "Closing DocumentManager resource, database name: " + manager.name());
         manager.close();
     }
 }

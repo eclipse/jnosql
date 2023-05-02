@@ -37,7 +37,7 @@ public interface DocumentManager extends AutoCloseable {
      *
      * @return the database's name
      */
-    String getName();
+    String name();
 
     /**
      * Saves document collection entity
