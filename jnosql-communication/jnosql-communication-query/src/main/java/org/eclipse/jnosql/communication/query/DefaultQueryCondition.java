@@ -14,8 +14,6 @@ package org.eclipse.jnosql.communication.query;
 
 import org.eclipse.jnosql.communication.Condition;
 
-import java.util.Objects;
-
 /**
  * The default implementation of {@link QueryCondition}
  */

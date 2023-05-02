@@ -46,18 +46,4 @@ public record ColumnQueryParams(ColumnQuery query, Params params) {
     public Params params() {
         return params;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ColumnQueryParams that = (ColumnQueryParams) o;
-        return Objects.equals(query, that.query) &&
-                Objects.equals(params, that.params);
-    }
-
 }
