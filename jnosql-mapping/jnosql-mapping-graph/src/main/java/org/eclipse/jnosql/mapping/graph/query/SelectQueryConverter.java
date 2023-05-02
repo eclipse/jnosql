@@ -96,7 +96,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
             if (l.startAt() > 1) {
                 traversal.skip(l.startAt() - 1);
             }
-            traversal.limit((int) l.maxResults());
+            traversal.limit(l.maxResults());
         });
         special.pageable().ifPresent(p -> {
             special.sorts().forEach(getSort(traversal, parser));

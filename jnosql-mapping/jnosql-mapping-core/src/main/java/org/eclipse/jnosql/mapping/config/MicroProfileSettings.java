@@ -155,7 +155,7 @@ public enum MicroProfileSettings implements Settings {
         Objects.requireNonNull(key, "key is required");
         Objects.requireNonNull(defaultValue, "defaultValue is required");
         Class<T> type = (Class<T>) defaultValue.getClass();
-        return (T) get(key, type).orElse(defaultValue);
+        return get(key, type).orElse(defaultValue);
     }
 
     @Override

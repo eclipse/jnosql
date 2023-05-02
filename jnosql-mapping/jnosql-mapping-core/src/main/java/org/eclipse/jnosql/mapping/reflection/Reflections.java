@@ -337,7 +337,7 @@ public class Reflections {
     }
 
     private String readEntity(Class<?> entity) {
-        return Optional.ofNullable((Entity) entity.getAnnotation(Entity.class))
+        return Optional.ofNullable(entity.getAnnotation(Entity.class))
                 .map(Entity::value)
                 .filter(StringUtils::isNotBlank)
                 .orElse(entity.getSimpleName());

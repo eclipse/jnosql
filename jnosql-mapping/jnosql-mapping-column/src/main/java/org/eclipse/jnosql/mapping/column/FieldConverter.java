@@ -104,7 +104,7 @@ enum FieldConverter {
                 if (optionalConverter.isPresent()) {
                     AttributeConverter<X, Y> attributeConverter = converter.getConverters().get(optionalConverter.get());
                     Y attr = (Y)(value.isInstanceOf(List.class) ? column : value.get());
-                    Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) attr);
+                    Object attributeConverted = attributeConverter.convertToEntityAttribute(attr);
                     field.write(instance, field.value(Value.of(attributeConverted)));
                 } else {
                     field.write(instance, field.value(value));
