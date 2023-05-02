@@ -47,8 +47,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toUnmodifiableList;
-
 public abstract class BaseDocumentRepository<T> {
 
     private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();

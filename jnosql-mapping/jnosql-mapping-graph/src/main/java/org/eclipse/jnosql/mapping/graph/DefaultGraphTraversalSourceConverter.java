@@ -34,7 +34,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 /**
  * A default implementation to GraphTraversalSourceOperation

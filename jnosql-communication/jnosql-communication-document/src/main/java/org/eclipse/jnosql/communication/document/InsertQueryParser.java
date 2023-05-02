@@ -46,11 +46,8 @@ final class InsertQueryParser extends ConditionQueryParser {
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        if (ttl.isPresent()) {
-            return Stream.of(collectionManager.insert(entity, ttl.get()));
-        } else {
-            return Stream.of(collectionManager.insert(entity));
-        }
+        return ttl.map(duration -> Stream.of(collectionManager.insert(entity, duration)))
+                .orElseGet(() -> Stream.of(collectionManager.insert(entity)));
     }
 
 

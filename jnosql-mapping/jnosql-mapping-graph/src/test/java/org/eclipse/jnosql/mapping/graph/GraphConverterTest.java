@@ -32,7 +32,6 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.Year;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
 import static org.junit.jupiter.api.Assertions.assertAll;

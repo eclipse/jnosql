@@ -72,7 +72,7 @@ public class BookTemplateTest {
         try {
             template.insertException(book);
             assert false;
-        }catch (Exception ex){
+        }catch (Exception ignored){
 
         }
 
