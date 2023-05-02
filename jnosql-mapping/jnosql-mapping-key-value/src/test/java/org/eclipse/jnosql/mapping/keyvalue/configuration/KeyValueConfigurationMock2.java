@@ -37,17 +37,7 @@ public class KeyValueConfigurationMock2 implements KeyValueConfiguration {
     }
 
 
-    public static class BucketManagerFactoryMock implements BucketManagerFactory {
-
-        private final Settings settings;
-
-        public BucketManagerFactoryMock(Settings settings) {
-            this.settings = settings;
-        }
-
-        public Settings getSettings() {
-            return settings;
-        }
+    public record BucketManagerFactoryMock(Settings settings) implements BucketManagerFactory {
 
         @Override
         public BucketManagerMock apply(String bucketName) {
@@ -80,23 +70,7 @@ public class KeyValueConfigurationMock2 implements KeyValueConfiguration {
         }
     }
 
-    public static class BucketManagerMock implements BucketManager {
-
-        private final String bucketName;
-
-        public BucketManagerMock(String bucketName) {
-            this.bucketName = bucketName;
-        }
-
-        public String getBucketName() {
-            return bucketName;
-        }
-
-        @Override
-        public String name() {
-            return bucketName;
-        }
-
+    public record BucketManagerMock(String name) implements BucketManager {
         @Override
         public <K, V> void put(K key, V value) {
 

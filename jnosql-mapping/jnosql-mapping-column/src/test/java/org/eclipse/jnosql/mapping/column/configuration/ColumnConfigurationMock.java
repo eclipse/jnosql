@@ -34,17 +34,7 @@ class ColumnConfigurationMock implements ColumnConfiguration {
     }
 
 
-    public static class ColumnManagerFactoryMock implements ColumnManagerFactory {
-
-        private final Settings settings;
-
-        public Settings getSettings() {
-            return settings;
-        }
-
-        public ColumnManagerFactoryMock(Settings settings) {
-            this.settings = settings;
-        }
+    public record ColumnManagerFactoryMock(Settings settings) implements ColumnManagerFactory {
 
         @Override
         public ColumnManagerMock apply(String database) {
@@ -57,22 +47,7 @@ class ColumnConfigurationMock implements ColumnConfiguration {
         }
     }
 
-    public static class ColumnManagerMock implements ColumnManager {
-
-        private final String database;
-
-        public ColumnManagerMock(String database) {
-            this.database = database;
-        }
-
-        public String getDatabase() {
-            return database;
-        }
-
-        @Override
-        public String name() {
-            return database;
-        }
+    public record ColumnManagerMock(String name) implements ColumnManager {
 
         @Override
         public ColumnEntity insert(ColumnEntity entity) {

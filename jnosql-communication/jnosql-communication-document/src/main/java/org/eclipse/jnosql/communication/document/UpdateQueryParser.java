@@ -32,7 +32,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
     Stream<DocumentEntity> query(String query, DocumentManager collectionManager, DocumentObserverParser observer) {
 
-        UpdateQueryConverter converter= new UpdateQueryConverter();
+        UpdateQueryConverter converter = new UpdateQueryConverter();
         UpdateQuery updateQuery = converter.apply(query);
 
         Params params = Params.newParams();
@@ -50,7 +50,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
         Params params = Params.newParams();
 
-        UpdateQueryConverter converter= new UpdateQueryConverter();
+        UpdateQueryConverter converter = new UpdateQueryConverter();
         UpdateQuery updateQuery = converter.apply(query);
 
         DocumentEntity entity = getEntity(params, updateQuery, observer);
@@ -62,12 +62,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
         return getEntity(new UpdateQueryConditioinSupplier(updateQuery), collection, params, observer);
     }
 
-    private static final class UpdateQueryConditioinSupplier implements ConditionQuerySupplier {
-        private final UpdateQuery query;
-
-        private UpdateQueryConditioinSupplier(UpdateQuery query) {
-            this.query = query;
-        }
+    private record UpdateQueryConditioinSupplier(UpdateQuery query) implements ConditionQuerySupplier {
 
         @Override
         public List<QueryCondition> conditions() {

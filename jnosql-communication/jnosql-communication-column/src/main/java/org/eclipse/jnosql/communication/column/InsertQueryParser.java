@@ -77,22 +77,17 @@ final class InsertQueryParser extends ConditionQueryParser {
     }
 
 
-    private static final class InsertQueryConditionSupplier implements ConditionQuerySupplier {
-        private final InsertQuery query;
-
-        private InsertQueryConditionSupplier(InsertQuery query) {
-            this.query = query;
-        }
+    private record InsertQueryConditionSupplier(InsertQuery query) implements ConditionQuerySupplier {
 
         @Override
-        public List<QueryCondition> conditions() {
-            return query.conditions();
-        }
+            public List<QueryCondition> conditions() {
+                return query.conditions();
+            }
 
-        @Override
-        public Optional<JSONQueryValue> value() {
-            return query.value();
+            @Override
+            public Optional<JSONQueryValue> value() {
+                return query.value();
+            }
         }
-    }
 
 }

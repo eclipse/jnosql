@@ -34,94 +34,69 @@ public class ColumnConfigurationMock2 implements ColumnConfiguration {
     }
 
 
-    public static class ColumnManagerFactoryMock implements ColumnManagerFactory {
-
-        private final Settings settings;
-
-        public Settings getSettings() {
-            return settings;
-        }
-
-        public ColumnManagerFactoryMock(Settings settings) {
-            this.settings = settings;
-        }
+    public record ColumnManagerFactoryMock(Settings settings) implements ColumnManagerFactory {
 
         @Override
-        public ColumnManagerMock apply(String database) {
-            return new ColumnManagerMock(database);
+            public ColumnManagerMock apply(String database) {
+                return new ColumnManagerMock(database);
+            }
+
+            @Override
+            public void close() {
+
+            }
         }
 
-        @Override
-        public void close() {
+    public record ColumnManagerMock(String name) implements ColumnManager {
 
+            @Override
+            public ColumnEntity insert(ColumnEntity entity) {
+                return null;
+            }
+
+            @Override
+            public ColumnEntity update(ColumnEntity entity) {
+                return null;
+            }
+
+            @Override
+            public Iterable<ColumnEntity> update(Iterable<ColumnEntity> entities) {
+                return null;
+            }
+
+            @Override
+            public ColumnEntity insert(ColumnEntity entity, Duration ttl) {
+                return null;
+            }
+
+            @Override
+            public Iterable<ColumnEntity> insert(Iterable<ColumnEntity> entities) {
+                return null;
+            }
+
+            @Override
+            public Iterable<ColumnEntity> insert(Iterable<ColumnEntity> entities, Duration ttl) {
+                return null;
+            }
+
+            @Override
+            public void delete(ColumnDeleteQuery query) {
+
+            }
+
+            @Override
+            public Stream<ColumnEntity> select(ColumnQuery query) {
+                return null;
+            }
+
+            @Override
+            public long count(String columnFamily) {
+                return 0;
+            }
+
+            @Override
+            public void close() {
+
+            }
         }
-    }
-
-    public static class ColumnManagerMock implements ColumnManager {
-
-        private final String database;
-
-        public ColumnManagerMock(String database) {
-            this.database = database;
-        }
-
-        public String getDatabase() {
-            return database;
-        }
-
-        @Override
-        public String name() {
-            return database;
-        }
-
-        @Override
-        public ColumnEntity insert(ColumnEntity entity) {
-            return null;
-        }
-
-        @Override
-        public ColumnEntity update(ColumnEntity entity) {
-            return null;
-        }
-
-        @Override
-        public Iterable<ColumnEntity> update(Iterable<ColumnEntity> entities) {
-            return null;
-        }
-
-        @Override
-        public ColumnEntity insert(ColumnEntity entity, Duration ttl) {
-            return null;
-        }
-
-        @Override
-        public Iterable<ColumnEntity> insert(Iterable<ColumnEntity> entities) {
-            return null;
-        }
-
-        @Override
-        public Iterable<ColumnEntity> insert(Iterable<ColumnEntity> entities, Duration ttl) {
-            return null;
-        }
-
-        @Override
-        public void delete(ColumnDeleteQuery query) {
-
-        }
-
-        @Override
-        public Stream<ColumnEntity> select(ColumnQuery query) {
-            return null;
-        }
-
-        @Override
-        public long count(String columnFamily) {
-            return 0;
-        }
-
-        @Override
-        public void close() {
-
-        }
-    }
 }

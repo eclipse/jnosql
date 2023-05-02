@@ -95,8 +95,8 @@ abstract class GraphConverterTest {
         Worker worker = getConverter().toEntity(vertex);
 
         assertEquals("James", worker.getName());
-        assertEquals("USD", worker.getSalary().getCurrency());
-        assertEquals(0, BigDecimal.valueOf(1_000).compareTo(worker.getSalary().getValue()));
+        assertEquals("USD", worker.getSalary().currency());
+        assertEquals(0, BigDecimal.valueOf(1_000).compareTo(worker.getSalary().value()));
     }
 
     @Test

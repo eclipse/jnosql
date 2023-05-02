@@ -254,30 +254,8 @@ class DynamicQueryMethodReturnTest {
 
     }
 
-    private static class Person {
+    private record Person(String name) {
 
-        private final String name;
-
-        private Person(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Person person = (Person) o;
-            return Objects.equals(name, person.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(name);
-        }
     }
 
     private interface PersonRepository extends CrudRepository<Person, String> {

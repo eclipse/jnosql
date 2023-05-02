@@ -29,25 +29,16 @@ public class ColumnManagerMock implements ColumnConfiguration {
         return new MockFamilyManager(settings);
     }
 
-    public static class MockFamilyManager implements ColumnManagerFactory {
-        private final Settings settings;
-
-        public MockFamilyManager(Settings settings) {
-            this.settings = settings;
-        }
+    public record MockFamilyManager(Settings settings) implements ColumnManagerFactory {
 
         @Override
-        public ColumnManager apply(String database) {
-            return Mockito.mock(ColumnManager.class);
-        }
+            public ColumnManager apply(String database) {
+                return Mockito.mock(ColumnManager.class);
+            }
 
-        public Settings getSettings() {
-            return settings;
-        }
+            @Override
+            public void close() {
 
-        @Override
-        public void close() {
-
+            }
         }
-    }
 }
