@@ -16,8 +16,27 @@ package org.eclipse.jnosql.mapping.test.entities;
 
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public record Money(String currency, BigDecimal value) {
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Money money = (Money) o;
+        return Objects.equals(currency, money.currency) &&
+                Objects.equals(value.doubleValue(), money.value.doubleValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(currency, value.doubleValue());
+    }
 
     @Override
     public String toString() {
