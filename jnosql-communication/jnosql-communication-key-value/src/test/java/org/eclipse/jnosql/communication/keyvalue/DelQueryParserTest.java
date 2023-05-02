@@ -24,17 +24,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.assertArg;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,17 +43,39 @@ class DelQueryParserTest {
     @Mock
     private BucketManager manager;
 
-    @Captor
-    private ArgumentCaptor<List<Object>> captor;
-
-    @ParameterizedTest(name = "Should be able to parse query: '{0}'")
+    @ParameterizedTest(name = "Should be able to parse query: {0}")
     @MethodSource("queryData")
     void shouldReturnParserQuery(String query, Object expected) {
         parser.query(query, manager);
-        verify(manager).delete(captor.capture());
+        verify(manager).delete(assertArg(value ->
+                assertThat(value).contains(expected)));
+    }
 
-        List<Object> value = captor.getValue();
-        assertThat(value).contains(expected);
+    @Test
+    @DisplayName("Should be able to execute the PreparedStatement using one parameter")
+    void shouldExecutePrepareStatementUsingOneParameter() {
+        String query = "del @id";
+
+        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
+        prepare.bind("id", 10);
+        prepare.result();
+
+        verify(manager).delete(assertArg(value ->
+                assertThat(value).hasSize(1).contains(10)));
+    }
+
+    @Test
+    @DisplayName("Should be able to execute the PreparedStatement using two parameter")
+    void shouldExecutePrepareStatementUsingTwoParameter() {
+        String query = "del @id, @id2";
+
+        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
+        prepare.bind("id", 10);
+        prepare.bind("id2", 11);
+        prepare.result();
+
+        verify(manager).delete(assertArg(value ->
+                assertThat(value).hasSize(2).contains(10, 11)));
     }
 
     @Test
@@ -74,37 +94,6 @@ class DelQueryParserTest {
         assertThatThrownBy(prepare::result)
                 .isInstanceOf(QueryException.class)
                 .hasMessage("Check all the parameters before execute the query, params left: [id]");
-    }
-
-    @Test
-    @DisplayName("Should be able to execute the PreparedStatement using one parameter")
-    void shouldExecutePrepareStatementUsingOneParameter() {
-        String query = "del @id";
-
-        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
-        prepare.bind("id", 10);
-        prepare.result();
-
-        verify(manager).delete(captor.capture());
-        List<Object> value = captor.getValue();
-
-        assertThat(value).hasSize(1).contains(10);
-    }
-
-    @Test
-    @DisplayName("Should be able to execute the PreparedStatement using two parameter")
-    void shouldExecutePrepareStatementUsingTwoParameter() {
-        String query = "del @id, @id2";
-
-        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
-        prepare.bind("id", 10);
-        prepare.bind("id2", 11);
-        prepare.result();
-
-        verify(manager).delete(captor.capture());
-        List<Object> value = captor.getValue();
-
-        assertThat(value).hasSize(2).contains(10, 11);
     }
 
     private static Stream<Arguments> queryData() {
