@@ -160,7 +160,7 @@ class GremlinExecutorTest {
 
     @Test
     public void shouldExecuteQueryProperties() {
-        List<Object> properties = executor.<Object>executeGremlin(graph.traversal(), "g.V().values()")
+        List<Object> properties = executor.executeGremlin(graph.traversal(), "g.V().values()")
                 .collect(toList());
         assertFalse(properties.isEmpty());
         assertEquals(4, properties.size());

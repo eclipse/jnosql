@@ -53,7 +53,7 @@ class DefaultDocumentQueryBuilderTest {
     }
 
     private DocumentCondition newRandomDocumentCondition() {
-        return DocumentCondition.eq(UUID.randomUUID().toString().toString(), UUID.randomUUID().toString().toString());
+        return DocumentCondition.eq(UUID.randomUUID().toString(), UUID.randomUUID().toString());
     }
 
     @BeforeEach
@@ -77,7 +77,7 @@ class DefaultDocumentQueryBuilderTest {
 
     @Test
     void shouldAcceptToSelectAnEmptyArrayOfDocuments() {
-        assertSame(builder, builder.select(new String[]{}));
+        assertSame(builder, builder.select());
     }
 
     @Test
@@ -102,7 +102,7 @@ class DefaultDocumentQueryBuilderTest {
 
     @Test
     void shouldAcceptToSortAnEmptyArrayOfSortRef() {
-        assertSame(builder, builder.sort(new Sort[]{}));
+        assertSame(builder, builder.sort());
     }
 
     @Test

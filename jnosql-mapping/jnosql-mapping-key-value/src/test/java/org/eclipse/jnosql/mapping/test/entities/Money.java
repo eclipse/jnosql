@@ -16,7 +16,6 @@ package org.eclipse.jnosql.mapping.test.entities;
 
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 public record Money(String currency, BigDecimal value) {
 
