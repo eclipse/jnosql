@@ -117,12 +117,9 @@ class ClassConverter {
 
 
         switch (field.type()) {
-            case ENTITY -> {
-                appendFields(nativeFieldGroupByJavaField, field, javaField, appendPreparePrefix(nativeField, field.name()));
-            }
-            case EMBEDDED -> {
-                appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField);
-            }
+            case ENTITY -> appendFields(nativeFieldGroupByJavaField, field, javaField,
+                    appendPreparePrefix(nativeField, field.name()));
+            case EMBEDDED -> appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField);
             case COLLECTION -> {
                 if (((GenericFieldMapping) field).isEmbeddable()) {
                     Class<?> type = ((GenericFieldMapping) field).getElementType();
