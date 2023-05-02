@@ -36,7 +36,7 @@ final class ConstructorMetadataBuilder {
 
         List<ParameterMetaData> parameters = Stream.of(constructor.getParameters())
                 .map(ParameterMetaDataBuilder::of)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
         return new ConstructorMetadata(constructor, parameters);
     }
 }

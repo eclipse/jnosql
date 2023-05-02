@@ -104,7 +104,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
                 .hasLabel(metadata.type())
                 .skip(NoSQLPage.skip(pageable))
                 .limit(pageable.size()).result()
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
 
         return NoSQLPage.of(entities, pageable);
     }

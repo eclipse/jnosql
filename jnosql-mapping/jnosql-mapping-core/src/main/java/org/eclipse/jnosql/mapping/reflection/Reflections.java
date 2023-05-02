@@ -162,7 +162,7 @@ public class Reflections {
         List<Constructor<?>> constructors = Stream.
                 of(type.getDeclaredConstructors())
                 .filter(defaultConstructorPredicate.or(customConstructorPredicate))
-                .collect(toList());
+                .toList();
 
 
         if (constructors.isEmpty()) {

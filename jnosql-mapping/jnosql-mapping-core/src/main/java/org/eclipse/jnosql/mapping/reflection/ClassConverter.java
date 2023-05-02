@@ -119,11 +119,9 @@ class ClassConverter {
         switch (field.type()) {
             case ENTITY -> {
                 appendFields(nativeFieldGroupByJavaField, field, javaField, appendPreparePrefix(nativeField, field.name()));
-                return;
             }
             case EMBEDDED -> {
                 appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField);
-                return;
             }
             case COLLECTION -> {
                 if (((GenericFieldMapping) field).isEmbeddable()) {
@@ -133,7 +131,6 @@ class ClassConverter {
                     return;
                 }
                 appendDefaultField(nativeFieldGroupByJavaField, field, javaField, nativeField);
-                return;
             }
             default -> appendDefaultField(nativeFieldGroupByJavaField, field, javaField, nativeField);
         }

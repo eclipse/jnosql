@@ -73,7 +73,7 @@ class ConstructorMetadataBuilderTest {
         assertEquals(5, parameters.size());
         List<String> names = parameters.stream()
                 .map(ParameterMetaData::getName)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
 
         assertThat(names).contains("_id", "name", "age", "model", "price");
     }
@@ -85,7 +85,7 @@ class ConstructorMetadataBuilderTest {
         assertEquals(3, parameters.size());
         List<String> names = parameters.stream()
                 .map(ParameterMetaData::getName)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
 
         assertThat(names).contains("_id", "native_name", "books");
     }
@@ -97,7 +97,7 @@ class ConstructorMetadataBuilderTest {
         assertEquals(3, parameters.size());
         List<String> names = parameters.stream()
                 .map(ParameterMetaData::getName)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
 
         assertThat(names).contains("_id", "name", "animal");
     }

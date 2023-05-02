@@ -107,7 +107,7 @@ class ParamsBinderTest {
         });
         List<Object> values = conditions.stream().map(ColumnCondition::column)
                 .map(Column::value)
-                .map(Value::get).collect(Collectors.toList());
+                .map(Value::get).toList();
         assertEquals(10, values.get(0));
         assertEquals("Ada", values.get(1));
 

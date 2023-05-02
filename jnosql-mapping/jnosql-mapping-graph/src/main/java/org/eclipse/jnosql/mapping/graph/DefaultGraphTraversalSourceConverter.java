@@ -95,7 +95,7 @@ class DefaultGraphTraversalSourceConverter extends GraphConverter {
 
         List<FieldGraph> fields = mapping.fields().stream()
                 .map(f -> to(f, entity))
-                .filter(FieldGraph::isNotEmpty).collect(toList());
+                .filter(FieldGraph::isNotEmpty).toList();
 
         Optional<FieldGraph> id = fields.stream().filter(FieldGraph::isId).findFirst();
 

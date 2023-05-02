@@ -246,7 +246,7 @@ abstract class GraphConverterTest {
         List<Property<?>> properties = getConverter().getProperties(worker)
                 .stream()
                 .sorted(comparing(Property::key))
-                .collect(Collectors.toList());
+                .toList();
         assertEquals(4, properties.size());
 
         assertAll(() -> {

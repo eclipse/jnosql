@@ -159,7 +159,7 @@ final class GraphMapperSelect extends AbstractMapperQuery
     @Override
     public <T> List<T> result() {
         Stream<T> stream = stream();
-        return stream.collect(Collectors.toUnmodifiableList());
+        return stream.toList();
     }
 
     @Override

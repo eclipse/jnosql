@@ -210,7 +210,7 @@ public abstract class DocumentEntityConverter {
 
     private <T> T convertEntity(List<Document> documents, EntityMetadata mapping, T instance) {
         final Map<String, FieldMapping> fieldsGroupByName = mapping.fieldsGroupByName();
-        final List<String> names = documents.stream().map(Document::name).sorted().collect(Collectors.toList());
+        final List<String> names = documents.stream().map(Document::name).sorted().toList();
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
             MappingType type = fieldsGroupByName.get(k).type();

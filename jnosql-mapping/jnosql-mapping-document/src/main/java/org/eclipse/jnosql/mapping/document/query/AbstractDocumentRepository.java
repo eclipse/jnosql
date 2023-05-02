@@ -115,7 +115,7 @@ public abstract class AbstractDocumentRepository<T, K> implements PageableReposi
                 pageable.size(), NoSQLPage.skip(pageable)
                 , null ,metadata.name());
 
-        List<Object> entities = getTemplate().select(query).collect(Collectors.toUnmodifiableList());
+        List<Object> entities = getTemplate().select(query).toList();
         return NoSQLPage.of(entities, pageable);
     }
 

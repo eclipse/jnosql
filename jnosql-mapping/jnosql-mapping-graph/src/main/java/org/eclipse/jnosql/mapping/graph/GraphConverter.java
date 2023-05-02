@@ -74,7 +74,7 @@ public abstract class GraphConverter {
 
         List<FieldGraph> fields = mapping.fields().stream()
                 .map(f -> to(f, entity))
-                .filter(FieldGraph::isNotEmpty).collect(toList());
+                .filter(FieldGraph::isNotEmpty).toList();
 
         Optional<FieldGraph> id = fields.stream().filter(FieldGraph::isId).findFirst();
         final Function<Property, Vertex> findVertexOrCreateWithId = p -> {
@@ -112,7 +112,7 @@ public abstract class GraphConverter {
         EntityMetadata mapping = getEntities().get(entity.getClass());
         List<FieldGraph> fields = mapping.fields().stream()
                 .map(f -> to(f, entity))
-                .filter(FieldGraph::isNotEmpty).collect(toList());
+                .filter(FieldGraph::isNotEmpty).toList();
 
         return fields.stream().filter(FieldGraph::isNotId)
                 .flatMap(f -> f.toElements(this, getConverters()).stream())
@@ -275,7 +275,7 @@ public abstract class GraphConverter {
         List<String> names = elements.stream()
                 .map(Property::key)
                 .sorted()
-                .collect(toList());
+                .toList();
         Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
 
         fieldsGroupByName.keySet().stream()

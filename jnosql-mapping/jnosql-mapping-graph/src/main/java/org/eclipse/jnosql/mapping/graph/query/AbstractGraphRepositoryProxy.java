@@ -159,7 +159,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                 DynamicReturn.toSingleResult(method).apply(querySupplier);
 
         Function<Pageable, Page<?>> pageFunction = p -> {
-            List<?> entities = querySupplier.get().collect(Collectors.toUnmodifiableList());
+            List<?> entities = querySupplier.get().toList();
             return NoSQLPage.of(entities, p);
         };
 

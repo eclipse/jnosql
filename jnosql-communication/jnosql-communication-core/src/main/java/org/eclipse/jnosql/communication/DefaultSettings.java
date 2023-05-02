@@ -75,7 +75,7 @@ final class DefaultSettings implements Settings {
     public Optional<Object> getSupplier(Iterable<Supplier<String>> suppliers) {
         Objects.requireNonNull(suppliers, "supplier is required");
         List<String> keys = StreamSupport.stream(suppliers.spliterator(), false)
-                .map(Supplier::get).collect(Collectors.toUnmodifiableList());
+                .map(Supplier::get).toList();
         return get(keys);
     }
 
@@ -99,7 +99,7 @@ final class DefaultSettings implements Settings {
         Objects.requireNonNull(prefix, "prefix is required");
         return configurations.entrySet().stream()
                 .filter(e -> e.getKey().startsWith(prefix))
-                .sorted(Comparator.comparing(Map.Entry::getKey))
+                .sorted(Map.Entry.comparingByKey())
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
     }
@@ -115,7 +115,7 @@ final class DefaultSettings implements Settings {
         Objects.requireNonNull(suppliers, "suppliers is required");
         Iterable<String> prefixes = StreamSupport.stream(suppliers.spliterator(), false)
                 .map(Supplier::get)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
         return prefix(prefixes);
     }
 
@@ -123,7 +123,7 @@ final class DefaultSettings implements Settings {
     public List<Object> prefix(Iterable<String> prefixes) {
         Objects.requireNonNull(prefixes, "prefixes is required");
         List<String> values = StreamSupport.stream(prefixes.spliterator(), false)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
         if (values.isEmpty()) {
             return Collections.emptyList();
         }
@@ -133,7 +133,7 @@ final class DefaultSettings implements Settings {
 
         return configurations.entrySet().stream()
                 .filter(prefixCondition)
-                .sorted(Comparator.comparing(Map.Entry::getKey))
+                .sorted(Map.Entry.comparingByKey())
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
     }

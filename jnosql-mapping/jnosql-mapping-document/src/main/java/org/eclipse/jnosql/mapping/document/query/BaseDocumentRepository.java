@@ -176,7 +176,7 @@ public abstract class BaseDocumentRepository<T> {
     protected Function<Pageable, Page<T>> getPage(DocumentQuery query) {
         return p -> {
             Stream<T> entities = getTemplate().select(query);
-            return NoSQLPage.of(entities.collect(toUnmodifiableList()), p);
+            return NoSQLPage.of(entities.toList(), p);
         };
     }
 

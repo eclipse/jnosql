@@ -130,7 +130,7 @@ class DefaultColumnEntityConverterConstructorTest {
         assertEquals("Otavio Santana", bookUser.getName());
         assertEquals("otaviojava", bookUser.getNickname());
         assertEquals(2, bookUser.getBooks().size());
-        List<String> names = bookUser.getBooks().stream().map(Book::getName).collect(Collectors.toUnmodifiableList());
+        List<String> names = bookUser.getBooks().stream().map(Book::getName).toList();
         assertThat(names).contains("Effective Java", "Clean Code");
 
     }

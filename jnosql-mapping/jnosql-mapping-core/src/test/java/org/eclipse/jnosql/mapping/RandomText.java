@@ -27,7 +27,7 @@ public class RandomText {
         List<Character> collect = ThreadLocalRandom.
                 current().ints(10)
                 .mapToObj(i -> (char) i)
-                .collect(Collectors.toList());
+                .toList();
 
         return collect.stream().map(Objects::toString)
                 .collect(Collectors.joining(","));

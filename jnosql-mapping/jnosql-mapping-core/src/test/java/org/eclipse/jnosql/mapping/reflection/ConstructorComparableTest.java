@@ -27,9 +27,7 @@ class ConstructorComparableTest {
 
     @Test
     public void shouldReturnDefaultConstructor(){
-        Constructor<?> constructor = Stream.of(Person.class.getDeclaredConstructors())
-                .sorted(ConstructorComparable.INSTANCE)
-                .findFirst().orElseThrow();
+        Constructor<?> constructor = Stream.of(Person.class.getDeclaredConstructors()).min(ConstructorComparable.INSTANCE).orElseThrow();
 
         Assertions.assertNotNull(constructor);
     }

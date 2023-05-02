@@ -70,7 +70,7 @@ public enum ClassScanner {
                 .getInterfaces()
                 .loadClasses(DataRepository.class)
                 .stream().filter(RepositoryFilter.INSTANCE)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     private static List<Class<?>> loadEmbeddable(ScanResult scan) {

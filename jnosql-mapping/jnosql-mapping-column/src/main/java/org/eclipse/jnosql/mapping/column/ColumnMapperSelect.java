@@ -163,7 +163,7 @@ final class ColumnMapperSelect extends AbstractMapperQuery implements MapperFrom
     public <T> List<T> result() {
         ColumnQuery query = build();
         return this.template.<T>select(query)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     @Override

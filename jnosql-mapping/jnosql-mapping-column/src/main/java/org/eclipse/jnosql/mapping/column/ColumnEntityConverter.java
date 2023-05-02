@@ -178,7 +178,7 @@ public abstract class ColumnEntityConverter {
 
     private <T> T convertEntity(List<Column> columns, EntityMetadata mapping, T instance) {
         final Map<String, FieldMapping> fieldsGroupByName = mapping.fieldsGroupByName();
-        final List<String> names = columns.stream().map(Column::name).sorted().collect(Collectors.toList());
+        final List<String> names = columns.stream().map(Column::name).sorted().toList();
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
             MappingType type = fieldsGroupByName.get(k).type();
