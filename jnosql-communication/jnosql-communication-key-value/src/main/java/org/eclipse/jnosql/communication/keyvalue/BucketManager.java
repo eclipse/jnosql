@@ -35,7 +35,7 @@ public interface BucketManager extends AutoCloseable {
      *
      * @return the bucket name
      */
-    String getName();
+    String name();
 
     /**
      * Associates the specified value with the specified key and then storage

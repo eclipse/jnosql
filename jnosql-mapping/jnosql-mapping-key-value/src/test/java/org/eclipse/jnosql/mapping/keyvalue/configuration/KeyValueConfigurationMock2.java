@@ -93,7 +93,7 @@ public class KeyValueConfigurationMock2 implements KeyValueConfiguration {
         }
 
         @Override
-        public String getName() {
+        public String name() {
             return bucketName;
         }
 

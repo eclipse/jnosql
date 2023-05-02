@@ -70,7 +70,7 @@ public class ColumnConfigurationMock2 implements ColumnConfiguration {
         }
 
         @Override
-        public String getName() {
+        public String name() {
             return database;
         }
 

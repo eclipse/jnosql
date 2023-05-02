@@ -69,7 +69,7 @@ class DocumentConfigurationMock implements DocumentConfiguration {
         }
 
         @Override
-        public String getName() {
+        public String name() {
             return database;
         }
 
