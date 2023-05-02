@@ -41,36 +41,36 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     }
 
     @Override
-    public Object getValue() {
-        return fieldValue.getValue();
+    public Object value() {
+        return fieldValue.value();
     }
 
     @Override
-    public FieldMapping getField() {
-        return fieldValue.getField();
+    public FieldMapping field() {
+        return fieldValue.field();
     }
 
 
     @Override
     public <X, Y> List<Document> toDocument(DocumentEntityConverter converter, Converters converters) {
         if (EMBEDDED.equals(getType())) {
-            return converter.toDocument(getValue()).documents();
+            return converter.toDocument(value()).documents();
         }  else if (ENTITY.equals(getType())) {
-            return singletonList(Document.of(getName(), converter.toDocument(getValue()).documents()));
+            return singletonList(Document.of(getName(), converter.toDocument(value()).documents()));
         } else if (isEmbeddableCollection()) {
             return singletonList(Document.of(getName(), getDocuments(converter)));
         }
-        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = getField().getConverter();
+        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field().getConverter();
         if (optionalConverter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters.get(optionalConverter.get());
-            return singletonList(Document.of(getName(), attributeConverter.convertToDatabaseColumn((X) getValue())));
+            return singletonList(Document.of(getName(), attributeConverter.convertToDatabaseColumn((X) value())));
         }
-        return singletonList(Document.of(getName(), getValue()));
+        return singletonList(Document.of(getName(), value()));
     }
 
     private List<List<Document>> getDocuments(DocumentEntityConverter converter) {
         List<List<Document>> documents = new ArrayList<>();
-        for (Object element : (Iterable) getValue()) {
+        for (Object element : (Iterable) value()) {
             documents.add(converter.toDocument(element).documents());
         }
         return documents;
@@ -86,15 +86,15 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     }
 
     private MappingType getType() {
-        return getField().type();
+        return field().type();
     }
 
     private boolean isEmbeddableElement() {
-        return ((GenericFieldMapping) getField()).isEmbeddable();
+        return ((GenericFieldMapping) field()).isEmbeddable();
     }
 
     private String getName() {
-        return getField().name();
+        return field().name();
     }
 
     static DocumentFieldValue of(Object value, FieldMapping field) {

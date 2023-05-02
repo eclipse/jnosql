@@ -19,53 +19,7 @@ import java.util.Objects;
 /**
  * The default implementation of {@link QueryCondition}
  */
-final class DefaultQueryCondition implements QueryCondition {
-
-    private final String name;
-
-    private final Condition condition;
-
-    private final QueryValue<?> value;
-
-    DefaultQueryCondition(String name, Condition condition, QueryValue<?> value) {
-        this.name = name;
-        this.condition = condition;
-        this.value = value;
-    }
-
-    @Override
-    public String name() {
-        return name;
-    }
-
-    @Override
-    public Condition condition() {
-        return condition;
-    }
-
-    @Override
-    public QueryValue<?> value() {
-        return value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof DefaultQueryCondition)) {
-            return false;
-        }
-        DefaultQueryCondition that = (DefaultQueryCondition) o;
-        return Objects.equals(name, that.name) &&
-                condition == that.condition &&
-                Objects.equals(value, that.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, condition, value);
-    }
+record DefaultQueryCondition(String name, Condition condition, QueryValue<?> value) implements QueryCondition {
 
     @Override
     public String toString() {
