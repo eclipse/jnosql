@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GremlinParamParserTest {
 
-    private GremlinParamParser parser = GremlinParamParser.INSTANCE;
+    private final GremlinParamParser parser = GremlinParamParser.INSTANCE;
 
     @Test
     public void shouldGotErrorWhenNull() {

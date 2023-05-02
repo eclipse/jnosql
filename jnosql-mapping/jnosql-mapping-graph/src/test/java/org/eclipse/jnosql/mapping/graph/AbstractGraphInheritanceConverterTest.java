@@ -191,26 +191,4 @@ public abstract class AbstractGraphInheritanceConverterTest {
         assertEquals(notification.getCreatedOn(),  entity.property("createdOn").value());
     }
 
-//    @Test
-//    public void shouldReturnErrorWhenConvertMissingColumn(){
-//        LocalDate date = LocalDate.now();
-//        DocumentEntity entity = DocumentEntity.of("Notification");
-//        entity.add("_id", 100L);
-//        entity.add("name", "SMS Notification");
-//        entity.add("phone", "+351987654123");
-//        entity.add("createdOn", date);
-//        Assertions.assertThrows(MappingException.class, ()-> this.converter.toEntity(entity));
-//    }
-//
-//    @Test
-//    public void shouldReturnErrorWhenMismatchField() {
-//        LocalDate date = LocalDate.now();
-//        DocumentEntity entity = DocumentEntity.of("Notification");
-//        entity.add("_id", 100L);
-//        entity.add("name", "Email Notification");
-//        entity.add("email", "otavio@otavio.test");
-//        entity.add("createdOn", date);
-//        entity.add("type", "Wrong");
-//        Assertions.assertThrows(MappingException.class, ()-> this.converter.toEntity(entity));
-//    }
 }
