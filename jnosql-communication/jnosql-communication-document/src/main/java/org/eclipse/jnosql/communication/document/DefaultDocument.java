@@ -21,26 +21,7 @@ import org.eclipse.jnosql.communication.Value;
 
 import java.util.Objects;
 
-final class DefaultDocument implements Document {
-
-    private final String name;
-
-    private final Value value;
-
-    DefaultDocument(String name, Value value) {
-        this.name = name;
-        this.value = value;
-    }
-
-    @Override
-    public String name() {
-        return name;
-    }
-
-    @Override
-    public Value value() {
-        return value;
-    }
+record DefaultDocument(String name, Value value) implements Document {
 
     @Override
     public <T> T get(Class<T> type) {
@@ -54,34 +35,9 @@ final class DefaultDocument implements Document {
         return value.get(supplier);
     }
 
-
     @Override
     public Object get() {
         return value.get();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Document)) {
-            return false;
-        }
-        Document that = (Document) o;
-        return Objects.equals(name, that.name()) &&
-                Objects.equals(value, that.value());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, value);
-    }
-
-    @Override
-    public String toString() {
-        return "Document{" + "name='" + name + '\'' +
-                ", value=" + value +
-                '}';
-    }
 }
