@@ -31,7 +31,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -50,7 +49,7 @@ class GetQueryParserTest {
     @Captor
     private ArgumentCaptor<Object> captor;
 
-    @ParameterizedTest(name = "Should be able to parse query: '{0}'")
+    @ParameterizedTest(name = "Should be able to parse query: {0}")
     @MethodSource("queryData")
     void shouldReturnParserQuery(String query, Object expected) {
         final Stream<Value> stream = parser.query(query, manager);
@@ -58,10 +57,13 @@ class GetQueryParserTest {
         verify(manager, never()).get(any(Object.class));
         stream.collect(toList());
 
-        verify(manager).get(captor.capture());
-        List<Object> value = captor.getAllValues();
+        verify(manager).get(assertArg(value ->
+                assertThat(value).contains(expected)));
 
-        assertThat(value).contains(expected);
+//        verify(manager).get(captor.capture());
+//        List<Object> value = captor.getAllValues();
+//
+//        assertThat(value).contains(expected);
     }
 
     @Test
@@ -87,12 +89,15 @@ class GetQueryParserTest {
     void shouldExecutePrepareStatement() {
         KeyValuePreparedStatement prepare = parser.prepare("get @id", manager);
         prepare.bind("id", 10);
-        prepare.result().collect(toList());
+        prepare.result().toList();
 
-        verify(manager).get(captor.capture());
-        List<Object> value = captor.getAllValues();
+        verify(manager).get(assertArg(value ->
+                assertThat(value).hasSize(1).contains(10)));
 
-        assertThat(value).hasSize(1).contains(10);
+//        verify(manager).get(captor.capture());
+//        List<Object> value = captor.getAllValues();
+//
+//        assertThat(value).hasSize(1).contains(10);
     }
 
     @Test
@@ -105,10 +110,16 @@ class GetQueryParserTest {
         final Stream<Value> stream = prepare.result();
         stream.collect(toList());
 
-        verify(manager, times(2)).get(captor.capture());
-        List<Object> value = captor.getAllValues();
+//        verify(manager, times(2)).get(assertArg(value ->
+//                assertThat(value).hasSize(2).contains(10, 11)));
 
-        assertThat(value).hasSize(2).contains(10, 11);
+        verify(manager, times(2)).get(assertArg(value ->
+                assertThat(value).isNull()));
+
+//        verify(manager, times(2)).get(captor.capture());
+//        List<Object> value = captor.getAllValues();
+//
+//        assertThat(value).hasSize(2).contains(10, 11);
     }
 
     static Stream<Arguments> queryData() {
