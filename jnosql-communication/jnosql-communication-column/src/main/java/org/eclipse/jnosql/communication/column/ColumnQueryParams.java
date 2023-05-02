@@ -19,8 +19,6 @@ package org.eclipse.jnosql.communication.column;
 
 import org.eclipse.jnosql.communication.Params;
 
-import java.util.Objects;
-
 
 /**
  * The result of {@link org.eclipse.jnosql.communication.query.SelectQueryConverter} that has {@link ColumnQuery} and {@link Params}.
