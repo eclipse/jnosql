@@ -12,86 +12,106 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication.keyvalue;
 
 import org.eclipse.jnosql.communication.QueryException;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.mockito.ArgumentMatchers.assertArg;
+import static org.mockito.Mockito.verify;
 
+@ExtendWith(MockitoExtension.class)
 class PutQueryParserTest {
 
     private final PutQueryParser parser = new PutQueryParser();
 
-    private final BucketManager manager = Mockito.mock(BucketManager.class);
+    @Mock
+    private BucketManager manager;
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"put {\"Diana\", \"Hunt\"}"})
-    public void shouldReturnParserQuery1(String query) {
-
-        ArgumentCaptor<KeyValueEntity> captor = ArgumentCaptor.forClass(KeyValueEntity.class);
-
+    @Test
+    @DisplayName("Should be able to parse query")
+    void shouldReturnParserQuery1() {
+        String query = """
+                put { "Diana", "Hunt" }
+                """;
         parser.query(query, manager);
 
-        Mockito.verify(manager).put(captor.capture());
-        KeyValueEntity entity = captor.getValue();
-
-        assertEquals("Diana", entity.key());
-        assertEquals("Hunt", entity.value());
+        verify(manager).put(assertArg((KeyValueEntity entity) ->
+                assertSoftly(softly -> {
+                    softly.assertThat(entity.key()).as("key is expected").isEqualTo("Diana");
+                    softly.assertThat(entity.value()).as("value is expected").isEqualTo("Hunt");
+                })));
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"put {\"Diana\", \"goddess of hunt\", 10 hour}"})
-    public void shouldReturnParserQuery2(String query) {
-
-        ArgumentCaptor<KeyValueEntity> captor = ArgumentCaptor.forClass(KeyValueEntity.class);
-        ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
-
+    @Test
+    @DisplayName("Should be able to parse query retrieving Duration")
+    void shouldReturnParserQuery2() {
+        String query = """
+                put { "Diana", "goddess of hunt", 10 hour }
+                """;
         parser.query(query, manager);
 
-        Mockito.verify(manager).put(captor.capture(), durationCaptor.capture());
-        KeyValueEntity entity = captor.getValue();
-        Duration ttl = durationCaptor.getValue();
-
-        assertEquals(Duration.ofHours(10), ttl);
-        assertEquals("Diana", entity.key());
-        assertEquals("goddess of hunt", entity.value());
+        verify(manager).put(
+                assertArg((KeyValueEntity entity) ->
+                        assertSoftly(softly -> {
+                            softly.assertThat(entity.key()).as("key is expected").isEqualTo("Diana");
+                            softly.assertThat(entity.value()).as("value is expected").isEqualTo("goddess of hunt");
+                        })),
+                assertArg((Duration duration) ->
+                        assertThat(duration).isEqualTo(Duration.ofHours(10))));
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"put {\"Diana\", @value}"})
-    public void shouldReturnErrorWhenUseParameterInQuery(String query) {
-        assertThrows(QueryException.class, () -> parser.query(query, manager));
+    @Test
+    @DisplayName("Should throw QueryException when use parameter in query")
+    void shouldReturnErrorWhenUseParameterInQuery() {
+        String query = """
+                put { "Diana", @value }
+                """;
+
+        assertThatThrownBy(() -> parser.query(query, manager))
+                .isInstanceOf(QueryException.class)
+                .hasMessage("To run a query with a parameter use a PrepareStatement instead.");
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"put {\"Diana\", @value}"})
-    public void shouldReturnErrorWhenDontBindParameters(String query) {
-
+    @Test
+    @DisplayName("Should throw QueryException when parameter is not bind")
+    void shouldReturnErrorWhenCannotBindParameters() {
+        String query = """
+                put { "Diana", @value }
+                """;
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
-        assertThrows(QueryException.class, prepare::result);
+
+        assertThatThrownBy(prepare::result)
+                .isInstanceOf(QueryException.class)
+                .hasMessage("Check all the parameters before execute the query, params left: [value]");
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"put {\"Diana\", @value}"})
-    public void shouldExecutePrepareStatement(String query) {
+    @Test
+    @DisplayName("Should be able to execute the PreparedStatement using one parameter")
+    void shouldExecutePrepareStatement() {
+        String query = """
+                put { "Diana", @value }
+                """;
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("value", "Hunt");
         prepare.result();
-        ArgumentCaptor<KeyValueEntity> captor = ArgumentCaptor.forClass(KeyValueEntity.class);
 
-        Mockito.verify(manager).put(captor.capture());
-        KeyValueEntity entity = captor.getValue();
-
-        assertEquals("Diana", entity.key());
-        assertEquals("Hunt", entity.value());
+        verify(manager).put(assertArg((KeyValueEntity entity) ->
+                assertSoftly(softly -> {
+                    softly.assertThat(entity.key()).as("key is expected").isEqualTo("Diana");
+                    softly.assertThat(entity.value()).as("value is expected").isEqualTo("Hunt");
+                })));
     }
 }
