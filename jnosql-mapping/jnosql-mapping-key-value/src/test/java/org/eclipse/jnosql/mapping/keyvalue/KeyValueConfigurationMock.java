@@ -33,17 +33,7 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
     }
 
 
-    public static class BucketManagerFactoryMock implements BucketManagerFactory {
-
-        private final Settings settings;
-
-        public BucketManagerFactoryMock(Settings settings) {
-            this.settings = settings;
-        }
-
-        public Settings getSettings() {
-            return settings;
-        }
+    public record BucketManagerFactoryMock(Settings settings) implements BucketManagerFactory {
 
         @Override
         public BucketManager apply(String bucketName) throws UnsupportedOperationException, NullPointerException {

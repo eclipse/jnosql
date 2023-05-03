@@ -32,62 +32,52 @@ class GraphConfigurationMock implements GraphConfiguration {
         return new GraphMock(settings);
     }
 
-    public static class GraphMock implements Graph {
-
-        private final Settings settings;
-
-        public GraphMock(Settings settings) {
-            this.settings = settings;
-        }
-
-        public Settings getSettings() {
-            return settings;
-        }
+    public record GraphMock(Settings settings) implements Graph {
 
         @Override
-        public Vertex addVertex(Object... keyValues) {
-            return null;
+            public Vertex addVertex(Object... keyValues) {
+                return null;
+            }
+
+            @Override
+            public <C extends GraphComputer> C compute(Class<C> graphComputerClass) throws IllegalArgumentException {
+                return null;
+            }
+
+            @Override
+            public GraphComputer compute() throws IllegalArgumentException {
+                return null;
+            }
+
+            @Override
+            public Iterator<Vertex> vertices(Object... vertexIds) {
+                return null;
+            }
+
+            @Override
+            public Iterator<Edge> edges(Object... edgeIds) {
+                return null;
+            }
+
+            @Override
+            public Transaction tx() {
+                return null;
+            }
+
+            @Override
+            public void close() throws Exception {
+
+            }
+
+            @Override
+            public Variables variables() {
+                return null;
+            }
+
+            @Override
+            public Configuration configuration() {
+                return null;
+            }
+
         }
-
-        @Override
-        public <C extends GraphComputer> C compute(Class<C> graphComputerClass) throws IllegalArgumentException {
-            return null;
-        }
-
-        @Override
-        public GraphComputer compute() throws IllegalArgumentException {
-            return null;
-        }
-
-        @Override
-        public Iterator<Vertex> vertices(Object... vertexIds) {
-            return null;
-        }
-
-        @Override
-        public Iterator<Edge> edges(Object... edgeIds) {
-            return null;
-        }
-
-        @Override
-        public Transaction tx() {
-            return null;
-        }
-
-        @Override
-        public void close() throws Exception {
-
-        }
-
-        @Override
-        public Variables variables() {
-            return null;
-        }
-
-        @Override
-        public Configuration configuration() {
-            return null;
-        }
-
-    }
 }

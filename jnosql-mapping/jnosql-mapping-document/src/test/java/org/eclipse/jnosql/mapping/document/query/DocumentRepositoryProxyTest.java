@@ -284,9 +284,9 @@ public class DocumentRepositoryProxyTest {
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
-        personRepository.findAllById(singletonList(10L)).collect(Collectors.toUnmodifiableList());
+        personRepository.findAllById(singletonList(10L)).toList();
         verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
-        personRepository.findAllById(Arrays.asList(10L, 11L, 12L)).collect(Collectors.toUnmodifiableList());
+        personRepository.findAllById(Arrays.asList(10L, 11L, 12L)).toList();
         verify(template, times(4)).find(Mockito.eq(Person.class), any(Long.class));
     }
 
@@ -329,7 +329,7 @@ public class DocumentRepositoryProxyTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        personRepository.findAll().collect(Collectors.toUnmodifiableList());
+        personRepository.findAll().toList();
         ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
         verify(template).findAll(captor.capture());
         assertEquals(captor.getValue(), Person.class);
@@ -684,7 +684,7 @@ public class DocumentRepositoryProxyTest {
                 .thenReturn(true);
 
         var result = personRepository.existsByName("Poliana");
-        Assertions.assertEquals(true, result);
+        assertTrue(result);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).exists(captor.capture());
         DocumentQuery query = captor.getValue();

@@ -45,8 +45,7 @@ class GraphSupplier implements Supplier<Graph> {
                     return (GraphConfiguration) reflections.newInstance(c);
                 }).orElseGet(GraphConfiguration::getConfiguration);
 
-        Graph graph = configuration.apply(settings);
-        return graph;
+        return configuration.apply(settings);
     }
 
     public void close(@Disposes Graph graph) throws Exception {

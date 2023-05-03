@@ -25,13 +25,11 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -55,7 +53,7 @@ class DefaultDocumentQueryBuilderTest {
     }
 
     private DocumentCondition newRandomDocumentCondition() {
-        return DocumentCondition.eq(UUID.randomUUID().toString().toString(), UUID.randomUUID().toString().toString());
+        return DocumentCondition.eq(UUID.randomUUID().toString(), UUID.randomUUID().toString());
     }
 
     @BeforeEach
@@ -79,7 +77,7 @@ class DefaultDocumentQueryBuilderTest {
 
     @Test
     void shouldAcceptToSelectAnEmptyArrayOfDocuments() {
-        assertSame(builder, builder.select(new String[]{}));
+        assertSame(builder, builder.select());
     }
 
     @Test
@@ -104,7 +102,7 @@ class DefaultDocumentQueryBuilderTest {
 
     @Test
     void shouldAcceptToSortAnEmptyArrayOfSortRef() {
-        assertSame(builder, builder.sort(new Sort[]{}));
+        assertSame(builder, builder.sort());
     }
 
     @Test
@@ -208,13 +206,13 @@ class DefaultDocumentQueryBuilderTest {
 
     @Test
     void shouldBeEqualsToYourself() {
-        assertTrue(builder.equals(builder));
+        assertEquals(builder, builder);
     }
 
 
     @Test
     void shouldBeNotEqualsToAnyOtherInstanceType() {
-        assertFalse(builder.equals(new Object()));
+        assertNotEquals(builder, new Object());
     }
 
     @Test
@@ -226,7 +224,7 @@ class DefaultDocumentQueryBuilderTest {
                 .skip(1)
                 .limit(2);
 
-        assertFalse(builder.equals(anotherBuilder));
+        assertNotEquals(builder, anotherBuilder);
     }
 
     @Test
@@ -253,7 +251,7 @@ class DefaultDocumentQueryBuilderTest {
 
         assertNotSame(builder1,builder2);
 
-        assertTrue(builder1.equals(builder2));
+        assertEquals(builder1, builder2);
     }
 
     @Test

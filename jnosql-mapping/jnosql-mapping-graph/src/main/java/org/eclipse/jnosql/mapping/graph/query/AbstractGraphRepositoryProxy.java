@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -68,23 +67,30 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
         Class<?> typeClass = getEntityMetadata().type();
 
         switch (type) {
-            case DEFAULT:
+            case DEFAULT -> {
                 return method.invoke(getRepository(), args);
-            case FIND_BY:
+            }
+            case FIND_BY -> {
                 return findBy(method, args, typeClass);
-            case FIND_ALL:
+            }
+            case FIND_ALL -> {
                 return findAll(method, typeClass, args);
-            case DELETE_BY:
+            }
+            case DELETE_BY -> {
                 return executeDeleteMethod(method, args);
-            case OBJECT_METHOD:
+            }
+            case OBJECT_METHOD -> {
                 return method.invoke(this, args);
-            case COUNT_BY:
+            }
+            case COUNT_BY -> {
                 return countBy(method, args);
-            case EXISTS_BY:
+            }
+            case EXISTS_BY -> {
                 return existsBy(method, args);
-            case ORDER_BY:
-                throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
-            case QUERY:
+            }
+            case ORDER_BY ->
+                    throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
+            case QUERY -> {
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
                         .withArgs(args)
                         .withMethod(method)
@@ -92,10 +98,10 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                         .withPrepareConverter(q -> getTemplate().prepare(q))
                         .withQueryConverter(q -> getTemplate().query(q)).build();
                 return methodReturn.execute();
-            case UNKNOWN:
-            default:
+            }
+            default -> {
                 return Void.class;
-
+            }
         }
     }
 
@@ -152,7 +158,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                 DynamicReturn.toSingleResult(method).apply(querySupplier);
 
         Function<Pageable, Page<?>> pageFunction = p -> {
-            List<?> entities = querySupplier.get().collect(Collectors.toUnmodifiableList());
+            List<?> entities = querySupplier.get().toList();
             return NoSQLPage.of(entities, p);
         };
 

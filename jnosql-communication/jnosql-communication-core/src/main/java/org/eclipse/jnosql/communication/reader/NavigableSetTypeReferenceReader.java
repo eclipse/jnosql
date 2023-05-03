@@ -38,7 +38,7 @@ import static java.util.stream.StreamSupport.stream;
 @SuppressWarnings("unchecked")
 public class NavigableSetTypeReferenceReader implements TypeReferenceReader {
 
-    private static final transient ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
+    private static final ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
 
     @Override
     public boolean test(TypeSupplier<?> typeReference) {

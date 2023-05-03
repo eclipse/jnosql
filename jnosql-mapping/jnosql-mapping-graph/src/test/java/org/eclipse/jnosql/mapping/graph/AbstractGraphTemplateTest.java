@@ -38,7 +38,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
@@ -418,7 +417,7 @@ public abstract class AbstractGraphTemplateTest {
         getGraphTemplate().insert(person);
         List<Person> people = getGraphTemplate()
                 .<Person>query("g.V().hasLabel('Person')")
-                .collect(Collectors.toList());
+                .toList();
         assertThat(people.stream().map(Person::getName).collect(toList())).contains("Otavio");
     }
 
@@ -450,7 +449,7 @@ public abstract class AbstractGraphTemplateTest {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
         PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(@param)");
         prepare.bind("param", "Person");
-        List<Person> people = prepare.<Person>result().collect(Collectors.toList());
+        List<Person> people = prepare.<Person>result().toList();
         assertThat(people.stream().map(Person::getName).collect(toList())).contains("Otavio");
     }
 
@@ -510,7 +509,7 @@ public abstract class AbstractGraphTemplateTest {
     public void shouldFindAll() {
         final Person otavio = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
-        List<Person> people = getGraphTemplate().findAll(Person.class).collect(Collectors.toUnmodifiableList());
+        List<Person> people = getGraphTemplate().findAll(Person.class).toList();
 
         assertThat(people).hasSize(1)
                 .map(Person::getName)
@@ -521,14 +520,14 @@ public abstract class AbstractGraphTemplateTest {
     public void shouldDeleteAll() {
         final Person otavio = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
-        List<Person> people = getGraphTemplate().findAll(Person.class).collect(Collectors.toUnmodifiableList());
+        List<Person> people = getGraphTemplate().findAll(Person.class).toList();
 
         assertThat(people).hasSize(1)
                 .map(Person::getName)
                 .contains("Otavio");
 
         getGraphTemplate().deleteAll(Person.class);
-        people = getGraphTemplate().findAll(Person.class).collect(Collectors.toUnmodifiableList());
+        people = getGraphTemplate().findAll(Person.class).toList();
 
         assertThat(people).isEmpty();
     }

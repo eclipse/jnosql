@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultFunctionTest {
 
@@ -40,7 +39,7 @@ class DefaultFunctionTest {
     public void shouldReturnEquals(){
         Function f = DefaultFunction.of("sum", new Object[]{1, 2});
         Function f2 = DefaultFunction.of("sum", new Object[]{1, 2});
-        assertTrue(f.equals(f2));
+        assertEquals(f, f2);
     }
 
     @Test

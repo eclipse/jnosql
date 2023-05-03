@@ -51,7 +51,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
@@ -255,11 +254,11 @@ public class GraphRepositoryProxyTest {
     public void shouldFindByIds() {
 
         when(template.find(any(Object.class))).thenReturn(Optional.empty());
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        personRepository.findAllById(singletonList(10L)).collect(Collectors.toUnmodifiableList());
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+        personRepository.findAllById(singletonList(10L)).toList();
         verify(template).find(captor.capture());
 
-        personRepository.findAllById(asList(1L, 2L, 3L)).collect(Collectors.toUnmodifiableList());
+        personRepository.findAllById(asList(1L, 2L, 3L)).toList();
         verify(template, times(4)).find(any(Long.class));
     }
 
@@ -296,7 +295,7 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldFindAll() {
-        List<Person> people = personRepository.findAll().collect(Collectors.toUnmodifiableList());
+        List<Person> people = personRepository.findAll().toList();
         verify(template).findAll(Person.class);
     }
 
@@ -309,7 +308,7 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldReturnEmptyAtFindAll() {
-        List<Person> people = personRepository.findAll().collect(Collectors.toUnmodifiableList());
+        List<Person> people = personRepository.findAll().toList();
         assertTrue(people.isEmpty());
     }
 

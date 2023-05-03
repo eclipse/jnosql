@@ -43,7 +43,6 @@ import org.junit.jupiter.api.Test;
 import jakarta.inject.Inject;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -107,7 +106,7 @@ class ParamsBinderTest {
         });
         List<Object> values = conditions.stream().map(ColumnCondition::column)
                 .map(Column::value)
-                .map(Value::get).collect(Collectors.toList());
+                .map(Value::get).toList();
         assertEquals(10, values.get(0));
         assertEquals("Ada", values.get(1));
 

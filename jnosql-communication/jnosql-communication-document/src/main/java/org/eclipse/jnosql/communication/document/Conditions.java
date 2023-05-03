@@ -46,50 +46,36 @@ final class Conditions {
     }
 
     static DocumentCondition getCondition(QueryCondition condition, Params parameters, DocumentObserverParser observer, String entity) {
-        switch (condition.condition()) {
-            case EQUALS:
-                return eq(Document.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case GREATER_THAN:
-                return gt(Document.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case GREATER_EQUALS_THAN:
-                return gte(Document.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case LESSER_THAN:
-                return lt(Document.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case LESSER_EQUALS_THAN:
-                return lte(Document.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case IN:
-                return in(Document.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case LIKE:
-                return like(Document.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case BETWEEN:
-                return between(Document.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case NOT:
-                return getCondition(ConditionQueryValue.class.cast(condition.value()).get().get(0),
-                        parameters, observer,
-                        entity).negate();
-            case OR:
-                return or(ConditionQueryValue.class.cast(condition.value())
-                        .get()
-                        .stream().map(v -> getCondition(v, parameters, observer, entity))
-                        .toArray(DocumentCondition[]::new));
-            case AND:
-                return and(ConditionQueryValue.class.cast(condition.value())
-                        .get()
-                        .stream().map(v -> getCondition(v, parameters, observer, entity))
-                        .toArray(DocumentCondition[]::new));
-            default:
-                throw new QueryException("There is not support the type: " + condition.condition());
-
-
-        }
+        return switch (condition.condition()) {
+            case EQUALS -> eq(Document.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case GREATER_THAN -> gt(Document.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case GREATER_EQUALS_THAN -> gte(Document.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case LESSER_THAN -> lt(Document.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case LESSER_EQUALS_THAN -> lte(Document.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case IN -> in(Document.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case LIKE -> like(Document.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case BETWEEN -> between(Document.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case NOT -> getCondition(ConditionQueryValue.class.cast(condition.value()).get().get(0),
+                    parameters, observer,
+                    entity).negate();
+            case OR -> or(ConditionQueryValue.class.cast(condition.value())
+                    .get()
+                    .stream().map(v -> getCondition(v, parameters, observer, entity))
+                    .toArray(DocumentCondition[]::new));
+            case AND -> and(ConditionQueryValue.class.cast(condition.value())
+                    .get()
+                    .stream().map(v -> getCondition(v, parameters, observer, entity))
+                    .toArray(DocumentCondition[]::new));
+            default -> throw new QueryException("There is not support the type: " + condition.condition());
+        };
     }
 
     private static String getName(QueryCondition condition,

@@ -196,7 +196,7 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
     @Override
     public <T> Stream<T> query(String query) {
         requireNonNull(query, "query is required");
-        return PARSER.query(query, getManager(), getObserver()).map(c -> (T) getConverter().toEntity(c));
+        return PARSER.query(query, getManager(), getObserver()).map(c -> getConverter().toEntity(c));
     }
 
     @Override

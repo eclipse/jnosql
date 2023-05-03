@@ -65,7 +65,7 @@ class ColumnManagerSupplier implements Supplier<ColumnManager> {
     }
 
     public void close(@Disposes ColumnManager manager) {
-        LOGGER.log(Level.FINEST, "Closing ColumnManager resource, database name: " + manager.getName());
+        LOGGER.log(Level.FINEST, "Closing ColumnManager resource, database name: " + manager.name());
         manager.close();
     }
 }

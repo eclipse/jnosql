@@ -37,7 +37,7 @@ public interface ColumnManager extends AutoCloseable {
      *
      * @return the database's name
      */
-    String getName();
+    String name();
 
     /**
      * Saves a Column family entity

@@ -38,7 +38,6 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Utilitarian class to reflection
@@ -162,7 +161,7 @@ public class Reflections {
         List<Constructor<?>> constructors = Stream.
                 of(type.getDeclaredConstructors())
                 .filter(defaultConstructorPredicate.or(customConstructorPredicate))
-                .collect(toList());
+                .toList();
 
 
         if (constructors.isEmpty()) {
@@ -337,7 +336,7 @@ public class Reflections {
     }
 
     private String readEntity(Class<?> entity) {
-        return Optional.ofNullable((Entity) entity.getAnnotation(Entity.class))
+        return Optional.ofNullable(entity.getAnnotation(Entity.class))
                 .map(Entity::value)
                 .filter(StringUtils::isNotBlank)
                 .orElse(entity.getSimpleName());

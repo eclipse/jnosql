@@ -96,7 +96,7 @@ class SelectQueryConverterTest {
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{"Ada"});
 
-        List<Vertex> vertices = converter.apply(queryMethod, null).collect(Collectors.toList());
+        List<Vertex> vertices = converter.apply(queryMethod, null).toList();
         assertEquals(2, vertices.size());
         assertNotEquals("Ada", vertices.get(0).value("name"));
         assertNotEquals("Ada", vertices.get(1).value("name"));
@@ -115,7 +115,7 @@ class SelectQueryConverterTest {
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{30});
 
-        List<Vertex> vertices = converter.apply(queryMethod, null).collect(Collectors.toList());
+        List<Vertex> vertices = converter.apply(queryMethod, null).toList();
         assertEquals(1, vertices.size());
         assertEquals("Poliana", vertices.get(0).value("name"));
     }
@@ -133,7 +133,7 @@ class SelectQueryConverterTest {
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{30});
 
-        List<Vertex> vertices = converter.apply(queryMethod, null).collect(Collectors.toList());
+        List<Vertex> vertices = converter.apply(queryMethod, null).toList();
         assertEquals(2, vertices.size());
         assertNotEquals("Ada", vertices.get(0).value("name"));
         assertNotEquals("Ada", vertices.get(1).value("name"));
@@ -153,7 +153,7 @@ class SelectQueryConverterTest {
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{30});
 
-        List<Vertex> vertices = converter.apply(queryMethod, null).collect(Collectors.toList());
+        List<Vertex> vertices = converter.apply(queryMethod, null).toList();
         assertEquals(1, vertices.size());
         assertEquals("Ada", vertices.get(0).value("name"));
     }
@@ -171,7 +171,7 @@ class SelectQueryConverterTest {
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{30});
 
-        List<Vertex> vertices = converter.apply(queryMethod, null).collect(Collectors.toList());
+        List<Vertex> vertices = converter.apply(queryMethod, null).toList();
         assertEquals(2, vertices.size());
         assertNotEquals("Poliana", vertices.get(0).value("name"));
         assertNotEquals("Poliana", vertices.get(1).value("name"));
@@ -190,7 +190,7 @@ class SelectQueryConverterTest {
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{29, 41});
 
-        List<Vertex> vertices = converter.apply(queryMethod, null).collect(Collectors.toList());
+        List<Vertex> vertices = converter.apply(queryMethod, null).toList();
         assertEquals(2, vertices.size());
         assertNotEquals("Poliana", vertices.get(0).value("name"));
         assertNotEquals("Poliana", vertices.get(1).value("name"));
@@ -210,7 +210,7 @@ class SelectQueryConverterTest {
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{100});
 
-        List<Vertex> vertices = converter.apply(queryMethod, null).collect(Collectors.toList());
+        List<Vertex> vertices = converter.apply(queryMethod, null).toList();
         List<Object> names = vertices.stream().map(v -> v.value("name"))
                 .collect(Collectors.toList());
         assertEquals(3, vertices.size());
@@ -231,7 +231,7 @@ class SelectQueryConverterTest {
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{100});
 
-        List<Vertex> vertices = converter.apply(queryMethod, null).collect(Collectors.toList());
+        List<Vertex> vertices = converter.apply(queryMethod, null).toList();
         List<Object> names = vertices.stream().map(v -> v.value("name"))
                 .collect(Collectors.toList());
         assertEquals(3, vertices.size());
@@ -251,7 +251,7 @@ class SelectQueryConverterTest {
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{100});
 
-        List<Vertex> vertices = converter.apply(queryMethod, null).collect(Collectors.toList());
+        List<Vertex> vertices = converter.apply(queryMethod, null).toList();
         List<Object> names = vertices.stream().map(v -> v.value("name"))
                 .collect(Collectors.toList());
         assertEquals(3, vertices.size());
@@ -271,7 +271,7 @@ class SelectQueryConverterTest {
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{Arrays.asList(25,40,30)});
 
-        List<Vertex> vertices = converter.apply(queryMethod, null).collect(Collectors.toList());
+        List<Vertex> vertices = converter.apply(queryMethod, null).toList();
         List<Object> names = vertices.stream().map(v -> v.value("name"))
                 .sorted()
                 .collect(Collectors.toList());
@@ -292,7 +292,7 @@ class SelectQueryConverterTest {
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{Arrays.asList("Otavio", "Ada", "Poliana")});
 
-        List<Vertex> vertices = converter.apply(queryMethod, null).collect(Collectors.toList());
+        List<Vertex> vertices = converter.apply(queryMethod, null).toList();
         List<Object> names = vertices.stream().map(v -> v.value("name"))
                 .sorted()
                 .collect(Collectors.toList());
@@ -312,7 +312,7 @@ class SelectQueryConverterTest {
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{"Ada"});
 
-        List<Vertex> vertices = converter.apply(queryMethod, null).collect(Collectors.toList());
+        List<Vertex> vertices = converter.apply(queryMethod, null).toList();
         assertEquals(1, vertices.size());
         assertEquals("Ada", vertices.get(0).value("name"));
     }

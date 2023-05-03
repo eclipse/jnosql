@@ -49,18 +49,14 @@ public final class DocumentQueryParser {
                                         DocumentObserverParser observer) {
         validation(query, collectionManager, observer);
         String command = query.substring(0, 6);
-        switch (command) {
-            case "select":
-                return select.query(query, collectionManager, observer);
-            case "delete":
-                return delete.query(query, collectionManager, observer);
-            case "insert":
-                return insert.query(query, collectionManager, observer);
-            case "update":
-                return update.query(query, collectionManager, observer);
-            default:
-                throw new QueryException(String.format("The command was not recognized at the query %s ", query));
-        }
+        return switch (command) {
+            case "select" -> select.query(query, collectionManager, observer);
+            case "delete" -> delete.query(query, collectionManager, observer);
+            case "insert" -> insert.query(query, collectionManager, observer);
+            case "update" -> update.query(query, collectionManager, observer);
+            default ->
+                    throw new QueryException(String.format("The command was not recognized at the query %s ", query));
+        };
     }
 
     /**
@@ -81,18 +77,14 @@ public final class DocumentQueryParser {
         validation(query, collectionManager, observer);
         String command = query.substring(0, 6);
 
-        switch (command) {
-            case "select":
-                return select.prepare(query, collectionManager, observer);
-            case "delete":
-                return delete.prepare(query, collectionManager, observer);
-            case "insert":
-                return insert.prepare(query, collectionManager, observer);
-            case "update":
-                return update.prepare(query, collectionManager, observer);
-            default:
-                throw new QueryException(String.format("The command was not recognized at the query %s ", query));
-        }
+        return switch (command) {
+            case "select" -> select.prepare(query, collectionManager, observer);
+            case "delete" -> delete.prepare(query, collectionManager, observer);
+            case "insert" -> insert.prepare(query, collectionManager, observer);
+            case "update" -> update.prepare(query, collectionManager, observer);
+            default ->
+                    throw new QueryException(String.format("The command was not recognized at the query %s ", query));
+        };
     }
 
 

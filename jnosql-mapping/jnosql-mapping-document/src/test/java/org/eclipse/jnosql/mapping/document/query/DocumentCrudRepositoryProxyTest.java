@@ -295,9 +295,9 @@ public class DocumentCrudRepositoryProxyTest {
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
-        personRepository.findAllById(singletonList(10L)).collect(Collectors.toUnmodifiableList());
+        personRepository.findAllById(singletonList(10L)).toList();
         verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
-        personRepository.findAllById(Arrays.asList(10L, 11L, 12L)).collect(Collectors.toUnmodifiableList());
+        personRepository.findAllById(Arrays.asList(10L, 11L, 12L)).toList();
         verify(template, times(4)).find(Mockito.eq(Person.class), any(Long.class));
     }
 
@@ -340,7 +340,7 @@ public class DocumentCrudRepositoryProxyTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        personRepository.findAll().collect(Collectors.toUnmodifiableList());
+        personRepository.findAll().toList();
         ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
         verify(template).findAll(captor.capture());
         assertEquals(captor.getValue(), Person.class);

@@ -35,7 +35,7 @@ final class DelQueryParser {
         DelQueryConverter converter = new DelQueryConverter();
         DelQuery delQuery = converter.apply(query);
         Params params = Params.newParams();
-        List<Value> values = delQuery.keys().stream().map(k -> Values.getValue(k, params)).collect(toList());
+        List<Value> values = delQuery.keys().stream().map(k -> Values.getValue(k, params)).toList();
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }

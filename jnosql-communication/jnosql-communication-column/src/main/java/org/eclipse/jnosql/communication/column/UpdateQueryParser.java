@@ -67,23 +67,18 @@ final class UpdateQueryParser extends ConditionQueryParser {
         return getEntity(new UpdateQueryConditionSupplier(updateQuery), columnFamily, params, observer);
     }
 
-    private static final class UpdateQueryConditionSupplier implements ConditionQuerySupplier {
-        private final UpdateQuery query;
-
-        private UpdateQueryConditionSupplier(UpdateQuery query) {
-            this.query = query;
-        }
+    private record UpdateQueryConditionSupplier(UpdateQuery query) implements ConditionQuerySupplier {
 
 
         @Override
-        public List<QueryCondition> conditions() {
-            return query.conditions();
-        }
+            public List<QueryCondition> conditions() {
+                return query.conditions();
+            }
 
-        @Override
-        public Optional<JSONQueryValue> value() {
-            return query.value();
+            @Override
+            public Optional<JSONQueryValue> value() {
+                return query.value();
+            }
         }
-    }
 
 }

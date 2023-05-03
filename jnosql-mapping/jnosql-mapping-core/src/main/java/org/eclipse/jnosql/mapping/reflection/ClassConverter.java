@@ -117,13 +117,10 @@ class ClassConverter {
 
 
         switch (field.type()) {
-            case ENTITY:
-                appendFields(nativeFieldGroupByJavaField, field, javaField, appendPreparePrefix(nativeField, field.name()));
-                return;
-            case EMBEDDED:
-                appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField);
-                return;
-            case COLLECTION:
+            case ENTITY -> appendFields(nativeFieldGroupByJavaField, field, javaField,
+                    appendPreparePrefix(nativeField, field.name()));
+            case EMBEDDED -> appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField);
+            case COLLECTION -> {
                 if (((GenericFieldMapping) field).isEmbeddable()) {
                     Class<?> type = ((GenericFieldMapping) field).getElementType();
                     String nativeFieldAppended = appendPreparePrefix(nativeField, field.name());
@@ -131,9 +128,8 @@ class ClassConverter {
                     return;
                 }
                 appendDefaultField(nativeFieldGroupByJavaField, field, javaField, nativeField);
-                return;
-            default:
-                appendDefaultField(nativeFieldGroupByJavaField, field, javaField, nativeField);
+            }
+            default -> appendDefaultField(nativeFieldGroupByJavaField, field, javaField, nativeField);
         }
 
     }
@@ -198,16 +194,16 @@ class ClassConverter {
             builder.withConverter(convert.value());
         }
         switch (mappingType) {
-            case COLLECTION:
-            case MAP:
+            case COLLECTION, MAP -> {
                 builder.withTypeSupplier(field::getGenericType);
                 return builder.buildGeneric();
-            case EMBEDDED:
+            }
+            case EMBEDDED -> {
                 return builder.withEntityName(reflections.getEntityName(field.getType())).buildEmbedded();
-            default:
+            }
+            default -> {
                 return builder.buildDefault();
-
-
+            }
         }
     }
 

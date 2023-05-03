@@ -39,7 +39,6 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -130,7 +129,7 @@ class DefaultColumnEntityConverterConstructorTest {
         assertEquals("Otavio Santana", bookUser.getName());
         assertEquals("otaviojava", bookUser.getNickname());
         assertEquals(2, bookUser.getBooks().size());
-        List<String> names = bookUser.getBooks().stream().map(Book::getName).collect(Collectors.toUnmodifiableList());
+        List<String> names = bookUser.getBooks().stream().map(Book::getName).toList();
         assertThat(names).contains("Effective Java", "Clean Code");
 
     }

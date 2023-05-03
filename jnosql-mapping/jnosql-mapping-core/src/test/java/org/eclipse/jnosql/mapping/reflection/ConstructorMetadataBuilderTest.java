@@ -31,7 +31,6 @@ import org.junit.jupiter.api.Test;
 import jakarta.inject.Inject;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,7 +72,7 @@ class ConstructorMetadataBuilderTest {
         assertEquals(5, parameters.size());
         List<String> names = parameters.stream()
                 .map(ParameterMetaData::getName)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
 
         assertThat(names).contains("_id", "name", "age", "model", "price");
     }
@@ -85,7 +84,7 @@ class ConstructorMetadataBuilderTest {
         assertEquals(3, parameters.size());
         List<String> names = parameters.stream()
                 .map(ParameterMetaData::getName)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
 
         assertThat(names).contains("_id", "native_name", "books");
     }
@@ -97,7 +96,7 @@ class ConstructorMetadataBuilderTest {
         assertEquals(3, parameters.size());
         List<String> names = parameters.stream()
                 .map(ParameterMetaData::getName)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
 
         assertThat(names).contains("_id", "name", "animal");
     }

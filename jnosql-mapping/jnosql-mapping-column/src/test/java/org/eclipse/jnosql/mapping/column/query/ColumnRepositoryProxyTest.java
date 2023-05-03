@@ -281,10 +281,10 @@ public class ColumnRepositoryProxyTest {
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
-        personRepository.findAllById(singletonList(10L)).collect(Collectors.toUnmodifiableList());
+        personRepository.findAllById(singletonList(10L)).toList();
         verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
 
-        personRepository.findAllById(asList(1L, 2L, 3L)).collect(Collectors.toUnmodifiableList());
+        personRepository.findAllById(asList(1L, 2L, 3L)).toList();
         verify(template, times(4)).find(Mockito.eq(Person.class), Mockito.any(Long.class));
     }
 
@@ -323,7 +323,7 @@ public class ColumnRepositoryProxyTest {
         when(template.select(any(ColumnQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        personRepository.findAll().collect(Collectors.toUnmodifiableList());
+        personRepository.findAll().toList();
         ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
         verify(template).findAll(captor.capture());
         assertEquals(captor.getValue(), Person.class);
@@ -687,7 +687,7 @@ public class ColumnRepositoryProxyTest {
                 .thenReturn(true);
 
         var result = personRepository.existsByName("Poliana");
-        Assertions.assertEquals(true, result);
+        assertTrue(result);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).exists(captor.capture());
         ColumnQuery query = captor.getValue();
