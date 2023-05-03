@@ -48,8 +48,10 @@ class OptionalReaderTest {
     @DisplayName("Should be abe to convert to Optional")
     void shouldConvert() {
         assertSoftly(softly -> {
-            softly.assertThat(valueReader.read(Optional.class, "12")).isEqualTo(Optional.of("12")).as("Default conversion");
-            softly.assertThat(valueReader.read(Optional.class, Optional.of("value"))).isEqualTo(Optional.of("value")).as("Optional conversion");
+            softly.assertThat(valueReader.read(Optional.class, "12"))
+                    .isEqualTo(Optional.of("12"));
+            softly.assertThat(valueReader.read(Optional.class, Optional.of("value")))
+                    .isEqualTo(Optional.of("value"));
         });
     }
 }
