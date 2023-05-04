@@ -12,138 +12,113 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication.keyvalue;
 
 import org.eclipse.jnosql.communication.QueryException;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.assertArg;
+import static org.mockito.Mockito.verify;
 
+@ExtendWith(MockitoExtension.class)
 class DelQueryParserTest {
 
     private final DelQueryParser parser = new DelQueryParser();
 
-    private final BucketManager manager = Mockito.mock(BucketManager.class);
+    @Mock
+    private BucketManager manager;
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"del \"Diana\""})
-    public void shouldReturnParserQuery1(String query) {
-
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
-
+    @ParameterizedTest(name = "Should be able to parse query: {0}")
+    @MethodSource("queryData")
+    void shouldReturnParserQuery(String query, Object expected) {
         parser.query(query, manager);
-
-        Mockito.verify(manager).delete(captor.capture());
-        List<Object> value = captor.getValue();
-
-        assertEquals(1, value.size());
-        assertThat(value).contains("Diana");
+        verify(manager).delete(assertArg(value ->
+                assertThat(value).contains(expected)));
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"del 12"})
-    public void shouldReturnParserQuery2(String query) {
+    @Test
+    @DisplayName("Should be able to execute the PreparedStatement using one parameter")
+    void shouldExecutePrepareStatementUsingOneParameter() {
+        String query = "del @id";
 
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
-
-        parser.query(query, manager);
-
-        Mockito.verify(manager).delete(captor.capture());
-        List<Object> value = captor.getValue();
-
-        assertEquals(1, value.size());
-        assertThat(value).contains(12L);
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"del {\"Ana\" : \"Sister\", \"Maria\" : \"Mother\"}"})
-    public void shouldReturnParserQuery3(String query) {
-
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
-
-        parser.query(query, manager);
-
-        Mockito.verify(manager).delete(captor.capture());
-        List<Object> value = captor.getValue();
-
-        assertEquals(1, value.size());
-        assertThat(value).contains("{\"Ana\":\"Sister\",\"Maria\":\"Mother\"}");
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"del convert(\"2018-01-10\", java.time.LocalDate)"})
-    public void shouldReturnParserQuery4(String query) {
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
-
-        parser.query(query, manager);
-
-        Mockito.verify(manager).delete(captor.capture());
-        List<Object> value = captor.getValue();
-
-        assertEquals(1, value.size());
-
-        assertThat(value).contains(LocalDate.parse("2018-01-10"));
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove @id"})
-    public void shouldReturnErrorWhenUseParameterInQuery(String query) {
-        assertThrows(QueryException.class, () -> parser.query(query, manager));
-    }
-
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"del @id"})
-    public void shouldReturnErrorWhenDontBindParameters(String query) {
-
-        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
-        assertThrows(QueryException.class, prepare::result);
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"del @id"})
-    public void shouldExecutePrepareStatement(String query) {
-
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         prepare.result();
 
-        Mockito.verify(manager).delete(captor.capture());
-        List<Object> value = captor.getValue();
-
-        assertEquals(1, value.size());
-
-        assertThat(value).contains(10);
+        verify(manager).delete(assertArg(value ->
+                assertThat(value).hasSize(1).contains(10)));
     }
 
+    @Test
+    @DisplayName("Should be able to execute the PreparedStatement using two parameter")
+    void shouldExecutePrepareStatementUsingTwoParameter() {
+        String query = "del @id, @id2";
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"del @id, @id2"})
-    public void shouldExecutePrepareStatement2(String query) {
-
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         prepare.bind("id2", 11);
         prepare.result();
 
-        Mockito.verify(manager).delete(captor.capture());
-        List<Object> value = captor.getValue();
-
-        assertEquals(2, value.size());
-
-        assertThat(value).contains(10, 11);
+        verify(manager).delete(assertArg(value ->
+                assertThat(value).hasSize(2).contains(10, 11)));
     }
 
+    @Test
+    @DisplayName("Should throw QueryException when use parameter in query")
+    void shouldReturnErrorWhenUseParameterInQuery() {
+        assertThatThrownBy(() -> parser.query("del @id", manager))
+                .isInstanceOf(QueryException.class)
+                .hasMessage("To run a query with a parameter use a PrepareStatement instead.");
+    }
+
+    @Test
+    @DisplayName("Should throw QueryException when parameter is not bind")
+    void shouldReturnErrorWhenCannotBindParameters() {
+        KeyValuePreparedStatement prepare = parser.prepare("del @id", manager);
+
+        assertThatThrownBy(prepare::result)
+                .isInstanceOf(QueryException.class)
+                .hasMessage("Check all the parameters before execute the query, params left: [id]");
+    }
+
+    private static Stream<Arguments> queryData() {
+        String query1 = """
+                del "Diana"
+                """;
+
+        String query2 = "del 12";
+
+        String query3 = """
+                del { "Ana": "Sister", "Maria": "Mother" }
+                """;
+
+        String query4 = """
+                del convert("2018-01-10", java.time.LocalDate)
+                """;
+
+        String resultOfQuery3 = """
+                {"Ana":"Sister","Maria":"Mother"}
+                """;
+        return Stream.of(
+                Arguments.of(query1, "Diana"),
+                Arguments.of(query2, 12L),
+                Arguments.of(query3, resultOfQuery3.trim()),
+                Arguments.of(query4, LocalDate.parse("2018-01-10"))
+        );
+    }
 }

@@ -13,28 +13,30 @@
  *
  *   Otavio Santana
  *   Maximillian Arruda
+ *   Elias Nogueira
  */
 package org.eclipse.jnosql.communication.keyvalue;
 
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.Value;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class KeyValueEntityParamsTest {
 
     @Test
-    public void shouldSetParameter() {
+    @DisplayName("Should be able to set and change a parameter value")
+    void shouldSetParameter() {
         Params params = Params.newParams();
         Value name = params.add("name");
+
         KeyValueEntity entity = KeyValueEntity.of("name", name);
         params.bind("name", "Ada Lovelace");
-
-        assertEquals("Ada Lovelace", entity.value());
+        assertThat(entity.value()).isEqualTo("Ada Lovelace");
 
         params.bind("name", "Diana");
-        assertEquals("Diana", entity.value());
+        assertThat(entity.value()).isEqualTo("Diana");
     }
-
 }

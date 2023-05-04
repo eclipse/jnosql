@@ -12,11 +12,10 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication.keyvalue;
-
-
 
 import jakarta.data.exceptions.NonUniqueResultException;
 import org.eclipse.jnosql.communication.Params;
@@ -47,11 +46,8 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
     private final Value key;
     private final Value value;
 
-    DefaultKeyValuePreparedStatement(Value key, Value value, List<Value> keys,
-                                     PreparedStatementType type,
-                                     BucketManager manager,
-                                     Params params,
-                                     Duration ttl, String query) {
+    DefaultKeyValuePreparedStatement(Value key, Value value, List<Value> keys, PreparedStatementType type,
+                                     BucketManager manager, Params params, Duration ttl, String query) {
         this.key = key;
         this.value = value;
         this.keys = keys;
@@ -76,15 +72,12 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
     @Override
     public Stream<Value> result() {
         if (!paramsLeft.isEmpty()) {
-            throw new QueryException("Check all the parameters before execute the query, params left: "
-                    + paramsLeft);
+            throw new QueryException("Check all the parameters before execute the query, params left: " + paramsLeft);
         }
+
         switch (type) {
             case GET -> {
-                return keys.stream().map(Value::get)
-                        .map(manager::get)
-                        .filter(Optional::isPresent)
-                        .map(Optional::get);
+                return keys.stream().map(Value::get).map(manager::get).filter(Optional::isPresent).map(Optional::get);
             }
             case DEL -> {
                 manager.delete(keys.stream().map(Value::get).collect(Collectors.toList()));
@@ -106,11 +99,12 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
     @Override
     public Optional<Value> singleResult() {
         Stream<Value> entities = result();
-        final Iterator<Value> iterator = entities.iterator();
 
+        final Iterator<Value> iterator = entities.iterator();
         if (!iterator.hasNext()) {
             return Optional.empty();
         }
+
         final Value next = iterator.next();
         if (!iterator.hasNext()) {
             return Optional.of(next);
@@ -123,28 +117,15 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
         GET, PUT, DEL
     }
 
-    static KeyValuePreparedStatement get(List<Value> keys,
-                                         BucketManager manager,
-                                         Params params, String query) {
-        return new DefaultKeyValuePreparedStatement(null, null, keys, PreparedStatementType.GET,
-                manager, params, null, query);
+    static KeyValuePreparedStatement get(List<Value> keys, BucketManager manager, Params params, String query) {
+        return new DefaultKeyValuePreparedStatement(null, null, keys, PreparedStatementType.GET, manager, params, null, query);
     }
 
-    static KeyValuePreparedStatement put(Value key,
-                                         Value value,
-                                         BucketManager manager,
-                                         Params params,
-                                         Duration ttl, String query) {
-        return new DefaultKeyValuePreparedStatement(key, value, null, PreparedStatementType.PUT,
-                manager, params, ttl, query);
+    static KeyValuePreparedStatement put(Value key, Value value, BucketManager manager, Params params, Duration ttl, String query) {
+        return new DefaultKeyValuePreparedStatement(key, value, null, PreparedStatementType.PUT, manager, params, ttl, query);
     }
 
-    static KeyValuePreparedStatement del(List<Value> keys,
-                                         BucketManager manager,
-                                         Params params, String query) {
-        return new DefaultKeyValuePreparedStatement(null, null, keys, PreparedStatementType.DEL,
-                manager, params, null, query);
+    static KeyValuePreparedStatement del(List<Value> keys, BucketManager manager, Params params, String query) {
+        return new DefaultKeyValuePreparedStatement(null, null, keys, PreparedStatementType.DEL, manager, params, null, query);
     }
-
-
 }

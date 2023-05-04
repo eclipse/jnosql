@@ -12,174 +12,199 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication.keyvalue;
 
 import jakarta.data.exceptions.NonUniqueResultException;
 import org.eclipse.jnosql.communication.Value;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class KeyValueQueryParserTest {
 
     private final KeyValueQueryParser parser = new KeyValueQueryParser();
 
-    private final BucketManager manager = Mockito.mock(BucketManager.class);
+    @Mock
+    private BucketManager manager;
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"get \"Diana\""})
-    public void shouldReturnParserQuery1(String query) {
+    @Captor
+    private ArgumentCaptor<List<Object>> captor;
 
-        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+    @Captor
+    private ArgumentCaptor<KeyValueEntity> captorValueEntity;
 
-        parser.query(query, manager).collect(Collectors.toList());
+    @Captor
+    private ArgumentCaptor<Duration> captorDuration;
 
-        Mockito.verify(manager).get(captor.capture());
-        List<Object> value = captor.getAllValues();
+    @Captor
+    private ArgumentCaptor<Object> captorObject;
 
-        assertEquals(1, value.size());
-        assertThat(value).contains("Diana");
+    @Test
+    @DisplayName("Should parse query using 'get'")
+    void shouldReturnParserQuery1() {
+        String query = """
+                get "Diana"
+                """;
+
+        parser.query(query, manager).toList();
+
+        verify(manager).get(captorObject.capture());
+        List<Object> value = captorObject.getAllValues();
+
+        assertThat(value).containsExactly("Diana");
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"put {\"Diana\", \"Hunt\"}"})
-    public void shouldReturnParserQuery2(String query) {
-
-        ArgumentCaptor<KeyValueEntity> captor = ArgumentCaptor.forClass(KeyValueEntity.class);
-
+    @Test
+    @DisplayName("Should parse query using 'put'")
+    void shouldReturnParserQuery2() {
+        String query = """
+                put { "Diana", "Hunt" }
+                """;
         parser.query(query, manager);
 
-        Mockito.verify(manager).put(captor.capture());
-        KeyValueEntity entity = captor.getValue();
+        verify(manager).put(captorValueEntity.capture());
+        KeyValueEntity entity = captorValueEntity.getValue();
 
-        assertEquals("Diana", entity.key());
-        assertEquals("Hunt", entity.value());
+        assertSoftly(softly -> {
+            softly.assertThat(entity.key()).as("key is equal").isEqualTo("Diana");
+            softly.assertThat(entity.value()).as("entity is equal").isEqualTo("Hunt");
+        });
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"del \"Diana\""})
-    public void shouldReturnParserQuery3(String query) {
-
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
-
+    @Test
+    @DisplayName("Should parse query using 'del'")
+    void shouldReturnParserQuery3() {
+        String query = """
+                del "Diana"
+                """;
         parser.query(query, manager);
 
-        Mockito.verify(manager).delete(captor.capture());
+        verify(manager).delete(captor.capture());
         List<Object> value = captor.getValue();
 
-        assertEquals(1, value.size());
-        assertThat(value).contains("Diana");
+        assertThat(value).hasSize(1).contains("Diana");
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"del @id"})
-    public void shouldExecutePrepareStatement(String query) {
-
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
-        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
+    @Test
+    @DisplayName("Should execute prepared statement using 'del'")
+    void shouldExecutePrepareStatement() {
+        KeyValuePreparedStatement prepare = parser.prepare("del @id", manager);
         prepare.bind("id", 10);
         prepare.result();
 
-        Mockito.verify(manager).delete(captor.capture());
+        verify(manager).delete(captor.capture());
         List<Object> value = captor.getValue();
 
-        assertEquals(1, value.size());
-
-        assertThat(value).contains(10);
+        assertThat(value).hasSize(1).contains(10);
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"put {\"Diana\", @value}"})
-    public void shouldExecutePrepareStatement1(String query) {
+    @Test
+    @DisplayName("Should execute prepared statement using 'put'")
+    void shouldExecutePrepareStatement1() {
+        String query = """
+                put { "Diana", @value }
+                """;
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("value", "Hunt");
         prepare.result();
-        ArgumentCaptor<KeyValueEntity> captor = ArgumentCaptor.forClass(KeyValueEntity.class);
 
-        Mockito.verify(manager).put(captor.capture());
-        KeyValueEntity entity = captor.getValue();
+        verify(manager).put(captorValueEntity.capture());
+        KeyValueEntity entity = captorValueEntity.getValue();
 
-        assertEquals("Diana", entity.key());
-        assertEquals("Hunt", entity.value());
+        assertSoftly(softly -> {
+            softly.assertThat(entity.key()).as("key is equal").isEqualTo("Diana");
+            softly.assertThat(entity.value()).as("entity is equal").isEqualTo("Hunt");
+        });
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"put {\"Diana\", @value, 10 second}"})
-    public void shouldExecutePrepareStatement2(String query) {
+    @Test
+    @DisplayName("Should execute prepared statement using 'put' setting a value")
+    void shouldExecutePrepareStatement2() {
+        String query = """
+                put { "Diana", @value, 10 second }
+                """;
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("value", "Hunt");
         prepare.result();
-        ArgumentCaptor<KeyValueEntity> captor = ArgumentCaptor.forClass(KeyValueEntity.class);
-        ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
 
-        Mockito.verify(manager).put(captor.capture(), durationCaptor.capture());
-        KeyValueEntity entity = captor.getValue();
-        final Duration duration = durationCaptor.getValue();
+        verify(manager).put(captorValueEntity.capture(), captorDuration.capture());
+        KeyValueEntity entity = captorValueEntity.getValue();
+        final Duration duration = captorDuration.getValue();
 
-        assertEquals("Diana", entity.key());
-        assertEquals("Hunt", entity.value());
-        assertEquals(Duration.ofSeconds(10L), duration);
+        assertSoftly(softly -> {
+            softly.assertThat(entity.key()).as("key is equal").isEqualTo("Diana");
+            softly.assertThat(entity.value()).as("entity is equal").isEqualTo("Hunt");
+            softly.assertThat(duration).as("duration is equal").isEqualTo(Duration.ofSeconds(10L));
+        });
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"get @id"})
-    public void shouldReturnSingleResult(String query) {
+    @Test
+    @DisplayName("Should return a single result")
+    void shouldReturnSingleResult() {
+        String query = "get @id";
 
-        Mockito.when(manager.get(10)).thenReturn(Optional.of(Value.of(10L)));
-        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+        when(manager.get(10)).thenReturn(Optional.of(Value.of(10)));
+
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         final Optional<Value> result = prepare.singleResult();
 
-        Mockito.verify(manager).get(captor.capture());
-        List<Object> value = captor.getAllValues();
+        verify(manager).get(captorObject.capture());
+        List<Object> value = captorObject.getAllValues();
 
-        assertEquals(1, value.size());
-        assertThat(value).contains(10);
-        assertEquals(10L, result.get().get());
+        assertSoftly(softly -> {
+            softly.assertThat(value).as("key is equal").hasSize(1).contains(10);
+            softly.assertThat(result.get().get()).as("").isEqualTo(10);
+        });
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"get @id"})
-    public void shouldReturnEmptySingleResult(String query) {
+    @Test
+    @DisplayName("Should return an empty single result")
+    void shouldReturnEmptySingleResult() {
+        when(manager.get(10)).thenReturn(Optional.empty());
 
-        Mockito.when(manager.get(10)).thenReturn(Optional.empty());
-        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
-        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
+        KeyValuePreparedStatement prepare = parser.prepare("get @id", manager);
         prepare.bind("id", 10);
         final Optional<Value> result = prepare.singleResult();
 
-        Mockito.verify(manager).get(captor.capture());
-        List<Object> value = captor.getAllValues();
+        verify(manager).get(captorObject.capture());
+        List<Object> value = captorObject.getAllValues();
 
-        assertEquals(1, value.size());
-        assertThat(value).contains(10);
-        assertFalse(result.isPresent());
+        assertSoftly(softly -> {
+            softly.assertThat(value).as("key is equal").hasSize(1).contains(10);
+            softly.assertThat(result).as("result is present").isNotPresent();
+        });
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"get @id, @id2"})
-    public void shouldReturnErrorSingleResult(String query) {
+    @Test
+    @DisplayName("Should throw NonUniqueResultException when get single result")
+    void shouldReturnErrorSingleResult() {
+        when(manager.get(10)).thenReturn(Optional.of(Value.of(10)));
+        when(manager.get(11)).thenReturn(Optional.of(Value.of(11)));
 
-        Mockito.when(manager.get(10)).thenReturn(Optional.of(Value.of(10)));
-        Mockito.when(manager.get(11)).thenReturn(Optional.of(Value.of(11)));
-        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
-        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
+        KeyValuePreparedStatement prepare = parser.prepare("get @id, @id2", manager);
         prepare.bind("id", 10);
         prepare.bind("id2", 11);
-        Assertions.assertThrows(NonUniqueResultException.class, prepare::singleResult);
+
+        assertThatThrownBy(prepare::singleResult).isInstanceOf(NonUniqueResultException.class)
+                .hasMessage("The select returns more than one entity, select: get @id, @id2");
     }
 }

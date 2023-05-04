@@ -12,19 +12,16 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication.keyvalue;
-
 
 import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.Value;
 
 import java.util.Objects;
 import java.util.stream.Stream;
-
-
-
 
 /**
  * A query parser to key-value database type, this class will convert a String to an operation in {@link BucketManager}.
@@ -57,7 +54,6 @@ final class KeyValueQueryParser {
                     throw new QueryException(String.format("The command was not recognized at the query %s ", query));
         };
     }
-
 
     /**
      * Executes a query and returns a {@link KeyValuePreparedStatement}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>

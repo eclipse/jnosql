@@ -12,11 +12,10 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication.keyvalue;
-
-
 
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
@@ -39,10 +38,9 @@ final class Values {
     private Values() {
     }
 
-
     private static Object get(QueryValue<?> value, Params parameters) {
-
         ValueType type = value.type();
+
         switch (type) {
             case NUMBER, STRING, BOOLEAN -> {
                 return value.get();
@@ -75,15 +73,11 @@ final class Values {
 
     private static Object executeConvert(Params parameters, Object[] params) {
         Object value = get(QueryValue.class.cast(params[0]), parameters);
-        return Value.of(value)
-                .get((Class<?>) params[1]);
+        return Value.of(value).get((Class<?>) params[1]);
     }
 
     static Value getValue(QueryValue<?> value, Params parameters) {
         Object result = get(value, parameters);
-        if (result instanceof Value) {
-            return Value.class.cast(result);
-        }
-        return Value.of(result);
+        return result instanceof Value ? Value.class.cast(result) : Value.of(result);
     }
 }
