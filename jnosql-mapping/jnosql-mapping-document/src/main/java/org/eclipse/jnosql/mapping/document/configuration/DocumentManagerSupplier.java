@@ -56,7 +56,7 @@ class DocumentManagerSupplier implements Supplier<DocumentManager> {
 
         Optional<String> database = settings.get(DOCUMENT_DATABASE, String.class);
         String db = database.orElseThrow(() -> new MappingException("Please, inform the database filling up the property "
-                + DOCUMENT_DATABASE));
+                + DOCUMENT_DATABASE.get()));
         DocumentManager manager = managerFactory.apply(db);
 
         LOGGER.log(Level.FINEST, "Starting  a DocumentManager instance using Eclipse MicroProfile Config," +

@@ -57,7 +57,7 @@ class BucketManagerSupplier implements Supplier<BucketManager> {
 
         Optional<String> database = settings.get(KEY_VALUE_DATABASE, String.class);
         String db = database.orElseThrow(() -> new MappingException("Please, inform the database filling up the property "
-                + KEY_VALUE_DATABASE));
+                + KEY_VALUE_DATABASE.get()));
         BucketManager manager = managerFactory.apply(db);
 
         LOGGER.log(Level.FINEST, "Starting  a BucketManager instance using Eclipse MicroProfile Config," +

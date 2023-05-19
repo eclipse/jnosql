@@ -15,6 +15,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 === Fixed
 
 - Create a filter to ignore unsupported annotations on repositories interfaces.
+- Enhance database supplier error message to use property instead of the enum name.
 
 == [1.0.0-b6] - 2023-03-11
 
