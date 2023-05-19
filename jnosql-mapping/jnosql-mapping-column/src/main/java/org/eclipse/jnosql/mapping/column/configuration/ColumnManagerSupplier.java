@@ -56,7 +56,7 @@ class ColumnManagerSupplier implements Supplier<ColumnManager> {
 
         Optional<String> database = settings.get(COLUMN_DATABASE, String.class);
         String db = database.orElseThrow(() -> new MappingException("Please, inform the database filling up the property "
-                + COLUMN_DATABASE));
+                + COLUMN_DATABASE.get()));
         ColumnManager manager = managerFactory.apply(db);
 
         LOGGER.log(Level.FINEST, "Starting  a ColumnManager instance using Eclipse MicroProfile Config," +
