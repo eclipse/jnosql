@@ -130,27 +130,18 @@ public abstract class GraphConverter {
         requireNonNull(vertex, "vertex is required");
         EntityMetadata mapping = getEntities().findByName(vertex.label());
 
-        ConstructorMetadata constructor = mapping.constructor();
-        if (constructor.isDefault()) {
-            List<Property<?>> properties = vertex.keys()
-                    .stream()
-                    .map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
+        List<Property<?>> properties = vertex.keys()
+                .stream()
+                .map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
 
-            T entity;
-            if (mapping.isInheritance()) {
-                entity = mapInheritanceEntity(vertex, properties, mapping.type());
-            } else {
-                entity = convert((Class<T>) mapping.type(), properties, vertex);
-            }
-            getEventManager().firePostEntity(entity);
-            return entity;
+        T entity;
+        if (mapping.isInheritance()) {
+            entity = mapInheritanceEntity(vertex, properties, mapping.type());
         } else {
-            EntityConverterByContructor<T> supplier = EntityConverterByContructor
-                    .of(mapping, vertex, getConverters());
-            T entity = supplier.get();
-            getEventManager().firePostEntity(entity);
-            return entity;
+            entity = convert((Class<T>) mapping.type(), properties, vertex);
         }
+        getEventManager().firePostEntity(entity);
+        return entity;
     }
 
     /**
@@ -245,7 +236,6 @@ public abstract class GraphConverter {
             return supplier.get();
         }
     }
-
 
 
     protected FieldGraph to(FieldMapping field, Object entityInstance) {
