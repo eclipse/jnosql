@@ -58,22 +58,26 @@ final class EntityConverterByContructor<T> implements Supplier<T> {
         for (ParameterMetaData parameter : builder.getParameters()) {
 
             if (parameter.isId()) {
-                Object vertexId = vertex.id();
-                if (Objects.nonNull(vertexId)) {
-                    parameter.getConverter().ifPresentOrElse(c -> {
-                        AttributeConverter attributeConverter = this.converters.get(c);
-                        Object attributeConverted = attributeConverter.convertToEntityAttribute(vertexId);
-                        Value value = Value.of(attributeConverted);
-                        builder.add(value.get(parameter.getType()));
-                    }, () -> builder.add(Value.of(vertexId).get(parameter.getType())));
-                } else {
-                    builder.addEmptyParameter();
-                }
+                feedId(builder, parameter);
             } else {
                 feedRegularFeilds(builder, properties, parameter);
             }
         }
         return builder.build();
+    }
+
+    private void feedId(ConstructorBuilder builder, ParameterMetaData parameter) {
+        Object vertexId = vertex.id();
+        if (Objects.nonNull(vertexId)) {
+            parameter.getConverter().ifPresentOrElse(c -> {
+                AttributeConverter attributeConverter = this.converters.get(c);
+                Object attributeConverted = attributeConverter.convertToEntityAttribute(vertexId);
+                Value value = Value.of(attributeConverted);
+                builder.add(value.get(parameter.getType()));
+            }, () -> builder.add(Value.of(vertexId).get(parameter.getType())));
+        } else {
+            builder.addEmptyParameter();
+        }
     }
 
     private void feedRegularFeilds(ConstructorBuilder builder, List<Property<?>> properties, ParameterMetaData parameter) {
