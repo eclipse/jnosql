@@ -23,5 +23,5 @@ import java.time.Year;
 @Entity
 public record Car(@Id Long plate, @Column("model") String model,
                   @Column("manufacturer") String manufacturer,
-                  @Column("year") Year year) {
+                  @Column("year") int year) {
 }
