@@ -97,7 +97,7 @@ final class EntityConverterByField<T> implements Supplier<T> {
         field.write(instance, convert(type, elements, vertex));
     }
 
-    private <T, X, Y> void singleField(T instance, Property<?> element, FieldMapping field) {
+    private <X, Y> void singleField(T instance, Property<?> element, FieldMapping field) {
         Object value = element.value();
         Optional<Class<? extends AttributeConverter<X, Y>>> converter = field.getConverter();
         if (converter.isPresent()) {
