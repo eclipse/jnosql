@@ -145,7 +145,8 @@ public abstract class GraphConverter {
             getEventManager().firePostEntity(entity);
             return entity;
         } else {
-            EntityConverterByContructor<T> supplier = EntityConverterByContructor.of(mapping, vertex, getConverters());
+            EntityConverterByContructor<T> supplier = EntityConverterByContructor
+                    .of(mapping, vertex, getConverters());
             T entity = supplier.get();
             getEventManager().firePostEntity(entity);
             return entity;
@@ -195,9 +196,9 @@ public abstract class GraphConverter {
                 .collect(toList());
 
         EntityMetadata mapping = getEntities().get(type.getClass());
-        convertEntity(properties, mapping, type, vertex);
-        feedId(vertex, type);
-        return type;
+        EntityConverterByField<T> converter = EntityConverterByField.of(properties, mapping,
+                type, vertex, getConverters(), getEntities());
+        return converter.get();
 
     }
 
@@ -232,52 +233,19 @@ public abstract class GraphConverter {
         throw new EmptyResultException("Edge does not found in the database with id: " + id);
     }
 
-
-    private <T> void feedId(Vertex vertex, T entity) {
-        EntityMetadata mapping = getEntities().get(entity.getClass());
-        Optional<FieldMapping> id = mapping.id();
-
-
-        Object vertexId = vertex.id();
-        if (Objects.nonNull(vertexId) && id.isPresent()) {
-            FieldMapping fieldMapping = id.get();
-            fieldMapping.getConverter().ifPresentOrElse(c -> {
-                AttributeConverter attributeConverter = getConverters().get(c);
-                Object attributeConverted = attributeConverter.convertToEntityAttribute(vertexId);
-                fieldMapping.write(entity, fieldMapping.value(Value.of(attributeConverted)));
-            }, () -> fieldMapping.write(entity, fieldMapping.value(Value.of(vertexId))));
-        }
-    }
-
     private <T> T convert(Class<T> type, List<Property<?>> properties, Vertex vertex) {
         EntityMetadata mapping = getEntities().get(type);
         ConstructorMetadata constructor = mapping.constructor();
         if (constructor.isDefault()) {
-            T instance = mapping.newInstance();
-            T entity = convertEntity(properties, mapping, instance, vertex);
-            feedId(vertex, entity);
-            return entity;
+            EntityConverterByField<T> converter = EntityConverterByField.of(properties, mapping,
+                    mapping.newInstance(), vertex, getConverters(), getEntities());
+            return converter.get();
         } else {
             EntityConverterByContructor<T> supplier = EntityConverterByContructor.of(mapping, vertex, getConverters());
             return supplier.get();
         }
     }
 
-    private <T> T convertEntity(List<Property<?>> elements, EntityMetadata mapping, T instance, Vertex vertex) {
-
-        Map<String, FieldMapping> fieldsGroupByName = mapping.fieldsGroupByName();
-        List<String> names = elements.stream()
-                .map(Property::key)
-                .sorted()
-                .toList();
-        Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
-
-        fieldsGroupByName.keySet().stream()
-                .filter(existField.or(k -> EMBEDDED.equals(fieldsGroupByName.get(k).type())))
-                .forEach(feedObject(instance, elements, fieldsGroupByName, vertex));
-
-        return instance;
-    }
 
     private <T> Consumer<String> feedObject(T instance, List<Property<?>> elements,
                                             Map<String, FieldMapping> fieldsGroupByName, Vertex vertex) {
@@ -296,7 +264,7 @@ public abstract class GraphConverter {
         };
     }
 
-    private <T, X, Y> void singleField(T instance, Property element, FieldMapping field) {
+    private <T, X, Y> void singleField(T instance, Property<?> element, FieldMapping field) {
         Object value = element.value();
         Optional<Class<? extends AttributeConverter<X, Y>>> converter = field.getConverter();
         if (converter.isPresent()) {
