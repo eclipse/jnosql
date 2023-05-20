@@ -247,39 +247,6 @@ public abstract class GraphConverter {
     }
 
 
-    private <T> Consumer<String> feedObject(T instance, List<Property<?>> elements,
-                                            Map<String, FieldMapping> fieldsGroupByName, Vertex vertex) {
-        return k -> {
-            Optional<Property<?>> element = elements
-                    .stream()
-                    .filter(c -> c.key().equals(k))
-                    .findFirst();
-
-            FieldMapping field = fieldsGroupByName.get(k);
-            if (EMBEDDED.equals(field.type())) {
-                embeddedField(instance, elements, field, vertex);
-            } else {
-                element.ifPresent(e -> singleField(instance, e, field));
-            }
-        };
-    }
-
-    private <T, X, Y> void singleField(T instance, Property<?> element, FieldMapping field) {
-        Object value = element.value();
-        Optional<Class<? extends AttributeConverter<X, Y>>> converter = field.getConverter();
-        if (converter.isPresent()) {
-            AttributeConverter<X, Y> attributeConverter = getConverters().get(converter.get());
-            Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) value);
-            field.write(instance, field.value(Value.of(attributeConverted)));
-        } else {
-            field.write(instance, field.value(Value.of(value)));
-        }
-    }
-
-    private <T> void embeddedField(T instance, List<Property<?>> elements,
-                                   FieldMapping field, Vertex vertex) {
-        field.write(instance, convert(field.nativeField().getType(), elements, vertex));
-    }
 
     protected FieldGraph to(FieldMapping field, Object entityInstance) {
         Object value = field.read(entityInstance);
