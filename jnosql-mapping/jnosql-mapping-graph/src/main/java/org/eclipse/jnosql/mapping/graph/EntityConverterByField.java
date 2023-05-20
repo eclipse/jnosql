@@ -70,6 +70,7 @@ final class EntityConverterByField<T> implements Supplier<T> {
                 .filter(existField.or(k -> EMBEDDED.equals(fieldsGroupByName.get(k).type())))
                 .forEach(feedObject(instance, elements, fieldsGroupByName, vertex));
 
+        feedId(vertex, instance);
         return instance;
     }
 
