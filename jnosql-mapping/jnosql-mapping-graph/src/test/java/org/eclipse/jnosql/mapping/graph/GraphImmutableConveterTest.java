@@ -104,7 +104,7 @@ class GraphImmutableConveterTest {
             soft.assertThat(result.manufacturer()).isNull();
             soft.assertThat(result.plate()).isNull();
             soft.assertThat(result.year()).isNull();
-            //
+
             soft.assertThat(result.model()).isEqualTo("SF90");
             soft.assertThat(result.manufacturer()).isEqualTo("Ferrari");
             soft.assertThat(result.plate()).isEqualTo(vertex.id());
