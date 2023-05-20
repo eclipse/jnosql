@@ -28,14 +28,20 @@ import java.util.function.Supplier;
 
 import static java.util.stream.Collectors.toList;
 
-final class GraphContructorBuilder<T> implements Supplier<T> {
+/**
+ * Given a {@link Vertex} it will create an entity from the database information using the constructor.
+ * It might be a record or a class that provides constructor annotations
+ *
+ * @param <T> the entity type
+ */
+final class EntityConverterByContructor<T> implements Supplier<T> {
 
     private final EntityMetadata mapping;
     private final Vertex vertex;
 
     private final Converters converters;
 
-    private GraphContructorBuilder(EntityMetadata mapping, Vertex vertex, Converters converters) {
+    private EntityConverterByContructor(EntityMetadata mapping, Vertex vertex, Converters converters) {
         this.mapping = mapping;
         this.vertex = vertex;
         this.converters = converters;
@@ -68,7 +74,7 @@ final class GraphContructorBuilder<T> implements Supplier<T> {
         return builder.build();
     }
 
-    static <T> GraphContructorBuilder<T> of(EntityMetadata mapping, Vertex vertex, Converters converters) {
-        return new GraphContructorBuilder<>(mapping, vertex, converters);
+    static <T> EntityConverterByContructor<T> of(EntityMetadata mapping, Vertex vertex, Converters converters) {
+        return new EntityConverterByContructor<>(mapping, vertex, converters);
     }
 }
