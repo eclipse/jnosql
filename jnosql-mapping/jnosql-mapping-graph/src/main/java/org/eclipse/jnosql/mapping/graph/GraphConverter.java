@@ -146,7 +146,9 @@ public abstract class GraphConverter {
             return entity;
         } else {
             EntityConverterByContructor<T> supplier = EntityConverterByContructor.of(mapping, vertex, getConverters());
-            return supplier.get();
+            T entity = supplier.get();
+            getEventManager().firePostEntity(entity);
+            return entity;
         }
     }
 
@@ -229,7 +231,6 @@ public abstract class GraphConverter {
         }
         throw new EmptyResultException("Edge does not found in the database with id: " + id);
     }
-
 
 
     private <T> void feedId(Vertex vertex, T entity) {
