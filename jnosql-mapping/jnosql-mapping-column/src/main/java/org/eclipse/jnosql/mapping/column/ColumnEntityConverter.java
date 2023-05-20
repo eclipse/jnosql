@@ -75,9 +75,9 @@ public abstract class ColumnEntityConverter {
     /**
      * Converts a {@link ColumnEntity} to entity
      *
-     * @param type the entity class
-     * @param entity      the {@link ColumnEntity} to be converted
-     * @param <T>         the entity type
+     * @param type   the entity class
+     * @param entity the {@link ColumnEntity} to be converted
+     * @param <T>    the entity type
      * @return the instance from {@link ColumnEntity}
      * @throws NullPointerException when either type or entity are null
      */
@@ -91,22 +91,26 @@ public abstract class ColumnEntityConverter {
      * Converts a {@link ColumnEntity} to entity
      * Instead of creating a new object is uses the instance used in this parameters
      *
-     * @param type the instance
-     * @param entity      the {@link ColumnEntity} to be converted
-     * @param <T>         the entity type
+     * @param type   the instance
+     * @param entity the {@link ColumnEntity} to be converted
+     * @param <T>    the entity type
      * @return the same instance with values set from {@link ColumnEntity}
      * @throws NullPointerException when either type or entity are null
      */
     public <T> T toEntity(T type, ColumnEntity entity) {
         requireNonNull(entity, "entity is required");
         requireNonNull(type, "type is required");
+
+        if (type.getClass().isRecord()) {
+            return (T) toEntity(type.getClass(), entity.columns());
+        }
         EntityMetadata mapping = getEntities().get(type.getClass());
         return convertEntity(entity.columns(), mapping, type);
     }
 
     /**
      * Similar to {@link ColumnEntityConverter#toEntity(Class, ColumnEntity)}, but
-     * search the instance type from {@link ColumnEntity#name()} }
+     * search the instance type from {@link ColumnEntity#name()}
      *
      * @param entity the {@link ColumnEntity} to be converted
      * @param <T>    the entity type
