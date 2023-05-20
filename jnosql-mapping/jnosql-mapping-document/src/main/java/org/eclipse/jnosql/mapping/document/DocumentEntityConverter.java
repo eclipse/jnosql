@@ -74,9 +74,9 @@ public abstract class DocumentEntityConverter {
     /**
      * Converts a {@link DocumentEntity} to entity
      *
-     * @param type the entity class
-     * @param entity      the {@link DocumentEntity} to be converted
-     * @param <T>         the entity type
+     * @param type   the entity class
+     * @param entity the {@link DocumentEntity} to be converted
+     * @param <T>    the entity type
      * @return the instance from {@link DocumentEntity}
      * @throws NullPointerException when either type or entity are null
      */
@@ -91,15 +91,19 @@ public abstract class DocumentEntityConverter {
      * Converts a {@link DocumentEntity} to entity
      * Instead of creating a new object is uses the instance used in this parameters
      *
-     * @param type the entity class
-     * @param entity         the {@link DocumentEntity} to be converted
-     * @param <T>            the entity type
+     * @param type   the entity class
+     * @param entity the {@link DocumentEntity} to be converted
+     * @param <T>    the entity type
      * @return the instance from {@link DocumentEntity}
      * @throws NullPointerException when either type or entity are null
      */
     public <T> T toEntity(T type, DocumentEntity entity) {
         requireNonNull(entity, "entity is required");
         requireNonNull(type, "type is required");
+
+        if (type.getClass().isRecord()) {
+            return (T) toEntity(type.getClass(), entity.documents());
+        }
         EntityMetadata mapping = getEntities().get(type.getClass());
         return convertEntity(entity.documents(), mapping, type);
     }
@@ -127,7 +131,7 @@ public abstract class DocumentEntityConverter {
             return convertEntityByConstructor(entity.documents(), mapping);
         }
     }
-    
+
     protected <T> T toEntity(Class<T> type, List<Document> documents) {
         EntityMetadata mapping = getEntities().get(type);
         if (mapping.isInheritance()) {
@@ -143,8 +147,6 @@ public abstract class DocumentEntityConverter {
         }
     }
 
-
-  
 
     protected <T> Consumer<String> feedObject(T entity, List<Document> documents, Map<String, FieldMapping> fieldsGroupByName) {
         return k -> {

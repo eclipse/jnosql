@@ -16,35 +16,27 @@ package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.data.exceptions.EmptyResultException;
 import jakarta.data.exceptions.MappingException;
-import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.mapping.AttributeConverter;
-import org.eclipse.jnosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.reflection.ConstructorBuilder;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
-import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
-import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
 
 
 public abstract class GraphConverter {
@@ -131,24 +123,18 @@ public abstract class GraphConverter {
         requireNonNull(vertex, "vertex is required");
         EntityMetadata mapping = getEntities().findByName(vertex.label());
 
-        ConstructorMetadata constructor = mapping.constructor();
-        if (constructor.isDefault()) {
-            List<Property> properties = vertex.keys()
-                    .stream()
-                    .map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
+        List<Property<?>> properties = vertex.keys()
+                .stream()
+                .map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
 
-            T entity;
-            if (mapping.isInheritance()) {
-                entity = mapInheritanceEntity(vertex, properties, mapping.type());
-            } else {
-                entity = toEntity((Class<T>) mapping.type(), properties);
-            }
-            feedId(vertex, entity);
-            getEventManager().firePostEntity(entity);
-            return entity;
+        T entity;
+        if (mapping.isInheritance()) {
+            entity = mapInheritanceEntity(vertex, properties, mapping.type());
         } else {
-            return convertEntityByConstructor(vertex, mapping);
+            entity = convert((Class<T>) mapping.type(), properties, vertex);
         }
+        getEventManager().firePostEntity(entity);
+        return entity;
     }
 
     /**
@@ -164,9 +150,9 @@ public abstract class GraphConverter {
         requireNonNull(type, "type is required");
         requireNonNull(vertex, "vertex is required");
 
-        List<Property> properties = vertex.keys().stream().map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
-        T entity = toEntity(type, properties);
-        feedId(vertex, entity);
+        List<Property<?>> properties = vertex.keys().stream()
+                .map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
+        T entity = convert(type, properties, vertex);
         getEventManager().firePostEntity(entity);
         return entity;
     }
@@ -185,14 +171,18 @@ public abstract class GraphConverter {
         requireNonNull(type, "entityInstance is required");
         requireNonNull(vertex, "vertex is required");
 
-        List<Property> properties = vertex.keys().stream()
+        if (type.getClass().isRecord()) {
+            return (T) toEntity(type.getClass(), vertex);
+        }
+
+        List<Property<?>> properties = vertex.keys().stream()
                 .map(k -> DefaultProperty.of(k, vertex.value(k)))
                 .collect(toList());
 
         EntityMetadata mapping = getEntities().get(type.getClass());
-        convertEntity(properties, mapping, type);
-        feedId(vertex, type);
-        return type;
+        EntityConverterByField<T> converter = EntityConverterByField.of(properties, mapping,
+                type, vertex, getConverters(), getEntities());
+        return converter.get();
 
     }
 
@@ -227,97 +217,19 @@ public abstract class GraphConverter {
         throw new EmptyResultException("Edge does not found in the database with id: " + id);
     }
 
-    private <T> T convertEntityByConstructor(Vertex vertex, EntityMetadata mapping) {
-        ConstructorBuilder builder = ConstructorBuilder.of(mapping.constructor());
-        List<Property<?>> properties = vertex.keys().stream()
-                .map(k -> DefaultProperty.of(k, vertex.value(k)))
-                .collect(toList());
-        for (ParameterMetaData parameter : builder.getParameters()) {
-            Optional<Property<?>> property = properties.stream()
-                    .filter(c -> c.key().equals(parameter.getName()))
-                    .findFirst();
-            property.ifPresentOrElse(p -> parameter.getConverter().ifPresentOrElse(c -> {
-                Object value = getConverters().get(c).convertToEntityAttribute(p.value());
-                builder.add(value);
-            }, () -> {
-                Value value = Value.of(p.value());
-                builder.add(value.get(parameter.getType()));
-            }), builder::addEmptyParameter);
-        }
-        return builder.build();
-    }
-
-    private <T> void feedId(Vertex vertex, T entity) {
-        EntityMetadata mapping = getEntities().get(entity.getClass());
-        Optional<FieldMapping> id = mapping.id();
-
-
-        Object vertexId = vertex.id();
-        if (Objects.nonNull(vertexId) && id.isPresent()) {
-            FieldMapping fieldMapping = id.get();
-            fieldMapping.getConverter().ifPresentOrElse(c -> {
-                AttributeConverter attributeConverter = getConverters().get(c);
-                Object attributeConverted = attributeConverter.convertToEntityAttribute(vertexId);
-                fieldMapping.write(entity, fieldMapping.value(Value.of(attributeConverted)));
-            }, () -> fieldMapping.write(entity, fieldMapping.value(Value.of(vertexId))));
-        }
-    }
-
-    private <T> T toEntity(Class<T> type, List<Property> properties) {
+    private <T> T convert(Class<T> type, List<Property<?>> properties, Vertex vertex) {
         EntityMetadata mapping = getEntities().get(type);
-        T instance = mapping.newInstance();
-        return convertEntity(properties, mapping, instance);
-    }
-
-    private <T> T convertEntity(List<Property> elements, EntityMetadata mapping, T instance) {
-
-        Map<String, FieldMapping> fieldsGroupByName = mapping.fieldsGroupByName();
-        List<String> names = elements.stream()
-                .map(Property::key)
-                .sorted()
-                .toList();
-        Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
-
-        fieldsGroupByName.keySet().stream()
-                .filter(existField.or(k -> EMBEDDED.equals(fieldsGroupByName.get(k).type())))
-                .forEach(feedObject(instance, elements, fieldsGroupByName));
-
-        return instance;
-    }
-
-    private <T> Consumer<String> feedObject(T instance, List<Property> elements,
-                                            Map<String, FieldMapping> fieldsGroupByName) {
-        return k -> {
-            Optional<Property> element = elements
-                    .stream()
-                    .filter(c -> c.key().equals(k))
-                    .findFirst();
-
-            FieldMapping field = fieldsGroupByName.get(k);
-            if (EMBEDDED.equals(field.type())) {
-                embeddedField(instance, elements, field);
-            } else {
-                element.ifPresent(e -> singleField(instance, e, field));
-            }
-        };
-    }
-
-    private <T, X, Y> void singleField(T instance, Property element, FieldMapping field) {
-        Object value = element.value();
-        Optional<Class<? extends AttributeConverter<X, Y>>> converter = field.getConverter();
-        if (converter.isPresent()) {
-            AttributeConverter<X, Y> attributeConverter = getConverters().get(converter.get());
-            Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) value);
-            field.write(instance, field.value(Value.of(attributeConverted)));
+        ConstructorMetadata constructor = mapping.constructor();
+        if (constructor.isDefault()) {
+            EntityConverterByField<T> converter = EntityConverterByField.of(properties, mapping,
+                    mapping.newInstance(), vertex, getConverters(), getEntities());
+            return converter.get();
         } else {
-            field.write(instance, field.value(Value.of(value)));
+            EntityConverterByContructor<T> supplier = EntityConverterByContructor.of(mapping, vertex, getConverters());
+            return supplier.get();
         }
     }
 
-    private <T> void embeddedField(T instance, List<Property> elements,
-                                   FieldMapping field) {
-        field.write(instance, toEntity(field.nativeField().getType(), elements));
-    }
 
     protected FieldGraph to(FieldMapping field, Object entityInstance) {
         Object value = field.read(entityInstance);
@@ -325,7 +237,7 @@ public abstract class GraphConverter {
     }
 
     private <T> T mapInheritanceEntity(Vertex vertex,
-                                       List<Property> properties, Class<?> type) {
+                                       List<Property<?>> properties, Class<?> type) {
 
         Map<String, InheritanceMetadata> group = getEntities()
                 .findByParentGroupByDiscriminatorValue(type);
@@ -353,6 +265,6 @@ public abstract class GraphConverter {
                         " column value " + discriminator));
 
         EntityMetadata mapping = getEntities().get(inheritance.getEntity());
-        return toEntity((Class<T>) mapping.type(), properties);
+        return convert((Class<T>) mapping.type(), properties, vertex);
     }
 }

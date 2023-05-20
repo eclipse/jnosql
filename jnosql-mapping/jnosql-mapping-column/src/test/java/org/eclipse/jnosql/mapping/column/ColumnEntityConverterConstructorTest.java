@@ -48,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AddPackages(value = {Convert.class, ColumnWorkflow.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
-class DefaultColumnEntityConverterConstructorTest {
+class ColumnEntityConverterConstructorTest {
 
     @Inject
     private ColumnEntityConverter converter;

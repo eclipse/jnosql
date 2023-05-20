@@ -23,6 +23,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+
 import java.util.Iterator;
 
 /**
@@ -32,15 +33,15 @@ import java.util.Iterator;
 class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
 
 
-    private Instance<GraphTraversalSourceSupplier> supplierInstance;
+    private final Instance<GraphTraversalSourceSupplier> supplierInstance;
 
-    private EntitiesMetadata entities;
+    private final EntitiesMetadata entities;
 
-    private GraphConverter converter;
+    private final GraphConverter converter;
 
-    private GraphWorkflow workflow;
+    private final GraphWorkflow workflow;
 
-    private Converters converters;
+    private final Converters converters;
 
     @Inject
     DefaultGraphTraversalSourceTemplate(Instance<GraphTraversalSourceSupplier> supplierInstance,
@@ -55,8 +56,6 @@ class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
         this.converters = converters;
     }
 
-    DefaultGraphTraversalSourceTemplate() {
-    }
 
     @Override
     protected Graph getGraph() {
@@ -72,6 +71,7 @@ class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
     protected GraphTraversalSource traversal() {
         return supplierInstance.get().get();
     }
+
     @Override
     protected EntitiesMetadata getEntities() {
         return entities;

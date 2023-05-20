@@ -29,7 +29,7 @@ import org.jboss.weld.junit5.auto.EnableAutoWeld;
 @AddPackages(value = {Convert.class, Transactional.class})
 @AddPackages(BookRepository.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
-class DefaultGraphInheritanceConverterTest extends AbstractGraphInheritanceConverterTest {
+class DefaultGraphInheritanceConverterTest extends GraphInheritanceConverterTest {
 
     @Inject
     private GraphConverter converter;

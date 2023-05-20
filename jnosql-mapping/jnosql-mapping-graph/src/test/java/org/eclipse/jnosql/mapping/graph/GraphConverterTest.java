@@ -304,7 +304,7 @@ abstract class GraphConverterTest {
 
         BookRelease book = this.getConverter().toEntity(vertex);
         assertNotNull(book);
-        assertEquals("9780132345286", book.getIsbn());
+        assertEquals(vertex.id().toString(), book.getIsbn());
         assertEquals("Effective Java", book.getTitle());
         assertEquals("Joshua Bloch", book.getAuthor());
         assertEquals(Year.of(2001), book.getYear());
@@ -320,7 +320,7 @@ abstract class GraphConverterTest {
 
         BookRelease book = this.getConverter().toEntity(vertex);
         assertNotNull(book);
-        assertEquals("9780132345286", book.getIsbn());
+        assertEquals(vertex.id().toString(), book.getIsbn());
         assertEquals("Effective Java", book.getTitle());
         assertEquals("Joshua Bloch", book.getAuthor());
         assertEquals(Year.of(2001), book.getYear());
