@@ -23,6 +23,7 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.graph.entities.Car;
+import org.eclipse.jnosql.mapping.graph.entities.Hero;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
@@ -32,6 +33,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Year;
+
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 @EnableAutoWeld
 @AddPackages(value = {Convert.class, Transactional.class})
@@ -82,5 +86,27 @@ class GraphImmutableConveterTest {
             soft.assertThat(car.manufacturer()).isEqualTo("Ferrari");
             soft.assertThat(car.year()).isEqualTo(2023);
         });
+    }
+
+    @Test
+    public void shouldConvertToExistRecordEntity() {
+        Vertex vertex = graph.addVertex("Hero");
+        vertex.property("model", "SF90");
+        vertex.property("manufacturer", "Ferrari");
+        vertex.property("year", 2023);
+    }
+
+    @Test
+    public void shouldConvertToExistEntity() {
+        Vertex vertex = graph.addVertex("Hero");
+        vertex.property("name", "Iron Man");
+        Hero hero = new Hero(null, null);
+        Hero result = converter.toEntity(hero, vertex);
+        assertSame(hero, result);
+        assertSoftly(soft -> {
+                    soft.assertThat(hero.id()).isEqualTo(vertex.id());
+                    soft.assertThat(hero.name()).isEqualTo("Iron Man");
+                }
+        );
     }
 }
