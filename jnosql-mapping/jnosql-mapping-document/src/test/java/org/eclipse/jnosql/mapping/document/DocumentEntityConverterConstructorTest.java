@@ -45,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AddPackages(value = {Convert.class, DocumentWorkflow.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
-public class DefaultDocumentEntityConverterConstructorTest {
+public class DocumentEntityConverterConstructorTest {
 
     @Inject
     private DocumentEntityConverter converter;
