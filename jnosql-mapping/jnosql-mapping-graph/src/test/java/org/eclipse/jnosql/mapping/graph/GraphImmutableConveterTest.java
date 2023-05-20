@@ -100,10 +100,10 @@ class GraphImmutableConveterTest {
         Car result = converter.toEntity(car, vertex);
         assertNotSame(result, car);
         assertSoftly(soft -> {
-            soft.assertThat(result.model()).isNull();
-            soft.assertThat(result.manufacturer()).isNull();
-            soft.assertThat(result.plate()).isNull();
-            soft.assertThat(result.year()).isNull();
+            soft.assertThat(result.model()).isNotNull();
+            soft.assertThat(result.manufacturer()).isNotNull();
+            soft.assertThat(result.plate()).isNotNull();
+            soft.assertThat(result.year()).isNotNull();
 
             soft.assertThat(result.model()).isEqualTo("SF90");
             soft.assertThat(result.manufacturer()).isEqualTo("Ferrari");
