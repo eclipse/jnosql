@@ -64,7 +64,7 @@ public class DocumentEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertEntityFromDocumentEntity() {
+    public void shouldConvertCommunicationEntity() {
 
         DocumentEntity entity = converter.toDocument(car);
         assertEquals("Car", entity.name());
@@ -76,7 +76,7 @@ public class DocumentEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertDocumentEntityFromEntity() {
+    public void shouldConvertCommunicationEntity2() {
 
         DocumentEntity entity = converter.toDocument(car);
         assertEquals("Car", entity.name());
@@ -86,7 +86,7 @@ public class DocumentEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertDocumentEntityToEntity() {
+    public void shouldConvertEntity() {
         DocumentEntity entity = DocumentEntity.of("Car");
         Stream.of(columns).forEach(entity::add);
 
@@ -100,7 +100,7 @@ public class DocumentEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertDocumentEntityToExistRecordEntity() {
+    public void shouldConvertExistRecord() {
         DocumentEntity entity = DocumentEntity.of("Car");
         Stream.of(columns).forEach(entity::add);
         Car ferrari = new Car(null, null, null, null);
@@ -116,11 +116,16 @@ public class DocumentEntityImmutableTest {
             soft.assertThat(ferrari.manufacturer()).isNull();
             soft.assertThat(ferrari.plate()).isNull();
             soft.assertThat(ferrari.year()).isNull();
+
+            soft.assertThat(result.model()).isEqualTo("SF90");
+            soft.assertThat(result.manufacturer()).isEqualTo("Ferrari");
+            soft.assertThat(result.plate()).isEqualTo("123456789");
+            soft.assertThat(result.year()).isEqualTo(2023);
         });
     }
 
     @Test
-    public void shouldConvertDocumentEntityToExistEntity2() {
+    public void shouldConvertExist() {
         DocumentEntity entity = DocumentEntity.of("Hero");
         entity.add("_id", "2342");
         entity.add("name", "Iron man");
