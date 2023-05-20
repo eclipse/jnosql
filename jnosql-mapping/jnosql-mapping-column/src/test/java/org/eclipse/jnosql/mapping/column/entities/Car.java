@@ -21,5 +21,7 @@ import jakarta.nosql.Id;
 import java.time.Year;
 
 @Entity
-public record Car(@Id String plate, @Column("model") String model, @Column("year") Year year) {
+public record Car(@Id String plate, @Column("model") String model,
+                  @Column("manufacturer") String manufacturer,
+                  @Column("year") Year year) {
 }
