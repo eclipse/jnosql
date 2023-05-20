@@ -69,7 +69,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @AddPackages(value = {Convert.class, ColumnWorkflow.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
-public class DefaultColumnEntityConverterTest {
+public class ColumnEntityConverterTest {
 
 
     @Inject
