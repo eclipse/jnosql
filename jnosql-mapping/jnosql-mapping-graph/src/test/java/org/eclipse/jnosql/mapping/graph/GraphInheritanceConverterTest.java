@@ -33,7 +33,7 @@ import java.time.LocalDate;
 import static io.smallrye.common.constraint.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public abstract class AbstractGraphInheritanceConverterTest {
+public abstract class GraphInheritanceConverterTest {
 
     protected abstract Graph getGraph();
 
