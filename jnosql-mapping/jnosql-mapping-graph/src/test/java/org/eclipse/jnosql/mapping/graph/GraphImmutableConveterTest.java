@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Year;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 @EnableAutoWeld
@@ -90,10 +91,25 @@ class GraphImmutableConveterTest {
 
     @Test
     public void shouldConvertToExistRecordEntity() {
-        Vertex vertex = graph.addVertex("Hero");
+        Vertex vertex = graph.addVertex("Car");
         vertex.property("model", "SF90");
         vertex.property("manufacturer", "Ferrari");
         vertex.property("year", 2023);
+
+        Car car = new Car(null, null, null, 0);
+        Car result = converter.toEntity(car, vertex);
+        assertNotSame(result, car);
+        assertSoftly(soft -> {
+            soft.assertThat(result.model()).isNull();
+            soft.assertThat(result.manufacturer()).isNull();
+            soft.assertThat(result.plate()).isNull();
+            soft.assertThat(result.year()).isNull();
+            //
+            soft.assertThat(result.model()).isEqualTo("SF90");
+            soft.assertThat(result.manufacturer()).isEqualTo("Ferrari");
+            soft.assertThat(result.plate()).isEqualTo(vertex.id());
+            soft.assertThat(result.year()).isEqualTo(2023);
+        });
     }
 
     @Test

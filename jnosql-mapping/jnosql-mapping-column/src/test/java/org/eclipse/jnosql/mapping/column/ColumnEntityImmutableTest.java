@@ -35,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 @EnableAutoWeld
@@ -64,7 +65,7 @@ public class ColumnEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertEntityFromColumnEntity() {
+    public void shouldConvertCommunicationEntity() {
 
         ColumnEntity entity = converter.toColumn(car);
         assertEquals("Car", entity.name());
@@ -76,7 +77,7 @@ public class ColumnEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertColumnEntityFromEntity() {
+    public void shouldConvertCommunicationEntity2() {
 
         ColumnEntity entity = converter.toColumn(car);
         assertEquals("Car", entity.name());
@@ -86,7 +87,7 @@ public class ColumnEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertColumnEntityToEntity() {
+    public void shouldConvertEntity() {
         ColumnEntity entity = ColumnEntity.of("Car");
         Stream.of(columns).forEach(entity::add);
 
@@ -100,7 +101,7 @@ public class ColumnEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertColumnEntityToExistRecordEntity() {
+    public void shouldConvertExistRecord() {
         ColumnEntity entity = ColumnEntity.of("Car");
         Stream.of(columns).forEach(entity::add);
         Car ferrari = new Car(null, null, null, null);
@@ -110,7 +111,7 @@ public class ColumnEntityImmutableTest {
         assertEquals("SF90", result.model());
         assertEquals("Ferrari", result.manufacturer());
         assertEquals(Year.now(), result.year());
-
+        assertNotSame(ferrari, car);
         assertSoftly(soft -> {
             soft.assertThat(ferrari.model()).isNull();
             soft.assertThat(ferrari.manufacturer()).isNull();
@@ -120,7 +121,7 @@ public class ColumnEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertColumnEntityToExistEntity2() {
+    public void shouldConvertExist() {
         ColumnEntity entity = ColumnEntity.of("Hero");
         entity.add("_id", "2342");
         entity.add("name", "Iron man");
