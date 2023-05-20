@@ -117,6 +117,11 @@ public class ColumnEntityImmutableTest {
             soft.assertThat(ferrari.manufacturer()).isNull();
             soft.assertThat(ferrari.plate()).isNull();
             soft.assertThat(ferrari.year()).isNull();
+
+            soft.assertThat(result.model()).isEqualTo("SF90");
+            soft.assertThat(result.manufacturer()).isEqualTo("Ferrari");
+            soft.assertThat(result.plate()).isEqualTo("123456789");
+            soft.assertThat(result.year()).isEqualTo(2023);
         });
     }
 
