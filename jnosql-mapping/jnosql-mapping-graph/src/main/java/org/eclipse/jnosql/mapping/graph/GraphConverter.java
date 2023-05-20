@@ -16,34 +16,27 @@ package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.data.exceptions.EmptyResultException;
 import jakarta.data.exceptions.MappingException;
-import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.mapping.AttributeConverter;
-import org.eclipse.jnosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.reflection.ConstructorBuilder;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
-import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
 
 
 public abstract class GraphConverter {
