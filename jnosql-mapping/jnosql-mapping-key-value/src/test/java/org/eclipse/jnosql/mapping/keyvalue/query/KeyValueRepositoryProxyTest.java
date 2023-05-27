@@ -47,14 +47,14 @@ import static org.mockito.Mockito.when;
 public class KeyValueRepositoryProxyTest {
 
     @Mock
-    private KeyValueTemplate repository;
+    private KeyValueTemplate template;
 
     private UserRepository userRepository;
 
     @BeforeEach
     public void setUp() {
 
-        KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(UserRepository.class, repository);
+        KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(UserRepository.class, template);
         userRepository = (UserRepository) Proxy.newProxyInstance(UserRepository.class.getClassLoader(),
                 new Class[]{UserRepository.class},
                 handler);
@@ -66,7 +66,7 @@ public class KeyValueRepositoryProxyTest {
 
         User user = new User("ada", "Ada", 10);
         userRepository.save(user);
-        Mockito.verify(repository).put(captor.capture());
+        Mockito.verify(template).put(captor.capture());
         User value = captor.getValue();
         assertEquals(user, value);
     }
@@ -78,7 +78,7 @@ public class KeyValueRepositoryProxyTest {
 
         User user = new User("ada", "Ada", 10);
         userRepository.saveAll(Collections.singleton(user));
-        Mockito.verify(repository).put(captor.capture());
+        Mockito.verify(template).put(captor.capture());
         User value = (User) captor.getValue().iterator().next();
         assertEquals(user, value);
     }
@@ -88,7 +88,7 @@ public class KeyValueRepositoryProxyTest {
     public void shouldDelete() {
         userRepository.deleteById("key");
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(repository).delete(captor.capture());
+        Mockito.verify(template).delete(captor.capture());
         assertEquals("key", captor.getValue());
     }
 
@@ -96,14 +96,14 @@ public class KeyValueRepositoryProxyTest {
     public void shouldDeleteIterable() {
         userRepository.deleteAllById(Collections.singletonList("key"));
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Mockito.verify(repository).delete(captor.capture());
+        Mockito.verify(template).delete(captor.capture());
         assertEquals("key", captor.getValue().iterator().next());
     }
 
     @Test
     public void shouldFindById() {
         User user = new User("ada", "Ada", 10);
-        when(repository.get("key", User.class)).thenReturn(
+        when(template.get("key", User.class)).thenReturn(
                 Optional.of(user));
 
         assertEquals(user, userRepository.findById("key").get());
@@ -114,7 +114,7 @@ public class KeyValueRepositoryProxyTest {
         User user = new User("ada", "Ada", 10);
         User user2 = new User("ada", "Ada", 10);
         List<String> keys = Arrays.asList("key", "key2");
-        when(repository.get(keys, User.class)).thenReturn(
+        when(template.get(keys, User.class)).thenReturn(
                 Arrays.asList(user, user2));
 
         assertThat(userRepository.findAllById(keys)).contains(user, user2);
@@ -123,10 +123,10 @@ public class KeyValueRepositoryProxyTest {
     @Test
     public void shouldFindByQuery() {
         User user = new User("12", "Ada", 10);
-        when(repository.query("get \"12\"", User.class)).thenReturn(Stream.of(user));
+        when(template.query("get \"12\"", User.class)).thenReturn(Stream.of(user));
 
         userRepository.findByQuery();
-        verify(repository).query("get \"12\"", User.class);
+        verify(template).query("get \"12\"", User.class);
 
     }
 
@@ -135,32 +135,47 @@ public class KeyValueRepositoryProxyTest {
         User user = new User("12", "Ada", 10);
         List<String> keys = Arrays.asList("key", "key2");
         PreparedStatement prepare = Mockito.mock(PreparedStatement.class);
-        when(repository.prepare("get @id", User.class)).thenReturn(prepare);
+        when(template.prepare("get @id", User.class)).thenReturn(prepare);
 
         userRepository.findByQuery("id");
-        verify(repository).prepare("get @id", User.class);
+        verify(template).prepare("get @id", User.class);
 
     }
 
     @Test
     public void shouldExecuteDefaultMethod() {
-        User user = new User("12", "Ada", 10);
-        when(repository.query("get \"otavio\"", User.class)).thenReturn(Stream.of(user));
+        User user = new User("12", "Otavio", 30);
+        PreparedStatement prepare = Mockito.mock(PreparedStatement.class);
+        Mockito.when(template.prepare("get @id", User.class))
+                .thenReturn(prepare);
+        Mockito.when(prepare.result()).thenReturn(Stream.of(user));
         userRepository.otavio();
-        verify(repository).prepare("get \"otavio\"", User.class);
+        verify(template).prepare("get @id", User.class);
+        verify(prepare).bind("id", "otavio");
     }
 
     @Test
     public void shouldUseQueriesFromOtherInterface() {
-        User user = new User("12", "Ada", 10);
-        when(repository.query("get \"otavio\"", User.class)).thenReturn(Stream.of(user));
-        userRepository.otavio();
-        verify(repository).prepare("get \"otavio\"", User.class);
+        User user = new User("12", "Ada", 30);
+        PreparedStatement prepare = Mockito.mock(PreparedStatement.class);
+        Mockito.when(template.prepare("get @key", User.class))
+                .thenReturn(prepare);
+        Mockito.when(prepare.result()).thenReturn(Stream.of(user));
+        userRepository.key("Ada");
+        verify(template).prepare("get @key", User.class);
+        verify(prepare).bind("key", "Ada");
     }
 
     @Test
     public void shouldUseDefaultMethodFromOtherInterface() {
-
+        User user = new User("12", "Poliana", 30);
+        PreparedStatement prepare = Mockito.mock(PreparedStatement.class);
+        Mockito.when(template.prepare("get @key", User.class))
+                .thenReturn(prepare);
+        Mockito.when(prepare.result()).thenReturn(Stream.of(user));
+        userRepository.poliana();
+        verify(template).prepare("get @key", User.class);
+        verify(prepare).bind("key", "Poliana");
     }
 
     @Test
@@ -180,11 +195,11 @@ public class KeyValueRepositoryProxyTest {
 
     interface BaseQuery<T> {
 
-        @Query("get @key ")
+        @Query("get @key")
         List<T> key(@Param("key") String name);
 
-        default List<T> ada() {
-            return this.key("Ada");
+        default List<T> poliana() {
+            return this.key("Poliana");
         }
     }
 
