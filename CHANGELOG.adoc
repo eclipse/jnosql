@@ -18,6 +18,11 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Enhance database supplier error message to use property instead of the enum name.
 - Fix convertion to/from entities when it is a record
 
+=== Added
+
+- Include support for default method interface
+- Add support for interfaces that is not repository
+
 == [1.0.0-b6] - 2023-03-11
 
 === Changed
