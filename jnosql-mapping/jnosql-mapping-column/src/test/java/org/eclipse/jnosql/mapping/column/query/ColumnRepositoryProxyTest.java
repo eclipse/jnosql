@@ -53,7 +53,10 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
@@ -748,6 +751,15 @@ public class ColumnRepositoryProxyTest {
         assertNull(personRepository.findByName("name"));
     }
 
+    @Test
+    public void shouldExecuteDefaultMethod() {
+        personRepository.partcionate("name");
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template, Mockito.times(2)).singleResult(captor.capture());
+        List<ColumnQuery> values = captor.getAllValues();
+        assertThat(values).isNotNull().hasSize(2);
+    }
+
     interface PersonRepository extends PageableRepository<Person, Long> {
 
         List<Person> findByActiveTrue();
@@ -764,6 +776,15 @@ public class ColumnRepositoryProxyTest {
         Person findByNameNot(String name);
 
         Person findByNameNotEquals(String name);
+
+        default Map<Boolean, List<Person>> partcionate(String name){
+            Objects.requireNonNull(name, "name is required");
+
+            Map<Boolean, List<Person>> map = new HashMap<>();
+            map.put(true, List.of(findByName(name)));
+            map.put(false, List.of(findByNameNot(name)));
+            return map;
+        }
 
         void deleteByName(String name);
 
