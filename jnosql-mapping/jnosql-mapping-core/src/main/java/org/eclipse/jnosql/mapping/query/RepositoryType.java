@@ -68,7 +68,7 @@ public enum RepositoryType {
      */
     ORDER_BY(""),
     /**
-     *
+     * The method that belongs to the interface using a default method.
      */
     DEFAULT_METHOD("");
 
