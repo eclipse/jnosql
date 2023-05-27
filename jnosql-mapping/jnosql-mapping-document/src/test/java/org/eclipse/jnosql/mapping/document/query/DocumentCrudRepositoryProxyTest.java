@@ -675,7 +675,7 @@ public class DocumentCrudRepositoryProxyTest {
         personRepository.findByNameNot("Otavio");
 
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        verify(template).select(captor.capture());
+        verify(template).singleResult(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition negate = query.condition().get();
         assertEquals(Condition.NOT, negate.condition());
