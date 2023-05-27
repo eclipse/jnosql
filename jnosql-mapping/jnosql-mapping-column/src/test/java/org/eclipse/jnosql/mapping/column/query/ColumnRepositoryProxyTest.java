@@ -122,11 +122,6 @@ public class ColumnRepositoryProxyTest {
                 .withAge(20)
                 .withId(1L).build();
 
-        when(template.select(Mockito.any(ColumnQuery.class)))
-                .thenReturn(Stream.of(person));
-        when(template.singleResult(Mockito.any(ColumnQuery.class)))
-                .thenReturn(Optional.of(person));
-
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
                 personHandler);
@@ -827,9 +822,15 @@ public class ColumnRepositoryProxyTest {
         default Map<Boolean, List<Person>> partcionate(String name) {
             Objects.requireNonNull(name, "name is required");
 
+            var person = Person.builder()
+                    .withName("Ada Lovelace")
+                    .withAge(20)
+                    .withId(1L).build();
+            findByName(name);
+            findByNameNot(name);
             Map<Boolean, List<Person>> map = new HashMap<>();
-            map.put(true, List.of(findByName(name)));
-            map.put(false, List.of(findByNameNot(name)));
+            map.put(true, List.of(person));
+            map.put(false, List.of(person));
             return map;
         }
 
