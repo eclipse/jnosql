@@ -481,39 +481,53 @@ public class GraphRepositoryProxyTest {
 
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false);
-        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", false);
-        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 15, "active", false);
 
-        Map<Boolean, List<Person>> partcionate = personRepository.partcionate("name");
+        Map<Boolean, List<Person>> partcionate = personRepository.partcionate("Otavio");
 
         assertThat(partcionate).isNotEmpty().hasSize(2);
         List<Person> otavios = partcionate.get(true);
         List<Person> notOtavios = partcionate.get(false);
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(otavios).isNotEmpty().hasSize(2);
-            soft.assertThat(notOtavios).isNotEmpty().hasSize(2);
+            soft.assertThat(otavios).isNotEmpty().hasSize(1)
+                    .map(Person::getName).contains("Otavio");
+            soft.assertThat(notOtavios).isNotEmpty().hasSize(1)
+                    .map(Person::getName).contains("Poliana");
         });
     }
 
     @Test
     public void shouldUseQueriesFromOtherInterface() {
-        personRepository.findByNameLessThan("name");
 
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false, "score", 2);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false, "score", 12);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 4, "active", false, "score", 5);
+        graph.addVertex(T.label, "Person", "name", "Elias", "age", 20, "active", false, "score", 15);
+        List<Person> people = personRepository.findByScoreLessThan(14);
+        assertThat(people).isNotEmpty().hasSize(3)
+                .map(Person::getName)
+                        .contains("Otavio","Ada", "Poliana");
     }
 
     @Test
     public void shouldUseDefaultMethodFromOtherInterface() {
-        personRepository.ada();
 
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false, "score", 2);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false, "score", 12);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 4, "active", false, "score", 5);
+        graph.addVertex(T.label, "Person", "name", "Elias", "age", 20, "active", false, "score", 15);
+        List<Person> people =  personRepository.lessThanTen();
+        assertThat(people).isNotEmpty().hasSize(2)
+                .map(Person::getName)
+                .contains("Otavio","Ada");
 
     }
 
     interface BaseQuery<T> {
 
-        List<T> findByNameLessThan(String name);
+        List<T> findByScoreLessThan(int value);
 
-        default List<T> ada() {
-            return this.findByNameLessThan("Ada");
+        default List<T> lessThanTen() {
+            return this.findByScoreLessThan(10);
         }
     }
 
