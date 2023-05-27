@@ -30,10 +30,10 @@ import java.lang.reflect.Method;
 /**
  * Template method to Repository proxy on column
  *
- * @param <T>  the entity type
+ * @param <T> the entity type
  * @param <K> the K entity
  */
-public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRepository implements InvocationHandler {
+public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepository implements InvocationHandler {
 
     protected abstract PageableRepository getRepository();
 
@@ -68,6 +68,9 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
             }
             case OBJECT_METHOD -> {
                 return method.invoke(this, args);
+            }
+            case DEFAULT_METHOD -> {
+                return InvocationHandler.invokeDefault(instance, method, args);
             }
             case ORDER_BY ->
                     throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
