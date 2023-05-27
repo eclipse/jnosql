@@ -44,6 +44,9 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
             case OBJECT_METHOD -> {
                 return method.invoke(this, args);
             }
+            case DEFAULT_METHOD -> {
+                return InvocationHandler.invokeDefault(instance, method, args);
+            }
             case QUERY -> {
                 Class<?> typeClass = getType();
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
