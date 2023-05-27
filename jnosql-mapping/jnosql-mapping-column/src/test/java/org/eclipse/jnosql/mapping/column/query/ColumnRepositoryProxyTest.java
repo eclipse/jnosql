@@ -117,6 +117,16 @@ public class ColumnRepositoryProxyTest {
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(Person.builder().build());
         when(template.update(any(Person.class))).thenReturn(Person.builder().build());
 
+        var person = Person.builder()
+                .withName("Ada Lovelace")
+                .withAge(20)
+                .withId(1L).build();
+
+        when(template.select(Mockito.any(ColumnQuery.class)))
+                .thenReturn(Stream.of(person));
+        when(template.singleResult(Mockito.any(ColumnQuery.class)))
+                .thenReturn(Optional.of(person));
+
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
                 personHandler);
@@ -754,17 +764,54 @@ public class ColumnRepositoryProxyTest {
     @Test
     public void shouldExecuteDefaultMethod() {
         personRepository.partcionate("name");
+
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template, Mockito.times(2)).singleResult(captor.capture());
         List<ColumnQuery> values = captor.getAllValues();
         assertThat(values).isNotNull().hasSize(2);
     }
 
-    interface PersonRepository extends PageableRepository<Person, Long> {
+    @Test
+    public void shouldUseQueriesFromOtherInterface() {
+        personRepository.findByNameLessThan("name");
+
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        assertEquals("Person", query.name());
+        ColumnCondition condition = query.condition().get();
+        assertEquals(LESSER_THAN, condition.condition());
+        assertEquals(Column.of("name", "name"), condition.column());
+    }
+
+    @Test
+    public void shouldUseDefaultMethodFromOtherInterface() {
+        personRepository.ada();
+
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        assertEquals("Person", query.name());
+        ColumnCondition condition = query.condition().get();
+        assertEquals(LESSER_THAN, condition.condition());
+        assertEquals(Column.of("name", "Ada"), condition.column());
+    }
+
+    interface BaseQuery<T> {
+
+        List<T> findByNameLessThan(String name);
+
+        default List<T> ada() {
+            return this.findByNameLessThan("Ada");
+        }
+    }
+
+    interface PersonRepository extends PageableRepository<Person, Long>, BaseQuery<Person> {
 
         List<Person> findByActiveTrue();
 
         List<Person> findByActiveFalse();
+
         List<Person> findBySalary_Currency(String currency);
 
         List<Person> findBySalary_CurrencyAndSalary_Value(String currency, BigDecimal value);
@@ -777,7 +824,7 @@ public class ColumnRepositoryProxyTest {
 
         Person findByNameNotEquals(String name);
 
-        default Map<Boolean, List<Person>> partcionate(String name){
+        default Map<Boolean, List<Person>> partcionate(String name) {
             Objects.requireNonNull(name, "name is required");
 
             Map<Boolean, List<Person>> map = new HashMap<>();
