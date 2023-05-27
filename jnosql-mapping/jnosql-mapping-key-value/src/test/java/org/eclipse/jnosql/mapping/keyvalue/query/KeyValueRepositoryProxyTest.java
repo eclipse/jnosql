@@ -143,6 +143,27 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
+    public void shouldExecuteDefaultMethod() {
+        User user = new User("12", "Ada", 10);
+        when(repository.query("get \"otavio\"", User.class)).thenReturn(Stream.of(user));
+        userRepository.otavio();
+        verify(repository).prepare("get \"otavio\"", User.class);
+    }
+
+    @Test
+    public void shouldUseQueriesFromOtherInterface() {
+        User user = new User("12", "Ada", 10);
+        when(repository.query("get \"otavio\"", User.class)).thenReturn(Stream.of(user));
+        userRepository.otavio();
+        verify(repository).prepare("get \"otavio\"", User.class);
+    }
+
+    @Test
+    public void shouldUseDefaultMethodFromOtherInterface() {
+
+    }
+
+    @Test
     public void shouldReturnErrorWhenExecuteMethodQuery() {
         Assertions.assertThrows(DynamicQueryException.class, () -> userRepository.findByName("name"));
     }
@@ -157,12 +178,29 @@ public class KeyValueRepositoryProxyTest {
         assertEquals(userRepository.hashCode(), userRepository.hashCode());
     }
 
-    interface UserRepository extends PageableRepository<User, String> {
+    interface BaseQuery<T> {
+
+        @Query("get @key ")
+        List<T> key(@Param("key") String name);
+
+        default List<T> ada() {
+            return this.key("Ada");
+        }
+    }
+
+    interface UserRepository extends PageableRepository<User, String>, BaseQuery<User> {
 
         Optional<User> findByName(String name);
 
         @Query("get \"12\"")
         Optional<User> findByQuery();
+
+
+        @Query("get @id")
+        Optional<User> querybyKey(@Param("id") String key);
+        default Optional<User> otavio() {
+            return querybyKey("otavio");
+        }
 
         @Query("get @id")
         Optional<User> findByQuery(@Param("id") String id);
