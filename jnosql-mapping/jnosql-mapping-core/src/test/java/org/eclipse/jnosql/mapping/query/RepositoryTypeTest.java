@@ -89,6 +89,11 @@ class RepositoryTypeTest {
                 "order2")));
     }
 
+    @Test
+    public void shouldDefaultMethod() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.DEFAULT_METHOD, RepositoryType.of(getMethod(DevRepository.class,
+                "duplicate")));
+    }
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
         return Stream.of(repository.getDeclaredMethods())
                 .filter(m -> m.getName().equals(methodName))
@@ -119,6 +124,10 @@ class RepositoryTypeTest {
         @OrderBy("sample")
         @OrderBy("test")
         String order2();
+
+        default int duplicate(int value) {
+            return value * 2;
+        }
     }
 
 }
