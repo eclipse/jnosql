@@ -804,7 +804,7 @@ public class DocumentCrudRepositoryProxyTest {
 
         Person findByName(String name);
 
-        List<Person> findByNameNot(String name);
+        Person findByNameNot(String name);
 
         List<Person> findByNameNotEquals(String name);
 
