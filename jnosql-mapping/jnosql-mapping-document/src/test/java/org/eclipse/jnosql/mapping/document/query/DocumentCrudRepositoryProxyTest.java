@@ -55,7 +55,10 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
@@ -746,7 +749,52 @@ public class DocumentCrudRepositoryProxyTest {
 
     }
 
-    interface PersonRepository extends CrudRepository<Person, Long> {
+    @Test
+    public void shouldExecuteDefaultMethod() {
+        personRepository.partcionate("name");
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template, Mockito.times(2)).singleResult(captor.capture());
+        List<DocumentQuery> values = captor.getAllValues();
+        assertThat(values).isNotNull().hasSize(2);
+    }
+
+    @Test
+    public void shouldUseQueriesFromOtherInterface() {
+        personRepository.findByNameLessThan("name");
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        assertEquals("Person", query.name());
+        DocumentCondition condition = query.condition().get();
+        assertEquals(LESSER_THAN, condition.condition());
+        assertEquals(Document.of("name", "name"), condition.document());
+    }
+
+    @Test
+    public void shouldUseDefaultMethodFromOtherInterface() {
+        personRepository.ada();
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        assertEquals("Person", query.name());
+        DocumentCondition condition = query.condition().get();
+        assertEquals(LESSER_THAN, condition.condition());
+        assertEquals(Document.of("name", "Ada"), condition.document());
+    }
+
+    interface BaseQuery<T> {
+
+        List<T> findByNameLessThan(String name);
+
+        default List<T> ada() {
+            return this.findByNameLessThan("Ada");
+        }
+    }
+
+    interface PersonRepository extends CrudRepository<Person, Long>, BaseQuery<Person> {
 
         List<Person> findBySalary_Currency(String currency);
 
@@ -798,6 +846,21 @@ public class DocumentCrudRepositoryProxyTest {
         @OrderBy("name")
         @OrderBy("age")
         List<Person> findByException();
+
+        default Map<Boolean, List<Person>> partcionate(String name) {
+            Objects.requireNonNull(name, "name is required");
+
+            var person = Person.builder()
+                    .withName("Ada Lovelace")
+                    .withAge(20)
+                    .withId(1L).build();
+            findByName(name);
+            findByNameNot(name);
+            Map<Boolean, List<Person>> map = new HashMap<>();
+            map.put(true, List.of(person));
+            map.put(false, List.of(person));
+            return map;
+        }
     }
 
     public interface VendorRepository extends CrudRepository<Vendor, String> {
