@@ -68,6 +68,9 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
             case OBJECT_METHOD -> {
                 return method.invoke(this, args);
             }
+            case DEFAULT_METHOD -> {
+                return InvocationHandler.invokeDefault(instance, method, args);
+            }
             case ORDER_BY ->
                     throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
             case QUERY -> {

@@ -66,7 +66,11 @@ public enum RepositoryType {
     /**
      * Method that has {@link jakarta.data.repository.OrderBy} annotation
      */
-    ORDER_BY("");
+    ORDER_BY(""),
+    /**
+     * The method that belongs to the interface using a default method.
+     */
+    DEFAULT_METHOD("");
 
     private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(CrudRepository.class)
             .or(Predicate.isEqual(PageableRepository.class));
@@ -88,6 +92,9 @@ public enum RepositoryType {
     public static RepositoryType of(Method method) {
         Objects.requireNonNull(method, "method is required");
         Class<?> declaringClass = method.getDeclaringClass();
+        if (method.isDefault()) {
+            return DEFAULT_METHOD;
+        }
         if (Object.class.equals(declaringClass)) {
             return OBJECT_METHOD;
         }

@@ -25,6 +25,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.graph.BookRepository;
@@ -48,7 +49,10 @@ import org.mockito.Mockito;
 
 import java.lang.reflect.Proxy;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -56,6 +60,7 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.jnosql.communication.Condition.LESSER_THAN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -471,8 +476,62 @@ public class GraphRepositoryProxyTest {
 
     }
 
+    @Test
+    public void shouldExecuteDefaultMethod() {
 
-    interface PersonRepository extends PageableRepository<Person, Long> {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false);
+
+        Map<Boolean, List<Person>> partcionate = personRepository.partcionate("Otavio");
+
+        assertThat(partcionate).isNotEmpty().hasSize(2);
+        List<Person> otavios = partcionate.get(true);
+        List<Person> notOtavios = partcionate.get(false);
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(otavios).isNotEmpty().hasSize(1)
+                    .map(Person::getName).contains("Otavio");
+            soft.assertThat(notOtavios).isNotEmpty().hasSize(1)
+                    .map(Person::getName).contains("Poliana");
+        });
+    }
+
+    @Test
+    public void shouldUseQueriesFromOtherInterface() {
+
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false, "score", 2);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false, "score", 12);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 4, "active", false, "score", 5);
+        graph.addVertex(T.label, "Person", "name", "Elias", "age", 20, "active", false, "score", 15);
+        List<Person> people = personRepository.findByScoreLessThan(14);
+        assertThat(people).isNotEmpty().hasSize(3)
+                .map(Person::getName)
+                        .contains("Otavio","Ada", "Poliana");
+    }
+
+    @Test
+    public void shouldUseDefaultMethodFromOtherInterface() {
+
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false, "score", 2);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false, "score", 12);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 4, "active", false, "score", 5);
+        graph.addVertex(T.label, "Person", "name", "Elias", "age", 20, "active", false, "score", 15);
+        List<Person> people =  personRepository.lessThanTen();
+        assertThat(people).isNotEmpty().hasSize(2)
+                .map(Person::getName)
+                .contains("Otavio","Ada");
+
+    }
+
+    interface BaseQuery<T> {
+
+        List<T> findByScoreLessThan(int value);
+
+        default List<T> lessThanTen() {
+            return this.findByScoreLessThan(10);
+        }
+    }
+
+    interface PersonRepository extends PageableRepository<Person, Long>, BaseQuery<Person> {
 
         List<Person> findByActiveTrue();
 
@@ -483,6 +542,8 @@ public class GraphRepositoryProxyTest {
         boolean existsByActiveTrue();
 
         Person findByName(String name);
+
+        Person findByNameNot(String name);
 
         List<Person> findByNameNotEquals(String name);
 
@@ -510,6 +571,14 @@ public class GraphRepositoryProxyTest {
         @OrderBy("name")
         @OrderBy("age")
         List<Person> findByException();
+
+        default Map<Boolean, List<Person>> partcionate(String name) {
+            Objects.requireNonNull(name, "name is required");
+            Map<Boolean, List<Person>> map = new HashMap<>();
+            map.put(true, List.of(findByName(name)));
+            map.put(false, List.of(findByNameNot(name)));
+            return map;
+        }
     }
 
     public interface VendorRepository extends PageableRepository<Vendor, String> {
