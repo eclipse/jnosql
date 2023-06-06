@@ -17,6 +17,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Create a filter to ignore unsupported annotations on repositories interfaces.
 - Enhance database supplier error message to use property instead of the enum name.
 - Fix convertion to/from entities when it is a record
+- Enhance the field name auto-detection of the constructor parameters annotated with @Column defined with empty name when it's used Record as entity
 
 === Added
 

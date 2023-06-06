@@ -23,6 +23,7 @@ import org.eclipse.jnosql.mapping.test.entities.MoneyConverter;
 import org.eclipse.jnosql.mapping.test.entities.constructor.Computer;
 import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
 import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
+import org.eclipse.jnosql.mapping.test.entities.constructor.Smartphone;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -44,6 +45,18 @@ class ParameterMetaDataBuilderTest {
         Assertions.assertEquals(Long.class, id.getType());
         Assertions.assertEquals(MappingType.DEFAULT, id.getParamType());
         Assertions.assertTrue(id.getConverter().isEmpty());
+    }
+
+    @Test
+    public void shouldConvertDefaultParameterWithoutDefinedName() {
+        Constructor<Smartphone> constructor = (Constructor<Smartphone>) Smartphone.class.getDeclaredConstructors()[0];
+        ParameterMetaData name = ParameterMetaDataBuilder.of(constructor.getParameters()[1]);
+        Assertions.assertNotNull(name);
+        Assertions.assertFalse(name.isId());
+        Assertions.assertEquals("owner", name.getName());
+        Assertions.assertEquals(String.class, name.getType());
+        Assertions.assertEquals(MappingType.DEFAULT, name.getParamType());
+        Assertions.assertTrue(name.getConverter().isEmpty());
     }
 
     @Test

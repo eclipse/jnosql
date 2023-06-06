@@ -21,6 +21,7 @@ import org.eclipse.jnosql.mapping.test.entities.Worker;
 import org.eclipse.jnosql.mapping.test.entities.constructor.Computer;
 import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
+import org.eclipse.jnosql.mapping.test.entities.constructor.Smartphone;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -87,6 +88,18 @@ class ConstructorMetadataBuilderTest {
                 .toList();
 
         assertThat(names).contains("_id", "native_name", "books");
+    }
+
+    @Test
+    public void shouldReturnSmartphoneEntityConstructor() {
+        ConstructorMetadata metadata = builder.build(Smartphone.class);
+        List<ParameterMetaData> parameters = metadata.getParameters();
+        assertEquals(2, parameters.size());
+        List<String> names = parameters.stream()
+                .map(ParameterMetaData::getName)
+                .toList();
+
+        assertThat(names).contains("_id", "owner");
     }
 
     @Test
