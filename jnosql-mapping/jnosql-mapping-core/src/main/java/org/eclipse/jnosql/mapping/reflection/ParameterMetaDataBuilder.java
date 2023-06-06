@@ -19,6 +19,7 @@ import jakarta.nosql.Id;
 import org.eclipse.jnosql.mapping.Convert;
 
 import java.lang.reflect.Parameter;
+import java.util.Objects;
 import java.util.Optional;
 
 class ParameterMetaDataBuilder {
@@ -37,6 +38,10 @@ class ParameterMetaDataBuilder {
         String name = Optional.ofNullable(id)
                 .map(Id::value)
                 .orElseGet(() -> column.value());
+        if ((Objects.isNull(name) || name.isBlank())
+                && parameter.getDeclaringExecutable().getDeclaringClass().isRecord()) {
+            name = parameter.getName();
+        }
         MappingType mappingType = MappingType.of(parameter);
         return switch (mappingType) {
             case COLLECTION, MAP -> new GenericParameterMetaData(name, type,
