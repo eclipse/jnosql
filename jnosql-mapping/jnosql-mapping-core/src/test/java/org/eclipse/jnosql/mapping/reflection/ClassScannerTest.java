@@ -38,7 +38,7 @@ class ClassScannerTest {
     public void shouldReturnEntities() {
         Set<Class<?>> entities = classScanner.entities();
         Assertions.assertNotNull(entities);
-        assertThat(entities).hasSize(24)
+        assertThat(entities).hasSize(25)
                 .contains(Person.class);
     }
 
