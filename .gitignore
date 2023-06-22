@@ -20,6 +20,7 @@ test-output/
 .project
 .factorypath
 
+**/.DS_Store
 # Annotation processor metadata
 .apt_generated/
 .apt_generated_tests/
