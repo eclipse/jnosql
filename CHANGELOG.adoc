@@ -8,6 +8,8 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+== [1.0.0] - 2023-6-22
+
 === Removed
 
 - Removed the JNoSQL Bean Validation module
