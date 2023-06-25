@@ -151,7 +151,7 @@ Jakarta NoSQL provides a Key-Value template to explore the specific behavior of 
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
     <artifactId>jnosql-mapping-key-value</artifactId>
-    <version>1.0.0-b6</version>
+    <version>1.0.0</version>
 </dependency>
 ----
 
@@ -243,7 +243,7 @@ Jakarta NoSQL provides a Column Family template to explore the specific behavior
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
     <artifactId>jnosql-mapping-column</artifactId>
-    <version>1.0.0-b6</version>
+    <version>1.0.0</version>
 </dependency>
 ----
 
@@ -338,7 +338,7 @@ Jakarta NoSQL provides a Document template to explore the specific behavior of t
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
     <artifactId>jnosql-mapping-document</artifactId>
-    <version>1.0.0-b6</version>
+    <version>1.0.0</version>
 </dependency>
 ----
 
@@ -434,7 +434,7 @@ Jakarta NoSQL provides a Graph template to explore the specific behavior of this
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
     <artifactId>jnosql-mapping-graph</artifactId>
-    <version>1.0.0-b6</version>
+    <version>1.0.0</version>
 </dependency>
 ----
 
