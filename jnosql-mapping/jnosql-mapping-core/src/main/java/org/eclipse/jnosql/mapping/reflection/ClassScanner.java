@@ -44,24 +44,24 @@ public enum ClassScanner {
     INSTANCE;
 
     private final Set<Class<?>> entities;
-    private final Set<Class<?>> repositores;
+    private final Set<Class<?>> repositories;
     private final Set<Class<?>> embeddables;
 
 
     ClassScanner() {
         entities = new HashSet<>();
         embeddables = new HashSet<>();
-        repositores = new HashSet<>();
+        repositories = new HashSet<>();
 
         Logger logger = Logger.getLogger(ClassScanner.class.getName());
         logger.fine("Starting scan class to find entities, embeddable and repositories.");
         try (ScanResult result = new ClassGraph().enableAllInfo().scan()) {
             this.entities.addAll(loadEntities(result));
             embeddables.addAll(loadEmbeddable(result));
-            this.repositores.addAll(loadRepositories(result));
+            this.repositories.addAll(loadRepositories(result));
         }
         logger.fine(String.format("Finished the class scan with entities %d, embeddables %d and repositories: %d"
-                , entities.size(), embeddables.size(), repositores.size()));
+                , entities.size(), embeddables.size(), repositories.size()));
 
     }
 
@@ -96,7 +96,7 @@ public enum ClassScanner {
      * @return the repositories items
      */
     public Set<Class<?>> repositories() {
-        return unmodifiableSet(repositores);
+        return unmodifiableSet(repositories);
     }
 
 
@@ -117,7 +117,7 @@ public enum ClassScanner {
      */
     public Set<Class<?>> repositories(Class<? extends DataRepository> filter) {
         Objects.requireNonNull(filter, "filter is required");
-        return repositores.stream().filter(filter::isAssignableFrom)
+        return repositories.stream().filter(filter::isAssignableFrom)
                 .filter(c -> Arrays.asList(c.getInterfaces()).contains(filter))
                 .collect(toUnmodifiableSet());
     }
@@ -129,7 +129,7 @@ public enum ClassScanner {
      * @return the standard repositories
      */
     public Set<Class<?>> repositoriesStandard() {
-        return repositores.stream()
+        return repositories.stream()
                 .filter(c -> {
                     List<Class<?>> interfaces = Arrays.asList(c.getInterfaces());
                     return interfaces.contains(CrudRepository.class) || interfaces.contains(PageableRepository.class);
