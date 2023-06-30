@@ -59,18 +59,15 @@ abstract class AbstractMapperQuery {
         this.template = template;
     }
 
-    protected void appendCondition(DocumentCondition newCondition) {
-        DocumentCondition documentCondition = getDocumentCondition(newCondition);
+    protected void appendCondition(DocumentCondition incomingCondition) {
+        DocumentCondition documentCondition = getDocumentCondition(incomingCondition);
 
         if (nonNull(condition)) {
-            if (and) {
-                this.condition = condition.and(documentCondition);
-            } else {
-                this.condition = condition.or(documentCondition);
-            }
+            this.condition = and ? condition.and(documentCondition) : condition.or(documentCondition);
         } else {
             this.condition = documentCondition;
         }
+
         this.negate = false;
         this.name = null;
     }

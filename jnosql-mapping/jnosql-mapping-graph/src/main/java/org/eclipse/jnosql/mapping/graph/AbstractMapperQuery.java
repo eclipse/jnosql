@@ -138,16 +138,15 @@ class AbstractMapperQuery {
         return field.map(FieldMapping::isId).orElse(false);
     }
 
-    private void appendCondition(GraphTraversal<Object, Object> newCondition) {
+    protected void appendCondition(GraphTraversal<Object, Object> incomingCondition) {
+        GraphTraversal<Object, Object> newCondition = checkNegation(incomingCondition);
+
         if (nonNull(condition)) {
-            if (and) {
-                this.condition = __.and(condition, checkNegation(newCondition));
-            } else {
-                this.condition = __.or(condition, checkNegation(newCondition));
-            }
+            this.condition = and ? __.and(condition, newCondition) : __.or(condition, newCondition);
         } else {
-            this.condition = checkNegation(newCondition);
+            this.condition = newCondition;
         }
+
         this.negate = false;
         this.name = null;
     }
