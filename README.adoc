@@ -146,6 +146,8 @@ As a reference implementation for Jakarta NoSQL, Eclipse JNosql provides particu
 
 Jakarta NoSQL provides a Key-Value template to explore the specific behavior of this NoSQL type.
 
+Eclipse JNoSQL offers a mapping implementation for Key-Value NoSQL types:
+
 [source,xml]
 ----
 <dependency>
