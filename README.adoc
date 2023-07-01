@@ -336,6 +336,8 @@ public ColumnManager getManagerB() {
 
 Jakarta NoSQL provides a Document template to explore the specific behavior of this NoSQL type.
 
+Eclipse JNoSQL offers a mapping implementation for Document NoSQL types:
+
 [source,xml]
 ----
 <dependency>
