@@ -432,7 +432,9 @@ public DocumentManager getManagerB() {
 
 === Graph
 
-Jakarta NoSQL provides a Graph template to explore the specific behavior of this NoSQL type.
+Currently, the Jakarta NoSQL doesn't define an API for Graph database types but Eclipse JNoSQL provides a Graph template to explore the specific behavior of this NoSQL type.
+
+Eclipse JNoSQL offers a mapping implementation for Graph NoSQL types:
 
 [source,xml]
 ----
@@ -443,7 +445,7 @@ Jakarta NoSQL provides a Graph template to explore the specific behavior of this
 </dependency>
 ----
 
-Despite the other three Jakarta NoSQL types, Graph does *not* provide a communication layer from Jakarta NoSQL API. Instead, it integrates with https://tinkerpop.apache.org/[Apache Tinkerpop 3.x].
+Despite the other three NoSQL types, Eclipse JNoSQL API does not offer a communication layer for Graph NoSQL types. Instead, it integrates with https://tinkerpop.apache.org/[Apache Tinkerpop 3.x].
 
 [source,java]
 ----
