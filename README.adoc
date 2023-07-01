@@ -135,7 +135,7 @@ Eclipse JNoSQL requires these minimum requirements:
 
 Eclipse JNoSQL provides common annotations and interfaces. Thus, the same annotations and interfaces, ```Template``` and ```Repository```, will work on the four NoSQL database types.
 
-Jakarta NoSQL also provides particular behavior to each database type. Currently, there is support for four NoSQL database types:
+As a reference implementation for Jakarta NoSQL, Eclipse JNosql provides particular behavior to the database type required by the specification, including the Graph database type, it means, Eclipse JNoSQL covers the four NoSQL database types:
 
 * Key-Value
 * Column Family
