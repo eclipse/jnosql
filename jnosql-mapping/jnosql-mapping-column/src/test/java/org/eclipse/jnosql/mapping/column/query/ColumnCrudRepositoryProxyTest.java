@@ -85,7 +85,7 @@ import static org.mockito.Mockito.when;
 @AddPackages(value = {Convert.class, ColumnWorkflow.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
-public class ColumnCrudRepositoryProxyTest {
+class ColumnCrudRepositoryProxyTest {
 
     private JNoSQLColumnTemplate template;
 
@@ -132,7 +132,7 @@ public class ColumnCrudRepositoryProxyTest {
 
 
     @Test
-    public void shouldSaveUsingInsertWhenDataDoesNotExist() {
+    void shouldSaveUsingInsertWhenDataDoesNotExist() {
         when(template.find(Person.class, 10L)).thenReturn(Optional.empty());
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
@@ -148,7 +148,7 @@ public class ColumnCrudRepositoryProxyTest {
 
 
     @Test
-    public void shouldSaveUsingUpdateWhenDataExists() {
+    void shouldSaveUsingUpdateWhenDataExists() {
 
         when(template.find(Person.class, 10L)).thenReturn(Optional.of(Person.builder().build()));
 
@@ -165,7 +165,7 @@ public class ColumnCrudRepositoryProxyTest {
 
 
     @Test
-    public void shouldSaveIterable() {
+    void shouldSaveIterable() {
         when(personRepository.findById(10L)).thenReturn(Optional.empty());
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
@@ -182,7 +182,7 @@ public class ColumnCrudRepositoryProxyTest {
 
 
     @Test
-    public void shouldFindByNameInstance() {
+    void shouldFindByNameInstance() {
 
         when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
@@ -207,7 +207,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByNameANDAge() {
+    void shouldFindByNameANDAge() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -222,7 +222,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByAgeANDName() {
+    void shouldFindByAgeANDName() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -237,7 +237,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByNameANDAgeOrderByName() {
+    void shouldFindByNameANDAgeOrderByName() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -252,7 +252,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByNameANDAgeOrderByAge() {
+    void shouldFindByNameANDAgeOrderByAge() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -267,7 +267,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldDeleteByName() {
+    void shouldDeleteByName() {
         ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         personRepository.deleteByName("Ada");
         verify(template).delete(captor.capture());
@@ -280,32 +280,32 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindById() {
+    void shouldFindById() {
         personRepository.findById(10L);
-        verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
+        verify(template).find(Person.class, 10L);
     }
 
     @Test
-    public void shouldFindByIds() {
+    void shouldFindByIds() {
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
         personRepository.findAllById(singletonList(10L)).toList();
-        verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
+        verify(template).find(Person.class, 10L);
 
         personRepository.findAllById(asList(1L, 2L, 3L)).toList();
         verify(template, times(4)).find(Mockito.eq(Person.class), Mockito.any(Long.class));
     }
 
     @Test
-    public void shouldDeleteById() {
+    void shouldDeleteById() {
         ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         personRepository.deleteById(10L);
         verify(template).delete(Person.class, 10L);
     }
 
     @Test
-    public void shouldDeleteByIds() {
+    void shouldDeleteByIds() {
         ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         personRepository.deleteAllById(singletonList(10L));
         verify(template).delete(Person.class, 10L);
@@ -313,7 +313,7 @@ public class ColumnCrudRepositoryProxyTest {
 
 
     @Test
-    public void shouldContainsById() {
+    void shouldContainsById() {
         when(template.find(Person.class, 10L)).thenReturn(Optional.of(Person.builder().build()));
 
         assertTrue(personRepository.existsById(10L));
@@ -325,7 +325,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindAll() {
+    void shouldFindAll() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -340,7 +340,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldDeleteAll() {
+    void shouldDeleteAll() {
         personRepository.deleteAll();
         ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
         verify(template).deleteAll(captor.capture());
@@ -349,17 +349,17 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldReturnToString() {
+    void shouldReturnToString() {
         assertNotNull(personRepository.toString());
     }
 
     @Test
-    public void shouldReturnHasCode() {
+    void shouldReturnHasCode() {
         assertEquals(personRepository.hashCode(), personRepository.hashCode());
     }
 
     @Test
-    public void shouldFindByNameAndAgeGreaterEqualThan() {
+    void shouldFindByNameAndAgeGreaterEqualThan() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -388,7 +388,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByGreaterThan() {
+    void shouldFindByGreaterThan() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -407,7 +407,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByAgeLessThanEqual() {
+    void shouldFindByAgeLessThanEqual() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -426,7 +426,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByAgeLessEqual() {
+    void shouldFindByAgeLessEqual() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -445,7 +445,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByAgeBetween() {
+    void shouldFindByAgeBetween() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -467,7 +467,7 @@ public class ColumnCrudRepositoryProxyTest {
 
 
     @Test
-    public void shouldFindByNameLike() {
+    void shouldFindByNameLike() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -487,7 +487,7 @@ public class ColumnCrudRepositoryProxyTest {
 
 
     @Test
-    public void shouldFindByStringWhenFieldIsSet() {
+    void shouldFindByStringWhenFieldIsSet() {
         Vendor vendor = new Vendor("vendor");
         vendor.setPrefixes(Collections.singleton("prefix"));
 
@@ -507,7 +507,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByIn() {
+    void shouldFindByIn() {
         Vendor vendor = new Vendor("vendor");
         vendor.setPrefixes(Collections.singleton("prefix"));
 
@@ -527,7 +527,7 @@ public class ColumnCrudRepositoryProxyTest {
 
 
     @Test
-    public void shouldConvertFieldToTheType() {
+    void shouldConvertFieldToTheType() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -546,13 +546,13 @@ public class ColumnCrudRepositoryProxyTest {
 
 
     @Test
-    public void shouldExecuteJNoSQLQuery() {
+    void shouldExecuteJNoSQLQuery() {
         personRepository.findByQuery();
         verify(template).query("select * from Person");
     }
 
     @Test
-    public void shouldExecuteJNoSQLPrepare() {
+    void shouldExecuteJNoSQLPrepare() {
         PreparedStatement statement = Mockito.mock(PreparedStatement.class);
         when(template.prepare(Mockito.anyString())).thenReturn(statement);
         personRepository.findByQuery("Ada");
@@ -560,7 +560,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindBySalary_Currency() {
+    void shouldFindBySalary_Currency() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -579,7 +579,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindBySalary_CurrencyAndSalary_Value() {
+    void shouldFindBySalary_CurrencyAndSalary_Value() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
         when(template.select(any(ColumnQuery.class)))
@@ -600,7 +600,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindBySalary_CurrencyOrderByCurrency_Name() {
+    void shouldFindBySalary_CurrencyOrderByCurrency_Name() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -621,7 +621,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByNameNotEquals() {
+    void shouldFindByNameNotEquals() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -641,7 +641,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByAgeNotGreaterThan() {
+    void shouldFindByAgeNotGreaterThan() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -661,7 +661,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldConvertMapAddressRepository() {
+    void shouldConvertMapAddressRepository() {
 
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         addressRepository.findByZipCodeZip("123456");
@@ -682,7 +682,7 @@ public class ColumnCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldConvertMapAddressRepositoryOrder() {
+    void shouldConvertMapAddressRepositoryOrder() {
 
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         addressRepository.findByZipCodeZipOrderByZipCodeZip("123456");

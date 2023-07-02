@@ -84,7 +84,7 @@ import static org.mockito.Mockito.when;
 @AddPackages(value = {Convert.class, DocumentWorkflow.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
-public class DocumentRepositoryProxyTest {
+class DocumentRepositoryProxyTest {
 
     private JNoSQLDocumentTemplate template;
 
@@ -121,8 +121,8 @@ public class DocumentRepositoryProxyTest {
 
 
     @Test
-    public void shouldSaveUsingInsertWhenDataDoesNotExist() {
-        when(template.find(Mockito.eq(Person.class), Mockito.eq(10L)))
+    void shouldSaveUsingInsertWhenDataDoesNotExist() {
+        when(template.find(Person.class, 10L))
                 .thenReturn(Optional.empty());
 
 
@@ -138,8 +138,8 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldSaveUsingUpdateWhenDataExists() {
-        when(template.find(Mockito.eq(Person.class), Mockito.eq(10L)))
+    void shouldSaveUsingUpdateWhenDataExists() {
+        when(template.find(Person.class, 10L))
                 .thenReturn(Optional.of(Person.builder().build()));
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
@@ -155,7 +155,7 @@ public class DocumentRepositoryProxyTest {
 
 
     @Test
-    public void shouldSaveIterable() {
+    void shouldSaveIterable() {
 
         when(personRepository.findById(10L)).thenReturn(Optional.empty());
 
@@ -176,7 +176,7 @@ public class DocumentRepositoryProxyTest {
 
 
     @Test
-    public void shouldFindByNameInstance() {
+    void shouldFindByNameInstance() {
 
         when(template.singleResult(Mockito.any(DocumentQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
@@ -201,7 +201,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByNameANDAge() {
+    void shouldFindByNameANDAge() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -216,7 +216,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByAgeANDName() {
+    void shouldFindByAgeANDName() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -231,7 +231,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByNameANDAgeOrderByName() {
+    void shouldFindByNameANDAgeOrderByName() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -246,7 +246,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByNameANDAgeOrderByAge() {
+    void shouldFindByNameANDAgeOrderByAge() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -261,7 +261,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldDeleteByName() {
+    void shouldDeleteByName() {
         ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
         personRepository.deleteByName("Ada");
         verify(template).delete(captor.capture());
@@ -274,31 +274,31 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindById() {
+    void shouldFindById() {
         personRepository.findById(10L);
-        verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
+        verify(template).find(Person.class, 10L);
     }
 
     @Test
-    public void shouldFindByIds() {
+    void shouldFindByIds() {
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
         personRepository.findAllById(singletonList(10L)).toList();
-        verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
+        verify(template).find(Person.class, 10L);
         personRepository.findAllById(Arrays.asList(10L, 11L, 12L)).toList();
         verify(template, times(4)).find(Mockito.eq(Person.class), any(Long.class));
     }
 
     @Test
-    public void shouldDeleteById() {
+    void shouldDeleteById() {
         personRepository.deleteById(10L);
         verify(template).delete(Person.class, 10L);
 
     }
 
     @Test
-    public void shouldDeleteByIds() {
+    void shouldDeleteByIds() {
         personRepository.deleteAllById(singletonList(10L));
         verify(template).delete(Person.class, 10L);
 
@@ -308,12 +308,12 @@ public class DocumentRepositoryProxyTest {
 
 
     @Test
-    public void shouldContainsById() {
+    void shouldContainsById() {
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
         assertTrue(personRepository.existsById(10L));
-        Mockito.verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
+        Mockito.verify(template).find(Person.class, 10L);
 
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.empty());
@@ -322,7 +322,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindAll() {
+    void shouldFindAll() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -337,7 +337,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldDeleteAll() {
+    void shouldDeleteAll() {
         personRepository.deleteAll();
         ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
         verify(template).deleteAll(captor.capture());
@@ -347,23 +347,23 @@ public class DocumentRepositoryProxyTest {
 
 
     @Test
-    public void shouldReturnToString() {
+    void shouldReturnToString() {
         assertNotNull(personRepository.toString());
     }
 
     @Test
-    public void shouldReturnHasCode() {
+    void shouldReturnHasCode() {
         assertNotNull(personRepository.hashCode());
         assertEquals(personRepository.hashCode(), personRepository.hashCode());
     }
 
     @Test
-    public void shouldReturnEquals() {
+    void shouldReturnEquals() {
         assertNotNull(personRepository.equals(personRepository));
     }
 
     @Test
-    public void shouldFindByNameAndAgeGreaterEqualThan() {
+    void shouldFindByNameAndAgeGreaterEqualThan() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -393,7 +393,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByGreaterThan() {
+    void shouldFindByGreaterThan() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -412,7 +412,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByAgeLessThanEqual() {
+    void shouldFindByAgeLessThanEqual() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -431,7 +431,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByAgeLessEqual() {
+    void shouldFindByAgeLessEqual() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -451,7 +451,7 @@ public class DocumentRepositoryProxyTest {
 
 
     @Test
-    public void shouldFindByAgeBetween() {
+    void shouldFindByAgeBetween() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -474,7 +474,7 @@ public class DocumentRepositoryProxyTest {
 
 
     @Test
-    public void shouldFindByNameLike() {
+    void shouldFindByNameLike() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -492,7 +492,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByStringWhenFieldIsSet() {
+    void shouldFindByStringWhenFieldIsSet() {
         Vendor vendor = new Vendor("vendor");
         vendor.setPrefixes(Collections.singleton("prefix"));
 
@@ -512,7 +512,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByIn() {
+    void shouldFindByIn() {
         Vendor vendor = new Vendor("vendor");
         vendor.setPrefixes(Collections.singleton("prefix"));
 
@@ -532,7 +532,7 @@ public class DocumentRepositoryProxyTest {
 
 
     @Test
-    public void shouldConvertFieldToTheType() {
+    void shouldConvertFieldToTheType() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -550,7 +550,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByActiveTrue() {
+    void shouldFindByActiveTrue() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -569,7 +569,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByActiveFalse() {
+    void shouldFindByActiveFalse() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -587,13 +587,13 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldExecuteJNoSQLQuery() {
+    void shouldExecuteJNoSQLQuery() {
         personRepository.findByQuery();
         verify(template).query("select * from Person");
     }
 
     @Test
-    public void shouldExecuteJNoSQLPrepare() {
+    void shouldExecuteJNoSQLPrepare() {
         PreparedStatement statement = Mockito.mock(PreparedStatement.class);
         when(template.prepare(Mockito.anyString())).thenReturn(statement);
         personRepository.findByQuery("Ada");
@@ -601,7 +601,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindBySalary_Currency() {
+    void shouldFindBySalary_Currency() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -620,7 +620,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindBySalary_CurrencyAndSalary_Value() {
+    void shouldFindBySalary_CurrencyAndSalary_Value() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
         when(template.select(any(DocumentQuery.class)))
@@ -641,7 +641,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindBySalary_CurrencyOrderByCurrency_Name() {
+    void shouldFindBySalary_CurrencyOrderByCurrency_Name() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -662,7 +662,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldCountByName() {
+    void shouldCountByName() {
         when(template.count(any(DocumentQuery.class)))
                 .thenReturn(10L);
 
@@ -679,7 +679,7 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldExistsByName() {
+    void shouldExistsByName() {
         when(template.exists(any(DocumentQuery.class)))
                 .thenReturn(true);
 

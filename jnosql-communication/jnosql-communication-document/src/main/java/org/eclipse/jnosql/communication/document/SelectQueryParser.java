@@ -101,8 +101,7 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, Document
     }
 
     private Sort toSort(Sort sort, DocumentObserverParser observer, String entity) {
-        return Sort.of(observer.fireField(entity, sort.property()),
-                sort.isAscending() == true ? Direction.ASC : Direction.DESC, false);
+        return Sort.of(observer.fireField(entity, sort.property()), sort.isAscending() ? Direction.ASC : Direction.DESC, false);
     }
 
 
