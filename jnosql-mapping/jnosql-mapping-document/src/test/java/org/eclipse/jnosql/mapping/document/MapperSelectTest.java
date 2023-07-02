@@ -52,7 +52,7 @@ import static org.mockito.Mockito.when;
 @AddPackages(value = {Convert.class, DocumentWorkflow.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
-public class MapperSelectTest {
+class MapperSelectTest {
 
     @Inject
     private DocumentEntityConverter converter;
@@ -83,7 +83,7 @@ public class MapperSelectTest {
 
 
     @Test
-    public void shouldExecuteSelectFrom() {
+    void shouldExecuteSelectFrom() {
         template.select(Person.class).result();
         DocumentQuery queryExpected = select().from("Person").build();
         Mockito.verify(managerMock).select(captor.capture());
@@ -92,7 +92,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectOrderAsc() {
+    void shouldSelectOrderAsc() {
         template.select(Worker.class).orderBy("salary").asc().result();
         Mockito.verify(managerMock).select(captor.capture());
         DocumentQuery query = captor.getValue();
@@ -101,7 +101,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectOrderDesc() {
+    void shouldSelectOrderDesc() {
         template.select(Worker.class).orderBy("salary").desc().result();
         DocumentQuery queryExpected = select().from("Worker").orderBy("money").desc().build();
         Mockito.verify(managerMock).select(captor.capture());
@@ -110,7 +110,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectLimit() {
+    void shouldSelectLimit() {
         template.select(Worker.class).limit(10).result();
         DocumentQuery queryExpected = select().from("Worker").limit(10L).build();
         Mockito.verify(managerMock).select(captor.capture());
@@ -119,7 +119,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectStart() {
+    void shouldSelectStart() {
         template.select(Worker.class).skip(10).result();
         DocumentQuery queryExpected = select().from("Worker").skip(10L).build();
         Mockito.verify(managerMock).select(captor.capture());
@@ -129,7 +129,7 @@ public class MapperSelectTest {
 
 
     @Test
-    public void shouldSelectWhereEq() {
+    void shouldSelectWhereEq() {
         template.select(Person.class).where("name").eq("Ada").result();
         DocumentQuery queryExpected = select().from("Person").where("name")
                 .eq("Ada").build();
@@ -139,7 +139,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereLike() {
+    void shouldSelectWhereLike() {
         template.select(Person.class).where("name").like("Ada").result();
         DocumentQuery queryExpected = select().from("Person").where("name")
                 .like("Ada").build();
@@ -149,7 +149,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereGt() {
+    void shouldSelectWhereGt() {
         template.select(Person.class).where("id").gt(10).result();
         DocumentQuery queryExpected = select().from("Person").where("_id")
                 .gt(10L).build();
@@ -159,7 +159,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereGte() {
+    void shouldSelectWhereGte() {
         template.select(Person.class).where("id").gte(10).result();
         DocumentQuery queryExpected = select().from("Person").where("_id")
                 .gte(10L).build();
@@ -170,7 +170,7 @@ public class MapperSelectTest {
 
 
     @Test
-    public void shouldSelectWhereLt() {
+    void shouldSelectWhereLt() {
         template.select(Person.class).where("id").lt(10).result();
         DocumentQuery queryExpected = select().from("Person").where("_id")
                 .lt(10L).build();
@@ -180,7 +180,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereLte() {
+    void shouldSelectWhereLte() {
         template.select(Person.class).where("id").lte(10).result();
         DocumentQuery queryExpected = select().from("Person").where("_id")
                 .lte(10L).build();
@@ -190,7 +190,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereBetween() {
+    void shouldSelectWhereBetween() {
         template.select(Person.class).where("id")
                 .between(10, 20).result();
         DocumentQuery queryExpected = select().from("Person").where("_id")
@@ -201,7 +201,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNot() {
+    void shouldSelectWhereNot() {
         template.select(Person.class).where("name").not().like("Ada").result();
         DocumentQuery queryExpected = select().from("Person").where("name")
                 .not().like("Ada").build();
@@ -212,7 +212,7 @@ public class MapperSelectTest {
 
 
     @Test
-    public void shouldSelectWhereAnd() {
+    void shouldSelectWhereAnd() {
         template.select(Person.class).where("age").between(10, 20)
                 .and("name").eq("Ada").result();
         DocumentQuery queryExpected = select().from("Person").where("age")
@@ -225,7 +225,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereOr() {
+    void shouldSelectWhereOr() {
         template.select(Person.class).where("id").between(10, 20)
                 .or("name").eq("Ada").result();
         DocumentQuery queryExpected = select().from("Person").where("_id")
@@ -238,7 +238,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldConvertField() {
+    void shouldConvertField() {
         template.select(Person.class).where("id").eq("20")
                 .result();
         DocumentQuery queryExpected = select().from("Person").where("_id").eq(20L)
@@ -251,7 +251,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldUseAttributeConverter() {
+    void shouldUseAttributeConverter() {
         template.select(Worker.class).where("salary")
                 .eq(new Money("USD", BigDecimal.TEN)).result();
         DocumentQuery queryExpected = select().from("Worker").where("money")
@@ -263,7 +263,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldQueryByEmbeddable() {
+    void shouldQueryByEmbeddable() {
         template.select(Worker.class).where("job.city").eq("Salvador")
                 .result();
         DocumentQuery queryExpected = select().from("Worker").where("city")
@@ -276,7 +276,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldQueryBySubEntity() {
+    void shouldQueryBySubEntity() {
         template.select(Address.class).where("zipCode.zip").eq("01312321")
                 .result();
         DocumentQuery queryExpected = select().from("Address").where("zipCode.zip")
@@ -290,7 +290,7 @@ public class MapperSelectTest {
 
 
     @Test
-    public void shouldResult() {
+    void shouldResult() {
         DocumentQuery query = select().from("Person").build();
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add("_id", 1L);
@@ -305,7 +305,7 @@ public class MapperSelectTest {
 
 
     @Test
-    public void shouldStream() {
+    void shouldStream() {
 
         DocumentQuery query = select().from("Person").build();
         DocumentEntity entity = DocumentEntity.of("Person");
@@ -318,7 +318,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSingleResult() {
+    void shouldSingleResult() {
 
         DocumentQuery query = select().from("Person").build();
         DocumentEntity entity = DocumentEntity.of("Person");
@@ -332,7 +332,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldReturnErrorSelectWhenOrderIsNull() {
+    void shouldReturnErrorSelectWhenOrderIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> template.select(Worker.class).orderBy(null));
     }
 
