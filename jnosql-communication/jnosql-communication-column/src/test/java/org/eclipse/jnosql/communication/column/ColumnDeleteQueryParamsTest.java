@@ -32,7 +32,8 @@ class ColumnDeleteQueryParamsTest {
     @ParameterizedTest
     @MethodSource("scenarios")
     void shouldInstantiateSuccessfully(ColumnDeleteQuery query, Params params) {
-        newInstance(query,params);
+        ColumnDeleteQueryParams target = newInstance(query, params);
+        assertThat(target).isNotNull();
     }
 
     @ParameterizedTest
