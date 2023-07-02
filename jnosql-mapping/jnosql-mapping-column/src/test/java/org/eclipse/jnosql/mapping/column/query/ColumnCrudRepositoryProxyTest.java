@@ -282,7 +282,7 @@ class ColumnCrudRepositoryProxyTest {
     @Test
     void shouldFindById() {
         personRepository.findById(10L);
-        verify(template).find(Person.class, Mockito.eq(10L));
+        verify(template).find(Person.class, 10L);
     }
 
     @Test
@@ -291,7 +291,7 @@ class ColumnCrudRepositoryProxyTest {
                 .thenReturn(Optional.of(Person.builder().build()));
 
         personRepository.findAllById(singletonList(10L)).toList();
-        verify(template).find(Person.class, Mockito.eq(10L));
+        verify(template).find(Person.class, 10L);
 
         personRepository.findAllById(asList(1L, 2L, 3L)).toList();
         verify(template, times(4)).find(Mockito.eq(Person.class), Mockito.any(Long.class));
