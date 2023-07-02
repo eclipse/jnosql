@@ -13,6 +13,7 @@
   ~   Contributors:
   ~
   ~   Otavio Santana
+  ~   Maximillian Arruda
   ~
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -28,7 +29,7 @@
     <artifactId>jnosql-parent</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Jakarta NoSQL</name>
+    <name>Eclipse JNoSQL</name>
     <description>The Eclipse JNoSQL is a framework to help developers create enterprise-grade applications using Java
         and NoSQL technologies.
     </description>
