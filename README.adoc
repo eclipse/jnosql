@@ -135,7 +135,7 @@ Eclipse JNoSQL requires these minimum requirements:
 
 Eclipse JNoSQL provides common annotations and interfaces. Thus, the same annotations and interfaces, ```Template``` and ```Repository```, will work on the four NoSQL database types.
 
-Jakarta NoSQL also provides particular behavior to each database type. Currently, there is support for four NoSQL database types:
+As a reference implementation for Jakarta NoSQL, Eclipse JNosql provides particular behavior to the database type required by the specification, including the Graph database type, it means, Eclipse JNoSQL covers the four NoSQL database types:
 
 * Key-Value
 * Column Family
@@ -145,6 +145,8 @@ Jakarta NoSQL also provides particular behavior to each database type. Currently
 === Key-Value
 
 Jakarta NoSQL provides a Key-Value template to explore the specific behavior of this NoSQL type.
+
+Eclipse JNoSQL offers a mapping implementation for Key-Value NoSQL types:
 
 [source,xml]
 ----
@@ -238,6 +240,7 @@ public BucketManager getManagerB() {
 
 Jakarta NoSQL provides a Column Family template to explore the specific behavior of this NoSQL type.
 
+Eclipse JNoSQL offers a mapping implementation for Column NoSQL types:
 [source,xml]
 ----
 <dependency>
@@ -333,6 +336,8 @@ public ColumnManager getManagerB() {
 
 Jakarta NoSQL provides a Document template to explore the specific behavior of this NoSQL type.
 
+Eclipse JNoSQL offers a mapping implementation for Document NoSQL types:
+
 [source,xml]
 ----
 <dependency>
@@ -427,7 +432,9 @@ public DocumentManager getManagerB() {
 
 === Graph
 
-Jakarta NoSQL provides a Graph template to explore the specific behavior of this NoSQL type.
+Currently, the Jakarta NoSQL doesn't define an API for Graph database types but Eclipse JNoSQL provides a Graph template to explore the specific behavior of this NoSQL type.
+
+Eclipse JNoSQL offers a mapping implementation for Graph NoSQL types:
 
 [source,xml]
 ----
@@ -438,7 +445,7 @@ Jakarta NoSQL provides a Graph template to explore the specific behavior of this
 </dependency>
 ----
 
-Despite the other three Jakarta NoSQL types, Graph does *not* provide a communication layer from Jakarta NoSQL API. Instead, it integrates with https://tinkerpop.apache.org/[Apache Tinkerpop 3.x].
+Despite the other three NoSQL types, Eclipse JNoSQL API does not offer a communication layer for Graph NoSQL types. Instead, it integrates with https://tinkerpop.apache.org/[Apache Tinkerpop 3.x].
 
 [source,java]
 ----
