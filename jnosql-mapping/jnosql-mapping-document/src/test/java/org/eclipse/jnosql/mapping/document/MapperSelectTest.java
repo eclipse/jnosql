@@ -296,7 +296,7 @@ public class MapperSelectTest {
         entity.add("_id", 1L);
         entity.add("name", "Ada");
         entity.add("age", 20);
-        Mockito.when(managerMock.select(Mockito.eq(query))).thenReturn(Stream.of(entity));
+        Mockito.when(managerMock.select(query)).thenReturn(Stream.of(entity));
         List<Person> result = template.select(Person.class).result();
         Assertions.assertNotNull(result);
         assertThat(result).hasSize(1)
@@ -312,7 +312,7 @@ public class MapperSelectTest {
         entity.add("_id", 1L);
         entity.add("name", "Ada");
         entity.add("age", 20);
-        Mockito.when(managerMock.select(Mockito.eq(query))).thenReturn(Stream.of(entity));
+        Mockito.when(managerMock.select(query)).thenReturn(Stream.of(entity));
         Stream<Person> result = template.select(Person.class).stream();
         Assertions.assertNotNull(result);
     }
@@ -325,7 +325,7 @@ public class MapperSelectTest {
         entity.add("_id", 1L);
         entity.add("name", "Ada");
         entity.add("age", 20);
-        Mockito.when(managerMock.select(Mockito.eq(query))).thenReturn(Stream.of(entity));
+        Mockito.when(managerMock.select(query)).thenReturn(Stream.of(entity));
         Optional<Person> result = template.select(Person.class).singleResult();
         Assertions.assertNotNull(result);
         Assertions.assertTrue(result.isPresent());

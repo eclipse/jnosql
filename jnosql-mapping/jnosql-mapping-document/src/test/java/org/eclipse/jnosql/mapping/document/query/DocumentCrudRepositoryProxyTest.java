@@ -136,7 +136,7 @@ public class DocumentCrudRepositoryProxyTest {
 
     @Test
     public void shouldSaveUsingInsertWhenDataDoesNotExist() {
-        when(template.find(Mockito.eq(Person.class), Mockito.eq(10L)))
+        when(template.find(Person.class, Mockito.eq(10L)))
                 .thenReturn(Optional.empty());
 
 
@@ -153,7 +153,7 @@ public class DocumentCrudRepositoryProxyTest {
 
     @Test
     public void shouldSaveUsingUpdateWhenDataExists() {
-        when(template.find(Mockito.eq(Person.class), Mockito.eq(10L)))
+        when(template.find(Person.class, Mockito.eq(10L)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
@@ -290,7 +290,7 @@ public class DocumentCrudRepositoryProxyTest {
     @Test
     public void shouldFindById() {
         personRepository.findById(10L);
-        verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
+        verify(template).find(Person.class, Mockito.eq(10L));
     }
 
     @Test
@@ -299,7 +299,7 @@ public class DocumentCrudRepositoryProxyTest {
                 .thenReturn(Optional.of(Person.builder().build()));
 
         personRepository.findAllById(singletonList(10L)).toList();
-        verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
+        verify(template).find(Person.class, Mockito.eq(10L));
         personRepository.findAllById(Arrays.asList(10L, 11L, 12L)).toList();
         verify(template, times(4)).find(Mockito.eq(Person.class), any(Long.class));
     }
@@ -327,7 +327,7 @@ public class DocumentCrudRepositoryProxyTest {
                 .thenReturn(Optional.of(Person.builder().build()));
 
         assertTrue(personRepository.existsById(10L));
-        Mockito.verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
+        Mockito.verify(template).find(Person.class, Mockito.eq(10L));
 
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.empty());
