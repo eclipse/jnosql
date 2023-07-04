@@ -31,7 +31,7 @@ class MethodConditionTest {
     }
 
     @Test
-    public void shouldCreateCondition() {
+    void shouldCreateCondition() {
         QueryCondition condition = new MethodCondition("active", Condition.EQUALS, queryValue);
         assertThat(condition).isNotNull();
         assertEquals(Condition.EQUALS, condition.condition());
@@ -40,21 +40,21 @@ class MethodConditionTest {
     }
 
     @Test
-    public void shouldEquals() {
+    void shouldEquals() {
         QueryCondition condition = new MethodCondition("active", Condition.EQUALS, queryValue);
         QueryCondition conditionB = new MethodCondition("active", Condition.EQUALS, queryValue);
         assertEquals(condition,conditionB);
     }
 
     @Test
-    public void shouldHashCode() {
+    void shouldHashCode() {
         QueryCondition condition = new MethodCondition("active", Condition.EQUALS, queryValue);
         QueryCondition conditionB = new MethodCondition("active", Condition.EQUALS, queryValue);
         assertEquals(condition.hashCode(),conditionB.hashCode());
     }
 
     @Test
-    public void shouldCreateWithQueryParam(){
+    void shouldCreateWithQueryParam(){
         QueryCondition condition = new MethodCondition("active", Condition.EQUALS);
         assertThat(condition).isNotNull();
         assertEquals(Condition.EQUALS, condition.condition());

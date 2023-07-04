@@ -34,7 +34,7 @@ class WhereTest {
     }
 
     @Test
-    public void shouldCreateInstance() {
+    void shouldCreateInstance() {
         Where where = Where.of(condition);
         Assertions.assertThat(where).isNotNull()
                 .extracting(Where::condition)
@@ -42,7 +42,7 @@ class WhereTest {
     }
 
     @Test
-    public void shouldEquals() {
+    void shouldEquals() {
         Where where = Where.of(condition);
         assertEquals(where, where, "should be equals to yourself");
         assertEquals(where, Where.of(condition));
@@ -52,13 +52,13 @@ class WhereTest {
 
 
     @Test
-    public void shouldHashCode() {
+    void shouldHashCode() {
         Where where = Where.of(condition);
         assertEquals(where.hashCode(), Where.of(condition).hashCode());
     }
 
     @Test
-    public void shouldToString() {
+    void shouldToString() {
         Where where = Where.of(condition);
         String actual = where.toString();
         assertNotNull(actual);
