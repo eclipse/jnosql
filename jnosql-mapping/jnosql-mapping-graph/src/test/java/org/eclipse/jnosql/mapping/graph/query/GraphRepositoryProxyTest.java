@@ -76,13 +76,10 @@ import static org.mockito.Mockito.when;
 @AddPackages(BookRepository.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 public class GraphRepositoryProxyTest {
-
-
     private GraphTemplate template;
 
     @Inject
     private EntitiesMetadata entities;
-
 
     @Inject
     private Graph graph;
@@ -273,7 +270,7 @@ public class GraphRepositoryProxyTest {
         personRepository.deleteById(10L);
         verify(template).delete(captor.capture());
 
-        assertEquals(captor.getValue(), 10L);
+        assertEquals(10L, captor.getValue());
     }
 
     @Test

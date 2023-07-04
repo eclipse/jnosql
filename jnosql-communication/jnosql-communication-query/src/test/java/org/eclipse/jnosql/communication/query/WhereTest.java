@@ -17,10 +17,12 @@ import org.eclipse.jnosql.communication.Condition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WhereTest {
-
     private QueryCondition condition;
 
     private QueryValue<Boolean> queryValue;
@@ -45,7 +47,7 @@ class WhereTest {
         assertEquals(where, where, "should be equals to yourself");
         assertEquals(where, Where.of(condition));
         assertNotEquals(where, new Object(), "should be not equal to an instance of any other type");
-        assertNotEquals(where, null, "should be not equal to null reference");
+        assertNotEquals(null, where, "should be not equal to null reference");
     }
 
 
@@ -62,5 +64,4 @@ class WhereTest {
         assertNotNull(actual);
         assertTrue(actual.startsWith("where "));
     }
-
 }

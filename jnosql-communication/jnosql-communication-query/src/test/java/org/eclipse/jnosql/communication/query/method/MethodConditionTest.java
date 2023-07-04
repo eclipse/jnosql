@@ -20,10 +20,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MethodConditionTest {
-
     private QueryValue<Boolean> queryValue;
 
     @BeforeEach
@@ -35,8 +34,8 @@ class MethodConditionTest {
     public void shouldCreateCondition() {
         QueryCondition condition = new MethodCondition("active", Condition.EQUALS, queryValue);
         assertThat(condition).isNotNull();
-        assertEquals(condition.condition(), Condition.EQUALS);
-        assertEquals(condition.name(), "active");
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("active", condition.name());
         assertEquals(condition.value(), queryValue);
     }
 
@@ -58,8 +57,8 @@ class MethodConditionTest {
     public void shouldCreateWithQueryParam(){
         QueryCondition condition = new MethodCondition("active", Condition.EQUALS);
         assertThat(condition).isNotNull();
-        assertEquals(condition.condition(), Condition.EQUALS);
-        assertEquals(condition.name(), "active");
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("active", condition.name());
         Assertions.assertThat(condition.value()).isInstanceOf(MethodParamQueryValue.class);
     }
 }
