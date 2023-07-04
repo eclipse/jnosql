@@ -19,7 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DefaultQueryConditionTest {
-
     private QueryValue<Boolean> queryValue;
 
     @BeforeEach
@@ -28,26 +27,25 @@ class DefaultQueryConditionTest {
     }
 
     @Test
-    public void shouldCreateCondition() {
+    void shouldCreateCondition() {
         QueryCondition condition = new DefaultQueryCondition("active", Condition.EQUALS, queryValue);
         assertThat(condition).isNotNull();
-        assertEquals(condition.condition(), Condition.EQUALS);
-        assertEquals(condition.name(), "active");
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("active", condition.name());
         assertEquals(condition.value(), queryValue);
     }
 
     @Test
-    public void shouldEquals() {
+    void shouldEquals() {
         QueryCondition condition = new DefaultQueryCondition("active", Condition.EQUALS, queryValue);
         QueryCondition conditionB = new DefaultQueryCondition("active", Condition.EQUALS, queryValue);
         assertEquals(condition,conditionB);
     }
 
     @Test
-    public void shouldHashCode() {
+    void shouldHashCode() {
         QueryCondition condition = new DefaultQueryCondition("active", Condition.EQUALS, queryValue);
         QueryCondition conditionB = new DefaultQueryCondition("active", Condition.EQUALS, queryValue);
         assertEquals(condition.hashCode(),conditionB.hashCode());
     }
-
 }

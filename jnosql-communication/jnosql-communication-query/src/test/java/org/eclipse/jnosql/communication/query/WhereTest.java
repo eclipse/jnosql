@@ -17,10 +17,12 @@ import org.eclipse.jnosql.communication.Condition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WhereTest {
-
     private QueryCondition condition;
 
     private QueryValue<Boolean> queryValue;
@@ -32,7 +34,7 @@ class WhereTest {
     }
 
     @Test
-    public void shouldCreateInstance() {
+    void shouldCreateInstance() {
         Where where = Where.of(condition);
         Assertions.assertThat(where).isNotNull()
                 .extracting(Where::condition)
@@ -40,27 +42,26 @@ class WhereTest {
     }
 
     @Test
-    public void shouldEquals() {
+    void shouldEquals() {
         Where where = Where.of(condition);
         assertEquals(where, where, "should be equals to yourself");
         assertEquals(where, Where.of(condition));
         assertNotEquals(where, new Object(), "should be not equal to an instance of any other type");
-        assertNotEquals(where, null, "should be not equal to null reference");
+        assertNotEquals(null, where, "should be not equal to null reference");
     }
 
 
     @Test
-    public void shouldHashCode() {
+    void shouldHashCode() {
         Where where = Where.of(condition);
         assertEquals(where.hashCode(), Where.of(condition).hashCode());
     }
 
     @Test
-    public void shouldToString() {
+    void shouldToString() {
         Where where = Where.of(condition);
         String actual = where.toString();
         assertNotNull(actual);
         assertTrue(actual.startsWith("where "));
     }
-
 }

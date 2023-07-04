@@ -20,10 +20,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MethodConditionTest {
-
     private QueryValue<Boolean> queryValue;
 
     @BeforeEach
@@ -32,34 +31,34 @@ class MethodConditionTest {
     }
 
     @Test
-    public void shouldCreateCondition() {
+    void shouldCreateCondition() {
         QueryCondition condition = new MethodCondition("active", Condition.EQUALS, queryValue);
         assertThat(condition).isNotNull();
-        assertEquals(condition.condition(), Condition.EQUALS);
-        assertEquals(condition.name(), "active");
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("active", condition.name());
         assertEquals(condition.value(), queryValue);
     }
 
     @Test
-    public void shouldEquals() {
+    void shouldEquals() {
         QueryCondition condition = new MethodCondition("active", Condition.EQUALS, queryValue);
         QueryCondition conditionB = new MethodCondition("active", Condition.EQUALS, queryValue);
         assertEquals(condition,conditionB);
     }
 
     @Test
-    public void shouldHashCode() {
+    void shouldHashCode() {
         QueryCondition condition = new MethodCondition("active", Condition.EQUALS, queryValue);
         QueryCondition conditionB = new MethodCondition("active", Condition.EQUALS, queryValue);
         assertEquals(condition.hashCode(),conditionB.hashCode());
     }
 
     @Test
-    public void shouldCreateWithQueryParam(){
+    void shouldCreateWithQueryParam(){
         QueryCondition condition = new MethodCondition("active", Condition.EQUALS);
         assertThat(condition).isNotNull();
-        assertEquals(condition.condition(), Condition.EQUALS);
-        assertEquals(condition.name(), "active");
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("active", condition.name());
         Assertions.assertThat(condition.value()).isInstanceOf(MethodParamQueryValue.class);
     }
 }

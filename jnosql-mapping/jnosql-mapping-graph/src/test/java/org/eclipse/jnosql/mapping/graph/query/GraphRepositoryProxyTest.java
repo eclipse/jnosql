@@ -75,14 +75,11 @@ import static org.mockito.Mockito.when;
 @AddPackages(value = {Convert.class, Transactional.class})
 @AddPackages(BookRepository.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
-public class GraphRepositoryProxyTest {
-
-
+class GraphRepositoryProxyTest {
     private GraphTemplate template;
 
     @Inject
     private EntitiesMetadata entities;
-
 
     @Inject
     private Graph graph;
@@ -98,7 +95,7 @@ public class GraphRepositoryProxyTest {
     private VendorRepository vendorRepository;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
 
         graph.traversal().V().toList().forEach(Vertex::remove);
         graph.traversal().E().toList().forEach(Edge::remove);
@@ -126,15 +123,14 @@ public class GraphRepositoryProxyTest {
     }
 
     @AfterEach
-    public void after() {
+    void after() {
         graph.traversal().V().toList().forEach(Vertex::remove);
         graph.traversal().E().toList().forEach(Edge::remove);
 
     }
 
-
     @Test
-    public void shouldSaveUsingInsertWhenDataDoesNotExist() {
+    void shouldSaveUsingInsertWhenDataDoesNotExist() {
         when(template.find(Mockito.any(Long.class))).thenReturn(Optional.empty());
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
@@ -149,7 +145,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldSaveUsingUpdateWhenDataExists() {
+    void shouldSaveUsingUpdateWhenDataExists() {
         when(template.find(Mockito.any(Long.class))).thenReturn(Optional.of(Person.builder().build()));
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
@@ -163,9 +159,8 @@ public class GraphRepositoryProxyTest {
         assertEquals(person, value);
     }
 
-
     @Test
-    public void shouldSaveIterable() {
+    void shouldSaveIterable() {
         when(personRepository.findById(10L)).thenReturn(Optional.empty());
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
@@ -180,9 +175,8 @@ public class GraphRepositoryProxyTest {
         assertEquals(person, personCapture);
     }
 
-
     @Test
-    public void shouldFindByNameInstance() {
+    void shouldFindByNameInstance() {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
@@ -193,7 +187,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByNameAndAge() {
+    void shouldFindByNameAndAge() {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
@@ -204,7 +198,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByAgeAndName() {
+    void shouldFindByAgeAndName() {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
@@ -215,7 +209,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByAge() {
+    void shouldFindByAge() {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
@@ -225,7 +219,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldDeleteByName() {
+    void shouldDeleteByName() {
         Vertex vertex = graph.addVertex(T.label, "Person", "name", "Ada", "age", 20);
 
         personRepository.deleteByName("Ada");
@@ -234,7 +228,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByNameAndAgeGreaterThanEqual() {
+    void shouldFindByNameAndAgeGreaterThanEqual() {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
@@ -245,7 +239,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindById() {
+    void shouldFindById() {
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         personRepository.findById(10L);
         verify(template).find(captor.capture());
@@ -256,7 +250,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByIds() {
+    void shouldFindByIds() {
 
         when(template.find(any(Object.class))).thenReturn(Optional.empty());
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
@@ -268,16 +262,16 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldDeleteById() {
+    void shouldDeleteById() {
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         personRepository.deleteById(10L);
         verify(template).delete(captor.capture());
 
-        assertEquals(captor.getValue(), 10L);
+        assertEquals(10L, captor.getValue());
     }
 
     @Test
-    public void shouldDeleteByIds() {
+    void shouldDeleteByIds() {
         personRepository.deleteAllById(singletonList(10L));
         verify(template).delete(10L);
 
@@ -285,9 +279,8 @@ public class GraphRepositoryProxyTest {
         verify(template, times(4)).delete(any(Long.class));
     }
 
-
     @Test
-    public void shouldContainsById() {
+    void shouldContainsById() {
         when(template.find(any(Long.class))).thenReturn(Optional.of(Person.builder().build()));
 
         assertTrue(personRepository.existsById(10L));
@@ -299,38 +292,36 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindAll() {
+    void shouldFindAll() {
         List<Person> people = personRepository.findAll().toList();
         verify(template).findAll(Person.class);
     }
 
-
     @Test
-    public void shouldDeleteAll() {
+    void shouldDeleteAll() {
         personRepository.deleteAll();
         verify(template).deleteAll(Person.class);
     }
 
     @Test
-    public void shouldReturnEmptyAtFindAll() {
+    void shouldReturnEmptyAtFindAll() {
         List<Person> people = personRepository.findAll().toList();
         assertTrue(people.isEmpty());
     }
 
-
     @Test
-    public void shouldReturnToString() {
+    void shouldReturnToString() {
         assertNotNull(personRepository.toString());
     }
 
     @Test
-    public void shouldReturnHasCode() {
+    void shouldReturnHasCode() {
         assertNotNull(personRepository.hashCode());
         assertEquals(personRepository.hashCode(), personRepository.hashCode());
     }
 
     @Test
-    public void shouldExecuteQuery() {
+    void shouldExecuteQuery() {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         personRepository.findByQuery();
@@ -344,7 +335,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByActiveTrue() {
+    void shouldFindByActiveTrue() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", true);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", true);
@@ -356,7 +347,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByActiveFalse() {
+    void shouldFindByActiveFalse() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", true);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", true);
@@ -368,7 +359,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByNameEquals() {
+    void shouldFindByNameEquals() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", false);
@@ -380,7 +371,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByAgeNotGreaterThan() {
+    void shouldFindByAgeNotGreaterThan() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", false);
@@ -392,7 +383,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldCountByActiveFalse() {
+    void shouldCountByActiveFalse() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", true);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", true);
@@ -403,7 +394,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldExistsByActiveFalse() {
+    void shouldExistsByActiveFalse() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", true);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", true);
@@ -414,7 +405,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldExistsByActiveFalse2() {
+    void shouldExistsByActiveFalse2() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", false);
@@ -425,18 +416,18 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldGotOrderException() {
+    void shouldGotOrderException() {
         Assertions.assertThrows(MappingException.class, () ->
                 personRepository.findBy());
     }
 
     @Test
-    public void shouldGotOrderException2() {
+    void shouldGotOrderException2() {
         Assertions.assertThrows(MappingException.class, () ->
                 personRepository.findByException());
     }
     @Test
-    public void shouldExecuteQuery2() {
+    void shouldExecuteQuery2() {
 
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         when(template.prepare(Mockito.anyString()))
@@ -451,7 +442,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByStringWhenFieldIsSet() {
+    void shouldFindByStringWhenFieldIsSet() {
         Vendor vendor = new Vendor("vendor");
         vendor.setPrefixes(Collections.singleton("prefix"));
 
@@ -463,7 +454,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByIn() {
+    void shouldFindByIn() {
         Vendor vendor = new Vendor("vendor");
         vendor.setPrefixes(Collections.singleton("prefix"));
 
@@ -477,7 +468,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldExecuteDefaultMethod() {
+    void shouldExecuteDefaultMethod() {
 
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false);
@@ -496,7 +487,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldUseQueriesFromOtherInterface() {
+    void shouldUseQueriesFromOtherInterface() {
 
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false, "score", 2);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false, "score", 12);
@@ -509,7 +500,7 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldUseDefaultMethodFromOtherInterface() {
+    void shouldUseDefaultMethodFromOtherInterface() {
 
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false, "score", 2);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false, "score", 12);
