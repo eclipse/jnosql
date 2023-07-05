@@ -79,10 +79,10 @@
         <sonar.maven.version>3.9.1.2184</sonar.maven.version>
         <commons.io.version>2.13.0</commons.io.version>
         <checkstyle.excludes>**/jnosql/query/grammar/**</checkstyle.excludes>
-        <weld.se.core.version>5.1.0.Final</weld.se.core.version>
+        <weld.se.core.version>5.1.1.Final</weld.se.core.version>
         <yasson.version>3.0.3</yasson.version>
         <microprofile.config.version>3.0.3</microprofile.config.version>
-        <smallrye.config.version>3.2.1</smallrye.config.version>
+        <smallrye.config.version>3.3.0</smallrye.config.version>
 
         <checkstyle.version>10.12.0</checkstyle.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
@@ -90,7 +90,7 @@
 
         <!-- testing libraries -->
         <junit.version>5.9.3</junit.version>
-        <mockito.verson>5.3.1</mockito.verson>
+        <mockito.verson>5.4.0</mockito.verson>
         <assertj.version>3.24.2</assertj.version>
         <awaitility.version>4.2.0</awaitility.version>
         <pi-test.version>1.12.0</pi-test.version>
