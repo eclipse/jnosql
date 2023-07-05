@@ -32,17 +32,17 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 @ApplicationScoped
 class DefaultDocumentTemplate extends AbstractDocumentTemplate {
 
-    private final DocumentEntityConverter converter;
+    private DocumentEntityConverter converter;
 
-    private final Instance<DocumentManager> manager;
+    private Instance<DocumentManager> manager;
 
-    private final DocumentWorkflow workflow;
+    private DocumentWorkflow workflow;
 
-    private final DocumentEventPersistManager persistManager;
+    private DocumentEventPersistManager persistManager;
 
-    private final EntitiesMetadata entities;
+    private EntitiesMetadata entities;
 
-    private final Converters converters;
+    private Converters converters;
 
     @Inject
     DefaultDocumentTemplate(DocumentEntityConverter converter, Instance<DocumentManager> manager,
@@ -54,6 +54,9 @@ class DefaultDocumentTemplate extends AbstractDocumentTemplate {
         this.persistManager = persistManager;
         this.entities = entities;
         this.converters = converters;
+    }
+
+    DefaultDocumentTemplate() {
     }
 
     @Override

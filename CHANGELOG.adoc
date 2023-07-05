@@ -8,6 +8,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+== Fixed
+
+- Added no-args constructor into the injectable beans
+
 == [1.0.0] - 2023-6-22
 
 === Removed

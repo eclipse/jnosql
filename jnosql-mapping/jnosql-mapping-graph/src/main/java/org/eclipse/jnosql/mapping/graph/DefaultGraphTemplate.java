@@ -33,15 +33,15 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 @ApplicationScoped
 class DefaultGraphTemplate extends AbstractGraphTemplate {
 
-    private final Instance<Graph> graph;
+    private Instance<Graph> graph;
 
-    private final EntitiesMetadata entities;
+    private EntitiesMetadata entities;
 
-    private final GraphConverter converter;
+    private GraphConverter converter;
 
-    private final GraphWorkflow workflow;
+    private GraphWorkflow workflow;
 
-    private final Converters converters;
+    private Converters converters;
 
     @Inject
     DefaultGraphTemplate(Instance<Graph> graph, EntitiesMetadata entities, GraphConverter converter,
@@ -54,6 +54,8 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
         this.converters = converters;
     }
 
+    DefaultGraphTemplate(){
+    }
 
     @Override
     protected Graph getGraph() {
