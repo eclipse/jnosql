@@ -65,14 +65,14 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
     }
 
     EntityMetadata load(Class<?> type) {
-        EntityMetadata entityMetadata = classConverter.create(type);
-        if (entityMetadata.hasEntityName()) {
-            mappings.put(type.getName(), entityMetadata);
+        EntityMetadata metadata = classConverter.create(type);
+        if (metadata.hasEntityName()) {
+            mappings.put(type.getName(), metadata);
         }
-        this.findBySimpleName.put(type.getSimpleName(), entityMetadata);
-        this.findByClassName.put(type.getName(), entityMetadata);
-        this.classes.put(type, entityMetadata);
-        return entityMetadata;
+        this.findBySimpleName.put(type.getSimpleName(), metadata);
+        this.findByClassName.put(type.getName(), metadata);
+        this.classes.put(type, metadata);
+        return metadata;
     }
 
     @Override
