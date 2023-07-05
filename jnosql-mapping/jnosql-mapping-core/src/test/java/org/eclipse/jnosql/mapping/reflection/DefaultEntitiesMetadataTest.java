@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.test.entities.Movie;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Vendor;
 import org.eclipse.jnosql.mapping.test.entities.inheritance.EmailNotification;
@@ -33,6 +34,8 @@ import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
 import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
@@ -129,5 +132,13 @@ class DefaultEntitiesMetadataTest {
         Assertions.assertNotNull(group.get("Small"));
         Assertions.assertNotNull(group.get("Large"));
         Assertions.assertNotNull(group.get("Project"));
+    }
+
+    @Test
+    public void shouldLoadUsingGet(){
+        this.mappings.load(Movie.class);
+        EntityMetadata mapping = mappings.findByName("Movie");
+        assertThat(mapping).isNotNull();
+        Assertions.assertEquals(Movie.class, mapping.type());
     }
 }

@@ -28,11 +28,11 @@ public interface EntitiesMetadata {
      * Find a class in the cached way and return in a class,
      * if it's not found the class will be both, loaded and cached, when this method is called
      *
-     * @param classEntity the class of entity
+     * @param entity the class of entity
      * @return the {@link EntityMetadata}
      * @throws NullPointerException when class entity is null
      */
-    EntityMetadata get(Class<?> classEntity);
+    EntityMetadata get(Class<?> entity);
 
     /**
      * Find the {@link InheritanceMetadata} where the parameter is the parent parameter
