@@ -33,15 +33,15 @@ import java.util.Iterator;
 class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
 
 
-    private final Instance<GraphTraversalSourceSupplier> supplierInstance;
+    private Instance<GraphTraversalSourceSupplier> supplierInstance;
 
-    private final EntitiesMetadata entities;
+    private EntitiesMetadata entities;
 
-    private final GraphConverter converter;
+    private GraphConverter converter;
 
-    private final GraphWorkflow workflow;
+    private GraphWorkflow workflow;
 
-    private final Converters converters;
+    private Converters converters;
 
     @Inject
     DefaultGraphTraversalSourceTemplate(Instance<GraphTraversalSourceSupplier> supplierInstance,
@@ -56,6 +56,8 @@ class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
         this.converters = converters;
     }
 
+    DefaultGraphTraversalSourceTemplate(){
+    }
 
     @Override
     protected Graph getGraph() {
