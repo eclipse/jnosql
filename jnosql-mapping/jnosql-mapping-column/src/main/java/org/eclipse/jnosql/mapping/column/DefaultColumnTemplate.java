@@ -32,17 +32,17 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 @ApplicationScoped
 class DefaultColumnTemplate extends AbstractColumnTemplate {
 
-    private final ColumnEntityConverter converter;
+    private ColumnEntityConverter converter;
 
-    private final Instance<ColumnManager> manager;
+    private Instance<ColumnManager> manager;
 
-    private final ColumnWorkflow flow;
+    private ColumnWorkflow flow;
 
-    private final ColumnEventPersistManager eventManager;
+    private ColumnEventPersistManager eventManager;
 
-    private final EntitiesMetadata entities;
+    private EntitiesMetadata entities;
 
-    private final Converters converters;
+    private Converters converters;
 
     @Inject
     DefaultColumnTemplate(ColumnEntityConverter converter, Instance<ColumnManager> manager,
@@ -57,6 +57,8 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
         this.converters = converters;
     }
 
+    DefaultColumnTemplate(){
+    }
 
     @Override
     protected ColumnEntityConverter getConverter() {
