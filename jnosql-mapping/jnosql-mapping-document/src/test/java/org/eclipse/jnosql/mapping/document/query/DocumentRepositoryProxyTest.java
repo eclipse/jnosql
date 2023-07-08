@@ -357,8 +357,8 @@ class DocumentRepositoryProxyTest {
     }
 
     @Test
-    void shouldReturnEquals() {
-        assertNotNull(personRepository.equals(personRepository));
+    void shouldReturnNotNull() {
+        assertNotNull(personRepository);
     }
 
     @Test
