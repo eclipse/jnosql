@@ -65,8 +65,7 @@ enum FieldConverter {
         private <T> void converterSubDocument(T instance, Document sudDocument, FieldMapping field,
                                               DocumentEntityConverter converter) {
             Object value = sudDocument.get();
-            if (value instanceof Map) {
-                Map map = (Map) value;
+            if (value instanceof Map map) {
                 List<Document> embeddedDocument = new ArrayList<>();
 
                 for (Map.Entry entry : (Set<Map.Entry>) map.entrySet()) {
@@ -116,7 +115,6 @@ enum FieldConverter {
             }
         }
     };
-
 
     abstract <X, Y, T> void convert(T instance, List<Document> documents, Document document, FieldMapping field,
                                     DocumentEntityConverter converter);
