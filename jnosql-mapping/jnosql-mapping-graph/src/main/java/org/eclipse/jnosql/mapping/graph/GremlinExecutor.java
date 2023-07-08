@@ -29,8 +29,6 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 final class GremlinExecutor {
-
-
     private final GraphConverter converter;
 
     private static final GremlinScriptEngine ENGINE = new GremlinLangScriptEngine();
@@ -51,14 +49,14 @@ final class GremlinExecutor {
 
             String query = GremlinParamParser.INSTANCE.apply(gremlin, params);
             Object eval = ENGINE.eval(query, bindings);
-            if (eval instanceof GraphTraversal) {
-                return convertToStream(((GraphTraversal) eval).toStream());
+            if (eval instanceof GraphTraversal graphTraversal) {
+                return convertToStream(graphTraversal.toStream());
             }
-            if (eval instanceof Iterable) {
-                return convertToStream(StreamSupport.stream(((Iterable) eval).spliterator(), false));
+            if (eval instanceof Iterable iterable) {
+                return convertToStream(StreamSupport.stream(iterable.spliterator(), false));
             }
-            if (eval instanceof Stream) {
-                return convertToStream((Stream) eval);
+            if (eval instanceof Stream stream) {
+                return convertToStream(stream);
             }
             return Stream.of((T) eval);
         } catch (ScriptException e) {
@@ -71,15 +69,13 @@ final class GremlinExecutor {
     }
 
     private Object getElement(Object entity) {
-        if (entity instanceof Vertex) {
-            return converter.toEntity((Vertex) entity);
+        if (entity instanceof Vertex vertex) {
+            return converter.toEntity(vertex);
         }
 
-        if (entity instanceof Edge) {
-            return converter.toEdgeEntity((Edge) entity);
+        if (entity instanceof Edge edge) {
+            return converter.toEdgeEntity(edge);
         }
         return entity;
     }
-
-
 }

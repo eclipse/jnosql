@@ -63,8 +63,7 @@ enum FieldConverter {
         private <T> void converterSubDocument(T instance, Column subColumn, FieldMapping field,
                                               ColumnEntityConverter converter) {
             Object value = subColumn.get();
-            if (value instanceof Map) {
-                Map map = (Map) value;
+            if (value instanceof Map map) {
                 List<Column> embeddedColumns = new ArrayList<>();
 
                 for (Map.Entry entry : (Set<Map.Entry>) map.entrySet()) {
@@ -113,7 +112,6 @@ enum FieldConverter {
         }
     };
 
-
     static FieldConverter get(FieldMapping field) {
         if (MappingType.EMBEDDED.equals(field.type())) {
             return EMBEDDED;
@@ -137,5 +135,4 @@ enum FieldConverter {
                            ColumnEntityConverter converter) {
         convert(instance, null, column, field, converter);
     }
-
 }

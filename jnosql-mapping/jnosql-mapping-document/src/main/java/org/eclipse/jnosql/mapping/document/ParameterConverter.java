@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 enum ParameterConverter {
-
     DEFAULT {
         @Override
         void convert(DocumentEntityConverter converter,
@@ -46,8 +45,7 @@ enum ParameterConverter {
                      ConstructorBuilder builder) {
 
             Object value = document.get();
-            if (value instanceof Map) {
-                Map<?, ?> map = (Map) value;
+            if (value instanceof Map<?, ?> map) {
                 List<Document> documents = new ArrayList<>();
 
                 for (Map.Entry<?, ?> entry : map.entrySet()) {

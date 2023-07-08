@@ -29,7 +29,6 @@ import java.util.Optional;
  * to apply pagination and sorting to your queries dynamically.
  */
 public final class SpecialParameters {
-
     static final SpecialParameters EMPTY = new SpecialParameters(null, null, Collections.emptyList());
 
     private final Pageable pageable;
@@ -128,17 +127,15 @@ public final class SpecialParameters {
         Pageable pageable = null;
         Limit limit = null;
         for (Object parameter : parameters) {
-            if (parameter instanceof Pageable) {
-                pageable = (Pageable) parameter;
-                sorts.addAll(pageable.sorts());
-            } else if (parameter instanceof Sort) {
-                sorts.add((Sort) parameter);
-            } else if (parameter instanceof Limit) {
-                limit = (Limit) parameter;
+            if (parameter instanceof Pageable pageableInstance) {
+                pageable = pageableInstance;
+                sorts.addAll(pageableInstance.sorts());
+            } else if (parameter instanceof Sort sort) {
+                sorts.add(sort);
+            } else if (parameter instanceof Limit limitInstance) {
+                limit = limitInstance;
             }
         }
         return new SpecialParameters(pageable, limit, sorts);
     }
-
-
 }
