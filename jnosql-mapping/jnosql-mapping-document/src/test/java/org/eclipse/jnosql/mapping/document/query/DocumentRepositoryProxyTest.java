@@ -352,8 +352,7 @@ class DocumentRepositoryProxyTest {
     }
 
     @Test
-    void shouldReturnHasCode() {
-        assertNotNull(personRepository.hashCode());
+    void shouldReturnSameHashCode() {
         assertEquals(personRepository.hashCode(), personRepository.hashCode());
     }
 
