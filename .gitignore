@@ -24,3 +24,7 @@ test-output/
 # Annotation processor metadata
 .apt_generated/
 .apt_generated_tests/
+
+# Quarkus Plugin dir
+
+.quarkus/

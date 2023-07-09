@@ -37,7 +37,8 @@ class ParameterMetaDataBuilder {
         Class<?> type = parameter.getType();
         String name = Optional.ofNullable(id)
                 .map(Id::value)
-                .orElseGet(() -> column.value());
+                .or(() -> Optional.ofNullable(column).map(Column::value))
+                .orElse(null);
         if ((Objects.isNull(name) || name.isBlank())
                 && parameter.getDeclaringExecutable().getDeclaringClass().isRecord()) {
             name = parameter.getName();

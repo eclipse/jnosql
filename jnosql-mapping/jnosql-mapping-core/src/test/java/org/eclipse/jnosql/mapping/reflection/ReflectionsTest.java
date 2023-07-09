@@ -14,35 +14,25 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
-import org.eclipse.jnosql.mapping.test.entities.Actor;
-import org.eclipse.jnosql.mapping.test.entities.Download;
-import org.eclipse.jnosql.mapping.test.entities.Movie;
-import org.eclipse.jnosql.mapping.test.entities.Person;
-import org.eclipse.jnosql.mapping.test.entities.Vendor;
-import org.eclipse.jnosql.mapping.test.entities.Worker;
-import org.eclipse.jnosql.mapping.test.entities.inheritance.EmailNotification;
-import org.eclipse.jnosql.mapping.test.entities.inheritance.LargeProject;
-import org.eclipse.jnosql.mapping.test.entities.inheritance.Notification;
-import org.eclipse.jnosql.mapping.test.entities.inheritance.Project;
-import org.eclipse.jnosql.mapping.test.entities.inheritance.SmallProject;
-import org.eclipse.jnosql.mapping.test.entities.inheritance.SmsNotification;
-import org.eclipse.jnosql.mapping.test.entities.inheritance.SocialMediaNotification;
+import org.eclipse.jnosql.mapping.test.entities.*;
+import org.eclipse.jnosql.mapping.test.entities.constructor.Smartphone;
+import org.eclipse.jnosql.mapping.test.entities.constructor.Tablet;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.*;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Optional;
 
-
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.eclipse.jnosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @EnableAutoWeld
@@ -51,22 +41,67 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @AddExtensions(EntityMetadataExtension.class)
 public class ReflectionsTest {
 
-
     @Inject
     private Reflections reflections;
 
     @Test
     public void shouldReturnsEntityName() {
-        assertEquals("Person", reflections.getEntityName(Person.class));
-        assertEquals("movie", reflections.getEntityName(Movie.class));
+        assertSoftly(softly -> {
+            softly.assertThat(reflections.getEntityName(Person.class))
+                    .as("getting entity name from annotated class with @Entity without name")
+                    .isEqualTo("Person");
+            softly.assertThat(reflections.getEntityName(Movie.class))
+                    .as("getting entity name from annotated class with @Entity with defined name")
+                    .isEqualTo("movie");
+            softly.assertThat(reflections.getEntityName(Smartphone.class))
+                    .as("getting entity name from annotated record class with @Entity without name")
+                    .isEqualTo("Smartphone");
+            softly.assertThat(reflections.getEntityName(Tablet.class))
+                    .as("getting entity name from annotated record class with @Entity with defined name")
+                    .isEqualTo("tablet");
+        });
+    }
+
+    @Test
+    public void shouldReturnsConstructor() {
+        assertSoftly(softly -> {
+
+            Constructor<Person> personConstructor = reflections.getConstructor(Person.class);
+            softly.assertThat(personConstructor)
+                    .as("getting an non-args constructor from annotated class " +
+                            "with @Entity")
+                    .isNotNull();
+
+            Constructor<Smartphone> smartphoneConstructor = reflections.getConstructor(Smartphone.class);
+            softly.assertThat(smartphoneConstructor)
+                    .as("getting constructor from annotated entity record class " +
+                            "with @Entity with all field annotated or @Id or @Column")
+                    .isNotNull();
+
+            Constructor<Tablet> tableConstructor = reflections.getConstructor(Tablet.class);
+            softly.assertThat(tableConstructor)
+                    .as("getting constructor from annotated entity record class " +
+                            "with @Entity with field not annotated with @Column")
+                    .isNotNull();
+        });
     }
 
     @Test
     public void shouldListFields() {
-
-        assertEquals(4, reflections.getFields(Person.class).size());
-        assertEquals(6, reflections.getFields(Actor.class).size());
-
+        assertSoftly(softly -> {
+            softly.assertThat(reflections.getFields(Person.class))
+                    .as("list fields from a class with field not annotated with @Column")
+                    .hasSize(4);
+            softly.assertThat(reflections.getFields(Actor.class))
+                    .as("list fields from a class that extends a class with field not annotated with @Column")
+                    .hasSize(6);
+            softly.assertThat(reflections.getFields(Smartphone.class))
+                    .as("list fields from a record class with all fields annotated with @Id or @Column")
+                    .hasSize(2);
+            softly.assertThat(reflections.getFields(Tablet.class))
+                    .as("list fields from a record class with field not annotated with @Id or @Column")
+                    .hasSize(2);
+        });
     }
 
     @Test
@@ -80,7 +115,7 @@ public class ReflectionsTest {
     }
 
     @Test
-    public void shouldGetEntityNameWhenThereIsNoAnnotation(){
+    public void shouldGetEntityNameWhenThereIsNoAnnotation() {
         String entityName = reflections.getEntityName(Person.class);
         assertEquals(Person.class.getSimpleName(), entityName);
     }
