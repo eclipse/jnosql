@@ -24,14 +24,12 @@ import org.eclipse.jnosql.mapping.Inheritance;
 import org.eclipse.jnosql.mapping.MappedSuperclass;
 import org.eclipse.jnosql.mapping.util.StringUtils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -148,10 +146,17 @@ public class Reflections {
      * @throws ConstructorException when the constructor has public and default
      */
     public <T> Constructor<T> getConstructor(Class<T> type) {
+
+        final Predicate<String> isIdAnnotation = Id.class.getName()::equals;
+        final Predicate<String> isColumnAnnotation = Column.class.getName()::equals;
+
         final Predicate<Constructor<?>> defaultConstructorPredicate = c -> c.getParameterCount() == 0;
         final Predicate<Constructor<?>> customConstructorPredicate = c -> {
             for (Parameter parameter : c.getParameters()) {
-                if (parameter.getAnnotation(Id.class) != null || parameter.getAnnotation(Column.class) != null) {
+                if (Arrays.stream(parameter.getAnnotations())
+                        .map(Annotation::annotationType)
+                        .map(Class::getName)
+                        .anyMatch(isIdAnnotation.or(isColumnAnnotation))) {
                     return true;
                 }
             }
@@ -162,7 +167,6 @@ public class Reflections {
                 of(type.getDeclaredConstructors())
                 .filter(defaultConstructorPredicate.or(customConstructorPredicate))
                 .toList();
-
 
         if (constructors.isEmpty()) {
             throw new ConstructorException(type);
