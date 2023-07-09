@@ -26,6 +26,7 @@ import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Optional;
 
@@ -58,6 +59,30 @@ public class ReflectionsTest {
             softly.assertThat(reflections.getEntityName(Tablet.class))
                     .as("getting entity name from annotated record class with @Entity with defined name")
                     .isEqualTo("tablet");
+        });
+    }
+
+    @Test
+    public void shouldReturnsConstructor() {
+        assertSoftly(softly -> {
+
+            Constructor<Person> personConstructor = reflections.getConstructor(Person.class);
+            softly.assertThat(personConstructor)
+                    .as("getting an non-args constructor from annotated class " +
+                            "with @Entity")
+                    .isNotNull();
+
+            Constructor<Smartphone> smartphoneConstructor = reflections.getConstructor(Smartphone.class);
+            softly.assertThat(smartphoneConstructor)
+                    .as("getting constructor from annotated entity record class " +
+                            "with @Entity with all field annotated or @Id or @Column")
+                    .isNotNull();
+
+            Constructor<Tablet> tableConstructor = reflections.getConstructor(Tablet.class);
+            softly.assertThat(tableConstructor)
+                    .as("getting constructor from annotated entity record class " +
+                            "with @Entity with field not annotated with @Column")
+                    .isNotNull();
         });
     }
 
