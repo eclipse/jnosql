@@ -20,5 +20,5 @@ import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 
 @Entity("tablet")
-public record Tablet(@Id String id, @Column String model, @Column String owner) {
+public record Tablet(@Id String id, String model, @Column String owner) {
 }
