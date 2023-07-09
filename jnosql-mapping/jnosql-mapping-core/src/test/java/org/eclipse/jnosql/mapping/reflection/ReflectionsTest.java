@@ -40,7 +40,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @AddExtensions(EntityMetadataExtension.class)
 public class ReflectionsTest {
 
-
     @Inject
     private Reflections reflections;
 
@@ -64,10 +63,20 @@ public class ReflectionsTest {
 
     @Test
     public void shouldListFields() {
-
-        assertEquals(4, reflections.getFields(Person.class).size());
-        assertEquals(6, reflections.getFields(Actor.class).size());
-
+        assertSoftly(softly -> {
+            softly.assertThat(reflections.getFields(Person.class))
+                    .as("list fields from a class with field not annotated with @Column")
+                    .hasSize(4);
+            softly.assertThat(reflections.getFields(Actor.class))
+                    .as("list fields from a class that extends a class with field not annotated with @Column")
+                    .hasSize(6);
+            softly.assertThat(reflections.getFields(Smartphone.class))
+                    .as("list fields from a record class with all fields annotated with @Id or @Column")
+                    .hasSize(2);
+            softly.assertThat(reflections.getFields(Tablet.class))
+                    .as("list fields from a record class with field not annotated with @Id or @Column")
+                    .hasSize(2);
+        });
     }
 
     @Test
