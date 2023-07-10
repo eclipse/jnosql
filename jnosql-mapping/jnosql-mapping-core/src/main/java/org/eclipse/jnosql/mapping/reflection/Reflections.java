@@ -11,6 +11,7 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Maximillian Arruda
  */
 package org.eclipse.jnosql.mapping.reflection;
 
@@ -24,11 +25,13 @@ import org.eclipse.jnosql.mapping.Inheritance;
 import org.eclipse.jnosql.mapping.MappedSuperclass;
 import org.eclipse.jnosql.mapping.util.StringUtils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -46,6 +49,10 @@ import static java.util.Objects.requireNonNull;
 public class Reflections {
 
     private static final Logger LOGGER = Logger.getLogger(Reflections.class.getName());
+
+    private static final Predicate<String> IS_ID_ANNOTATION = Id.class.getName()::equals;
+    private static final Predicate<String> IS_COLUMN_ANNOTATION = Column.class.getName()::equals;
+    private static final Predicate<String> IS_NOSQL_ANNOTATION = IS_ID_ANNOTATION.or(IS_COLUMN_ANNOTATION);
 
     /**
      * Return The Object from the Column.
@@ -106,7 +113,7 @@ public class Reflections {
      * Create new instance of this class.
      *
      * @param type the class's type
-     * @param <T>   the instance type
+     * @param <T>  the instance type
      * @return the new instance that class
      */
     public <T> T newInstance(Class<T> type) {
@@ -143,15 +150,16 @@ public class Reflections {
      * conflicts with a JVM SecurityManager (if active).
      *
      * @param type the class constructor acessible
-     * @param <T>   the entity type
+     * @param <T>  the entity type
      * @return the constructor class
      * @throws ConstructorException when the constructor has public and default
      */
     public <T> Constructor<T> getConstructor(Class<T> type) {
+
         final Predicate<Constructor<?>> defaultConstructorPredicate = c -> c.getParameterCount() == 0;
         final Predicate<Constructor<?>> customConstructorPredicate = c -> {
             for (Parameter parameter : c.getParameters()) {
-                if (parameter.getAnnotation(Id.class) != null || parameter.getAnnotation(Column.class) != null) {
+                if (hasNoSQLAnnotation(parameter)) {
                     return true;
                 }
             }
@@ -162,7 +170,6 @@ public class Reflections {
                 of(type.getDeclaredConstructors())
                 .filter(defaultConstructorPredicate.or(customConstructorPredicate))
                 .toList();
-
 
         if (constructors.isEmpty()) {
             throw new ConstructorException(type);
@@ -180,6 +187,21 @@ public class Reflections {
         Constructor<?> constructor = constructors.get(0);
         constructor.setAccessible(true);
         return (Constructor<T>) constructor;
+    }
+
+    /**
+     * Checks if the {@link Parameter} instance is annotated with
+     * Jakarta NoSQL annotations (@{@link Id} or @{@link Column}).
+     *
+     * @param parameter the parameter
+     * @return if the provided {@link Parameter} instance is annotated with
+     * Jakarta NoSQL annotations (@{@link Id} or @{@link Column}).
+     */
+    boolean hasNoSQLAnnotation(Parameter parameter) {
+        return parameter != null && Arrays.stream(parameter.getAnnotations())
+                .map(Annotation::annotationType)
+                .map(Class::getName)
+                .anyMatch(IS_NOSQL_ANNOTATION);
     }
 
     /**
