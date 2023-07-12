@@ -43,8 +43,7 @@ public class ListTypeReferenceReader implements TypeReferenceReader {
     @Override
     public boolean test(TypeSupplier<?> typeReference) {
         Type type = typeReference.get();
-        if (ParameterizedType.class.isInstance(type)) {
-            ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
+        if (type instanceof ParameterizedType parameterizedType) {
 
             return (List.class.equals(parameterizedType.getRawType())
                     || Iterable.class.equals(parameterizedType.getRawType())
@@ -57,7 +56,7 @@ public class ListTypeReferenceReader implements TypeReferenceReader {
     @Override
     public <T> T convert(TypeSupplier<T> typeReference, Object value) {
         Type type = typeReference.get();
-        ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
+        ParameterizedType parameterizedType = (ParameterizedType) type;
         Class<?> classType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
         if (Iterable.class.isInstance(value)) {
             Iterable iterable = Iterable.class.cast(value);
