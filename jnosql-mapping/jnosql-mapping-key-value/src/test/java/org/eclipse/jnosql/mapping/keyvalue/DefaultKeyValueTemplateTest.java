@@ -58,9 +58,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, KeyValueWorkflow.class})
+@AddPackages(value = {Convert.class, KeyValueEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
 @ExtendWith(MockitoExtension.class)
@@ -70,9 +69,6 @@ public class DefaultKeyValueTemplateTest {
     private static final String KEY = "otaviojava";
     @Inject
     private KeyValueEntityConverter converter;
-
-    @Inject
-    private KeyValueWorkflow flow;
 
     @Inject
     private KeyValueEventPersistManager eventManager;
@@ -90,7 +86,7 @@ public class DefaultKeyValueTemplateTest {
     public void setUp() {
         Instance<BucketManager> instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        this.template = new DefaultKeyValueTemplate(converter, instance, flow, eventManager);
+        this.template = new DefaultKeyValueTemplate(converter, instance, eventManager);
     }
 
     @Test

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
+import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.MockProducer;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
@@ -34,7 +34,7 @@ import jakarta.inject.Inject;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentWorkflow.class})
+@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 class DocumentRepositoryProducerTest {

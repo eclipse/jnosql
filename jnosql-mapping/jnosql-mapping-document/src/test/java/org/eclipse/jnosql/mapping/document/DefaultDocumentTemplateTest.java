@@ -61,9 +61,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentWorkflow.class})
+@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 public class DefaultDocumentTemplateTest {
@@ -107,8 +106,7 @@ public class DefaultDocumentTemplateTest {
         captor = ArgumentCaptor.forClass(DocumentEntity.class);
         Instance<DocumentManager> instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerMock);
-        DefaultDocumentWorkflow workflow = new DefaultDocumentWorkflow(documentEventPersistManager, converter);
-        this.template = new DefaultDocumentTemplate(converter, instance, workflow,
+        this.template = new DefaultDocumentTemplate(converter, instance,
                 documentEventPersistManager, entities, converters);
     }
 

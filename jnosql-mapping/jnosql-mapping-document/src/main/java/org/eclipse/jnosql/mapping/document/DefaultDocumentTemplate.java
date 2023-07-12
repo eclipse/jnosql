@@ -36,9 +36,7 @@ class DefaultDocumentTemplate extends AbstractDocumentTemplate {
 
     private Instance<DocumentManager> manager;
 
-    private DocumentWorkflow workflow;
-
-    private DocumentEventPersistManager persistManager;
+    private DocumentEventPersistManager eventManager;
 
     private EntitiesMetadata entities;
 
@@ -46,12 +44,11 @@ class DefaultDocumentTemplate extends AbstractDocumentTemplate {
 
     @Inject
     DefaultDocumentTemplate(DocumentEntityConverter converter, Instance<DocumentManager> manager,
-                            DocumentWorkflow workflow, DocumentEventPersistManager persistManager,
-                            EntitiesMetadata entities, Converters converters) {
+                            DocumentEventPersistManager eventManager, EntitiesMetadata entities,
+                            Converters converters) {
         this.converter = converter;
         this.manager = manager;
-        this.workflow = workflow;
-        this.persistManager = persistManager;
+        this.eventManager = eventManager;
         this.entities = entities;
         this.converters = converters;
     }
@@ -70,13 +67,8 @@ class DefaultDocumentTemplate extends AbstractDocumentTemplate {
     }
 
     @Override
-    protected DocumentWorkflow getWorkflow() {
-        return workflow;
-    }
-
-    @Override
     protected DocumentEventPersistManager getEventManager() {
-        return persistManager;
+        return eventManager;
     }
 
     @Override

@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column.query;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
-import org.eclipse.jnosql.mapping.column.ColumnWorkflow;
+import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.MockProducer;
 import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
@@ -34,9 +34,8 @@ import jakarta.inject.Inject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnWorkflow.class})
+@AddPackages(value = {Convert.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 public class ColumnRepositoryExtensionTest {

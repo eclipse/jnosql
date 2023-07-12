@@ -36,6 +36,7 @@ import java.time.Duration;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -54,8 +55,6 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
     protected abstract ColumnEntityConverter getConverter();
 
     protected abstract ColumnManager getManager();
-
-    protected abstract ColumnWorkflow getFlow();
 
     protected abstract ColumnEventPersistManager getEventManager();
 
@@ -80,7 +79,7 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
     @Override
     public <T> T insert(T entity) {
         requireNonNull(entity, "entity is required");
-        return getFlow().flow(entity, insert);
+        return persist(entity, insert);
     }
 
 
@@ -88,14 +87,14 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
     public <T> T insert(T entity, Duration ttl) {
         requireNonNull(entity, "entity is required");
         requireNonNull(ttl, "ttl is required");
-        return getFlow().flow(entity, e -> getManager().insert(e, ttl));
+        return persist(entity, e -> getManager().insert(e, ttl));
     }
 
 
     @Override
     public <T> T update(T entity) {
         requireNonNull(entity, "entity is required");
-        return getFlow().flow(entity, update);
+        return persist(entity, update);
     }
 
     @Override
@@ -270,4 +269,21 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
         delete(query);
     }
 
+    private <T> T persist(T entity, UnaryOperator<ColumnEntity> persistAction) {
+        return Stream.of(entity)
+                .map(toUnary(getEventManager()::firePreEntity))
+                .map(getConverter()::toColumn)
+                .map(persistAction)
+                .map(t -> getConverter().toEntity(entity, t))
+                .map(toUnary(getEventManager()::firePostEntity))
+                .findFirst()
+                .orElseThrow();
+    }
+
+    private <T> UnaryOperator<T> toUnary(Consumer<T> consumer) {
+        return t -> {
+            consumer.accept(t);
+            return t;
+        };
+    }
 }

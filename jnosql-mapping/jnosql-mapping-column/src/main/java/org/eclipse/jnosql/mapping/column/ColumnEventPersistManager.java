@@ -27,7 +27,7 @@ import org.eclipse.jnosql.mapping.EntityPrePersist;
  * 1) firePreColumn
  * 2) firePostColumn
  *
- * @see ColumnWorkflow
+ * @see AbstractColumnTemplate
  */
 @ApplicationScoped
 public class ColumnEventPersistManager {

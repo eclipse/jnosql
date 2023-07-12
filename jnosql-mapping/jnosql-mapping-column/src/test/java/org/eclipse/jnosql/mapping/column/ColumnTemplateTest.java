@@ -31,7 +31,7 @@ import jakarta.inject.Inject;
 import static org.eclipse.jnosql.mapping.DatabaseType.COLUMN;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnWorkflow.class})
+@AddPackages(value = {Convert.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 class ColumnTemplateTest {

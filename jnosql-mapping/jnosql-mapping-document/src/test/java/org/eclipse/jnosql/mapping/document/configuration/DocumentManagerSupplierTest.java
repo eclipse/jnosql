@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.document.configuration;
 import jakarta.data.exceptions.MappingException;
 import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
+import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.MockProducer;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
@@ -36,7 +36,7 @@ import static org.eclipse.jnosql.mapping.config.MappingConfigurations.DOCUMENT_D
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.DOCUMENT_PROVIDER;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentWorkflow.class})
+@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 class DocumentManagerSupplierTest {

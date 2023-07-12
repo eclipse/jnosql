@@ -36,7 +36,7 @@ import jakarta.inject.Inject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, KeyValueWorkflow.class})
+@AddPackages(value = {Convert.class, KeyValueEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
 public class DefaultKeyValueEntityConverterTest {

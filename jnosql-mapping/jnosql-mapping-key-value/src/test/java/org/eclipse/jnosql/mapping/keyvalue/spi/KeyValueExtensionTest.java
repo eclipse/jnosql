@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.keyvalue.spi;
 
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.keyvalue.KeyValueWorkflow;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;
 import org.eclipse.jnosql.mapping.keyvalue.MockProducer;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Person;
@@ -33,7 +33,7 @@ import jakarta.inject.Inject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, KeyValueWorkflow.class})
+@AddPackages(value = {Convert.class, KeyValueEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
 public class KeyValueExtensionTest {

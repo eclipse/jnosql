@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentWorkflow.class})
+@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 class MapperSelectTest {
@@ -76,8 +76,7 @@ class MapperSelectTest {
         Instance<DocumentManager> instance = Mockito.mock(Instance.class);
         this.captor = ArgumentCaptor.forClass(DocumentQuery.class);
         when(instance.get()).thenReturn(managerMock);
-        DefaultDocumentWorkflow workflow = new DefaultDocumentWorkflow(persistManager, converter);
-        this.template = new DefaultDocumentTemplate(converter, instance, workflow,
+        this.template = new DefaultDocumentTemplate(converter, instance,
                 persistManager, entities, converters);
     }
 

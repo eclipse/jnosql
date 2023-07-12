@@ -32,14 +32,13 @@ import jakarta.inject.Inject;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnWorkflow.class})
+@AddPackages(value = {Convert.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 public class DefaultColumnTemplateProducerTest {
 
     @Inject
     private ColumnTemplateProducer producer;
-
 
     @Test
     public void shouldReturnErrorWhenColumnManagerNull() {

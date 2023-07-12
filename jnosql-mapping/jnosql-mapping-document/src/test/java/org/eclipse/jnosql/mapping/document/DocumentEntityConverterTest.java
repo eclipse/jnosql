@@ -65,7 +65,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentWorkflow.class})
+@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 public class DocumentEntityConverterTest {

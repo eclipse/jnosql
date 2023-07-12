@@ -14,8 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Vetoed;
 import jakarta.inject.Inject;
@@ -25,7 +23,6 @@ import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 import java.util.Objects;
 import java.util.function.Function;
 
-
 /**
  * The producer of {@link KeyValueTemplate}
  */
@@ -34,8 +31,6 @@ public class KeyValueTemplateProducer implements Function<BucketManager, KeyValu
 
     @Inject
     private KeyValueEntityConverter converter;
-    @Inject
-    private KeyValueWorkflow flow;
 
     @Inject
     private KeyValueEventPersistManager eventManager;
@@ -43,7 +38,7 @@ public class KeyValueTemplateProducer implements Function<BucketManager, KeyValu
     @Override
     public KeyValueTemplate apply(BucketManager manager) {
         Objects.requireNonNull(manager, "manager is required");
-        return new ProducerKeyValueTemplate(converter, flow, manager, eventManager);
+        return new ProducerKeyValueTemplate(converter, manager, eventManager);
     }
 
     @Vetoed
@@ -51,16 +46,13 @@ public class KeyValueTemplateProducer implements Function<BucketManager, KeyValu
 
         private KeyValueEntityConverter converter;
 
-        private KeyValueWorkflow flow;
-
         private BucketManager manager;
 
         private KeyValueEventPersistManager eventManager;
 
-        ProducerKeyValueTemplate(KeyValueEntityConverter converter, KeyValueWorkflow flow,
+        ProducerKeyValueTemplate(KeyValueEntityConverter converter,
                                  BucketManager manager, KeyValueEventPersistManager eventManager) {
             this.converter = converter;
-            this.flow = flow;
             this.manager = manager;
             this.eventManager = eventManager;
         }
@@ -76,11 +68,6 @@ public class KeyValueTemplateProducer implements Function<BucketManager, KeyValu
         @Override
         protected BucketManager getManager() {
             return manager;
-        }
-
-        @Override
-        protected KeyValueWorkflow getFlow() {
-            return flow;
         }
 
         @Override

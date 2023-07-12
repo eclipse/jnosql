@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, KeyValueWorkflow.class})
+@AddPackages(value = {Convert.class, KeyValueEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
 public class KeyValueTemplateProducerTest {
