@@ -45,8 +45,8 @@ public class OffsetTimeReader implements ValueReader {
             return OffsetTime.class.cast(value);
         }
 
-        if (Calendar.class.isInstance(value)) {
-            return ((Calendar) value).toInstant().atZone(ZoneId.systemDefault())
+        if (value instanceof Calendar calendar) {
+            return calendar.toInstant().atZone(ZoneId.systemDefault())
                     .toOffsetDateTime().toOffsetTime();
         }
 

@@ -36,7 +36,7 @@ public final class CalendarReader implements ValueReader {
     @Override
     public <T> T read(Class<T> type, Object value) {
 
-        if (Calendar.class.isInstance(value)) {
+        if (value instanceof Calendar) {
             return (T) value;
         }
 
