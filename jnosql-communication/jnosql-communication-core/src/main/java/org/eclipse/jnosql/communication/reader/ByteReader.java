@@ -34,7 +34,7 @@ public final class ByteReader implements ValueReader {
     @Override
     public <T> T read(Class<T> type, Object value) {
 
-        if (Byte.class.isInstance(value)) {
+        if (value instanceof Byte) {
             return (T) value;
         }
         if (Number.class.isInstance(value)) {
