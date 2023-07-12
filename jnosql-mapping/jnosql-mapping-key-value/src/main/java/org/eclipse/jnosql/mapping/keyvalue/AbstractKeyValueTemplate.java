@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 
-
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.nosql.PreparedStatement;
 import jakarta.nosql.QueryMapper;
@@ -28,6 +27,7 @@ import java.time.Duration;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,32 +45,19 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
 
     protected abstract BucketManager getManager();
 
-    protected abstract KeyValueWorkflow getFlow();
     protected abstract KeyValueEventPersistManager getEventManager();
 
     @Override
     public <T> T put(T entity) {
         requireNonNull(entity, "entity is required");
-
-        UnaryOperator<KeyValueEntity> putAction = k -> {
-            getManager().put(k);
-            return k;
-
-        };
-        return getFlow().flow(entity, putAction);
+        return persist(entity, (keyValueEntity) -> getManager().put(keyValueEntity));
     }
 
     @Override
     public <T> T put(T entity, Duration ttl) {
         requireNonNull(entity, "entity is required");
         requireNonNull(ttl, "ttl class is required");
-
-        UnaryOperator<KeyValueEntity> putAction = k -> {
-            getManager().put(k, ttl);
-            return k;
-
-        };
-        return getFlow().flow(entity, putAction);
+        return persist(entity, (keyValueEntity) -> getManager().put(keyValueEntity, ttl));
     }
 
     @Override
@@ -196,5 +183,23 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     @Override
     public <T> QueryMapper.MapperDeleteFrom delete(Class<T> type) {
         throw new UnsupportedOperationException("Key value database type does not have support for mapping query");
+    }
+
+    protected <T> T persist(T entity, Consumer<KeyValueEntity> persistAction) {
+        return Stream.of(entity)
+                .map(toUnary(getEventManager()::firePreEntity))
+                .map(getConverter()::toKeyValue)
+                .map(toUnary(persistAction))
+                .map(it -> getConverter().toEntity((Class<T>) entity.getClass(), it))
+                .map(toUnary(getEventManager()::firePostEntity))
+                .findFirst()
+                .orElseThrow();
+    }
+
+    private <T> UnaryOperator<T> toUnary(Consumer<T> consumer) {
+        return t -> {
+            consumer.accept(t);
+            return t;
+        };
     }
 }

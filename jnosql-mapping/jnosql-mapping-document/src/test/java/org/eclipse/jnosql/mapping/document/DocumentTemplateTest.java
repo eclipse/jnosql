@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import static org.eclipse.jnosql.mapping.DatabaseType.DOCUMENT;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentWorkflow.class})
+@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 class DocumentTemplateTest {

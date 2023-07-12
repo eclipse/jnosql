@@ -60,7 +60,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnWorkflow.class})
+@AddPackages(value = {Convert.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 public class DefaultColumnTemplateTest {
@@ -104,7 +104,7 @@ public class DefaultColumnTemplateTest {
         captor = ArgumentCaptor.forClass(ColumnEntity.class);
         Instance<ColumnManager> instance = Mockito.mock(Instance.class);
         Mockito.when(instance.get()).thenReturn(managerMock);
-        this.template = new DefaultColumnTemplate(converter, instance, new DefaultColumnWorkflow(columnEventPersistManager, converter),
+        this.template = new DefaultColumnTemplate(converter, instance,
                 columnEventPersistManager, entities, converters);
     }
 

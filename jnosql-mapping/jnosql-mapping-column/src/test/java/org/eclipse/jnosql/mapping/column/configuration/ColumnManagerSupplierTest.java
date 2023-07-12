@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column.configuration;
 import org.eclipse.jnosql.communication.column.ColumnManager;
 import jakarta.data.exceptions.MappingException;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.column.ColumnWorkflow;
+import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.MockProducer;
 import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
@@ -36,7 +36,7 @@ import static org.eclipse.jnosql.mapping.config.MappingConfigurations.COLUMN_DAT
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.COLUMN_PROVIDER;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnWorkflow.class})
+@AddPackages(value = {Convert.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 class ColumnManagerSupplierTest {

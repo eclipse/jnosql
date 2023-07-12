@@ -32,14 +32,13 @@ import java.util.Iterator;
 @GraphTraversalSourceOperation
 class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
 
-
     private Instance<GraphTraversalSourceSupplier> supplierInstance;
 
     private EntitiesMetadata entities;
 
     private GraphConverter converter;
 
-    private GraphWorkflow workflow;
+    private GraphEventPersistManager persistManager;
 
     private Converters converters;
 
@@ -47,12 +46,12 @@ class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
     DefaultGraphTraversalSourceTemplate(Instance<GraphTraversalSourceSupplier> supplierInstance,
                                         EntitiesMetadata entities,
                                         @GraphTraversalSourceOperation GraphConverter converter,
-                                        GraphWorkflow workflow,
+                                        GraphEventPersistManager persistManager,
                                         Converters converters) {
         this.supplierInstance = supplierInstance;
         this.entities = entities;
         this.converter = converter;
-        this.workflow = workflow;
+        this.persistManager = persistManager;
         this.converters = converters;
     }
 
@@ -85,8 +84,8 @@ class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
     }
 
     @Override
-    protected GraphWorkflow getFlow() {
-        return workflow;
+    protected GraphEventPersistManager getEventManager() {
+        return persistManager;
     }
 
     @Override

@@ -21,7 +21,6 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.EntityPostPersist;
 import org.eclipse.jnosql.mapping.EntityPrePersist;
 
-
 /**
  * This interface represent the manager of events. When an entity be either saved or updated an event will be fired. This order gonna be:
  * 1) firePreEntity
@@ -31,7 +30,7 @@ import org.eclipse.jnosql.mapping.EntityPrePersist;
  * 5) firePostEntity
  * 6) firePostGraphEntity
  *
- * @see GraphWorkflow
+ * @see AbstractGraphTemplate
  */
 @ApplicationScoped
 class GraphEventPersistManager {

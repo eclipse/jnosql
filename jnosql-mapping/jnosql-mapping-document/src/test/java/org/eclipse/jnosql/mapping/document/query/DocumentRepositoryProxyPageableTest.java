@@ -30,7 +30,7 @@ import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.NoSQLPage;
-import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
+import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.MockProducer;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
@@ -77,7 +77,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentWorkflow.class})
+@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 class DocumentRepositoryProxyPageableTest {
@@ -459,7 +459,7 @@ class DocumentRepositoryProxyPageableTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
-        
+
         DocumentCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(EQUALS, condition.condition());

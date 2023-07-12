@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnWorkflow.class})
+@AddPackages(value = {Convert.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 class MapperSelectTest {
@@ -76,8 +76,7 @@ class MapperSelectTest {
         Instance<ColumnManager> instance = Mockito.mock(Instance.class);
         this.captor = ArgumentCaptor.forClass(ColumnQuery.class);
         when(instance.get()).thenReturn(managerMock);
-        DefaultColumnWorkflow workflow = new DefaultColumnWorkflow(persistManager, converter);
-        this.template = new DefaultColumnTemplate(converter, instance, workflow,
+        this.template = new DefaultColumnTemplate(converter, instance,
                 persistManager, entities, converters);
     }
 

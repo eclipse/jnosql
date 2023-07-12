@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-
 import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.document.DocumentTemplate;
@@ -23,20 +22,17 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Vetoed;
 import jakarta.inject.Inject;
+
 import java.util.Objects;
 
 /**
  * The producer of {@link DocumentTemplate}
  */
 @ApplicationScoped
-public class DocumentTemplateProducer  {
-
+public class DocumentTemplateProducer {
 
     @Inject
     private DocumentEntityConverter converter;
-
-    @Inject
-    private DocumentWorkflow workflow;
 
     @Inject
     private DocumentEventPersistManager persistManager;
@@ -47,7 +43,6 @@ public class DocumentTemplateProducer  {
     @Inject
     private Converters converters;
 
-
     /**
      * creates a {@link DocumentManager}
      *
@@ -57,7 +52,7 @@ public class DocumentTemplateProducer  {
      */
     public JNoSQLDocumentTemplate get(DocumentManager manager) {
         Objects.requireNonNull(manager, "manager is required");
-        return new ProducerDocumentTemplate(converter, manager, workflow,
+        return new ProducerDocumentTemplate(converter, manager,
                 persistManager, entities, converters);
     }
 
@@ -68,20 +63,17 @@ public class DocumentTemplateProducer  {
 
         private DocumentManager manager;
 
-        private DocumentWorkflow workflow;
-
         private DocumentEventPersistManager persistManager;
 
         private Converters converters;
 
         private EntitiesMetadata entities;
+
         ProducerDocumentTemplate(DocumentEntityConverter converter, DocumentManager manager,
-                                 DocumentWorkflow workflow,
                                  DocumentEventPersistManager persistManager,
                                  EntitiesMetadata entities, Converters converters) {
             this.converter = converter;
             this.manager = manager;
-            this.workflow = workflow;
             this.persistManager = persistManager;
             this.entities = entities;
             this.converters = converters;
@@ -98,11 +90,6 @@ public class DocumentTemplateProducer  {
         @Override
         protected DocumentManager getManager() {
             return manager;
-        }
-
-        @Override
-        protected DocumentWorkflow getWorkflow() {
-            return workflow;
         }
 
         @Override

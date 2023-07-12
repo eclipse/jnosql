@@ -36,8 +36,6 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
 
     private Instance<ColumnManager> manager;
 
-    private ColumnWorkflow flow;
-
     private ColumnEventPersistManager eventManager;
 
     private EntitiesMetadata entities;
@@ -46,12 +44,10 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
 
     @Inject
     DefaultColumnTemplate(ColumnEntityConverter converter, Instance<ColumnManager> manager,
-                          ColumnWorkflow flow,
                           ColumnEventPersistManager eventManager,
                           EntitiesMetadata entities, Converters converters) {
         this.converter = converter;
         this.manager = manager;
-        this.flow = flow;
         this.eventManager = eventManager;
         this.entities = entities;
         this.converters = converters;
@@ -71,11 +67,6 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
     }
 
     @Override
-    protected ColumnWorkflow getFlow() {
-        return flow;
-    }
-
-    @Override
     protected ColumnEventPersistManager getEventManager() {
         return eventManager;
     }
@@ -89,5 +80,4 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
     protected Converters getConverters() {
         return converters;
     }
-
 }

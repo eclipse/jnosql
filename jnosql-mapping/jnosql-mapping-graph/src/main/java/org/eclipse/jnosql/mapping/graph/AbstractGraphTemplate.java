@@ -43,8 +43,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
+import java.util.function.Supplier;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -67,9 +68,9 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     protected abstract GraphConverter getConverter();
 
-    protected abstract GraphWorkflow getFlow();
-
     protected abstract Converters getConverters();
+
+    protected abstract GraphEventPersistManager getEventManager();
 
     private GremlinExecutor gremlinExecutor;
 
@@ -89,7 +90,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
             return v;
         };
 
-        return getFlow().flow(entity, save);
+        return persist(entity, save);
     }
 
     @Override
@@ -116,7 +117,8 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
             GraphTransactionUtil.transaction(getGraph());
             return vertex;
         };
-        return getFlow().flow(entity, update);
+
+        return persist(entity, update);
     }
 
     @Override
@@ -435,5 +437,23 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     private <T> void checkId(T entity) {
         EntityMetadata entityMetadata = getEntities().get(entity.getClass());
         entityMetadata.id().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
+    }
+
+    protected <T> T persist(T entity, UnaryOperator<Vertex> persistAction) {
+        return Stream.of(entity)
+                .map(toUnary(getEventManager()::firePreEntity))
+                .map(getConverter()::toVertex)
+                .map(persistAction)
+                .map(t -> getConverter().toEntity(entity, t))
+                .map(toUnary(getEventManager()::firePostEntity))
+                .findFirst()
+                .orElseThrow();
+    }
+
+    private <T> UnaryOperator<T> toUnary(Consumer<T> consumer) {
+        return t -> {
+            consumer.accept(t);
+            return t;
+        };
     }
 }

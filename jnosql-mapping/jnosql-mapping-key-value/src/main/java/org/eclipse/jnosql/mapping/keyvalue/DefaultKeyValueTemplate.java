@@ -31,18 +31,14 @@ class DefaultKeyValueTemplate extends AbstractKeyValueTemplate {
 
     private Instance<BucketManager> manager;
 
-    private KeyValueWorkflow flow;
-
     private KeyValueEventPersistManager eventManager;
 
     @Inject
     DefaultKeyValueTemplate(KeyValueEntityConverter converter,
                             Instance<BucketManager> manager,
-                            KeyValueWorkflow flow,
                             KeyValueEventPersistManager eventManager) {
         this.converter = converter;
         this.manager = manager;
-        this.flow = flow;
         this.eventManager = eventManager;
     }
 
@@ -60,13 +56,7 @@ class DefaultKeyValueTemplate extends AbstractKeyValueTemplate {
     }
 
     @Override
-    protected KeyValueWorkflow getFlow() {
-        return flow;
-    }
-
-    @Override
     protected KeyValueEventPersistManager getEventManager() {
         return eventManager;
     }
-
 }

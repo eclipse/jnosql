@@ -39,18 +39,18 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
 
     private GraphConverter converter;
 
-    private GraphWorkflow workflow;
+    private GraphEventPersistManager persistManager;
 
     private Converters converters;
 
     @Inject
     DefaultGraphTemplate(Instance<Graph> graph, EntitiesMetadata entities, GraphConverter converter,
-                         GraphWorkflow workflow,
+                         GraphEventPersistManager persistManager,
                          Converters converters) {
         this.graph = graph;
         this.entities = entities;
         this.converter = converter;
-        this.workflow = workflow;
+        this.persistManager = persistManager;
         this.converters = converters;
     }
 
@@ -73,8 +73,8 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     }
 
     @Override
-    protected GraphWorkflow getFlow() {
-        return workflow;
+    protected GraphEventPersistManager getEventManager() {
+        return persistManager;
     }
 
     @Override
