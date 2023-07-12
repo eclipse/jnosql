@@ -38,8 +38,8 @@ public final class ShortReader implements ValueReader {
         if (Short.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) Short.valueOf(Number.class.cast(value).shortValue());
+        if (value instanceof Number number) {
+            return (T) Short.valueOf(number.shortValue());
         } else {
             return (T) Short.valueOf(value.toString());
         }

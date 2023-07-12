@@ -39,8 +39,8 @@ public final class DateReader implements ValueReader {
             return (T) value;
         }
 
-        if (Number.class.isInstance(value)) {
-            return (T) new Date(((Number) value).longValue());
+        if (value instanceof Number number) {
+            return (T) new Date(number.longValue());
         }
 
         return (T) new Date(value.toString());

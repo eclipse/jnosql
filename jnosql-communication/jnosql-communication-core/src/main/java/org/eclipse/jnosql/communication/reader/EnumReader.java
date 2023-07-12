@@ -47,8 +47,8 @@ public final class EnumReader implements ValueReader {
         }
         List<Enum> elements = getEnumList((Class<Enum>) type);
 
-        if (Number.class.isInstance(value)) {
-            int index = Number.class.cast(value).intValue();
+        if (value instanceof Number number) {
+            int index = number.intValue();
             return (T) elements.stream().filter(element -> element.ordinal() == index).findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("There is not index in enum to value: " + index));
         }

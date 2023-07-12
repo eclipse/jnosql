@@ -47,8 +47,8 @@ public final class BooleanReader implements ValueReader {
             bool = Boolean.class.cast(value);
         } else if (AtomicBoolean.class.isInstance(value)) {
             bool = AtomicBoolean.class.cast(value).get();
-        } else if (Number.class.isInstance(value)) {
-            bool = Number.class.cast(value).longValue() != 0;
+        } else if (value instanceof Number number) {
+            bool = number.longValue() != 0;
         } else if (String.class.isInstance(value)) {
             bool = Boolean.valueOf(value.toString());
         }

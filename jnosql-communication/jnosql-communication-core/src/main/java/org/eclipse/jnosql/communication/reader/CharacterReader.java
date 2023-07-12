@@ -37,8 +37,8 @@ public final class CharacterReader implements ValueReader {
         if (Character.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) Character.valueOf((char) Number.class.cast(value).intValue());
+        if (value instanceof Number number) {
+            return (T) Character.valueOf((char) number.intValue());
         }
 
         if (value.toString().isEmpty()) {

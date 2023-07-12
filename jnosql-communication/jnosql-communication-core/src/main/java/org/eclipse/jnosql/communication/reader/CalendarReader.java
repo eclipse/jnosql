@@ -40,9 +40,9 @@ public final class CalendarReader implements ValueReader {
             return (T) value;
         }
 
-        if (Number.class.isInstance(value)) {
+        if (value instanceof Number number) {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis( ((Number) value).longValue());
+            calendar.setTimeInMillis(number.longValue());
             return (T) calendar;
         }
 

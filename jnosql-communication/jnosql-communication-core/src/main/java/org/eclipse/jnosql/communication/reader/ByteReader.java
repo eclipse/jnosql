@@ -37,8 +37,8 @@ public final class ByteReader implements ValueReader {
         if (value instanceof Byte) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) Byte.valueOf(Number.class.cast(value).byteValue());
+        if (value instanceof Number number) {
+            return (T) Byte.valueOf(number.byteValue());
         } else {
             return (T) Byte.valueOf(value.toString());
         }

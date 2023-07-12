@@ -56,8 +56,8 @@ public class OffsetTimeReader implements ValueReader {
                     .toOffsetTime();
         }
 
-        if (Number.class.isInstance(value)) {
-            return new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault())
+        if (value instanceof Number number) {
+            return new Date(number.longValue()).toInstant().atZone(ZoneId.systemDefault())
                     .toOffsetDateTime()
                     .toOffsetTime();
         }

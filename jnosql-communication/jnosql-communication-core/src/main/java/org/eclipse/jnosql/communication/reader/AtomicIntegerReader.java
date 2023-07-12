@@ -39,8 +39,8 @@ public final class AtomicIntegerReader implements ValueReader {
         if (AtomicInteger.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) new AtomicInteger(Number.class.cast(value).intValue());
+        if (value instanceof Number number) {
+            return (T) new AtomicInteger(number.intValue());
         } else {
             return (T) new AtomicInteger(Integer.parseInt(value.toString()));
         }

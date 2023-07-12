@@ -52,8 +52,8 @@ public final class LocalDateReader implements ValueReader {
             return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         }
 
-        if (Number.class.isInstance(value)) {
-            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        if (value instanceof Number number) {
+            return (T) new Date(number.longValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         }
 
         return (T) LocalDate.parse(value.toString());

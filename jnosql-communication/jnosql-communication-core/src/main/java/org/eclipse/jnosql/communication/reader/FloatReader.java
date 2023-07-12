@@ -37,8 +37,8 @@ public final class FloatReader implements ValueReader {
         if (Float.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) Float.valueOf(Number.class.cast(value).floatValue());
+        if (value instanceof Number number) {
+            return (T) Float.valueOf(number.floatValue());
         } else {
             return (T) Float.valueOf(value.toString());
         }

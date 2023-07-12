@@ -49,8 +49,8 @@ public class ZonedDateTimeReader implements ValueReader {
             return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault());
         }
 
-        if (Number.class.isInstance(value)) {
-            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault());
+        if (value instanceof Number number) {
+            return (T) new Date(number.longValue()).toInstant().atZone(ZoneId.systemDefault());
         }
 
         return (T) ZonedDateTime.parse(value.toString());

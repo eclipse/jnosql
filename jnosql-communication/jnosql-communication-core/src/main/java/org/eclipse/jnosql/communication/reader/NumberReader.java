@@ -34,7 +34,7 @@ public final class NumberReader implements ValueReader {
 
     @Override
     public <T> T read(Class<T> type, Object value) {
-        if (Number.class.isInstance(value)) {
+        if (value instanceof Number) {
             return (T) value;
         } else {
             return (T) Double.valueOf(value.toString());
