@@ -48,8 +48,8 @@ public class OffsetDateTimeReader implements ValueReader {
             return calendar.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime();
         }
 
-        if (Date.class.isInstance(value)) {
-            return ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime();
+        if (value instanceof Date date) {
+            return date.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime();
         }
 
         if (value instanceof Number number) {

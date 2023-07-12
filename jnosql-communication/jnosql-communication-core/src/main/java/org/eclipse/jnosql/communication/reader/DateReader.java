@@ -35,7 +35,7 @@ public final class DateReader implements ValueReader {
     @Override
     public <T> T read(Class<T> type, Object value) {
 
-        if (Date.class.isInstance(value)) {
+        if (value instanceof Date) {
             return (T) value;
         }
 

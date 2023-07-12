@@ -48,8 +48,8 @@ public final class LocalDateReader implements ValueReader {
             return (T) calendar.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         }
 
-        if (Date.class.isInstance(value)) {
-            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        if (value instanceof Date date) {
+            return (T) date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         }
 
         if (value instanceof Number number) {

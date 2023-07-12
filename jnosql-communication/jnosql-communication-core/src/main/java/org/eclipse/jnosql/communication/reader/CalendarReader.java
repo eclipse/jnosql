@@ -46,9 +46,9 @@ public final class CalendarReader implements ValueReader {
             return (T) calendar;
         }
 
-        if (Date.class.isInstance(value)) {
+        if (value instanceof Date date) {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime((Date)value);
+            calendar.setTime(date);
             return (T) calendar;
         }
 

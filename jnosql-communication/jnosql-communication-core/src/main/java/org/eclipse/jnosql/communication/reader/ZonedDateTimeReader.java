@@ -45,8 +45,8 @@ public class ZonedDateTimeReader implements ValueReader {
             return (T) calendar.toInstant().atZone(ZoneId.systemDefault());
         }
 
-        if (Date.class.isInstance(value)) {
-            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault());
+        if (value instanceof Date date) {
+            return (T) date.toInstant().atZone(ZoneId.systemDefault());
         }
 
         if (value instanceof Number number) {
