@@ -58,10 +58,8 @@ public class ListTypeReferenceReader implements TypeReferenceReader {
         Type type = typeReference.get();
         ParameterizedType parameterizedType = (ParameterizedType) type;
         Class<?> classType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
-        if (Iterable.class.isInstance(value)) {
-            Iterable iterable = Iterable.class.cast(value);
-            return (T) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(classType, o))
-                    .collect(toList());
+        if (value instanceof Iterable iterable) {
+            return (T) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(classType, o)).collect(toList());
         }
         return (T) new ArrayList<>(Collections.singletonList(SERVICE_PROVIDER.read(classType, value)));
     }

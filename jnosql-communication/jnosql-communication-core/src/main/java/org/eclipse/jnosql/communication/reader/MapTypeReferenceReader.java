@@ -72,9 +72,9 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
         if (Map.class.isInstance(value)) {
             return convertToMap(keyClass, valueClass, value);
         }
-        if (Iterable.class.isInstance(value)) {
+        if (value instanceof Iterable iterable) {
             List<Object> collection = new ArrayList<>();
-            Iterable.class.cast(value).forEach(collection::add);
+            iterable.forEach(collection::add);
             if (collection.isEmpty()) {
                 return Collections.emptyMap();
             }
