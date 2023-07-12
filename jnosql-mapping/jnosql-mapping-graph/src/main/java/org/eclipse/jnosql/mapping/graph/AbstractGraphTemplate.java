@@ -439,7 +439,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         entityMetadata.id().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
     }
 
-    private <T> T persist(T entity, UnaryOperator<Vertex> persistAction) {
+    protected <T> T persist(T entity, UnaryOperator<Vertex> persistAction) {
         return Stream.of(entity)
                 .map(toUnary(getEventManager()::firePreEntity))
                 .map(getConverter()::toVertex)

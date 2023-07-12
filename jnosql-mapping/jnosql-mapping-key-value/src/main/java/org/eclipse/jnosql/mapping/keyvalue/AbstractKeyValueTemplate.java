@@ -185,7 +185,7 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
         throw new UnsupportedOperationException("Key value database type does not have support for mapping query");
     }
 
-    private <T> T persist(T entity, Consumer<KeyValueEntity> persistAction) {
+    protected <T> T persist(T entity, Consumer<KeyValueEntity> persistAction) {
         return Stream.of(entity)
                 .map(toUnary(getEventManager()::firePreEntity))
                 .map(getConverter()::toKeyValue)

@@ -261,7 +261,7 @@ public abstract class AbstractDocumentTemplate implements JNoSQLDocumentTemplate
         delete(query);
     }
 
-    private <T> T persist(T entity, UnaryOperator<DocumentEntity> persistAction) {
+    protected <T> T persist(T entity, UnaryOperator<DocumentEntity> persistAction) {
         return Stream.of(entity)
                 .map(toUnary(getEventManager()::firePreEntity))
                 .map(getConverter()::toDocument)

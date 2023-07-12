@@ -269,7 +269,7 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
         delete(query);
     }
 
-    private <T> T persist(T entity, UnaryOperator<ColumnEntity> persistAction) {
+    protected <T> T persist(T entity, UnaryOperator<ColumnEntity> persistAction) {
         return Stream.of(entity)
                 .map(toUnary(getEventManager()::firePreEntity))
                 .map(getConverter()::toColumn)
