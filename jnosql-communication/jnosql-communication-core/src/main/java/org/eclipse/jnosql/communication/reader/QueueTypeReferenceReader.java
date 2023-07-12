@@ -47,8 +47,7 @@ public class QueueTypeReferenceReader implements TypeReferenceReader {
 
             boolean isCollectionRight = Queue.class.equals(parameterizedType.getRawType())
                     || Deque.class.equals(parameterizedType.getRawType());
-            return isCollectionRight &&
-                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]);
+            return isCollectionRight && parameterizedType.getActualTypeArguments()[0] instanceof Class;
         }
         return false;
     }

@@ -50,8 +50,8 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
         if (type instanceof ParameterizedType parameterizedType) {
 
             return Map.class.equals(parameterizedType.getRawType()) &&
-                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0])
-                    && Class.class.isInstance(parameterizedType.getActualTypeArguments()[1]);
+                                    parameterizedType.getActualTypeArguments()[0] instanceof Class &&
+                                    parameterizedType.getActualTypeArguments()[1] instanceof Class;
         }
         return false;
     }

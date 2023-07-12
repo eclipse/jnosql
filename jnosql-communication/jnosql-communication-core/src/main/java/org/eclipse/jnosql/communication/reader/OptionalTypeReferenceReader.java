@@ -39,7 +39,7 @@ public class OptionalTypeReferenceReader implements TypeReferenceReader {
         if (type instanceof ParameterizedType parameterizedType) {
 
             return Optional.class.equals(parameterizedType.getRawType()) &&
-                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]);
+                                         parameterizedType.getActualTypeArguments()[0] instanceof Class;
         }
         return false;
     }

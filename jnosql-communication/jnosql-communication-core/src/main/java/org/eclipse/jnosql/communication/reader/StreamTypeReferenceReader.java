@@ -40,8 +40,7 @@ public class StreamTypeReferenceReader implements TypeReferenceReader {
         Type type = typeReference.get();
         if (type instanceof ParameterizedType parameterizedType) {
 
-            return Stream.class.equals(parameterizedType.getRawType()) &&
-                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]);
+            return Stream.class.equals(parameterizedType.getRawType()) && parameterizedType.getActualTypeArguments()[0] instanceof Class;
         }
         return false;
     }

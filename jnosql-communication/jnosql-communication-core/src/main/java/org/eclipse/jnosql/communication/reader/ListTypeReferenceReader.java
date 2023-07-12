@@ -47,8 +47,8 @@ public class ListTypeReferenceReader implements TypeReferenceReader {
 
             return (List.class.equals(parameterizedType.getRawType())
                     || Iterable.class.equals(parameterizedType.getRawType())
-                    || Collection.class.equals(parameterizedType.getRawType())) &&
-                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]);
+                    || Collection.class.equals(parameterizedType.getRawType()))
+                    && parameterizedType.getActualTypeArguments()[0] instanceof Class;
         }
         return false;
     }

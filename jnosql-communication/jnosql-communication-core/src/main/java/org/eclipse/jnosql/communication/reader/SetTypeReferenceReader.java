@@ -44,8 +44,7 @@ public class SetTypeReferenceReader implements TypeReferenceReader {
         Type type = typeReference.get();
         if (type instanceof ParameterizedType parameterizedType) {
 
-            return Set.class.equals(parameterizedType.getRawType()) &&
-                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]);
+            return Set.class.equals(parameterizedType.getRawType()) && parameterizedType.getActualTypeArguments()[0] instanceof Class;
         }
         return false;
     }
