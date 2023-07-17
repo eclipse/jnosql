@@ -41,16 +41,16 @@ public class LocalTimeReader implements ValueReader {
             return (T) value;
         }
 
-        if (Calendar.class.isInstance(value)) {
-            return (T) ((Calendar) value).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        if (value instanceof Calendar calendar) {
+            return (T) calendar.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
         }
 
-        if (Date.class.isInstance(value)) {
-            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        if (value instanceof Date date) {
+            return (T) date.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
         }
 
-        if (Number.class.isInstance(value)) {
-            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        if (value instanceof Number number) {
+            return (T) new Date(number.longValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
         }
 
         return (T) LocalTime.parse(value.toString());

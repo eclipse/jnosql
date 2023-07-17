@@ -47,12 +47,11 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
     @Override
     public boolean test(TypeSupplier<?> typeReference) {
         Type type = typeReference.get();
-        if (ParameterizedType.class.isInstance(type)) {
-            ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
+        if (type instanceof ParameterizedType parameterizedType) {
 
             return Map.class.equals(parameterizedType.getRawType()) &&
-                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0])
-                    && Class.class.isInstance(parameterizedType.getActualTypeArguments()[1]);
+                                    parameterizedType.getActualTypeArguments()[0] instanceof Class &&
+                                    parameterizedType.getActualTypeArguments()[1] instanceof Class;
         }
         return false;
     }
@@ -60,7 +59,7 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
     @Override
     public <T> T convert(TypeSupplier<T> typeReference, Object value) {
         Type type = typeReference.get();
-        ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
+        ParameterizedType parameterizedType = (ParameterizedType) type;
         Class<?> keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
         Class<?> valueType = (Class<?>) Optional.of(parameterizedType.getActualTypeArguments()[1])
                 .filter(IS_CLASS).orElse(Object.class);
@@ -73,9 +72,9 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
         if (Map.class.isInstance(value)) {
             return convertToMap(keyClass, valueClass, value);
         }
-        if (Iterable.class.isInstance(value)) {
+        if (value instanceof Iterable iterable) {
             List<Object> collection = new ArrayList<>();
-            Iterable.class.cast(value).forEach(collection::add);
+            iterable.forEach(collection::add);
             if (collection.isEmpty()) {
                 return Collections.emptyMap();
             }

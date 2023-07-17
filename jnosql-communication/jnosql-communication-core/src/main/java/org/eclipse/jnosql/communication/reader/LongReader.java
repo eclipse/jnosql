@@ -37,8 +37,8 @@ public final class LongReader implements ValueReader {
         if (Long.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) Long.valueOf(Number.class.cast(value).longValue());
+        if (value instanceof Number number) {
+            return (T) Long.valueOf(number.longValue());
         } else {
             return (T) Long.valueOf(value.toString());
         }

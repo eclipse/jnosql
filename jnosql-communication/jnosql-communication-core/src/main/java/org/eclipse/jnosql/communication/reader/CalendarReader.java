@@ -36,19 +36,19 @@ public final class CalendarReader implements ValueReader {
     @Override
     public <T> T read(Class<T> type, Object value) {
 
-        if (Calendar.class.isInstance(value)) {
+        if (value instanceof Calendar) {
             return (T) value;
         }
 
-        if (Number.class.isInstance(value)) {
+        if (value instanceof Number number) {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis( ((Number) value).longValue());
+            calendar.setTimeInMillis(number.longValue());
             return (T) calendar;
         }
 
-        if (Date.class.isInstance(value)) {
+        if (value instanceof Date date) {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime((Date)value);
+            calendar.setTime(date);
             return (T) calendar;
         }
 

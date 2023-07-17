@@ -35,12 +35,12 @@ public final class DateReader implements ValueReader {
     @Override
     public <T> T read(Class<T> type, Object value) {
 
-        if (Date.class.isInstance(value)) {
+        if (value instanceof Date) {
             return (T) value;
         }
 
-        if (Number.class.isInstance(value)) {
-            return (T) new Date(((Number) value).longValue());
+        if (value instanceof Number number) {
+            return (T) new Date(number.longValue());
         }
 
         return (T) new Date(value.toString());

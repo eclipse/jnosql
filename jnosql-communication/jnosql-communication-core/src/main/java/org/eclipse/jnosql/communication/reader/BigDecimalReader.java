@@ -41,8 +41,8 @@ public final class BigDecimalReader implements ValueReader {
         if (BigDecimal.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) BigDecimal.valueOf(Number.class.cast(value).doubleValue());
+        if (value instanceof Number number) {
+            return (T) BigDecimal.valueOf(number.doubleValue());
         } else {
             return (T) BigDecimal.valueOf(Double.parseDouble(value.toString()));
         }

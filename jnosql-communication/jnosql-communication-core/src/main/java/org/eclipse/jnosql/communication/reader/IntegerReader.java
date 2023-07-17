@@ -38,8 +38,8 @@ public final class IntegerReader implements ValueReader {
         if (Integer.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) Integer.valueOf(Number.class.cast(value).intValue());
+        if (value instanceof Number number) {
+            return (T) Integer.valueOf(number.intValue());
         } else {
             return (T) Integer.valueOf(value.toString());
         }

@@ -44,16 +44,16 @@ public class OffsetDateTimeReader implements ValueReader {
             return OffsetDateTime.class.cast(value);
         }
 
-        if (Calendar.class.isInstance(value)) {
-            return ((Calendar) value).toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime();
+        if (value instanceof Calendar calendar) {
+            return calendar.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime();
         }
 
-        if (Date.class.isInstance(value)) {
-            return ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime();
+        if (value instanceof Date date) {
+            return date.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime();
         }
 
-        if (Number.class.isInstance(value)) {
-            return new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime();
+        if (value instanceof Number number) {
+            return new Date(number.longValue()).toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime();
         }
 
         return OffsetDateTime.parse(value.toString());
