@@ -14,6 +14,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Fixes lazy loading metadata at the EntityMetadata
 - Fixes ParameterMedataData to not thrown NullPointException when it's built with a Parameter without @Column or @Id annotations
 - Fixes Reflections.getConstructor() method logic to detect constructors with parameters annotated with @Id or @Column
+- Unwrapping of UndeclaredThrowableException in repository when an underlying (f.e. ConstraintValidationException) occurs
 
 == [1.0.0] - 2023-6-22
 
