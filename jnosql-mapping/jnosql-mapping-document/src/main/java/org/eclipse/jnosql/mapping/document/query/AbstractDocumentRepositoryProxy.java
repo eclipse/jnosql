@@ -23,6 +23,7 @@ import org.eclipse.jnosql.mapping.query.RepositoryType;
 import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
@@ -45,7 +46,11 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
 
         switch (type) {
             case DEFAULT -> {
-                return method.invoke(getRepository(), args);
+                try {
+                    return method.invoke(getRepository(), args);
+                }catch (InvocationTargetException ex){
+                    throw ex.getTargetException();
+                }
             }
             case FIND_BY -> {
                 return executeFindByQuery(method, args, typeClass, getQuery(method, args));
