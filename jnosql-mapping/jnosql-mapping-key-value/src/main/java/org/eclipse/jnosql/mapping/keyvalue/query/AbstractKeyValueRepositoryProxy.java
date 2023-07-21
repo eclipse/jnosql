@@ -19,8 +19,10 @@ import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
 import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
+import org.eclipse.jnosql.mapping.repository.ThrowingSupplier;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHandler {
@@ -32,20 +34,19 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
 
     protected abstract Class<T> getType();
 
-
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
         RepositoryType type = RepositoryType.of(method);
         switch (type) {
             case DEFAULT -> {
-                return method.invoke(getRepository(), args);
+                return unwrapInvocationTargetException(() -> method.invoke(getRepository(), args));
             }
             case OBJECT_METHOD -> {
-                return method.invoke(this, args);
+                return unwrapInvocationTargetException(() -> method.invoke(this, args));
             }
             case DEFAULT_METHOD -> {
-                return InvocationHandler.invokeDefault(instance, method, args);
+                return unwrapInvocationTargetException(() -> InvocationHandler.invokeDefault(instance, method, args));
             }
             case QUERY -> {
                 Class<?> typeClass = getType();
@@ -58,6 +59,14 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
                 return methodReturn.execute();
             }
             default -> throw new DynamicQueryException("Key Value repository does not support query method");
+        }
+    }
+
+    private Object unwrapInvocationTargetException(ThrowingSupplier<Object> supplier) throws Throwable {
+        try {
+            return supplier.get();
+        } catch (InvocationTargetException ex) {
+            throw ex.getCause();
         }
     }
 }

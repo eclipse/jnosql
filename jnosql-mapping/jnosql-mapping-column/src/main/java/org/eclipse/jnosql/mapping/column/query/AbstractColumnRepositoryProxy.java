@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-
 import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
@@ -22,10 +21,11 @@ import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
 import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
+import org.eclipse.jnosql.mapping.repository.ThrowingSupplier;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 
 /**
  * Template method to Repository proxy on column
@@ -46,7 +46,7 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepo
 
         switch (type) {
             case DEFAULT -> {
-                return method.invoke(getRepository(), args);
+                return unwrapInvocationTargetException(() -> method.invoke(getRepository(), args));
             }
             case FIND_BY -> {
                 return executeFindByQuery(method, args, typeClass, getQuery(method, args));
@@ -67,10 +67,10 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepo
                 return Void.class;
             }
             case OBJECT_METHOD -> {
-                return method.invoke(this, args);
+                return unwrapInvocationTargetException(() -> method.invoke(this, args));
             }
             case DEFAULT_METHOD -> {
-                return InvocationHandler.invokeDefault(instance, method, args);
+                return unwrapInvocationTargetException(() -> InvocationHandler.invokeDefault(instance, method, args));
             }
             case ORDER_BY ->
                     throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
@@ -89,5 +89,11 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepo
         }
     }
 
-
+    private Object unwrapInvocationTargetException(ThrowingSupplier<Object> supplier) throws Throwable {
+        try {
+            return supplier.get();
+        } catch (InvocationTargetException ex) {
+            throw ex.getCause();
+        }
+    }
 }

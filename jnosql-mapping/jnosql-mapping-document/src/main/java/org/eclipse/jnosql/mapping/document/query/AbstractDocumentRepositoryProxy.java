@@ -14,19 +14,19 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
-
 import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
 import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
+import org.eclipse.jnosql.mapping.repository.ThrowingSupplier;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
-
 
 /**
  * The template method to {@link PageableRepository} to Document
@@ -45,7 +45,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
 
         switch (type) {
             case DEFAULT -> {
-                return method.invoke(getRepository(), args);
+                return unwrapInvocationTargetException(() -> method.invoke(getRepository(), args));
             }
             case FIND_BY -> {
                 return executeFindByQuery(method, args, typeClass, getQuery(method, args));
@@ -66,10 +66,10 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                 return null;
             }
             case OBJECT_METHOD -> {
-                return method.invoke(this, args);
+                return unwrapInvocationTargetException(() -> method.invoke(this, args));
             }
             case DEFAULT_METHOD -> {
-                return InvocationHandler.invokeDefault(instance, method, args);
+                return unwrapInvocationTargetException(() -> InvocationHandler.invokeDefault(instance, method, args));
             }
             case ORDER_BY ->
                     throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
@@ -85,6 +85,14 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
             default -> {
                 return Void.class;
             }
+        }
+    }
+
+    private Object unwrapInvocationTargetException(ThrowingSupplier<Object> supplier) throws Throwable {
+        try {
+            return supplier.get();
+        } catch (InvocationTargetException ex) {
+            throw ex.getCause();
         }
     }
 }
