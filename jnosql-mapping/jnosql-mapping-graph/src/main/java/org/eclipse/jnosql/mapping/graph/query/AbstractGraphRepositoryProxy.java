@@ -29,8 +29,10 @@ import org.eclipse.jnosql.mapping.query.RepositoryType;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.repository.ThrowingSupplier;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +70,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
         switch (type) {
             case DEFAULT -> {
-                return method.invoke(getRepository(), args);
+                return unwrapInvocationTargetException(() -> method.invoke(getRepository(), args));
             }
             case FIND_BY -> {
                 return findBy(method, args, typeClass);
@@ -80,7 +82,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                 return executeDeleteMethod(method, args);
             }
             case OBJECT_METHOD -> {
-                return method.invoke(this, args);
+                return unwrapInvocationTargetException(() -> method.invoke(this, args));
             }
             case COUNT_BY -> {
                 return countBy(method, args);
@@ -89,7 +91,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                 return existsBy(method, args);
             }
             case DEFAULT_METHOD -> {
-                return InvocationHandler.invokeDefault(instance, method, args);
+                return unwrapInvocationTargetException(() -> InvocationHandler.invokeDefault(instance, method, args));
             }
             case ORDER_BY ->
                     throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
@@ -190,4 +192,11 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
         return Void.class;
     }
 
+    private Object unwrapInvocationTargetException(ThrowingSupplier<Object> supplier) throws Throwable {
+        try {
+            return supplier.get();
+        } catch (InvocationTargetException ex) {
+            throw ex.getCause();
+        }
+    }
 }
