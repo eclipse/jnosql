@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 /**
  * When The Entity is converted to communication layer,
  * this entity must have a field with {@link Id} annotation. If this entity
- * hasn't this information an exception will be launch.
+ * hasn't this information an exception will be launched.
  */
 public class IdNotFoundException extends NoSQLException {
 
