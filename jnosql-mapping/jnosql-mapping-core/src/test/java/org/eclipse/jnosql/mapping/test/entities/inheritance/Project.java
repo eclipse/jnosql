@@ -17,14 +17,10 @@ package org.eclipse.jnosql.mapping.test.entities.inheritance;
 
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.DiscriminatorColumn;
-import org.eclipse.jnosql.mapping.Inheritance;
 
 import java.util.Objects;
 
 @Entity
-@Inheritance
-@DiscriminatorColumn("size")
 public class Project {
 
     @Id

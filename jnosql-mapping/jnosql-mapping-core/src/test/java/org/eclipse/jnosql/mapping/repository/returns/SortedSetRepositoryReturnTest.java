@@ -16,7 +16,6 @@ package org.eclipse.jnosql.mapping.repository.returns;
 
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
-import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.repository.RepositoryReturn;
 import org.junit.jupiter.api.Assertions;

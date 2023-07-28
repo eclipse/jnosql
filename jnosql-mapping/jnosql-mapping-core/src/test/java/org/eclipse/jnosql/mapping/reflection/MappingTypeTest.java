@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.Column;
-import org.eclipse.jnosql.mapping.Embeddable;
 import org.eclipse.jnosql.mapping.test.entities.Actor;
 import org.eclipse.jnosql.mapping.test.entities.Address;
 import org.eclipse.jnosql.mapping.test.entities.Movie;
@@ -124,7 +123,6 @@ class MappingTypeTest {
         }
     }
 
-    @Embeddable
     public static class BarClass {
 
         @Column("integerAnnotation")

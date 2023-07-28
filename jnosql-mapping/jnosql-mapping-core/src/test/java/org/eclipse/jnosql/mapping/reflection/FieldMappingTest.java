@@ -16,8 +16,6 @@ package org.eclipse.jnosql.mapping.reflection;
 
 
 import jakarta.nosql.Column;
-import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.Embeddable;
 import org.eclipse.jnosql.mapping.VetedConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
@@ -160,7 +158,6 @@ public class FieldMappingTest {
         private BarClass barClass;
     }
 
-    @Embeddable
     public static class BarClass {
 
         @Column("integerAnnotation")

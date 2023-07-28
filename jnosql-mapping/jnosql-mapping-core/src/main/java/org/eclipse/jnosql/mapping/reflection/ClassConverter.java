@@ -16,7 +16,6 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.Convert;
 
 import java.lang.reflect.Field;
 import java.util.Collections;

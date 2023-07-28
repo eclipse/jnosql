@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.util;
 
-import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Money;

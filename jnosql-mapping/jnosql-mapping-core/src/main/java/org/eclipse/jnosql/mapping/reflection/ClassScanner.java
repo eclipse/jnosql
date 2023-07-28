@@ -21,7 +21,6 @@ import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Repository;
 import jakarta.nosql.Entity;
-import org.eclipse.jnosql.mapping.Embeddable;
 
 import java.util.Arrays;
 import java.util.HashSet;

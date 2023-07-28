@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.repository.returns;
 
-import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 
 import java.util.NavigableSet;

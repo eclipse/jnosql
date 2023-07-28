@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.test.entities;
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
-import org.eclipse.jnosql.mapping.Convert;
 
 @Entity
 public class Worker {
@@ -29,7 +28,6 @@ public class Worker {
     private Job job;
 
     @Column("money")
-    @Convert(MoneyConverter.class)
     private Money salary;
 
     public String getName() {

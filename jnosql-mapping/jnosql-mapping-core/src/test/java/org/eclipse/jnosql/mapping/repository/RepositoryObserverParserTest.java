@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.repository;
 
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;

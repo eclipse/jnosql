@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.test.entities.Address;
 import org.eclipse.jnosql.mapping.test.entities.AppointmentBook;

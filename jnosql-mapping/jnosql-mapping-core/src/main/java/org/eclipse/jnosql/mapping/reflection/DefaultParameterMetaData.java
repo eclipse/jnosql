@@ -14,8 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import org.eclipse.jnosql.mapping.AttributeConverter;
-
 import java.util.Objects;
 import java.util.Optional;
 

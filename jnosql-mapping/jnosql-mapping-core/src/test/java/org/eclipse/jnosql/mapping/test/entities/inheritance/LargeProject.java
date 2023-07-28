@@ -17,12 +17,10 @@ package org.eclipse.jnosql.mapping.test.entities.inheritance;
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
-import org.eclipse.jnosql.mapping.DiscriminatorValue;
 
 import java.math.BigDecimal;
 
 @Entity
-@DiscriminatorValue("Large")
 public class LargeProject extends Project {
 
     @Column

@@ -18,13 +18,11 @@ package org.eclipse.jnosql.mapping.test.entities.inheritance;
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.Inheritance;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Inheritance
 public abstract class Notification {
 
     @Id
