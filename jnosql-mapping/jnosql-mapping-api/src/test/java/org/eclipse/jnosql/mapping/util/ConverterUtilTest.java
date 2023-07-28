@@ -23,7 +23,6 @@ import org.eclipse.jnosql.mapping.test.entities.Worker;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
-import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.junit.jupiter.api.Test;

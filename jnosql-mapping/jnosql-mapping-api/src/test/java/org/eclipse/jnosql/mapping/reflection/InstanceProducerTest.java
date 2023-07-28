@@ -20,7 +20,6 @@ import org.eclipse.jnosql.mapping.test.entities.ZipCode;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
-import org.eclipse.jnosql.mapping.InstanceProducer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
