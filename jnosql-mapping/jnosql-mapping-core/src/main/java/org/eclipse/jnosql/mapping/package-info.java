@@ -14,21 +14,12 @@
  */
 
 /**
- * This package contains all columns API to artemis.
- * Artemis is a flexible and extensible ORM to connect NoSQL databases. It brings an easy interface to
- * support key-value, column family, document oriented and graph databases using as base Diana in CDI based.
- * The API's focus is on simplicity and ease of use.
- * <ul>
- * <li>CDI Based</li>
- * <li>Diana Based</li>
- * <li>Events to insert, delete, update</li>
- * <li>Supports to Bean Validation</li>
- * <li>ORM Annotation Based</li>
- * <li>Configurable and extensible</li>
- </ul>
- * Developers should only have to know a minimal set of
- * artifacts to work with the solution.
- * The API is built on latest Java 8 features and therefore fit
- * perfectly with the functional features of Java 8.
+ * The {@code core} package in the Eclipse JNoSQL project contains the fundamental classes and interfaces
+ * that form the core of the JNoSQL framework for NoSQL database integration and object-mapping.
+ *
+ * <p>Developers can use the classes and interfaces provided in this package to interact with various NoSQL
+ * databases and perform CRUD (Create, Read, Update, Delete) operations on entities mapped to these databases.
+ * The core package provides a flexible and extensible foundation for building NoSQL-based applications with JNoSQL.
+ *
  */
 package org.eclipse.jnosql.mapping;
