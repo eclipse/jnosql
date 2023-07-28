@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.mapping;
 
+import org.eclipse.jnosql.mapping.AttributeConverter;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 

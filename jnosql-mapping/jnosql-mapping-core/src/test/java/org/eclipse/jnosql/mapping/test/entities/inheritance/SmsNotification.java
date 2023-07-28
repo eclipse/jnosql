@@ -17,8 +17,10 @@ package org.eclipse.jnosql.mapping.test.entities.inheritance;
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
+import org.eclipse.jnosql.mapping.DiscriminatorValue;
 
 @Entity
+@DiscriminatorValue("SMS")
 public class SmsNotification extends Notification {
 
     @Column

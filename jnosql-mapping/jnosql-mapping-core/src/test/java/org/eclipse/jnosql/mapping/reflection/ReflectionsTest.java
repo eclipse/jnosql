@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.test.entities.*;
 import org.eclipse.jnosql.mapping.test.entities.constructor.Smartphone;

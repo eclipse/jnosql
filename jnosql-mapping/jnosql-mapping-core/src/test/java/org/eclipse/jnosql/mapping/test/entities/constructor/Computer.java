@@ -17,7 +17,9 @@ package org.eclipse.jnosql.mapping.test.entities.constructor;
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.test.entities.Money;
+import org.eclipse.jnosql.mapping.test.entities.MoneyConverter;
 
 @Entity
 public class Computer {
@@ -35,11 +37,12 @@ public class Computer {
     private final String model;
 
     @Column
+    @Convert(MoneyConverter.class)
     private final Money price;
 
     public Computer(@Id Long id, @Column("name") String name,
                     @Column("age") int age, @Column("model") String model,
-                    @Column("price") Money price) {
+                    @Column("price") @Convert(MoneyConverter.class) Money price) {
         this.id = id;
         this.name = name;
         this.age = age;

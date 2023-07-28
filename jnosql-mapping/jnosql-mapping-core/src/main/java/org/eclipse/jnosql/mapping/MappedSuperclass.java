@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -14,20 +14,18 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import org.eclipse.jnosql.mapping.AttributeConverter;
 
-import jakarta.enterprise.inject.Vetoed;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Vetoed
-public class VetedConverter implements AttributeConverter<String, String> {
+/**
+ * Designates a class whose mapping information is applied to the entities that inherit from it.
+ * A mapped superclass has no separate table defined for it.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface MappedSuperclass {
 
-    @Override
-    public String convertToDatabaseColumn(String attribute) {
-        return attribute;
-    }
-
-    @Override
-    public String convertToEntityAttribute(String dbData) {
-        return dbData;
-    }
 }

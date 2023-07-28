@@ -16,9 +16,11 @@ package org.eclipse.jnosql.mapping.test.entities;
 
 
 import jakarta.nosql.Column;
+import org.eclipse.jnosql.mapping.Embeddable;
 
 import java.util.Objects;
 
+@Embeddable
 public class Job {
 
     @Column

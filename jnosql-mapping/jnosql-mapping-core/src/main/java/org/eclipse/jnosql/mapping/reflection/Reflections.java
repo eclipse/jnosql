@@ -19,6 +19,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
+import org.eclipse.jnosql.mapping.DiscriminatorColumn;
+import org.eclipse.jnosql.mapping.DiscriminatorValue;
+import org.eclipse.jnosql.mapping.Inheritance;
+import org.eclipse.jnosql.mapping.MappedSuperclass;
 import org.eclipse.jnosql.mapping.util.StringUtils;
 
 import java.lang.annotation.Annotation;

@@ -15,6 +15,8 @@
 package org.eclipse.jnosql.mapping.test.entities;
 
 
+import org.eclipse.jnosql.mapping.AttributeConverter;
+
 public class MoneyConverter implements AttributeConverter<Money, String> {
 
 

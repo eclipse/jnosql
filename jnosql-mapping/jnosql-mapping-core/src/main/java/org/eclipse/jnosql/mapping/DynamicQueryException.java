@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -14,20 +14,20 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import org.eclipse.jnosql.mapping.AttributeConverter;
 
-import jakarta.enterprise.inject.Vetoed;
+import jakarta.nosql.NoSQLException;
 
-@Vetoed
-public class VetedConverter implements AttributeConverter<String, String> {
+/**
+ * The root exception to dynamic query on {@link jakarta.data.repository.CrudRepository}
+ */
+public class DynamicQueryException extends NoSQLException {
 
-    @Override
-    public String convertToDatabaseColumn(String attribute) {
-        return attribute;
-    }
-
-    @Override
-    public String convertToEntityAttribute(String dbData) {
-        return dbData;
+    /**
+     * Constructs a new runtime exception with the specified detail message.
+     *
+     * @param message the message
+     */
+    public DynamicQueryException(String message) {
+        super(message);
     }
 }
