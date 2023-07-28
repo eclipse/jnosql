@@ -22,19 +22,6 @@ import java.util.Objects;
  * It provides information about the type of NoSQL database and its provider.
  * CDI qualifiers allow for distinguishing between different instances of the same type.
  *
- * <p>Example usage:
- * <pre>{@code
- * // Creating a qualifier for a default key-value database
- * &#64;Inject
- * &#64;DefaultKeyValueType
- * private DatabaseInterface defaultKeyValueDB;
- *
- * // Creating a qualifier for a default column database
- * &#64;Inject
- * &#64;DefaultColumnType
- * private DatabaseInterface defaultColumnDB;
- * }</pre>
- *
  * <p>Supported types of NoSQL databases are {@link DatabaseType#KEY_VALUE}, {@link DatabaseType#COLUMN},
  * {@link DatabaseType#DOCUMENT}, and {@link DatabaseType#GRAPH}.
  *
