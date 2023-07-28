@@ -18,16 +18,52 @@ package org.eclipse.jnosql.mapping;
 import java.util.Objects;
 
 /**
- * This class is metadata to {@link Database}
+ * The DatabaseMetadata class represents metadata for NoSQL databases used as qualifiers in CDI (Contexts and Dependency Injection).
+ * It provides information about the type of NoSQL database and its provider.
+ * CDI qualifiers allow for distinguishing between different instances of the same type.
+ *
+ * <p>Example usage:
+ * <pre>{@code
+ * // Creating a qualifier for a default key-value database
+ * &#64;Inject
+ * &#64;DefaultKeyValueType
+ * private DatabaseInterface defaultKeyValueDB;
+ *
+ * // Creating a qualifier for a default column database
+ * &#64;Inject
+ * &#64;DefaultColumnType
+ * private DatabaseInterface defaultColumnDB;
+ * }</pre>
+ *
+ * <p>Supported types of NoSQL databases are {@link DatabaseType#KEY_VALUE}, {@link DatabaseType#COLUMN},
+ * {@link DatabaseType#DOCUMENT}, and {@link DatabaseType#GRAPH}.
+ *
+ * @see DatabaseType
  */
 public final class DatabaseMetadata {
 
+    /**
+     * A default DatabaseMetadata instance for key-value databases without a specific provider.
+     */
     public static final DatabaseMetadata DEFAULT_KEY_VALUE = new DatabaseMetadata(DatabaseType.KEY_VALUE, "");
-    public static final DatabaseMetadata DEFAULT_COLUMN = new DatabaseMetadata(DatabaseType.COLUMN, "");
-    public static final DatabaseMetadata DEFAULT_DOCUMENT = new DatabaseMetadata(DatabaseType.DOCUMENT, "");
-    public static final DatabaseMetadata DEFAULT_GRAPH = new DatabaseMetadata(DatabaseType.GRAPH, "");
-    private final DatabaseType type;
 
+    /**
+     * A default DatabaseMetadata instance for column databases without a specific provider.
+     */
+    public static final DatabaseMetadata DEFAULT_COLUMN = new DatabaseMetadata(DatabaseType.COLUMN, "");
+
+    /**
+     * A default DatabaseMetadata instance for document databases without a specific provider.
+     */
+    public static final DatabaseMetadata DEFAULT_DOCUMENT = new DatabaseMetadata(DatabaseType.DOCUMENT, "");
+
+    /**
+     * A default DatabaseMetadata instance for graph databases without a specific provider.
+     */
+    public static final DatabaseMetadata DEFAULT_GRAPH = new DatabaseMetadata(DatabaseType.GRAPH, "");
+
+
+    private final DatabaseType type;
     private final String provider;
 
     private DatabaseMetadata(DatabaseType type, String provider) {
@@ -35,10 +71,20 @@ public final class DatabaseMetadata {
         this.provider = provider;
     }
 
+    /**
+     * Gets the type of the NoSQL database.
+     *
+     * @return The type of the NoSQL database.
+     */
     public DatabaseType getType() {
         return type;
     }
 
+    /**
+     * Gets the provider of the NoSQL database.
+     *
+     * @return The provider of the NoSQL database.
+     */
     public String getProvider() {
         return provider;
     }
@@ -68,7 +114,7 @@ public final class DatabaseMetadata {
 
 
     /**
-     * creates a  instance
+     * creates an instance
      *
      * @param database the database annotation
      * @return a  instance
