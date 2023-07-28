@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @EnableAutoWeld
-@AddPackages(value = Convert.class)
+@AddPackages(value = Converters.class)
 @AddPackages(value = VetedConverter.class)
 @AddExtensions(EntityMetadataExtension.class)
 public class ConverterUtilTest {

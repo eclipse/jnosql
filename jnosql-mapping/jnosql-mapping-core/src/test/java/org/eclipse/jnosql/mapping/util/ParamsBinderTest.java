@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Optional;
 
 @EnableAutoWeld
-@AddPackages(value = Convert.class)
+@AddPackages(value = Converters.class)
 @AddPackages(value = VetedConverter.class)
 @AddExtensions(EntityMetadataExtension.class)
 class ParamsBinderTest {
