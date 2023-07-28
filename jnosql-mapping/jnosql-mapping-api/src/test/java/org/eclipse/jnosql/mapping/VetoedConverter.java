@@ -14,12 +14,10 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import org.eclipse.jnosql.mapping.AttributeConverter;
-
 import jakarta.enterprise.inject.Vetoed;
 
 @Vetoed
-public class VetedConverter implements AttributeConverter<String, String> {
+public class VetoedConverter implements AttributeConverter<String, String> {
 
     @Override
     public String convertToDatabaseColumn(String attribute) {
