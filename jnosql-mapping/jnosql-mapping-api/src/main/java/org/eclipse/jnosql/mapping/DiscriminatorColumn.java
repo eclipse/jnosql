@@ -24,11 +24,32 @@ import java.lang.annotation.Target;
  * Specifies the discriminator column for the mapping strategy.
  * If the <code>DiscriminatorColumn</code> annotation is missing,
  * the name of the discriminator column defaults is <code>"dtype"</code>.
+ *  * <p>Example usage:
+ *  * <pre>{@code
+ *  * @Entity
+ *  * @DiscriminatorColumn(name = "dtype")
+ *  * public class Animal {
+ *  *     // Common fields and methods for all animals
+ *  * }
+ *  *
+ *  * @Entity
+ *  * public class Dog extends Animal {
+ *  *     // Specific fields and methods for dogs
+ *  * }
+ *  *
+ *  * @Entity
+ *  * public class Cat extends Animal {
+ *  *     // Specific fields and methods for cats
+ *  * }
+ *  * }</pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface DiscriminatorColumn {
 
+    /**
+     * The default name of the discriminator column, which is {@code "dtype"}.
+     */
     String DEFAULT_DISCRIMINATOR_COLUMN = "dtype";
     /**
      * (Optional) The name of column to be used for the discriminator.
