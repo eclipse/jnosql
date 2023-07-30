@@ -14,26 +14,30 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+
+import org.eclipse.jnosql.mapping.AttributeConverter;
+
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-public final class EmbeddedFieldMapping extends AbstractFieldMapping {
+/**
+ * Class that represents {@link FieldMetadata} a default field
+ */
+public class DefaultFieldMetadata extends AbstractFieldMetadata {
 
-    private final String entityName;
 
-    public EmbeddedFieldMapping(MappingType type, Field field, String name, String entityName,
-                                FieldReader reader, FieldWriter writer) {
-        super(type, field, name, null, reader, writer);
-        this.entityName = entityName;
-    }
+    private final boolean id;
 
-    public String getEntityName() {
-        return entityName;
+    DefaultFieldMetadata(MappingType type, Field field, String name,
+                         Class<? extends AttributeConverter<?, ?>> converter, boolean id,
+                         FieldReader reader, FieldWriter writer) {
+        super(type, field, name, converter, reader, writer);
+        this.id = id;
     }
 
     @Override
     public boolean isId() {
-        return false;
+        return id;
     }
 
     @Override
@@ -44,21 +48,21 @@ public final class EmbeddedFieldMapping extends AbstractFieldMapping {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        EmbeddedFieldMapping that = (EmbeddedFieldMapping) o;
+        AbstractFieldMetadata that = (AbstractFieldMetadata) o;
         return type == that.type &&
                 Objects.equals(field, that.field) &&
-                Objects.equals(entityName, that.entityName) &&
                 Objects.equals(name, that.name);
     }
 
+
     @Override
     public int hashCode() {
-        return Objects.hash(type, field, name, entityName);
+        return Objects.hash(type, field, name);
     }
 
     @Override
     public String toString() {
-        return  "EmbeddedFieldMapping{" + "entityName='" + entityName + '\'' +
+        return  "DefaultFieldMapping{" + "id=" + id +
                 ", type=" + type +
                 ", field=" + field +
                 ", name='" + name + '\'' +

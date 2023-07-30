@@ -16,9 +16,9 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import java.util.Objects;
 
-public record DefaultFieldValue(Object value, FieldMapping field) implements FieldValue {
+public record DefaultFieldValue(Object value, FieldMetadata field) implements FieldValue {
 
-    public DefaultFieldValue(Object value, FieldMapping field) {
+    public DefaultFieldValue(Object value, FieldMetadata field) {
         this.value = value;
         this.field = Objects.requireNonNull(field, "field is required");
     }

@@ -57,16 +57,16 @@ class ClassConverter {
         long start = System.currentTimeMillis();
         String entityName = reflections.getEntityName(entity);
 
-        List<FieldMapping> fields = reflections.getFields(entity)
+        List<FieldMetadata> fields = reflections.getFields(entity)
                 .stream().map(this::to).collect(toList());
 
-        List<String> fieldsName = fields.stream().map(FieldMapping::name).collect(toList());
+        List<String> fieldsName = fields.stream().map(FieldMetadata::name).collect(toList());
 
         Map<String, NativeMapping> nativeFieldGroupByJavaField =
                 getNativeFieldGroupByJavaField(fields, "", "");
 
-        Map<String, FieldMapping> fieldsGroupedByName = fields.stream()
-                .collect(collectingAndThen(toMap(FieldMapping::name,
+        Map<String, FieldMetadata> fieldsGroupedByName = fields.stream()
+                .collect(collectingAndThen(toMap(FieldMetadata::name,
                         Function.identity()), Collections::unmodifiableMap));
 
 
@@ -92,19 +92,19 @@ class ClassConverter {
         return mapping;
     }
 
-    private Map<String, NativeMapping> getNativeFieldGroupByJavaField(List<FieldMapping> fields,
+    private Map<String, NativeMapping> getNativeFieldGroupByJavaField(List<FieldMetadata> fields,
                                                                       String javaField, String nativeField) {
 
         Map<String, NativeMapping> nativeFieldGroupByJavaField = new HashMap<>();
 
-        for (FieldMapping field : fields) {
+        for (FieldMetadata field : fields) {
             appendValue(nativeFieldGroupByJavaField, field, javaField, nativeField);
         }
 
         return nativeFieldGroupByJavaField;
     }
 
-    private void appendValue(Map<String, NativeMapping> nativeFieldGroupByJavaField, FieldMapping field,
+    private void appendValue(Map<String, NativeMapping> nativeFieldGroupByJavaField, FieldMetadata field,
                              String javaField, String nativeField) {
 
 
@@ -113,8 +113,8 @@ class ClassConverter {
                     appendPreparePrefix(nativeField, field.name()));
             case EMBEDDED -> appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField);
             case COLLECTION -> {
-                if (((GenericFieldMapping) field).isEmbeddable()) {
-                    Class<?> type = ((GenericFieldMapping) field).getElementType();
+                if (((GenericFieldMetadata) field).isEmbeddable()) {
+                    Class<?> type = ((GenericFieldMetadata) field).getElementType();
                     String nativeFieldAppended = appendPreparePrefix(nativeField, field.name());
                     appendFields(nativeFieldGroupByJavaField, field, javaField, nativeFieldAppended, type);
                     return;
@@ -127,14 +127,14 @@ class ClassConverter {
     }
 
     private void appendDefaultField(Map<String, NativeMapping> nativeFieldGroupByJavaField,
-                                    FieldMapping field, String javaField, String nativeField) {
+                                    FieldMetadata field, String javaField, String nativeField) {
 
         nativeFieldGroupByJavaField.put(javaField.concat(field.fieldName()),
                 NativeMapping.of(nativeField.concat(field.name()), field));
     }
 
     private void appendFields(Map<String, NativeMapping> nativeFieldGroupByJavaField,
-                              FieldMapping field,
+                              FieldMetadata field,
                               String javaField, String nativeField) {
 
         Class<?> type = field.nativeField().getType();
@@ -142,7 +142,7 @@ class ClassConverter {
     }
 
     private void appendFields(Map<String, NativeMapping> nativeFieldGroupByJavaField,
-                              FieldMapping field, String javaField, String nativeField,
+                              FieldMetadata field, String javaField, String nativeField,
                               Class<?> type) {
 
         Map<String, NativeMapping> entityMap = getNativeFieldGroupByJavaField(
@@ -170,7 +170,7 @@ class ClassConverter {
     }
 
 
-    private FieldMapping to(Field field) {
+    private FieldMetadata to(Field field) {
         MappingType mappingType = MappingType.of(field);
         reflections.makeAccessible(field);
         Convert convert = field.getAnnotation(Convert.class);

@@ -22,11 +22,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Base class to all {@link FieldMapping}
+ * Base class to all {@link FieldMetadata}
  *
- * @see FieldMapping
+ * @see FieldMetadata
  */
-abstract class AbstractFieldMapping implements FieldMapping {
+abstract class AbstractFieldMetadata implements FieldMetadata {
 
     protected final MappingType type;
 
@@ -42,8 +42,8 @@ abstract class AbstractFieldMapping implements FieldMapping {
 
     protected final FieldWriter writer;
 
-    AbstractFieldMapping(MappingType type, Field field, String name,
-                         Class<? extends AttributeConverter<?, ?>> converter, FieldReader reader, FieldWriter writer) {
+    AbstractFieldMetadata(MappingType type, Field field, String name,
+                          Class<? extends AttributeConverter<?, ?>> converter, FieldReader reader, FieldWriter writer) {
         this.type = type;
         this.field = field;
         this.name = name;

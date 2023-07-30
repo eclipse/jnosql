@@ -22,7 +22,7 @@ import org.eclipse.jnosql.mapping.reflection.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
 import org.eclipse.jnosql.mapping.reflection.MappingType;
@@ -148,10 +148,10 @@ public abstract class DocumentEntityConverter {
     }
 
 
-    protected <T> Consumer<String> feedObject(T entity, List<Document> documents, Map<String, FieldMapping> fieldsGroupByName) {
+    protected <T> Consumer<String> feedObject(T entity, List<Document> documents, Map<String, FieldMetadata> fieldsGroupByName) {
         return k -> {
             Optional<Document> document = documents.stream().filter(c -> c.name().equals(k)).findFirst();
-            FieldMapping field = fieldsGroupByName.get(k);
+            FieldMetadata field = fieldsGroupByName.get(k);
             FieldConverter fieldConverter = FieldConverter.get(field);
             if (ENTITY.equals(field.type())) {
                 document.ifPresent(d -> fieldConverter.convert(entity,
@@ -210,7 +210,7 @@ public abstract class DocumentEntityConverter {
     }
 
     private <T> T convertEntity(List<Document> documents, EntityMetadata mapping, T instance) {
-        final Map<String, FieldMapping> fieldsGroupByName = mapping.fieldsGroupByName();
+        final Map<String, FieldMetadata> fieldsGroupByName = mapping.fieldsGroupByName();
         final List<String> names = documents.stream().map(Document::name).sorted().toList();
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
@@ -257,7 +257,7 @@ public abstract class DocumentEntityConverter {
         return convertEntity(documents, inheritanceMetadata, instance);
     }
 
-    private DocumentFieldValue to(FieldMapping field, Object entityInstance) {
+    private DocumentFieldValue to(FieldMetadata field, Object entityInstance) {
         Object value = field.read(entityInstance);
         return DefaultDocumentFieldValue.of(value, field);
     }

@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
- * A collection supplier to create an {@link Collection} instance at {@link GenericFieldMapping#getCollectionInstance}
+ * A collection supplier to create an {@link Collection} instance at {@link GenericFieldMetadata#getCollectionInstance}
  * by SPI
  *
  * @param <T> the collection instance

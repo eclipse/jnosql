@@ -20,19 +20,19 @@ final class NativeMapping {
 
     private final String nativeField;
 
-    private final FieldMapping fieldMapping;
+    private final FieldMetadata fieldMetadata;
 
-    private NativeMapping(String nativeField, FieldMapping fieldMapping) {
+    private NativeMapping(String nativeField, FieldMetadata fieldMetadata) {
         this.nativeField = nativeField;
-        this.fieldMapping = fieldMapping;
+        this.fieldMetadata = fieldMetadata;
     }
 
     public String getNativeField() {
         return nativeField;
     }
 
-    public FieldMapping getFieldMapping() {
-        return fieldMapping;
+    public FieldMetadata getFieldMapping() {
+        return fieldMetadata;
     }
 
     @Override
@@ -45,22 +45,22 @@ final class NativeMapping {
         }
         NativeMapping that = (NativeMapping) o;
         return Objects.equals(nativeField, that.nativeField) &&
-                Objects.equals(fieldMapping, that.fieldMapping);
+                Objects.equals(fieldMetadata, that.fieldMetadata);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nativeField, fieldMapping);
+        return Objects.hash(nativeField, fieldMetadata);
     }
 
     @Override
     public String toString() {
         return  "NativeMapping{" + "nativeField='" + nativeField + '\'' +
-                ", fieldMapping=" + fieldMapping +
+                ", fieldMapping=" + fieldMetadata +
                 '}';
     }
 
-    public static NativeMapping of(String nativeField, FieldMapping field) {
+    public static NativeMapping of(String nativeField, FieldMetadata field) {
         return new NativeMapping(nativeField, field);
     }
 }

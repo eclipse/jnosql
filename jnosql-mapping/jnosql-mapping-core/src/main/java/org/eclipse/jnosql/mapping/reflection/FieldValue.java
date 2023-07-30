@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.reflection;
 
 
 /**
- * The tuple between the instance value and {@link FieldMapping}
+ * The tuple between the instance value and {@link FieldMetadata}
  */
 public interface FieldValue {
 
@@ -28,11 +28,11 @@ public interface FieldValue {
     Object value();
 
     /**
-     * returns the {@link FieldMapping}
+     * returns the {@link FieldMetadata}
      *
-     * @return the {@link FieldMapping} instance
+     * @return the {@link FieldMetadata} instance
      */
-    FieldMapping field();
+    FieldMetadata field();
 
     /**
      * Returns true if {@link FieldValue#value()} is different of null

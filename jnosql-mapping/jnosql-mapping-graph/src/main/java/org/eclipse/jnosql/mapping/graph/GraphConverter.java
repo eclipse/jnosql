@@ -24,7 +24,7 @@ import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
 
 import java.util.Iterator;
@@ -231,7 +231,7 @@ public abstract class GraphConverter {
     }
 
 
-    protected FieldGraph to(FieldMapping field, Object entityInstance) {
+    protected FieldGraph to(FieldMetadata field, Object entityInstance) {
         Object value = field.read(entityInstance);
         return FieldGraph.of(value, field);
     }

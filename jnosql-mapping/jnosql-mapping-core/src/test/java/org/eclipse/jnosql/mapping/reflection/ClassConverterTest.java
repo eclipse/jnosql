@@ -96,7 +96,7 @@ public class ClassConverterTest {
     @Test
     public void shouldReturnFalseWhenThereIsNotKey() {
         EntityMetadata entityMetadata = classConverter.create(Worker.class);
-        boolean allMatch = entityMetadata.fields().stream().noneMatch(FieldMapping::isId);
+        boolean allMatch = entityMetadata.fields().stream().noneMatch(FieldMetadata::isId);
         assertTrue(allMatch);
     }
 
@@ -104,13 +104,13 @@ public class ClassConverterTest {
     @Test
     public void shouldReturnTrueWhenThereIsKey() {
         EntityMetadata entityMetadata = classConverter.create(User.class);
-        List<FieldMapping> fields = entityMetadata.fields();
+        List<FieldMetadata> fields = entityMetadata.fields();
 
-        Predicate<FieldMapping> hasKeyAnnotation = FieldMapping::isId;
+        Predicate<FieldMetadata> hasKeyAnnotation = FieldMetadata::isId;
         assertTrue(fields.stream().anyMatch(hasKeyAnnotation));
-        FieldMapping fieldMapping = fields.stream().filter(hasKeyAnnotation).findFirst().get();
-        assertEquals("_id", fieldMapping.name());
-        assertEquals(MappingType.DEFAULT, fieldMapping.type());
+        FieldMetadata fieldMetadata = fields.stream().filter(hasKeyAnnotation).findFirst().get();
+        assertEquals("_id", fieldMetadata.name());
+        assertEquals(MappingType.DEFAULT, fieldMetadata.type());
 
     }
 
@@ -122,7 +122,7 @@ public class ClassConverterTest {
     @Test
     public void shouldReturnWhenIsDefaultConstructor() {
         EntityMetadata entityMetadata = classConverter.create(Machine.class);
-        List<FieldMapping> fields = entityMetadata.fields();
+        List<FieldMetadata> fields = entityMetadata.fields();
         assertEquals(1, fields.size());
     }
 

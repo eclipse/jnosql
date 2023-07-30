@@ -17,11 +17,11 @@ package org.eclipse.jnosql.mapping.column;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.MappingType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.DefaultFieldValue;
-import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
+import org.eclipse.jnosql.mapping.reflection.GenericFieldMetadata;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     }
 
     @Override
-    public FieldMapping field() {
+    public FieldMetadata field() {
         return fieldValue.field();
     }
 
@@ -94,7 +94,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     }
 
     private boolean isEmbeddableElement() {
-        return ((GenericFieldMapping) field()).isEmbeddable();
+        return ((GenericFieldMetadata) field()).isEmbeddable();
     }
 
     @Override
@@ -103,7 +103,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
                 '}';
     }
 
-    static ColumnFieldValue of(Object value, FieldMapping field) {
+    static ColumnFieldValue of(Object value, FieldMetadata field) {
         return new DefaultColumnFieldValue(new DefaultFieldValue(value, field));
     }
 }

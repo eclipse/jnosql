@@ -22,7 +22,7 @@ import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
 
 import java.util.Collections;
 import java.util.List;
@@ -59,7 +59,7 @@ final class EntityConverterByField<T> implements Supplier<T> {
 
     @Override
     public T get() {
-        Map<String, FieldMapping> fieldsGroupByName = mapping.fieldsGroupByName();
+        Map<String, FieldMetadata> fieldsGroupByName = mapping.fieldsGroupByName();
         List<String> names = elements.stream()
                 .map(Property::key)
                 .sorted()
@@ -75,7 +75,7 @@ final class EntityConverterByField<T> implements Supplier<T> {
     }
 
     private Consumer<String> feedObject(T instance, List<Property<?>> elements,
-                                            Map<String, FieldMapping> fieldsGroupByName,
+                                            Map<String, FieldMetadata> fieldsGroupByName,
                                             Vertex vertex) {
         return k -> {
             Optional<Property<?>> element = elements
@@ -83,7 +83,7 @@ final class EntityConverterByField<T> implements Supplier<T> {
                     .filter(c -> c.key().equals(k))
                     .findFirst();
 
-            FieldMapping field = fieldsGroupByName.get(k);
+            FieldMetadata field = fieldsGroupByName.get(k);
             if (EMBEDDED.equals(field.type())) {
                 embeddedField(instance, elements, field, vertex);
             } else {
@@ -93,12 +93,12 @@ final class EntityConverterByField<T> implements Supplier<T> {
     }
 
     private void embeddedField(T instance, List<Property<?>> elements,
-                                   FieldMapping field, Vertex vertex) {
+                               FieldMetadata field, Vertex vertex) {
         Class<T> type = (Class<T>) field.nativeField().getType();
         field.write(instance, convert(type, elements, vertex));
     }
 
-    private <X, Y> void singleField(T instance, Property<?> element, FieldMapping field) {
+    private <X, Y> void singleField(T instance, Property<?> element, FieldMetadata field) {
         Object value = element.value();
         Optional<Class<? extends AttributeConverter<X, Y>>> converter = field.converter();
         if (converter.isPresent()) {
@@ -127,23 +127,23 @@ final class EntityConverterByField<T> implements Supplier<T> {
 
     private void feedId(Vertex vertex, T entity) {
         EntityMetadata mapping = entities.get(entity.getClass());
-        Optional<FieldMapping> id = mapping.id();
+        Optional<FieldMetadata> id = mapping.id();
 
 
         Object vertexId = vertex.id();
         if (Objects.nonNull(vertexId) && id.isPresent()) {
-            FieldMapping fieldMapping = id.get();
-            fieldMapping.converter().ifPresentOrElse(c -> {
+            FieldMetadata fieldMetadata = id.get();
+            fieldMetadata.converter().ifPresentOrElse(c -> {
                 AttributeConverter attributeConverter = converters.get(c);
                 Object attributeConverted = attributeConverter.convertToEntityAttribute(vertexId);
-                fieldMapping.write(entity, fieldMapping.value(Value.of(attributeConverted)));
-            }, () -> fieldMapping.write(entity, fieldMapping.value(Value.of(vertexId))));
+                fieldMetadata.write(entity, fieldMetadata.value(Value.of(attributeConverted)));
+            }, () -> fieldMetadata.write(entity, fieldMetadata.value(Value.of(vertexId))));
         }
     }
 
     private T convertEntity(List<Property<?>> elements, EntityMetadata mapping, T instance, Vertex vertex) {
 
-        Map<String, FieldMapping> fieldsGroupByName = mapping.fieldsGroupByName();
+        Map<String, FieldMetadata> fieldsGroupByName = mapping.fieldsGroupByName();
         List<String> names = elements.stream()
                 .map(Property::key)
                 .sorted()

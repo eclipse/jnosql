@@ -17,11 +17,11 @@ package org.eclipse.jnosql.mapping.document;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.MappingType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.DefaultFieldValue;
-import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
+import org.eclipse.jnosql.mapping.reflection.GenericFieldMetadata;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     }
 
     @Override
-    public FieldMapping field() {
+    public FieldMetadata field() {
         return fieldValue.field();
     }
 
@@ -90,14 +90,14 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     }
 
     private boolean isEmbeddableElement() {
-        return ((GenericFieldMapping) field()).isEmbeddable();
+        return ((GenericFieldMetadata) field()).isEmbeddable();
     }
 
     private String getName() {
         return field().name();
     }
 
-    static DocumentFieldValue of(Object value, FieldMapping field) {
+    static DocumentFieldValue of(Object value, FieldMetadata field) {
         return new DefaultDocumentFieldValue(new DefaultFieldValue(value, field));
     }
 

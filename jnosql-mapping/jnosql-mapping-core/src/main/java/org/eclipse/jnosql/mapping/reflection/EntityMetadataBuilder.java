@@ -29,11 +29,11 @@ class EntityMetadataBuilder {
 
     private Class<?> type;
 
-    private List<FieldMapping> fields = Collections.emptyList();
+    private List<FieldMetadata> fields = Collections.emptyList();
 
     private Map<String, NativeMapping> javaFieldGroupedByColumn = emptyMap();
 
-    private Map<String, FieldMapping> fieldsGroupedByName = emptyMap();
+    private Map<String, FieldMetadata> fieldsGroupedByName = emptyMap();
 
     private InstanceSupplier instanceSupplier;
 
@@ -59,7 +59,7 @@ class EntityMetadataBuilder {
         return this;
     }
 
-    public EntityMetadataBuilder fields(List<FieldMapping> fields) {
+    public EntityMetadataBuilder fields(List<FieldMetadata> fields) {
         this.fields = fields;
         return this;
     }
@@ -69,7 +69,7 @@ class EntityMetadataBuilder {
         return this;
     }
 
-    public EntityMetadataBuilder fieldsGroupedByName(Map<String, FieldMapping> fieldsGroupedByName) {
+    public EntityMetadataBuilder fieldsGroupedByName(Map<String, FieldMetadata> fieldsGroupedByName) {
         this.fieldsGroupedByName = fieldsGroupedByName;
         return this;
     }

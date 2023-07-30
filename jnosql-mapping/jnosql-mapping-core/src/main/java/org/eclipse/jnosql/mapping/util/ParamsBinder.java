@@ -18,7 +18,7 @@ import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class ParamsBinder {
             String name = names.get(index);
             int lastIndex = name.lastIndexOf('_') == -1 ? name.length() : name.lastIndexOf('_');
             String fieldName = name.substring(0, lastIndex);
-            Optional<FieldMapping> field = this.mapping.fields().stream()
+            Optional<FieldMetadata> field = this.mapping.fields().stream()
                     .filter(f -> f.name().equals(fieldName)).findFirst();
 
             Object value = getValue(args, index, field.orElse(null));
@@ -78,7 +78,7 @@ public class ParamsBinder {
         }
     }
 
-    private Object getValue(Object[] args, int index, FieldMapping field) {
+    private Object getValue(Object[] args, int index, FieldMetadata field) {
         Object value = args[index];
         if (field != null) {
             if (value instanceof Iterable) {

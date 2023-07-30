@@ -19,8 +19,8 @@ import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
+import org.eclipse.jnosql.mapping.reflection.GenericFieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.MappingType;
 
 import java.lang.reflect.Field;
@@ -36,7 +36,7 @@ enum FieldConverter {
     EMBEDDED {
         @Override
         public <X, Y, T> void convert(T instance, List<Column> columns, Column column,
-                                      FieldMapping field, ColumnEntityConverter converter) {
+                                      FieldMetadata field, ColumnEntityConverter converter) {
             Field nativeField = field.nativeField();
             Object subEntity = converter.toEntity(nativeField.getType(), columns);
             EntityMetadata mapping = converter.getEntities().get(subEntity.getClass());
@@ -50,7 +50,7 @@ enum FieldConverter {
         }
     }, ENTITY {
         @Override
-        public <X, Y, T> void convert(T instance, List<Column> columns, Column subColumn, FieldMapping field,
+        public <X, Y, T> void convert(T instance, List<Column> columns, Column subColumn, FieldMetadata field,
                                       ColumnEntityConverter converter) {
 
             if (Objects.nonNull(subColumn)) {
@@ -60,7 +60,7 @@ enum FieldConverter {
             }
         }
 
-        private <T> void converterSubDocument(T instance, Column subColumn, FieldMapping field,
+        private <T> void converterSubDocument(T instance, Column subColumn, FieldMetadata field,
                                               ColumnEntityConverter converter) {
             Object value = subColumn.get();
             if (value instanceof Map map) {
@@ -79,11 +79,11 @@ enum FieldConverter {
         }
     }, COLLECTION {
         @Override
-        public <X, Y, T> void convert(T instance, List<Column> columns, Column column, FieldMapping field,
+        public <X, Y, T> void convert(T instance, List<Column> columns, Column column, FieldMetadata field,
                                       ColumnEntityConverter converter) {
 
             if (Objects.nonNull(column)) {
-                GenericFieldMapping genericField = (GenericFieldMapping) field;
+                GenericFieldMetadata genericField = (GenericFieldMetadata) field;
                 Collection elements = genericField.getCollectionInstance();
                 List<List<Column>> embeddable = (List<List<Column>>) column.get();
                 for (List<Column> columnList : embeddable) {
@@ -96,7 +96,7 @@ enum FieldConverter {
     }, DEFAULT{
         @Override
         public <X, Y, T> void convert(T instance, List<Column> columns, Column column,
-                                      FieldMapping field, ColumnEntityConverter converter) {
+                                      FieldMetadata field, ColumnEntityConverter converter) {
             if (Objects.nonNull(column)) {
                 Value value = column.value();
                 Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.converter();
@@ -112,7 +112,7 @@ enum FieldConverter {
         }
     };
 
-    static FieldConverter get(FieldMapping field) {
+    static FieldConverter get(FieldMetadata field) {
         if (MappingType.EMBEDDED.equals(field.type())) {
             return EMBEDDED;
         } else if (MappingType.ENTITY.equals(field.type())) {
@@ -124,14 +124,14 @@ enum FieldConverter {
         }
     }
 
-    private static boolean isCollectionEmbeddable(FieldMapping field) {
-        return MappingType.COLLECTION.equals(field.type()) && ((GenericFieldMapping) field).isEmbeddable();
+    private static boolean isCollectionEmbeddable(FieldMetadata field) {
+        return MappingType.COLLECTION.equals(field.type()) && ((GenericFieldMetadata) field).isEmbeddable();
     }
 
-    abstract <X, Y, T> void convert(T instance, List<Column> columns, Column column, FieldMapping field,
+    abstract <X, Y, T> void convert(T instance, List<Column> columns, Column column, FieldMetadata field,
                                     ColumnEntityConverter converter);
 
-    <X, Y, T> void convert(T instance, Column column, FieldMapping field,
+    <X, Y, T> void convert(T instance, Column column, FieldMetadata field,
                            ColumnEntityConverter converter) {
         convert(instance, null, column, field, converter);
     }

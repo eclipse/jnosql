@@ -18,7 +18,7 @@ import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -47,23 +47,23 @@ public final class ConverterUtil {
      * @return the value converted
      */
     public static Object getValue(Object value, EntityMetadata mapping, String name, Converters converters) {
-        Optional<FieldMapping> fieldOptional = mapping.fieldMapping(name);
+        Optional<FieldMetadata> fieldOptional = mapping.fieldMapping(name);
         if (fieldOptional.isPresent()) {
-            FieldMapping field = fieldOptional.get();
+            FieldMetadata field = fieldOptional.get();
             return getValue(value, converters, field);
         }
         return value;
     }
 
     /**
-     * Converts the value from the field with {@link FieldMapping} to database format
+     * Converts the value from the field with {@link FieldMetadata} to database format
      *
      * @param value      the value to be converted
      * @param converters the converter
      * @param field      the field
      * @return tje value converted
      */
-    public static Object getValue(Object value, Converters converters, FieldMapping field) {
+    public static Object getValue(Object value, Converters converters, FieldMetadata field) {
         Field nativeField = field.nativeField();
         if (!nativeField.getType().equals(value.getClass())) {
             return field.converter()

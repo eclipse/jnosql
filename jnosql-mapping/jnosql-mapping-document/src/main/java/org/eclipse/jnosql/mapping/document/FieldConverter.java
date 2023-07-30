@@ -19,8 +19,8 @@ import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
+import org.eclipse.jnosql.mapping.reflection.GenericFieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.MappingType;
 
 import java.lang.reflect.Field;
@@ -36,7 +36,7 @@ enum FieldConverter {
     EMBEDDED {
         @Override
         public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
-                                      FieldMapping field, DocumentEntityConverter converter) {
+                                      FieldMetadata field, DocumentEntityConverter converter) {
 
             Field nativeField = field.nativeField();
             Object subEntity = converter.toEntity(nativeField.getType(), documents);
@@ -53,7 +53,7 @@ enum FieldConverter {
     }, ENTITY {
         @Override
         public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
-                                      FieldMapping field, DocumentEntityConverter converter) {
+                                      FieldMetadata field, DocumentEntityConverter converter) {
 
             if (Objects.nonNull(document)) {
                 converterSubDocument(instance, document, field, converter);
@@ -62,7 +62,7 @@ enum FieldConverter {
             }
         }
 
-        private <T> void converterSubDocument(T instance, Document sudDocument, FieldMapping field,
+        private <T> void converterSubDocument(T instance, Document sudDocument, FieldMetadata field,
                                               DocumentEntityConverter converter) {
             Object value = sudDocument.get();
             if (value instanceof Map map) {
@@ -82,10 +82,10 @@ enum FieldConverter {
     }, COLLECTION {
         @Override
         public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
-                                      FieldMapping field, DocumentEntityConverter converter) {
+                                      FieldMetadata field, DocumentEntityConverter converter) {
 
             if (Objects.nonNull(document)) {
-                GenericFieldMapping genericField = (GenericFieldMapping) field;
+                GenericFieldMetadata genericField = (GenericFieldMetadata) field;
                 Collection collection = genericField.getCollectionInstance();
                 List<List<Document>> embeddable = (List<List<Document>>) document.get();
                 for (List<Document> documentList : embeddable) {
@@ -98,7 +98,7 @@ enum FieldConverter {
     }, DEFAULT {
         @Override
         public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
-                                      FieldMapping field, DocumentEntityConverter converter) {
+                                      FieldMetadata field, DocumentEntityConverter converter) {
 
 
             if (Objects.nonNull(document)) {
@@ -116,15 +116,15 @@ enum FieldConverter {
         }
     };
 
-    abstract <X, Y, T> void convert(T instance, List<Document> documents, Document document, FieldMapping field,
+    abstract <X, Y, T> void convert(T instance, List<Document> documents, Document document, FieldMetadata field,
                                     DocumentEntityConverter converter);
 
-    <X, Y, T> void convert(T instance, Document document, FieldMapping field,
+    <X, Y, T> void convert(T instance, Document document, FieldMetadata field,
                            DocumentEntityConverter converter) {
         convert(instance, null, document, field, converter);
     }
 
-    static FieldConverter get(FieldMapping field) {
+    static FieldConverter get(FieldMetadata field) {
         if (MappingType.EMBEDDED.equals(field.type())) {
             return EMBEDDED;
         } else if (MappingType.ENTITY.equals(field.type())) {
@@ -136,7 +136,7 @@ enum FieldConverter {
         }
     }
 
-    private static boolean isCollectionEmbeddable(FieldMapping field) {
-        return MappingType.COLLECTION.equals(field.type()) && ((GenericFieldMapping) field).isEmbeddable();
+    private static boolean isCollectionEmbeddable(FieldMetadata field) {
+        return MappingType.COLLECTION.equals(field.type()) && ((GenericFieldMetadata) field).isEmbeddable();
     }
 }

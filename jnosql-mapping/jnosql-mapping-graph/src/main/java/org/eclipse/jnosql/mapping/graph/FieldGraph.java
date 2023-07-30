@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.graph;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,9 +30,9 @@ final class FieldGraph {
 
     private final Object value;
 
-    private final FieldMapping field;
+    private final FieldMetadata field;
 
-    private FieldGraph(Object value, FieldMapping field) {
+    private FieldGraph(Object value, FieldMetadata field) {
         this.value = value;
         this.field = field;
     }
@@ -41,7 +41,7 @@ final class FieldGraph {
         return value;
     }
 
-    public FieldMapping getField() {
+    public FieldMetadata getField() {
         return field;
     }
 
@@ -82,7 +82,7 @@ final class FieldGraph {
                 '}';
     }
 
-    public static FieldGraph of(Object value, FieldMapping field) {
+    public static FieldGraph of(Object value, FieldMetadata field) {
         return new FieldGraph(value, field);
     }
 

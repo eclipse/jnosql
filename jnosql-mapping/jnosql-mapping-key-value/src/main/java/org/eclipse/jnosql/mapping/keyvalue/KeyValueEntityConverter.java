@@ -21,7 +21,7 @@ import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
 
 import java.util.Objects;
 
@@ -47,7 +47,7 @@ public abstract class KeyValueEntityConverter {
         requireNonNull(entity, "entity is required");
         Class<?> type = entity.getClass();
 
-        FieldMapping key = getId(type);
+        FieldMetadata key = getId(type);
         Object value = key.read(entity);
 
         requireNonNull(value, String.format("The key field %s is required", key.name()));
@@ -72,13 +72,13 @@ public abstract class KeyValueEntityConverter {
         }
 
         Object key = getKey(entity.key(), type, true);
-        FieldMapping id = getId(type);
+        FieldMetadata id = getId(type);
         id.write(bean, key);
         return bean;
     }
 
     private <T> Object getKey(Object key, Class<T> type, boolean toEntity) {
-        FieldMapping id = getId(type);
+        FieldMetadata id = getId(type);
         if (id.converter().isPresent()) {
             AttributeConverter attributeConverter = getConverters().get(id.converter().get());
             if (toEntity) {
@@ -91,7 +91,7 @@ public abstract class KeyValueEntityConverter {
         }
     }
 
-    private FieldMapping getId(Class<?> type) {
+    private FieldMetadata getId(Class<?> type) {
         EntityMetadata mapping = getEntities().get(type);
         return mapping.id().orElseThrow(() -> IdNotFoundException.newInstance(type));
     }

@@ -28,12 +28,12 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.ServiceLoader;
 
-public class GenericFieldMapping extends AbstractFieldMapping {
+public class GenericFieldMetadata extends AbstractFieldMetadata {
 
     private final TypeSupplier<?> typeSupplier;
 
-    GenericFieldMapping(MappingType type, Field field, String name, TypeSupplier<?> typeSupplier,
-                        Class<? extends AttributeConverter<?, ?>> converter, FieldReader reader, FieldWriter writer) {
+    GenericFieldMetadata(MappingType type, Field field, String name, TypeSupplier<?> typeSupplier,
+                         Class<? extends AttributeConverter<?, ?>> converter, FieldReader reader, FieldWriter writer) {
         super(type, field, name, converter, reader, writer);
         this.typeSupplier = typeSupplier;
     }
@@ -60,7 +60,7 @@ public class GenericFieldMapping extends AbstractFieldMapping {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        GenericFieldMapping that = (GenericFieldMapping) o;
+        GenericFieldMetadata that = (GenericFieldMetadata) o;
         return type == that.type &&
                 Objects.equals(field, that.field) &&
                 Objects.equals(typeSupplier, that.typeSupplier) &&

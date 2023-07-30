@@ -22,7 +22,7 @@ import org.eclipse.jnosql.mapping.reflection.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
 import org.eclipse.jnosql.mapping.reflection.MappingType;
@@ -132,15 +132,15 @@ public abstract class ColumnEntityConverter {
         }
     }
 
-    protected ColumnFieldValue to(FieldMapping field, Object entity) {
+    protected ColumnFieldValue to(FieldMetadata field, Object entity) {
         Object value = field.read(entity);
         return DefaultColumnFieldValue.of(value, field);
     }
 
-    protected <T> Consumer<String> feedObject(T entity, List<Column> columns, Map<String, FieldMapping> fieldsGroupByName) {
+    protected <T> Consumer<String> feedObject(T entity, List<Column> columns, Map<String, FieldMetadata> fieldsGroupByName) {
         return (String k) -> {
             Optional<Column> column = columns.stream().filter(c -> c.name().equals(k)).findFirst();
-            FieldMapping field = fieldsGroupByName.get(k);
+            FieldMetadata field = fieldsGroupByName.get(k);
             FieldConverter fieldConverter = FieldConverter.get(field);
             if (ENTITY.equals(field.type())) {
                 column.ifPresent(c -> fieldConverter.convert(entity, c, field, this));
@@ -180,7 +180,7 @@ public abstract class ColumnEntityConverter {
     }
 
     private <T> T convertEntity(List<Column> columns, EntityMetadata mapping, T instance) {
-        final Map<String, FieldMapping> fieldsGroupByName = mapping.fieldsGroupByName();
+        final Map<String, FieldMetadata> fieldsGroupByName = mapping.fieldsGroupByName();
         final List<String> names = columns.stream().map(Column::name).sorted().toList();
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {

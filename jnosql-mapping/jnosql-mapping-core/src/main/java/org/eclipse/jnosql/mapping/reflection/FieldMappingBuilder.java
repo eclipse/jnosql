@@ -85,16 +85,16 @@ class FieldMappingBuilder {
         return this;
     }
 
-    public DefaultFieldMapping buildDefault() {
-        return new DefaultFieldMapping(type, field, name, converter, id, reader, writer);
+    public DefaultFieldMetadata buildDefault() {
+        return new DefaultFieldMetadata(type, field, name, converter, id, reader, writer);
     }
 
-    public GenericFieldMapping buildGeneric() {
-        return new GenericFieldMapping(type, field, name, typeSupplier, converter, reader, writer);
+    public GenericFieldMetadata buildGeneric() {
+        return new GenericFieldMetadata(type, field, name, typeSupplier, converter, reader, writer);
     }
 
-    public EmbeddedFieldMapping buildEmbedded() {
-        return new EmbeddedFieldMapping(type, field, name, entityName, reader, writer);
+    public EmbeddedFieldMetadata buildEmbedded() {
+        return new EmbeddedFieldMetadata(type, field, name, entityName, reader, writer);
     }
 
 }

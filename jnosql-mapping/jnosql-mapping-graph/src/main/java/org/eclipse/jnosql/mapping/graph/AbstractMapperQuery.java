@@ -20,7 +20,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
 import java.util.List;
@@ -134,8 +134,8 @@ class AbstractMapperQuery {
     }
 
     private boolean isKey(String name) {
-        Optional<FieldMapping> field = mapping.fieldMapping(name);
-        return field.map(FieldMapping::isId).orElse(false);
+        Optional<FieldMetadata> field = mapping.fieldMapping(name);
+        return field.map(FieldMetadata::isId).orElse(false);
     }
 
     protected void appendCondition(GraphTraversal<Object, Object> incomingCondition) {

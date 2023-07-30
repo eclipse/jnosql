@@ -67,7 +67,7 @@ public interface EntityMetadata {
     /**
      * @return The fields from this class
      */
-    List<FieldMapping> fields();
+    List<FieldMetadata> fields();
 
 
     /**
@@ -96,22 +96,22 @@ public interface EntityMetadata {
     String columnField(String javaField);
 
     /**
-     * Gets the {@link FieldMapping} from the java field name
+     * Gets the {@link FieldMetadata} from the java field name
      *
      * @param javaField the java field
      * @return the field otherwise {@link Optional#empty()}
      * @throws NullPointerException when the javaField is null
      */
-    Optional<FieldMapping> fieldMapping(String javaField);
+    Optional<FieldMetadata> fieldMapping(String javaField);
 
     /**
      * Returns a Fields grouped by the name
      *
-     * @return a {@link FieldMapping} grouped by
-     * {@link FieldMapping#name()}
-     * @see FieldMapping#name()
+     * @return a {@link FieldMetadata} grouped by
+     * {@link FieldMetadata#name()}
+     * @see FieldMetadata#name()
      */
-    Map<String, FieldMapping> fieldsGroupByName();
+    Map<String, FieldMetadata> fieldsGroupByName();
 
 
     /**
@@ -119,5 +119,5 @@ public interface EntityMetadata {
      *
      * @return the field with ID annotation
      */
-    Optional<FieldMapping> id();
+    Optional<FieldMetadata> id();
 }

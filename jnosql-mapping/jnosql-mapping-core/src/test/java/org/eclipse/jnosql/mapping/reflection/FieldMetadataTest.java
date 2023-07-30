@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AddPackages(value = Convert.class)
 @AddPackages(value = VetedConverter.class)
 @AddExtensions(EntityMetadataExtension.class)
-public class FieldMappingTest {
+public class FieldMetadataTest {
 
 
     @Inject
@@ -48,9 +48,9 @@ public class FieldMappingTest {
     @Test
     public void shouldReadDefaultField() {
         EntityMetadata entityMetadata = classConverter.create(ForClass.class);
-        List<FieldMapping> fields = entityMetadata.fields();
+        List<FieldMetadata> fields = entityMetadata.fields();
 
-        FieldMapping field = fields.stream()
+        FieldMetadata field = fields.stream()
                 .filter(f -> "string".equals(f.fieldName())).findFirst().get();
 
         assertEquals("string", field.fieldName());
@@ -62,8 +62,8 @@ public class FieldMappingTest {
     @Test
     public void shouldReadCollectionField() {
         EntityMetadata entityMetadata = classConverter.create(ForClass.class);
-        List<FieldMapping> fields = entityMetadata.fields();
-        FieldMapping field = fields.stream()
+        List<FieldMetadata> fields = entityMetadata.fields();
+        FieldMetadata field = fields.stream()
                 .filter(f -> "list".equals(f.fieldName())).findFirst().get();
 
         assertEquals("list", field.fieldName());
@@ -74,8 +74,8 @@ public class FieldMappingTest {
     @Test
     public void shouldReadMapField() {
         EntityMetadata entityMetadata = classConverter.create(ForClass.class);
-        List<FieldMapping> fields = entityMetadata.fields();
-        FieldMapping field = fields.stream()
+        List<FieldMetadata> fields = entityMetadata.fields();
+        FieldMetadata field = fields.stream()
                 .filter(f -> "map".equals(f.fieldName())).findFirst().get();
 
         assertEquals("map", field.fieldName());
@@ -87,8 +87,8 @@ public class FieldMappingTest {
     @Test
     public void shouldReadEmbeddableField() {
         EntityMetadata entityMetadata = classConverter.create(ForClass.class);
-        List<FieldMapping> fields = entityMetadata.fields();
-        FieldMapping field = fields.stream()
+        List<FieldMetadata> fields = entityMetadata.fields();
+        FieldMetadata field = fields.stream()
                 .filter(f -> "barClass".equals(f.fieldName())).findFirst().get();
 
         assertEquals("barClass", field.fieldName());
@@ -107,10 +107,10 @@ public class FieldMappingTest {
 
         EntityMetadata entityMetadata = classConverter.create(ForClass.class);
 
-        FieldMapping string = entityMetadata.fieldMapping("string").get();
-        FieldMapping list = entityMetadata.fieldMapping("list").get();
-        FieldMapping map = entityMetadata.fieldMapping("map").get();
-        FieldMapping barClass = entityMetadata.fieldMapping("barClass").get();
+        FieldMetadata string = entityMetadata.fieldMapping("string").get();
+        FieldMetadata list = entityMetadata.fieldMapping("list").get();
+        FieldMetadata map = entityMetadata.fieldMapping("map").get();
+        FieldMetadata barClass = entityMetadata.fieldMapping("barClass").get();
 
         assertEquals("text", string.read(forClass));
         assertEquals(forClass.list, list.read(forClass));
@@ -127,10 +127,10 @@ public class FieldMappingTest {
 
         EntityMetadata entityMetadata = classConverter.create(ForClass.class);
 
-        FieldMapping string = entityMetadata.fieldMapping("string").get();
-        FieldMapping list = entityMetadata.fieldMapping("list").get();
-        FieldMapping map = entityMetadata.fieldMapping("map").get();
-        FieldMapping barClass = entityMetadata.fieldMapping("barClass").get();
+        FieldMetadata string = entityMetadata.fieldMapping("string").get();
+        FieldMetadata list = entityMetadata.fieldMapping("list").get();
+        FieldMetadata map = entityMetadata.fieldMapping("map").get();
+        FieldMetadata barClass = entityMetadata.fieldMapping("barClass").get();
 
         string.write(forClass, "text");
         list.write(forClass, Collections.singletonList("text"));
