@@ -37,6 +37,15 @@ public interface FieldMetadata {
     MappingType mappingType();
 
     /**
+     * The {@link Field}
+     *
+     * @return the field
+     */
+    default Field nativeField() {
+        return null;
+    }
+
+    /**
      * Returns a {@code Class} object that identifies the
      * declared type for the field represented by this
      * {@code  java.lang.reflect.Field} object.

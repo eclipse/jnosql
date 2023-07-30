@@ -94,7 +94,7 @@ final class EntityConverterByField<T> implements Supplier<T> {
 
     private void embeddedField(T instance, List<Property<?>> elements,
                                FieldMetadata field, Vertex vertex) {
-        Class<T> type = (Class<T>) field.nativeField().getType();
+        Class<T> type = (Class<T>) field.type();
         field.write(instance, convert(type, elements, vertex));
     }
 

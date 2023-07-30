@@ -87,7 +87,7 @@ public abstract class KeyValueEntityConverter {
                 return attributeConverter.convertToDatabaseColumn(key);
             }
         } else {
-            return Value.of(key).get(id.nativeField().getType());
+            return Value.of(key).get(id.type());
         }
     }
 

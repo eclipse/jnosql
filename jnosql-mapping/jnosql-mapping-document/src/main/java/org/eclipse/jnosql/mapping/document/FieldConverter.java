@@ -38,8 +38,7 @@ enum FieldConverter {
         public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
                                       FieldMetadata field, DocumentEntityConverter converter) {
 
-            Field nativeField = field.nativeField();
-            Object subEntity = converter.toEntity(nativeField.getType(), documents);
+            Object subEntity = converter.toEntity(field.type(), documents);
             EntityMetadata mapping = converter.getEntities().get(subEntity.getClass());
             boolean areAllFieldsNull = mapping.fields()
                     .stream()
@@ -58,7 +57,7 @@ enum FieldConverter {
             if (Objects.nonNull(document)) {
                 converterSubDocument(instance, document, field, converter);
             } else {
-                field.write(instance, converter.toEntity(field.nativeField().getType(), documents));
+                field.write(instance, converter.toEntity(field.type(), documents));
             }
         }
 
@@ -71,10 +70,10 @@ enum FieldConverter {
                 for (Map.Entry entry : (Set<Map.Entry>) map.entrySet()) {
                     embeddedDocument.add(Document.of(entry.getKey().toString(), entry.getValue()));
                 }
-                field.write(instance, converter.toEntity(field.nativeField().getType(), embeddedDocument));
+                field.write(instance, converter.toEntity(field.type(), embeddedDocument));
 
             } else {
-                field.write(instance, converter.toEntity(field.nativeField().getType(),
+                field.write(instance, converter.toEntity(field.type(),
                         sudDocument.get(new TypeReference<List<Document>>() {
                         })));
             }

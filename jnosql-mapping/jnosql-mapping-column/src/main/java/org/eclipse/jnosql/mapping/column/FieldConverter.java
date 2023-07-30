@@ -37,8 +37,7 @@ enum FieldConverter {
         @Override
         public <X, Y, T> void convert(T instance, List<Column> columns, Column column,
                                       FieldMetadata field, ColumnEntityConverter converter) {
-            Field nativeField = field.nativeField();
-            Object subEntity = converter.toEntity(nativeField.getType(), columns);
+            Object subEntity = converter.toEntity(field.type(), columns);
             EntityMetadata mapping = converter.getEntities().get(subEntity.getClass());
             boolean areAllFieldsNull = mapping.fields()
                     .stream()
@@ -56,7 +55,7 @@ enum FieldConverter {
             if (Objects.nonNull(subColumn)) {
                 converterSubDocument(instance, subColumn, field, converter);
             } else {
-                field.write(instance, converter.toEntity(field.nativeField().getType(), columns));
+                field.write(instance, converter.toEntity(field.type(), columns));
             }
         }
 
@@ -69,10 +68,10 @@ enum FieldConverter {
                 for (Map.Entry entry : (Set<Map.Entry>) map.entrySet()) {
                     embeddedColumns.add(Column.of(entry.getKey().toString(), entry.getValue()));
                 }
-                field.write(instance, converter.toEntity(field.nativeField().getType(), embeddedColumns));
+                field.write(instance, converter.toEntity(field.type(), embeddedColumns));
 
             } else {
-                field.write(instance, converter.toEntity(field.nativeField().getType(),
+                field.write(instance, converter.toEntity(field.type(),
                         subColumn.get(new TypeReference<List<Column>>() {
                         })));
             }

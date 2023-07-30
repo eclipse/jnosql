@@ -65,7 +65,7 @@ public final class ConverterUtil {
      */
     public static Object getValue(Object value, Converters converters, FieldMetadata field) {
         Field nativeField = field.nativeField();
-        if (!nativeField.getType().equals(value.getClass())) {
+        if (!field.type().equals(value.getClass())) {
             return field.converter()
                     .map(converters::get)
                     .map(useConverter(value))
