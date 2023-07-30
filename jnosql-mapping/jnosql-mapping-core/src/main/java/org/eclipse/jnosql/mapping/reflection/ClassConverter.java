@@ -18,6 +18,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Convert;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,8 +39,6 @@ class ClassConverter {
     private static final Logger LOGGER = Logger.getLogger(ClassConverter.class.getName());
 
     private Reflections reflections;
-   private InstanceSupplierFactory instanceSupplierFactory;
-
     private ConstructorMetadataBuilder constructorMetadataBuilder;
 
 
@@ -47,7 +46,6 @@ class ClassConverter {
     ClassConverter(Reflections reflections) {
 
         this.reflections = reflections;
-        this.instanceSupplierFactory = new ReflectionInstanceSupplierFactory(reflections);
         this.constructorMetadataBuilder = new ConstructorMetadataBuilder(reflections);
     }
 
@@ -71,7 +69,9 @@ class ClassConverter {
                 .collect(collectingAndThen(toMap(FieldMapping::name,
                         Function.identity()), Collections::unmodifiableMap));
 
-        InstanceSupplier instanceSupplier = instanceSupplierFactory.apply(reflections.getConstructor(entity));
+
+        Constructor<?> constructor = reflections.getConstructor(entity);
+        InstanceSupplier instanceSupplier = () -> reflections.newInstance(constructor);
         InheritanceMetadata inheritance = reflections.getInheritance(entity).orElse(null);
         boolean hasInheritanceAnnotation = reflections.hasInheritanceAnnotation(entity);
 
