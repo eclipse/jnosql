@@ -86,7 +86,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     }
 
     private MappingType getType() {
-        return field().type();
+        return field().mappingType();
     }
 
     private boolean isEmbeddableElement() {

@@ -54,7 +54,7 @@ abstract class AbstractFieldMetadata implements FieldMetadata {
     }
 
     @Override
-    public MappingType type() {
+    public MappingType mappingType() {
         return type;
     }
 

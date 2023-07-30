@@ -125,9 +125,9 @@ enum FieldConverter {
     }
 
     static FieldConverter get(FieldMetadata field) {
-        if (MappingType.EMBEDDED.equals(field.type())) {
+        if (MappingType.EMBEDDED.equals(field.mappingType())) {
             return EMBEDDED;
-        } else if (MappingType.ENTITY.equals(field.type())) {
+        } else if (MappingType.ENTITY.equals(field.mappingType())) {
             return ENTITY;
         } else if (isCollectionEmbeddable(field)) {
             return COLLECTION;
@@ -137,6 +137,6 @@ enum FieldConverter {
     }
 
     private static boolean isCollectionEmbeddable(FieldMetadata field) {
-        return MappingType.COLLECTION.equals(field.type()) && ((GenericFieldMetadata) field).isEmbeddable();
+        return MappingType.COLLECTION.equals(field.mappingType()) && ((GenericFieldMetadata) field).isEmbeddable();
     }
 }

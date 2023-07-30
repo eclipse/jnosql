@@ -67,7 +67,7 @@ final class EntityConverterByField<T> implements Supplier<T> {
         Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
 
         fieldsGroupByName.keySet().stream()
-                .filter(existField.or(k -> EMBEDDED.equals(fieldsGroupByName.get(k).type())))
+                .filter(existField.or(k -> EMBEDDED.equals(fieldsGroupByName.get(k).mappingType())))
                 .forEach(feedObject(instance, elements, fieldsGroupByName, vertex));
 
         feedId(vertex, instance);
@@ -84,7 +84,7 @@ final class EntityConverterByField<T> implements Supplier<T> {
                     .findFirst();
 
             FieldMetadata field = fieldsGroupByName.get(k);
-            if (EMBEDDED.equals(field.type())) {
+            if (EMBEDDED.equals(field.mappingType())) {
                 embeddedField(instance, elements, field, vertex);
             } else {
                 element.ifPresent(e -> singleField(instance, e, field));
@@ -151,7 +151,7 @@ final class EntityConverterByField<T> implements Supplier<T> {
         Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
 
         fieldsGroupByName.keySet().stream()
-                .filter(existField.or(k -> EMBEDDED.equals(fieldsGroupByName.get(k).type())))
+                .filter(existField.or(k -> EMBEDDED.equals(fieldsGroupByName.get(k).mappingType())))
                 .forEach(feedObject(instance, elements, fieldsGroupByName, vertex));
 
         return instance;

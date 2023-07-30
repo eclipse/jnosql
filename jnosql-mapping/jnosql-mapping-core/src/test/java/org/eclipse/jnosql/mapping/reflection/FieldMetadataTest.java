@@ -55,7 +55,7 @@ public class FieldMetadataTest {
 
         assertEquals("string", field.fieldName());
         assertEquals("stringTypeAnnotation", field.name());
-        assertEquals(DEFAULT, field.type());
+        assertEquals(DEFAULT, field.mappingType());
 
     }
 
@@ -68,7 +68,7 @@ public class FieldMetadataTest {
 
         assertEquals("list", field.fieldName());
         assertEquals("listAnnotation", field.name());
-        assertEquals(COLLECTION, field.type());
+        assertEquals(COLLECTION, field.mappingType());
     }
 
     @Test
@@ -80,7 +80,7 @@ public class FieldMetadataTest {
 
         assertEquals("map", field.fieldName());
         assertEquals("mapAnnotation", field.name());
-        assertEquals(MAP, field.type());
+        assertEquals(MAP, field.mappingType());
 
     }
 
@@ -93,7 +93,7 @@ public class FieldMetadataTest {
 
         assertEquals("barClass", field.fieldName());
         assertEquals("barClass", field.name());
-        assertEquals(EMBEDDED, field.type());
+        assertEquals(EMBEDDED, field.mappingType());
     }
 
     @Test

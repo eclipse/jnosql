@@ -153,7 +153,7 @@ public abstract class DocumentEntityConverter {
             Optional<Document> document = documents.stream().filter(c -> c.name().equals(k)).findFirst();
             FieldMetadata field = fieldsGroupByName.get(k);
             FieldConverter fieldConverter = FieldConverter.get(field);
-            if (ENTITY.equals(field.type())) {
+            if (ENTITY.equals(field.mappingType())) {
                 document.ifPresent(d -> fieldConverter.convert(entity,
                         null, d, field, this));
             } else {
@@ -214,7 +214,7 @@ public abstract class DocumentEntityConverter {
         final List<String> names = documents.stream().map(Document::name).sorted().toList();
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
-            MappingType type = fieldsGroupByName.get(k).type();
+            MappingType type = fieldsGroupByName.get(k).mappingType();
             return EMBEDDED.equals(type) || ENTITY.equals(type);
         };
 

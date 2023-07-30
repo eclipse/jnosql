@@ -142,7 +142,7 @@ public abstract class ColumnEntityConverter {
             Optional<Column> column = columns.stream().filter(c -> c.name().equals(k)).findFirst();
             FieldMetadata field = fieldsGroupByName.get(k);
             FieldConverter fieldConverter = FieldConverter.get(field);
-            if (ENTITY.equals(field.type())) {
+            if (ENTITY.equals(field.mappingType())) {
                 column.ifPresent(c -> fieldConverter.convert(entity, c, field, this));
             } else {
                 fieldConverter.convert(entity, columns, column.orElse(null), field, this);
@@ -184,7 +184,7 @@ public abstract class ColumnEntityConverter {
         final List<String> names = columns.stream().map(Column::name).sorted().toList();
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
-            MappingType type = fieldsGroupByName.get(k).type();
+            MappingType type = fieldsGroupByName.get(k).mappingType();
             return EMBEDDED.equals(type) || ENTITY.equals(type);
         };
         fieldsGroupByName.keySet().stream()

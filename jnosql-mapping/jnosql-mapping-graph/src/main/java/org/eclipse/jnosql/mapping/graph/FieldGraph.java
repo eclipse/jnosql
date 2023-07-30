@@ -87,7 +87,7 @@ final class FieldGraph {
     }
 
     public <X, Y> List<Property<?>> toElements(GraphConverter converter, Converters converters) {
-        if (EMBEDDED.equals(field.type())) {
+        if (EMBEDDED.equals(field.mappingType())) {
             return converter.getProperties(value);
         }
 

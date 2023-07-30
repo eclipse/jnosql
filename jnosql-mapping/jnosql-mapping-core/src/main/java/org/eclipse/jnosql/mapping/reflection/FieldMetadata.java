@@ -34,7 +34,7 @@ public interface FieldMetadata {
      *
      * @return the {@link MappingType}
      */
-    MappingType type();
+    MappingType mappingType();
 
     /**
      * The {@link Field}

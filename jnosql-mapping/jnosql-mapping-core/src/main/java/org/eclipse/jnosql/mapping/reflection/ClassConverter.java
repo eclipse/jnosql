@@ -108,7 +108,7 @@ class ClassConverter {
                              String javaField, String nativeField) {
 
 
-        switch (field.type()) {
+        switch (field.mappingType()) {
             case ENTITY -> appendFields(nativeFieldGroupByJavaField, field, javaField,
                     appendPreparePrefix(nativeField, field.name()));
             case EMBEDDED -> appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField);

@@ -86,7 +86,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     }
 
     private MappingType getType() {
-        return field().type();
+        return field().mappingType();
     }
 
     private String getName() {

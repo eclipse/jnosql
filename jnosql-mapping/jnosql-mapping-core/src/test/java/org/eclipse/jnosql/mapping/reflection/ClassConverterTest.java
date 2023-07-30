@@ -110,7 +110,7 @@ public class ClassConverterTest {
         assertTrue(fields.stream().anyMatch(hasKeyAnnotation));
         FieldMetadata fieldMetadata = fields.stream().filter(hasKeyAnnotation).findFirst().get();
         assertEquals("_id", fieldMetadata.name());
-        assertEquals(MappingType.DEFAULT, fieldMetadata.type());
+        assertEquals(MappingType.DEFAULT, fieldMetadata.mappingType());
 
     }
 
