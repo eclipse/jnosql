@@ -55,7 +55,7 @@ final class EntityConverterByContructor<T> implements Supplier<T> {
         List<Property<?>> properties = vertex.keys().stream()
                 .map(k -> DefaultProperty.of(k, vertex.value(k)))
                 .collect(toList());
-        for (ParameterMetaData parameter : builder.getParameters()) {
+        for (ParameterMetaData parameter : builder.parameters()) {
 
             if (parameter.isId()) {
                 feedId(builder, parameter);

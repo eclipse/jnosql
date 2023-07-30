@@ -41,7 +41,7 @@ public final class ConstructorBuilder {
     }
 
 
-    public List<ParameterMetaData> getParameters() {
+    public List<ParameterMetaData> parameters() {
         return this.metadata.parameters();
     }
 

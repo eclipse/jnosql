@@ -167,7 +167,7 @@ public abstract class ColumnEntityConverter {
 
     private <T> T convertEntityByConstructor(List<Column> columns, EntityMetadata mapping) {
         ConstructorBuilder builder = ConstructorBuilder.of(mapping.constructor());
-        for (ParameterMetaData parameter : builder.getParameters()) {
+        for (ParameterMetaData parameter : builder.parameters()) {
             Optional<Column> column = columns.stream()
                     .filter(c -> c.name().equals(parameter.name()))
                     .findFirst();

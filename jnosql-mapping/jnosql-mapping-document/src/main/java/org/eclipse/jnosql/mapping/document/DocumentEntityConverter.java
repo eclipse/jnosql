@@ -164,7 +164,7 @@ public abstract class DocumentEntityConverter {
 
     private <T> T convertEntityByConstructor(List<Document> documents, EntityMetadata mapping) {
         ConstructorBuilder builder = ConstructorBuilder.of(mapping.constructor());
-        for (ParameterMetaData parameter : builder.getParameters()) {
+        for (ParameterMetaData parameter : builder.parameters()) {
             Optional<Document> document = documents.stream()
                     .filter(c -> c.name().equals(parameter.name()))
                     .findFirst();
