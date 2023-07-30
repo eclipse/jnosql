@@ -22,13 +22,13 @@ class ReflectionClassOperation implements ClassOperation {
 
     private final ReflectionInstanceSupplierFactory supplierFactory;
 
-    private final ReflectionFieldWriterFactory writerFactory;
+    private final FieldWriterFactory writerFactory;
 
     private final ReflectionFieldReaderFactory readerFactory;
 
     ReflectionClassOperation(Reflections reflections) {
         supplierFactory = new ReflectionInstanceSupplierFactory(reflections);
-        writerFactory = new ReflectionFieldWriterFactory(reflections);
+        writerFactory = new FieldWriterFactory(reflections);
         readerFactory = new ReflectionFieldReaderFactory(reflections);
     }
 

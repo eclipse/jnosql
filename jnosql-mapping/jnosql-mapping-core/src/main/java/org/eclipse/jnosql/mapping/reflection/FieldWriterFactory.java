@@ -14,11 +14,32 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+
 import java.lang.reflect.Field;
 import java.util.function.Function;
 
 /**
  * A factory of {@link FieldWriter}
  */
-public interface FieldWriterFactory extends Function<Field, FieldWriter> {
+@ApplicationScoped
+public class FieldWriterFactory implements Function<Field, FieldWriter> {
+
+
+
+    private Reflections reflections;
+
+    @Inject
+    public FieldWriterFactory(Reflections reflections) {
+        this.reflections = reflections;
+    }
+
+    FieldWriterFactory() {
+    }
+
+    @Override
+    public FieldWriter apply(Field field) {
+        return (bean, value) -> reflections.setValue(bean, field, value);
+    }
 }
