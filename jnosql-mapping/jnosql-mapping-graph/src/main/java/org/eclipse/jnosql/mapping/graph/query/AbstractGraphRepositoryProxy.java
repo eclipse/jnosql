@@ -26,7 +26,7 @@ import org.eclipse.jnosql.mapping.NoSQLPage;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.repository.ThrowingSupplier;

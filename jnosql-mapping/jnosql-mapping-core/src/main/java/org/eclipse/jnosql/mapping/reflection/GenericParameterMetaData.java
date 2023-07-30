@@ -18,6 +18,7 @@ import org.eclipse.jnosql.communication.TypeSupplier;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.CollectionSupplier;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
+import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;

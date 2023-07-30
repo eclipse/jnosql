@@ -18,8 +18,8 @@ package org.eclipse.jnosql.mapping.document.query;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 import java.lang.reflect.ParameterizedType;
 

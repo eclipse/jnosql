@@ -15,6 +15,10 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;

@@ -17,9 +17,9 @@ package org.eclipse.jnosql.mapping.column;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
-import org.eclipse.jnosql.mapping.reflection.FieldValue;
+import org.eclipse.jnosql.mapping.metadata.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.DefaultFieldValue;
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMetadata;
 

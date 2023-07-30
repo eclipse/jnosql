@@ -12,8 +12,10 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.reflection;
+package org.eclipse.jnosql.mapping.metadata;
 
+
+import org.eclipse.jnosql.mapping.reflection.ClassInformationNotFoundException;
 
 import java.util.Map;
 import java.util.Optional;

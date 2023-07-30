@@ -21,7 +21,7 @@ import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentTemplateProducer;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 import java.lang.reflect.Proxy;
 import java.util.Objects;

@@ -20,6 +20,7 @@ import jakarta.enterprise.event.Event;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.spi.CDI;
 import jakarta.enterprise.util.TypeLiteral;
+import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

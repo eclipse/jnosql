@@ -12,28 +12,57 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.reflection;
+package org.eclipse.jnosql.mapping.metadata;
+
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Id;
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.util.Optional;
 
 /**
- * This class represents the information from {@link java.lang.reflect.Constructor#getParameters()}.
- * The strategy is to cache all the parameters in a class to create an instance
+ * This class represents the information from {@link java.lang.reflect.Field}.
+ * The strategy is to cache in all fields in a class to either read and write faster from Field
  */
-public interface ParameterMetaData {
-
+public interface FieldMetadata {
 
     /**
      * Return the type of the field
      *
      * @return the {@link MappingType}
      */
-    MappingType paramType();
+    MappingType mappingType();
+
+    /**
+     * Returns a {@code Class} object that identifies the
+     * declared type for the field represented by this
+     * {@code  java.lang.reflect.Field} object.
+     *
+     * @return a {@code Class} object identifying the declared
+     * type of the field represented by this object
+     */
+    Class<?> type();
+
+    /**
+     * Reads and returns the field information through the bean.
+     *
+     * @param bean the bean
+     * @return the property value
+     * @throws NullPointerException when bean is null
+     */
+    Object read(Object bean);
+
+    /**
+     * Writes the field information through the bean.
+     *
+     * @param bean  the bean
+     * @param value the value to write
+     * @throws NullPointerException when there is null parameter
+     */
+    void write(Object bean, Object value);
 
     /**
      * Returns the name of the field that can be either the field name
@@ -44,10 +73,21 @@ public interface ParameterMetaData {
     String name();
 
     /**
-     * @return a {@code Class} object identifying the declared
-     * type of the entity represented by this object
+     * Returns the Java Fields name.
+     * {@link java.lang.reflect.Field#getName()}
+     *
+     * @return The Java Field name {@link java.lang.reflect.Field#getName()}
      */
-    Class<?> type();
+    String fieldName();
+
+
+    /**
+     * Returns the object from the field type
+     *
+     * @param value the value {@link Value}
+     * @return the instance from the field type
+     */
+    Object value(Value value);
 
     /**
      * Returns true is the field is annotated with {@link Id}
@@ -64,4 +104,6 @@ public interface ParameterMetaData {
      * @return the converter if present
      */
     <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> converter();
+
+
 }

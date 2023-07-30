@@ -23,6 +23,7 @@ import org.eclipse.jnosql.mapping.DiscriminatorColumn;
 import org.eclipse.jnosql.mapping.DiscriminatorValue;
 import org.eclipse.jnosql.mapping.Inheritance;
 import org.eclipse.jnosql.mapping.MappedSuperclass;
+import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 import org.eclipse.jnosql.mapping.util.StringUtils;
 
 import java.lang.annotation.Annotation;

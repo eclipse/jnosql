@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+
 import java.util.Objects;
 
 final class NativeMapping {

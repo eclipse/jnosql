@@ -20,7 +20,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.eclipse.jnosql.mapping.NoSQLPage;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.repository.RepositoryObserverParser;
 import org.eclipse.jnosql.mapping.repository.SpecialParameters;

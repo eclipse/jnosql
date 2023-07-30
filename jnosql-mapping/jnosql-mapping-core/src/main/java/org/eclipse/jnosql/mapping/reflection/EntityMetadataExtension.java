@@ -20,6 +20,7 @@ import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.BeforeBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
 import jakarta.nosql.Entity;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

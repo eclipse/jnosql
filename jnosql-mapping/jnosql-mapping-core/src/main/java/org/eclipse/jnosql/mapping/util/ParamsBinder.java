@@ -17,8 +17,8 @@ package org.eclipse.jnosql.mapping.util;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

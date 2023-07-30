@@ -26,7 +26,7 @@ import jakarta.nosql.QueryMapper.MapperSkip;
 import jakarta.nosql.QueryMapper.MapperWhere;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import java.util.List;
 import java.util.Optional;

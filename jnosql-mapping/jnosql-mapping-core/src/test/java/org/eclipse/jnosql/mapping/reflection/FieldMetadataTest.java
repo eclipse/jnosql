@@ -19,6 +19,8 @@ import jakarta.nosql.Column;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Embeddable;
 import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;

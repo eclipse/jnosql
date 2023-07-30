@@ -12,9 +12,11 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.reflection;
+package org.eclipse.jnosql.mapping.metadata;
 
 import jakarta.nosql.Id;
+import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
+import org.eclipse.jnosql.mapping.reflection.InstanceSupplier;
 
 import java.util.List;
 import java.util.Map;

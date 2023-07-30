@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.repository;
 
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.Objects;
 import java.util.Optional;

@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
+
 import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.List;

@@ -26,7 +26,7 @@ import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.PreparedStatement;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.column.entities.Job;
 import org.eclipse.jnosql.mapping.column.entities.Movie;

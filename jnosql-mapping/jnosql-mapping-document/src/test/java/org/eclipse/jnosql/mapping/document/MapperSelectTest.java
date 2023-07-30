@@ -28,7 +28,7 @@ import org.eclipse.jnosql.mapping.document.entities.Money;
 import org.eclipse.jnosql.mapping.document.entities.Person;
 import org.eclipse.jnosql.mapping.document.entities.Worker;
 
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
