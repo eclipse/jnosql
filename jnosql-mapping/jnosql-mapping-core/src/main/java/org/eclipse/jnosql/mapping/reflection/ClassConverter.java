@@ -51,11 +51,10 @@ class ClassConverter {
     @Inject
     ClassConverter(Reflections reflections) {
 
-        ClassOperation classOperation = new ReflectionClassOperation(reflections);
         this.reflections = reflections;
-        this.readerFactory = classOperation.getFieldReaderFactory();
-        this.writerFactory = classOperation.getFieldWriterFactory();
-        this.instanceSupplierFactory = classOperation.getInstanceSupplierFactory();
+        this.readerFactory = new ReflectionFieldReaderFactory(reflections);
+        this.writerFactory = new FieldWriterFactory(reflections);
+        this.instanceSupplierFactory = new ReflectionInstanceSupplierFactory(reflections);
         this.constructorMetadataBuilder = new ConstructorMetadataBuilder(reflections);
     }
 
