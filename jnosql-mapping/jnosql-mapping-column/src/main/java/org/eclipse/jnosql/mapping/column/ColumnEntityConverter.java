@@ -169,7 +169,7 @@ public abstract class ColumnEntityConverter {
         ConstructorBuilder builder = ConstructorBuilder.of(mapping.constructor());
         for (ParameterMetaData parameter : builder.getParameters()) {
             Optional<Column> column = columns.stream()
-                    .filter(c -> c.name().equals(parameter.getName()))
+                    .filter(c -> c.name().equals(parameter.name()))
                     .findFirst();
             column.ifPresentOrElse(c -> {
                 ParameterConverter converter = ParameterConverter.of(parameter);

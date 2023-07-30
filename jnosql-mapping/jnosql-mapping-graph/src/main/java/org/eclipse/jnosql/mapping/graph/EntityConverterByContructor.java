@@ -69,12 +69,12 @@ final class EntityConverterByContructor<T> implements Supplier<T> {
     private void feedId(ConstructorBuilder builder, ParameterMetaData parameter) {
         Object vertexId = vertex.id();
         if (Objects.nonNull(vertexId)) {
-            parameter.getConverter().ifPresentOrElse(c -> {
+            parameter.converter().ifPresentOrElse(c -> {
                 AttributeConverter attributeConverter = this.converters.get(c);
                 Object attributeConverted = attributeConverter.convertToEntityAttribute(vertexId);
                 Value value = Value.of(attributeConverted);
-                builder.add(value.get(parameter.getType()));
-            }, () -> builder.add(Value.of(vertexId).get(parameter.getType())));
+                builder.add(value.get(parameter.type()));
+            }, () -> builder.add(Value.of(vertexId).get(parameter.type())));
         } else {
             builder.addEmptyParameter();
         }
@@ -82,14 +82,14 @@ final class EntityConverterByContructor<T> implements Supplier<T> {
 
     private void feedRegularFeilds(ConstructorBuilder builder, List<Property<?>> properties, ParameterMetaData parameter) {
         Optional<Property<?>> property = properties.stream()
-                .filter(c -> c.key().equals(parameter.getName()))
+                .filter(c -> c.key().equals(parameter.name()))
                 .findFirst();
-        property.ifPresentOrElse(p -> parameter.getConverter().ifPresentOrElse(c -> {
+        property.ifPresentOrElse(p -> parameter.converter().ifPresentOrElse(c -> {
             Object value = this.converters.get(c).convertToEntityAttribute(p.value());
             builder.add(value);
         }, () -> {
             Value value = Value.of(p.value());
-            builder.add(value.get(parameter.getType()));
+            builder.add(value.get(parameter.type()));
         }), builder::addEmptyParameter);
     }
 

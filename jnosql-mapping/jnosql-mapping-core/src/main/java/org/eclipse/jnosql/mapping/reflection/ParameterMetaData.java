@@ -32,7 +32,7 @@ public interface ParameterMetaData {
      *
      * @return the {@link MappingType}
      */
-    MappingType getParamType();
+    MappingType paramType();
 
     /**
      * Returns the name of the field that can be either the field name
@@ -40,13 +40,13 @@ public interface ParameterMetaData {
      *
      * @return the name
      */
-    String getName();
+    String name();
 
     /**
      * @return a {@code Class} object identifying the declared
      * type of the entity represented by this object
      */
-    Class<?> getType();
+    Class<?> type();
 
     /**
      * Returns true is the field is annotated with {@link Id}
@@ -62,5 +62,5 @@ public interface ParameterMetaData {
      * @param <T> the Converter
      * @return the converter if present
      */
-    <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> getConverter();
+    <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> converter();
 }

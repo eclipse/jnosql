@@ -43,17 +43,17 @@ class DefaultParameterMetaData implements ParameterMetaData {
     }
 
     @Override
-    public MappingType getParamType() {
+    public MappingType paramType() {
         return mappingType;
     }
 
     @Override
-    public String getName() {
+    public String name() {
         return name;
     }
 
     @Override
-    public Class<?> getType() {
+    public Class<?> type() {
         return type;
     }
 
@@ -63,7 +63,7 @@ class DefaultParameterMetaData implements ParameterMetaData {
     }
 
     @Override
-    public <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> getConverter() {
+    public <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> converter() {
         return Optional.ofNullable((Class<? extends AttributeConverter<X, Y>>)converter);
     }
 

@@ -33,10 +33,10 @@ enum ParameterConverter {
                      ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
-            metaData.getConverter().ifPresentOrElse(c -> {
+            metaData.converter().ifPresentOrElse(c -> {
                 Object value = converter.getConverters().get(c).convertToEntityAttribute(column.get());
                 builder.add(value);
-            }, () -> builder.add(column.get(metaData.getType())));
+            }, () -> builder.add(column.get(metaData.type())));
 
         }
     }, ENTITY {
@@ -52,12 +52,12 @@ enum ParameterConverter {
                     columns.add(Column.of(entry.getKey().toString(), entry.getValue()));
                 }
 
-                Object entity = converter.toEntity(metaData.getType(), columns);
+                Object entity = converter.toEntity(metaData.type(), columns);
                 builder.add(entity);
 
             } else {
                 List<Column> columns = column.get(new TypeReference<>() {});
-                Object entity = converter.toEntity(metaData.getType(), columns);
+                Object entity = converter.toEntity(metaData.type(), columns);
                 builder.add(entity);
             }
         }
@@ -84,7 +84,7 @@ enum ParameterConverter {
                           ConstructorBuilder builder);
 
     static ParameterConverter of(ParameterMetaData parameter) {
-        return switch (parameter.getParamType()) {
+        return switch (parameter.paramType()) {
             case COLLECTION -> COLLECTION;
             case ENTITY -> ENTITY;
             default -> DEFAULT;

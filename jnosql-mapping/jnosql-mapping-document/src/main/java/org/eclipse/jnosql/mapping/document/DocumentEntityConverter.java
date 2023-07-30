@@ -166,7 +166,7 @@ public abstract class DocumentEntityConverter {
         ConstructorBuilder builder = ConstructorBuilder.of(mapping.constructor());
         for (ParameterMetaData parameter : builder.getParameters()) {
             Optional<Document> document = documents.stream()
-                    .filter(c -> c.name().equals(parameter.getName()))
+                    .filter(c -> c.name().equals(parameter.name()))
                     .findFirst();
             document.ifPresentOrElse(c -> {
                 ParameterConverter converter = ParameterConverter.of(parameter);

@@ -41,7 +41,7 @@ public final class GenericParameterMetaData extends DefaultParameterMetaData imp
     }
 
     public Collection<?> getCollectionInstance() {
-        Class<?> type =  getType();
+        Class<?> type =  type();
         final CollectionSupplier supplier = ServiceLoader.load(CollectionSupplier.class)
                 .stream()
                 .map(ServiceLoader.Provider::get)
