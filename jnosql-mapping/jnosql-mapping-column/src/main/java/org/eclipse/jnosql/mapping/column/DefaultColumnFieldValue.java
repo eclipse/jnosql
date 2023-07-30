@@ -65,7 +65,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
         } else if (isEmbeddableCollection()) {
             return singletonList(Column.of(getName(), getColumns(converter)));
         }
-        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field().getConverter();
+        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field().converter();
         if (optionalConverter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters.get(optionalConverter.get());
             return singletonList(Column.of(getName(), attributeConverter.convertToDatabaseColumn((X) value())));

@@ -100,7 +100,7 @@ final class EntityConverterByField<T> implements Supplier<T> {
 
     private <X, Y> void singleField(T instance, Property<?> element, FieldMapping field) {
         Object value = element.value();
-        Optional<Class<? extends AttributeConverter<X, Y>>> converter = field.getConverter();
+        Optional<Class<? extends AttributeConverter<X, Y>>> converter = field.converter();
         if (converter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters().get(converter.get());
             Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) value);
@@ -133,7 +133,7 @@ final class EntityConverterByField<T> implements Supplier<T> {
         Object vertexId = vertex.id();
         if (Objects.nonNull(vertexId) && id.isPresent()) {
             FieldMapping fieldMapping = id.get();
-            fieldMapping.getConverter().ifPresentOrElse(c -> {
+            fieldMapping.converter().ifPresentOrElse(c -> {
                 AttributeConverter attributeConverter = converters.get(c);
                 Object attributeConverted = attributeConverter.convertToEntityAttribute(vertexId);
                 fieldMapping.write(entity, fieldMapping.value(Value.of(attributeConverted)));

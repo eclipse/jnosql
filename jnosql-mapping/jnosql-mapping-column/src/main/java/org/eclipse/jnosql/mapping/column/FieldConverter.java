@@ -99,7 +99,7 @@ enum FieldConverter {
                                       FieldMapping field, ColumnEntityConverter converter) {
             if (Objects.nonNull(column)) {
                 Value value = column.value();
-                Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.getConverter();
+                Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.converter();
                 if (optionalConverter.isPresent()) {
                     AttributeConverter<X, Y> attributeConverter = converter.getConverters().get(optionalConverter.get());
                     Y attr = (Y)(value.isInstanceOf(List.class) ? column : value.get());

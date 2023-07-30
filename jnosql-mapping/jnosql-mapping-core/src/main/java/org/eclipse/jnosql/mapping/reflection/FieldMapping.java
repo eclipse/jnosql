@@ -102,7 +102,7 @@ public interface FieldMapping {
      * @param <T> the Converter
      * @return the converter if present
      */
-    <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> getConverter();
+    <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> converter();
 
 
 }

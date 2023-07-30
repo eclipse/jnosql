@@ -79,8 +79,8 @@ public abstract class KeyValueEntityConverter {
 
     private <T> Object getKey(Object key, Class<T> type, boolean toEntity) {
         FieldMapping id = getId(type);
-        if (id.getConverter().isPresent()) {
-            AttributeConverter attributeConverter = getConverters().get(id.getConverter().get());
+        if (id.converter().isPresent()) {
+            AttributeConverter attributeConverter = getConverters().get(id.converter().get());
             if (toEntity) {
                 return attributeConverter.convertToEntityAttribute(key);
             } else {
