@@ -148,10 +148,10 @@ public class ReflectionsTest {
         Optional<InheritanceMetadata> inheritance = this.reflections.getInheritance(LargeProject.class);
         assertFalse(inheritance.isEmpty());
         InheritanceMetadata project = inheritance.get();
-        assertEquals("size", project.getDiscriminatorColumn());
-        assertEquals("Large", project.getDiscriminatorValue());
-        assertEquals(Project.class, project.getParent());
-        assertEquals(LargeProject.class, project.getEntity());
+        assertEquals("size", project.discriminatorColumn());
+        assertEquals("Large", project.discriminatorValue());
+        assertEquals(Project.class, project.parent());
+        assertEquals(LargeProject.class, project.entity());
     }
 
     @Test
@@ -159,10 +159,10 @@ public class ReflectionsTest {
         Optional<InheritanceMetadata> inheritance = this.reflections.getInheritance(SmsNotification.class);
         assertFalse(inheritance.isEmpty());
         InheritanceMetadata project = inheritance.get();
-        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, project.getDiscriminatorColumn());
-        assertEquals("SMS", project.getDiscriminatorValue());
-        assertEquals(Notification.class, project.getParent());
-        assertEquals(SmsNotification.class, project.getEntity());
+        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, project.discriminatorColumn());
+        assertEquals("SMS", project.discriminatorValue());
+        assertEquals(Notification.class, project.parent());
+        assertEquals(SmsNotification.class, project.entity());
     }
 
     @Test
@@ -170,10 +170,10 @@ public class ReflectionsTest {
         Optional<InheritanceMetadata> inheritance = this.reflections.getInheritance(SocialMediaNotification.class);
         assertFalse(inheritance.isEmpty());
         InheritanceMetadata project = inheritance.get();
-        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, project.getDiscriminatorColumn());
-        assertEquals("SocialMediaNotification", project.getDiscriminatorValue());
-        assertEquals(Notification.class, project.getParent());
-        assertEquals(SocialMediaNotification.class, project.getEntity());
+        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, project.discriminatorColumn());
+        assertEquals("SocialMediaNotification", project.discriminatorValue());
+        assertEquals(Notification.class, project.parent());
+        assertEquals(SocialMediaNotification.class, project.entity());
     }
 
     @Test
@@ -181,10 +181,10 @@ public class ReflectionsTest {
         Optional<InheritanceMetadata> inheritance = this.reflections.getInheritance(Project.class);
         assertFalse(inheritance.isEmpty());
         InheritanceMetadata project = inheritance.get();
-        assertEquals("size", project.getDiscriminatorColumn());
-        assertEquals("Project", project.getDiscriminatorValue());
-        assertEquals(Project.class, project.getParent());
-        assertEquals(Project.class, project.getEntity());
+        assertEquals("size", project.discriminatorColumn());
+        assertEquals("Project", project.discriminatorValue());
+        assertEquals(Project.class, project.parent());
+        assertEquals(Project.class, project.entity());
     }
 
     @Test

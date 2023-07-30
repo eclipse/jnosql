@@ -67,8 +67,8 @@ public abstract class ColumnEntityConverter {
                 .flatMap(List::stream)
                 .forEach(communication::add);
 
-        mapping.inheritance().ifPresent(i -> communication.add(i.getDiscriminatorColumn(),
-                i.getDiscriminatorValue()));
+        mapping.inheritance().ifPresent(i -> communication.add(i.discriminatorColumn(),
+                i.discriminatorValue()));
         return communication;
     }
 
@@ -205,7 +205,7 @@ public abstract class ColumnEntityConverter {
         String column = group.values()
                 .stream()
                 .findFirst()
-                .map(InheritanceMetadata::getDiscriminatorColumn)
+                .map(InheritanceMetadata::discriminatorColumn)
                 .orElseThrow();
 
         String discriminator = entity.find(column, String.class)
@@ -217,7 +217,7 @@ public abstract class ColumnEntityConverter {
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        EntityMetadata mapping = getEntities().get(inheritance.getEntity());
+        EntityMetadata mapping = getEntities().get(inheritance.entity());
         ConstructorMetadata constructor = mapping.constructor();
         if (constructor.isDefault()) {
             T instance = mapping.newInstance();
@@ -239,7 +239,7 @@ public abstract class ColumnEntityConverter {
         String column = group.values()
                 .stream()
                 .findFirst()
-                .map(InheritanceMetadata::getDiscriminatorColumn)
+                .map(InheritanceMetadata::discriminatorColumn)
                 .orElseThrow();
 
         String discriminator = columns.stream()
@@ -254,7 +254,7 @@ public abstract class ColumnEntityConverter {
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        EntityMetadata inheritanceMetadata = getEntities().get(inheritance.getEntity());
+        EntityMetadata inheritanceMetadata = getEntities().get(inheritance.entity());
         T instance = inheritanceMetadata.newInstance();
         return convertEntity(columns, inheritanceMetadata, instance);
     }

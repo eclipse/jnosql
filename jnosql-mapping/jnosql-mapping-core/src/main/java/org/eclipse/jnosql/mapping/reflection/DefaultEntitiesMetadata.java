@@ -90,7 +90,7 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
         return this.classes.values().stream()
                 .flatMap(c -> c.inheritance().stream())
                 .filter(p -> p.isParent(parent))
-                .collect(Collectors.toMap(InheritanceMetadata::getDiscriminatorValue, Function.identity()));
+                .collect(Collectors.toMap(InheritanceMetadata::discriminatorValue, Function.identity()));
     }
 
     @Override

@@ -142,9 +142,9 @@ public class ClassConverterTest {
         InheritanceMetadata inheritance = entity.inheritance()
                 .orElseThrow(RuntimeException::new);
 
-        assertEquals("size", inheritance.getDiscriminatorColumn());
-        assertEquals("Small", inheritance.getDiscriminatorValue());
-        assertEquals(Project.class, inheritance.getParent());
+        assertEquals("size", inheritance.discriminatorColumn());
+        assertEquals("Small", inheritance.discriminatorValue());
+        assertEquals(Project.class, inheritance.parent());
     }
 
     @Test
@@ -156,9 +156,9 @@ public class ClassConverterTest {
         InheritanceMetadata inheritance = entity.inheritance()
                 .orElseThrow(RuntimeException::new);
 
-        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
-        assertEquals("SocialMediaNotification", inheritance.getDiscriminatorValue());
-        assertEquals(Notification.class, inheritance.getParent());
+        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.discriminatorColumn());
+        assertEquals("SocialMediaNotification", inheritance.discriminatorValue());
+        assertEquals(Notification.class, inheritance.parent());
     }
 
     @Test
@@ -170,9 +170,9 @@ public class ClassConverterTest {
         InheritanceMetadata inheritance = entity.inheritance()
                 .orElseThrow(RuntimeException::new);
 
-        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
-        assertEquals("Email", inheritance.getDiscriminatorValue());
-        assertEquals(Notification.class, inheritance.getParent());
+        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.discriminatorColumn());
+        assertEquals("Email", inheritance.discriminatorValue());
+        assertEquals(Notification.class, inheritance.parent());
     }
 
     @Test
@@ -184,10 +184,10 @@ public class ClassConverterTest {
         InheritanceMetadata inheritance = entity.inheritance()
                 .orElseThrow(RuntimeException::new);
 
-        assertEquals("size", inheritance.getDiscriminatorColumn());
-        assertEquals("Project", inheritance.getDiscriminatorValue());
-        assertEquals(Project.class, inheritance.getParent());
-        assertEquals(Project.class, inheritance.getEntity());
+        assertEquals("size", inheritance.discriminatorColumn());
+        assertEquals("Project", inheritance.discriminatorValue());
+        assertEquals(Project.class, inheritance.parent());
+        assertEquals(Project.class, inheritance.entity());
     }
 
 

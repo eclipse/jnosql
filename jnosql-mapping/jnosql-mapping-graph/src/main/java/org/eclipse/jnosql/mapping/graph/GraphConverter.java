@@ -85,7 +85,7 @@ public abstract class GraphConverter {
                 .forEach(p -> vertex.property(p.key(), p.value()));
 
         mapping.inheritance().ifPresent(i ->
-                vertex.property(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
+                vertex.property(i.discriminatorColumn(), i.discriminatorValue()));
 
         return vertex;
     }
@@ -249,7 +249,7 @@ public abstract class GraphConverter {
         String column = group.values()
                 .stream()
                 .findFirst()
-                .map(InheritanceMetadata::getDiscriminatorColumn)
+                .map(InheritanceMetadata::discriminatorColumn)
                 .orElseThrow();
 
 
@@ -264,7 +264,7 @@ public abstract class GraphConverter {
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        EntityMetadata mapping = getEntities().get(inheritance.getEntity());
+        EntityMetadata mapping = getEntities().get(inheritance.entity());
         return convert((Class<T>) mapping.type(), properties, vertex);
     }
 }

@@ -115,7 +115,7 @@ class DefaultGraphTraversalSourceConverter extends GraphConverter {
                 .forEach(p -> vertex.property(p.key(), p.value()));
 
         mapping.inheritance().ifPresent(i ->
-                vertex.property(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
+                vertex.property(i.discriminatorColumn(), i.discriminatorValue()));
 
         return vertex;
 

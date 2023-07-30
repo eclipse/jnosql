@@ -43,7 +43,7 @@ public final class InheritanceMetadata {
      *
      * @return the {@link org.eclipse.jnosql.mapping.DiscriminatorValue} from entity
      */
-    public String getDiscriminatorValue() {
+    public String discriminatorValue() {
         return discriminatorValue;
     }
 
@@ -53,21 +53,21 @@ public final class InheritanceMetadata {
      *
      * @return the {@link org.eclipse.jnosql.mapping.DiscriminatorValue} from entity
      */
-    public String getDiscriminatorColumn() {
+    public String discriminatorColumn() {
         return discriminatorColumn;
     }
 
     /**
      * @return The parent class
      */
-    public Class<?> getParent() {
+    public Class<?> parent() {
         return parent;
     }
 
     /**
      * @return the entity class
      */
-    public Class<?> getEntity() {
+    public Class<?> entity() {
         return entity;
     }
 
