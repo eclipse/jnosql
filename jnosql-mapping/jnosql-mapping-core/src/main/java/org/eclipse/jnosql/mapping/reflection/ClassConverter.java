@@ -114,7 +114,7 @@ class ClassConverter {
             case EMBEDDED -> appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField);
             case COLLECTION -> {
                 if (((GenericFieldMetadata) field).isEmbeddable()) {
-                    Class<?> type = ((GenericFieldMetadata) field).getElementType();
+                    Class<?> type = ((GenericFieldMetadata) field).elementType();
                     String nativeFieldAppended = appendPreparePrefix(nativeField, field.name());
                     appendFields(nativeFieldGroupByJavaField, field, javaField, nativeFieldAppended, type);
                     return;

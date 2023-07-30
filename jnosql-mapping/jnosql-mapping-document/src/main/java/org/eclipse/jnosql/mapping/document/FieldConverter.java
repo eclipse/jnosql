@@ -23,7 +23,6 @@ import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.MappingType;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -85,10 +84,10 @@ enum FieldConverter {
 
             if (Objects.nonNull(document)) {
                 GenericFieldMetadata genericField = (GenericFieldMetadata) field;
-                Collection collection = genericField.getCollectionInstance();
+                Collection collection = genericField.collectionInstance();
                 List<List<Document>> embeddable = (List<List<Document>>) document.get();
                 for (List<Document> documentList : embeddable) {
-                    Object element = converter.toEntity(genericField.getElementType(), documentList);
+                    Object element = converter.toEntity(genericField.elementType(), documentList);
                     collection.add(element);
                 }
                 field.write(instance, collection);

@@ -91,13 +91,13 @@ public class GenericFieldMetadata extends AbstractFieldMetadata {
                 .getAnnotation(annotation) != null;
     }
 
-    public Class<?> getElementType() {
+    public Class<?> elementType() {
         return (Class<?>) ((ParameterizedType) nativeField()
                 .getGenericType())
                 .getActualTypeArguments()[0];
     }
 
-    public Collection<?> getCollectionInstance() {
+    public Collection<?> collectionInstance() {
         Class<?> type = nativeField().getType();
         final CollectionSupplier supplier =  ServiceLoader.load(CollectionSupplier.class)
                 .stream()
