@@ -37,7 +37,7 @@ class ReflectionFieldWriterFactoryTest {
 
 
     @Inject
-    private ReflectionFieldWriterFactory writerFactory;
+    private FieldWriterFactory writerFactory;
 
 
     @Test
