@@ -59,11 +59,6 @@ abstract class AbstractFieldMetadata implements FieldMetadata {
     }
 
     @Override
-    public Field nativeField() {
-        return field;
-    }
-
-    @Override
     public String name() {
         return name;
     }

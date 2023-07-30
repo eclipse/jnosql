@@ -85,20 +85,20 @@ public class GenericFieldMetadata extends AbstractFieldMetadata {
     }
 
     private boolean hasFieldAnnotation(Class<?> annotation) {
-        return ((Class) ((ParameterizedType) nativeField()
+        return ((Class) ((ParameterizedType) this.field
                 .getGenericType())
                 .getActualTypeArguments()[0])
                 .getAnnotation(annotation) != null;
     }
 
     public Class<?> elementType() {
-        return (Class<?>) ((ParameterizedType) nativeField()
+        return (Class<?>) ((ParameterizedType) this.field
                 .getGenericType())
                 .getActualTypeArguments()[0];
     }
 
     public Collection<?> collectionInstance() {
-        Class<?> type = nativeField().getType();
+        Class<?> type = type();
         final CollectionSupplier supplier =  ServiceLoader.load(CollectionSupplier.class)
                 .stream()
                 .map(ServiceLoader.Provider::get)

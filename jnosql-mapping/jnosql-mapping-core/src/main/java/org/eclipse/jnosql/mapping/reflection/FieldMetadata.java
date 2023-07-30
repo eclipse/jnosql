@@ -20,7 +20,6 @@ import jakarta.nosql.Id;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 
-import java.lang.reflect.Field;
 import java.util.Optional;
 
 /**
@@ -35,15 +34,6 @@ public interface FieldMetadata {
      * @return the {@link MappingType}
      */
     MappingType mappingType();
-
-    /**
-     * The {@link Field}
-     *
-     * @return the field
-     */
-    default Field nativeField() {
-        return null;
-    }
 
     /**
      * Returns a {@code Class} object that identifies the
@@ -83,9 +73,9 @@ public interface FieldMetadata {
 
     /**
      * Returns the Java Fields name.
-     * {@link Field#getName()}
+     * {@link java.lang.reflect.Field#getName()}
      *
-     * @return The Java Field name {@link Field#getName()}
+     * @return The Java Field name {@link java.lang.reflect.Field#getName()}
      */
     String fieldName();
 
