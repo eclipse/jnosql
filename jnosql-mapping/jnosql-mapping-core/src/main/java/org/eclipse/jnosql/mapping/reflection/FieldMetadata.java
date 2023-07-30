@@ -46,7 +46,7 @@ public interface FieldMetadata {
     Class<?> type();
 
     /**
-     * Reads the field using {@link FieldReader}
+     * Reads and returns the field information through the bean.
      *
      * @param bean the bean
      * @return the property value
@@ -55,7 +55,7 @@ public interface FieldMetadata {
     Object read(Object bean);
 
     /**
-     * Writes the field using {@link java.io.FileWriter}
+     * Writes the field information through the bean.
      *
      * @param bean  the bean
      * @param value the value to write
