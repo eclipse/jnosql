@@ -45,7 +45,7 @@ class ParameterMetaDataBuilder {
                 && parameter.getDeclaringExecutable().getDeclaringClass().isRecord()) {
             name = parameter.getName();
         }
-        MappingType mappingType = MappingType.of(parameter);
+        MappingType mappingType = MappingType.of(parameter.getType());
         return switch (mappingType) {
             case COLLECTION, MAP -> new GenericParameterMetaData(name, type,
                     id != null,

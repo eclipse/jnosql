@@ -29,7 +29,7 @@ public final class InheritanceMetadata {
 
     private final Class<?> entity;
 
-    InheritanceMetadata(String discriminatorValue, String discriminatorColumn, Class<?> parent
+    public InheritanceMetadata(String discriminatorValue, String discriminatorColumn, Class<?> parent
     , Class<?> entity) {
         this.discriminatorValue = discriminatorValue;
         this.discriminatorColumn = discriminatorColumn;
