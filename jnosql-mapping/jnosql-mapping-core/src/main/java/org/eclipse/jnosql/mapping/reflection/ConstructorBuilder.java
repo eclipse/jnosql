@@ -42,7 +42,7 @@ public final class ConstructorBuilder {
 
 
     public List<ParameterMetaData> getParameters() {
-        return this.metadata.getParameters();
+        return this.metadata.parameters();
     }
 
     public void add(Object value) {
@@ -54,7 +54,7 @@ public final class ConstructorBuilder {
     }
 
     public <T> T build() {
-        Constructor<?> constructor = metadata.getConstructor();
+        Constructor<?> constructor = metadata.constructor();
 
         try {
             Instance<Event<ConstructorEvent>> instance = CDI.current().select(new TypeLiteral<>() {

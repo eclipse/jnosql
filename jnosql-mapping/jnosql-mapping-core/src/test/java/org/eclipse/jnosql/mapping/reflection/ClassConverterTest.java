@@ -202,7 +202,7 @@ public class ClassConverterTest {
         ConstructorMetadata constructor = entityMetadata.constructor();
         assertNotNull(constructor);
         assertFalse(constructor.isDefault());
-        assertEquals(5, constructor.getParameters().size());
+        assertEquals(5, constructor.parameters().size());
     }
 
 }

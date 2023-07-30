@@ -31,11 +31,11 @@ public final class ConstructorMetadata {
         this.parameters = parameters;
     }
 
-    public List<ParameterMetaData> getParameters() {
+    public List<ParameterMetaData> parameters() {
         return parameters;
     }
 
-    public Constructor<?> getConstructor() {
+    public Constructor<?> constructor() {
         return constructor;
     }
 

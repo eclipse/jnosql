@@ -56,20 +56,20 @@ class ConstructorMetadataBuilderTest {
     public void shouldReturnEmptyMetadata() {
         ConstructorMetadata metadata = builder.build(Person.class);
         Assertions.assertNotNull(metadata);
-        Assertions.assertTrue(metadata.getParameters().isEmpty());
+        Assertions.assertTrue(metadata.parameters().isEmpty());
     }
 
     @Test
     public void shouldReturnEmptyDefaultConstructor() {
         ConstructorMetadata metadata = builder.build(Worker.class);
         Assertions.assertNotNull(metadata);
-        Assertions.assertTrue(metadata.getParameters().isEmpty());
+        Assertions.assertTrue(metadata.parameters().isEmpty());
     }
 
     @Test
     public void shouldReturnComputerEntityConstructor() {
         ConstructorMetadata metadata = builder.build(Computer.class);
-        List<ParameterMetaData> parameters = metadata.getParameters();
+        List<ParameterMetaData> parameters = metadata.parameters();
         assertEquals(5, parameters.size());
         List<String> names = parameters.stream()
                 .map(ParameterMetaData::name)
@@ -81,7 +81,7 @@ class ConstructorMetadataBuilderTest {
     @Test
     public void shouldReturnBookUserEntityConstructor() {
         ConstructorMetadata metadata = builder.build(BookUser.class);
-        List<ParameterMetaData> parameters = metadata.getParameters();
+        List<ParameterMetaData> parameters = metadata.parameters();
         assertEquals(3, parameters.size());
         List<String> names = parameters.stream()
                 .map(ParameterMetaData::name)
@@ -93,7 +93,7 @@ class ConstructorMetadataBuilderTest {
     @Test
     public void shouldReturnSmartphoneEntityConstructor() {
         ConstructorMetadata metadata = builder.build(Smartphone.class);
-        List<ParameterMetaData> parameters = metadata.getParameters();
+        List<ParameterMetaData> parameters = metadata.parameters();
         assertEquals(2, parameters.size());
         List<String> names = parameters.stream()
                 .map(ParameterMetaData::name)
@@ -105,7 +105,7 @@ class ConstructorMetadataBuilderTest {
     @Test
     public void shouldReturnPetOwnerEntityConstructor() {
         ConstructorMetadata metadata = builder.build(PetOwner.class);
-        List<ParameterMetaData> parameters = metadata.getParameters();
+        List<ParameterMetaData> parameters = metadata.parameters();
         assertEquals(3, parameters.size());
         List<String> names = parameters.stream()
                 .map(ParameterMetaData::name)
