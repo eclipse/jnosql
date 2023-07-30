@@ -24,7 +24,7 @@ import java.lang.reflect.Field;
 import java.util.Optional;
 
 /**
- * This class represents the information from {@link Field}.
+ * This class represents the information from {@link java.lang.reflect.Field}.
  * The strategy is to cache in all fields in a class to either read and write faster from Field
  */
 public interface FieldMetadata {
@@ -37,13 +37,14 @@ public interface FieldMetadata {
     MappingType mappingType();
 
     /**
-     * The {@link Field}
+     * Returns a {@code Class} object that identifies the
+     * declared type for the field represented by this
+     * {@code  java.lang.reflect.Field} object.
      *
-     * @return the field
+     * @return a {@code Class} object identifying the declared
+     * type of the field represented by this object
      */
-    default Field nativeField() {
-        return null;
-    }
+    Class<?> type();
 
     /**
      * Reads the field using {@link FieldReader}
