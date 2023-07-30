@@ -49,7 +49,7 @@ public class DefaultFieldMetadata extends AbstractFieldMetadata {
             return false;
         }
         AbstractFieldMetadata that = (AbstractFieldMetadata) o;
-        return type == that.type &&
+        return mappingType == that.mappingType &&
                 Objects.equals(field, that.field) &&
                 Objects.equals(name, that.name);
     }
@@ -57,13 +57,13 @@ public class DefaultFieldMetadata extends AbstractFieldMetadata {
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, field, name);
+        return Objects.hash(mappingType, field, name);
     }
 
     @Override
     public String toString() {
         return  "DefaultFieldMapping{" + "id=" + id +
-                ", type=" + type +
+                ", type=" + mappingType +
                 ", field=" + field +
                 ", name='" + name + '\'' +
                 ", fieldName='" + fieldName + '\'' +

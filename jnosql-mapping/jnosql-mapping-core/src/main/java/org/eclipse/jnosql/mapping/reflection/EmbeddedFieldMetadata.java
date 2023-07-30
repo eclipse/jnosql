@@ -45,7 +45,7 @@ public final class EmbeddedFieldMetadata extends AbstractFieldMetadata {
             return false;
         }
         EmbeddedFieldMetadata that = (EmbeddedFieldMetadata) o;
-        return type == that.type &&
+        return mappingType == that.mappingType &&
                 Objects.equals(field, that.field) &&
                 Objects.equals(entityName, that.entityName) &&
                 Objects.equals(name, that.name);
@@ -53,13 +53,13 @@ public final class EmbeddedFieldMetadata extends AbstractFieldMetadata {
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, field, name, entityName);
+        return Objects.hash(mappingType, field, name, entityName);
     }
 
     @Override
     public String toString() {
         return  "EmbeddedFieldMapping{" + "entityName='" + entityName + '\'' +
-                ", type=" + type +
+                ", type=" + mappingType +
                 ", field=" + field +
                 ", name='" + name + '\'' +
                 ", fieldName='" + fieldName + '\'' +

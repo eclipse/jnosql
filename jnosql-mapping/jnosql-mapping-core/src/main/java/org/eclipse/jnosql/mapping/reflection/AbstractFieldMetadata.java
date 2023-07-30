@@ -28,7 +28,7 @@ import java.util.Optional;
  */
 abstract class AbstractFieldMetadata implements FieldMetadata {
 
-    protected final MappingType type;
+    protected final MappingType mappingType;
 
     protected final Field field;
 
@@ -42,20 +42,23 @@ abstract class AbstractFieldMetadata implements FieldMetadata {
 
     protected final FieldWriter writer;
 
-    AbstractFieldMetadata(MappingType type, Field field, String name,
+    protected final Class<?> type;
+
+    AbstractFieldMetadata(MappingType mappingType, Field field, String name,
                           Class<? extends AttributeConverter<?, ?>> converter, FieldReader reader, FieldWriter writer) {
-        this.type = type;
+        this.mappingType = mappingType;
         this.field = field;
         this.name = name;
         this.fieldName = field.getName();
         this.converter = converter;
         this.reader = reader;
         this.writer = writer;
+        this.type = field.getType();
     }
 
     @Override
     public MappingType mappingType() {
-        return type;
+        return mappingType;
     }
 
     @Override
@@ -81,20 +84,26 @@ abstract class AbstractFieldMetadata implements FieldMetadata {
     }
 
     @Override
+    public Class<?> type() {
+        return this.type;
+    }
+
+    @Override
     public <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> converter() {
         return Optional.ofNullable((Class<? extends AttributeConverter<X, Y>>) converter);
     }
 
     @Override
     public String toString() {
-        return "AbstractFieldMapping{" +
-                "type=" + type +
+        return "AbstractFieldMetadata{" +
+                "mappingType=" + mappingType +
                 ", field=" + field +
                 ", name='" + name + '\'' +
                 ", fieldName='" + fieldName + '\'' +
                 ", converter=" + converter +
                 ", reader=" + reader +
                 ", writer=" + writer +
+                ", type=" + type +
                 '}';
     }
 

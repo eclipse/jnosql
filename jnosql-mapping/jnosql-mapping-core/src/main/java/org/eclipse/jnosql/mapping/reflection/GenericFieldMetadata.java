@@ -61,7 +61,7 @@ public class GenericFieldMetadata extends AbstractFieldMetadata {
             return false;
         }
         GenericFieldMetadata that = (GenericFieldMetadata) o;
-        return type == that.type &&
+        return mappingType == that.mappingType &&
                 Objects.equals(field, that.field) &&
                 Objects.equals(typeSupplier, that.typeSupplier) &&
                 Objects.equals(name, that.name);
@@ -69,7 +69,7 @@ public class GenericFieldMetadata extends AbstractFieldMetadata {
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, field, name, typeSupplier);
+        return Objects.hash(mappingType, field, name, typeSupplier);
     }
 
     public boolean isEmbeddable() {
@@ -112,7 +112,7 @@ public class GenericFieldMetadata extends AbstractFieldMetadata {
     @Override
     public String toString() {
         return "GenericFieldMapping{" + "typeSupplier=" + typeSupplier +
-                ", type=" + type +
+                ", type=" + mappingType +
                 ", field=" + field +
                 ", name='" + name + '\'' +
                 ", fieldName='" + fieldName + '\'' +
