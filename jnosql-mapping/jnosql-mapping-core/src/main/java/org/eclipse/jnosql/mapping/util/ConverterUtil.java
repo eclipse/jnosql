@@ -64,12 +64,11 @@ public final class ConverterUtil {
      * @return tje value converted
      */
     public static Object getValue(Object value, Converters converters, FieldMetadata field) {
-        Field nativeField = field.nativeField();
         if (!field.type().equals(value.getClass())) {
             return field.converter()
                     .map(converters::get)
                     .map(useConverter(value))
-                    .orElseGet(getSupplier(value, nativeField));
+                    .orElseGet(getSupplier(value, field.type()));
         }
 
         return field.converter()
@@ -78,16 +77,16 @@ public final class ConverterUtil {
                 .orElse(value);
     }
 
-    private static Supplier<Object> getSupplier(Object value, Field nativeField) {
+    private static Supplier<Object> getSupplier(Object value, Class<?> type) {
         return () -> {
-            if (Iterable.class.isAssignableFrom(nativeField.getType())) {
+            if (Iterable.class.isAssignableFrom(type)) {
                 return value;
             }
             try {
-                return Value.of(value).get(nativeField.getType());
+                return Value.of(value).get(type);
             } catch (UnsupportedOperationException ex) {
                 LOGGER.fine(String.format("There is an error when try to convert the type %s to the type %s",
-                        value, nativeField.getType()));
+                        value, type));
                 return value;
             }
 
