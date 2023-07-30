@@ -41,7 +41,7 @@ public class EntityMetadataExtension implements Extension {
     private final ClassConverter converter;
 
     {
-        converter = new ClassConverter(ClassOperationFactory.INSTANCE.getReflections());
+        converter = new ClassConverter(new Reflections());
     }
 
 
