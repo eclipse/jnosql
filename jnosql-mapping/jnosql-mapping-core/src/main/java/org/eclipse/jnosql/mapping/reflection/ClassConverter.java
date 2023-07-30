@@ -50,8 +50,8 @@ class ClassConverter {
 
     @Inject
     ClassConverter(Reflections reflections) {
-        ClassOperation classOperation = ClassOperationFactory.INSTANCE.get();
 
+        ClassOperation classOperation = new ReflectionClassOperation(reflections);
         this.reflections = reflections;
         this.readerFactory = classOperation.getFieldReaderFactory();
         this.writerFactory = classOperation.getFieldWriterFactory();

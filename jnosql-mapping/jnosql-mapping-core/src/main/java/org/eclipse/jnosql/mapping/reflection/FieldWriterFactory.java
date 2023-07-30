@@ -27,7 +27,6 @@ import java.util.function.Function;
 public class FieldWriterFactory implements Function<Field, FieldWriter> {
 
 
-
     private Reflections reflections;
 
     @Inject
