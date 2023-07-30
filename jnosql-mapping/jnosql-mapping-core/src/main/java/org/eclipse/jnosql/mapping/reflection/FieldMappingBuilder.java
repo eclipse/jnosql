@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import org.eclipse.jnosql.communication.TypeSupplier;
 import org.eclipse.jnosql.mapping.AttributeConverter;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.lang.reflect.Field;
 

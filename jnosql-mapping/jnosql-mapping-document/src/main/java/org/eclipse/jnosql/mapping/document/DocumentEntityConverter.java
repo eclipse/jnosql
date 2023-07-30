@@ -25,7 +25,7 @@ import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
-import org.eclipse.jnosql.mapping.reflection.MappingType;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
 
 import java.util.Collections;
@@ -36,8 +36,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
-import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
+import static org.eclipse.jnosql.mapping.metadata.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.metadata.MappingType.ENTITY;
 
 /**
  * This interface represents the converter between an entity and the {@link DocumentEntity}

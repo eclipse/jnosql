@@ -19,6 +19,7 @@ import jakarta.nosql.Column;
 import jakarta.nosql.Id;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.AttributeConverter;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.util.Optional;
 

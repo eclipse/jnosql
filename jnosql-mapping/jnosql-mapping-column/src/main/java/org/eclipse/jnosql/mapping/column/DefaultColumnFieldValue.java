@@ -18,7 +18,7 @@ import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.FieldMetadata;
-import org.eclipse.jnosql.mapping.reflection.MappingType;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.DefaultFieldValue;
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMetadata;
@@ -27,10 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.eclipse.jnosql.mapping.reflection.MappingType.COLLECTION;
+import static org.eclipse.jnosql.mapping.metadata.MappingType.COLLECTION;
 
-import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
+import static org.eclipse.jnosql.mapping.metadata.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.metadata.MappingType.ENTITY;
 import static java.util.Collections.singletonList;
 
 final class DefaultColumnFieldValue implements ColumnFieldValue {

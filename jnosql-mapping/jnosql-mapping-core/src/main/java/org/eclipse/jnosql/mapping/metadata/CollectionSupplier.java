@@ -12,7 +12,9 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.reflection;
+package org.eclipse.jnosql.mapping.metadata;
+
+import org.eclipse.jnosql.mapping.reflection.GenericFieldMetadata;
 
 import java.util.Collection;
 import java.util.function.Predicate;

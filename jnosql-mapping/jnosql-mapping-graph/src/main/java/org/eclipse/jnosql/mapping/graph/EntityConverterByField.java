@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.metadata.MappingType.EMBEDDED;
 
 final class EntityConverterByField<T> implements Supplier<T> {
     private final List<Property<?>> elements;

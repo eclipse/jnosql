@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.reflection;
+package org.eclipse.jnosql.mapping.metadata;
 
 import jakarta.nosql.Entity;
 import org.eclipse.jnosql.mapping.Embeddable;
@@ -28,20 +28,6 @@ import java.util.Map;
 public enum MappingType {
     EMBEDDED, MAP, COLLECTION, DEFAULT, ENTITY;
 
-    /**
-     * select you the kind of annotation on field and then define a enum type, follow the sequences:
-     * <ul>
-     * <li>Collection</li>
-     * <li>Map</li>
-     * <li>embedded</li>
-     * </ul>.
-     *
-     * @param field - the field with annotation
-     * @return the type
-     */
-    static MappingType of(Field field) {
-        return MappingType.of(field.getType());
-    }
 
     /**
      * select you the kind of annotation on field and then define a enum type, follow the sequences:
@@ -51,14 +37,10 @@ public enum MappingType {
      * <li>embedded</li>
      * </ul>.
      *
-     * @param parameter - the parameter with annotation
+     * @param type - the type
      * @return the type
      */
-    static MappingType of(Parameter parameter) {
-        return MappingType.of(parameter.getType());
-    }
-
-    private static MappingType of(Class<?> type) {
+    public static MappingType of(Class<?> type) {
         if (Collection.class.isAssignableFrom(type)) {
             return MappingType.COLLECTION;
         }

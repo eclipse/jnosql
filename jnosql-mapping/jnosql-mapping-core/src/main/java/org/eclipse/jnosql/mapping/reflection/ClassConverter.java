@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -171,7 +172,7 @@ class ClassConverter {
 
 
     private FieldMetadata to(Field field) {
-        MappingType mappingType = MappingType.of(field);
+        MappingType mappingType = MappingType.of(field.getType());
         reflections.makeAccessible(field);
         Convert convert = field.getAnnotation(Convert.class);
         boolean id = reflections.isIdField(field);
