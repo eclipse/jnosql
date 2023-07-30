@@ -137,7 +137,7 @@ class ClassConverter {
                               FieldMetadata field,
                               String javaField, String nativeField) {
 
-        Class<?> type = field.nativeField().getType();
+        Class<?> type = field.type();
         appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField, type);
     }
 

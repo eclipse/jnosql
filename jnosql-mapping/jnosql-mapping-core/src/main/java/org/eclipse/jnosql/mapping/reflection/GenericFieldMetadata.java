@@ -92,7 +92,7 @@ public class GenericFieldMetadata extends AbstractFieldMetadata {
     }
 
     public Class<?> getElementType() {
-        return (Class) ((ParameterizedType) nativeField()
+        return (Class<?>) ((ParameterizedType) nativeField()
                 .getGenericType())
                 .getActualTypeArguments()[0];
     }
