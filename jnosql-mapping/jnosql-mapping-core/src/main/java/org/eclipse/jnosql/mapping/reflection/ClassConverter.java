@@ -38,10 +38,7 @@ class ClassConverter {
     private static final Logger LOGGER = Logger.getLogger(ClassConverter.class.getName());
 
     private Reflections reflections;
-
-    private FieldWriterFactory writerFactory;
-
-    private InstanceSupplierFactory instanceSupplierFactory;
+   private InstanceSupplierFactory instanceSupplierFactory;
 
     private ConstructorMetadataBuilder constructorMetadataBuilder;
 
@@ -50,7 +47,6 @@ class ClassConverter {
     ClassConverter(Reflections reflections) {
 
         this.reflections = reflections;
-        this.writerFactory = new FieldWriterFactory(reflections);
         this.instanceSupplierFactory = new ReflectionInstanceSupplierFactory(reflections);
         this.constructorMetadataBuilder = new ConstructorMetadataBuilder(reflections);
     }
@@ -184,7 +180,7 @@ class ClassConverter {
         FieldMappingBuilder builder = new FieldMappingBuilder().withName(columnName)
                 .withField(field).withType(mappingType).withId(id)
                 .withReader(bean -> reflections.getValue(bean, field))
-                .withWriter(writerFactory.apply(field));
+                .withWriter( (bean, value) -> reflections.setValue(bean, field, value));
 
         if (nonNull(convert)) {
             builder.withConverter(convert.value());
