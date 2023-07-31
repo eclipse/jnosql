@@ -19,6 +19,8 @@ import jakarta.enterprise.event.Event;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.spi.CDI;
 import jakarta.enterprise.util.TypeLiteral;
+import org.eclipse.jnosql.mapping.metadata.ConstructorBuilder;
+import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
 import java.lang.reflect.Constructor;
@@ -27,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-final class DefaultConstructorBuilder implements ConstructorBuilder{
+final class DefaultConstructorBuilder implements ConstructorBuilder {
 
     private final List<Object> values = new ArrayList<>();
 

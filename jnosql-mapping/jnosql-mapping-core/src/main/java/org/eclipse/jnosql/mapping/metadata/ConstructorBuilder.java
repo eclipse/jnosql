@@ -12,15 +12,13 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.reflection;
+package org.eclipse.jnosql.mapping.metadata;
 
 
 import jakarta.nosql.NoSQLException;
-import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.ServiceLoader;
 
 /**
