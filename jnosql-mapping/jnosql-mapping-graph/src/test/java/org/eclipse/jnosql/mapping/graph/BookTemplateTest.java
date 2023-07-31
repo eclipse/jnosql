@@ -14,32 +14,28 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Transaction.Status;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
 import org.eclipse.jnosql.mapping.graph.entities.BookTemplate;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.apache.tinkerpop.gremlin.structure.Transaction.Status.COMMIT;
 import static org.apache.tinkerpop.gremlin.structure.Transaction.Status.ROLLBACK;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, Transactional.class})
+@AddPackages(value = {Converters.class, Transactional.class})
 @AddPackages(BookRepository.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 public class BookTemplateTest {

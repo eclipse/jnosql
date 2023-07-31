@@ -14,28 +14,26 @@
  */
 package org.eclipse.jnosql.mapping.column.spi;
 
+import jakarta.inject.Inject;
 import jakarta.nosql.column.ColumnTemplate;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.MockProducer;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.column.entities.Person;
 import org.eclipse.jnosql.mapping.column.entities.PersonRepository;
-
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 public class ColumnExtensionTest {

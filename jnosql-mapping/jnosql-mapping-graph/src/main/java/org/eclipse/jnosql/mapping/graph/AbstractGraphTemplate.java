@@ -28,9 +28,9 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
 import java.time.Duration;
@@ -126,7 +126,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
         EntityMetadata entityMetadata = getEntities().get(type);
-        FieldMapping idField = entityMetadata.id()
+        FieldMetadata idField = entityMetadata.id()
                 .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
@@ -398,7 +398,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     private <T> Optional<Vertex> vertex(T entity) {
         EntityMetadata entityMetadata = getEntities().get(entity.getClass());
-        FieldMapping field = entityMetadata.id().get();
+        FieldMetadata field = entityMetadata.id().get();
         Object id = field.read(entity);
         Iterator<Vertex> vertices = vertices(id);
         if (vertices.hasNext()) {
@@ -429,7 +429,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     private <T> boolean isIdNull(T entity) {
         EntityMetadata entityMetadata = getEntities().get(entity.getClass());
-        FieldMapping field = entityMetadata.id().get();
+        FieldMetadata field = entityMetadata.id().get();
         return isNull(field.read(entity));
 
     }

@@ -19,16 +19,14 @@ import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
 import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
-import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.document.entities.Address;
 import org.eclipse.jnosql.mapping.document.entities.Money;
 import org.eclipse.jnosql.mapping.document.entities.Person;
 import org.eclipse.jnosql.mapping.document.entities.Worker;
-
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -43,13 +41,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
+@AddPackages(value = {Converters.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 class MapperSelectTest {

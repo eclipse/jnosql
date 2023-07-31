@@ -18,12 +18,11 @@ import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.mapping.AttributeConverter;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
-import org.eclipse.jnosql.mapping.reflection.MappingType;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,9 +35,8 @@ enum FieldConverter {
     EMBEDDED {
         @Override
         public <X, Y, T> void convert(T instance, List<Column> columns, Column column,
-                                      FieldMapping field, ColumnEntityConverter converter) {
-            Field nativeField = field.nativeField();
-            Object subEntity = converter.toEntity(nativeField.getType(), columns);
+                                      FieldMetadata field, ColumnEntityConverter converter) {
+            Object subEntity = converter.toEntity(field.type(), columns);
             EntityMetadata mapping = converter.getEntities().get(subEntity.getClass());
             boolean areAllFieldsNull = mapping.fields()
                     .stream()
@@ -50,17 +48,17 @@ enum FieldConverter {
         }
     }, ENTITY {
         @Override
-        public <X, Y, T> void convert(T instance, List<Column> columns, Column subColumn, FieldMapping field,
+        public <X, Y, T> void convert(T instance, List<Column> columns, Column subColumn, FieldMetadata field,
                                       ColumnEntityConverter converter) {
 
             if (Objects.nonNull(subColumn)) {
                 converterSubDocument(instance, subColumn, field, converter);
             } else {
-                field.write(instance, converter.toEntity(field.nativeField().getType(), columns));
+                field.write(instance, converter.toEntity(field.type(), columns));
             }
         }
 
-        private <T> void converterSubDocument(T instance, Column subColumn, FieldMapping field,
+        private <T> void converterSubDocument(T instance, Column subColumn, FieldMetadata field,
                                               ColumnEntityConverter converter) {
             Object value = subColumn.get();
             if (value instanceof Map map) {
@@ -69,25 +67,25 @@ enum FieldConverter {
                 for (Map.Entry entry : (Set<Map.Entry>) map.entrySet()) {
                     embeddedColumns.add(Column.of(entry.getKey().toString(), entry.getValue()));
                 }
-                field.write(instance, converter.toEntity(field.nativeField().getType(), embeddedColumns));
+                field.write(instance, converter.toEntity(field.type(), embeddedColumns));
 
             } else {
-                field.write(instance, converter.toEntity(field.nativeField().getType(),
+                field.write(instance, converter.toEntity(field.type(),
                         subColumn.get(new TypeReference<List<Column>>() {
                         })));
             }
         }
     }, COLLECTION {
         @Override
-        public <X, Y, T> void convert(T instance, List<Column> columns, Column column, FieldMapping field,
+        public <X, Y, T> void convert(T instance, List<Column> columns, Column column, FieldMetadata field,
                                       ColumnEntityConverter converter) {
 
             if (Objects.nonNull(column)) {
-                GenericFieldMapping genericField = (GenericFieldMapping) field;
-                Collection elements = genericField.getCollectionInstance();
+                GenericFieldMetadata genericField = (GenericFieldMetadata) field;
+                Collection elements = genericField.collectionInstance();
                 List<List<Column>> embeddable = (List<List<Column>>) column.get();
                 for (List<Column> columnList : embeddable) {
-                    Object element = converter.toEntity(genericField.getElementType(), columnList);
+                    Object element = converter.toEntity(genericField.elementType(), columnList);
                     elements.add(element);
                 }
                 field.write(instance, elements);
@@ -96,10 +94,10 @@ enum FieldConverter {
     }, DEFAULT{
         @Override
         public <X, Y, T> void convert(T instance, List<Column> columns, Column column,
-                                      FieldMapping field, ColumnEntityConverter converter) {
+                                      FieldMetadata field, ColumnEntityConverter converter) {
             if (Objects.nonNull(column)) {
                 Value value = column.value();
-                Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.getConverter();
+                Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.converter();
                 if (optionalConverter.isPresent()) {
                     AttributeConverter<X, Y> attributeConverter = converter.getConverters().get(optionalConverter.get());
                     Y attr = (Y)(value.isInstanceOf(List.class) ? column : value.get());
@@ -112,10 +110,10 @@ enum FieldConverter {
         }
     };
 
-    static FieldConverter get(FieldMapping field) {
-        if (MappingType.EMBEDDED.equals(field.type())) {
+    static FieldConverter get(FieldMetadata field) {
+        if (MappingType.EMBEDDED.equals(field.mappingType())) {
             return EMBEDDED;
-        } else if (MappingType.ENTITY.equals(field.type())) {
+        } else if (MappingType.ENTITY.equals(field.mappingType())) {
             return ENTITY;
         } else if (isCollectionEmbeddable(field)) {
             return COLLECTION;
@@ -124,14 +122,14 @@ enum FieldConverter {
         }
     }
 
-    private static boolean isCollectionEmbeddable(FieldMapping field) {
-        return MappingType.COLLECTION.equals(field.type()) && ((GenericFieldMapping) field).isEmbeddable();
+    private static boolean isCollectionEmbeddable(FieldMetadata field) {
+        return MappingType.COLLECTION.equals(field.mappingType()) && ((GenericFieldMetadata) field).isEmbeddable();
     }
 
-    abstract <X, Y, T> void convert(T instance, List<Column> columns, Column column, FieldMapping field,
+    abstract <X, Y, T> void convert(T instance, List<Column> columns, Column column, FieldMetadata field,
                                     ColumnEntityConverter converter);
 
-    <X, Y, T> void convert(T instance, Column column, FieldMapping field,
+    <X, Y, T> void convert(T instance, Column column, FieldMetadata field,
                            ColumnEntityConverter converter) {
         convert(instance, null, column, field, converter);
     }

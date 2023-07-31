@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
+import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
@@ -23,24 +24,21 @@ import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.communication.column.ColumnQueryParams;
 import org.eclipse.jnosql.communication.column.SelectQueryParser;
 import org.eclipse.jnosql.communication.query.SelectQuery;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.MockProducer;
-import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.column.entities.Person;
-
+import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
-import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Stream;
@@ -48,7 +46,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 class ParamsBinderTest {

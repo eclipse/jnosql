@@ -16,11 +16,10 @@ package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.inject.Inject;
 import jakarta.nosql.Template;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -30,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import static org.eclipse.jnosql.mapping.DatabaseType.GRAPH;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, Transactional.class})
+@AddPackages(value = {Converters.class, Transactional.class})
 @AddPackages(BookRepository.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 public class TemplateGraphTest {

@@ -15,6 +15,11 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
+import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -32,15 +37,15 @@ class DefaultEntityMetadata implements EntityMetadata {
 
     private final Class<?> type;
 
-    private final List<FieldMapping> fields;
+    private final List<FieldMetadata> fields;
 
     private final InstanceSupplier instanceSupplier;
 
     private final Map<String, NativeMapping> javaFieldGroupedByColumn;
 
-    private final Map<String, FieldMapping> fieldsGroupedByName;
+    private final Map<String, FieldMetadata> fieldsGroupedByName;
 
-    private final FieldMapping id;
+    private final FieldMetadata id;
 
     private final InheritanceMetadata inheritance;
 
@@ -49,9 +54,9 @@ class DefaultEntityMetadata implements EntityMetadata {
     private final ConstructorMetadata constructor;
 
     DefaultEntityMetadata(String name, List<String> fieldsName, Class<?> type,
-                          List<FieldMapping> fields,
+                          List<FieldMetadata> fields,
                           Map<String, NativeMapping> javaFieldGroupedByColumn,
-                          Map<String, FieldMapping> fieldsGroupedByName,
+                          Map<String, FieldMetadata> fieldsGroupedByName,
                           InstanceSupplier instanceSupplier,
                           InheritanceMetadata inheritance,
                           ConstructorMetadata constructor,
@@ -63,7 +68,7 @@ class DefaultEntityMetadata implements EntityMetadata {
         this.fieldsGroupedByName = fieldsGroupedByName;
         this.javaFieldGroupedByColumn = javaFieldGroupedByColumn;
         this.instanceSupplier = instanceSupplier;
-        this.id = fields.stream().filter(FieldMapping::isId).findFirst().orElse(null);
+        this.id = fields.stream().filter(FieldMetadata::isId).findFirst().orElse(null);
         this.inheritance = inheritance;
         this.constructor = constructor;
         this.hasInheritanceAnnotation = hasInheritanceAnnotation;
@@ -100,7 +105,7 @@ class DefaultEntityMetadata implements EntityMetadata {
     }
 
     @Override
-    public List<FieldMapping> fields() {
+    public List<FieldMetadata> fields() {
         return fields;
     }
 
@@ -123,19 +128,19 @@ class DefaultEntityMetadata implements EntityMetadata {
     }
 
     @Override
-    public Optional<FieldMapping> fieldMapping(String javaField) {
+    public Optional<FieldMetadata> fieldMapping(String javaField) {
         requireNonNull(javaField, "javaField is required");
         return ofNullable(javaFieldGroupedByColumn.get(javaField))
                 .map(NativeMapping::getFieldMapping);
     }
 
     @Override
-    public Map<String, FieldMapping> fieldsGroupByName() {
+    public Map<String, FieldMetadata> fieldsGroupByName() {
         return fieldsGroupedByName;
     }
 
     @Override
-    public Optional<FieldMapping> id() {
+    public Optional<FieldMetadata> id() {
         return Optional.ofNullable(id);
     }
 

@@ -14,9 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import org.eclipse.jnosql.communication.TypeSupplier;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import jakarta.nosql.Column;
+import org.eclipse.jnosql.mapping.metadata.GenericParameterMetaData;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
+import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 import org.eclipse.jnosql.mapping.test.entities.Animal;
 import org.eclipse.jnosql.mapping.test.entities.Money;
 import org.eclipse.jnosql.mapping.test.entities.MoneyConverter;
@@ -41,10 +43,10 @@ class ParameterMetaDataBuilderTest {
         ParameterMetaData id = ParameterMetaDataBuilder.of(constructor.getParameters()[0]);
         Assertions.assertNotNull(id);
         Assertions.assertTrue(id.isId());
-        Assertions.assertEquals("_id", id.getName());
-        Assertions.assertEquals(Long.class, id.getType());
-        Assertions.assertEquals(MappingType.DEFAULT, id.getParamType());
-        Assertions.assertTrue(id.getConverter().isEmpty());
+        Assertions.assertEquals("_id", id.name());
+        Assertions.assertEquals(Long.class, id.type());
+        Assertions.assertEquals(MappingType.DEFAULT, id.paramType());
+        Assertions.assertTrue(id.converter().isEmpty());
     }
 
     @Test
@@ -53,10 +55,10 @@ class ParameterMetaDataBuilderTest {
         ParameterMetaData name = ParameterMetaDataBuilder.of(constructor.getParameters()[1]);
         Assertions.assertNotNull(name);
         Assertions.assertFalse(name.isId());
-        Assertions.assertEquals("owner", name.getName());
-        Assertions.assertEquals(String.class, name.getType());
-        Assertions.assertEquals(MappingType.DEFAULT, name.getParamType());
-        Assertions.assertTrue(name.getConverter().isEmpty());
+        Assertions.assertEquals("owner", name.name());
+        Assertions.assertEquals(String.class, name.type());
+        Assertions.assertEquals(MappingType.DEFAULT, name.paramType());
+        Assertions.assertTrue(name.converter().isEmpty());
     }
 
     @Test
@@ -65,10 +67,10 @@ class ParameterMetaDataBuilderTest {
         ParameterMetaData name = ParameterMetaDataBuilder.of(constructor.getParameters()[1]);
         Assertions.assertNotNull(name);
         Assertions.assertFalse(name.isId());
-        Assertions.assertEquals("name", name.getName());
-        Assertions.assertEquals(String.class, name.getType());
-        Assertions.assertEquals(MappingType.DEFAULT, name.getParamType());
-        Assertions.assertTrue(name.getConverter().isEmpty());
+        Assertions.assertEquals("name", name.name());
+        Assertions.assertEquals(String.class, name.type());
+        Assertions.assertEquals(MappingType.DEFAULT, name.paramType());
+        Assertions.assertTrue(name.converter().isEmpty());
     }
 
     @Test
@@ -77,11 +79,11 @@ class ParameterMetaDataBuilderTest {
         ParameterMetaData price = ParameterMetaDataBuilder.of(constructor.getParameters()[4]);
         Assertions.assertNotNull(price);
         Assertions.assertFalse(price.isId());
-        Assertions.assertEquals("price", price.getName());
-        Assertions.assertEquals(Money.class, price.getType());
-        Assertions.assertEquals(MappingType.DEFAULT, price.getParamType());
-        Assertions.assertFalse(price.getConverter().isEmpty());
-        Class<? extends AttributeConverter<Object, Object>> converter = price.getConverter().orElseThrow();
+        Assertions.assertEquals("price", price.name());
+        Assertions.assertEquals(Money.class, price.type());
+        Assertions.assertEquals(MappingType.DEFAULT, price.paramType());
+        Assertions.assertFalse(price.converter().isEmpty());
+        Class<? extends AttributeConverter<Object, Object>> converter = price.converter().orElseThrow();
         assertEquals(MoneyConverter.class, converter);
     }
     //parameter wit collection
@@ -94,10 +96,10 @@ class ParameterMetaDataBuilderTest {
         ParameterMetaData animal = ParameterMetaDataBuilder.of(constructor.getParameters()[2]);
         Assertions.assertNotNull(animal);
         Assertions.assertFalse(animal.isId());
-        Assertions.assertEquals("animal", animal.getName());
-        Assertions.assertEquals(Animal.class, animal.getType());
-        Assertions.assertEquals(MappingType.ENTITY, animal.getParamType());
-        Assertions.assertTrue(animal.getConverter().isEmpty());
+        Assertions.assertEquals("animal", animal.name());
+        Assertions.assertEquals(Animal.class, animal.type());
+        Assertions.assertEquals(MappingType.ENTITY, animal.paramType());
+        Assertions.assertTrue(animal.converter().isEmpty());
     }
 
     @Test
@@ -106,14 +108,12 @@ class ParameterMetaDataBuilderTest {
         ParameterMetaData books = ParameterMetaDataBuilder.of(constructor.getParameters()[2]);
         Assertions.assertNotNull(books);
         Assertions.assertFalse(books.isId());
-        Assertions.assertEquals("books", books.getName());
-        Assertions.assertEquals(List.class, books.getType());
-        Assertions.assertEquals(MappingType.COLLECTION, books.getParamType());
-        Assertions.assertTrue(books.getConverter().isEmpty());
-        assertEquals(GenericParameterMetaData.class, books.getClass());
-        GenericParameterMetaData generic = (GenericParameterMetaData) books;
-        TypeSupplier<?> typeSupplier = generic.getTypeSupplier();
-        Assertions.assertNotNull(typeSupplier);
+        Assertions.assertEquals("books", books.name());
+        Assertions.assertEquals(List.class, books.type());
+        Assertions.assertEquals(MappingType.COLLECTION, books.paramType());
+        Assertions.assertTrue(books.converter().isEmpty());
+        assertEquals(DefaultGenericParameterMetaData.class, books.getClass());
+
     }
 
     @Test
@@ -122,14 +122,11 @@ class ParameterMetaDataBuilderTest {
         ParameterMetaData map = ParameterMetaDataBuilder.of(constructor.getParameters()[0]);
         Assertions.assertNotNull(map);
         Assertions.assertFalse(map.isId());
-        Assertions.assertEquals("map", map.getName());
-        Assertions.assertEquals(Map.class, map.getType());
-        Assertions.assertEquals(MappingType.MAP, map.getParamType());
-        Assertions.assertTrue(map.getConverter().isEmpty());
-        assertEquals(GenericParameterMetaData.class, map.getClass());
-        GenericParameterMetaData generic = (GenericParameterMetaData) map;
-        TypeSupplier<?> typeSupplier = generic.getTypeSupplier();
-        Assertions.assertNotNull(typeSupplier);
+        Assertions.assertEquals("map", map.name());
+        Assertions.assertEquals(Map.class, map.type());
+        Assertions.assertEquals(MappingType.MAP, map.paramType());
+        Assertions.assertTrue(map.converter().isEmpty());
+        assertEquals(DefaultGenericParameterMetaData.class, map.getClass());
     }
 
     static class Foo{

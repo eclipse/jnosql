@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 interface DocumentTokenProcessor {
 

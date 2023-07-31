@@ -15,6 +15,8 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import org.eclipse.jnosql.mapping.AttributeConverter;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
+import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -43,17 +45,17 @@ class DefaultParameterMetaData implements ParameterMetaData {
     }
 
     @Override
-    public MappingType getParamType() {
+    public MappingType paramType() {
         return mappingType;
     }
 
     @Override
-    public String getName() {
+    public String name() {
         return name;
     }
 
     @Override
-    public Class<?> getType() {
+    public Class<?> type() {
         return type;
     }
 
@@ -63,7 +65,7 @@ class DefaultParameterMetaData implements ParameterMetaData {
     }
 
     @Override
-    public <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> getConverter() {
+    public <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> converter() {
         return Optional.ofNullable((Class<? extends AttributeConverter<X, Y>>)converter);
     }
 

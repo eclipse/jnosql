@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.column.entities.Car;
 import org.eclipse.jnosql.mapping.column.entities.Hero;
 import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
@@ -33,13 +33,10 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 public class ColumnEntityImmutableTest {

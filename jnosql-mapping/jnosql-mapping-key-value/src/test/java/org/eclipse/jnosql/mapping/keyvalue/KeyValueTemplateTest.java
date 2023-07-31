@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.keyvalue;
 
 import jakarta.inject.Inject;
 import jakarta.nosql.Template;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import static org.eclipse.jnosql.mapping.DatabaseType.KEY_VALUE;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, KeyValueEntityConverter.class})
+@AddPackages(value = {Converters.class, KeyValueEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
 class KeyValueTemplateTest {

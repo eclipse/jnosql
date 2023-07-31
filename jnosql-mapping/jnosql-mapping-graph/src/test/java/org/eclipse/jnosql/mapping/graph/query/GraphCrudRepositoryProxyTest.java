@@ -23,7 +23,6 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.graph.BookRepository;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
@@ -32,9 +31,8 @@ import org.eclipse.jnosql.mapping.graph.Transactional;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.graph.entities.Vendor;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -55,18 +53,12 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, Transactional.class})
+@AddPackages(value = {Converters.class, Transactional.class})
 @AddPackages(BookRepository.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 class GraphCrudRepositoryProxyTest {

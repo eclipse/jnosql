@@ -17,6 +17,11 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.mapping.test.entities.Actor;
 import org.eclipse.jnosql.mapping.test.entities.Director;
 import org.eclipse.jnosql.mapping.test.entities.Machine;
@@ -96,7 +101,7 @@ public class ClassConverterTest {
     @Test
     public void shouldReturnFalseWhenThereIsNotKey() {
         EntityMetadata entityMetadata = classConverter.create(Worker.class);
-        boolean allMatch = entityMetadata.fields().stream().noneMatch(FieldMapping::isId);
+        boolean allMatch = entityMetadata.fields().stream().noneMatch(FieldMetadata::isId);
         assertTrue(allMatch);
     }
 
@@ -104,13 +109,13 @@ public class ClassConverterTest {
     @Test
     public void shouldReturnTrueWhenThereIsKey() {
         EntityMetadata entityMetadata = classConverter.create(User.class);
-        List<FieldMapping> fields = entityMetadata.fields();
+        List<FieldMetadata> fields = entityMetadata.fields();
 
-        Predicate<FieldMapping> hasKeyAnnotation = FieldMapping::isId;
+        Predicate<FieldMetadata> hasKeyAnnotation = FieldMetadata::isId;
         assertTrue(fields.stream().anyMatch(hasKeyAnnotation));
-        FieldMapping fieldMapping = fields.stream().filter(hasKeyAnnotation).findFirst().get();
-        assertEquals("_id", fieldMapping.name());
-        assertEquals(MappingType.DEFAULT, fieldMapping.type());
+        FieldMetadata fieldMetadata = fields.stream().filter(hasKeyAnnotation).findFirst().get();
+        assertEquals("_id", fieldMetadata.name());
+        assertEquals(MappingType.DEFAULT, fieldMetadata.mappingType());
 
     }
 
@@ -122,7 +127,7 @@ public class ClassConverterTest {
     @Test
     public void shouldReturnWhenIsDefaultConstructor() {
         EntityMetadata entityMetadata = classConverter.create(Machine.class);
-        List<FieldMapping> fields = entityMetadata.fields();
+        List<FieldMetadata> fields = entityMetadata.fields();
         assertEquals(1, fields.size());
     }
 
@@ -142,9 +147,9 @@ public class ClassConverterTest {
         InheritanceMetadata inheritance = entity.inheritance()
                 .orElseThrow(RuntimeException::new);
 
-        assertEquals("size", inheritance.getDiscriminatorColumn());
-        assertEquals("Small", inheritance.getDiscriminatorValue());
-        assertEquals(Project.class, inheritance.getParent());
+        assertEquals("size", inheritance.discriminatorColumn());
+        assertEquals("Small", inheritance.discriminatorValue());
+        assertEquals(Project.class, inheritance.parent());
     }
 
     @Test
@@ -156,9 +161,9 @@ public class ClassConverterTest {
         InheritanceMetadata inheritance = entity.inheritance()
                 .orElseThrow(RuntimeException::new);
 
-        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
-        assertEquals("SocialMediaNotification", inheritance.getDiscriminatorValue());
-        assertEquals(Notification.class, inheritance.getParent());
+        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.discriminatorColumn());
+        assertEquals("SocialMediaNotification", inheritance.discriminatorValue());
+        assertEquals(Notification.class, inheritance.parent());
     }
 
     @Test
@@ -170,9 +175,9 @@ public class ClassConverterTest {
         InheritanceMetadata inheritance = entity.inheritance()
                 .orElseThrow(RuntimeException::new);
 
-        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
-        assertEquals("Email", inheritance.getDiscriminatorValue());
-        assertEquals(Notification.class, inheritance.getParent());
+        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.discriminatorColumn());
+        assertEquals("Email", inheritance.discriminatorValue());
+        assertEquals(Notification.class, inheritance.parent());
     }
 
     @Test
@@ -184,10 +189,10 @@ public class ClassConverterTest {
         InheritanceMetadata inheritance = entity.inheritance()
                 .orElseThrow(RuntimeException::new);
 
-        assertEquals("size", inheritance.getDiscriminatorColumn());
-        assertEquals("Project", inheritance.getDiscriminatorValue());
-        assertEquals(Project.class, inheritance.getParent());
-        assertEquals(Project.class, inheritance.getEntity());
+        assertEquals("size", inheritance.discriminatorColumn());
+        assertEquals("Project", inheritance.discriminatorValue());
+        assertEquals(Project.class, inheritance.parent());
+        assertEquals(Project.class, inheritance.entity());
     }
 
 
@@ -202,7 +207,7 @@ public class ClassConverterTest {
         ConstructorMetadata constructor = entityMetadata.constructor();
         assertNotNull(constructor);
         assertFalse(constructor.isDefault());
-        assertEquals(5, constructor.getParameters().size());
+        assertEquals(5, constructor.parameters().size());
     }
 
 }

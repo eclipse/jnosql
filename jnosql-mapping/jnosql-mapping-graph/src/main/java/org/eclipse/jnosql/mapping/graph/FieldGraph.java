@@ -17,22 +17,22 @@ package org.eclipse.jnosql.mapping.graph;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
-import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.metadata.MappingType.EMBEDDED;
 
 final class FieldGraph {
 
     private final Object value;
 
-    private final FieldMapping field;
+    private final FieldMetadata field;
 
-    private FieldGraph(Object value, FieldMapping field) {
+    private FieldGraph(Object value, FieldMetadata field) {
         this.value = value;
         this.field = field;
     }
@@ -41,7 +41,7 @@ final class FieldGraph {
         return value;
     }
 
-    public FieldMapping getField() {
+    public FieldMetadata getField() {
         return field;
     }
 
@@ -82,16 +82,16 @@ final class FieldGraph {
                 '}';
     }
 
-    public static FieldGraph of(Object value, FieldMapping field) {
+    public static FieldGraph of(Object value, FieldMetadata field) {
         return new FieldGraph(value, field);
     }
 
     public <X, Y> List<Property<?>> toElements(GraphConverter converter, Converters converters) {
-        if (EMBEDDED.equals(field.type())) {
+        if (EMBEDDED.equals(field.mappingType())) {
             return converter.getProperties(value);
         }
 
-        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.getConverter();
+        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.converter();
         if (optionalConverter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters.get(optionalConverter.get());
             return singletonList(DefaultProperty.of(field.name(), attributeConverter.convertToDatabaseColumn((X) value)));
@@ -100,7 +100,7 @@ final class FieldGraph {
     }
 
     public <X, Y> Property toElement(Converters converters) {
-        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.getConverter();
+        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.converter();
         if (optionalConverter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters.get(optionalConverter.get());
             return DefaultProperty.of(field.name(), attributeConverter.convertToDatabaseColumn((X) value));

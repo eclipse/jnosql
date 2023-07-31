@@ -15,32 +15,26 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.data.exceptions.EmptyResultException;
+import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, Transactional.class})
+@AddPackages(value = {Converters.class, Transactional.class})
 @AddPackages(BookRepository.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 public class EdgeEntityTest {

@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection.collection;
 
-import org.eclipse.jnosql.mapping.reflection.CollectionSupplier;
+import org.eclipse.jnosql.mapping.metadata.CollectionSupplier;
 
 import java.util.NavigableSet;
 import java.util.SortedSet;

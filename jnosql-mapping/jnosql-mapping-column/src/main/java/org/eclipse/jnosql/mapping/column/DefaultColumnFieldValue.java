@@ -17,20 +17,20 @@ package org.eclipse.jnosql.mapping.column;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.MappingType;
-import org.eclipse.jnosql.mapping.reflection.FieldValue;
-import org.eclipse.jnosql.mapping.reflection.DefaultFieldValue;
-import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
+import org.eclipse.jnosql.mapping.metadata.FieldValue;
+import org.eclipse.jnosql.mapping.metadata.DefaultFieldValue;
+import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.eclipse.jnosql.mapping.reflection.MappingType.COLLECTION;
+import static org.eclipse.jnosql.mapping.metadata.MappingType.COLLECTION;
 
-import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
+import static org.eclipse.jnosql.mapping.metadata.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.metadata.MappingType.ENTITY;
 import static java.util.Collections.singletonList;
 
 final class DefaultColumnFieldValue implements ColumnFieldValue {
@@ -47,7 +47,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     }
 
     @Override
-    public FieldMapping field() {
+    public FieldMetadata field() {
         return fieldValue.field();
     }
 
@@ -65,7 +65,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
         } else if (isEmbeddableCollection()) {
             return singletonList(Column.of(getName(), getColumns(converter)));
         }
-        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field().getConverter();
+        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field().converter();
         if (optionalConverter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters.get(optionalConverter.get());
             return singletonList(Column.of(getName(), attributeConverter.convertToDatabaseColumn((X) value())));
@@ -86,7 +86,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     }
 
     private MappingType getType() {
-        return field().type();
+        return field().mappingType();
     }
 
     private String getName() {
@@ -94,7 +94,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     }
 
     private boolean isEmbeddableElement() {
-        return ((GenericFieldMapping) field()).isEmbeddable();
+        return ((GenericFieldMetadata) field()).isEmbeddable();
     }
 
     @Override
@@ -103,7 +103,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
                 '}';
     }
 
-    static ColumnFieldValue of(Object value, FieldMapping field) {
+    static ColumnFieldValue of(Object value, FieldMetadata field) {
         return new DefaultColumnFieldValue(new DefaultFieldValue(value, field));
     }
 }

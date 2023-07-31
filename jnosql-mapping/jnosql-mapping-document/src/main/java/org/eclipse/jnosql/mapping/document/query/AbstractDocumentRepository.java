@@ -21,8 +21,8 @@ import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.NoSQLPage;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.MappingDocumentQuery;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.List;
 import java.util.Objects;
@@ -97,7 +97,7 @@ public abstract class AbstractDocumentRepository<T, K> implements PageableReposi
     }
 
 
-    private FieldMapping getIdField() {
+    private FieldMetadata getIdField() {
         return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 

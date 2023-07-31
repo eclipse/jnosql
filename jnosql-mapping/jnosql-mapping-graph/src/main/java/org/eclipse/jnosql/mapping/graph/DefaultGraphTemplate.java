@@ -22,7 +22,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 /**
  * The default {@link GraphTemplate}

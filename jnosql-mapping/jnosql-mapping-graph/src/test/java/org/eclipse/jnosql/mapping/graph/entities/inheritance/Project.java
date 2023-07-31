@@ -15,9 +15,9 @@
 package org.eclipse.jnosql.mapping.graph.entities.inheritance;
 
 import jakarta.nosql.Column;
-import org.eclipse.jnosql.mapping.DiscriminatorColumn;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
+import org.eclipse.jnosql.mapping.DiscriminatorColumn;
 import org.eclipse.jnosql.mapping.Inheritance;
 
 import java.util.Objects;

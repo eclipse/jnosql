@@ -20,7 +20,7 @@ import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.column.ColumnTemplateProducer;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

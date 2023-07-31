@@ -16,13 +16,13 @@ package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.data.exceptions.EmptyResultException;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
@@ -115,7 +115,7 @@ class DefaultGraphTraversalSourceConverter extends GraphConverter {
                 .forEach(p -> vertex.property(p.key(), p.value()));
 
         mapping.inheritance().ifPresent(i ->
-                vertex.property(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
+                vertex.property(i.discriminatorColumn(), i.discriminatorValue()));
 
         return vertex;
 

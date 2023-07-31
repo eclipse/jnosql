@@ -20,7 +20,7 @@ import org.eclipse.jnosql.communication.query.BooleanQueryValue;
 import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
 import java.lang.reflect.Method;

@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection.collection;
 
-import org.eclipse.jnosql.mapping.reflection.CollectionSupplier;
+import org.eclipse.jnosql.mapping.metadata.CollectionSupplier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

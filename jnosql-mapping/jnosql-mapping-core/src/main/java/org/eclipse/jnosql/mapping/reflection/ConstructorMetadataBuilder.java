@@ -14,6 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
+import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
+
 import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.List;
@@ -30,12 +33,12 @@ final class ConstructorMetadataBuilder {
     <T> ConstructorMetadata build(Class<T> entity) {
         Constructor<T> constructor = reflections.getConstructor(entity);
         if (constructor.getParameterCount() == 0) {
-            return new ConstructorMetadata(constructor, Collections.emptyList());
+            return new DefaultConstructorMetadata(constructor, Collections.emptyList());
         }
 
         List<ParameterMetaData> parameters = Stream.of(constructor.getParameters())
                 .map(ParameterMetaDataBuilder::of)
                 .toList();
-        return new ConstructorMetadata(constructor, parameters);
+        return new DefaultConstructorMetadata(constructor, parameters);
     }
 }

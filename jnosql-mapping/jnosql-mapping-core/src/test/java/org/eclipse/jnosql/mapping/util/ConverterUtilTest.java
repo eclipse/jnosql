@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.util;
 
-import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Money;
@@ -24,8 +23,8 @@ import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
@@ -35,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @EnableAutoWeld
-@AddPackages(value = Convert.class)
+@AddPackages(value = Converters.class)
 @AddPackages(value = VetedConverter.class)
 @AddExtensions(EntityMetadataExtension.class)
 public class ConverterUtilTest {

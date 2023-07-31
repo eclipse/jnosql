@@ -27,9 +27,9 @@ import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.communication.column.ColumnQueryParser;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
 import java.time.Duration;
@@ -166,7 +166,7 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
         requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
         EntityMetadata entityMetadata = getEntities().get(type);
-        FieldMapping idField = entityMetadata.id()
+        FieldMetadata idField = entityMetadata.id()
                 .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
@@ -182,7 +182,7 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
         requireNonNull(id, "id is required");
 
         EntityMetadata entityMetadata = getEntities().get(type);
-        FieldMapping idField = entityMetadata.id()
+        FieldMetadata idField = entityMetadata.id()
                 .orElseThrow(() -> IdNotFoundException.newInstance(type));
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
 

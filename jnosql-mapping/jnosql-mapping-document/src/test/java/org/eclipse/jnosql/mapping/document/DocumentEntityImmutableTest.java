@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.document;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.entities.Car;
 import org.eclipse.jnosql.mapping.document.entities.Hero;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
@@ -33,12 +33,10 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
+@AddPackages(value = {Converters.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 public class DocumentEntityImmutableTest {

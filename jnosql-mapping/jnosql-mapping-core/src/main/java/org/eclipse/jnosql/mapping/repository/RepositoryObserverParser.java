@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.repository;
 
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -59,9 +59,9 @@ public final class RepositoryObserverParser {
                 } else {
                     currentField = currentField + capitalize(fields[index], true);
                 }
-                Optional<FieldMapping> mapping = metadata.fieldMapping(currentField);
+                Optional<FieldMetadata> mapping = metadata.fieldMapping(currentField);
                 if (mapping.isPresent()) {
-                    String name = mapping.map(FieldMapping::name).orElseThrow();
+                    String name = mapping.map(FieldMetadata::name).orElseThrow();
                     return name + concat(index, fields);
                 }
             }

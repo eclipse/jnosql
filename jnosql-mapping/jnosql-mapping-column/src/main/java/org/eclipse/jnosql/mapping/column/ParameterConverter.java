@@ -16,9 +16,9 @@ package org.eclipse.jnosql.mapping.column;
 
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.column.Column;
-import org.eclipse.jnosql.mapping.reflection.ConstructorBuilder;
-import org.eclipse.jnosql.mapping.reflection.GenericParameterMetaData;
-import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
+import org.eclipse.jnosql.mapping.metadata.ConstructorBuilder;
+import org.eclipse.jnosql.mapping.metadata.GenericParameterMetaData;
+import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,10 +33,10 @@ enum ParameterConverter {
                      ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
-            metaData.getConverter().ifPresentOrElse(c -> {
+            metaData.converter().ifPresentOrElse(c -> {
                 Object value = converter.getConverters().get(c).convertToEntityAttribute(column.get());
                 builder.add(value);
-            }, () -> builder.add(column.get(metaData.getType())));
+            }, () -> builder.add(column.get(metaData.type())));
 
         }
     }, ENTITY {
@@ -52,12 +52,12 @@ enum ParameterConverter {
                     columns.add(Column.of(entry.getKey().toString(), entry.getValue()));
                 }
 
-                Object entity = converter.toEntity(metaData.getType(), columns);
+                Object entity = converter.toEntity(metaData.type(), columns);
                 builder.add(entity);
 
             } else {
                 List<Column> columns = column.get(new TypeReference<>() {});
-                Object entity = converter.toEntity(metaData.getType(), columns);
+                Object entity = converter.toEntity(metaData.type(), columns);
                 builder.add(entity);
             }
         }
@@ -67,10 +67,10 @@ enum ParameterConverter {
                      ConstructorBuilder builder) {
 
             GenericParameterMetaData genericParameter = (GenericParameterMetaData) metaData;
-            Collection elements = genericParameter.getCollectionInstance();
+            Collection elements = genericParameter.collectionInstance();
             List<List<Column>> embeddable = (List<List<Column>>) column.get();
             for (List<Column> columnList : embeddable) {
-                Object element = converter.toEntity(genericParameter.getElementType(), columnList);
+                Object element = converter.toEntity(genericParameter.elementType(), columnList);
                 elements.add(element);
             }
             builder.add(elements);
@@ -84,7 +84,7 @@ enum ParameterConverter {
                           ConstructorBuilder builder);
 
     static ParameterConverter of(ParameterMetaData parameter) {
-        return switch (parameter.getParamType()) {
+        return switch (parameter.paramType()) {
             case COLLECTION -> COLLECTION;
             case ENTITY -> ENTITY;
             default -> DEFAULT;

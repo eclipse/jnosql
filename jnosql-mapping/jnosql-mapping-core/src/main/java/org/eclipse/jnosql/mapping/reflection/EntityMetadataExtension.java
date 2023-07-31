@@ -20,6 +20,7 @@ import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.BeforeBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
 import jakarta.nosql.Entity;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,7 +42,7 @@ public class EntityMetadataExtension implements Extension {
     private final ClassConverter converter;
 
     {
-        converter = new ClassConverter(ClassOperationFactory.INSTANCE.getReflections());
+        converter = new ClassConverter(new Reflections());
     }
 
 

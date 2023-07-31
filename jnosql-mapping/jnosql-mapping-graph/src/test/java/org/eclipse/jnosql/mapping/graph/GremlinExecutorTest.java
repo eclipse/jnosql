@@ -14,22 +14,21 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, Transactional.class})
+@AddPackages(value = {Converters.class, Transactional.class})
 @AddPackages(BookRepository.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 class GremlinExecutorTest {

@@ -16,6 +16,7 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -23,8 +24,6 @@ import org.eclipse.jnosql.mapping.graph.entities.Book;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
-import jakarta.inject.Inject;
 
 public abstract class AbstractTraversalTest {
 

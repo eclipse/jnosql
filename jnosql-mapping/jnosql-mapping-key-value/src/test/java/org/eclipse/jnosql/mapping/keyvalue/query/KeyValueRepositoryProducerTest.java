@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.keyvalue.query;
 import jakarta.inject.Inject;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;
 import org.eclipse.jnosql.mapping.keyvalue.MockProducer;
 import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
@@ -32,7 +32,7 @@ import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, KeyValueEntityConverter.class})
+@AddPackages(value = {Converters.class, KeyValueEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
 class KeyValueRepositoryProducerTest {

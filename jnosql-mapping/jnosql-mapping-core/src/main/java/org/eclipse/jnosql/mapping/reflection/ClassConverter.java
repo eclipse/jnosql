@@ -17,7 +17,13 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
+import org.eclipse.jnosql.mapping.metadata.MappingType;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,24 +44,13 @@ class ClassConverter {
     private static final Logger LOGGER = Logger.getLogger(ClassConverter.class.getName());
 
     private Reflections reflections;
-
-    private FieldWriterFactory writerFactory;
-
-    private FieldReaderFactory readerFactory;
-
-    private InstanceSupplierFactory instanceSupplierFactory;
-
     private ConstructorMetadataBuilder constructorMetadataBuilder;
 
 
     @Inject
     ClassConverter(Reflections reflections) {
-        ClassOperation classOperation = ClassOperationFactory.INSTANCE.get();
 
         this.reflections = reflections;
-        this.readerFactory = classOperation.getFieldReaderFactory();
-        this.writerFactory = classOperation.getFieldWriterFactory();
-        this.instanceSupplierFactory = classOperation.getInstanceSupplierFactory();
         this.constructorMetadataBuilder = new ConstructorMetadataBuilder(reflections);
     }
 
@@ -67,19 +62,21 @@ class ClassConverter {
         long start = System.currentTimeMillis();
         String entityName = reflections.getEntityName(entity);
 
-        List<FieldMapping> fields = reflections.getFields(entity)
+        List<FieldMetadata> fields = reflections.getFields(entity)
                 .stream().map(this::to).collect(toList());
 
-        List<String> fieldsName = fields.stream().map(FieldMapping::name).collect(toList());
+        List<String> fieldsName = fields.stream().map(FieldMetadata::name).collect(toList());
 
         Map<String, NativeMapping> nativeFieldGroupByJavaField =
                 getNativeFieldGroupByJavaField(fields, "", "");
 
-        Map<String, FieldMapping> fieldsGroupedByName = fields.stream()
-                .collect(collectingAndThen(toMap(FieldMapping::name,
+        Map<String, FieldMetadata> fieldsGroupedByName = fields.stream()
+                .collect(collectingAndThen(toMap(FieldMetadata::name,
                         Function.identity()), Collections::unmodifiableMap));
 
-        InstanceSupplier instanceSupplier = instanceSupplierFactory.apply(reflections.getConstructor(entity));
+
+        Constructor<?> constructor = reflections.getConstructor(entity);
+        InstanceSupplier instanceSupplier = () -> reflections.newInstance(constructor);
         InheritanceMetadata inheritance = reflections.getInheritance(entity).orElse(null);
         boolean hasInheritanceAnnotation = reflections.hasInheritanceAnnotation(entity);
 
@@ -100,29 +97,29 @@ class ClassConverter {
         return mapping;
     }
 
-    private Map<String, NativeMapping> getNativeFieldGroupByJavaField(List<FieldMapping> fields,
+    private Map<String, NativeMapping> getNativeFieldGroupByJavaField(List<FieldMetadata> fields,
                                                                       String javaField, String nativeField) {
 
         Map<String, NativeMapping> nativeFieldGroupByJavaField = new HashMap<>();
 
-        for (FieldMapping field : fields) {
+        for (FieldMetadata field : fields) {
             appendValue(nativeFieldGroupByJavaField, field, javaField, nativeField);
         }
 
         return nativeFieldGroupByJavaField;
     }
 
-    private void appendValue(Map<String, NativeMapping> nativeFieldGroupByJavaField, FieldMapping field,
+    private void appendValue(Map<String, NativeMapping> nativeFieldGroupByJavaField, FieldMetadata field,
                              String javaField, String nativeField) {
 
 
-        switch (field.type()) {
+        switch (field.mappingType()) {
             case ENTITY -> appendFields(nativeFieldGroupByJavaField, field, javaField,
                     appendPreparePrefix(nativeField, field.name()));
             case EMBEDDED -> appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField);
             case COLLECTION -> {
-                if (((GenericFieldMapping) field).isEmbeddable()) {
-                    Class<?> type = ((GenericFieldMapping) field).getElementType();
+                if (((GenericFieldMetadata) field).isEmbeddable()) {
+                    Class<?> type = ((GenericFieldMetadata) field).elementType();
                     String nativeFieldAppended = appendPreparePrefix(nativeField, field.name());
                     appendFields(nativeFieldGroupByJavaField, field, javaField, nativeFieldAppended, type);
                     return;
@@ -135,22 +132,22 @@ class ClassConverter {
     }
 
     private void appendDefaultField(Map<String, NativeMapping> nativeFieldGroupByJavaField,
-                                    FieldMapping field, String javaField, String nativeField) {
+                                    FieldMetadata field, String javaField, String nativeField) {
 
         nativeFieldGroupByJavaField.put(javaField.concat(field.fieldName()),
                 NativeMapping.of(nativeField.concat(field.name()), field));
     }
 
     private void appendFields(Map<String, NativeMapping> nativeFieldGroupByJavaField,
-                              FieldMapping field,
+                              FieldMetadata field,
                               String javaField, String nativeField) {
 
-        Class<?> type = field.nativeField().getType();
+        Class<?> type = field.type();
         appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField, type);
     }
 
     private void appendFields(Map<String, NativeMapping> nativeFieldGroupByJavaField,
-                              FieldMapping field, String javaField, String nativeField,
+                              FieldMetadata field, String javaField, String nativeField,
                               Class<?> type) {
 
         Map<String, NativeMapping> entityMap = getNativeFieldGroupByJavaField(
@@ -178,8 +175,8 @@ class ClassConverter {
     }
 
 
-    private FieldMapping to(Field field) {
-        MappingType mappingType = MappingType.of(field);
+    private FieldMetadata to(Field field) {
+        MappingType mappingType = MappingType.of(field.getType());
         reflections.makeAccessible(field);
         Convert convert = field.getAnnotation(Convert.class);
         boolean id = reflections.isIdField(field);
@@ -187,8 +184,8 @@ class ClassConverter {
 
         FieldMappingBuilder builder = new FieldMappingBuilder().withName(columnName)
                 .withField(field).withType(mappingType).withId(id)
-                .withReader(readerFactory.apply(field))
-                .withWriter(writerFactory.apply(field));
+                .withReader(bean -> reflections.getValue(bean, field))
+                .withWriter( (bean, value) -> reflections.setValue(bean, field, value));
 
         if (nonNull(convert)) {
             builder.withConverter(convert.value());

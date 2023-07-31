@@ -19,8 +19,8 @@ import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.NoSQLPage;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.List;
 import java.util.Objects;
@@ -128,7 +128,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
         getTemplate().deleteAll(getEntityMetadata().type());
     }
 
-    private FieldMapping getIdField() {
+    private FieldMetadata getIdField() {
         return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 

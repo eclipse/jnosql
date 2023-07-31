@@ -18,13 +18,12 @@ import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.assertj.core.api.SoftAssertions;
-import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.graph.entities.Car;
 import org.eclipse.jnosql.mapping.graph.entities.Hero;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
@@ -33,10 +32,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Year;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, Transactional.class})
+@AddPackages(value = {Converters.class, Transactional.class})
 @AddPackages(BookRepository.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 class EntityConverterByContructorTest {

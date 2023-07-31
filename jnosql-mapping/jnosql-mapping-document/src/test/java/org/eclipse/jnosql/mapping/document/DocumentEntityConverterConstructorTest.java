@@ -18,15 +18,15 @@ import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
-import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.document.entities.BookRelease;
-import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.entities.Animal;
+import org.eclipse.jnosql.mapping.document.entities.BookRelease;
 import org.eclipse.jnosql.mapping.document.entities.Money;
 import org.eclipse.jnosql.mapping.document.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.document.entities.constructor.Computer;
 import org.eclipse.jnosql.mapping.document.entities.constructor.PetOwner;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
+@AddPackages(value = {Converters.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 public class DocumentEntityConverterConstructorTest {

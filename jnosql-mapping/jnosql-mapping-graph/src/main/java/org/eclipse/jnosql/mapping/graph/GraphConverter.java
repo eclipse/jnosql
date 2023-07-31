@@ -21,11 +21,11 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
+import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 
 import java.util.Iterator;
 import java.util.List;
@@ -85,7 +85,7 @@ public abstract class GraphConverter {
                 .forEach(p -> vertex.property(p.key(), p.value()));
 
         mapping.inheritance().ifPresent(i ->
-                vertex.property(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
+                vertex.property(i.discriminatorColumn(), i.discriminatorValue()));
 
         return vertex;
     }
@@ -231,7 +231,7 @@ public abstract class GraphConverter {
     }
 
 
-    protected FieldGraph to(FieldMapping field, Object entityInstance) {
+    protected FieldGraph to(FieldMetadata field, Object entityInstance) {
         Object value = field.read(entityInstance);
         return FieldGraph.of(value, field);
     }
@@ -249,7 +249,7 @@ public abstract class GraphConverter {
         String column = group.values()
                 .stream()
                 .findFirst()
-                .map(InheritanceMetadata::getDiscriminatorColumn)
+                .map(InheritanceMetadata::discriminatorColumn)
                 .orElseThrow();
 
 
@@ -264,7 +264,7 @@ public abstract class GraphConverter {
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        EntityMetadata mapping = getEntities().get(inheritance.getEntity());
+        EntityMetadata mapping = getEntities().get(inheritance.entity());
         return convert((Class<T>) mapping.type(), properties, vertex);
     }
 }

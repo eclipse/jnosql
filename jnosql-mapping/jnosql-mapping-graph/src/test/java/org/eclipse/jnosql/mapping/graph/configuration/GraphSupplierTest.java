@@ -14,13 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.graph.configuration;
 
-import org.eclipse.jnosql.mapping.Convert;
+import jakarta.inject.Inject;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.graph.BookRepository;
 import org.eclipse.jnosql.mapping.graph.Transactional;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -28,13 +28,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.GRAPH_PROVIDER;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, Transactional.class})
+@AddPackages(value = {Converters.class, Transactional.class})
 @AddPackages(BookRepository.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 class GraphSupplierTest {

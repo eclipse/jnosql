@@ -33,19 +33,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.jnosql.communication</groupId>
-            <artifactId>jnosql-communication-core</artifactId>
+            <groupId>org.eclipse.jnosql.mapping</groupId>
+            <artifactId>jnosql-mapping-api-core</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jnosql.communication</groupId>
-            <artifactId>jnosql-communication-query</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.nosql</groupId>
-            <artifactId>nosql-core</artifactId>
-            <version>${jakarta.nosql.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.classgraph</groupId>

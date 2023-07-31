@@ -14,13 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
+import jakarta.data.exceptions.MappingException;
+import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
-import jakarta.data.exceptions.MappingException;
-import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.column.entities.inheritance.EmailNotification;
 import org.eclipse.jnosql.mapping.column.entities.inheritance.LargeProject;
 import org.eclipse.jnosql.mapping.column.entities.inheritance.Notification;
@@ -30,14 +29,14 @@ import org.eclipse.jnosql.mapping.column.entities.inheritance.ProjectManager;
 import org.eclipse.jnosql.mapping.column.entities.inheritance.SmallProject;
 import org.eclipse.jnosql.mapping.column.entities.inheritance.SmsNotification;
 import org.eclipse.jnosql.mapping.column.entities.inheritance.SocialMediaNotification;
-
+import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 class ColumnEntityConverterInheritanceTest {

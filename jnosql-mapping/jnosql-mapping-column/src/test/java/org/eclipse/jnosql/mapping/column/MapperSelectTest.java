@@ -19,16 +19,14 @@ import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
 import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
-import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.column.entities.Address;
 import org.eclipse.jnosql.mapping.column.entities.Money;
 import org.eclipse.jnosql.mapping.column.entities.Person;
 import org.eclipse.jnosql.mapping.column.entities.Worker;
-
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -49,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 class MapperSelectTest {

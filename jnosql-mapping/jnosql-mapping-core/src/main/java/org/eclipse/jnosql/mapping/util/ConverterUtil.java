@@ -17,10 +17,9 @@ package org.eclipse.jnosql.mapping.util;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Optional;
@@ -47,47 +46,46 @@ public final class ConverterUtil {
      * @return the value converted
      */
     public static Object getValue(Object value, EntityMetadata mapping, String name, Converters converters) {
-        Optional<FieldMapping> fieldOptional = mapping.fieldMapping(name);
+        Optional<FieldMetadata> fieldOptional = mapping.fieldMapping(name);
         if (fieldOptional.isPresent()) {
-            FieldMapping field = fieldOptional.get();
+            FieldMetadata field = fieldOptional.get();
             return getValue(value, converters, field);
         }
         return value;
     }
 
     /**
-     * Converts the value from the field with {@link FieldMapping} to database format
+     * Converts the value from the field with {@link FieldMetadata} to database format
      *
      * @param value      the value to be converted
      * @param converters the converter
      * @param field      the field
      * @return tje value converted
      */
-    public static Object getValue(Object value, Converters converters, FieldMapping field) {
-        Field nativeField = field.nativeField();
-        if (!nativeField.getType().equals(value.getClass())) {
-            return field.getConverter()
+    public static Object getValue(Object value, Converters converters, FieldMetadata field) {
+        if (!field.type().equals(value.getClass())) {
+            return field.converter()
                     .map(converters::get)
                     .map(useConverter(value))
-                    .orElseGet(getSupplier(value, nativeField));
+                    .orElseGet(getSupplier(value, field.type()));
         }
 
-        return field.getConverter()
+        return field.converter()
                 .map(converters::get)
                 .map(useConverter(value))
                 .orElse(value);
     }
 
-    private static Supplier<Object> getSupplier(Object value, Field nativeField) {
+    private static Supplier<Object> getSupplier(Object value, Class<?> type) {
         return () -> {
-            if (Iterable.class.isAssignableFrom(nativeField.getType())) {
+            if (Iterable.class.isAssignableFrom(type)) {
                 return value;
             }
             try {
-                return Value.of(value).get(nativeField.getType());
+                return Value.of(value).get(type);
             } catch (UnsupportedOperationException ex) {
                 LOGGER.fine(String.format("There is an error when try to convert the type %s to the type %s",
-                        value, nativeField.getType()));
+                        value, type));
                 return value;
             }
 

@@ -15,18 +15,17 @@
 package org.eclipse.jnosql.mapping.column;
 
 
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Alternative;
+import jakarta.enterprise.inject.Produces;
+import jakarta.interceptor.Interceptor;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
 import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.mockito.Mockito;
-
-import jakarta.annotation.Priority;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Alternative;
-import jakarta.enterprise.inject.Produces;
-import jakarta.interceptor.Interceptor;
 
 import java.util.function.Supplier;
 

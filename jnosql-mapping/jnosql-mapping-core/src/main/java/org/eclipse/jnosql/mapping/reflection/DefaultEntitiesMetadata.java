@@ -18,6 +18,10 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.metadata.ClassInformationNotFoundException;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 
 import java.util.Map;
 import java.util.Objects;
@@ -90,7 +94,7 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
         return this.classes.values().stream()
                 .flatMap(c -> c.inheritance().stream())
                 .filter(p -> p.isParent(parent))
-                .collect(Collectors.toMap(InheritanceMetadata::getDiscriminatorValue, Function.identity()));
+                .collect(Collectors.toMap(InheritanceMetadata::discriminatorValue, Function.identity()));
     }
 
     @Override

@@ -21,8 +21,8 @@ import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.NoSQLPage;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.column.MappingColumnQuery;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.List;
 import java.util.Objects;
@@ -102,7 +102,7 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
                 .flatMap(optionalToStream());
     }
 
-    private FieldMapping getIdField() {
+    private FieldMetadata getIdField() {
         return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
