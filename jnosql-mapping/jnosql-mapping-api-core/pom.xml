@@ -29,5 +29,15 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>org.eclipse.jnosql.communication</groupId>
+            <artifactId>jnosql-communication-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jnosql.communication</groupId>
+            <artifactId>jnosql-communication-query</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
