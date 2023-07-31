@@ -112,8 +112,7 @@ class ParameterMetaDataBuilderTest {
         Assertions.assertEquals(List.class, books.type());
         Assertions.assertEquals(MappingType.COLLECTION, books.paramType());
         Assertions.assertTrue(books.converter().isEmpty());
-        assertEquals(GenericParameterMetaData.class, books.getClass());
-        GenericParameterMetaData generic = (GenericParameterMetaData) books;
+        assertEquals(DefaultGenericParameterMetaData.class, books.getClass());
 
     }
 
