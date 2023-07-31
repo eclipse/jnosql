@@ -96,6 +96,11 @@ abstract class AbstractFieldMetadata implements FieldMetadata {
     }
 
     @Override
+    public Object value(Value value) {
+        return value.get(field.getType());
+    }
+
+    @Override
     public String toString() {
         return "AbstractFieldMetadata{" +
                 "mappingType=" + mappingType +
@@ -109,7 +114,5 @@ abstract class AbstractFieldMetadata implements FieldMetadata {
                 '}';
     }
 
-    public Object value(Value value) {
-        return value.get(field.getType());
-    }
+
 }
