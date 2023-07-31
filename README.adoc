@@ -676,7 +676,7 @@ Please take a look link:TESTING-GUIDELINE.adoc[at the file].
 
 == Migration
 
-This migration guide explains how to upgrade from Eclipse JNoSQL version 1.0.1-b6 to the latest version, taking into account two significant changes: upgrading to Jakarta EE 9 and reducing the scope of the Jakarta NoSQL specification to only run on the Mapping. The guide provides instructions on how to update package names and annotations to successfully migrate your Eclipse JNoSQL project.
+This migration guide explains how to upgrade from Eclipse JNoSQL version 1.0.0-b6 to the latest version, taking into account two significant changes: upgrading to Jakarta EE 9 and reducing the scope of the Jakarta NoSQL specification to only run on the Mapping. The guide provides instructions on how to update package names and annotations to successfully migrate your Eclipse JNoSQL project.
 
 link:MIGRATION.adoc[Migration Guide]
 
