@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.reflection;
 
 
 import jakarta.nosql.Column;
+import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Embeddable;
 import org.eclipse.jnosql.mapping.VetedConverter;
@@ -27,9 +28,15 @@ import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.eclipse.jnosql.mapping.metadata.MappingType.COLLECTION;
 import static org.eclipse.jnosql.mapping.metadata.MappingType.DEFAULT;
@@ -145,16 +152,39 @@ public class FieldMetadataTest {
         assertEquals(forClass.barClass, barClass.read(forClass));
     }
 
+    @Test
+    public void shouldReadFromAnnotation(){
+        EntityMetadata entityMetadata = classConverter.create(ForClass.class);
+        List<FieldMetadata> fields = entityMetadata.fields();
+
+        FieldMetadata field = fields.stream()
+                .filter(f -> "string".equals(f.fieldName())).findFirst().get();
+
+        var value = field.value(Custom.class);
+        Assertions.assertThat(value)
+                .isNotEmpty()
+                .get().isEqualTo("customAnnotationValue");
+    }
+
+    public void shouldReturnEmptyWhenThereIsNotAnnotation(){}
+
+    public void shouldReturnEmptyWhenThereIsValueMethod(){
+
+    }
+
 
     public static class ForClass {
 
         @Column("stringTypeAnnotation")
+        @Custom("customAnnotationValue")
         private String string;
 
         @Column("listAnnotation")
+        @Custom2
         private List<String> list;
 
         @Column("mapAnnotation")
+        @Custom3
         private Map<String, String> map;
 
 
@@ -167,6 +197,20 @@ public class FieldMetadataTest {
 
         @Column("integerAnnotation")
         private Integer integer;
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD, ElementType.PARAMETER})
+    public @interface Custom{
+        String value();
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD, ElementType.PARAMETER})
+    public @interface Custom2 {
+    }
+
+    public @interface Custom3 {
     }
 
 }
