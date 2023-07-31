@@ -14,41 +14,14 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import org.eclipse.jnosql.communication.TypeSupplier;
-import org.eclipse.jnosql.mapping.AttributeConverter;
-import org.eclipse.jnosql.mapping.metadata.CollectionSupplier;
-import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
-import java.util.ServiceLoader;
 
-public final class GenericParameterMetaData extends DefaultParameterMetaData implements ParameterMetaData {
+public interface GenericParameterMetaData extends ParameterMetaData {
 
-    private final TypeSupplier<?> typeSupplier;
+      Class<?> elementType();
 
-    GenericParameterMetaData(String name, Class<?> type, boolean id,
-                             Class<? extends AttributeConverter<?, ?>> converter,
-                             MappingType mappingType, TypeSupplier<?> typeSupplier) {
-        super(name, type, id, converter, mappingType);
-        this.typeSupplier = typeSupplier;
-    }
-
-    public Class<?> elementType() {
-        return (Class<?>) ((ParameterizedType) typeSupplier.get()).getActualTypeArguments()[0];
-    }
-
-    public Collection<?> collectionInstance() {
-        Class<?> type =  type();
-        final CollectionSupplier supplier = ServiceLoader.load(CollectionSupplier.class)
-                .stream()
-                .map(ServiceLoader.Provider::get)
-                .map(CollectionSupplier.class::cast)
-                .filter(c -> c.test(type))
-                .findFirst()
-                .orElseThrow(() -> new UnsupportedOperationException("This collection is not supported yet: " + type));
-        return (Collection<?>) supplier.get();
-    }
+    Collection<?> collectionInstance();
 
 }

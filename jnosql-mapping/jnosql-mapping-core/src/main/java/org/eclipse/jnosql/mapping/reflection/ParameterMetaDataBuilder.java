@@ -47,7 +47,7 @@ class ParameterMetaDataBuilder {
         }
         MappingType mappingType = MappingType.of(parameter.getType());
         return switch (mappingType) {
-            case COLLECTION, MAP -> new GenericParameterMetaData(name, type,
+            case COLLECTION, MAP -> new DefaultGenericParameterMetaData(name, type,
                     id != null,
                     Optional.ofNullable(convert).map(Convert::value).orElse(null),
                     mappingType, parameter::getParameterizedType);
