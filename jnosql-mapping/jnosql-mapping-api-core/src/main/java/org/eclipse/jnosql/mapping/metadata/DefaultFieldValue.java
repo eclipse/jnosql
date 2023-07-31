@@ -14,9 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.metadata;
 
-import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.metadata.FieldValue;
-
 import java.util.Objects;
 
 public record DefaultFieldValue(Object value, FieldMetadata field) implements FieldValue {
