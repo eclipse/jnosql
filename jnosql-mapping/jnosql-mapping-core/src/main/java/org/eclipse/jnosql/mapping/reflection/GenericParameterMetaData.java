@@ -43,7 +43,7 @@ public final class GenericParameterMetaData extends DefaultParameterMetaData imp
         return (Class<?>) ((ParameterizedType) typeSupplier.get()).getActualTypeArguments()[0];
     }
 
-    public Collection<?> getCollectionInstance() {
+    public Collection<?> collectionInstance() {
         Class<?> type =  type();
         final CollectionSupplier supplier = ServiceLoader.load(CollectionSupplier.class)
                 .stream()

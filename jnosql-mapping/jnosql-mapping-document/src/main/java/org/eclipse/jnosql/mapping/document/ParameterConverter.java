@@ -68,7 +68,7 @@ enum ParameterConverter {
                      ConstructorBuilder builder) {
 
             GenericParameterMetaData genericParameter = (GenericParameterMetaData) metaData;
-            Collection elements = genericParameter.getCollectionInstance();
+            Collection elements = genericParameter.collectionInstance();
             List<List<Document>> embeddable = (List<List<Document>>) document.get();
             for (List<Document> columnList : embeddable) {
                 Object element = converter.toEntity(genericParameter.getElementType(), columnList);
