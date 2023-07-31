@@ -44,7 +44,7 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.jnosql.mapping</groupId>
-            <artifactId>jnosql-mapping-api</artifactId>
+            <artifactId>jnosql-mapping-api-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

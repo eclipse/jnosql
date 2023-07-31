@@ -24,7 +24,7 @@
         <version>1.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jnosql-mapping-api</artifactId>
+    <artifactId>jnosql-mapping-api-core</artifactId>
     <packaging>jar</packaging>
 
 
