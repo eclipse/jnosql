@@ -112,7 +112,7 @@ abstract class AbstractFieldMetadata implements FieldMetadata {
         Optional<Method> method = Arrays.stream(type.getDeclaredMethods()).filter(m -> "value".equals(m.getName()))
                 .findFirst();
         T annotation = this.field.getAnnotation(type);
-        if (method.isEmpty() && annotation == null) {
+        if (method.isEmpty() || annotation == null) {
             return Optional.empty();
         }
         return method.map(m -> {

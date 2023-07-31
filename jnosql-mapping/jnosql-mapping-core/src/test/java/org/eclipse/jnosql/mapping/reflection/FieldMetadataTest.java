@@ -166,10 +166,44 @@ public class FieldMetadataTest {
                 .get().isEqualTo("customAnnotationValue");
     }
 
-    public void shouldReturnEmptyWhenThereIsNotAnnotation(){}
+    @Test
+    public void shouldReturnEmptyWhenThereIsNotAnnotation(){
+        EntityMetadata entityMetadata = classConverter.create(ForClass.class);
+        List<FieldMetadata> fields = entityMetadata.fields();
 
+        FieldMetadata field = fields.stream()
+                .filter(f -> "list".equals(f.fieldName())).findFirst().get();
+
+        var value = field.value(Custom.class);
+        Assertions.assertThat(value)
+                .isEmpty();
+    }
+
+    @Test
     public void shouldReturnEmptyWhenThereIsValueMethod(){
+        EntityMetadata entityMetadata = classConverter.create(ForClass.class);
+        List<FieldMetadata> fields = entityMetadata.fields();
 
+        FieldMetadata field = fields.stream()
+                .filter(f -> "list".equals(f.fieldName())).findFirst().get();
+
+        var value = field.value(Custom2.class);
+        Assertions.assertThat(value)
+                .isEmpty();
+    }
+
+
+    @Test
+    public void shouldReturnEmptyWhenThereIsValueMethod2(){
+        EntityMetadata entityMetadata = classConverter.create(ForClass.class);
+        List<FieldMetadata> fields = entityMetadata.fields();
+
+        FieldMetadata field = fields.stream()
+                .filter(f -> "map".equals(f.fieldName())).findFirst().get();
+
+        var value = field.value(Custom3.class);
+        Assertions.assertThat(value)
+                .isEmpty();
     }
 
 
