@@ -55,7 +55,7 @@ final class DefaultConstructorBuilder implements ConstructorBuilder{
 
     @Override
     public <T> T build() {
-        Constructor<?> constructor = metadata.constructor();
+        Constructor<?> constructor = ((DefaultConstructorMetadata) metadata).constructor();
 
         try {
             Instance<Event<ConstructorEvent>> instance = CDI.current().select(new TypeLiteral<>() {
