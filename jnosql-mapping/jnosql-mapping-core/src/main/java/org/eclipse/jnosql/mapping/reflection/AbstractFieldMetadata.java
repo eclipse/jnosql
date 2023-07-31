@@ -14,12 +14,17 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import jakarta.nosql.NoSQLException;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -98,6 +103,27 @@ abstract class AbstractFieldMetadata implements FieldMetadata {
     @Override
     public Object value(Value value) {
         return value.get(field.getType());
+    }
+
+
+    @Override
+    public <T extends Annotation> Optional<String> value(Class<T> type){
+        Objects.requireNonNull(type, "type is required");
+        Optional<Method> method = Arrays.stream(type.getDeclaredMethods()).filter(m -> "value".equals(m.getName()))
+                .findFirst();
+        T annotation = this.field.getAnnotation(type);
+        if (method.isEmpty() && annotation == null) {
+            return Optional.empty();
+        }
+        return method.map(m -> {
+            try {
+                Object invoke = m.invoke(annotation);
+                return invoke.toString();
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new NoSQLException("There is an issue invoking the method: " + m + " using the annotation: "
+                + type, e);
+            }
+        });
     }
 
     @Override

@@ -20,6 +20,7 @@ import jakarta.nosql.Id;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 
+import java.lang.annotation.Annotation;
 import java.util.Optional;
 
 /**
@@ -105,4 +106,19 @@ public interface FieldMetadata {
     <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> converter();
 
 
+    /**
+     * Retrieves the value from the default method (usually named "value") of the provided annotation type.
+     *
+     * <p>This method allows you to obtain the value from the default method, typically named "value," in the
+     * specified annotation type. If the field in question has this annotation or if the method with the name
+     * "value" exists in the annotation, this method will return an {@link java.util.Optional} containing the
+     * value. Otherwise, it will return an empty {@link java.util.Optional}.</p>
+     *
+     * @param type the annotation
+     * @return an {@link java.util.Optional} containing the value from the default method if present,
+     *         otherwise an empty {@link Optional#empty()}
+     * @param <T> the annotation type
+     * @see java.util.Optional
+     */
+    <T extends Annotation> Optional<String> value(Class<T> type);
 }
