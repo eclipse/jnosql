@@ -15,23 +15,23 @@
 package org.eclipse.jnosql.mapping.column;
 
 import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
+import jakarta.nosql.PreparedStatement;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnCondition;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
 import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
-import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.PreparedStatement;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
-import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
-import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.column.entities.Job;
 import org.eclipse.jnosql.mapping.column.entities.Movie;
 import org.eclipse.jnosql.mapping.column.entities.Person;
-
+import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -41,8 +41,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import jakarta.enterprise.inject.Instance;
-import jakarta.inject.Inject;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Optional;
@@ -51,16 +49,13 @@ import java.util.stream.Stream;
 
 import static org.eclipse.jnosql.communication.column.ColumnDeleteQuery.delete;
 import static org.eclipse.jnosql.communication.column.ColumnQuery.select;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 public class DefaultColumnTemplateTest {

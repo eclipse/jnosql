@@ -14,26 +14,24 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
+import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
-import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.column.entities.Animal;
 import org.eclipse.jnosql.mapping.column.entities.Book;
+import org.eclipse.jnosql.mapping.column.entities.BookRelease;
 import org.eclipse.jnosql.mapping.column.entities.Money;
 import org.eclipse.jnosql.mapping.column.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.column.entities.constructor.Computer;
 import org.eclipse.jnosql.mapping.column.entities.constructor.PetOwner;
-
-import org.eclipse.jnosql.mapping.column.entities.BookRelease;
+import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
-
-import jakarta.inject.Inject;
 
 import java.time.Year;
 import java.util.ArrayList;
@@ -45,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 class ColumnEntityConverterConstructorTest {
