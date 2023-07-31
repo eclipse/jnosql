@@ -19,7 +19,7 @@ import org.eclipse.jnosql.mapping.metadata.MappingType;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-public final class EmbeddedFieldMetadata extends AbstractFieldMetadata {
+final class EmbeddedFieldMetadata extends AbstractFieldMetadata {
 
     private final String entityName;
 
@@ -27,10 +27,6 @@ public final class EmbeddedFieldMetadata extends AbstractFieldMetadata {
                                  FieldReader reader, FieldWriter writer) {
         super(type, field, name, null, reader, writer);
         this.entityName = entityName;
-    }
-
-    public String getEntityName() {
-        return entityName;
     }
 
     @Override
