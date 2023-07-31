@@ -153,7 +153,7 @@ Eclipse JNoSQL offers a mapping implementation for Key-Value NoSQL types:
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
     <artifactId>jnosql-mapping-key-value</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ----
 
@@ -246,7 +246,7 @@ Eclipse JNoSQL offers a mapping implementation for Column NoSQL types:
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
     <artifactId>jnosql-mapping-column</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ----
 
@@ -343,7 +343,7 @@ Eclipse JNoSQL offers a mapping implementation for Document NoSQL types:
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
     <artifactId>jnosql-mapping-document</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ----
 
@@ -441,7 +441,7 @@ Eclipse JNoSQL offers a mapping implementation for Graph NoSQL types:
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
     <artifactId>jnosql-mapping-graph</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ----
 
@@ -676,7 +676,7 @@ Please take a look link:TESTING-GUIDELINE.adoc[at the file].
 
 == Migration
 
-This migration guide explains how to upgrade from Eclipse JNoSQL version 1.0.0-b6 to the latest version, taking into account two significant changes: upgrading to Jakarta EE 9 and reducing the scope of the Jakarta NoSQL specification to only run on the Mapping. The guide provides instructions on how to update package names and annotations to successfully migrate your Eclipse JNoSQL project.
+This migration guide explains how to upgrade from Eclipse JNoSQL version 1.0.1-b6 to the latest version, taking into account two significant changes: upgrading to Jakarta EE 9 and reducing the scope of the Jakarta NoSQL specification to only run on the Mapping. The guide provides instructions on how to update package names and annotations to successfully migrate your Eclipse JNoSQL project.
 
 link:MIGRATION.adoc[Migration Guide]
 
