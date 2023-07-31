@@ -15,110 +15,41 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-import jakarta.nosql.Entity;
-import org.eclipse.jnosql.communication.TypeSupplier;
-import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.mapping.AttributeConverter;
-import org.eclipse.jnosql.mapping.Embeddable;
-import org.eclipse.jnosql.mapping.metadata.CollectionSupplier;
-import org.eclipse.jnosql.mapping.metadata.MappingType;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.ServiceLoader;
 
-public class GenericFieldMetadata extends AbstractFieldMetadata {
 
-    private final TypeSupplier<?> typeSupplier;
+/**
+ * The GenericFieldMetadata interface extends the {@link FieldMetadata} interface and provides
+ * additional information about a parameter with a generic type.
+ *
+ * <p>This interface is used to represent parameters of generic types, where the type may be a collection
+ * or array containing elements of a specific type.</p>
+ *
+ *  @see ParameterMetaData
+ */
+public interface GenericFieldMetadata extends FieldMetadata {
+    /**
+     * Returns true if it is the element has either Entity or Embeddable annotations
+     * @return true if the element has Entity or Embeddable annotations
+     */
+    boolean isEmbeddable();
 
-    GenericFieldMetadata(MappingType type, Field field, String name, TypeSupplier<?> typeSupplier,
-                         Class<? extends AttributeConverter<?, ?>> converter, FieldReader reader, FieldWriter writer) {
-        super(type, field, name, converter, reader, writer);
-        this.typeSupplier = typeSupplier;
-    }
+    /**
+     * Returns the {@link Class} representing the type of elements in the collection or array.
+     *
+     * @return the element type of the generic parameter
+     */
+    Class<?> elementType();
 
-    @Override
-    public Object value(Value value) {
-        if(value.get() instanceof Iterable) {
-            return value.get(typeSupplier);
-        } else {
-            return Value.of(Collections.singletonList(value.get())).get(typeSupplier);
-        }
-    }
+    /**
+     * Returns an instance of the {@link Collection} interface representing the collection type
+     * for the parameter.
+     *
+     * @return an instance of the collection type for the parameter
+     */
+    Collection<?> collectionInstance();
 
-    @Override
-    public boolean isId() {
-        return false;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        GenericFieldMetadata that = (GenericFieldMetadata) o;
-        return mappingType == that.mappingType &&
-                Objects.equals(field, that.field) &&
-                Objects.equals(typeSupplier, that.typeSupplier) &&
-                Objects.equals(name, that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(mappingType, field, name, typeSupplier);
-    }
-
-    public boolean isEmbeddable() {
-        return isEmbeddableField() || isEntityField();
-    }
-
-    private boolean isEntityField() {
-        return hasFieldAnnotation(Entity.class);
-    }
-
-    private boolean isEmbeddableField() {
-        return hasFieldAnnotation(Embeddable.class);
-    }
-
-    private boolean hasFieldAnnotation(Class<?> annotation) {
-        return ((Class) ((ParameterizedType) this.field
-                .getGenericType())
-                .getActualTypeArguments()[0])
-                .getAnnotation(annotation) != null;
-    }
-
-    public Class<?> elementType() {
-        return (Class<?>) ((ParameterizedType) this.field
-                .getGenericType())
-                .getActualTypeArguments()[0];
-    }
-
-    public Collection<?> collectionInstance() {
-        Class<?> type = type();
-        final CollectionSupplier supplier =  ServiceLoader.load(CollectionSupplier.class)
-                .stream()
-                .map(ServiceLoader.Provider::get)
-                .map(CollectionSupplier.class::cast)
-                .filter(c -> c.test(type))
-                .findFirst()
-                .orElseThrow(() -> new UnsupportedOperationException("This collection is not supported yet: " + type));
-        return (Collection<?>) supplier.get();
-    }
-
-    @Override
-    public String toString() {
-        return "GenericFieldMapping{" + "typeSupplier=" + typeSupplier +
-                ", type=" + mappingType +
-                ", field=" + field +
-                ", name='" + name + '\'' +
-                ", fieldName='" + fieldName + '\'' +
-                ", converter=" + converter +
-                '}';
-    }
 }
