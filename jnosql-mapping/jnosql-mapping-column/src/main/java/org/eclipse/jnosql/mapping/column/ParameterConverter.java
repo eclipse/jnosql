@@ -70,7 +70,7 @@ enum ParameterConverter {
             Collection elements = genericParameter.collectionInstance();
             List<List<Column>> embeddable = (List<List<Column>>) column.get();
             for (List<Column> columnList : embeddable) {
-                Object element = converter.toEntity(genericParameter.getElementType(), columnList);
+                Object element = converter.toEntity(genericParameter.elementType(), columnList);
                 elements.add(element);
             }
             builder.add(elements);

@@ -35,11 +35,11 @@ public final class GenericParameterMetaData extends DefaultParameterMetaData imp
         this.typeSupplier = typeSupplier;
     }
 
-    public TypeSupplier<?> getTypeSupplier() {
+    public TypeSupplier<?> typeSupplier() {
         return typeSupplier;
     }
 
-    public Class<?> getElementType() {
+    public Class<?> elementType() {
         return (Class<?>) ((ParameterizedType) typeSupplier.get()).getActualTypeArguments()[0];
     }
 

@@ -114,7 +114,7 @@ class ParameterMetaDataBuilderTest {
         Assertions.assertTrue(books.converter().isEmpty());
         assertEquals(GenericParameterMetaData.class, books.getClass());
         GenericParameterMetaData generic = (GenericParameterMetaData) books;
-        TypeSupplier<?> typeSupplier = generic.getTypeSupplier();
+        TypeSupplier<?> typeSupplier = generic.typeSupplier();
         Assertions.assertNotNull(typeSupplier);
     }
 
@@ -130,7 +130,7 @@ class ParameterMetaDataBuilderTest {
         Assertions.assertTrue(map.converter().isEmpty());
         assertEquals(GenericParameterMetaData.class, map.getClass());
         GenericParameterMetaData generic = (GenericParameterMetaData) map;
-        TypeSupplier<?> typeSupplier = generic.getTypeSupplier();
+        TypeSupplier<?> typeSupplier = generic.typeSupplier();
         Assertions.assertNotNull(typeSupplier);
     }
 
