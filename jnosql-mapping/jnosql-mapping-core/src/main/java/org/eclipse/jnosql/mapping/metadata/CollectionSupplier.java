@@ -14,15 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.metadata;
 
-import org.eclipse.jnosql.mapping.reflection.GenericFieldMetadata;
 
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
- * A collection supplier to create an {@link Collection} instance at {@link GenericFieldMetadata#collectionInstance}
- * by SPI
+ * A collection supplier to create an {@link Collection} by SPI
  *
  * @param <T> the collection instance
  */

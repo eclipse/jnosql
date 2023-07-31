@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.metadata;
 
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.reflection.InstanceSupplier;
 
 import java.util.List;
 import java.util.Map;
@@ -72,7 +71,7 @@ public interface EntityMetadata {
 
 
     /**
-     * Creates a new instance from {@link InstanceSupplier}
+     * Creates a new instance from default constructor.
      *
      * @param <T> the instance type
      * @return a new instance of this class

@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.metadata;
 
-import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
 import java.util.List;
 

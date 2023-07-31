@@ -17,8 +17,6 @@ package org.eclipse.jnosql.mapping.metadata;
 import jakarta.nosql.Entity;
 import org.eclipse.jnosql.mapping.Embeddable;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Parameter;
 import java.util.Collection;
 import java.util.Map;
 
