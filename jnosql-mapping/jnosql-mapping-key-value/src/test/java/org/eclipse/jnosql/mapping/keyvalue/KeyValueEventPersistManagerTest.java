@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
+import jakarta.enterprise.event.Event;
 import org.eclipse.jnosql.mapping.EntityPostPersist;
 import org.eclipse.jnosql.mapping.EntityPrePersist;
 import org.junit.jupiter.api.Test;
@@ -22,8 +23,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import jakarta.enterprise.event.Event;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;

@@ -15,6 +15,11 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Alternative;
+import jakarta.enterprise.inject.Produces;
+import jakarta.interceptor.Interceptor;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 import org.eclipse.jnosql.mapping.Database;
@@ -23,11 +28,6 @@ import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.User;
 import org.mockito.Mockito;
 
-import jakarta.annotation.Priority;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Alternative;
-import jakarta.enterprise.inject.Produces;
-import jakarta.interceptor.Interceptor;
 import java.util.Optional;
 import java.util.function.Supplier;
 
