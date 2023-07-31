@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.mapping.metadata.ConstructorBuilder;
-import org.eclipse.jnosql.mapping.reflection.GenericParameterMetaData;
+import org.eclipse.jnosql.mapping.metadata.GenericParameterMetaData;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
 import java.util.ArrayList;
