@@ -16,57 +16,26 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
-import java.lang.reflect.Constructor;
 import java.util.List;
-import java.util.Objects;
 
 /**
- * This class has information about {@link java.lang.reflect.Constructor}
+ * The ConstructorMetadata interface provides information about a Java constructor.
+ * It contains methods to retrieve details about the constructor and its parameters.
+ *
  */
-public final class ConstructorMetadata {
+public interface ConstructorMetadata {
 
-    private final Constructor<?> constructor;
-    private final List<ParameterMetaData> parameters;
+    /**
+     * Returns a list of ParameterMetaData objects representing the parameters of the constructor.
+     *
+     * @return the constructor parameters
+     */
+    List<ParameterMetaData> parameters();
 
-    ConstructorMetadata(Constructor<?> constructor, List<ParameterMetaData> parameters) {
-        this.constructor = constructor;
-        this.parameters = parameters;
-    }
-
-    public List<ParameterMetaData> parameters() {
-        return parameters;
-    }
-
-    public Constructor<?> constructor() {
-        return constructor;
-    }
-
-    public boolean isDefault(){
-        return parameters.isEmpty();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ConstructorMetadata that = (ConstructorMetadata) o;
-        return Objects.equals(constructor, that.constructor);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(constructor);
-    }
-
-    @Override
-    public String toString() {
-        return "ConstructorMetadata{" +
-                "constructor=" + constructor +
-                ", parameters=" + parameters +
-                '}';
-    }
+    /**
+     * Checks if the constructor is a default (no-argument) constructor.
+     *
+     * @return {@code true} if the constructor is a default constructor, otherwise {@code false}
+     */
+    boolean isDefault();
 }
