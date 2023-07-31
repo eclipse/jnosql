@@ -103,7 +103,7 @@ final class DefaultConstructorBuilder implements ConstructorBuilder {
      * @return the builder instance
      * @throws NullPointerException when metadata is null
      */
-    public static ConstructorBuilder of(ConstructorMetadata metadata) {
+    static ConstructorBuilder of(ConstructorMetadata metadata) {
         Objects.requireNonNull(metadata, "metadata is required");
         return new DefaultConstructorBuilder(metadata);
     }
