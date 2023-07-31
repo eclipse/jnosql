@@ -14,11 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.graph.entities;
 
-import org.eclipse.jnosql.mapping.graph.GraphTemplate;
-import org.eclipse.jnosql.mapping.graph.Transactional;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.graph.GraphTemplate;
+import org.eclipse.jnosql.mapping.graph.Transactional;
 
 @ApplicationScoped
 public class BookTemplate {

@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import org.eclipse.jnosql.communication.Value;
 import org.apache.tinkerpop.gremlin.structure.Property;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.graph.entities.inheritance;
 
 import jakarta.nosql.Column;
-import org.eclipse.jnosql.mapping.DiscriminatorValue;
 import jakarta.nosql.Entity;
+import org.eclipse.jnosql.mapping.DiscriminatorValue;
 
 @Entity
 @DiscriminatorValue("SMS")

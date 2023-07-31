@@ -18,8 +18,6 @@ import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 
-import java.time.Year;
-
 @Entity
 public record Car(@Id Long plate, @Column("model") String model,
                   @Column("manufacturer") String manufacturer,

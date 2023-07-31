@@ -126,7 +126,7 @@ class ParameterMetaDataBuilderTest {
         Assertions.assertEquals(Map.class, map.type());
         Assertions.assertEquals(MappingType.MAP, map.paramType());
         Assertions.assertTrue(map.converter().isEmpty());
-        assertEquals(GenericParameterMetaData.class, map.getClass());
+        assertEquals(DefaultGenericParameterMetaData.class, map.getClass());
     }
 
     static class Foo{

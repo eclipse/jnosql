@@ -16,9 +16,9 @@ package org.eclipse.jnosql.mapping.graph.entities;
 
 
 import jakarta.nosql.Column;
-import org.eclipse.jnosql.mapping.Convert;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
+import org.eclipse.jnosql.mapping.Convert;
 
 @Entity
 public class Computer {
