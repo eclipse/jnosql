@@ -18,6 +18,9 @@ import org.eclipse.jnosql.mapping.metadata.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.metadata.ConstructorBuilderSupplier;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 
+/**
+ * A supplier of constructor using reflection.
+ */
 public class ReflectionConstructorBuilderSupplier implements ConstructorBuilderSupplier {
     @Override
     public ConstructorBuilder apply(ConstructorMetadata constructorMetadata) {
