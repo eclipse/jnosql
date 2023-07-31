@@ -26,15 +26,14 @@ import org.eclipse.jnosql.communication.document.DocumentQueryParams;
 import org.eclipse.jnosql.communication.document.SelectQueryParser;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
-import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.MockProducer;
+import org.eclipse.jnosql.mapping.document.entities.Person;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.document.entities.Person;
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
@@ -48,7 +47,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
+@AddPackages(value = {Converters.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 class ParamsBinderTest {

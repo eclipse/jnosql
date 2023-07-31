@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.inject.Inject;
 import jakarta.nosql.Template;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import static org.eclipse.jnosql.mapping.DatabaseType.DOCUMENT;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
+@AddPackages(value = {Converters.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 class DocumentTemplateTest {

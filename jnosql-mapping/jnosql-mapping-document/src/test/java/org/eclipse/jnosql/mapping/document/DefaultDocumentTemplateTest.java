@@ -15,24 +15,23 @@
 package org.eclipse.jnosql.mapping.document;
 
 import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
 import org.eclipse.jnosql.communication.document.Document;
-
-import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
-import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
-import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
-import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.document.entities.Job;
 import org.eclipse.jnosql.mapping.document.entities.Movie;
 import org.eclipse.jnosql.mapping.document.entities.Person;
-
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -42,8 +41,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import jakarta.enterprise.inject.Instance;
-import jakarta.inject.Inject;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Optional;
@@ -52,17 +49,12 @@ import java.util.stream.Stream;
 
 import static org.eclipse.jnosql.communication.document.DocumentDeleteQuery.delete;
 import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
+@AddPackages(value = {Converters.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 public class DefaultDocumentTemplateTest {

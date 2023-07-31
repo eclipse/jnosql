@@ -14,9 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import org.eclipse.jnosql.communication.document.DocumentManager;
+import jakarta.inject.Inject;
 import jakarta.nosql.document.DocumentTemplate;
-import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
@@ -26,13 +27,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import jakarta.inject.Inject;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
+@AddPackages(value = {Converters.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 public class DefaultDocumentTemplateProducerTest {

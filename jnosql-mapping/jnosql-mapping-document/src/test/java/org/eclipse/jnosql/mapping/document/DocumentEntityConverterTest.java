@@ -14,16 +14,16 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
+import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
-import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.entities.Actor;
 import org.eclipse.jnosql.mapping.document.entities.Address;
 import org.eclipse.jnosql.mapping.document.entities.AppointmentBook;
+import org.eclipse.jnosql.mapping.document.entities.Citizen;
 import org.eclipse.jnosql.mapping.document.entities.Contact;
 import org.eclipse.jnosql.mapping.document.entities.ContactType;
 import org.eclipse.jnosql.mapping.document.entities.Director;
@@ -35,7 +35,8 @@ import org.eclipse.jnosql.mapping.document.entities.Person;
 import org.eclipse.jnosql.mapping.document.entities.Vendor;
 import org.eclipse.jnosql.mapping.document.entities.Worker;
 import org.eclipse.jnosql.mapping.document.entities.ZipCode;
-import org.eclipse.jnosql.mapping.document.entities.Citizen;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -43,7 +44,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,14 +58,10 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, DocumentEntityConverter.class})
+@AddPackages(value = {Converters.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 public class DocumentEntityConverterTest {
