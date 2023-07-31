@@ -21,7 +21,7 @@ import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.mapping.metadata.FieldValue;
 import org.eclipse.jnosql.mapping.metadata.DefaultFieldValue;
-import org.eclipse.jnosql.mapping.reflection.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
 
 import java.util.ArrayList;
 import java.util.List;

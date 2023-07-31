@@ -20,7 +20,7 @@ import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.reflection.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.util.ArrayList;
