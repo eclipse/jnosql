@@ -36,14 +36,14 @@ public final class ConstructorEvent {
     /**
      * @return the constructor
      */
-    public Constructor<?> getConstructor() {
+    public Constructor<?> constructor() {
         return constructor;
     }
 
     /**
      * @return the param to the respective constructor
      */
-    public Object[] getParams() {
+    public Object[] params() {
         return params;
     }
 

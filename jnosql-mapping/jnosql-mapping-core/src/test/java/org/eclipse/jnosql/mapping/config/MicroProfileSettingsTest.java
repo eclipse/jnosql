@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import static java.util.Collections.singletonMap;
@@ -296,6 +297,8 @@ class MicroProfileSettingsTest {
         List<Object> hosts = settings.prefix(Arrays.asList("jnosql.host", "jnosql.server"));
         assertThat(hosts).hasSize(4).contains("host", "host-1", "server", "server-1");
     }
+
+
 
     private void setProperty(Map<String, Object> params) {
         params.forEach((k, v) -> System.setProperty(k, v.toString()));
