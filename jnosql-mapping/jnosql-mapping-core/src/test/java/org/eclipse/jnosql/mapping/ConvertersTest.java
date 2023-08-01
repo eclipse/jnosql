@@ -22,6 +22,8 @@ import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
 @AddPackages(value = VetedConverter.class)
@@ -48,6 +50,11 @@ class ConvertersTest {
         Object text = attributeConverter.convertToDatabaseColumn("Text");
         Assertions.assertNotNull(text);
         Assertions.assertEquals("Text", text);
+    }
+
+    @Test
+    public void shouldGetToString(){
+        assertThat(this.converters.toString()).isNotNull().isNotBlank().isNotEmpty();
     }
 
 }
