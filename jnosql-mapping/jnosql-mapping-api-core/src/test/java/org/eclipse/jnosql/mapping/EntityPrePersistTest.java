@@ -20,14 +20,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EntityPrePersistTest {
 
     @Test
-    public void testGet() {
+    public void shouldGet() {
         Object value = new Object();
         EntityPrePersist entity = new EntityPrePersist(value);
         assertEquals(value, entity.get());
     }
 
     @Test
-    public void testEqualsAndHashCode() {
+    public void shouldEqualsAndHashCode() {
         Object value1 = new Object();
         Object value2 = new Object();
 
@@ -43,7 +43,7 @@ public class EntityPrePersistTest {
     }
 
     @Test
-    public void testToString() {
+    public void shouldToString() {
         Object value = new Object();
         EntityPrePersist entity = new EntityPrePersist(value);
         String expected = "DefaultEntityPrePersist{value=" + value + "}";
@@ -51,14 +51,14 @@ public class EntityPrePersistTest {
     }
 
     @Test
-    public void testOf() {
+    public void shouldOf() {
         Object value = new Object();
         EntityPrePersist entity = EntityPrePersist.of(value);
         assertEquals(value, entity.get());
     }
 
     @Test
-    public void testOfWithNullValue() {
+    public void shouldOfWithNullValue() {
         assertThrows(NullPointerException.class, () -> EntityPrePersist.of(null));
     }
 }
