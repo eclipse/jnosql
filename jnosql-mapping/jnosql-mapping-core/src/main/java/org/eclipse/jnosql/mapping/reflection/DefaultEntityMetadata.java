@@ -123,7 +123,7 @@ class DefaultEntityMetadata implements EntityMetadata {
     public String columnField(String javaField) {
         requireNonNull(javaField, "javaField is required");
         return ofNullable(javaFieldGroupedByColumn.get(javaField))
-                .map(NativeMapping::getNativeField).orElse(javaField);
+                .map(NativeMapping::nativeField).orElse(javaField);
 
     }
 
@@ -131,7 +131,7 @@ class DefaultEntityMetadata implements EntityMetadata {
     public Optional<FieldMetadata> fieldMapping(String javaField) {
         requireNonNull(javaField, "javaField is required");
         return ofNullable(javaFieldGroupedByColumn.get(javaField))
-                .map(NativeMapping::getFieldMapping);
+                .map(NativeMapping::fieldMapping);
     }
 
     @Override

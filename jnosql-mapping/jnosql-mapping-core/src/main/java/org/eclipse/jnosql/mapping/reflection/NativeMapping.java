@@ -29,11 +29,11 @@ final class NativeMapping {
         this.fieldMetadata = fieldMetadata;
     }
 
-    public String getNativeField() {
+    public String nativeField() {
         return nativeField;
     }
 
-    public FieldMetadata getFieldMapping() {
+    public FieldMetadata fieldMapping() {
         return fieldMetadata;
     }
 

@@ -155,7 +155,7 @@ class ClassConverter {
                         .stream().map(this::to).collect(toList()),
                 appendPreparePrefix(javaField, field.fieldName()), nativeField);
 
-        String nativeElement = entityMap.values().stream().map(NativeMapping::getNativeField)
+        String nativeElement = entityMap.values().stream().map(NativeMapping::nativeField)
                 .collect(Collectors.joining(","));
 
         nativeFieldGroupByJavaField.put(appendPrefix(javaField, field.fieldName()), NativeMapping.of(nativeElement, field));
