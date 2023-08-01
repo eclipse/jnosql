@@ -22,15 +22,18 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 class NoSQLPageTest {
 
 
     @Test
     public void shouldReturnErrorWhenNull() {
-        Assertions.assertThrows(NullPointerException.class, ()->
+        assertThrows(NullPointerException.class, ()->
                 NoSQLPage.of(Collections.emptyList(), null));
 
-        Assertions.assertThrows(NullPointerException.class, ()->
+        assertThrows(NullPointerException.class, ()->
                 NoSQLPage.of(null, Pageable.ofPage(2)));
     }
 
@@ -40,9 +43,9 @@ class NoSQLPageTest {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 Pageable.ofPage(2));
 
-        Assertions.assertThrows(UnsupportedOperationException.class, page::totalPages);
+        assertThrows(UnsupportedOperationException.class, page::totalPages);
 
-        Assertions.assertThrows(UnsupportedOperationException.class, page::totalElements);
+        assertThrows(UnsupportedOperationException.class, page::totalElements);
     }
 
     @Test
@@ -63,7 +66,7 @@ class NoSQLPageTest {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 Pageable.ofPage(2));
 
-        Assertions.assertEquals(1, page.numberOfElements());
+        assertEquals(1, page.numberOfElements());
     }
 
     @Test
@@ -79,7 +82,7 @@ class NoSQLPageTest {
                 Pageable.ofPage(2));
         Pageable pageable = page.pageable();
         Assertions.assertNotNull(pageable);
-        Assertions.assertEquals(Pageable.ofPage(2), pageable);
+        assertEquals(Pageable.ofPage(2), pageable);
     }
 
     @Test
@@ -87,6 +90,24 @@ class NoSQLPageTest {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 Pageable.ofPage(2));
         Pageable pageable = page.nextPageable();
-        Assertions.assertEquals(Pageable.ofPage(3), pageable);
+        assertEquals(Pageable.ofPage(3), pageable);
+    }
+
+    @Test
+    public void shouldThrowNullPointerExceptionWhenPageableIsNull() {
+        assertThrows(NullPointerException.class, () -> NoSQLPage.skip(null));
+    }
+
+    @Test
+    public void shouldCalculateSkip() {
+        long skipValue = NoSQLPage.skip(Pageable.ofPage(2).size(10));
+        assertEquals(10, skipValue);
+    }
+
+    @Test
+    public void shouldCalculateSkipForFirstPage() {
+        // Create a pageable with page=1 and size=5
+        long skipValue = NoSQLPage.skip(Pageable.ofPage(1).size(5));
+        assertEquals(0, skipValue);
     }
 }
