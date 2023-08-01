@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.inject.Inject;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
