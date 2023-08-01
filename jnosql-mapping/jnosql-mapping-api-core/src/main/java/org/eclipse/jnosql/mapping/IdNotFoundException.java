@@ -39,7 +39,7 @@ public class IdNotFoundException extends NoSQLException {
 
 
     public static IdNotFoundException newInstance(Class<?> type) {
-        String message = "The entity " + type + " must have a field annotated with @Id";
+        String message = "The entity " + type.getName() + " must have a field annotated with @Id";
         return new IdNotFoundException(message);
     }
 }
