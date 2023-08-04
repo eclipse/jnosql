@@ -102,6 +102,12 @@ class DefaultEntityMetadataTest {
     }
 
     @Test
+    public void shouldClassName(){
+        EntityMetadata entityMetadata = converter.create(Person.class);
+        assertThat(entityMetadata.className()).isEqualTo(Person.class.getName());
+    }
+
+    @Test
     public void shouldSimpleName(){
         EntityMetadata entityMetadata = converter.create(Person.class);
         assertThat(entityMetadata.simpleName()).isEqualTo(Person.class.getSimpleName());
