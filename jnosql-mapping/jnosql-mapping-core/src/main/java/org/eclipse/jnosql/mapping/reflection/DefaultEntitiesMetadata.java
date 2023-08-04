@@ -64,7 +64,7 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
         extension.getMappings().forEach((k, v) -> mappings.put(k.toUpperCase(Locale.US), v));
         mappings.values().forEach(r -> {
             findBySimpleName.put(r.simpleName(), r);
-            findByClassName.put(r.name(), r);
+            findByClassName.put(r.className(), r);
         });
     }
 
