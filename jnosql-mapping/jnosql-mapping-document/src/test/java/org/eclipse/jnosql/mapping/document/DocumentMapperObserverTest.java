@@ -12,15 +12,15 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.column;
+package org.eclipse.jnosql.mapping.document;
 
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.communication.column.ColumnObserverParser;
+import org.eclipse.jnosql.communication.document.DocumentObserverParser;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.column.entities.Car;
-import org.eclipse.jnosql.mapping.column.entities.Vendor;
-import org.eclipse.jnosql.mapping.column.entities.Worker;
-import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
+import org.eclipse.jnosql.mapping.document.entities.Car;
+import org.eclipse.jnosql.mapping.document.entities.Vendor;
+import org.eclipse.jnosql.mapping.document.entities.Worker;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
@@ -30,21 +30,23 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, DocumentEntityConverter.class})
 @AddPackages(MockProducer.class)
-@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
-class ColumnMapperObserverTest {
+@AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
+class DocumentMapperObserverTest {
+
 
     @Inject
     private EntitiesMetadata mappings;
 
-    private ColumnObserverParser parser;
+    private DocumentObserverParser parser;
 
     @BeforeEach
     public void setUp() {
-        this.parser = new ColumnMapperObserver(mappings);
+        this.parser = new DocumentMapperObserver(mappings);
     }
 
     @Test
@@ -88,5 +90,4 @@ class ColumnMapperObserverTest {
         var field = parser.fireField(Vendor.class.getSimpleName(), "name");
         Assertions.assertEquals("_id", field);
     }
-
 }
