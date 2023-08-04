@@ -392,7 +392,7 @@ public class DefaultColumnTemplateTest {
 
     @Test
     public void shouldConvertConvertFromAnnotationEntity(){
-        template.query("select * from vendors" );
+        template.query("select * from Vendor" );
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
