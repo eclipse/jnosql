@@ -47,7 +47,8 @@ final class ColumnMapperObserver implements ColumnObserverParser {
         try {
             return Optional.of(this.mappings.findByName(entity));
         } catch (ClassInformationNotFoundException e) {
-            return mappings.findByClassName(entity);
+            return this.mappings.findBySimpleName(entity)
+                    .or(() -> this.mappings.findByClassName(entity));
         }
     }
 
