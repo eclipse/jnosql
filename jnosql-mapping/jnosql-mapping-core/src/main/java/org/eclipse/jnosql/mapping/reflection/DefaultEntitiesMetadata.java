@@ -61,7 +61,7 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
         findByClassName = new ConcurrentHashMap<>();
 
         classes.putAll(extension.getClasses());
-        mappings.putAll(extension.getMappings());
+        extension.getMappings().forEach((k, v) -> mappings.put(k.toUpperCase(Locale.US), v));
         mappings.values().forEach(r -> {
             var type = r.type();
 
