@@ -39,6 +39,12 @@ public interface EntityMetadata {
     String simpleName();
 
     /**
+     * Returns the {@link Class#getName()}} of the entity
+     * @return the {@link Class#getName()} of the entity
+     */
+    String className();
+
+    /**
      * @return the fields name
      */
     List<String> fieldsName();

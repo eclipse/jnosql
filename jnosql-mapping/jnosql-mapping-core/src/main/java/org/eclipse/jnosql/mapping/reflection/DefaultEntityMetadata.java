@@ -35,6 +35,8 @@ class DefaultEntityMetadata implements EntityMetadata {
 
     private final String simpleName;
 
+    private final String className;
+
     private final List<String> fieldsName;
 
     private final Class<?> type;
@@ -65,6 +67,7 @@ class DefaultEntityMetadata implements EntityMetadata {
                           boolean hasInheritanceAnnotation) {
         this.name = name;
         this.simpleName = type.getSimpleName();
+        this.className = type.getName();
         this.fieldsName = fieldsName;
         this.type = type;
         this.fields = fields;
@@ -85,6 +88,11 @@ class DefaultEntityMetadata implements EntityMetadata {
     @Override
     public String simpleName() {
         return simpleName;
+    }
+
+    @Override
+    public String className() {
+        return this.className;
     }
 
     @Override
