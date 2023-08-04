@@ -69,19 +69,19 @@ class ColumnMapperObserverTest {
     @Test
     public void shouldFireField(){
         var field = parser.fireField("Worker", "salary");
-        Assertions.assertEquals("salary", field);
+        Assertions.assertEquals("money", field);
     }
 
     @Test
     public void shouldFireFieldFromClassName(){
         var field = parser.fireField(Worker.class.getName(), "salary");
-        Assertions.assertEquals("salary", field);
+        Assertions.assertEquals("money", field);
     }
 
     @Test
     public void shouldFireFieldFromSimplesName(){
         var field = parser.fireField(Worker.class.getSimpleName(), "salary");
-        Assertions.assertEquals("salary", field);
+        Assertions.assertEquals("money", field);
     }
 
     @Test
