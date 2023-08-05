@@ -20,8 +20,10 @@ import jakarta.enterprise.context.spi.CreationalContext;
 import jakarta.enterprise.inject.spi.Bean;
 import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -36,32 +38,35 @@ public class Converters {
     @Inject
     private BeanManager beanManager;
 
-    @Inject
-    private InstanceProducer instanceProducer;
-
     /**
      * Returns a converter instance where it might use scope from CDI.
      *
-     * @param converterClass the converter class
+     * @param metadata the metadata class
      * @param <X> the type of the entity attribute
      * @param <Y> the type of the database column
      * @return a converter instance
      * @throws NullPointerException when converter is null
      */
-    public <X, Y> AttributeConverter<X, Y> get(Class<? extends AttributeConverter<X, Y>> converterClass) {
-        Objects.requireNonNull(converterClass, "The converterClass is required");
-        return getInstance(converterClass);
+    public <X, Y> AttributeConverter<X, Y> get(FieldMetadata metadata) {
+        Objects.requireNonNull(metadata, "The metadata is required");
+        return getInstance(metadata);
     }
 
-    private <T> T getInstance(Class<T> entity) {
-        Iterator<Bean<?>> iterator = beanManager.getBeans(entity).iterator();
+    @SuppressWarnings("unchecked")
+    private <T> T getInstance(FieldMetadata metadata) {
+        Class<T> type = (Class<T>) metadata.converter()
+                .orElseThrow(() -> new NoSuchElementException("There is not converter to the field: "
+                        + metadata.name() + " in the Field: " + metadata.type()));
+
+        Iterator<Bean<?>> iterator = beanManager.getBeans(type).iterator();
         if (iterator.hasNext()) {
             Bean<T> bean = (Bean<T>) iterator.next();
             CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
-            return (T) beanManager.getReference(bean, entity, ctx);
+            return (T) beanManager.getReference(bean, type, ctx);
         } else {
-            LOGGER.info("The entity type: " + entity + " not found on CDI context, creating by constructor");
-            return instanceProducer.create(entity);
+            LOGGER.info("The converter type: " + type + " not found on CDI context, creating by constructor");
+            return (T) metadata.newConverter() .orElseThrow(() -> new NoSuchElementException("There is not converter to the field: "
+                    + metadata.name() + " in the Field: " + metadata.type()));
         }
 
     }

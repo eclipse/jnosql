@@ -45,7 +45,7 @@ public class DefaultFieldMetadata extends AbstractFieldMetadata {
 
     @Override
     public <X, Y, T extends AttributeConverter<X, Y>> Optional<T> newConverter() {
-        return Optional.empty();
+        return (Optional<T>) Optional.ofNullable(Reflections.newInstance(converter));
     }
 
     @Override
