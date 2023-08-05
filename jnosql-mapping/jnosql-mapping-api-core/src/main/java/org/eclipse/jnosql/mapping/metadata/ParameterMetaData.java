@@ -14,62 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.metadata;
 
-import jakarta.nosql.Column;
-import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.AttributeConverter;
-
-import java.util.Optional;
-
 /**
  * This class represents the information from {@link java.lang.reflect.Constructor#getParameters()}.
  * The strategy is to cache all the parameters in a class to create an instance
  */
-public interface ParameterMetaData {
+public interface ParameterMetaData extends FieldParameterMetadata {
 
 
-    /**
-     * Return the type of the field
-     *
-     * @return the {@link MappingType}
-     */
-    MappingType paramType();
 
-    /**
-     * Returns the name of the field that can be either the field name
-     * or {@link Column#value()}
-     *
-     * @return the name
-     */
-    String name();
-
-    /**
-     * @return a {@code Class} object identifying the declared
-     * type of the entity represented by this object
-     */
-    Class<?> type();
-
-    /**
-     * Returns true is the field is annotated with {@link Id}
-     *
-     * @return true is annotated with {@link Id}
-     */
-    boolean isId();
-
-    /**
-     * Returns the converter class
-     * @param <X> the type of the entity attribute
-     * @param <Y> the type of the database column
-     * @param <T> the Converter
-     * @return the converter if present
-     */
-    <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> converter();
-
-    /**
-     * Returns the converter instance using the default constructor
-     * @param <X> the type of the entity attribute
-     * @param <Y> the type of the database column
-     * @param <T> the Converter
-     * @return the converter if present
-     */
-    <X, Y, T extends AttributeConverter<X, Y>> Optional<T> newConverter();
 }
