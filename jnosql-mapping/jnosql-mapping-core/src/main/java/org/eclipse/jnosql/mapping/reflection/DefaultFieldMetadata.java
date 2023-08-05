@@ -43,6 +43,7 @@ public class DefaultFieldMetadata extends AbstractFieldMetadata {
         return id;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <X, Y, T extends AttributeConverter<X, Y>> Optional<T> newConverter() {
         return (Optional<T>) Optional.ofNullable(Reflections.newInstance(converter));
