@@ -21,6 +21,7 @@ import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Class that represents {@link FieldMetadata} a default field
@@ -40,6 +41,11 @@ public class DefaultFieldMetadata extends AbstractFieldMetadata {
     @Override
     public boolean isId() {
         return id;
+    }
+
+    @Override
+    public <X, Y, T extends AttributeConverter<X, Y>> Optional<T> newConverter() {
+        return Optional.empty();
     }
 
     @Override
