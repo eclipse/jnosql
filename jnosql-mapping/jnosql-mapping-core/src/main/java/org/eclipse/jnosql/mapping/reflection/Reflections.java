@@ -150,7 +150,7 @@ public class Reflections {
      * called when actually necessary, to avoid unnecessary
      * conflicts with a JVM SecurityManager (if active).
      *
-     * @param type the class constructor acessible
+     * @param type the class constructor accessible
      * @param <T>  the entity type
      * @return the constructor class
      * @throws ConstructorException when the constructor has public and default
