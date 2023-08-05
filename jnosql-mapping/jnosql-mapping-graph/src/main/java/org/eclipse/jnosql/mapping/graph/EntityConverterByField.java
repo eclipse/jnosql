@@ -100,7 +100,7 @@ final class EntityConverterByField<T> implements Supplier<T> {
 
     private <X, Y> void singleField(T instance, Property<?> element, FieldMetadata field) {
         Object value = element.value();
-        Optional<Class<? extends AttributeConverter<X, Y>>> converter = field.converter();
+        Optional<Class<AttributeConverter<Object, Object>>> converter = field.converter();
         if (converter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters().get(field);
             Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) value);

@@ -49,7 +49,7 @@ class ConvertersTest {
         Optional<?> newInstance = Optional.of(new MyConverter());
 
         Mockito.when(fieldMetadata.converter())
-                .thenReturn((Optional<Class<? extends AttributeConverter<Object, Object>>>) converter);
+                .thenReturn((Optional<Class<AttributeConverter<Object, Object>>>) converter);
         Mockito.when(fieldMetadata.newConverter())
                 .thenReturn((Optional<AttributeConverter<Object, Object>>) newInstance);
         AttributeConverter<String, String> attributeConverter = converters.get(fieldMetadata);
@@ -66,7 +66,7 @@ class ConvertersTest {
         Optional<?> newInstance = Optional.of(new VetedConverter());
 
         Mockito.when(fieldMetadata.converter())
-                .thenReturn((Optional<Class<? extends AttributeConverter<Object, Object>>>) converter);
+                .thenReturn((Optional<Class<AttributeConverter<Object, Object>>>) converter);
         Mockito.when(fieldMetadata.newConverter())
                 .thenReturn((Optional<AttributeConverter<Object, Object>>) newInstance);
 

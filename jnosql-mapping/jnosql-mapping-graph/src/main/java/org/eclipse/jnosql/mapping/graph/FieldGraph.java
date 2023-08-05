@@ -91,7 +91,7 @@ final class FieldGraph {
             return converter.getProperties(value);
         }
 
-        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.converter();
+        Optional<Class<AttributeConverter<Object, Object>>> optionalConverter = field.converter();
         if (optionalConverter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters.get(field);
             return singletonList(DefaultProperty.of(field.name(), attributeConverter.convertToDatabaseColumn((X) value)));
@@ -100,7 +100,7 @@ final class FieldGraph {
     }
 
     public <X, Y> Property toElement(Converters converters) {
-        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.converter();
+        Optional<Class<AttributeConverter<Object, Object>>> optionalConverter = field.converter();
         if (optionalConverter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters.get(field);
             return DefaultProperty.of(field.name(), attributeConverter.convertToDatabaseColumn((X) value));

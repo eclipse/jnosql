@@ -78,7 +78,7 @@ class DefaultParameterMetaDataTest {
 
     @Test
     public void shouldConverter() {
-        Optional<Class<? extends AttributeConverter<String, String>>> converter = parameterMetaData.converter();
+        Optional<Class<AttributeConverter<Object, Object>>> converter = parameterMetaData.converter();
         assertFalse(converter.isPresent());
     }
 
