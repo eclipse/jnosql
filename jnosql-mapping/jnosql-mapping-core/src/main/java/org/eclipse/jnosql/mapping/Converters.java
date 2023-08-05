@@ -42,7 +42,7 @@ public class Converters {
     /**
      * Returns a converter instance where it might use scope from CDI.
      *
-     * @param metadata the metadata class
+     * @param metadata the metadata field
      * @param <X> the type of the entity attribute
      * @param <Y> the type of the database column
      * @return a converter instance
@@ -56,7 +56,7 @@ public class Converters {
     /**
      * Returns a converter instance where it might use scope from CDI.
      *
-     * @param metadata the metadata class
+     * @param metadata the metadata parameter
      * @param <X> the type of the entity attribute
      * @param <Y> the type of the database column
      * @return a converter instance

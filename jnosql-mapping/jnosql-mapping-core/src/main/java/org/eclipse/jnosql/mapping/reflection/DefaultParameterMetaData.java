@@ -64,9 +64,16 @@ class DefaultParameterMetaData implements ParameterMetaData {
         return id;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> converter() {
         return Optional.ofNullable((Class<? extends AttributeConverter<X, Y>>)converter);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <X, Y, T extends AttributeConverter<X, Y>> Optional<T> newConverter() {
+        return Optional.ofNullable(converter).map(c -> (T) Reflections.newInstance(c));
     }
 
     @Override
