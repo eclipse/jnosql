@@ -25,7 +25,7 @@ import java.util.Optional;
  * This class represents the information from {@link java.lang.reflect.Field}.
  * The strategy is to cache in all fields in a class to either read and write faster from Field
  */
-public interface FieldMetadata {
+public interface FieldMetadata extends FieldParameterMetadata {
 
     /**
      * Reads and returns the field information through the bean.
