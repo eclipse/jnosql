@@ -28,12 +28,6 @@ import java.util.Optional;
 public interface FieldMetadata extends FieldParameterMetadata {
 
     /**
-     * Returns true if it is the element has either Entity or Embeddable annotations
-     * @return true if the element has Entity or Embeddable annotations
-     */
-    boolean isEmbeddable();
-
-    /**
      * Reads and returns the field information through the bean.
      *
      * @param bean the bean
@@ -74,6 +68,12 @@ public interface FieldMetadata extends FieldParameterMetadata {
      * @return true is annotated with {@link Id}
      */
     boolean isId();
+
+    /**
+     * Returns true if it is the element has either Entity or Embeddable annotations
+     * @return true if the element has Entity or Embeddable annotations
+     */
+    boolean isEmbeddable();
 
     /**
      * Retrieves the value from the default method (usually named "value") of the provided annotation type.
