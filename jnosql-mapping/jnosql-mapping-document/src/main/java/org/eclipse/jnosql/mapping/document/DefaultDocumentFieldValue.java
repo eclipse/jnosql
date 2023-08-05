@@ -62,7 +62,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
         }
         Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field().converter();
         if (optionalConverter.isPresent()) {
-            AttributeConverter<X, Y> attributeConverter = converters.get(optionalConverter.get());
+            AttributeConverter<X, Y> attributeConverter = converters.get(field());
             return singletonList(Document.of(getName(), attributeConverter.convertToDatabaseColumn((X) value())));
         }
         return singletonList(Document.of(getName(), value()));

@@ -80,7 +80,7 @@ public abstract class KeyValueEntityConverter {
     private <T> Object getKey(Object key, Class<T> type, boolean toEntity) {
         FieldMetadata id = getId(type);
         if (id.converter().isPresent()) {
-            AttributeConverter attributeConverter = getConverters().get(id.converter().get());
+            AttributeConverter<Object, Object> attributeConverter = getConverters().get(id);
             if (toEntity) {
                 return attributeConverter.convertToEntityAttribute(key);
             } else {

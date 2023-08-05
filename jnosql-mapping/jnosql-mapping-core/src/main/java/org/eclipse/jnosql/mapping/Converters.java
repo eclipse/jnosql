@@ -21,6 +21,7 @@ import jakarta.enterprise.inject.spi.Bean;
 import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -52,6 +53,20 @@ public class Converters {
         return getInstance(metadata);
     }
 
+    /**
+     * Returns a converter instance where it might use scope from CDI.
+     *
+     * @param metadata the metadata class
+     * @param <X> the type of the entity attribute
+     * @param <Y> the type of the database column
+     * @return a converter instance
+     * @throws NullPointerException when converter is null
+     */
+    public <X, Y> AttributeConverter<X, Y> get(ParameterMetaData metadata) {
+        Objects.requireNonNull(metadata, "The metadata is required");
+        return getInstance(metadata);
+    }
+
     @SuppressWarnings("unchecked")
     private <T> T getInstance(FieldMetadata metadata) {
         Class<T> type = (Class<T>) metadata.converter()
@@ -70,6 +85,26 @@ public class Converters {
         }
 
     }
+
+    @SuppressWarnings("unchecked")
+    private <T> T getInstance(ParameterMetaData metadata) {
+        Class<T> type = (Class<T>) metadata.converter()
+                .orElseThrow(() -> new NoSuchElementException("There is not converter to the field: "
+                        + metadata.name() + " in the Field: " + metadata.type()));
+
+        Iterator<Bean<?>> iterator = beanManager.getBeans(type).iterator();
+        if (iterator.hasNext()) {
+            Bean<T> bean = (Bean<T>) iterator.next();
+            CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
+            return (T) beanManager.getReference(bean, type, ctx);
+        } else {
+            LOGGER.info("The converter type: " + type + " not found on CDI context, creating by constructor");
+            return (T) metadata.newConverter() .orElseThrow(() -> new NoSuchElementException("There is not converter to the field: "
+                    + metadata.name() + " in the Field: " + metadata.type()));
+        }
+
+    }
+
 
     @Override
     public String toString() {

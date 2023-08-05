@@ -34,7 +34,7 @@ enum ParameterConverter {
                      ConstructorBuilder builder) {
 
             metaData.converter().ifPresentOrElse(c -> {
-                Object value = converter.getConverters().get(c).convertToEntityAttribute(document.get());
+                Object value = converter.getConverters().get(metaData).convertToEntityAttribute(document.get());
                 builder.add(value);
             }, () -> builder.add(document.get(metaData.type())));
 

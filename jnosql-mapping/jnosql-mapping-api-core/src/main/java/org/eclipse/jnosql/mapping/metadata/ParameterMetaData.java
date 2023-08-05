@@ -63,4 +63,13 @@ public interface ParameterMetaData {
      * @return the converter if present
      */
     <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> converter();
+
+    /**
+     * Returns the converter instance using the default constructor
+     * @param <X> the type of the entity attribute
+     * @param <Y> the type of the database column
+     * @param <T> the Converter
+     * @return the converter if present
+     */
+    <X, Y, T extends AttributeConverter<X, Y>> Optional<T> newConverter();
 }
