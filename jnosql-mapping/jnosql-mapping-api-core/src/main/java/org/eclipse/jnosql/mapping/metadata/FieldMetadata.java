@@ -107,6 +107,15 @@ public interface FieldMetadata {
 
 
     /**
+     * Returns the converter instance using the default constructor
+     * @param <X> the type of the entity attribute
+     * @param <Y> the type of the database column
+     * @param <T> the Converter
+     * @return the converter if present
+     */
+    <X, Y, T extends AttributeConverter<X, Y>> Optional<T> newConverter();
+
+    /**
      * Retrieves the value from the default method (usually named "value") of the provided annotation type.
      *
      * <p>This method allows you to obtain the value from the default method, typically named "value," in the
