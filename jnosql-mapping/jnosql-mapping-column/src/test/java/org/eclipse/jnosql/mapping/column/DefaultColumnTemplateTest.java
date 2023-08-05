@@ -396,7 +396,7 @@ public class DefaultColumnTemplateTest {
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        assertEquals("Vendor", query.name());
+        assertEquals("vendors", query.name());
     }
 
     @Test

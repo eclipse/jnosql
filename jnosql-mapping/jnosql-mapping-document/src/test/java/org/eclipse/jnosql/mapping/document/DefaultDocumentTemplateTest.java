@@ -399,7 +399,7 @@ public class DefaultDocumentTemplateTest {
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
-        assertEquals("Vendor", query.name());
+        assertEquals("vendors", query.name());
     }
 
     @Test
