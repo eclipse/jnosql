@@ -45,7 +45,7 @@ class DefaultParameterMetaData implements ParameterMetaData {
     }
 
     @Override
-    public MappingType paramType() {
+    public MappingType mappingType() {
         return mappingType;
     }
 

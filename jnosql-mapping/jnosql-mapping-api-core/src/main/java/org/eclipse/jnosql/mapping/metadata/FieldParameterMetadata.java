@@ -31,7 +31,7 @@ public interface FieldParameterMetadata {
      *
      * @return the {@link MappingType}
      */
-    MappingType paramType();
+    MappingType mappingType();
 
     /**
      * Returns the name of the field that can be either the field name
