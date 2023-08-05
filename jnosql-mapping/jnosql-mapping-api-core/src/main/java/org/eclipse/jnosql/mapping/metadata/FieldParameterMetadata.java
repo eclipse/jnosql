@@ -58,15 +58,16 @@ public interface FieldParameterMetadata {
      * Returns the converter class
      * @param <X> the type of the entity attribute
      * @param <Y> the type of the database column
+     * @param <T> the Converter type
      * @return the converter if present
      */
-    <X, Y> Optional<Class<? extends AttributeConverter<X, Y>>> converter();
+    <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<T>> converter();
 
     /**
      * Returns the converter instance using the default constructor
      * @param <X> the type of the entity attribute
      * @param <Y> the type of the database column
-     * @param <T> the Converter
+     * @param <T> the Converter type
      * @return the converter if present
      */
     <X, Y, T extends AttributeConverter<X, Y>> Optional<T> newConverter();
