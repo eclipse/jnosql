@@ -70,7 +70,7 @@ final class EntityConverterByContructor<T> implements Supplier<T> {
         Object vertexId = vertex.id();
         if (Objects.nonNull(vertexId)) {
             parameter.converter().ifPresentOrElse(c -> {
-                AttributeConverter attributeConverter = this.converters.get(c);
+                AttributeConverter<Object, Object> attributeConverter = this.converters.get(parameter);
                 Object attributeConverted = attributeConverter.convertToEntityAttribute(vertexId);
                 Value value = Value.of(attributeConverted);
                 builder.add(value.get(parameter.type()));
@@ -85,7 +85,7 @@ final class EntityConverterByContructor<T> implements Supplier<T> {
                 .filter(c -> c.key().equals(parameter.name()))
                 .findFirst();
         property.ifPresentOrElse(p -> parameter.converter().ifPresentOrElse(c -> {
-            Object value = this.converters.get(c).convertToEntityAttribute(p.value());
+            Object value = this.converters.get(parameter).convertToEntityAttribute(p.value());
             builder.add(value);
         }, () -> {
             Value value = Value.of(p.value());
