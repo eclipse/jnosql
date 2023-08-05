@@ -95,9 +95,16 @@ abstract class AbstractFieldMetadata implements FieldMetadata {
         return this.type;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> converter() {
+    public <X, Y> Optional<Class<? extends AttributeConverter<X, Y>>> converter() {
         return Optional.ofNullable((Class<? extends AttributeConverter<X, Y>>) converter);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <X, Y, T extends AttributeConverter<X, Y>> Optional<T> newConverter() {
+        return (Optional<T>) Optional.ofNullable(converter).map(Reflections::newInstance);
     }
 
     @Override
