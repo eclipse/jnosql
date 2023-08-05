@@ -69,11 +69,6 @@ public interface FieldMetadata extends FieldParameterMetadata {
      */
     boolean isId();
 
-    /**
-     * Returns true if it is the element has either Entity or Embeddable annotations
-     * @return true if the element has Entity or Embeddable annotations
-     */
-    boolean isEmbeddable();
 
     /**
      * Retrieves the value from the default method (usually named "value") of the provided annotation type.
