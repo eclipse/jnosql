@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -51,7 +51,7 @@ class DefaultParameterMetaDataTest {
         EntityMetadata entityMetadata = converter.create(BookUser.class);
         ConstructorMetadata constructor = entityMetadata.constructor();
         this.parameterMetaData =
-                constructor.parameters().stream().filter(p -> p.name().equals("name"))
+                constructor.parameters().stream().filter(p -> p.name().equals("native_name"))
                         .findFirst().orElseThrow();
     }
 
@@ -63,7 +63,7 @@ class DefaultParameterMetaDataTest {
 
     @Test
     public void shouldName() {
-        assertEquals("name", parameterMetaData.name());
+        assertEquals("native_name", parameterMetaData.name());
     }
 
     @Test
