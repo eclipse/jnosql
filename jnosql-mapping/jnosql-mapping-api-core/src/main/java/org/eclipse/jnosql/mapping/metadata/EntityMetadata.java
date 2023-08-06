@@ -67,7 +67,7 @@ public interface EntityMetadata {
      * A class that has a parent with {@link org.eclipse.jnosql.mapping.Inheritance} annotation
      * won't use the name. It will use the parent name instead.
      *
-     * @return true if has not parent class with {@link org.eclipse.jnosql.mapping.Inheritance} or is the parent itself
+     * @return true if it has not parent class with {@link org.eclipse.jnosql.mapping.Inheritance} or is the parent itself
      */
     boolean hasEntityName();
 
