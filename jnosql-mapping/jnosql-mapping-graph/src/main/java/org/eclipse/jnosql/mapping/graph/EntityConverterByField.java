@@ -100,9 +100,9 @@ final class EntityConverterByField<T> implements Supplier<T> {
 
     private <X, Y> void singleField(T instance, Property<?> element, FieldMetadata field) {
         Object value = element.value();
-        Optional<Class<? extends AttributeConverter<X, Y>>> converter = field.converter();
+        Optional<Class<AttributeConverter<Object, Object>>> converter = field.converter();
         if (converter.isPresent()) {
-            AttributeConverter<X, Y> attributeConverter = converters().get(converter.get());
+            AttributeConverter<X, Y> attributeConverter = converters().get(field);
             Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) value);
             field.write(instance, field.value(Value.of(attributeConverted)));
         } else {
@@ -134,7 +134,7 @@ final class EntityConverterByField<T> implements Supplier<T> {
         if (Objects.nonNull(vertexId) && id.isPresent()) {
             FieldMetadata fieldMetadata = id.get();
             fieldMetadata.converter().ifPresentOrElse(c -> {
-                AttributeConverter attributeConverter = converters.get(c);
+                AttributeConverter<Object, Object> attributeConverter = converters.get(fieldMetadata);
                 Object attributeConverted = attributeConverter.convertToEntityAttribute(vertexId);
                 fieldMetadata.write(entity, fieldMetadata.value(Value.of(attributeConverted)));
             }, () -> fieldMetadata.write(entity, fieldMetadata.value(Value.of(vertexId))));

@@ -65,13 +65,13 @@ public final class ConverterUtil {
     public static Object getValue(Object value, Converters converters, FieldMetadata field) {
         if (!field.type().equals(value.getClass())) {
             return field.converter()
-                    .map(converters::get)
+                    .map(c -> converters.get(field))
                     .map(useConverter(value))
                     .orElseGet(getSupplier(value, field.type()));
         }
 
         return field.converter()
-                .map(converters::get)
+                .map(c -> converters.get(field))
                 .map(useConverter(value))
                 .orElse(value);
     }

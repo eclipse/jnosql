@@ -357,7 +357,7 @@ public class DefaultColumnTemplateTest {
 
     @Test
     public void shouldExecuteQuery() {
-        Stream<Person> people = template.query("select * from Person");
+        template.query("select * from Person");
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
@@ -366,11 +366,37 @@ public class DefaultColumnTemplateTest {
 
     @Test
     public void shouldConvertEntity() {
-        Stream<Movie> movies = template.query("select * from Movie");
+        template.query("select * from Movie");
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
         assertEquals("movie", query.name());
+    }
+
+    @Test
+    public void shouldConvertEntityName() {
+        template.query("select * from download");
+        ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(managerMock).select(queryCaptor.capture());
+        ColumnQuery query = queryCaptor.getValue();
+        assertEquals("download", query.name());
+    }
+    @Test
+    public void shouldConvertEntityNameClassName() {
+        template.query("select * from " + Person.class.getName());
+        ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(managerMock).select(queryCaptor.capture());
+        ColumnQuery query = queryCaptor.getValue();
+        assertEquals("Person", query.name());
+    }
+
+    @Test
+    public void shouldConvertConvertFromAnnotationEntity(){
+        template.query("select * from Vendor" );
+        ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(managerMock).select(queryCaptor.capture());
+        ColumnQuery query = queryCaptor.getValue();
+        assertEquals("vendors", query.name());
     }
 
     @Test

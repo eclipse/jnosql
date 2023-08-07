@@ -45,7 +45,7 @@ class DefaultParameterMetaData implements ParameterMetaData {
     }
 
     @Override
-    public MappingType paramType() {
+    public MappingType mappingType() {
         return mappingType;
     }
 
@@ -64,9 +64,16 @@ class DefaultParameterMetaData implements ParameterMetaData {
         return id;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> converter() {
-        return Optional.ofNullable((Class<? extends AttributeConverter<X, Y>>)converter);
+    public <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<T>> converter() {
+        return Optional.ofNullable((Class<T>)converter);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <X, Y, T extends AttributeConverter<X, Y>> Optional<T> newConverter() {
+        return Optional.ofNullable(converter).map(c -> (T) Reflections.newInstance(c));
     }
 
     @Override

@@ -15,12 +15,16 @@
 package org.eclipse.jnosql.mapping;
 
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,16 +41,36 @@ class ConvertersTest {
         Assertions.assertThrows(NullPointerException.class, () -> converters.get(null));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void shouldCreateAttributeConverterWithInjections() {
-        AttributeConverter attributeConverter = converters.get(MyConverter.class);
+        FieldMetadata fieldMetadata = Mockito.mock(FieldMetadata.class);
+        Optional<?> converter = Optional.of(MyConverter.class);
+        Optional<?> newInstance = Optional.of(new MyConverter());
+
+        Mockito.when(fieldMetadata.converter())
+                .thenReturn((Optional<Class<AttributeConverter<Object, Object>>>) converter);
+        Mockito.when(fieldMetadata.newConverter())
+                .thenReturn((Optional<AttributeConverter<Object, Object>>) newInstance);
+        AttributeConverter<String, String> attributeConverter = converters.get(fieldMetadata);
         Object text = attributeConverter.convertToDatabaseColumn("Text");
         Assertions.assertNotNull(text);
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void shouldCreateNotUsingInjections() {
-        AttributeConverter attributeConverter = converters.get(VetedConverter.class);
+
+        FieldMetadata fieldMetadata = Mockito.mock(FieldMetadata.class);
+        Optional<?> converter = Optional.of(VetedConverter.class);
+        Optional<?> newInstance = Optional.of(new VetedConverter());
+
+        Mockito.when(fieldMetadata.converter())
+                .thenReturn((Optional<Class<AttributeConverter<Object, Object>>>) converter);
+        Mockito.when(fieldMetadata.newConverter())
+                .thenReturn((Optional<AttributeConverter<Object, Object>>) newInstance);
+
+        AttributeConverter<String, String> attributeConverter = converters.get(fieldMetadata);
         Object text = attributeConverter.convertToDatabaseColumn("Text");
         Assertions.assertNotNull(text);
         Assertions.assertEquals("Text", text);

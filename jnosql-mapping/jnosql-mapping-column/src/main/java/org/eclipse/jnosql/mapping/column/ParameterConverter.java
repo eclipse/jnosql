@@ -34,7 +34,7 @@ enum ParameterConverter {
                      ConstructorBuilder builder) {
 
             metaData.converter().ifPresentOrElse(c -> {
-                Object value = converter.getConverters().get(c).convertToEntityAttribute(column.get());
+                Object value = converter.getConverters().get(metaData).convertToEntityAttribute(column.get());
                 builder.add(value);
             }, () -> builder.add(column.get(metaData.type())));
 
@@ -84,7 +84,7 @@ enum ParameterConverter {
                           ConstructorBuilder builder);
 
     static ParameterConverter of(ParameterMetaData parameter) {
-        return switch (parameter.paramType()) {
+        return switch (parameter.mappingType()) {
             case COLLECTION -> COLLECTION;
             case ENTITY -> ENTITY;
             default -> DEFAULT;

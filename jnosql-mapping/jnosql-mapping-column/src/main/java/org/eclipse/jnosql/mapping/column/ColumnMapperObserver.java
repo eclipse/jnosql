@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.column;
 
 import org.eclipse.jnosql.communication.column.ColumnObserverParser;
+import org.eclipse.jnosql.mapping.metadata.ClassInformationNotFoundException;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
@@ -43,11 +44,12 @@ final class ColumnMapperObserver implements ColumnObserverParser {
     }
 
     private Optional<EntityMetadata> getEntityMetadata(String entity) {
-        Optional<EntityMetadata> bySimpleName = mappings.findBySimpleName(entity);
-        if (bySimpleName.isPresent()) {
-            return bySimpleName;
+        try {
+            return Optional.of(this.mappings.findByName(entity));
+        } catch (ClassInformationNotFoundException e) {
+            return this.mappings.findBySimpleName(entity)
+                    .or(() -> this.mappings.findByClassName(entity));
         }
-        return mappings.findByClassName(entity);
     }
 
 }

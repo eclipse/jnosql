@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.repository;
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
-import org.eclipse.jnosql.mapping.reflection.MethodDynamicExecutable;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;

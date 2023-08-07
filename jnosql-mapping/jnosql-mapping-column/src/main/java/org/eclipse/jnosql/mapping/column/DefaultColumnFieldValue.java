@@ -56,6 +56,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
         return fieldValue.isNotEmpty();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <X, Y> List<Column> toColumn(ColumnEntityConverter converter, Converters converters) {
         if (EMBEDDED.equals(getType())) {
@@ -65,9 +66,9 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
         } else if (isEmbeddableCollection()) {
             return singletonList(Column.of(getName(), getColumns(converter)));
         }
-        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field().converter();
+        Optional<Class<AttributeConverter<Object, Object>>> optionalConverter = field().converter();
         if (optionalConverter.isPresent()) {
-            AttributeConverter<X, Y> attributeConverter = converters.get(optionalConverter.get());
+            AttributeConverter<X, Y> attributeConverter = converters.get(field());
             return singletonList(Column.of(getName(), attributeConverter.convertToDatabaseColumn((X) value())));
         }
         return singletonList(Column.of(getName(), value()));

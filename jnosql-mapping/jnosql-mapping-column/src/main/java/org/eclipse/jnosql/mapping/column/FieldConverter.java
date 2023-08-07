@@ -92,14 +92,15 @@ enum FieldConverter {
             }
         }
     }, DEFAULT{
+        @SuppressWarnings("unchecked")
         @Override
         public <X, Y, T> void convert(T instance, List<Column> columns, Column column,
                                       FieldMetadata field, ColumnEntityConverter converter) {
             if (Objects.nonNull(column)) {
                 Value value = column.value();
-                Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.converter();
+                Optional<Class<AttributeConverter<Object, Object>>> optionalConverter = field.converter();
                 if (optionalConverter.isPresent()) {
-                    AttributeConverter<X, Y> attributeConverter = converter.getConverters().get(optionalConverter.get());
+                    AttributeConverter<X, Y> attributeConverter = converter.getConverters().get(field);
                     Y attr = (Y)(value.isInstanceOf(List.class) ? column : value.get());
                     Object attributeConverted = attributeConverter.convertToEntityAttribute(attr);
                     field.write(instance, field.value(Value.of(attributeConverted)));

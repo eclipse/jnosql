@@ -79,7 +79,7 @@ public class Reflections {
      * @param object the object
      * @param field  the field to return object
      * @param value  the value to object
-     * @return - if the operation was execute with success
+     * @return - if the operation was executed with success
      */
     boolean setValue(Object object, Field field, Object value) {
         try {
@@ -100,7 +100,7 @@ public class Reflections {
      * @param <T>         the instance type
      * @return the new instance that class
      */
-    public <T> T newInstance(Constructor<T> constructor) {
+    public static <T> T newInstance(Constructor<T> constructor) {
         try {
             return constructor.newInstance();
         } catch (Exception exception) {
@@ -117,7 +117,7 @@ public class Reflections {
      * @param <T>  the instance type
      * @return the new instance that class
      */
-    public <T> T newInstance(Class<T> type) {
+    public static <T> T newInstance(Class<T> type) {
         try {
             Constructor<T> constructor = getConstructor(type);
             return newInstance(constructor);
@@ -150,12 +150,12 @@ public class Reflections {
      * called when actually necessary, to avoid unnecessary
      * conflicts with a JVM SecurityManager (if active).
      *
-     * @param type the class constructor acessible
+     * @param type the class constructor accessible
      * @param <T>  the entity type
      * @return the constructor class
      * @throws ConstructorException when the constructor has public and default
      */
-    public <T> Constructor<T> getConstructor(Class<T> type) {
+    public static <T> Constructor<T> getConstructor(Class<T> type) {
 
         final Predicate<Constructor<?>> defaultConstructorPredicate = c -> c.getParameterCount() == 0;
         final Predicate<Constructor<?>> customConstructorPredicate = c -> {
@@ -198,7 +198,7 @@ public class Reflections {
      * @return if the provided {@link Parameter} instance is annotated with
      * Jakarta NoSQL annotations (@{@link Id} or @{@link Column}).
      */
-    boolean hasNoSQLAnnotation(Parameter parameter) {
+    static boolean hasNoSQLAnnotation(Parameter parameter) {
         return parameter != null && Arrays.stream(parameter.getAnnotations())
                 .map(Annotation::annotationType)
                 .map(Class::getName)

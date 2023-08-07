@@ -15,10 +15,8 @@
 package org.eclipse.jnosql.mapping.metadata;
 
 
-import jakarta.nosql.Column;
 import jakarta.nosql.Id;
 import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.mapping.AttributeConverter;
 
 import java.lang.annotation.Annotation;
 import java.util.Optional;
@@ -27,24 +25,7 @@ import java.util.Optional;
  * This class represents the information from {@link java.lang.reflect.Field}.
  * The strategy is to cache in all fields in a class to either read and write faster from Field
  */
-public interface FieldMetadata {
-
-    /**
-     * Return the type of the field
-     *
-     * @return the {@link MappingType}
-     */
-    MappingType mappingType();
-
-    /**
-     * Returns a {@code Class} object that identifies the
-     * declared type for the field represented by this
-     * {@code  java.lang.reflect.Field} object.
-     *
-     * @return a {@code Class} object identifying the declared
-     * type of the field represented by this object
-     */
-    Class<?> type();
+public interface FieldMetadata extends FieldParameterMetadata {
 
     /**
      * Reads and returns the field information through the bean.
@@ -64,15 +45,7 @@ public interface FieldMetadata {
      */
     void write(Object bean, Object value);
 
-    /**
-     * Returns the name of the field that can be either the field name
-     * or {@link Column#value()}
-     *
-     * @return the name
-     */
-    String name();
-
-    /**
+     /**
      * Returns the Java Fields name.
      * {@link java.lang.reflect.Field#getName()}
      *
@@ -95,15 +68,6 @@ public interface FieldMetadata {
      * @return true is annotated with {@link Id}
      */
     boolean isId();
-
-    /**
-     * Returns the converter class
-     * @param <X> the type of the entity attribute
-     * @param <Y> the type of the database column
-     * @param <T> the Converter
-     * @return the converter if present
-     */
-    <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> converter();
 
 
     /**

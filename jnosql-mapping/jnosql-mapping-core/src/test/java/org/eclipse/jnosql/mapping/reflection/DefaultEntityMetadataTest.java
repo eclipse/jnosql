@@ -27,6 +27,7 @@ import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -87,4 +88,36 @@ class DefaultEntityMetadataTest {
                 .hasSize(4)
                 .containsKeys("_id", "name", "age", "phones");
     }
+
+    @Test
+    public void shouldGetClass(){
+        EntityMetadata entityMetadata = converter.create(Person.class);
+        assertThat(entityMetadata.type()).isEqualTo(Person.class);
+    }
+
+    @Test
+    public void shouldName(){
+        EntityMetadata entityMetadata = converter.create(Person.class);
+        assertThat(entityMetadata.name()).isEqualTo(Person.class.getSimpleName());
+    }
+
+    @Test
+    public void shouldClassName(){
+        EntityMetadata entityMetadata = converter.create(Person.class);
+        assertThat(entityMetadata.className()).isEqualTo(Person.class.getName());
+    }
+
+    @Test
+    public void shouldSimpleName(){
+        EntityMetadata entityMetadata = converter.create(Person.class);
+        assertThat(entityMetadata.simpleName()).isEqualTo(Person.class.getSimpleName());
+    }
+
+    @Test
+    public void shouldNewInstance(){
+        EntityMetadata entityMetadata = converter.create(Person.class);
+        Object instance = entityMetadata.newInstance();
+        assertThat(instance).isNotNull().isInstanceOf(Person.class);
+    }
+
 }

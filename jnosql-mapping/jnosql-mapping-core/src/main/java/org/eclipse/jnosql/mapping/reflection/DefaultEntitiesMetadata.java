@@ -23,6 +23,7 @@ import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -60,18 +61,17 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
         findByClassName = new ConcurrentHashMap<>();
 
         classes.putAll(extension.getClasses());
-        mappings.putAll(extension.getMappings());
+        extension.getMappings().forEach((k, v) -> mappings.put(k.toUpperCase(Locale.US), v));
         mappings.values().forEach(r -> {
-            Class<?> type = r.type();
-            findBySimpleName.put(type.getSimpleName(), r);
-            findByClassName.put(type.getName(), r);
+            findBySimpleName.put(r.simpleName(), r);
+            findByClassName.put(r.className(), r);
         });
     }
 
     EntityMetadata load(Class<?> type) {
         EntityMetadata metadata = classConverter.create(type);
         if (metadata.hasEntityName()) {
-            mappings.put(type.getName(), metadata);
+            mappings.put(type.getName().toUpperCase(Locale.US), metadata);
         }
         this.findBySimpleName.put(type.getSimpleName(), metadata);
         this.findByClassName.put(type.getName(), metadata);
@@ -99,10 +99,10 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
 
     @Override
     public EntityMetadata findByName(String name) {
-        return mappings.keySet().stream()
-                .map(k -> mappings.get(k))
-                .filter(r -> r.name().equalsIgnoreCase(name)).findFirst()
+        Objects.requireNonNull(name, "name is required");
+        return Optional.ofNullable(mappings.get(name.toUpperCase(Locale.US)))
                 .orElseThrow(() -> new ClassInformationNotFoundException("There is not entity found with the name: " + name));
+
     }
 
     @Override
