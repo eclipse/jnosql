@@ -13,6 +13,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Create Metadata API project
 - Enhance the reflection documentation
 
+== Fixed
+
+- Fixes the converter query when it finds by Class reference
+
 == [1.0.1] - 2023-7-31
 
 == Fixed
