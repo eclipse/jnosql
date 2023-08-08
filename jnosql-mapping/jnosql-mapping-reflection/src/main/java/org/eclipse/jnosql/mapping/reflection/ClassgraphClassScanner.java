@@ -66,22 +66,6 @@ public enum ClassgraphClassScanner implements ClassScanner {
 
     }
 
-    private static List<Class<DataRepository>> loadRepositories(ScanResult scan) {
-        return scan.getClassesWithAnnotation(Repository.class)
-                .getInterfaces()
-                .loadClasses(DataRepository.class)
-                .stream().filter(RepositoryFilter.INSTANCE)
-                .toList();
-    }
-
-    private static List<Class<?>> loadEmbeddable(ScanResult scan) {
-        return scan.getClassesWithAnnotation(Embeddable.class).loadClasses();
-    }
-
-    private static List<Class<?>> loadEntities(ScanResult scan) {
-        return scan.getClassesWithAnnotation(Entity.class).loadClasses();
-    }
-
      @Override
     public Set<Class<?>> entities() {
         return unmodifiableSet(entities);
@@ -99,7 +83,7 @@ public enum ClassgraphClassScanner implements ClassScanner {
     }
 
     @Override
-    public Set<Class<?>> repositories(Class<? extends DataRepository> filter) {
+    public <T extends DataRepository<?, ?>> Set<Class<?>> repositories(Class<T> filter) {
         Objects.requireNonNull(filter, "filter is required");
         return repositories.stream().filter(filter::isAssignableFrom)
                 .filter(c -> Arrays.asList(c.getInterfaces()).contains(filter))
@@ -114,5 +98,23 @@ public enum ClassgraphClassScanner implements ClassScanner {
                     List<Class<?>> interfaces = Arrays.asList(c.getInterfaces());
                     return interfaces.contains(CrudRepository.class) || interfaces.contains(PageableRepository.class);
                 }).collect(Collectors.toUnmodifiableSet());
+    }
+
+
+    @SuppressWarnings("rawtypes")
+    private static List<Class<DataRepository>> loadRepositories(ScanResult scan) {
+        return scan.getClassesWithAnnotation(Repository.class)
+                .getInterfaces()
+                .loadClasses(DataRepository.class)
+                .stream().filter(RepositoryFilter.INSTANCE)
+                .toList();
+    }
+
+    private static List<Class<?>> loadEmbeddable(ScanResult scan) {
+        return scan.getClassesWithAnnotation(Embeddable.class).loadClasses();
+    }
+
+    private static List<Class<?>> loadEntities(ScanResult scan) {
+        return scan.getClassesWithAnnotation(Entity.class).loadClasses();
     }
 }
