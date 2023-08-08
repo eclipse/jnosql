@@ -20,47 +20,48 @@ import jakarta.data.repository.DataRepository;
 import java.util.Set;
 
 /**
- * Scanner classes that will load entities with both {@link jakarta.nosql.Entity} and
- * {@link org.eclipse.jnosql.mapping.Embeddable}
- * annotations and repositories: interfaces that extend {@link jakarta.data.repository.DataRepository}
- * and has the {@link jakarta.data.repository.Repository} annotation.
+ * This interface defines a scanner for classes that are annotated with both the {@link jakarta.nosql.Entity}
+ * and {@link org.eclipse.jnosql.mapping.Embeddable} annotations, as well as repositories: interfaces that
+ * extend {@link jakarta.data.repository.DataRepository} and are annotated with {@link jakarta.data.repository.Repository}.
+ * The scanner facilitates the discovery of entities and repositories in the Eclipse JNoSQL context.
  */
 public interface ClassScanner {
 
     /**
-     * Returns the classes that that has the {@link jakarta.nosql.Entity} annotation
+     * Returns a set of classes that are annotated with the {@link jakarta.nosql.Entity} annotation.
      *
-     * @return classes with {@link jakarta.nosql.Entity} annotation
+     * @return A set of classes with the {@link jakarta.nosql.Entity} annotation.
      */
     Set<Class<?>> entities();
 
     /**
-     * Returns repositories: interfaces that extend DataRepository and has the Repository annotation.
+     * Returns a set of repository interfaces that extend {@link jakarta.data.repository.DataRepository}
+     * and are annotated with {@link jakarta.data.repository.Repository}.
      *
-     * @return the repositories items
+     * @return A set of repository interfaces.
      */
     Set<Class<?>> repositories();
 
     /**
-     * Returns the classes that that has the {@link org.eclipse.jnosql.mapping.Embeddable} annotation
+     * Returns a set of classes that are annotated with the {@link org.eclipse.jnosql.mapping.Embeddable} annotation.
      *
-     * @return embeddables items
+     * @return A set of classes with the {@link org.eclipse.jnosql.mapping.Embeddable} annotation.
      */
     Set<Class<?>> embeddables();
 
     /**
-     * Returns repositories {@link Class#isAssignableFrom(Class)} the parameter
+     * Returns a set of repository interfaces that are assignable from the given filter type.
      *
-     * @param filter the repository filter
-     * @return the list
+     * @param filter The repository filter.
+     * @return A set of repository interfaces that match the filter criteria.
      */
-    Set<Class<?>> repositories(Class<? extends DataRepository<?,?>> filter);
+    Set<Class<?>> repositories(Class<? extends DataRepository<?, ?>> filter);
 
     /**
-     * Returns the repositories that extends directly from {@link jakarta.data.repository.PageableRepository}
-     * and {@link jakarta.data.repository.CrudRepository}
+     * Returns a set of repository interfaces that directly extend both
+     * {@link jakarta.data.repository.PageableRepository} and {@link jakarta.data.repository.CrudRepository}.
      *
-     * @return the standard repositories
+     * @return A set of standard repository interfaces.
      */
     Set<Class<?>> repositoriesStandard();
 
