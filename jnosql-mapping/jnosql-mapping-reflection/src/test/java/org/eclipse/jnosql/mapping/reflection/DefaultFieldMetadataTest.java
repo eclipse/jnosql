@@ -37,7 +37,7 @@ import org.junit.jupiter.api.Test;
 class DefaultFieldMetadataTest {
 
     @Inject
-    private ClassConverter converter;
+    private ReflectionClassConverter converter;
 
     private DefaultFieldMetadata fieldMetadata;
 

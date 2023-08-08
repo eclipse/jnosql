@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DefaultEntityMetadataTest {
 
     @Inject
-    private ClassConverter converter;
+    private ReflectionClassConverter converter;
 
 
     @Test

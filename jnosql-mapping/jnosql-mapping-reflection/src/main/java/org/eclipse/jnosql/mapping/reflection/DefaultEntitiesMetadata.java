@@ -49,7 +49,7 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
 
 
     @Inject
-    private ClassConverter classConverter;
+    private ReflectionClassConverter converter;
 
     @Inject
     private GroupEntityMetadata extension;
@@ -61,8 +61,8 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
         findBySimpleName = new ConcurrentHashMap<>();
         findByClassName = new ConcurrentHashMap<>();
 
-        classes.putAll(extension.getClasses());
-        extension.getMappings().forEach((k, v) -> mappings.put(k.toUpperCase(Locale.US), v));
+        classes.putAll(extension.classes());
+        extension.mappings().forEach((k, v) -> mappings.put(k.toUpperCase(Locale.US), v));
         mappings.values().forEach(r -> {
             findBySimpleName.put(r.simpleName(), r);
             findByClassName.put(r.className(), r);
@@ -70,7 +70,7 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
     }
 
     EntityMetadata load(Class<?> type) {
-        EntityMetadata metadata = classConverter.create(type);
+        EntityMetadata metadata = converter.create(type);
         if (metadata.hasEntityName()) {
             mappings.put(type.getName().toUpperCase(Locale.US), metadata);
         }
@@ -122,7 +122,7 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
     public String toString() {
         return "DefaultEntitiesMetadata{" + "mappings-size=" + mappings.size() +
                 ", classes=" + classes +
-                ", classConverter=" + classConverter +
+                ", classConverter=" + converter +
                 ", extension=" + extension +
                 '}';
     }

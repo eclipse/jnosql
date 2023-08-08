@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class DefaultParameterMetaDataTest {
 
     @Inject
-    private ClassConverter converter;
+    private ReflectionClassConverter converter;
 
     private ParameterMetaData parameterMetaData;
 

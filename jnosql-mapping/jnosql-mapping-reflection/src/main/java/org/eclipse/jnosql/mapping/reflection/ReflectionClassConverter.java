@@ -36,21 +36,16 @@ import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
-class ClassConverter {
+class ReflectionClassConverter {
 
-    private static final Logger LOGGER = Logger.getLogger(ClassConverter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ReflectionClassConverter.class.getName());
 
-    private Reflections reflections;
-    private ConstructorMetadataBuilder constructorMetadataBuilder;
+    private final Reflections reflections;
+    private final ConstructorMetadataBuilder constructorMetadataBuilder;
 
-
-    ClassConverter(Reflections reflections) {
-
-        this.reflections = reflections;
+    ReflectionClassConverter() {
+        this.reflections = new Reflections();
         this.constructorMetadataBuilder = new ConstructorMetadataBuilder(reflections);
-    }
-
-    ClassConverter() {
     }
 
     public EntityMetadata create(Class<?> entity) {

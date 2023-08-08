@@ -51,14 +51,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
 @AddPackages(value = VetedConverter.class)
-public class ClassConverterTest {
+public class ReflectionClassConverterTest {
 
     @Inject
-    private ClassConverter classConverter;
+    private ReflectionClassConverter converter;
 
     @Test
     public void shouldCreateEntityMetadata() {
-        EntityMetadata entityMetadata = classConverter.create(Person.class);
+        EntityMetadata entityMetadata = converter.create(Person.class);
 
         assertEquals("Person", entityMetadata.name());
         assertEquals(Person.class, entityMetadata.type());
@@ -72,7 +72,7 @@ public class ClassConverterTest {
 
     @Test
     public void shouldEntityMetadata2() {
-        EntityMetadata entityMetadata = classConverter.create(Actor.class);
+        EntityMetadata entityMetadata = converter.create(Actor.class);
 
         assertEquals("Actor", entityMetadata.name());
         assertEquals(Actor.class, entityMetadata.type());
@@ -85,7 +85,7 @@ public class ClassConverterTest {
 
     @Test
     public void shouldCreateEntityMetadataWithEmbeddedClass() {
-        EntityMetadata entityMetadata = classConverter.create(Director.class);
+        EntityMetadata entityMetadata = converter.create(Director.class);
         assertEquals("Director", entityMetadata.name());
         assertEquals(Director.class, entityMetadata.type());
         assertEquals(5, entityMetadata.fields().size());
@@ -95,7 +95,7 @@ public class ClassConverterTest {
 
     @Test
     public void shouldReturnFalseWhenThereIsNotKey() {
-        EntityMetadata entityMetadata = classConverter.create(Worker.class);
+        EntityMetadata entityMetadata = converter.create(Worker.class);
         boolean allMatch = entityMetadata.fields().stream().noneMatch(FieldMetadata::isId);
         assertTrue(allMatch);
     }
@@ -103,7 +103,7 @@ public class ClassConverterTest {
 
     @Test
     public void shouldReturnTrueWhenThereIsKey() {
-        EntityMetadata entityMetadata = classConverter.create(User.class);
+        EntityMetadata entityMetadata = converter.create(User.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
         Predicate<FieldMetadata> hasKeyAnnotation = FieldMetadata::isId;
@@ -116,26 +116,26 @@ public class ClassConverterTest {
 
     @Test
     public void shouldReturnErrorWhenThereIsNotConstructor() {
-        Assertions.assertThrows(ConstructorException.class, () -> classConverter.create(NoConstructorEntity.class));
+        Assertions.assertThrows(ConstructorException.class, () -> converter.create(NoConstructorEntity.class));
     }
 
     @Test
     public void shouldReturnWhenIsDefaultConstructor() {
-        EntityMetadata entityMetadata = classConverter.create(Machine.class);
+        EntityMetadata entityMetadata = converter.create(Machine.class);
         List<FieldMetadata> fields = entityMetadata.fields();
         assertEquals(1, fields.size());
     }
 
     @Test
     public void shouldReturnEmptyInheritance() {
-        EntityMetadata entityMetadata = classConverter.create(Person.class);
+        EntityMetadata entityMetadata = converter.create(Person.class);
         Optional<InheritanceMetadata> inheritance = entityMetadata.inheritance();
         Assertions.assertTrue(inheritance.isEmpty());
     }
 
     @Test
     public void shouldInheritance() {
-        EntityMetadata entity = classConverter.create(SmallProject.class);
+        EntityMetadata entity = converter.create(SmallProject.class);
         Assertions.assertEquals(2, entity.fields().size());
         Assertions.assertEquals(SmallProject.class, entity.type());
 
@@ -149,7 +149,7 @@ public class ClassConverterTest {
 
     @Test
     public void shouldInheritanceNoDiscriminatorValue() {
-        EntityMetadata entity = classConverter.create(SocialMediaNotification.class);
+        EntityMetadata entity = converter.create(SocialMediaNotification.class);
         Assertions.assertEquals(4, entity.fields().size());
         Assertions.assertEquals(SocialMediaNotification.class, entity.type());
 
@@ -163,7 +163,7 @@ public class ClassConverterTest {
 
     @Test
     public void shouldInheritanceNoDiscriminatorColumn() {
-        EntityMetadata entity = classConverter.create(EmailNotification.class);
+        EntityMetadata entity = converter.create(EmailNotification.class);
         Assertions.assertEquals(4, entity.fields().size());
         Assertions.assertEquals(EmailNotification.class, entity.type());
 
@@ -177,7 +177,7 @@ public class ClassConverterTest {
 
     @Test
     public void shouldInheritanceSameParent() {
-        EntityMetadata entity = classConverter.create(Project.class);
+        EntityMetadata entity = converter.create(Project.class);
         Assertions.assertEquals(1, entity.fields().size());
         Assertions.assertEquals(Project.class, entity.type());
 
@@ -193,7 +193,7 @@ public class ClassConverterTest {
 
     @Test
     public void shouldCreateEntityMetadataWithConstructor() {
-        EntityMetadata entityMetadata = classConverter.create(Computer.class);
+        EntityMetadata entityMetadata = converter.create(Computer.class);
 
         assertEquals("Computer", entityMetadata.name());
         assertEquals(Computer.class, entityMetadata.type());

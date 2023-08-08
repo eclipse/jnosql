@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DefaultGenericFieldMetaDataTest {
 
     @Inject
-    private ClassConverter converter;
+    private ReflectionClassConverter converter;
 
     private GenericFieldMetadata fieldMetadata;
 

@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DefaultConstructorBuilderTest {
 
     @Inject
-    private ClassConverter converter;
+    private ReflectionClassConverter converter;
 
     private ConstructorMetadata constructor;
 
