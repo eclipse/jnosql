@@ -20,10 +20,8 @@ import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.GenericParameterMetaData;
-import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Book;
 import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
-import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
 @AddPackages(value = VetedConverter.class)
-@AddExtensions(EntityMetadataExtension.class)
+
 class DefaultGenericParameterMetaDataTest {
 
     @Inject

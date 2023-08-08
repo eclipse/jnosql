@@ -31,7 +31,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MappingTypeTest {
 

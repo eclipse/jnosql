@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
+import jakarta.inject.Inject;
 import jakarta.nosql.Column;
 import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.Convert;
@@ -22,13 +23,9 @@ import org.eclipse.jnosql.mapping.Embeddable;
 import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
-import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
-
-import jakarta.inject.Inject;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -38,16 +35,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.eclipse.jnosql.mapping.metadata.MappingType.COLLECTION;
-import static org.eclipse.jnosql.mapping.metadata.MappingType.DEFAULT;
-import static org.eclipse.jnosql.mapping.metadata.MappingType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.metadata.MappingType.MAP;
+import static org.eclipse.jnosql.mapping.metadata.MappingType.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
 @AddPackages(value = VetedConverter.class)
-@AddExtensions(EntityMetadataExtension.class)
+
 public class FieldMetadataTest {
 
 

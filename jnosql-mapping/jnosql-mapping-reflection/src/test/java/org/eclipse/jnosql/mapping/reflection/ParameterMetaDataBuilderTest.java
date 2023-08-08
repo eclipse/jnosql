@@ -14,16 +14,16 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import org.eclipse.jnosql.mapping.AttributeConverter;
 import jakarta.nosql.Column;
+import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 import org.eclipse.jnosql.mapping.test.entities.Animal;
 import org.eclipse.jnosql.mapping.test.entities.Money;
 import org.eclipse.jnosql.mapping.test.entities.MoneyConverter;
+import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.test.entities.constructor.Computer;
 import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
-import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.test.entities.constructor.Smartphone;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ParameterMetaDataBuilderTest {
 

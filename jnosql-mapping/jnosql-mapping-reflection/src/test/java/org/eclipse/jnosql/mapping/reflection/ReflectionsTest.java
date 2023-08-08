@@ -18,12 +18,21 @@ import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
-import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.test.entities.*;
+import org.eclipse.jnosql.mapping.test.entities.Actor;
+import org.eclipse.jnosql.mapping.test.entities.Download;
+import org.eclipse.jnosql.mapping.test.entities.Movie;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.Vendor;
+import org.eclipse.jnosql.mapping.test.entities.Worker;
 import org.eclipse.jnosql.mapping.test.entities.constructor.Smartphone;
 import org.eclipse.jnosql.mapping.test.entities.constructor.Tablet;
-import org.eclipse.jnosql.mapping.test.entities.inheritance.*;
-import org.jboss.weld.junit5.auto.AddExtensions;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.EmailNotification;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.LargeProject;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.Notification;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.Project;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.SmallProject;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.SmsNotification;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.SocialMediaNotification;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
@@ -40,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
 @AddPackages(value = VetedConverter.class)
-@AddExtensions(EntityMetadataExtension.class)
+
 public class ReflectionsTest {
 
     @Inject

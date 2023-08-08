@@ -14,8 +14,6 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import org.eclipse.jnosql.mapping.AttributeConverter;
-
 import jakarta.enterprise.inject.Vetoed;
 
 @Vetoed

@@ -21,8 +21,8 @@ import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.metadata.ClassInformationNotFoundException;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.GroupEntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
-import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 
 import java.util.Locale;
 import java.util.Map;
@@ -52,7 +52,7 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
     private ClassConverter classConverter;
 
     @Inject
-    private EntityMetadataExtension extension;
+    private GroupEntityMetadata extension;
 
     @PostConstruct
     public void init() {

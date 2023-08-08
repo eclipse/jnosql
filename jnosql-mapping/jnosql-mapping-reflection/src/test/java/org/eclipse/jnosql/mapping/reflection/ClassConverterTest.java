@@ -22,7 +22,6 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
-import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Actor;
 import org.eclipse.jnosql.mapping.test.entities.Director;
 import org.eclipse.jnosql.mapping.test.entities.Machine;
@@ -36,7 +35,6 @@ import org.eclipse.jnosql.mapping.test.entities.inheritance.Notification;
 import org.eclipse.jnosql.mapping.test.entities.inheritance.Project;
 import org.eclipse.jnosql.mapping.test.entities.inheritance.SmallProject;
 import org.eclipse.jnosql.mapping.test.entities.inheritance.SocialMediaNotification;
-import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
@@ -46,17 +44,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static org.eclipse.jnosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.eclipse.jnosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
 @AddPackages(value = VetedConverter.class)
-@AddExtensions(EntityMetadataExtension.class)
 public class ClassConverterTest {
 
     @Inject
