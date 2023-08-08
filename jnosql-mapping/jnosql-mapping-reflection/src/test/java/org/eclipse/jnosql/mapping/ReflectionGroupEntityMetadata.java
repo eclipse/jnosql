@@ -31,10 +31,8 @@ public class ReflectionGroupEntityMetadata implements GroupEntityMetadata {
 
     private final Map<Class<?>, EntityMetadata> classes = new ConcurrentHashMap<>();
 
-    private final ClassConverter converter = ClassConverter.load();
-
     public ReflectionGroupEntityMetadata() {
-
+        ClassConverter converter = ClassConverter.load();
         ClassScanner scanner = ClassScanner.load();
         for (Class<?> entity : scanner.entities()) {
             EntityMetadata entityMetadata = converter.apply(entity);
