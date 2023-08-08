@@ -14,10 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.inject.Inject;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.ReflectionGroupEntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
@@ -32,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
-@AddPackages(value = VetedConverter.class)
+@AddPackages(value = ReflectionGroupEntityMetadata.class)
 class DefaultConstructorBuilderTest {
 
     private ConstructorMetadata constructor;

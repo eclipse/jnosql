@@ -14,9 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -36,8 +33,6 @@ import org.eclipse.jnosql.mapping.test.entities.inheritance.Notification;
 import org.eclipse.jnosql.mapping.test.entities.inheritance.Project;
 import org.eclipse.jnosql.mapping.test.entities.inheritance.SmallProject;
 import org.eclipse.jnosql.mapping.test.entities.inheritance.SocialMediaNotification;
-import org.jboss.weld.junit5.auto.AddPackages;
-import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.ReflectionGroupEntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 import org.eclipse.jnosql.mapping.test.entities.Movie;
@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
-@AddPackages(value = VetedConverter.class)
+@AddPackages(value = ReflectionGroupEntityMetadata.class)
 class DefaultEntitiesMetadataTest {
 
     @Inject

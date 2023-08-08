@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.ReflectionGroupEntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 import org.eclipse.jnosql.mapping.test.entities.Person;
@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
-@AddPackages(value = VetedConverter.class)
+@AddPackages(value = ReflectionGroupEntityMetadata.class)
 class ConstructorMetadataBuilderTest {
 
     @Inject
