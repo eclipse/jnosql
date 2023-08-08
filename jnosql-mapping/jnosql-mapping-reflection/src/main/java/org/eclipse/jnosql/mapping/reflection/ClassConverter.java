@@ -14,8 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
@@ -38,7 +36,6 @@ import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
-@ApplicationScoped
 class ClassConverter {
 
     private static final Logger LOGGER = Logger.getLogger(ClassConverter.class.getName());
@@ -47,7 +44,6 @@ class ClassConverter {
     private ConstructorMetadataBuilder constructorMetadataBuilder;
 
 
-    @Inject
     ClassConverter(Reflections reflections) {
 
         this.reflections = reflections;
