@@ -41,7 +41,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
 @AddPackages(value = VetedConverter.class)
-
 class DefaultEntitiesMetadataTest {
 
     @Inject

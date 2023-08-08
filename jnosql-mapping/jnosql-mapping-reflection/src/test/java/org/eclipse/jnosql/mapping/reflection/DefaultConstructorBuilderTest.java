@@ -18,6 +18,7 @@ import jakarta.inject.Inject;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -34,13 +35,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AddPackages(value = VetedConverter.class)
 class DefaultConstructorBuilderTest {
 
-    @Inject
-    private ReflectionClassConverter converter;
-
     private ConstructorMetadata constructor;
 
     @BeforeEach
     public void setUp(){
+        ClassConverter converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(BookUser.class);
         this.constructor = entityMetadata.constructor();
     }

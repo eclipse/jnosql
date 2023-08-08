@@ -14,16 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.GenericParameterMetaData;
 import org.eclipse.jnosql.mapping.test.entities.Book;
 import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
-import org.jboss.weld.junit5.auto.AddPackages;
-import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,19 +28,14 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableAutoWeld
-@AddPackages(value = Convert.class)
-@AddPackages(value = VetedConverter.class)
 
 class DefaultGenericParameterMetaDataTest {
-
-    @Inject
-    private ReflectionClassConverter converter;
 
     private GenericParameterMetaData fieldMetadata;
 
     @BeforeEach
     public void setUp(){
+        ClassConverter converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(BookUser.class);
         ConstructorMetadata constructor = entityMetadata.constructor();
         this.fieldMetadata = (GenericParameterMetaData)

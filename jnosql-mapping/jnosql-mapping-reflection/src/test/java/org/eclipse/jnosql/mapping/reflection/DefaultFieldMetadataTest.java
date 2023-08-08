@@ -14,35 +14,28 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.inject.Inject;
 import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.AttributeConverter;
-import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.test.entities.MoneyConverter;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Worker;
-import org.jboss.weld.junit5.auto.AddPackages;
-import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-@EnableAutoWeld
-@AddPackages(value = Convert.class)
-@AddPackages(value = VetedConverter.class)
 
 class DefaultFieldMetadataTest {
 
-    @Inject
-    private ReflectionClassConverter converter;
+    private ClassConverter converter;
 
     private DefaultFieldMetadata fieldMetadata;
 
     @BeforeEach
     public void setUp(){
+        this.converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(Person.class);
         FieldMetadata name = entityMetadata.fieldMapping("name").orElseThrow();
         this.fieldMetadata = (DefaultFieldMetadata) name;

@@ -14,16 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.inject.Inject;
 import org.assertj.core.api.SoftAssertions;
-import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.inheritance.Notification;
-import org.jboss.weld.junit5.auto.AddPackages;
-import org.jboss.weld.junit5.auto.EnableAutoWeld;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -32,15 +29,16 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@EnableAutoWeld
-@AddPackages(value = Convert.class)
-@AddPackages(value = VetedConverter.class)
 
 class DefaultEntityMetadataTest {
 
-    @Inject
-    private ReflectionClassConverter converter;
+    private ClassConverter converter;
 
+
+    @BeforeEach
+    public void setUp() {
+        this.converter = new ReflectionClassConverter();
+    }
 
     @Test
     public void shouldToString(){

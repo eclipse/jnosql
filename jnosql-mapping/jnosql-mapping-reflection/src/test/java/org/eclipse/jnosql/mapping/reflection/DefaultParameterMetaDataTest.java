@@ -19,6 +19,7 @@ import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
@@ -34,20 +35,15 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@EnableAutoWeld
-@AddPackages(value = Convert.class)
-@AddPackages(value = VetedConverter.class)
 
 class DefaultParameterMetaDataTest {
-
-    @Inject
-    private ReflectionClassConverter converter;
 
     private ParameterMetaData parameterMetaData;
 
 
     @BeforeEach
     public void setUp(){
+        ClassConverter converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(BookUser.class);
         ConstructorMetadata constructor = entityMetadata.constructor();
         this.parameterMetaData =
