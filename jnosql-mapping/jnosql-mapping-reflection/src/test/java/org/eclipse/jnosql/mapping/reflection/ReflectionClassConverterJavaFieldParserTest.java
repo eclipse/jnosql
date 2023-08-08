@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.test.entities.Address;
 import org.eclipse.jnosql.mapping.test.entities.AppointmentBook;
@@ -25,6 +25,7 @@ import org.eclipse.jnosql.mapping.test.entities.Worker;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -33,25 +34,26 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@EnableAutoWeld
-@AddPackages(value = Convert.class)
-@AddPackages(value = VetedConverter.class)
 public class ReflectionClassConverterJavaFieldParserTest {
 
-    @Inject
-    private ReflectionClassConverter reflectionClassConverter;
+    private ClassConverter converter;
+
+    @BeforeEach
+    public void setUp() {
+        this.converter = new ReflectionClassConverter();
+    }
 
     @Test
     public void shouldReturnErrorWhenParameterIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            EntityMetadata entityMetadata = reflectionClassConverter.apply(Person.class);
+            EntityMetadata entityMetadata = converter.apply(Person.class);
             entityMetadata.columnField(null);
         });
     }
 
     @Test
     public void shouldReturnTheNativeName() {
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(Worker.class);
+        EntityMetadata entityMetadata = converter.apply(Worker.class);
         String notFound = entityMetadata.columnField("salary");
         assertEquals("money", notFound);
 
@@ -59,21 +61,21 @@ public class ReflectionClassConverterJavaFieldParserTest {
 
     @Test
     public void shouldReturnTheSameValueWhenTheFieldDoesNotExistInTheEntityMetadata() {
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(Person.class);
+        EntityMetadata entityMetadata = converter.apply(Person.class);
         String notFound = entityMetadata.columnField("notFound");
         assertEquals("notFound", notFound);
     }
 
     @Test
     public void shouldReadFieldWhenFieldIsSubEntity() {
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(Address.class);
+        EntityMetadata entityMetadata = converter.apply(Address.class);
         String result = entityMetadata.columnField("zipCode.plusFour");
         assertEquals("zipCode.plusFour", result);
     }
 
     @Test
     public void shouldReturnAllFieldWhenSelectTheSubEntityField() {
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(Address.class);
+        EntityMetadata entityMetadata = converter.apply(Address.class);
         String result = entityMetadata.columnField("zipCode");
         List<String> resultList = Stream.of(result.split(",")).sorted().collect(toList());
         List<String> expected = Stream.of("zipCode.plusFour", "zipCode.zip").sorted().collect(toList());
@@ -82,14 +84,14 @@ public class ReflectionClassConverterJavaFieldParserTest {
 
     @Test
     public void shouldReadFieldWhenFieldIsEmbedded() {
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(Worker.class);
+        EntityMetadata entityMetadata = converter.apply(Worker.class);
         String result = entityMetadata.columnField("job.city");
         assertEquals("city", result);
     }
 
     @Test
     public void shouldReturnAllFieldWhenSelectTheEmbeddedField() {
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(Worker.class);
+        EntityMetadata entityMetadata = converter.apply(Worker.class);
         String result = entityMetadata.columnField("job");
         List<String> resultList = Stream.of(result.split(",")).sorted().collect(toList());
         List<String> expected = Stream.of("description", "city").sorted().collect(toList());
@@ -99,7 +101,7 @@ public class ReflectionClassConverterJavaFieldParserTest {
 
     @Test
     public void shouldReturnEmbeddedFieldInCollection() {
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(AppointmentBook.class);
+        EntityMetadata entityMetadata = converter.apply(AppointmentBook.class);
         String result = entityMetadata.columnField("contacts.name");
         assertEquals("contacts.contact_name", result);
     }

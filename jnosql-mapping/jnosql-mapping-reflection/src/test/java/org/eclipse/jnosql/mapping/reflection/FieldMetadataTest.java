@@ -21,10 +21,12 @@ import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Embeddable;
 import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.ElementType;
@@ -38,19 +40,22 @@ import java.util.Map;
 import static org.eclipse.jnosql.mapping.metadata.MappingType.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@EnableAutoWeld
-@AddPackages(value = Convert.class)
-@AddPackages(value = VetedConverter.class)
 
 public class FieldMetadataTest {
 
 
     @Inject
-    private ReflectionClassConverter reflectionClassConverter;
+    private ClassConverter converter;
+
+
+    @BeforeEach
+    public void setUp() {
+        this.converter = new ReflectionClassConverter();
+    }
 
     @Test
     public void shouldReadDefaultField() {
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
+        EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
         FieldMetadata field = fields.stream()
@@ -64,7 +69,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReadCollectionField() {
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
+        EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
         FieldMetadata field = fields.stream()
                 .filter(f -> "list".equals(f.fieldName())).findFirst().get();
@@ -76,7 +81,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReadMapField() {
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
+        EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
         FieldMetadata field = fields.stream()
                 .filter(f -> "map".equals(f.fieldName())).findFirst().get();
@@ -89,7 +94,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReadEmbeddableField() {
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
+        EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
         FieldMetadata field = fields.stream()
                 .filter(f -> "barClass".equals(f.fieldName())).findFirst().get();
@@ -108,7 +113,7 @@ public class FieldMetadataTest {
         forClass.barClass = new BarClass();
         forClass.barClass.integer = 10;
 
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
+        EntityMetadata entityMetadata = converter.apply(ForClass.class);
 
         FieldMetadata string = entityMetadata.fieldMapping("string").get();
         FieldMetadata list = entityMetadata.fieldMapping("list").get();
@@ -128,7 +133,7 @@ public class FieldMetadataTest {
         BarClass value = new BarClass();
         value.integer = 10;
 
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
+        EntityMetadata entityMetadata = converter.apply(ForClass.class);
 
         FieldMetadata string = entityMetadata.fieldMapping("string").get();
         FieldMetadata list = entityMetadata.fieldMapping("list").get();
@@ -148,7 +153,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReadFromAnnotation(){
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
+        EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
         FieldMetadata field = fields.stream()
@@ -162,7 +167,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReturnEmptyWhenThereIsNotAnnotation(){
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
+        EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
         FieldMetadata field = fields.stream()
@@ -175,7 +180,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReturnEmptyWhenThereIsValueMethod(){
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
+        EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
         FieldMetadata field = fields.stream()
@@ -189,7 +194,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReturnEmptyWhenThereIsValueMethod2(){
-        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
+        EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
         FieldMetadata field = fields.stream()

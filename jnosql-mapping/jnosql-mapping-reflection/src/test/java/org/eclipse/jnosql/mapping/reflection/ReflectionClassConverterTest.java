@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
@@ -38,6 +39,7 @@ import org.eclipse.jnosql.mapping.test.entities.inheritance.SocialMediaNotificat
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -48,13 +50,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
 import static org.junit.jupiter.api.Assertions.*;
 
-@EnableAutoWeld
-@AddPackages(value = Convert.class)
-@AddPackages(value = VetedConverter.class)
 public class ReflectionClassConverterTest {
 
-    @Inject
-    private ReflectionClassConverter converter;
+    private ClassConverter converter;
+
+
+    @BeforeEach
+    public void setUp() {
+        this.converter = new ReflectionClassConverter();
+    }
 
     @Test
     public void shouldCreateEntityMetadata() {
