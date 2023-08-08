@@ -18,6 +18,7 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ClassInformationNotFoundException;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -39,28 +40,30 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 class DefaultEntitiesMetadata implements EntitiesMetadata {
 
-    private Map<String, EntityMetadata> mappings;
+    private final Map<String, EntityMetadata> mappings;
 
-    private Map<Class<?>, EntityMetadata> classes;
+    private final  Map<Class<?>, EntityMetadata> classes;
 
-    private Map<String, EntityMetadata> findBySimpleName;
+    private final  Map<String, EntityMetadata> findBySimpleName;
 
-    private Map<String, EntityMetadata> findByClassName;
+    private final  Map<String, EntityMetadata> findByClassName;
 
 
-    @Inject
-    private ReflectionClassConverter converter;
+    private final ClassConverter converter;
 
     @Inject
     private GroupEntityMetadata extension;
 
+    public DefaultEntitiesMetadata() {
+        this.mappings = new ConcurrentHashMap<>();
+        this.classes = new ConcurrentHashMap<>();
+        this.findBySimpleName = new ConcurrentHashMap<>();
+        this.findByClassName = new ConcurrentHashMap<>();
+        this.converter = new ReflectionClassConverter();
+    }
+
     @PostConstruct
     public void init() {
-        mappings = new ConcurrentHashMap<>();
-        classes = new ConcurrentHashMap<>();
-        findBySimpleName = new ConcurrentHashMap<>();
-        findByClassName = new ConcurrentHashMap<>();
-
         classes.putAll(extension.classes());
         extension.mappings().forEach((k, v) -> mappings.put(k.toUpperCase(Locale.US), v));
         mappings.values().forEach(r -> {

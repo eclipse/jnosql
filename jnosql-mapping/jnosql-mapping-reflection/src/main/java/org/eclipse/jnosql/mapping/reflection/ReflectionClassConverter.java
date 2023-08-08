@@ -44,7 +44,7 @@ class ReflectionClassConverter implements ClassConverter {
     private final Reflections reflections;
     private final ConstructorMetadataBuilder constructorMetadataBuilder;
 
-    ReflectionClassConverter() {
+    public ReflectionClassConverter() {
         this.reflections = new Reflections();
         this.constructorMetadataBuilder = new ConstructorMetadataBuilder(reflections);
     }
