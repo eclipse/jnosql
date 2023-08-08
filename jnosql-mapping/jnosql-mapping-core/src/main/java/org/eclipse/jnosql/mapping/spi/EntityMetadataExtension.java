@@ -69,12 +69,12 @@ public class EntityMetadataExtension implements Extension, GroupEntityMetadata {
 
 
     @Override
-    public Map<String, EntityMetadata> getMappings() {
+    public Map<String, EntityMetadata> mappings() {
         return mappings;
     }
 
     @Override
-    public Map<Class<?>, EntityMetadata> getClasses() {
+    public Map<Class<?>, EntityMetadata> classes() {
         return classes;
     }
 
