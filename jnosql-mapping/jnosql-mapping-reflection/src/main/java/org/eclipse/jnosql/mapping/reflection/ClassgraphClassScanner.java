@@ -22,6 +22,7 @@ import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Repository;
 import jakarta.nosql.Entity;
 import org.eclipse.jnosql.mapping.Embeddable;
+import org.eclipse.jnosql.mapping.metadata.ClassScanner;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -39,7 +40,7 @@ import static java.util.stream.Collectors.toUnmodifiableSet;
  * annotations and repositories: interfaces that extend DataRepository
  * and has the Repository annotation.
  */
-public enum ClassScanner {
+public enum ClassgraphClassScanner implements ClassScanner {
 
     INSTANCE;
 
@@ -48,12 +49,12 @@ public enum ClassScanner {
     private final Set<Class<?>> embeddables;
 
 
-    ClassScanner() {
+    ClassgraphClassScanner() {
         entities = new HashSet<>();
         embeddables = new HashSet<>();
         repositories = new HashSet<>();
 
-        Logger logger = Logger.getLogger(ClassScanner.class.getName());
+        Logger logger = Logger.getLogger(ClassgraphClassScanner.class.getName());
         logger.fine("Starting scan class to find entities, embeddable and repositories.");
         try (ScanResult result = new ClassGraph().enableAllInfo().scan()) {
             this.entities.addAll(loadEntities(result));
@@ -81,40 +82,23 @@ public enum ClassScanner {
         return scan.getClassesWithAnnotation(Entity.class).loadClasses();
     }
 
-    /**
-     * Returns the classes that that has the {@link Entity} annotation
-     *
-     * @return classes with {@link Entity} annotation
-     */
+     @Override
     public Set<Class<?>> entities() {
         return unmodifiableSet(entities);
     }
 
-    /**
-     * Returns repositories: interfaces that extend DataRepository and has the Repository annotation.
-     *
-     * @return the repositories items
-     */
+  @Override
     public Set<Class<?>> repositories() {
         return unmodifiableSet(repositories);
     }
 
 
-    /**
-     * Returns the classes that that has the {@link Embeddable} annotation
-     *
-     * @return embeddables items
-     */
+   @Override
     public Set<Class<?>> embeddables() {
         return unmodifiableSet(embeddables);
     }
 
-    /**
-     * Returns repositories {@link Class#isAssignableFrom(Class)} the parameter
-     *
-     * @param filter the repository filter
-     * @return the list
-     */
+    @Override
     public Set<Class<?>> repositories(Class<? extends DataRepository> filter) {
         Objects.requireNonNull(filter, "filter is required");
         return repositories.stream().filter(filter::isAssignableFrom)
@@ -123,11 +107,7 @@ public enum ClassScanner {
     }
 
 
-    /**
-     * Returns the repositories that extends directly from {@link PageableRepository} and {@link CrudRepository}
-     *
-     * @return the standard repositories
-     */
+    @Override
     public Set<Class<?>> repositoriesStandard() {
         return repositories.stream()
                 .filter(c -> {

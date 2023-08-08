@@ -54,9 +54,10 @@ public interface ClassScanner {
      * Returns a set of repository interfaces that are assignable from the given filter type.
      *
      * @param filter The repository filter.
+     * @param <T>    The repository type.
      * @return A set of repository interfaces that match the filter criteria.
      */
-    Set<Class<?>> repositories(Class<? extends DataRepository<?, ?>> filter);
+    <T extends DataRepository<?, ?>> Set<Class<?>> repositories(Class<T> filter);
 
     /**
      * Returns a set of repository interfaces that directly extend both
