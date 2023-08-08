@@ -41,7 +41,7 @@ class DefaultConstructorBuilderTest {
 
     @BeforeEach
     public void setUp(){
-        EntityMetadata entityMetadata = converter.create(BookUser.class);
+        EntityMetadata entityMetadata = converter.apply(BookUser.class);
         this.constructor = entityMetadata.constructor();
     }
 

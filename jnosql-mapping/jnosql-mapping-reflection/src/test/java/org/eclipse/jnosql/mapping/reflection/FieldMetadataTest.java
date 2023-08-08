@@ -50,7 +50,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReadDefaultField() {
-        EntityMetadata entityMetadata = reflectionClassConverter.create(ForClass.class);
+        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
         FieldMetadata field = fields.stream()
@@ -64,7 +64,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReadCollectionField() {
-        EntityMetadata entityMetadata = reflectionClassConverter.create(ForClass.class);
+        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
         FieldMetadata field = fields.stream()
                 .filter(f -> "list".equals(f.fieldName())).findFirst().get();
@@ -76,7 +76,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReadMapField() {
-        EntityMetadata entityMetadata = reflectionClassConverter.create(ForClass.class);
+        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
         FieldMetadata field = fields.stream()
                 .filter(f -> "map".equals(f.fieldName())).findFirst().get();
@@ -89,7 +89,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReadEmbeddableField() {
-        EntityMetadata entityMetadata = reflectionClassConverter.create(ForClass.class);
+        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
         FieldMetadata field = fields.stream()
                 .filter(f -> "barClass".equals(f.fieldName())).findFirst().get();
@@ -108,7 +108,7 @@ public class FieldMetadataTest {
         forClass.barClass = new BarClass();
         forClass.barClass.integer = 10;
 
-        EntityMetadata entityMetadata = reflectionClassConverter.create(ForClass.class);
+        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
 
         FieldMetadata string = entityMetadata.fieldMapping("string").get();
         FieldMetadata list = entityMetadata.fieldMapping("list").get();
@@ -128,7 +128,7 @@ public class FieldMetadataTest {
         BarClass value = new BarClass();
         value.integer = 10;
 
-        EntityMetadata entityMetadata = reflectionClassConverter.create(ForClass.class);
+        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
 
         FieldMetadata string = entityMetadata.fieldMapping("string").get();
         FieldMetadata list = entityMetadata.fieldMapping("list").get();
@@ -148,7 +148,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReadFromAnnotation(){
-        EntityMetadata entityMetadata = reflectionClassConverter.create(ForClass.class);
+        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
         FieldMetadata field = fields.stream()
@@ -162,7 +162,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReturnEmptyWhenThereIsNotAnnotation(){
-        EntityMetadata entityMetadata = reflectionClassConverter.create(ForClass.class);
+        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
         FieldMetadata field = fields.stream()
@@ -175,7 +175,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReturnEmptyWhenThereIsValueMethod(){
-        EntityMetadata entityMetadata = reflectionClassConverter.create(ForClass.class);
+        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
         FieldMetadata field = fields.stream()
@@ -189,7 +189,7 @@ public class FieldMetadataTest {
 
     @Test
     public void shouldReturnEmptyWhenThereIsValueMethod2(){
-        EntityMetadata entityMetadata = reflectionClassConverter.create(ForClass.class);
+        EntityMetadata entityMetadata = reflectionClassConverter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
         FieldMetadata field = fields.stream()

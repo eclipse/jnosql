@@ -45,7 +45,7 @@ class DefaultGenericParameterMetaDataTest {
 
     @BeforeEach
     public void setUp(){
-        EntityMetadata entityMetadata = converter.create(BookUser.class);
+        EntityMetadata entityMetadata = converter.apply(BookUser.class);
         ConstructorMetadata constructor = entityMetadata.constructor();
         this.fieldMetadata = (GenericParameterMetaData)
                 constructor.parameters().stream().filter(p -> p.name().equals("books"))

@@ -48,7 +48,7 @@ class DefaultParameterMetaDataTest {
 
     @BeforeEach
     public void setUp(){
-        EntityMetadata entityMetadata = converter.create(BookUser.class);
+        EntityMetadata entityMetadata = converter.apply(BookUser.class);
         ConstructorMetadata constructor = entityMetadata.constructor();
         this.parameterMetaData =
                 constructor.parameters().stream().filter(p -> p.name().equals("native_name"))

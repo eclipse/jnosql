@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
@@ -36,7 +37,7 @@ import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
-class ReflectionClassConverter {
+class ReflectionClassConverter implements ClassConverter {
 
     private static final Logger LOGGER = Logger.getLogger(ReflectionClassConverter.class.getName());
 
@@ -48,7 +49,10 @@ class ReflectionClassConverter {
         this.constructorMetadataBuilder = new ConstructorMetadataBuilder(reflections);
     }
 
-    public EntityMetadata create(Class<?> entity) {
+
+
+    @Override
+    public EntityMetadata apply(Class<?> entity) {
 
         long start = System.currentTimeMillis();
         String entityName = reflections.getEntityName(entity);

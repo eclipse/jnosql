@@ -43,7 +43,7 @@ class DefaultFieldMetadataTest {
 
     @BeforeEach
     public void setUp(){
-        EntityMetadata entityMetadata = converter.create(Person.class);
+        EntityMetadata entityMetadata = converter.apply(Person.class);
         FieldMetadata name = entityMetadata.fieldMapping("name").orElseThrow();
         this.fieldMetadata = (DefaultFieldMetadata) name;
     }
@@ -55,7 +55,7 @@ class DefaultFieldMetadataTest {
 
     @Test
     public void shouldCreateNewInstanceConverter(){
-        EntityMetadata entityMetadata = converter.create(Worker.class);
+        EntityMetadata entityMetadata = converter.apply(Worker.class);
         FieldMetadata name = entityMetadata.fieldMapping("salary").orElseThrow();
         fieldMetadata = (DefaultFieldMetadata) name;
         AttributeConverter<Object, Object> result = fieldMetadata.newConverter().orElseThrow();

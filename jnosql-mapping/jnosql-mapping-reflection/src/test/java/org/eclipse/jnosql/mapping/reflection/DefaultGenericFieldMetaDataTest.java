@@ -44,7 +44,7 @@ class DefaultGenericFieldMetaDataTest {
 
     @BeforeEach
     public void setUp(){
-        EntityMetadata entityMetadata = converter.create(Person.class);
+        EntityMetadata entityMetadata = converter.apply(Person.class);
         FieldMetadata phones = entityMetadata.fieldMapping("phones").orElseThrow();
         this.fieldMetadata = (GenericFieldMetadata) phones;
     }
