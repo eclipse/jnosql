@@ -34,7 +34,7 @@ final class StringUtils {
      * @return {@code true} if the character sequence is blank, otherwise {@code false}.
      */
     public static boolean isBlank(final CharSequence cs) {
-        if (cs == null || cs.length() == 0) {
+        if (cs == null || cs.isEmpty()) {
             return true;
         }
 
