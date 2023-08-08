@@ -14,8 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.metadata;
 
-import jakarta.data.exceptions.MappingException;
-import jakarta.nosql.NoSQLException;
 
 import java.util.ServiceLoader;
 import java.util.function.Function;
