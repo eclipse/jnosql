@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.metadata;
 
 import jakarta.data.repository.DataRepository;
 
+import java.util.ServiceLoader;
 import java.util.Set;
 
 /**
@@ -64,5 +65,17 @@ public interface ClassScanner {
      * @return A set of standard repository interfaces.
      */
     Set<Class<?>> repositoriesStandard();
+
+    /**
+     * Loads and returns an instance of the {@link ClassScanner} implementation using the ServiceLoader mechanism.
+     *
+     * @return An instance of the loaded {@link ClassScanner} implementation.
+     * @throws IllegalStateException If no suitable implementation is found.
+     */
+    static ClassScanner load() {
+        ServiceLoader<ClassScanner> serviceLoader = ServiceLoader.load(ClassScanner.class);
+        return serviceLoader.findFirst().orElseThrow(() ->
+                new IllegalStateException("No implementation of ClassScanner found via ServiceLoader"));
+    }
 
 }
