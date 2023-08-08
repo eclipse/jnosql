@@ -31,12 +31,12 @@ public interface GroupEntityMetadata {
      *
      * @return A map containing entity names and their corresponding metadata.
      */
-    Map<String, EntityMetadata> getMappings();
+    Map<String, EntityMetadata> mappings();
 
     /**
      * Returns a mapping of Java classes to their corresponding {@link EntityMetadata}.
      *
      * @return A map containing Java classes and their corresponding metadata.
      */
-    Map<Class<?>, EntityMetadata> getClasses();
+    Map<Class<?>, EntityMetadata> classes();
 }
