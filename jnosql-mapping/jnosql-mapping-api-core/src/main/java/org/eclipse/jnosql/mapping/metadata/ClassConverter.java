@@ -47,6 +47,6 @@ public interface ClassConverter extends Function<Class<?>, EntityMetadata> {
     static ClassConverter load() {
         ServiceLoader<ClassConverter> serviceLoader = ServiceLoader.load(ClassConverter.class);
         return serviceLoader.findFirst().orElseThrow(() ->
-                new NoSQLException("No implementation of ClassConverter found via ServiceLoader"));
+                new MetadataException("No implementation of ClassConverter found via ServiceLoader"));
     }
 }

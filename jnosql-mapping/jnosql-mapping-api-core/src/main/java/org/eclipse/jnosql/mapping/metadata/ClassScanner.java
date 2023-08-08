@@ -75,7 +75,7 @@ public interface ClassScanner {
     static ClassScanner load() {
         ServiceLoader<ClassScanner> serviceLoader = ServiceLoader.load(ClassScanner.class);
         return serviceLoader.findFirst().orElseThrow(() ->
-                new IllegalStateException("No implementation of ClassScanner found via ServiceLoader"));
+                new MetadataException("No implementation of ClassScanner found via ServiceLoader"));
     }
 
 }
