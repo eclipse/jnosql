@@ -18,6 +18,7 @@ import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
+import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.*;
 import org.eclipse.jnosql.mapping.test.entities.constructor.Smartphone;
 import org.eclipse.jnosql.mapping.test.entities.constructor.Tablet;
