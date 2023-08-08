@@ -23,6 +23,7 @@ import jakarta.nosql.Entity;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ClassScanner;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.GroupEntityMetadata;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,7 +35,7 @@ import java.util.logging.Logger;
  * Where the key is {@link Class#getName()} and the value is {@link EntityMetadata}
  */
 @ApplicationScoped
-public class EntityMetadataExtension implements Extension {
+public class EntityMetadataExtension implements Extension, GroupEntityMetadata {
 
     private static final Logger LOGGER = Logger.getLogger(EntityMetadataExtension.class.getName());
     private final Map<String, EntityMetadata> mappings = new ConcurrentHashMap<>();
@@ -67,20 +68,12 @@ public class EntityMetadataExtension implements Extension {
     }
 
 
-    /**
-     * Returns the mappings loaded in CDI startup
-     *
-     * @return the class loaded
-     */
+    @Override
     public Map<String, EntityMetadata> getMappings() {
         return mappings;
     }
 
-    /**
-     * Returns all class found in the process grouped by Java class
-     *
-     * @return the map instance
-     */
+    @Override
     public Map<Class<?>, EntityMetadata> getClasses() {
         return classes;
     }
