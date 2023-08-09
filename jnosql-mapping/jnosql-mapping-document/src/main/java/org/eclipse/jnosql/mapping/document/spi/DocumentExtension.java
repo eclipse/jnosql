@@ -24,7 +24,7 @@ import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.Databases;
 import org.eclipse.jnosql.mapping.document.query.RepositoryDocumentBean;
-import org.eclipse.jnosql.mapping.reflection.ClassScanner;
+import org.eclipse.jnosql.mapping.metadata.ClassScanner;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -48,7 +48,7 @@ public class DocumentExtension implements Extension {
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
 
-        ClassScanner scanner = ClassScanner.INSTANCE;
+        ClassScanner scanner = ClassScanner.load();
 
         Set<Class<?>> crudTypes = scanner.repositoriesStandard();
 
@@ -64,12 +64,10 @@ public class DocumentExtension implements Extension {
 
         crudTypes.forEach(type -> {
             if (!databases.contains(DatabaseMetadata.DEFAULT_DOCUMENT)) {
-                afterBeanDiscovery.addBean(new RepositoryDocumentBean(type, ""));
+                afterBeanDiscovery.addBean(new RepositoryDocumentBean<>(type, ""));
             }
-            databases.forEach(database -> {
-                final RepositoryDocumentBean bean = new RepositoryDocumentBean(type, database.getProvider());
-                afterBeanDiscovery.addBean(bean);
-            });
+            databases.forEach(database ->
+                afterBeanDiscovery.addBean(new RepositoryDocumentBean<>(type, database.getProvider())));
         });
 
     }

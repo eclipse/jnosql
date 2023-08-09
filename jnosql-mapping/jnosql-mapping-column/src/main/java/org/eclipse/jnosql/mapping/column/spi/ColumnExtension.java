@@ -23,7 +23,7 @@ import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.Databases;
 import org.eclipse.jnosql.mapping.column.query.RepositoryColumnBean;
-import org.eclipse.jnosql.mapping.reflection.ClassScanner;
+import org.eclipse.jnosql.mapping.metadata.ClassScanner;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -49,7 +49,7 @@ public class ColumnExtension implements Extension {
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
 
-        ClassScanner scanner = ClassScanner.INSTANCE;
+        ClassScanner scanner = ClassScanner.load();
         Set<Class<?>> crudTypes = scanner.repositoriesStandard();
         LOGGER.info(String.format("Processing Column extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
@@ -62,10 +62,10 @@ public class ColumnExtension implements Extension {
 
         crudTypes.forEach(type -> {
             if (!databases.contains(DatabaseMetadata.DEFAULT_COLUMN)) {
-                afterBeanDiscovery.addBean(new RepositoryColumnBean(type, ""));
+                afterBeanDiscovery.addBean(new RepositoryColumnBean<>(type, ""));
             }
             databases.forEach(database -> afterBeanDiscovery
-                    .addBean(new RepositoryColumnBean(type, database.getProvider())));
+                    .addBean(new RepositoryColumnBean<>(type, database.getProvider())));
         });
 
     }
