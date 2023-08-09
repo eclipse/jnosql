@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.util;
 
 import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Money;
 import org.eclipse.jnosql.mapping.test.entities.Person;
@@ -36,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @EnableAutoWeld
 @AddPackages(value = Converters.class)
 @AddPackages(value = VetedConverter.class)
+@AddPackages(value = Reflections.class)
 @AddExtensions(EntityMetadataExtension.class)
 public class ConverterUtilTest {
 
