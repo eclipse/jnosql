@@ -132,20 +132,4 @@ abstract class AbstractFieldMetadata implements FieldMetadata {
             }
         });
     }
-
-    @Override
-    public String toString() {
-        return "AbstractFieldMetadata{" +
-                "mappingType=" + mappingType +
-                ", field=" + field +
-                ", name='" + name + '\'' +
-                ", fieldName='" + fieldName + '\'' +
-                ", converter=" + converter +
-                ", reader=" + reader +
-                ", writer=" + writer +
-                ", type=" + type +
-                '}';
-    }
-
-
 }

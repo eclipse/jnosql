@@ -81,4 +81,21 @@ class DefaultConstructorBuilderTest {
         });
     }
 
+    @Test
+    public void shouldParameters(){
+        ConstructorBuilder builder = DefaultConstructorBuilder.of(constructor);
+        builder.add("id");
+        builder.add("name");
+        builder.addEmptyParameter();
+
+        assertThat(builder.parameters()).hasSize(3);
+    }
+
+    @Test
+    public void shouldEqualsHashCode(){
+        ConstructorBuilder builder = DefaultConstructorBuilder.of(constructor);
+        ConstructorBuilder other = DefaultConstructorBuilder.of(constructor);
+        assertThat(builder).isEqualTo(other);
+        assertThat(builder.hashCode()).isEqualTo(other.hashCode());
+    }
 }

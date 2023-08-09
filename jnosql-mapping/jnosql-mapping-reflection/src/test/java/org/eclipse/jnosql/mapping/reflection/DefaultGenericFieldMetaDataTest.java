@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import org.assertj.core.api.Assertions;
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
@@ -30,13 +32,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DefaultGenericFieldMetaDataTest {
 
-    private ClassConverter converter;
-
     private GenericFieldMetadata fieldMetadata;
 
     @BeforeEach
     public void setUp(){
-        this.converter = new ReflectionClassConverter();
+        ClassConverter converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(Person.class);
         FieldMetadata phones = entityMetadata.fieldMapping("phones").orElseThrow();
         this.fieldMetadata = (GenericFieldMetadata) phones;
@@ -55,5 +55,28 @@ class DefaultGenericFieldMetaDataTest {
     public void shouldCollectionInstance(){
         Collection<?> collection = this.fieldMetadata.collectionInstance();
         assertThat(collection).isInstanceOf(List.class);
+    }
+
+    @Test
+    public void shouldEqualsHashCode(){
+        Assertions.assertThat(fieldMetadata).isEqualTo(fieldMetadata);
+        Assertions.assertThat(fieldMetadata.hashCode()).isEqualTo(fieldMetadata.hashCode());
+    }
+
+    @Test
+    public void shouldValue(){
+        List<String> phones = List.of("Ada", "Lovelace");
+        Object value = fieldMetadata.value(Value.of(phones));
+        assertThat(value).isNotNull().isInstanceOf(List.class);
+    }
+
+    @Test
+    public void shouldConverter(){
+        assertThat(fieldMetadata.converter()).isNotNull().isEmpty();
+    }
+
+    @Test
+    public void shouldNewConverter(){
+        assertThat(fieldMetadata.newConverter()).isNotNull().isEmpty();
     }
 }
