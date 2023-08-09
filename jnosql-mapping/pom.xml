@@ -32,6 +32,7 @@
 
     <modules>
         <module>jnosql-mapping-api-core</module>
+        <module>jnosql-mapping-reflection</module>
         <module>jnosql-mapping-core</module>
         <module>jnosql-mapping-graph</module>
         <module>jnosql-mapping-document</module>

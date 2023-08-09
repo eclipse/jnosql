@@ -20,38 +20,14 @@ import org.eclipse.jnosql.communication.document.DocumentQuery;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
  * The mapping implementation of {@link DocumentQuery}
  */
-public final class MappingDocumentQuery implements DocumentQuery {
-    private final List<Sort> sorts;
-    private final long limit;
-    private final long skip;
-    private final DocumentCondition condition;
-    private final String documentCollection;
+public record MappingDocumentQuery(List<Sort> sorts, long limit, long skip, DocumentCondition documentCondition,
+                                   String documentCollection) implements DocumentQuery {
 
-    public MappingDocumentQuery(List<Sort> sorts, long limit, long skip, DocumentCondition condition,
-                                String documentCollection) {
-
-        this.sorts = sorts;
-        this.limit = limit;
-        this.skip = skip;
-        this.condition = condition;
-        this.documentCollection = documentCollection;
-    }
-
-    @Override
-    public long limit() {
-        return limit;
-    }
-
-    @Override
-    public long skip() {
-        return skip;
-    }
 
     @Override
     public String name() {
@@ -60,12 +36,12 @@ public final class MappingDocumentQuery implements DocumentQuery {
 
     @Override
     public Optional<DocumentCondition> condition() {
-        return Optional.ofNullable(condition);
+        return Optional.ofNullable(documentCondition);
     }
 
     @Override
     public List<Sort> sorts() {
-        return sorts;
+        return Collections.unmodifiableList(sorts);
     }
 
     @Override
@@ -73,36 +49,5 @@ public final class MappingDocumentQuery implements DocumentQuery {
         return Collections.emptyList();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof DocumentQuery)) {
-            return false;
-        }
-        DocumentQuery that = (DocumentQuery) o;
-        return limit == that.limit() &&
-                skip == that.skip() &&
-                Objects.equals(sorts, that.sorts()) &&
-                Objects.equals(condition, that.condition().orElse(null)) &&
-                Objects.equals(documentCollection, that.name());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(limit, skip, documentCollection, condition, sorts, Collections.emptyList());
-    }
-
-    @Override
-    public String toString() {
-        return "DocumentQuery{" + "limit=" + limit +
-                ", skip=" + skip +
-                ", documentCollection='" + documentCollection + '\'' +
-                ", condition=" + condition +
-                ", sorts=" + sorts +
-                ", documents=" + Collections.emptyList() +
-                '}';
-    }
 }
 

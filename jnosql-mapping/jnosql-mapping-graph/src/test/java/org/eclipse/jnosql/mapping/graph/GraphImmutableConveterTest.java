@@ -24,7 +24,8 @@ import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.graph.entities.Car;
 import org.eclipse.jnosql.mapping.graph.entities.Hero;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
+import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -38,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, Transactional.class})
 @AddPackages(BookRepository.class)
+@AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 class GraphImmutableConveterTest {
 

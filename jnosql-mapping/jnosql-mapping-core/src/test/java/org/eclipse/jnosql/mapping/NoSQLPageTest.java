@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -109,5 +110,25 @@ class NoSQLPageTest {
         // Create a pageable with page=1 and size=5
         long skipValue = NoSQLPage.skip(Pageable.ofPage(1).size(5));
         assertEquals(0, skipValue);
+    }
+
+    @Test
+    public void shouldToString(){
+        Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
+                Pageable.ofPage(2));
+
+        assertThat(page.toString()).isNotBlank();
+    }
+
+    @Test
+    public void shouldEqualsHasCode(){
+        Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
+                Pageable.ofPage(2));
+        Page<Person> page2 = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
+                Pageable.ofPage(2));
+
+        assertEquals(page, page2);
+        assertEquals(page.hashCode(), page2.hashCode());
+
     }
 }

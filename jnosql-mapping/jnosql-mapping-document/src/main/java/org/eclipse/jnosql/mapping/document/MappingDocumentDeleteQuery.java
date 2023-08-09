@@ -19,19 +19,9 @@ import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
-class MappingDocumentDeleteQuery implements DocumentDeleteQuery {
-
-    private final String documentCollection;
-
-    private final DocumentCondition condition;
-
-    MappingDocumentDeleteQuery(String documentCollection, DocumentCondition condition) {
-        this.documentCollection = documentCollection;
-        this.condition = condition;
-    }
+record MappingDocumentDeleteQuery(String documentCollection, DocumentCondition documentCondition) implements DocumentDeleteQuery {
 
     @Override
     public String name() {
@@ -40,38 +30,11 @@ class MappingDocumentDeleteQuery implements DocumentDeleteQuery {
 
     @Override
     public Optional<DocumentCondition> condition() {
-        return Optional.ofNullable(condition);
+        return Optional.ofNullable(documentCondition);
     }
 
     @Override
     public List<String> documents() {
         return Collections.emptyList();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof DocumentDeleteQuery)) {
-            return false;
-        }
-        DocumentDeleteQuery that = (DocumentDeleteQuery) o;
-        return Objects.equals(documentCollection, that.name()) &&
-                Objects.equals(condition, that.condition().orElse(null)) && Objects.equals(Collections.emptyList(),
-                that.documents());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(documentCollection, condition, Collections.emptyList());
-    }
-
-    @Override
-    public String toString() {
-        return  "ArtemisDocumentDeleteQuery{" + "documentCollection='" + documentCollection + '\'' +
-                ", condition=" + condition +
-                ", documents=" + Collections.emptyList() +
-                '}';
     }
 }

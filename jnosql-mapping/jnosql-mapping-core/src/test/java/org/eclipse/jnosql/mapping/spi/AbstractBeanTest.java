@@ -16,27 +16,15 @@ package org.eclipse.jnosql.mapping.spi;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.spi.CreationalContext;
-import jakarta.enterprise.inject.spi.Bean;
-import jakarta.enterprise.inject.spi.CDI;
 import jakarta.enterprise.inject.spi.InjectionPoint;
-import jakarta.enterprise.inject.spi.PassivationCapable;
-import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.VetedConverter;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-import org.jboss.weld.junit5.auto.AddExtensions;
-import org.jboss.weld.junit5.auto.AddPackages;
-import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class AbstractBeanTest {
 
@@ -75,7 +63,7 @@ class AbstractBeanTest {
         String name = abstractBean.getName();
 
         // Verify that the returned name is null
-        assertEquals(null, name);
+        assertNull(name);
     }
 
     @Test
@@ -99,7 +87,7 @@ class AbstractBeanTest {
         boolean isAlternative = abstractBean.isAlternative();
 
         // Verify that the returned isAlternative is false
-        assertEquals(false, isAlternative);
+        assertFalse(isAlternative);
     }
 
 

@@ -19,19 +19,9 @@ import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
-class MappingColumnDeleteQuery implements ColumnDeleteQuery {
-
-    private final String columnFamily;
-
-    private final ColumnCondition condition;
-
-    MappingColumnDeleteQuery(String columnFamily, ColumnCondition condition) {
-        this.columnFamily = columnFamily;
-        this.condition = condition;
-    }
+record MappingColumnDeleteQuery(String columnFamily, ColumnCondition columnCondition) implements ColumnDeleteQuery {
 
 
     @Override
@@ -41,30 +31,11 @@ class MappingColumnDeleteQuery implements ColumnDeleteQuery {
 
     @Override
     public Optional<ColumnCondition> condition() {
-        return Optional.ofNullable(condition);
+        return Optional.ofNullable(columnCondition);
     }
 
     @Override
     public List<String> columns() {
         return Collections.emptyList();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ColumnDeleteQuery)) {
-            return false;
-        }
-        ColumnDeleteQuery that = (ColumnDeleteQuery) o;
-        return Objects.equals(columnFamily, that.name())
-                && Objects.equals(condition, that.condition().orElse(null))
-                && Objects.equals(Collections.emptyList(), that.columns());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(columnFamily, condition, Collections.emptyList());
     }
 }

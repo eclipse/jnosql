@@ -19,8 +19,8 @@ import jakarta.data.repository.Sort;
 import org.eclipse.jnosql.communication.column.ColumnCondition;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.emptyList;
@@ -28,31 +28,9 @@ import static java.util.Collections.emptyList;
 /**
  * A mapping implementation of {@link ColumnQuery}
  */
-public final class MappingColumnQuery implements ColumnQuery {
+public record MappingColumnQuery(List<Sort> sorts, long limit, long skip, ColumnCondition columnCondition, String columnFamily)
+        implements ColumnQuery {
 
-    private final List<Sort> sorts;
-    private final long limit;
-    private final long skip;
-    private final ColumnCondition condition;
-    private final String columnFamily;
-
-    public MappingColumnQuery(List<Sort> sorts, long limit, long skip, ColumnCondition condition, String columnFamily) {
-        this.sorts = sorts;
-        this.limit = limit;
-        this.skip = skip;
-        this.condition = condition;
-        this.columnFamily = columnFamily;
-    }
-
-    @Override
-    public long limit() {
-        return limit;
-    }
-
-    @Override
-    public long skip() {
-        return skip;
-    }
 
     @Override
     public String name() {
@@ -61,7 +39,7 @@ public final class MappingColumnQuery implements ColumnQuery {
 
     @Override
     public Optional<ColumnCondition> condition() {
-        return Optional.ofNullable(condition);
+        return Optional.ofNullable(columnCondition);
     }
 
     @Override
@@ -71,39 +49,7 @@ public final class MappingColumnQuery implements ColumnQuery {
 
     @Override
     public List<Sort> sorts() {
-        return sorts;
+        return Collections.unmodifiableList(sorts);
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ColumnQuery)) {
-            return false;
-        }
-        ColumnQuery that = (ColumnQuery) o;
-        return limit == that.limit()
-                && skip == that.skip()
-                && Objects.equals(sorts, that.sorts())
-                && Objects.equals(condition, that.condition().orElse(null))
-                && Objects.equals(columnFamily, that.name());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(limit, skip, columnFamily, emptyList(), sorts, condition);
-    }
-
-    @Override
-    public String toString() {
-        return  "ArtemisColumnQuery{" + "limit=" + limit +
-                ", skip=" + skip +
-                ", columnFamily='" + columnFamily + '\'' +
-                ", columns=" + emptyList() +
-                ", sorts=" + sorts +
-                ", condition=" + condition +
-                '}';
-    }
 }
