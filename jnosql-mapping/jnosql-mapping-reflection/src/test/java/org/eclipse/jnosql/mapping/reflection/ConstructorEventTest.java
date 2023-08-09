@@ -19,6 +19,10 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 public class ConstructorEventTest {
 
     @Test
@@ -40,7 +44,7 @@ public class ConstructorEventTest {
         Constructor<?> eventConstructor = constructorEvent.constructor();
         Object[] eventParams = constructorEvent.params();
 
-        Assertions.assertEquals(constructor, eventConstructor);
+        assertEquals(constructor, eventConstructor);
         Assertions.assertArrayEquals(new Object[]{intValue, stringValue}, eventParams);
     }
 
@@ -48,6 +52,37 @@ public class ConstructorEventTest {
     public void shouldThrowNullPointerException() {
         Assertions.assertThrows(NullPointerException.class, () -> ConstructorEvent.of(null, new Object[]{1}));
         Assertions.assertThrows(NullPointerException.class, () -> ConstructorEvent.of(ConstructorEventTest.class.getDeclaredConstructors()[0], null));
+    }
+
+    @Test
+    public void shouldToString()  throws NoSuchMethodException{
+        Class<?> sampleClass = SampleClass.class;
+
+        Constructor<?> constructor = sampleClass.getConstructor(int.class, String.class);
+
+        int intValue = 42;
+        String stringValue = "Hello, World!";
+
+        ConstructorEvent constructorEvent = ConstructorEvent.of(constructor, new Object[]{intValue, stringValue});
+        assertThat(constructorEvent.toString()).isNotNull().isNotBlank();
+    }
+
+    @Test
+    public void shouldEqualsHasCode() throws NoSuchMethodException {
+        Class<?> sampleClass = SampleClass.class;
+        Constructor<?> constructor = sampleClass.getConstructor(int.class, String.class);
+
+        Object[] params1 = new Object[]{42, "Hello, World!"};
+        Object[] params2 = new Object[]{10, "Hello, World!"};
+
+        ConstructorEvent event1 = ConstructorEvent.of(constructor, params1);
+        ConstructorEvent event1Duplicate = ConstructorEvent.of(constructor, params1);
+
+        // Test equals
+        assertEquals(event1, event1Duplicate);
+
+        // Test hashCode
+        assertEquals(event1.hashCode(), event1Duplicate.hashCode());
     }
 
     public static class SampleClass {
