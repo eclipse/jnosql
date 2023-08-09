@@ -24,6 +24,7 @@ import org.eclipse.jnosql.mapping.graph.entities.Hero;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
@@ -35,8 +36,9 @@ import java.time.Year;
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, Transactional.class})
 @AddPackages(BookRepository.class)
+@AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
-class EntityConverterByContructorTest {
+class EntityConverterByConstructorTest {
 
     @Inject
     private Graph graph;

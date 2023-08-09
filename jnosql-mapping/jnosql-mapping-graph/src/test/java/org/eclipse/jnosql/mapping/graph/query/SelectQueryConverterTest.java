@@ -27,6 +27,7 @@ import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.jboss.weld.junit5.ExplicitParamInjection;
 import org.jboss.weld.junit5.auto.AddExtensions;
@@ -49,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, Transactional.class})
 @AddPackages(BookRepository.class)
+@AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 @ExplicitParamInjection
 class SelectQueryConverterTest {
