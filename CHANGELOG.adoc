@@ -13,7 +13,11 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Create Metadata API project
 - Enhance the reflection documentation
 
-== Fixed
+== Changed
+
+- Define metadata as a module
+- define the default implementation of metadata using reflection
+- enhance the documentation to use metadata
 
 
 == [1.0.1] - 2023-7-31
