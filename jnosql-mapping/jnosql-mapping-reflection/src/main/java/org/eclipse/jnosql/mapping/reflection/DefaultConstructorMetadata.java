@@ -19,8 +19,6 @@ import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
-import java.util.Objects;
-
 record DefaultConstructorMetadata(Constructor<?> constructor,
                                   List<ParameterMetaData> parameters) implements ConstructorMetadata {
 
