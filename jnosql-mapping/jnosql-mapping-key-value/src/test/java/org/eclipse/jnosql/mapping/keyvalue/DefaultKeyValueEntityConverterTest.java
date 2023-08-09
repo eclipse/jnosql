@@ -20,6 +20,7 @@ import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Car;
 import org.eclipse.jnosql.mapping.test.entities.Person;
@@ -37,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, KeyValueEntityConverter.class})
 @AddPackages(MockProducer.class)
+@AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
 public class DefaultKeyValueEntityConverterTest {
 

@@ -21,6 +21,7 @@ import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;
 import org.eclipse.jnosql.mapping.keyvalue.MockProducer;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.User;
@@ -35,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AddPackages(value = {Converters.class, KeyValueEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
+@AddPackages(Reflections.class)
 public class KeyValueExtensionTest {
 
     @Inject

@@ -24,7 +24,7 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class AbstractBeanTest {
 
@@ -63,7 +63,7 @@ class AbstractBeanTest {
         String name = abstractBean.getName();
 
         // Verify that the returned name is null
-        assertEquals(null, name);
+        assertNull(name);
     }
 
     @Test
@@ -87,7 +87,7 @@ class AbstractBeanTest {
         boolean isAlternative = abstractBean.isAlternative();
 
         // Verify that the returned isAlternative is false
-        assertEquals(false, isAlternative);
+        assertFalse(isAlternative);
     }
 
 
