@@ -23,7 +23,7 @@ import java.util.Set;
  * A class that implements the {@link ClassScanner} interface using the ClassGraph library for class scanning.
  * This class provides methods to scan for different types of classes such as entities, repositories, and embeddables.
  */
-public class ReflectionClassScanner implements ClassScanner {
+public final class ReflectionClassScanner implements ClassScanner {
 
     @Override
     public Set<Class<?>> entities() {
