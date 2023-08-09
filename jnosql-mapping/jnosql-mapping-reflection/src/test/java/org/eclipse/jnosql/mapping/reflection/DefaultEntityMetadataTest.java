@@ -116,4 +116,11 @@ class DefaultEntityMetadataTest {
         assertThat(instance).isNotNull().isInstanceOf(Person.class);
     }
 
+    @Test
+    public void shouldHashCodeEquals(){
+        EntityMetadata entityMetadata = converter.apply(Person.class);
+        assertThat(entityMetadata).isEqualTo(converter.apply(Person.class));
+        assertThat(entityMetadata.hashCode()).isEqualTo(entityMetadata.hashCode());
+    }
+
 }
