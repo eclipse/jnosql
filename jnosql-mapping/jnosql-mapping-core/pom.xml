@@ -28,7 +28,6 @@
     <packaging>jar</packaging>
 
     <properties>
-        <classgraph.version>4.8.161</classgraph.version>
     </properties>
 
     <dependencies>
@@ -38,9 +37,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.github.classgraph</groupId>
-            <artifactId>classgraph</artifactId>
-            <version>${classgraph.version}</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jnosql-mapping-reflection</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
