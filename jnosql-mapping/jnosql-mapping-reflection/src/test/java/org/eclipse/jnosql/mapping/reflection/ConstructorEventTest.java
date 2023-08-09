@@ -85,6 +85,7 @@ public class ConstructorEventTest {
         assertEquals(event1.hashCode(), event1Duplicate.hashCode());
     }
 
+
     public static class SampleClass {
         public SampleClass(int intValue, String stringValue) {
             // Sample constructor
