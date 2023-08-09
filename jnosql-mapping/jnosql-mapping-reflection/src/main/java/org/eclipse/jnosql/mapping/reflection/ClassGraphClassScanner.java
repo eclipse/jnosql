@@ -40,7 +40,7 @@ import static java.util.stream.Collectors.toUnmodifiableSet;
  * annotations and repositories: interfaces that extend DataRepository
  * and has the Repository annotation.
  */
-public enum ClassgraphClassScanner implements ClassScanner {
+public enum ClassGraphClassScanner implements ClassScanner {
 
     INSTANCE;
 
@@ -49,12 +49,12 @@ public enum ClassgraphClassScanner implements ClassScanner {
     private final Set<Class<?>> embeddables;
 
 
-    ClassgraphClassScanner() {
+    ClassGraphClassScanner() {
         entities = new HashSet<>();
         embeddables = new HashSet<>();
         repositories = new HashSet<>();
 
-        Logger logger = Logger.getLogger(ClassgraphClassScanner.class.getName());
+        Logger logger = Logger.getLogger(ClassGraphClassScanner.class.getName());
         logger.fine("Starting scan class to find entities, embeddable and repositories.");
         try (ScanResult result = new ClassGraph().enableAllInfo().scan()) {
             this.entities.addAll(loadEntities(result));

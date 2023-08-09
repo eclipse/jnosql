@@ -30,9 +30,9 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ClassgraphClassScannerTest {
+class ClassGraphClassScannerTest {
 
-    private ClassgraphClassScanner classScanner = ClassgraphClassScanner.INSTANCE;
+    private ClassGraphClassScanner classScanner = ClassGraphClassScanner.INSTANCE;
 
     @Test
     public void shouldReturnEntities() {
