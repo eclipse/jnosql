@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.repository;
 
 import jakarta.nosql.PreparedStatement;
-import org.eclipse.jnosql.mapping.reflection.RepositoryReflectionUtils;
 
 import java.lang.reflect.Method;
 import java.util.Map;

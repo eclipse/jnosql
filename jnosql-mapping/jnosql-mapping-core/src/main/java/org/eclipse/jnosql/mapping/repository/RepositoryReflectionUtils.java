@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.reflection;
+package org.eclipse.jnosql.mapping.repository;
 
 
 
