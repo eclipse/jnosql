@@ -110,6 +110,16 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
+    public void shouldExistsById() {
+        User user = new User("ada", "Ada", 10);
+        when(template.get("key", User.class)).thenReturn(
+                Optional.of(user));
+
+        assertThat(userRepository.existsById("key")).isTrue();
+        assertThat(userRepository.existsById("non-exist")).isFalse();
+    }
+
+    @Test
     public void shouldFindByIdIterable() {
         User user = new User("ada", "Ada", 10);
         User user2 = new User("ada", "Ada", 10);
@@ -191,6 +201,16 @@ public class KeyValueRepositoryProxyTest {
     @Test
     public void shouldReturnHasCode() {
         assertEquals(userRepository.hashCode(), userRepository.hashCode());
+    }
+
+    @Test
+    public void shouldReturnUnsupportedOperationException() {
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll());
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.count());
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll(null));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.deleteAll());
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.delete(null));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.deleteAll(null));
     }
 
     interface BaseQuery<T> {
