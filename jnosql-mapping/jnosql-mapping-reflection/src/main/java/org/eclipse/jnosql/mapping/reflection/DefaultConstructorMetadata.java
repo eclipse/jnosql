@@ -21,50 +21,11 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Objects;
 
-final class DefaultConstructorMetadata implements ConstructorMetadata {
+record DefaultConstructorMetadata(Constructor<?> constructor,
+                                  List<ParameterMetaData> parameters) implements ConstructorMetadata {
 
-    private final Constructor<?> constructor;
-    private final List<ParameterMetaData> parameters;
-
-    DefaultConstructorMetadata(Constructor<?> constructor, List<ParameterMetaData> parameters) {
-        this.constructor = constructor;
-        this.parameters = parameters;
-    }
-
-    public List<ParameterMetaData> parameters() {
-        return parameters;
-    }
-
-    public Constructor<?> constructor() {
-        return constructor;
-    }
-
-    public boolean isDefault(){
+    public boolean isDefault() {
         return parameters.isEmpty();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        DefaultConstructorMetadata that = (DefaultConstructorMetadata) o;
-        return Objects.equals(constructor, that.constructor);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(constructor);
-    }
-
-    @Override
-    public String toString() {
-        return "ConstructorMetadata{" +
-                "constructor=" + constructor +
-                ", parameters=" + parameters +
-                '}';
-    }
 }

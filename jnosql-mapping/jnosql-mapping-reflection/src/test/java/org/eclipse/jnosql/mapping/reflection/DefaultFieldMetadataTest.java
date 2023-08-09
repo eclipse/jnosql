@@ -25,6 +25,7 @@ import org.eclipse.jnosql.mapping.test.entities.Worker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class DefaultFieldMetadataTest {
@@ -42,9 +43,14 @@ class DefaultFieldMetadataTest {
     }
     @Test
     public void shouldToString() {
-        Assertions.assertThat(fieldMetadata.toString()).isNotEmpty().isNotNull();
+        assertThat(fieldMetadata.toString()).isNotEmpty().isNotNull();
     }
 
+    @Test
+    public void shouldEqualsHashCode() {
+        assertThat(fieldMetadata).isEqualTo(fieldMetadata);
+        assertThat(fieldMetadata.hashCode()).isEqualTo(fieldMetadata.hashCode());
+    }
 
     @Test
     public void shouldCreateNewInstanceConverter(){
@@ -52,6 +58,6 @@ class DefaultFieldMetadataTest {
         FieldMetadata name = entityMetadata.fieldMapping("salary").orElseThrow();
         fieldMetadata = (DefaultFieldMetadata) name;
         AttributeConverter<Object, Object> result = fieldMetadata.newConverter().orElseThrow();
-        Assertions.assertThat(result).isNotNull().isInstanceOf(MoneyConverter.class);
+        assertThat(result).isNotNull().isInstanceOf(MoneyConverter.class);
     }
 }
