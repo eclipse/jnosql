@@ -19,7 +19,6 @@ import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 record MappingDocumentDeleteQuery(String documentCollection, DocumentCondition documentCondition) implements DocumentDeleteQuery {

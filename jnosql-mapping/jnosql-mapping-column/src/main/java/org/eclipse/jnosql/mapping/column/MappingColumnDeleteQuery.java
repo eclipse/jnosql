@@ -19,7 +19,6 @@ import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 record MappingColumnDeleteQuery(String columnFamily, ColumnCondition columnCondition) implements ColumnDeleteQuery {
