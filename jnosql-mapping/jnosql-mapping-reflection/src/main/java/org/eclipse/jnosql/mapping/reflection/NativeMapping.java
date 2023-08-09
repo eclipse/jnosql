@@ -16,51 +16,7 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
-import java.util.Objects;
-
-final class NativeMapping {
-
-    private final String nativeField;
-
-    private final FieldMetadata fieldMetadata;
-
-    private NativeMapping(String nativeField, FieldMetadata fieldMetadata) {
-        this.nativeField = nativeField;
-        this.fieldMetadata = fieldMetadata;
-    }
-
-    public String nativeField() {
-        return nativeField;
-    }
-
-    public FieldMetadata fieldMapping() {
-        return fieldMetadata;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        NativeMapping that = (NativeMapping) o;
-        return Objects.equals(nativeField, that.nativeField) &&
-                Objects.equals(fieldMetadata, that.fieldMetadata);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nativeField, fieldMetadata);
-    }
-
-    @Override
-    public String toString() {
-        return  "NativeMapping{" + "nativeField='" + nativeField + '\'' +
-                ", fieldMapping=" + fieldMetadata +
-                '}';
-    }
+record NativeMapping (String nativeField, FieldMetadata fieldMetadata) {
 
     public static NativeMapping of(String nativeField, FieldMetadata field) {
         return new NativeMapping(nativeField, field);

@@ -147,7 +147,7 @@ class DefaultEntityMetadata implements EntityMetadata {
     public Optional<FieldMetadata> fieldMapping(String javaField) {
         requireNonNull(javaField, "javaField is required");
         return ofNullable(javaFieldGroupedByColumn.get(javaField))
-                .map(NativeMapping::fieldMapping);
+                .map(NativeMapping::fieldMetadata);
     }
 
     @Override
