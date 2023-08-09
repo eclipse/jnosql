@@ -40,7 +40,7 @@ import static java.util.stream.Collectors.toUnmodifiableSet;
  * annotations and repositories: interfaces that extend DataRepository
  * and has the Repository annotation.
  */
-public enum ClassGraphClassScanner implements ClassScanner {
+enum ClassGraphClassScanner implements ClassScanner {
 
     INSTANCE;
 
