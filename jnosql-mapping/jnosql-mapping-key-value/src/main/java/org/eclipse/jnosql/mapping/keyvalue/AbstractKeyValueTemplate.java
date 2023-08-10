@@ -116,13 +116,23 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     }
 
     @Override
-    public <K> void delete(K key) {
+    public <T> void delete(T entity) {
+        throw new UnsupportedOperationException("delete by entity");
+    }
+
+    @Override
+    public <T> void delete(Iterable<? extends T> entities) {
+        throw new UnsupportedOperationException("deleteByKey");
+    }
+
+    @Override
+    public <K> void deleteByKey(K key) {
         requireNonNull(key, "key is required");
         getManager().delete(key);
     }
 
     @Override
-    public <K> void delete(Iterable<K> keys) {
+    public <K> void deleteByKey(Iterable<K> keys) {
         requireNonNull(keys, "keys is required");
         getManager().delete(keys);
     }
@@ -172,7 +182,7 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
 
     @Override
     public <T, K> void delete(Class<T> type, K id) {
-        this.delete(id);
+        this.deleteByKey(id);
     }
 
     @Override
