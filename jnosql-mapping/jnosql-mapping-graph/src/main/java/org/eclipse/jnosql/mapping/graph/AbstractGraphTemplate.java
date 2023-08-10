@@ -136,7 +136,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <T> void delete(T idValue) {
+    public <T> void deleteById(T idValue) {
         requireNonNull(idValue, "id is required");
         traversal().V(idValue).toStream().forEach(Vertex::remove);
     }
@@ -181,7 +181,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <T> void delete(Iterable<T> ids) {
+    public <T> void deleteById(Iterable<T> ids) {
         requireNonNull(ids, "ids is required");
         final Object[] vertexIds = StreamSupport.stream(ids.spliterator(), false).toArray(Object[]::new);
         traversal().V(vertexIds).toStream().forEach(Vertex::remove);
