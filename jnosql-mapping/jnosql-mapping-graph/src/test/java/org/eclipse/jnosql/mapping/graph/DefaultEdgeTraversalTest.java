@@ -376,6 +376,48 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     }
 
+    @Test
+    public void shouldRepeatUntilHasValueTraversal() {
+        Animal lion = graphTemplate.insert(new Animal("lion"));
+        Animal snake = graphTemplate.insert(new Animal("snake"));
+        Animal mouse = graphTemplate.insert(new Animal("mouse"));
+        Animal plant = graphTemplate.insert(new Animal("plant"));
+
+        graphTemplate.edge(lion, "eats", snake).add("when", "night");
+        graphTemplate.edge(snake, "eats", mouse);
+        graphTemplate.edge(mouse, "eats", plant);
+
+        Optional<EdgeEntity> result = graphTemplate.traversalEdge().repeat().has("when")
+                .until().has("when", "night").next();
+
+        assertTrue(result.isPresent());
+
+        assertEquals(snake, result.get().incoming());
+        assertEquals(lion, result.get().outgoing());
+
+    }
+
+    @Test
+    public void shouldRepeatUntilHasPredicateTraversal() {
+        Animal lion = graphTemplate.insert(new Animal("lion"));
+        Animal snake = graphTemplate.insert(new Animal("snake"));
+        Animal mouse = graphTemplate.insert(new Animal("mouse"));
+        Animal plant = graphTemplate.insert(new Animal("plant"));
+
+        graphTemplate.edge(lion, "eats", snake).add("when", "night");
+        graphTemplate.edge(snake, "eats", mouse);
+        graphTemplate.edge(mouse, "eats", plant);
+
+        Optional<EdgeEntity> result = graphTemplate.traversalEdge().repeat().has("when")
+                .until().has("when", new P<Object>((a, b) -> true, "night")).next();
+
+        assertTrue(result.isPresent());
+
+        assertEquals(snake, result.get().incoming());
+        assertEquals(lion, result.get().outgoing());
+
+    }
+
 
     @Test
     public void shouldReturnErrorWhenTheOrderIsNull() {

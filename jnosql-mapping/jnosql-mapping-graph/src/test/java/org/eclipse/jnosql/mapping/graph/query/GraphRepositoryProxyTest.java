@@ -287,10 +287,10 @@ class GraphRepositoryProxyTest {
     void shouldDeleteByEntities() {
         Person person = Person.builder().withId(10L).build();
         personRepository.deleteAll(singletonList(person));
-        verify(template).delete(10L);
+        verify(template).delete(singletonList(person));
 
         personRepository.deleteAll(asList(person, person, person));
-        verify(template, times(4)).delete(any(Long.class));
+        verify(template, times(2)).delete(any(List.class));
     }
 
     @Test
