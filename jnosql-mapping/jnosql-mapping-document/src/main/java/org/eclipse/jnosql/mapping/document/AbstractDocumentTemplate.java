@@ -187,6 +187,24 @@ public abstract class AbstractDocumentTemplate implements JNoSQLDocumentTemplate
     }
 
     @Override
+    public <T> void delete(T entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        EntityMetadata entityMetadata = getEntities().get(entity.getClass());
+        FieldMetadata idField = entityMetadata.id()
+                .orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
+        Object value = ConverterUtil.getValue(idField.type(), entityMetadata, idField.fieldName(), getConverters());
+        DocumentDeleteQuery query = DocumentDeleteQuery.delete().from(entityMetadata.name())
+                .where(idField.name()).eq(value).build();
+        getManager().delete(query);
+    }
+
+    @Override
+    public <T> void delete(Iterable<? extends T> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        entities.forEach(this::delete);
+    }
+
+    @Override
     public <T> Stream<T> query(String query) {
         requireNonNull(query, "query is required");
         return PARSER.query(query, getManager(), getObserver()).map(c -> getConverter().toEntity(c));
