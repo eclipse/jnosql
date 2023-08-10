@@ -78,9 +78,9 @@ public abstract class AbstractTraversalTest {
 
     @AfterEach
     public void after() {
-        graphTemplate.delete(otavio.getId());
-        graphTemplate.delete(poliana.getId());
-        graphTemplate.delete(paulo.getId());
+        graphTemplate.deleteById(otavio.getId());
+        graphTemplate.deleteById(poliana.getId());
+        graphTemplate.deleteById(paulo.getId());
 
         graphTemplate.deleteEdge(shack.getId());
         graphTemplate.deleteEdge(license.getId());

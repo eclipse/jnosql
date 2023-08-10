@@ -142,6 +142,22 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
+    public <T> void deleteById(Iterable<T> ids) {
+        requireNonNull(ids, "ids is required");
+        final Object[] vertexIds = StreamSupport.stream(ids.spliterator(), false).toArray(Object[]::new);
+        traversal().V(vertexIds).toStream().forEach(Vertex::remove);
+    }
+    @Override
+    public <T> void delete(T entity) {
+    throw new UnsupportedOperationException("GraphTemplate does not support delete by entity");
+    }
+
+    @Override
+    public <T> void delete(Iterable<? extends T> entities) {
+        throw new UnsupportedOperationException("GraphTemplate does not support delete by entity");
+    }
+
+    @Override
     public <T, K> void delete(Class<T> type, K id) {
         requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
@@ -178,13 +194,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false)
                 .map(this::update).collect(Collectors.toList());
-    }
-
-    @Override
-    public <T> void deleteById(Iterable<T> ids) {
-        requireNonNull(ids, "ids is required");
-        final Object[] vertexIds = StreamSupport.stream(ids.spliterator(), false).toArray(Object[]::new);
-        traversal().V(vertexIds).toStream().forEach(Vertex::remove);
     }
 
     @Override
