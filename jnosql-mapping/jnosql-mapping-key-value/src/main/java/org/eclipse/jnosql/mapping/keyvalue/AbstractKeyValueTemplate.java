@@ -25,6 +25,7 @@ import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 
 import java.time.Duration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -117,12 +118,18 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
 
     @Override
     public <T> void delete(T entity) {
-        throw new UnsupportedOperationException("delete by entity");
+        Objects.requireNonNull(entity, "entity is required");
+        KeyValueEntity keyValue = getConverter().toKeyValue(entity);
+        getManager().delete(keyValue.key());
     }
 
     @Override
     public <T> void delete(Iterable<? extends T> entities) {
-        throw new UnsupportedOperationException("deleteByKey");
+        Objects.requireNonNull(entities, "entities is required");
+        List<Object> keys = StreamSupport.stream(entities.spliterator(), false)
+                .map(getConverter()::toKeyValue)
+                .map(KeyValueEntity::key).toList();
+        getManager().delete(keys);
     }
 
     @Override
