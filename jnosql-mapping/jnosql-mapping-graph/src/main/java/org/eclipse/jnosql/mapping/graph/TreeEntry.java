@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import java.util.Map;
-import java.util.Objects;
 
 record TreeEntry<K, V>(K key, V value) implements Map.Entry<K, V> {
 

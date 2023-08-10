@@ -20,7 +20,6 @@ import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
