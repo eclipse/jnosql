@@ -14,13 +14,13 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Enhance the reflection documentation
 - Add support to delete by entities
 
-== Changed
+=== Changed
 
 - Define metadata as a module
 - define the default implementation of metadata using reflection
 - enhance the documentation to use metadata
 
-== Fixed
+=== Fixed
 
 - Remove exception at the delete methods at the repositories proxies
 
