@@ -197,7 +197,8 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
         EntityMetadata entityMetadata = getEntities().get(entity.getClass());
         FieldMetadata idField = entityMetadata.id()
                 .orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
-        Object value = ConverterUtil.getValue(idField.type(), entityMetadata, idField.fieldName(), getConverters());
+        Object idValue = Objects.requireNonNull(idField.read(entity), "The should not be null at the entity: " + entityMetadata.className());
+        Object value = ConverterUtil.getValue(idValue, entityMetadata, idField.fieldName(), getConverters());
         ColumnDeleteQuery query = ColumnDeleteQuery.delete().from(entityMetadata.name())
                 .where(idField.name()).eq(value).build();
         getManager().delete(query);

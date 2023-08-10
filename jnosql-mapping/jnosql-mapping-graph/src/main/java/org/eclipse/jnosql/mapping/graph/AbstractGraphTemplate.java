@@ -157,7 +157,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     private <T> Object getIdValue(T entity) {
         EntityMetadata entityMetadata = getEntities().get(entity.getClass());
         FieldMetadata id = entityMetadata.id().orElseThrow(() -> new IdNotFoundException(entity.getClass().getName()));
-        Object idValue = Objects.requireNonNull(id.read(entity), "The id is null at the entity: " + entityMetadata.className());
+        Object idValue = Objects.requireNonNull(id.read(entity), "The should not be null at the entity: " + entityMetadata.className());
         return ConverterUtil.getValue(idValue, entityMetadata, id.fieldName(), getConverters());
     }
 
