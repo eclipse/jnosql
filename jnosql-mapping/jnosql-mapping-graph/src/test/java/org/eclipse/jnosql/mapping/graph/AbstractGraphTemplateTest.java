@@ -220,13 +220,24 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldDeleteAnEntity() {
+    public void shouldDeleteById() {
 
         Person person = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
 
         assertTrue(getGraphTemplate().find(person.getId()).isPresent());
         getGraphTemplate().deleteById(person.getId());
+        assertFalse(getGraphTemplate().find(person.getId()).isPresent());
+    }
+
+    @Test
+    public void shouldDelete() {
+
+        Person person = getGraphTemplate().insert(Person.builder().withAge()
+                .withName("Otavio").build());
+
+        assertTrue(getGraphTemplate().find(person.getId()).isPresent());
+        getGraphTemplate().delete(person);
         assertFalse(getGraphTemplate().find(person.getId()).isPresent());
     }
 
@@ -256,7 +267,7 @@ public abstract class AbstractGraphTemplateTest {
 
 
     @Test
-    public void shouldDeleteEntities() {
+    public void shouldDeleteEntitiesById() {
 
         Person otavio = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
@@ -266,6 +277,21 @@ public abstract class AbstractGraphTemplateTest {
 
         assertTrue(getGraphTemplate().find(otavio.getId()).isPresent());
         getGraphTemplate().deleteById(Arrays.asList(otavio.getId(), poliana.getId()));
+        assertFalse(getGraphTemplate().find(otavio.getId()).isPresent());
+        assertFalse(getGraphTemplate().find(poliana.getId()).isPresent());
+    }
+
+    @Test
+    public void shouldDeleteEntities() {
+
+        Person otavio = getGraphTemplate().insert(Person.builder().withAge()
+                .withName("Otavio").build());
+
+        Person poliana = getGraphTemplate().insert(Person.builder().withAge()
+                .withName("Poliana").build());
+
+        assertTrue(getGraphTemplate().find(otavio.getId()).isPresent());
+        getGraphTemplate().delete(Arrays.asList(otavio, poliana));
         assertFalse(getGraphTemplate().find(otavio.getId()).isPresent());
         assertFalse(getGraphTemplate().find(poliana.getId()).isPresent());
     }

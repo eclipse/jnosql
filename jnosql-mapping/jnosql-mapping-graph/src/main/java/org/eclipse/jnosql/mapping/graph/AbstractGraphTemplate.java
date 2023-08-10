@@ -18,7 +18,6 @@ import jakarta.data.exceptions.EmptyResultException;
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.nosql.PreparedStatement;
 import jakarta.nosql.QueryMapper;
-import org.apache.tinkerpop.gremlin.structure.T;
 import org.eclipse.jnosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
@@ -127,7 +126,10 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
         EntityMetadata entityMetadata = getEntities().get(type);
-        Object value = findIdValue(type, id, entityMetadata);
+        FieldMetadata idField = entityMetadata.id()
+                .orElseThrow(() -> IdNotFoundException.newInstance(type));
+
+        Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
 
         final Optional<Vertex> vertex = traversal().V(value).hasLabel(entityMetadata.name()).tryNext();
         return vertex.map(getConverter()::toEntity);
@@ -148,23 +150,22 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public <T> void delete(T entity) {
         Objects.requireNonNull(entity, "entity is required");
+        Object value = getIdValue(entity);
+        traversal().V(value).toStream().forEach(Vertex::remove);
+    }
+
+    private <T> Object getIdValue(T entity) {
         EntityMetadata entityMetadata = getEntities().get(entity.getClass());
         FieldMetadata id = entityMetadata.id().orElseThrow(() -> new IdNotFoundException(entity.getClass().getName()));
-        Object value = findIdValue(entity.getClass(), id.type(), entityMetadata);
-        traversal().V(value).toStream().forEach(Vertex::remove);
+        Object idValue = Objects.requireNonNull(id.read(entity), "The id is null at the entity: " + entityMetadata.className());
+        return ConverterUtil.getValue(idValue, entityMetadata, id.fieldName(), getConverters());
     }
 
     @Override
     public <T> void delete(Iterable<? extends T> entities) {
         Objects.requireNonNull(entities, "entity is required");
-        List<Object> ids = new ArrayList<>();
-        for (T entity : entities) {
-            EntityMetadata entityMetadata = getEntities().get(entity.getClass());
-            FieldMetadata id = entityMetadata.id()
-                    .orElseThrow(() -> new IdNotFoundException(entity.getClass().getName()));
-            ids.add(findIdValue(entity.getClass(), id.type(), entityMetadata));
-        }
-        final Object[] vertexIds = ids.toArray(new Object[0]);
+        final Object[] vertexIds = StreamSupport.stream(entities.spliterator(), false)
+                .map(this::getIdValue).toArray();
         traversal().V(vertexIds).toStream().forEach(Vertex::remove);
     }
 
@@ -403,12 +404,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         return edge;
     }
 
-    private <T, K> Object findIdValue(Class<T> type, K id, EntityMetadata entityMetadata) {
-        FieldMetadata idField = entityMetadata.id()
-                .orElseThrow(() -> IdNotFoundException.newInstance(type));
-
-        return ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
-    }
     private <K> Collection<EdgeEntity> edgesByIdImpl(K id, Direction direction, String... labels) {
 
         requireNonNull(id, "id is required");
