@@ -258,6 +258,20 @@ public class DefaultKeyValueTemplateTest {
     }
 
     @Test
+    public void shouldRemoveEntity() {
+        User user = new User(KEY, "otavio", 27);
+        template.delete(user);
+        Mockito.verify(manager).delete(KEY);
+    }
+
+    @Test
+    public void shouldRemoveEntities() {
+        User user = new User(KEY, "otavio", 27);
+        template.delete(List.of(user, user));
+        Mockito.verify(manager).delete(List.of(KEY, KEY));
+    }
+
+    @Test
     public void shouldRemoveById() {
         template.delete(User.class, KEY);
         Mockito.verify(manager).delete(KEY);
