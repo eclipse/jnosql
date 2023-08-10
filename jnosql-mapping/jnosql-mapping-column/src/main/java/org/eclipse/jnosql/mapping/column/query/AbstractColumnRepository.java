@@ -130,12 +130,14 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
 
     @Override
     public void delete(Object entity) {
-        throw new UnsupportedOperationException("The JNoSQL Column has not support for it yet");
+        Objects.requireNonNull(entity, "entity is required");
+        getTemplate().delete(entity);
     }
 
     @Override
     public void deleteAll(Iterable entities) {
-        throw new UnsupportedOperationException("The JNoSQL Column has not support for it yet");
+        Objects.requireNonNull(entities, "entity is required");
+        getTemplate().delete(entities);
     }
 
     @Override

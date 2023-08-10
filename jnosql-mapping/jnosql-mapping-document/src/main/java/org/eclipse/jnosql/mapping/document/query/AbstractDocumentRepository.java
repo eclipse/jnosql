@@ -125,12 +125,14 @@ public abstract class AbstractDocumentRepository<T, K> implements PageableReposi
 
     @Override
     public void delete(Object entity) {
-        throw new UnsupportedOperationException("The JNoSQL Document has not support for it yet");
+        Objects.requireNonNull(entity, "entity is required");
+        getTemplate().delete(entity);
     }
 
     @Override
     public void deleteAll(Iterable entities) {
-        throw new UnsupportedOperationException("The JNoSQL Document has not support for it yet");
+        Objects.requireNonNull(entities, "entities is required");
+        getTemplate().delete(entities);
     }
 
     @Override
