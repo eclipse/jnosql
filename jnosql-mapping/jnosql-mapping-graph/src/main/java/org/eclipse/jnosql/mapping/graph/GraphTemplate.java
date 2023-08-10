@@ -43,7 +43,7 @@ public interface GraphTemplate extends Template {
      * @param <T> the id type
      * @throws NullPointerException when id is null
      */
-    <T> void delete(T id);
+    <T> void deleteById(T id);
 
     /**
      * Deletes a {@link org.apache.tinkerpop.gremlin.structure.Edge}
@@ -83,7 +83,7 @@ public interface GraphTemplate extends Template {
      * @param <T> the id type
      * @throws NullPointerException when id is null
      */
-    <T> void delete(Iterable<T> ids);
+    <T> void deleteById(Iterable<T> ids);
 
     /**
      * Deletes {@link org.apache.tinkerpop.gremlin.structure.Edge} instances

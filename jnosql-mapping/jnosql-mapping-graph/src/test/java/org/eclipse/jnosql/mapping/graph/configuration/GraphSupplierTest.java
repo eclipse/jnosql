@@ -28,6 +28,7 @@ import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.GRAPH_PROVIDER;
@@ -69,5 +70,12 @@ class GraphSupplierTest {
         Graph graph = supplier.get();
         Assertions.assertNotNull(graph);
         assertThat(graph).isInstanceOf(GraphConfigurationMock2.GraphMock.class);
+    }
+
+    @Test
+    public void shouldClose() throws Exception {
+        Graph graph = Mockito.mock(Graph.class);
+        supplier.close(graph);
+        Mockito.verify(graph).close();
     }
 }

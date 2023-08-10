@@ -93,4 +93,5 @@ public interface JNoSQLDocumentTemplate extends DocumentTemplate {
      * @throws NullPointerException when type is null
      */
     <T> void deleteAll(Class<T> type);
+
 }

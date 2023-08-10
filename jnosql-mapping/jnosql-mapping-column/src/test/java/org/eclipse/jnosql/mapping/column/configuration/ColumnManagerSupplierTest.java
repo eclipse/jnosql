@@ -29,6 +29,7 @@ import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.COLUMN_DATABASE;
@@ -80,5 +81,12 @@ class ColumnManagerSupplierTest {
     @Test
     public void shouldReturnErrorWhenThereIsNotDatabase() {
         Assertions.assertThrows(MappingException.class, () -> supplier.get());
+    }
+
+    @Test
+    public void shouldClose(){
+        ColumnManager manager = Mockito.mock(ColumnManager.class);
+        supplier.close(manager);
+        Mockito.verify(manager).close();
     }
 }

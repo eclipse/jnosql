@@ -20,30 +20,13 @@ import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
 import static org.eclipse.jnosql.mapping.metadata.MappingType.EMBEDDED;
 
-final class FieldGraph {
+record FieldGraph(Object value, FieldMetadata field) {
 
-    private final Object value;
-
-    private final FieldMetadata field;
-
-    private FieldGraph(Object value, FieldMetadata field) {
-        this.value = value;
-        this.field = field;
-    }
-
-    public Object getValue() {
-        return value;
-    }
-
-    public FieldMetadata getField() {
-        return field;
-    }
 
     public boolean isNotEmpty() {
         return value != null;
@@ -55,31 +38,6 @@ final class FieldGraph {
 
     public boolean isNotId() {
         return !isId();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof FieldGraph)) {
-            return false;
-        }
-        FieldGraph that = (FieldGraph) o;
-        return Objects.equals(value, that.value) &&
-                Objects.equals(field, that.field);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value, field);
-    }
-
-    @Override
-    public String toString() {
-        return  "FieldGraph{" + "value=" + value +
-                ", field=" + field +
-                '}';
     }
 
     public static FieldGraph of(Object value, FieldMetadata field) {

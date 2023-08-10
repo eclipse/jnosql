@@ -17,18 +17,8 @@ package org.eclipse.jnosql.mapping.graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import java.util.Map;
-import java.util.Objects;
 
-final class TreeEntry<K, V> implements Map.Entry<K, V> {
-
-    private final K key;
-
-    private final V value;
-
-    private TreeEntry(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
+record TreeEntry<K, V>(K key, V value) implements Map.Entry<K, V> {
 
     @Override
     public K getKey() {
@@ -45,31 +35,6 @@ final class TreeEntry<K, V> implements Map.Entry<K, V> {
         throw new UnsupportedOperationException("This entry is read-only");
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TreeEntry<?, ?> that = (TreeEntry<?, ?>) o;
-        return Objects.equals(key, that.key) &&
-                Objects.equals(value, that.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(key, value);
-    }
-
-    @Override
-    public String toString() {
-        return "EntityTreeEntry{" +
-                "key=" + key +
-                ", value=" + value +
-                '}';
-    }
 
     static <K, V> TreeEntry<K, V> of(Vertex vertex, GraphConverter converter) {
         K key = (K) vertex.id();

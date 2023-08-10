@@ -136,9 +136,37 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <T> void delete(T idValue) {
+    public <T> void deleteById(T idValue) {
         requireNonNull(idValue, "id is required");
         traversal().V(idValue).toStream().forEach(Vertex::remove);
+    }
+
+    @Override
+    public <T> void deleteById(Iterable<T> ids) {
+        requireNonNull(ids, "ids is required");
+        final Object[] vertexIds = StreamSupport.stream(ids.spliterator(), false).toArray(Object[]::new);
+        traversal().V(vertexIds).toStream().forEach(Vertex::remove);
+    }
+    @Override
+    public <T> void delete(T entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        Object value = getIdValue(entity);
+        traversal().V(value).toStream().forEach(Vertex::remove);
+    }
+
+    private <T> Object getIdValue(T entity) {
+        EntityMetadata entityMetadata = getEntities().get(entity.getClass());
+        FieldMetadata id = entityMetadata.id().orElseThrow(() -> new IdNotFoundException(entity.getClass().getName()));
+        Object idValue = Objects.requireNonNull(id.read(entity), "The should not be null at the entity: " + entityMetadata.className());
+        return ConverterUtil.getValue(idValue, entityMetadata, id.fieldName(), getConverters());
+    }
+
+    @Override
+    public <T> void delete(Iterable<? extends T> entities) {
+        Objects.requireNonNull(entities, "entity is required");
+        final Object[] vertexIds = StreamSupport.stream(entities.spliterator(), false)
+                .map(this::getIdValue).toArray();
+        traversal().V(vertexIds).toStream().forEach(Vertex::remove);
     }
 
     @Override
@@ -178,13 +206,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false)
                 .map(this::update).collect(Collectors.toList());
-    }
-
-    @Override
-    public <T> void delete(Iterable<T> ids) {
-        requireNonNull(ids, "ids is required");
-        final Object[] vertexIds = StreamSupport.stream(ids.spliterator(), false).toArray(Object[]::new);
-        traversal().V(vertexIds).toStream().forEach(Vertex::remove);
     }
 
     @Override
@@ -228,11 +249,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
                 .orElseGet(() -> new DefaultEdgeEntity<>(getEdge(label, outVertex, inVertex), incoming, outgoing));
     }
 
-    private Edge getEdge(String label, Vertex outVertex, Vertex inVertex) {
-        final Edge edge = outVertex.addEdge(label, inVertex);
-        GraphTransactionUtil.transaction(getGraph());
-        return edge;
-    }
 
     @Override
     public <E> Optional<EdgeEntity> edge(E edgeId) {
@@ -330,14 +346,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         return new DefaultPreparedStatement(getExecutor(), gremlin, traversal());
     }
 
-    protected GraphTraversalSource traversal() {
-        return getGraph().traversal();
-    }
-
-    protected Iterator<Vertex> vertices(Object id) {
-        return getGraph().vertices(id);
-    }
-
     @Override
     public long count(String label) {
         Objects.requireNonNull(label, "label is required");
@@ -380,6 +388,20 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
         traversal().V().hasLabel(metadata.name()).toStream().forEach(Vertex::remove);
+    }
+
+    protected GraphTraversalSource traversal() {
+        return getGraph().traversal();
+    }
+
+    protected Iterator<Vertex> vertices(Object id) {
+        return getGraph().vertices(id);
+    }
+
+    private Edge getEdge(String label, Vertex outVertex, Vertex inVertex) {
+        final Edge edge = outVertex.addEdge(label, inVertex);
+        GraphTransactionUtil.transaction(getGraph());
+        return edge;
     }
 
     private <K> Collection<EdgeEntity> edgesByIdImpl(K id, Direction direction, String... labels) {

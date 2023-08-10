@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Property;
+import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Test;
 
@@ -61,6 +62,33 @@ public class DefaultPropertyTest {
         assertEquals(Value.of(10L), element.value());
         assertEquals("key", element.key());
         assertEquals(Value.of(10L), element.value());
+    }
+
+    @Test
+    public void shouldToString() {
+        Property element = DefaultProperty.of("key", 10L);
+        assertEquals("DefaultProperty{key='key', value=10}", element.toString());
+    }
+
+    @Test
+    public void shouldUnsupportedOperationException() {
+        Property element = DefaultProperty.of("key", 10L);
+        assertThrows(UnsupportedOperationException.class, () -> element.remove());
+        assertThrows(UnsupportedOperationException.class, () -> element.element());
+    }
+
+    @Test
+    public void shouldEqualsHashCode() {
+        Property element = DefaultProperty.of("key", 10L);
+        assertEquals(element, element);
+        assertEquals(element, DefaultProperty.of("key", 10L));
+        assertEquals(element.hashCode(), DefaultProperty.of("key", 10L).hashCode());
+    }
+
+    @Test
+    public void shouldIsPresent(){
+        Property element = DefaultProperty.of("key", 10L);
+        Assertions.assertThat(element.isPresent()).isTrue();
     }
 
 }

@@ -336,6 +336,20 @@ class ColumnRepositoryProxyTest {
     }
 
     @Test
+    public void shouldDeleteEntity(){
+        Person person = Person.builder().withId(1L).withAge(20).withName("Ada").build();
+        personRepository.delete(person);
+        verify(template).delete(person);
+    }
+
+    @Test
+    public void shouldDeleteEntities(){
+        Person person = Person.builder().withId(1L).withAge(20).withName("Ada").build();
+        personRepository.deleteAll(List.of(person));
+        verify(template).delete(List.of(person));
+    }
+
+    @Test
     void shouldReturnToString() {
         assertNotNull(personRepository.toString());
     }

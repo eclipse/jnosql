@@ -43,6 +43,7 @@ import org.mockito.Mockito;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -353,6 +354,32 @@ public class DefaultColumnTemplateTest {
 
         assertEquals("Person", query.name());
         assertEquals(ColumnCondition.eq(Column.of("_id", 10L)), condition);
+    }
+
+    @Test
+    public void shouldDeleteByEntity() {
+        template.delete(Person.builder().withId(10L).build());
+        ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        verify(managerMock).delete(queryCaptor.capture());
+        ColumnDeleteQuery query = queryCaptor.getValue();
+        ColumnCondition condition = query.condition().get();
+
+        assertEquals("Person", query.name());
+        assertEquals(ColumnCondition.eq(Column.of("_id", 10L)), condition);
+
+    }
+
+    @Test
+    public void shouldDeleteByEntities() {
+        template.delete(List.of(Person.builder().withId(10L).build(), Person.builder().withId(11L).build()));
+        ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        verify(managerMock, Mockito.times(2)).delete(queryCaptor.capture());
+        ColumnDeleteQuery query = queryCaptor.getValue();
+        ColumnCondition condition = query.condition().get();
+
+        assertEquals("Person", query.name());
+        assertEquals(ColumnCondition.eq(Column.of("_id", 11L)), condition);
+
     }
 
 
