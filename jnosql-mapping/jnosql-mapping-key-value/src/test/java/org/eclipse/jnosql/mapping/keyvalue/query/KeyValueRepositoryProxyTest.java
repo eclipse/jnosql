@@ -101,6 +101,25 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
+    public void shouldDeleteEntity() {
+        User user = new User("ada", "Ada", 10);
+        userRepository.delete(user);
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+        Mockito.verify(template).delete(captor.capture());
+        assertEquals(user, captor.getValue());
+    }
+
+    @Test
+    public void shouldDeleteEntities() {
+        User user = new User("ada", "Ada", 10);
+        userRepository.deleteAll(Collections.singletonList(user));
+        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
+        Mockito.verify(template).delete(captor.capture());
+        assertEquals(user, captor.getValue().iterator().next());
+    }
+
+
+    @Test
     public void shouldFindById() {
         User user = new User("ada", "Ada", 10);
         when(template.get("key", User.class)).thenReturn(
@@ -209,9 +228,9 @@ public class KeyValueRepositoryProxyTest {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.count());
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll(null));
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.deleteAll());
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.delete(null));
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.deleteAll(null));
     }
+
+
 
     interface BaseQuery<T> {
 

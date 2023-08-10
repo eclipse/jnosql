@@ -20,6 +20,7 @@ import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -97,11 +98,13 @@ public abstract class AbstractKeyValueRepository<T> implements PageableRepositor
 
     @Override
     public void delete(Object entity) {
-        throw new UnsupportedOperationException("The key-value type does not support count method");
+        Objects.requireNonNull(entity, "entity is required");
+        getTemplate().delete(entity);
     }
 
     @Override
     public void deleteAll(Iterable entities) {
-        throw new UnsupportedOperationException("The key-value type does not support count method");
+        Objects.requireNonNull(entities, "entities is required");
+       getTemplate().delete(entities);
     }
 }
