@@ -62,7 +62,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
     @Override
     public void deleteById(K id) {
         requireNonNull(id, "is is required");
-        getTemplate().delete(id);
+        getTemplate().deleteById(id);
     }
 
     @Override
@@ -115,12 +115,14 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
 
     @Override
     public void delete(Object entity) {
-        throw new UnsupportedOperationException("The JNoSQL Column has not support for it yet");
+        requireNonNull(entity, "entity is required");
+       getTemplate().delete(entity);
     }
 
     @Override
     public void deleteAll(Iterable entities) {
-        throw new UnsupportedOperationException("The JNoSQL Column has not support for it yet");
+        requireNonNull(entities, "entities is required");
+        getTemplate().delete(entities);
     }
 
     @Override
