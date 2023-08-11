@@ -20,6 +20,7 @@ import jakarta.data.repository.Query;
 import jakarta.data.repository.Sort;
 import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
@@ -32,6 +33,7 @@ import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.MockProducer;
 import org.eclipse.jnosql.mapping.document.entities.Person;
+import org.eclipse.jnosql.mapping.document.entities.PersonStatisticRepository;
 import org.eclipse.jnosql.mapping.document.entities.Vendor;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -695,8 +697,21 @@ class DocumentRepositoryProxyTest {
         assertEquals("Poliana", document.get());
     }
 
+    @Test
+    public void shouldExecuteCustomRepository(){
+        PersonStatisticRepository.PersonStatistic statistics = personRepository.statistics("Salvador");
+        assertThat(statistics).isNotNull();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(statistics.average()).isEqualTo(26);
+            softly.assertThat(statistics.sum()).isEqualTo(26);
+            softly.assertThat(statistics.max()).isEqualTo(26);
+            softly.assertThat(statistics.min()).isEqualTo(26);
+            softly.assertThat(statistics.count()).isEqualTo(1);
+            softly.assertThat(statistics.city()).isEqualTo("Salvador");
+        });
+    }
 
-    interface PersonRepository extends PageableRepository<Person, Long> {
+    interface PersonRepository extends PageableRepository<Person, Long>, PersonStatisticRepository {
 
 
         long countByName(String name);
