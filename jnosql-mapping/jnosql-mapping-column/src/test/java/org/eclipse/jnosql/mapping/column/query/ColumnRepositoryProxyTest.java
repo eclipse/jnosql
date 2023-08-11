@@ -22,6 +22,7 @@ import jakarta.data.repository.Query;
 import jakarta.data.repository.Sort;
 import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
@@ -34,6 +35,7 @@ import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.column.MockProducer;
 import org.eclipse.jnosql.mapping.column.entities.Person;
+import org.eclipse.jnosql.mapping.column.entities.PersonStatisticRepository;
 import org.eclipse.jnosql.mapping.column.entities.Vendor;
 import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -104,11 +106,6 @@ class ColumnRepositoryProxyTest {
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(Person.builder().build());
         when(template.update(any(Person.class))).thenReturn(Person.builder().build());
-
-        var person = Person.builder()
-                .withName("Ada Lovelace")
-                .withAge(20)
-                .withId(1L).build();
 
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
@@ -793,6 +790,20 @@ class ColumnRepositoryProxyTest {
         assertEquals(Column.of("name", "Ada"), condition.column());
     }
 
+    @Test
+    public void shouldExecuteCustomRepository(){
+        PersonStatisticRepository.PersonStatistic statistics = personRepository.statistics("Salvador");
+        assertThat(statistics).isNotNull();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(statistics.average()).isEqualTo(26);
+            softly.assertThat(statistics.sum()).isEqualTo(26);
+            softly.assertThat(statistics.max()).isEqualTo(26);
+            softly.assertThat(statistics.min()).isEqualTo(26);
+            softly.assertThat(statistics.count()).isEqualTo(1);
+            softly.assertThat(statistics.city()).isEqualTo("Salvador");
+        });
+    }
+
     interface BaseQuery<T> {
 
         List<T> findByNameLessThan(String name);
@@ -802,7 +813,7 @@ class ColumnRepositoryProxyTest {
         }
     }
 
-    interface PersonRepository extends PageableRepository<Person, Long>, BaseQuery<Person> {
+    interface PersonRepository extends PageableRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
 
         List<Person> findByActiveTrue();
 

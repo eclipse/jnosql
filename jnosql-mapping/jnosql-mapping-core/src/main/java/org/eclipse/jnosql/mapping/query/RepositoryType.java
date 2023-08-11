@@ -18,6 +18,7 @@ import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Query;
+import jakarta.enterprise.inject.spi.CDI;
 
 import java.lang.reflect.Method;
 import java.util.EnumSet;
@@ -70,7 +71,11 @@ public enum RepositoryType {
     /**
      * The method that belongs to the interface using a default method.
      */
-    DEFAULT_METHOD("");
+    DEFAULT_METHOD(""),
+    /**
+     * The method that belongs to the interface using a custom repository.
+     */
+    CUSTOM_REPOSITORY("");
 
     private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(CrudRepository.class)
             .or(Predicate.isEqual(PageableRepository.class));
@@ -107,7 +112,9 @@ public enum RepositoryType {
         if (Objects.nonNull(method.getAnnotation(Query.class))) {
             return QUERY;
         }
-
+        if (isCustomRepository(declaringClass)) {
+            return CUSTOM_REPOSITORY;
+        }
         String methodName = method.getName();
         if (FIND_ALL.keyword.equals(methodName)) {
             return FIND_ALL;
@@ -115,5 +122,13 @@ public enum RepositoryType {
         return KEY_WORLD_METHODS.stream()
                 .filter(k -> methodName.startsWith(k.keyword))
                 .findFirst().orElse(UNKNOWN);
+    }
+
+    private static boolean isCustomRepository(Class<?> type) {
+        try {
+            return CDI.current().select(type).isResolvable();
+        }catch (Exception e) {
+            return false;
+        }
     }
 }

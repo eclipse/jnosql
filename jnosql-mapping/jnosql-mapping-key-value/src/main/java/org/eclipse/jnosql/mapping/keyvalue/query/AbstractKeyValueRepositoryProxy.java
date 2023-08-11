@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
 import jakarta.data.repository.PageableRepository;
+import jakarta.enterprise.inject.spi.CDI;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
@@ -57,6 +58,10 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
                         .withPrepareConverter(q -> getTemplate().prepare(q, typeClass))
                         .withQueryConverter(q -> getTemplate().query(q, typeClass)).build();
                 return methodReturn.execute();
+            }
+            case CUSTOM_REPOSITORY -> {
+                Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
+                return unwrapInvocationTargetException(() -> method.invoke(customRepository, args));
             }
             default -> throw new DynamicQueryException("Key Value repository does not support query method");
         }

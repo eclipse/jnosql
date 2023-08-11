@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.PageableRepository;
+import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.Converters;
@@ -82,6 +83,10 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepo
                         .withPrepareConverter(q -> getTemplate().prepare(q))
                         .withQueryConverter(q -> getTemplate().query(q)).build();
                 return methodReturn.execute();
+            }
+            case CUSTOM_REPOSITORY -> {
+                Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
+                return unwrapInvocationTargetException(() -> method.invoke(customRepository, args));
             }
             default -> {
                 return Void.class;

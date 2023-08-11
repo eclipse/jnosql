@@ -18,10 +18,16 @@ import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Query;
+import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.spi.CDI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.stream.Stream;
 
 class RepositoryTypeTest {
@@ -94,6 +100,33 @@ class RepositoryTypeTest {
         Assertions.assertEquals(RepositoryType.DEFAULT_METHOD, RepositoryType.of(getMethod(DevRepository.class,
                 "duplicate")));
     }
+
+    @Test
+    public void shouldReturnCustom() throws NoSuchMethodException {
+        try (MockedStatic<CDI> cdi = Mockito.mockStatic(CDI.class)) {
+            CDI<Object> current = Mockito.mock(CDI.class);
+            Instance<Calculate> instance = Mockito.mock(Instance.class);
+            Mockito.when(instance.isResolvable()).thenReturn(true);
+            cdi.when(CDI::current).thenReturn(current);
+            Mockito.when(current.select(Calculate.class)).thenReturn(instance);
+            Assertions.assertEquals(RepositoryType.CUSTOM_REPOSITORY, RepositoryType.of(getMethod(Calculate.class,
+                    "sum")));
+        }
+    }
+
+    @Test
+    public void shouldReturnFindByCustom() throws NoSuchMethodException {
+        try (MockedStatic<CDI> cdi = Mockito.mockStatic(CDI.class)) {
+            CDI<Object> current = Mockito.mock(CDI.class);
+            Instance<Calculate> instance = Mockito.mock(Instance.class);
+            Mockito.when(instance.isResolvable()).thenReturn(true);
+            cdi.when(CDI::current).thenReturn(current);
+            Mockito.when(current.select(Calculate.class)).thenReturn(instance);
+            Assertions.assertEquals(RepositoryType.CUSTOM_REPOSITORY, RepositoryType.of(getMethod(Calculate.class,
+                    "findBySum")));
+        }
+    }
+
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
         return Stream.of(repository.getDeclaredMethods())
                 .filter(m -> m.getName().equals(methodName))
@@ -101,7 +134,7 @@ class RepositoryTypeTest {
 
     }
 
-    interface DevRepository extends CrudRepository {
+    interface DevRepository extends CrudRepository, Calculate {
 
         String findByName(String name);
 
@@ -128,6 +161,12 @@ class RepositoryTypeTest {
         default int duplicate(int value) {
             return value * 2;
         }
+    }
+
+    interface Calculate {
+        BigDecimal sum();
+
+        List<String> findBySum(String name);
     }
 
 }
