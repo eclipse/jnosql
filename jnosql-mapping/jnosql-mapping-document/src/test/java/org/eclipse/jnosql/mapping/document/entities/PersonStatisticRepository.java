@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.column.entities;
+package org.eclipse.jnosql.mapping.document.entities;
 
 public interface PersonStatisticRepository {
 
