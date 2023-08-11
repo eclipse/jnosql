@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.PageableRepository;
+import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
@@ -81,6 +82,10 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                         .withPrepareConverter(q -> getTemplate().prepare(q))
                         .withQueryConverter(q -> getTemplate().query(q)).build();
                 return methodReturn.execute();
+            }
+            case CUSTOM_REPOSITORY -> {
+                Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
+                return unwrapInvocationTargetException(() -> method.invoke(customRepository, args));
             }
             default -> {
                 return Void.class;
