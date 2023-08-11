@@ -119,7 +119,7 @@ class RepositoryTypeTest {
         try (MockedStatic<CDI> cdi = Mockito.mockStatic(CDI.class)) {
             CDI<Object> current = Mockito.mock(CDI.class);
             Instance<Calculate> instance = Mockito.mock(Instance.class);
-            Mockito.when(instance.isResolvable()).thenReturn(false);
+            Mockito.when(instance.isResolvable()).thenReturn(true);
             cdi.when(CDI::current).thenReturn(current);
             Mockito.when(current.select(Calculate.class)).thenReturn(instance);
             Assertions.assertEquals(RepositoryType.CUSTOM_REPOSITORY, RepositoryType.of(getMethod(Calculate.class,
