@@ -1,0 +1,6 @@
+package org.eclipse.jnosql.mapping.column.entities;
+
+public interface PersonCustomRepository {
+
+    
+}
