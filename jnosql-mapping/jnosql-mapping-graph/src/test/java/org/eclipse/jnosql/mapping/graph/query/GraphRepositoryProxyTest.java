@@ -32,6 +32,7 @@ import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.graph.Transactional;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
+import org.eclipse.jnosql.mapping.graph.entities.PersonStatisticRepository;
 import org.eclipse.jnosql.mapping.graph.entities.Vendor;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -526,6 +527,20 @@ class GraphRepositoryProxyTest {
 
     }
 
+    @Test
+    public void shouldExecuteCustomRepository(){
+        PersonStatisticRepository.PersonStatistic statistics = personRepository.statistics("Salvador");
+        assertThat(statistics).isNotNull();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(statistics.average()).isEqualTo(26);
+            softly.assertThat(statistics.sum()).isEqualTo(26);
+            softly.assertThat(statistics.max()).isEqualTo(26);
+            softly.assertThat(statistics.min()).isEqualTo(26);
+            softly.assertThat(statistics.count()).isEqualTo(1);
+            softly.assertThat(statistics.city()).isEqualTo("Salvador");
+        });
+    }
+
     interface BaseQuery<T> {
 
         List<T> findByScoreLessThan(int value);
@@ -535,7 +550,7 @@ class GraphRepositoryProxyTest {
         }
     }
 
-    interface PersonRepository extends PageableRepository<Person, Long>, BaseQuery<Person> {
+    interface PersonRepository extends PageableRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
 
         List<Person> findByActiveTrue();
 
