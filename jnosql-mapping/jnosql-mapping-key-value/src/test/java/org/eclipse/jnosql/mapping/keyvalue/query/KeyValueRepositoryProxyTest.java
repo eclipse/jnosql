@@ -19,16 +19,24 @@ import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.nosql.PreparedStatement;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.assertj.core.api.SoftAssertions;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;
+import org.eclipse.jnosql.mapping.keyvalue.MockProducer;
+import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
+import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.test.entities.PersonStatisticRepository;
 import org.eclipse.jnosql.mapping.test.entities.User;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
@@ -43,17 +51,22 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+
+@EnableAutoWeld
+@AddPackages(value = {Converters.class, KeyValueEntityConverter.class})
+@AddPackages(MockProducer.class)
+@AddPackages(PersonStatisticRepository.class)
+@AddPackages(Reflections.class)
+@AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
 public class KeyValueRepositoryProxyTest {
 
-    @Mock
+
     private KeyValueTemplate template;
 
     private UserRepository userRepository;
-
     @BeforeEach
     public void setUp() {
-
+        this.template = Mockito.mock(KeyValueTemplate.class);
         KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(UserRepository.class, template);
         userRepository = (UserRepository) Proxy.newProxyInstance(UserRepository.class.getClassLoader(),
                 new Class[]{UserRepository.class},
@@ -231,6 +244,20 @@ public class KeyValueRepositoryProxyTest {
     }
 
 
+    @Test
+    public void shouldExecuteCustomRepository(){
+        PersonStatisticRepository.PersonStatistic statistics = userRepository
+                .statistics("Salvador");
+        assertThat(statistics).isNotNull();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(statistics.average()).isEqualTo(26);
+            softly.assertThat(statistics.sum()).isEqualTo(26);
+            softly.assertThat(statistics.max()).isEqualTo(26);
+            softly.assertThat(statistics.min()).isEqualTo(26);
+            softly.assertThat(statistics.count()).isEqualTo(1);
+            softly.assertThat(statistics.city()).isEqualTo("Salvador");
+        });
+    }
 
     interface BaseQuery<T> {
 
@@ -242,7 +269,7 @@ public class KeyValueRepositoryProxyTest {
         }
     }
 
-    interface UserRepository extends PageableRepository<User, String>, BaseQuery<User> {
+    interface UserRepository extends PageableRepository<User, String>, BaseQuery<User>, PersonStatisticRepository {
 
         Optional<User> findByName(String name);
 
