@@ -52,13 +52,27 @@ public final class Params {
     }
 
     /**
-     * set the value from the class
+     * set the value from the name
      *
      * @param name  the name
      * @param value the value
      */
     public void bind(String name, Object value) {
-        parameters.stream().filter(p -> p.getName().equals(name)).forEach(p -> p.setValue(value));
+        parameters.stream().filter(p -> p.getName().startsWith(name)).forEach(p -> p.setValue(value));
+
+    }
+
+    /**
+     * set the value from the prefix name
+     * @param name the name
+     * @param value the value
+     */
+    public void prefix(String name, Object value) {
+        parameters.stream().filter(p -> {
+            int lastIndex = p.getName().lastIndexOf('_') == -1 ? p.getName().length() : p.getName().lastIndexOf('_');
+            String fieldName = p.getName().substring(0, lastIndex);
+            return fieldName.equals(name);
+        }).forEach(p -> p.setValue(value));
     }
 
     /**
