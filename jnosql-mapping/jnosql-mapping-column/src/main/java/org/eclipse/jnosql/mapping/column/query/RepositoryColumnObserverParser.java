@@ -18,7 +18,12 @@ import org.eclipse.jnosql.communication.column.ColumnObserverParser;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.RepositoryObserverParser;
 
-final class RepositoryColumnObserverParser implements ColumnObserverParser {
+import java.util.Objects;
+
+/**
+ * The {@link ColumnObserverParser} to {@link RepositoryObserverParser}
+ */
+public final class RepositoryColumnObserverParser implements ColumnObserverParser {
 
     private final RepositoryObserverParser parser;
 
@@ -34,5 +39,14 @@ final class RepositoryColumnObserverParser implements ColumnObserverParser {
     @Override
     public String fireField(String entity, String field) {
         return parser.field(field);
+    }
+
+    /**
+     * @return RepositoryColumnObserverParser
+     * throws NullPointerException if entityMetadata is null
+     */
+    public static ColumnObserverParser of(EntityMetadata entityMetadata) {
+        Objects.requireNonNull(entityMetadata, "entityMetadata is required");
+        return new RepositoryColumnObserverParser(entityMetadata);
     }
 }

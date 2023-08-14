@@ -18,7 +18,9 @@ import org.eclipse.jnosql.communication.document.DocumentObserverParser;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.RepositoryObserverParser;
 
-public class RepositoryDocumentObserverParser implements DocumentObserverParser {
+import java.util.Objects;
+
+public final class RepositoryDocumentObserverParser implements DocumentObserverParser {
 
     private final RepositoryObserverParser parser;
 
@@ -36,4 +38,13 @@ public class RepositoryDocumentObserverParser implements DocumentObserverParser 
         return parser.field(field);
     }
 
+
+    /**
+     * @return RepositoryColumnObserverParser
+     * throws NullPointerException if entityMetadata is null
+     */
+    public static DocumentObserverParser of(EntityMetadata entityMetadata) {
+        Objects.requireNonNull(entityMetadata, "entityMetadata is required");
+        return new RepositoryDocumentObserverParser(entityMetadata);
+    }
 }
