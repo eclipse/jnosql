@@ -48,25 +48,37 @@ public class EntityMetadataExtension implements Extension, GroupEntityMetadata {
         converter = ClassConverter.load();
     }
 
-
     public void afterBeanDiscovery(@Observes BeforeBeanDiscovery event) {
         LOGGER.fine("Starting the scanning process for Entity and Embeddable annotations: ");
 
         ClassScanner scanner = ClassScanner.load();
-        for (Class<?> entity : scanner.entities()) {
-                EntityMetadata entityMetadata = converter.apply(entity);
-                if (entityMetadata.hasEntityName()) {
-                    mappings.put(entityMetadata.name(), entityMetadata);
-                }
-                classes.put(entity, entityMetadata);
-            }
-            for (Class<?> embeddable : scanner.embeddables()) {
-                EntityMetadata entityMetadata = converter.apply(embeddable);
-                classes.put(embeddable, entityMetadata);
-            }
+
+        processEntities(scanner);
+        processEmbeddables(scanner);
+
         LOGGER.fine("Finishing the scanning with total of " + classes.size() + " scanned.");
     }
 
+    private void processEntities(ClassScanner scanner) {
+        for (Class<?> entity : scanner.entities()) {
+            EntityMetadata entityMetadata = convertToEntityMetadata(entity);
+            if (entityMetadata.hasEntityName()) {
+                mappings.put(entityMetadata.name(), entityMetadata);
+            }
+            classes.put(entity, entityMetadata);
+        }
+    }
+
+    private void processEmbeddables(ClassScanner scanner) {
+        for (Class<?> embeddable : scanner.embeddables()) {
+            EntityMetadata entityMetadata = convertToEntityMetadata(embeddable);
+            classes.put(embeddable, entityMetadata);
+        }
+    }
+
+    private EntityMetadata convertToEntityMetadata(Class<?> entityClass) {
+        return converter.apply(entityClass);
+    }
 
     @Override
     public Map<String, EntityMetadata> mappings() {
