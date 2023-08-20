@@ -116,7 +116,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
     @Override
     public void delete(Object entity) {
         requireNonNull(entity, "entity is required");
-       getTemplate().delete(entity);
+        getTemplate().delete(entity);
     }
 
     @Override
