@@ -145,44 +145,8 @@ public abstract class BaseColumnRepository<T> {
 
 
     protected ColumnQuery updateQueryDynamically(Object[] args, ColumnQuery query) {
-        SpecialParameters special = DynamicReturn.findSpecialParameters(args);
-
-        if (special.isEmpty()) {
-            return query;
-        }
-        Optional<Limit> limit = special.limit();
-        if (special.hasOnlySort()) {
-            List<Sort> sorts = new ArrayList<>();
-            sorts.addAll(query.sorts());
-            sorts.addAll(special.sorts());
-            long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
-            long max = limit.map(Limit::maxResults).orElse((int) query.limit());
-            return new MappingColumnQuery(sorts, max,
-                    skip,
-                    query.condition().orElse(null),
-                    query.name());
-        }
-
-        if (limit.isPresent()) {
-            long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
-            long max = limit.map(Limit::maxResults).orElse((int) query.limit());
-            return new MappingColumnQuery(query.sorts(), max,
-                    skip,
-                    query.condition().orElse(null),
-                    query.name());
-        }
-
-        return special.pageable().<ColumnQuery>map(p -> {
-            long size = p.size();
-            long skip = NoSQLPage.skip(p);
-            List<Sort> sorts = query.sorts();
-            if (!special.sorts().isEmpty()) {
-                sorts = new ArrayList<>(query.sorts());
-                sorts.addAll(special.sorts());
-            }
-            return new MappingColumnQuery(sorts, size, skip,
-                    query.condition().orElse(null), query.name());
-        }).orElse(query);
+        DynamicQuery dynamicQuery = DynamicQuery.of(args, query);
+        return dynamicQuery.get();
     }
 
 
