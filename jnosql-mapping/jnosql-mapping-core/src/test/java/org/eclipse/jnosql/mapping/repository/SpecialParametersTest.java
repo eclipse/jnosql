@@ -20,6 +20,7 @@ import jakarta.data.repository.Sort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -102,5 +103,15 @@ class SpecialParametersTest {
         Limit limit1 = limit.orElseThrow();
         assertEquals(1, limit1.startAt());
         assertEquals(10, limit1.maxResults());
+    }
+
+    @Test
+    public void shouldReturnIterableSort(){
+        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio",
+                List.of(Sort.asc("name"), Sort.desc("age"))});
+        assertFalse(parameters.isEmpty());
+        assertThat(parameters.sorts()).hasSize(2)
+                .containsExactly(Sort.asc("name"),
+                        Sort.desc("age"));
     }
 }
