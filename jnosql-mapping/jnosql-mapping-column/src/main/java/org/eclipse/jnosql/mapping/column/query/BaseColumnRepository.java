@@ -15,10 +15,8 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
-import jakarta.data.repository.Limit;
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
-import jakarta.data.repository.Sort;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQueryParams;
@@ -34,15 +32,11 @@ import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.NoSQLPage;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
-import org.eclipse.jnosql.mapping.column.MappingColumnQuery;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
-import org.eclipse.jnosql.mapping.repository.SpecialParameters;
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
