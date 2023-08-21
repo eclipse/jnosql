@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -116,5 +117,25 @@ class DynamicQueryTest {
         assertEquals(0, dynamicQuery.get().skip());
         assertEquals(10, dynamicQuery.get().limit());
         assertEquals(1, dynamicQuery.get().sorts().size());
+    }
+
+    @Test
+    public void shouldReturnWhenThereIsLimitAndSort(){
+        when(special.isEmpty()).thenReturn(false);
+        when(special.pageable()).thenReturn(Optional.of(mock(Pageable.class)));
+        when(query.condition()).thenReturn(Optional.empty());
+        when(query.name()).thenReturn("sampleQuery");
+        when(query.sorts()).thenReturn(Collections.emptyList());
+        when(query.skip()).thenReturn(0L);
+        when(query.limit()).thenReturn(10L);
+
+        DynamicQuery dynamicQuery = DynamicQuery.of(new Object[]{Sort.asc("name"), Limit.of(20)}
+                , query);
+
+        DocumentQuery documentQuery = dynamicQuery.get();
+        assertEquals("sampleQuery", documentQuery.name());
+        assertEquals(0, documentQuery.skip());
+        assertEquals(20, documentQuery.limit());
+        assertEquals(1, documentQuery.sorts().size());
     }
 }

@@ -63,7 +63,10 @@ public class DynamicQuery implements Supplier<DocumentQuery> {
         if (limit.isPresent()) {
             long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
             long max = limit.map(Limit::maxResults).orElse((int) query.limit());
-            return new MappingDocumentQuery(query.sorts(), max,
+            List<Sort> sorts = new ArrayList<>();
+            sorts.addAll(query.sorts());
+            sorts.addAll(special.sorts());
+            return new MappingDocumentQuery(sorts, max,
                     skip,
                     query.condition().orElse(null),
                     query.name());

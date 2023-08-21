@@ -62,7 +62,10 @@ public class DynamicQuery implements Supplier<ColumnQuery> {
         if (limit.isPresent()) {
             long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
             long max = limit.map(Limit::maxResults).orElse((int) query.limit());
-            return new MappingColumnQuery(query.sorts(), max,
+            List<Sort> sorts = new ArrayList<>();
+            sorts.addAll(query.sorts());
+            sorts.addAll(special.sorts());
+            return new MappingColumnQuery(sorts, max,
                     skip,
                     query.condition().orElse(null),
                     query.name());
