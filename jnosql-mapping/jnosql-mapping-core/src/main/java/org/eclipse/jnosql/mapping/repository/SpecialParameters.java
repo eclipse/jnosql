@@ -134,6 +134,12 @@ public final class SpecialParameters {
                 sorts.add(sort);
             } else if (parameter instanceof Limit limitInstance) {
                 limit = limitInstance;
+            } else if(parameter instanceof Iterable<?> iterable) {
+                for (Object value : iterable) {
+                    if (value instanceof Sort sortValue) {
+                        sorts.add(sortValue);
+                    }
+                }
             }
         }
         return new SpecialParameters(pageable, limit, sorts);
