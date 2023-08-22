@@ -76,7 +76,7 @@ public abstract class AbstractGraphTemplateTest {
         Person updated = getGraphTemplate().insert(person);
 
         assertNotNull(updated.getId());
-        getGraphTemplate().deleteById(updated.getId());
+        getGraphTemplate().delete(updated.getId());
     }
 
     @Test
@@ -154,7 +154,7 @@ public abstract class AbstractGraphTemplateTest {
 
         assertEquals(newPerson, update);
 
-        getGraphTemplate().deleteById(update.getId());
+        getGraphTemplate().delete(update.getId());
     }
 
     @Test
@@ -210,7 +210,7 @@ public abstract class AbstractGraphTemplateTest {
         assertTrue(personFound.isPresent());
         assertEquals(updated, personFound.get());
 
-        getGraphTemplate().deleteById(updated.getId());
+        getGraphTemplate().delete(updated.getId());
     }
 
     @Test
@@ -226,7 +226,7 @@ public abstract class AbstractGraphTemplateTest {
                 .withName("Otavio").build());
 
         assertTrue(getGraphTemplate().find(person.getId()).isPresent());
-        getGraphTemplate().deleteById(person.getId());
+        getGraphTemplate().delete(person.getId());
         assertFalse(getGraphTemplate().find(person.getId()).isPresent());
     }
 
@@ -276,7 +276,7 @@ public abstract class AbstractGraphTemplateTest {
                 .withName("Poliana").build());
 
         assertTrue(getGraphTemplate().find(otavio.getId()).isPresent());
-        getGraphTemplate().deleteById(Arrays.asList(otavio.getId(), poliana.getId()));
+        getGraphTemplate().delete(Arrays.asList(otavio.getId(), poliana.getId()));
         assertFalse(getGraphTemplate().find(otavio.getId()).isPresent());
         assertFalse(getGraphTemplate().find(poliana.getId()).isPresent());
     }

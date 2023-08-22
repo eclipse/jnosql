@@ -136,36 +136,15 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <T> void deleteById(T idValue) {
+    public <T> void delete(T idValue) {
         requireNonNull(idValue, "id is required");
         traversal().V(idValue).toStream().forEach(Vertex::remove);
     }
 
     @Override
-    public <T> void deleteById(Iterable<T> ids) {
+    public <T> void delete(Iterable<T> ids) {
         requireNonNull(ids, "ids is required");
         final Object[] vertexIds = StreamSupport.stream(ids.spliterator(), false).toArray(Object[]::new);
-        traversal().V(vertexIds).toStream().forEach(Vertex::remove);
-    }
-    @Override
-    public <T> void delete(T entity) {
-        Objects.requireNonNull(entity, "entity is required");
-        Object value = getIdValue(entity);
-        traversal().V(value).toStream().forEach(Vertex::remove);
-    }
-
-    private <T> Object getIdValue(T entity) {
-        EntityMetadata entityMetadata = getEntities().get(entity.getClass());
-        FieldMetadata id = entityMetadata.id().orElseThrow(() -> new IdNotFoundException(entity.getClass().getName()));
-        Object idValue = Objects.requireNonNull(id.read(entity), "The should not be null at the entity: " + entityMetadata.className());
-        return ConverterUtil.getValue(idValue, entityMetadata, id.fieldName(), getConverters());
-    }
-
-    @Override
-    public <T> void delete(Iterable<? extends T> entities) {
-        Objects.requireNonNull(entities, "entity is required");
-        final Object[] vertexIds = StreamSupport.stream(entities.spliterator(), false)
-                .map(this::getIdValue).toArray();
         traversal().V(vertexIds).toStream().forEach(Vertex::remove);
     }
 
