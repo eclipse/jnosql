@@ -122,9 +122,9 @@ public class KeyValueRepositoryProxyTest {
     public void shouldDeleteEntity() {
         User user = new User("ada", "Ada", 10);
         userRepository.delete(user);
-        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         Mockito.verify(template).delete(captor.capture());
-        assertEquals(user, captor.getValue());
+        assertEquals("ada", captor.getValue());
     }
 
     @Test
@@ -133,7 +133,7 @@ public class KeyValueRepositoryProxyTest {
         userRepository.deleteAll(Collections.singletonList(user));
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
         Mockito.verify(template).delete(captor.capture());
-        assertEquals(user, captor.getValue().iterator().next());
+        assertEquals("ada", captor.getValue().iterator().next());
     }
 
 
