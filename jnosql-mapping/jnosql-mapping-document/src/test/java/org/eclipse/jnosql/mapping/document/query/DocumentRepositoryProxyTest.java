@@ -338,14 +338,14 @@ class DocumentRepositoryProxyTest {
     public void shouldDeleteEntity(){
         Person person = Person.builder().withId(1L).withAge(20).withName("Ada").build();
         personRepository.delete(person);
-        verify(template).delete(person);
+        verify(template).delete(Person.class, 1L);
     }
 
     @Test
     public void shouldDeleteEntities(){
         Person person = Person.builder().withId(1L).withAge(20).withName("Ada").build();
         personRepository.deleteAll(List.of(person));
-        verify(template).delete(List.of(person));
+        verify(template).delete(Person.class, 1L);
     }
 
 

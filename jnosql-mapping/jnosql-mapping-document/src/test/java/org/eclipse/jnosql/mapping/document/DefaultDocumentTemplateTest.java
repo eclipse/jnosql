@@ -359,31 +359,6 @@ public class DefaultDocumentTemplateTest {
 
     }
 
-    @Test
-    public void shouldDeleteByEntity() {
-        template.delete(Person.builder().withId(10L).build());
-        ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-        verify(managerMock).delete(queryCaptor.capture());
-        DocumentDeleteQuery query = queryCaptor.getValue();
-        DocumentCondition condition = query.condition().get();
-
-        assertEquals("Person", query.name());
-        assertEquals(DocumentCondition.eq(Document.of("_id", 10L)), condition);
-
-    }
-
-    @Test
-    public void shouldDeleteByEntities() {
-        template.delete(List.of(Person.builder().withId(10L).build(), Person.builder().withId(11L).build()));
-        ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-        verify(managerMock, Mockito.times(2)).delete(queryCaptor.capture());
-        DocumentDeleteQuery query = queryCaptor.getValue();
-        DocumentCondition condition = query.condition().get();
-
-        assertEquals("Person", query.name());
-        assertEquals(DocumentCondition.eq(Document.of("_id", 11L)), condition);
-
-    }
 
     @Test
     public void shouldExecuteQuery() {
