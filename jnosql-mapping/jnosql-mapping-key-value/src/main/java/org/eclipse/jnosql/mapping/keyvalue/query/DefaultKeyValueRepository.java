@@ -16,20 +16,29 @@ package org.eclipse.jnosql.mapping.keyvalue.query;
 
 
 import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 class DefaultKeyValueRepository<T>  extends AbstractKeyValueRepository<T> {
 
 
     private final KeyValueTemplate repository;
 
-    public DefaultKeyValueRepository(Class<T> typeClass, KeyValueTemplate repository) {
+    private final EntityMetadata metadata;
+
+    public DefaultKeyValueRepository(Class<T> typeClass, EntityMetadata metadata, KeyValueTemplate repository) {
         super(typeClass);
         this.repository = repository;
+        this.metadata = metadata;
     }
 
     @Override
     protected KeyValueTemplate getTemplate() {
         return repository;
+    }
+
+    @Override
+    protected EntityMetadata getEntityMetadata() {
+        return metadata;
     }
 
 }

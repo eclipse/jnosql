@@ -18,6 +18,8 @@ package org.eclipse.jnosql.mapping.keyvalue.query;
 
 import jakarta.data.repository.PageableRepository;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -27,10 +29,12 @@ class KeyValueRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
     private final KeyValueTemplate template;
     private final Class<T> type;
 
-    KeyValueRepositoryProxy(Class<?> repositoryType, KeyValueTemplate template) {
+
+    KeyValueRepositoryProxy(Class<?> repositoryType, EntitiesMetadata entitiesMetadata, KeyValueTemplate template) {
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
-        this.repository = new DefaultKeyValueRepository(typeClass, template);
+        EntityMetadata metadata = entitiesMetadata.get(typeClass);
+        this.repository = new DefaultKeyValueRepository(typeClass, metadata, template);
         this.template = template;
         this.type = typeClass;
     }

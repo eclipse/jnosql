@@ -62,7 +62,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
     @Override
     public void deleteById(K id) {
         requireNonNull(id, "is is required");
-        getTemplate().deleteById(id);
+        getTemplate().delete(id);
     }
 
     @Override
@@ -116,13 +116,19 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
     @Override
     public void delete(Object entity) {
         requireNonNull(entity, "entity is required");
-        getTemplate().delete(entity);
+        EntityMetadata metadata = getEntityMetadata();
+        FieldMetadata id = metadata.id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        Object value = id.read(entity);
+        getTemplate().delete(value);
     }
 
     @Override
     public void deleteAll(Iterable entities) {
         requireNonNull(entities, "entities is required");
-        getTemplate().delete(entities);
+        EntityMetadata metadata = getEntityMetadata();
+        FieldMetadata id = metadata.id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        List<Object> ids = stream(entities.spliterator(), false).map(id::read).toList();
+        getTemplate().delete(ids);
     }
 
     @Override

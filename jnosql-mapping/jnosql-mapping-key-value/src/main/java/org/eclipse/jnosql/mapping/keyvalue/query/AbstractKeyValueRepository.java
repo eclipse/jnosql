@@ -19,11 +19,17 @@ import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import static java.util.stream.StreamSupport.stream;
+import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 
 /**
  * The template method to key-value repository
@@ -35,6 +41,8 @@ public abstract class AbstractKeyValueRepository<T> implements PageableRepositor
 
 
     protected abstract KeyValueTemplate getTemplate();
+
+    protected abstract EntityMetadata getEntityMetadata();
 
     public AbstractKeyValueRepository(Class<T> type) {
         this.type = type;
@@ -99,12 +107,17 @@ public abstract class AbstractKeyValueRepository<T> implements PageableRepositor
     @Override
     public void delete(Object entity) {
         Objects.requireNonNull(entity, "entity is required");
-        getTemplate().delete(entity);
+        FieldMetadata id = getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        Object value = id.read(entity);
+        getTemplate().delete(value);
     }
 
     @Override
     public void deleteAll(Iterable entities) {
         Objects.requireNonNull(entities, "entities is required");
-       getTemplate().delete(entities);
+        EntityMetadata metadata = getEntityMetadata();
+        FieldMetadata id = metadata.id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        List<Object> ids = stream(entities.spliterator(), false).map(id::read).toList();
+        getTemplate().delete(ids);
     }
 }

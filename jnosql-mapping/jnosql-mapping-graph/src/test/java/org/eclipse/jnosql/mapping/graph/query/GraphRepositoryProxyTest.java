@@ -260,7 +260,7 @@ class GraphRepositoryProxyTest {
     void shouldDeleteById() {
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         personRepository.deleteById(10L);
-        verify(template).deleteById(captor.capture());
+        verify(template).delete(captor.capture());
 
         assertEquals(10L, captor.getValue());
     }
@@ -272,23 +272,23 @@ class GraphRepositoryProxyTest {
         personRepository.delete(person);
         verify(template).delete(captor.capture());
 
-        assertEquals(person, captor.getValue());
+        assertEquals(10L, captor.getValue());
     }
 
     @Test
     void shouldDeleteByIds() {
         personRepository.deleteAllById(singletonList(10L));
-        verify(template).deleteById(10L);
+        verify(template).delete(10L);
 
         personRepository.deleteAllById(asList(1L, 2L, 3L));
-        verify(template, times(4)).deleteById(any(Long.class));
+        verify(template, times(4)).delete(any(Long.class));
     }
 
     @Test
     void shouldDeleteByEntities() {
         Person person = Person.builder().withId(10L).build();
         personRepository.deleteAll(singletonList(person));
-        verify(template).delete(singletonList(person));
+        verify(template).delete(singletonList(10L));
 
         personRepository.deleteAll(asList(person, person, person));
         verify(template, times(2)).delete(any(List.class));

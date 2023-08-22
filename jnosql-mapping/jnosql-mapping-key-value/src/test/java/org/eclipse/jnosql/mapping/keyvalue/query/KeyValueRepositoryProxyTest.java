@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.keyvalue.query;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
+import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.assertj.core.api.SoftAssertions;
@@ -25,6 +26,7 @@ import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;
 import org.eclipse.jnosql.mapping.keyvalue.MockProducer;
 import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.PersonStatisticRepository;
@@ -64,10 +66,13 @@ public class KeyValueRepositoryProxyTest {
     private KeyValueTemplate template;
 
     private UserRepository userRepository;
+
+    @Inject
+    private EntitiesMetadata entitiesMetadata;
     @BeforeEach
     public void setUp() {
         this.template = Mockito.mock(KeyValueTemplate.class);
-        KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(UserRepository.class, template);
+        KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(UserRepository.class, entitiesMetadata, template);
         userRepository = (UserRepository) Proxy.newProxyInstance(UserRepository.class.getClassLoader(),
                 new Class[]{UserRepository.class},
                 handler);
@@ -117,9 +122,9 @@ public class KeyValueRepositoryProxyTest {
     public void shouldDeleteEntity() {
         User user = new User("ada", "Ada", 10);
         userRepository.delete(user);
-        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         Mockito.verify(template).delete(captor.capture());
-        assertEquals(user, captor.getValue());
+        assertEquals("ada", captor.getValue());
     }
 
     @Test
@@ -128,7 +133,7 @@ public class KeyValueRepositoryProxyTest {
         userRepository.deleteAll(Collections.singletonList(user));
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
         Mockito.verify(template).delete(captor.capture());
-        assertEquals(user, captor.getValue().iterator().next());
+        assertEquals("ada", captor.getValue().iterator().next());
     }
 
 
