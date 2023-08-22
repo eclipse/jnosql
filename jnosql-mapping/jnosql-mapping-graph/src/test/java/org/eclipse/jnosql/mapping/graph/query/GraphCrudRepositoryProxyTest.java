@@ -274,14 +274,14 @@ class GraphCrudRepositoryProxyTest {
         personRepository.delete(person);
         verify(template).delete(captor.capture());
 
-        assertEquals(person, captor.getValue());
+        assertEquals(10L, captor.getValue());
     }
 
     @Test
     void shouldDeleteEntities() {
         Person person = Person.builder().withId(10L).build();
         personRepository.deleteAll(singletonList(person));
-        verify(template).delete(singletonList(person));
+        verify(template).delete(singletonList(10L));
 
         personRepository.deleteAll(asList(person, person, person));
         verify(template, times(2)).delete(any(List.class));
