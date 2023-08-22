@@ -126,13 +126,16 @@ public abstract class AbstractDocumentRepository<T, K> implements PageableReposi
     @Override
     public void delete(Object entity) {
         Objects.requireNonNull(entity, "entity is required");
-        getTemplate().delete(entity);
+        EntityMetadata metadata = getEntityMetadata();
+        FieldMetadata id = metadata.id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        getTemplate().delete(metadata.type(), id.read(entity));
     }
 
     @Override
     public void deleteAll(Iterable entities) {
         Objects.requireNonNull(entities, "entities is required");
-        getTemplate().delete(entities);
+        StreamSupport.stream(entities.spliterator(), false)
+                .forEach(this::delete);
     }
 
     @Override
