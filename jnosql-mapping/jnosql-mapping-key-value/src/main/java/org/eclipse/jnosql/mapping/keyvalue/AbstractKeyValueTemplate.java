@@ -116,30 +116,15 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public <T> void delete(T entity) {
-        Objects.requireNonNull(entity, "entity is required");
-        KeyValueEntity keyValue = getConverter().toKeyValue(entity);
-        getManager().delete(keyValue.key());
-    }
 
     @Override
-    public <T> void delete(Iterable<? extends T> entities) {
-        Objects.requireNonNull(entities, "entities is required");
-        List<Object> keys = StreamSupport.stream(entities.spliterator(), false)
-                .map(getConverter()::toKeyValue)
-                .map(KeyValueEntity::key).toList();
-        getManager().delete(keys);
-    }
-
-    @Override
-    public <K> void deleteByKey(K key) {
+    public <K> void delete(K key) {
         requireNonNull(key, "key is required");
         getManager().delete(key);
     }
 
     @Override
-    public <K> void deleteByKey(Iterable<K> keys) {
+    public <K> void delete(Iterable<K> keys) {
         requireNonNull(keys, "keys is required");
         getManager().delete(keys);
     }
@@ -189,7 +174,7 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
 
     @Override
     public <T, K> void delete(Class<T> type, K id) {
-        this.deleteByKey(id);
+        this.delete(id);
     }
 
     @Override

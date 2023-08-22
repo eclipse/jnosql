@@ -19,6 +19,7 @@ import jakarta.enterprise.context.spi.CreationalContext;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.util.AnnotationLiteralUtil;
 
@@ -73,7 +74,8 @@ public class RepositoryKeyValueBean<T extends CrudRepository> extends AbstractBe
     public T create(CreationalContext<T> creationalContext) {
         KeyValueTemplate template = provider.isEmpty() ? getInstance(KeyValueTemplate.class) :
                 getInstance(KeyValueTemplate.class, DatabaseQualifier.ofKeyValue(provider));
-        KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(type, template);
+        EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
+        KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(type, entities, template);
         return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

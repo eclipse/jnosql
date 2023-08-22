@@ -253,7 +253,7 @@ public class DefaultKeyValueTemplateTest {
 
     @Test
     public void shouldRemove() {
-        template.deleteByKey(KEY);
+        template.delete(KEY);
         Mockito.verify(manager).delete(KEY);
     }
 
@@ -279,7 +279,7 @@ public class DefaultKeyValueTemplateTest {
 
     @Test
     public void shouldRemoveIterable() {
-        template.deleteByKey(singletonList(KEY));
+        template.delete(singletonList(KEY));
         Mockito.verify(manager).delete(singletonList(KEY));
     }
 

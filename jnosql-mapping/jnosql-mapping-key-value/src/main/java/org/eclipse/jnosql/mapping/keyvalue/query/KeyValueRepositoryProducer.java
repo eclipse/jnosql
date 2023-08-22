@@ -21,6 +21,7 @@ import jakarta.inject.Inject;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplateProducer;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 import java.lang.reflect.Proxy;
 import java.util.Objects;
@@ -30,6 +31,9 @@ public class KeyValueRepositoryProducer {
 
     @Inject
     private KeyValueTemplateProducer producer;
+
+    @Inject
+    private EntitiesMetadata entities;
 
     public <T, K, R extends PageableRepository<T, K>> R get(Class<R> repositoryClass, BucketManager manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
@@ -41,8 +45,7 @@ public class KeyValueRepositoryProducer {
     public <T, K, R extends PageableRepository<T, K>> R get(Class<R> repositoryClass, KeyValueTemplate template) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
-
-        KeyValueRepositoryProxy<T> handler = new KeyValueRepositoryProxy<>(repositoryClass, template);
+        KeyValueRepositoryProxy<T> handler = new KeyValueRepositoryProxy<>(repositoryClass, entities, template);
         return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);
