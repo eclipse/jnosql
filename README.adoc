@@ -236,6 +236,8 @@ public BucketManager getManagerB() {
 }
 ----
 
+
+
 === Column Family
 
 Jakarta NoSQL provides a Column Family template to explore the specific behavior of this NoSQL type.
