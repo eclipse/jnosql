@@ -21,6 +21,8 @@ import jakarta.enterprise.inject.Produces;
 import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.keyvalue.BucketManagerFactory;
+import org.eclipse.jnosql.mapping.Database;
+import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueDatabase;
 
 import java.lang.reflect.ParameterizedType;
@@ -36,6 +38,7 @@ public class CollectionSupplier {
 
     @Inject
     private BucketManagerFactory factory;
+    DatabaseQualifier
 
     @Produces
     @KeyValueDatabase("")
