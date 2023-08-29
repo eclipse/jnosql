@@ -24,6 +24,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 === Fixed
 
 - Remove exception at the delete methods at the repositories proxies
+- Add support to LIKE conditions parameterized at Repository methods annotated with `@Query`
 
 == [1.0.1] - 2023-7-31
 
