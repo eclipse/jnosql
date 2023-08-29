@@ -19,14 +19,14 @@ import org.eclipse.jnosql.query.grammar.QueryParser;
 
 import java.util.Objects;
 
-final class StringParameterConverter {
+final class ValueStringConverter {
 
     private static final String MESSAGE = "There is an error when trying to convert the value";
 
-    private StringParameterConverter() {
+    private ValueStringConverter() {
     }
 
-    static QueryValue<String> get(QueryParser.String_parameterContext context) {
+    static QueryValue<String> get(QueryParser.Value_stringContext context) {
 
         if (Objects.nonNull(context.string())) {
             return StringQueryValue.of(context.string());

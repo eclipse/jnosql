@@ -105,7 +105,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
     public void exitLike(QueryParser.LikeContext ctx) {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
-        QueryValue<String> value = StringParameterConverter.get(ctx.string_parameter());
+        QueryValue<String> value = ValueStringConverter.get(ctx.value_string());
         checkCondition(new DefaultQueryCondition(name, LIKE, value), hasNot);
     }
 
