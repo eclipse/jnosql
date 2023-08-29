@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.configuration;
 
-import jakarta.data.exceptions.MappingException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;
