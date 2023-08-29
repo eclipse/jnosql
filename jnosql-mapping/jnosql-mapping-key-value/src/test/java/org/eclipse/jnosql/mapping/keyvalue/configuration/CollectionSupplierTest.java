@@ -14,9 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.configuration;
 
+import jakarta.enterprise.inject.spi.BeanManager;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.enterprise.util.TypeLiteral;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueDatabase;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueDatabaseQualifier;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;
 import org.eclipse.jnosql.mapping.keyvalue.MockProducer;
 import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
@@ -68,6 +72,7 @@ class CollectionSupplierTest {
     @Inject
     private CollectionStructure structure;
 
+
     @BeforeAll
     public static void beforeAll(){
         System.clearProperty(KEY_VALUE_PROVIDER.get());
@@ -112,4 +117,17 @@ class CollectionSupplierTest {
     public void shouldStructure() {
         Assertions.assertNotNull(structure);
     }
+
+
+    @Test
+    public void shouldGetFromQualifier() {
+        CDI<Object> current = CDI.current();
+        TypeLiteral<List<Integer>> literal = new TypeLiteral<>(){};
+        List<Integer> integers = current.select(literal, KeyValueDatabaseQualifier.of("numbers")).get();
+        Assertions.assertNotNull(integers);
+        assertThat(integers)
+                .isInstanceOf(ArrayList.class);
+    }
+
+
 }

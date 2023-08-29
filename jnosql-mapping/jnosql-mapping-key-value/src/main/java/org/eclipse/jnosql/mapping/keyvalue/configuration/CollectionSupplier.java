@@ -71,13 +71,18 @@ public class CollectionSupplier {
 
         @SuppressWarnings("unchecked")
         private static <T> CollectionElement<T> of(InjectionPoint injectionPoint) {
-            KeyValueDatabase keyValue = injectionPoint.getAnnotated().getAnnotation(KeyValueDatabase.class);
+
+            KeyValueDatabase keyValue = injectionPoint.getQualifiers()
+                    .stream().filter(KeyValueDatabase.class::isInstance)
+                    .map(KeyValueDatabase.class::cast)
+                    .findFirst().orElseThrow(() -> new MappingException("There is an issue to load " +
+                            "a Collection from the database"));
             String bucketName = keyValue.value();
             if (injectionPoint.getType() instanceof ParameterizedType param) {
                 Type argument = param.getActualTypeArguments()[0];
                 return new CollectionElement<>(bucketName, (Class<T>) argument);
             }
-            throw new MappingException("There is an issue to load the Queue from the database");
+            throw new MappingException("There is an issue to load a Collection from the database");
         }
     }
 
@@ -85,14 +90,18 @@ public class CollectionSupplier {
 
         @SuppressWarnings("unchecked")
         private static <K, V> MapElement<K, V> of(InjectionPoint injectionPoint) {
-            KeyValueDatabase keyValue = injectionPoint.getAnnotated().getAnnotation(KeyValueDatabase.class);
+            KeyValueDatabase keyValue = injectionPoint.getQualifiers()
+                    .stream().filter(KeyValueDatabase.class::isInstance)
+                    .map(KeyValueDatabase.class::cast)
+                    .findFirst().orElseThrow(() -> new MappingException("There is an issue to load " +
+                            "a Collection from the database"));
             String bucketName = keyValue.value();
             if (injectionPoint.getType() instanceof ParameterizedType param) {
                 Type key = param.getActualTypeArguments()[0];
                 Type value = param.getActualTypeArguments()[1];
                 return new MapElement<>(bucketName, (Class<K>) key, (Class<V>) value);
             }
-            throw new MappingException("There is an issue to load the Queue from the database");
+            throw new MappingException("There is an issue to load the Map from the database");
         }
     }
 }
