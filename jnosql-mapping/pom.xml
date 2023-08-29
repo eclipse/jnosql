@@ -42,6 +42,8 @@
 
     <properties>
         <weld.jupiter.version>4.0.0.Final</weld.jupiter.version>
+        <tinkerpop.version>3.7.0</tinkerpop.version>
+        <neo4j.connector.version>0.9-3.4.0</neo4j.connector.version>
     </properties>
 
     <dependencies>
