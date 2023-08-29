@@ -40,6 +40,8 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
 
     private final Converters converters;
 
+    private final Class<?> repositoryType;
+
 
     ColumnRepositoryProxy(JNoSQLColumnTemplate template, EntitiesMetadata entities, Class<?> repositoryType,
                           Converters converters) {
@@ -49,6 +51,7 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
         this.entityMetadata = entities.get(typeClass);
         this.repository = new ColumnRepository(template, entityMetadata);
         this.converters = converters;
+        this.repositoryType =  repositoryType;
     }
 
     @Override
@@ -69,6 +72,11 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
     @Override
     protected Converters getConverters() {
         return converters;
+    }
+
+    @Override
+    protected Class<?> repositoryType() {
+        return repositoryType;
     }
 
 
