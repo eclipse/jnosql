@@ -236,6 +236,38 @@ public BucketManager getManagerB() {
 }
 ----
 
+
+The KeyValue Database module provides a simple way to integrate the `KeyValueDatabase` annotation with CDI, allowing you to inject collections managed by the key-value database. This annotation works seamlessly with various collections, such as List, Set, Queue, and Map.
+
+To inject collections managed by the key-value database, use the `@KeyValueDatabase` annotation in combination with CDI's `@Inject` annotation. Here's how you can use it:
+
+[source,java]
+----
+import javax.inject.Inject;
+
+// Inject a List<String> instance from the "names" bucket in the key-value database.
+@Inject
+@KeyValueDatabase("names")
+private List<String> names;
+
+// Inject a Set<String> instance from the "fruits" bucket in the key-value database.
+@Inject
+@KeyValueDatabase("fruits")
+private Set<String> fruits;
+
+// Inject a Queue<String> instance from the "orders" bucket in the key-value database.
+@Inject
+@KeyValueDatabase("orders")
+private Queue<String> orders;
+
+// Inject a Map<String, String> instance from the "orders" bucket in the key-value database.
+@Inject
+@KeyValueDatabase("orders")
+private Map<String, String> map;
+----
+
+
+
 === Column Family
 
 Jakarta NoSQL provides a Column Family template to explore the specific behavior of this NoSQL type.
