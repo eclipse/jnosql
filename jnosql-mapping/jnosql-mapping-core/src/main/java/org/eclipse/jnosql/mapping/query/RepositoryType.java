@@ -94,7 +94,7 @@ public enum RepositoryType {
      * @param method the method
      * @return a repository type
      */
-    public static RepositoryType of(Method method) {
+    public static RepositoryType of(Method method, Class<?> repositoryType) {
         Objects.requireNonNull(method, "method is required");
         Class<?> declaringClass = method.getDeclaringClass();
         if (method.isDefault()) {
@@ -112,7 +112,7 @@ public enum RepositoryType {
         if (Objects.nonNull(method.getAnnotation(Query.class))) {
             return QUERY;
         }
-        if (isCustomRepository(declaringClass)) {
+        if (!repositoryType.equals(declaringClass) && isCustomRepository(declaringClass)) {
             return CUSTOM_REPOSITORY;
         }
         String methodName = method.getName();

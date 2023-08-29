@@ -45,6 +45,8 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
 
     private final Converters converters;
 
+    private final Class<?> repositoryType;
+
 
     GraphRepositoryProxy(GraphTemplate template, EntitiesMetadata entities,
                          Class<?> repositoryType,
@@ -60,6 +62,7 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
         this.repository = new GraphRepository(template, entityMetadata);
         this.template = template;
         this.converters = converters;
+        this.repositoryType = repositoryType;
 
     }
 
@@ -91,6 +94,11 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
     @Override
     protected Converters getConverters() {
         return converters;
+    }
+
+    @Override
+    protected Class<?> repositoryType() {
+        return repositoryType;
     }
 
 

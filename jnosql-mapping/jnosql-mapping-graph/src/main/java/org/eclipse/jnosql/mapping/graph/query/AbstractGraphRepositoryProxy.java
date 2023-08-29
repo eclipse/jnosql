@@ -62,11 +62,13 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
     protected abstract Converters getConverters();
 
+    protected abstract Class<?> repositoryType();
+
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
-        RepositoryType type = RepositoryType.of(method);
+        RepositoryType type = RepositoryType.of(method, repositoryType());
         Class<?> typeClass = getEntityMetadata().type();
 
         switch (type) {

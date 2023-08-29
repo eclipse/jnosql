@@ -29,6 +29,8 @@ class KeyValueRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
     private final KeyValueTemplate template;
     private final Class<T> type;
 
+    private final Class<?> repositoryType;
+
 
     KeyValueRepositoryProxy(Class<?> repositoryType, EntitiesMetadata entitiesMetadata, KeyValueTemplate template) {
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
@@ -37,6 +39,7 @@ class KeyValueRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
         this.repository = new DefaultKeyValueRepository(typeClass, metadata, template);
         this.template = template;
         this.type = typeClass;
+        this.repositoryType = repositoryType;
     }
 
     @Override
@@ -52,6 +55,11 @@ class KeyValueRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
     @Override
     protected Class getType() {
         return type;
+    }
+
+    @Override
+    protected Class<?> repositoryType() {
+        return repositoryType;
     }
 
 

@@ -39,6 +39,8 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
 
     private final Converters converters;
 
+    private final Class<?> repositoryType;
+
 
     DocumentRepositoryProxy(JNoSQLDocumentTemplate template, EntitiesMetadata entities,
                             Class<?> repositoryType, Converters converters) {
@@ -48,12 +50,18 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
         this.entityMetadata = entities.get(typeClass);
         this.repository = new DocumentRepository(template, entityMetadata);
         this.converters = converters;
+        this.repositoryType = repositoryType;
     }
 
 
     @Override
     protected PageableRepository getRepository() {
         return repository;
+    }
+
+    @Override
+    protected Class<?> repositoryType() {
+        return repositoryType;
     }
 
     @Override
