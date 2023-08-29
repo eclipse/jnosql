@@ -35,10 +35,12 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
 
     protected abstract Class<T> getType();
 
+    protected abstract Class<?> repositoryType();
+
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
-        RepositoryType type = RepositoryType.of(method);
+        RepositoryType type = RepositoryType.of(method, repositoryType());
         switch (type) {
             case DEFAULT -> {
                 return unwrapInvocationTargetException(() -> method.invoke(getRepository(), args));

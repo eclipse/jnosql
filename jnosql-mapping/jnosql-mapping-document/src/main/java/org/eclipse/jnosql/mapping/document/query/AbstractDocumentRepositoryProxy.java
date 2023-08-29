@@ -38,10 +38,12 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
 
     protected abstract PageableRepository getRepository();
 
+    protected abstract Class<?> repositoryType();
+
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
-        RepositoryType type = RepositoryType.of(method);
+        RepositoryType type = RepositoryType.of(method, repositoryType());
         Class<?> typeClass = getEntityMetadata().type();
 
         switch (type) {
