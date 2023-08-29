@@ -45,9 +45,9 @@ import java.lang.annotation.Target;
  * @KeyValueDatabase("orders")
  * private Queue<String> orders;
  *
- * // Inject a Map<String, String> instance from the "orders" bucket in the key-value database.
+ * // Inject a Map<String, String> instance from the "map" bucket in the key-value database.
  * @Inject
- * @KeyValueDatabase("orders")
+ * @KeyValueDatabase("map")
  * private Map<String, String> map;
  * }</pre>
  */
