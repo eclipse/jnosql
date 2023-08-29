@@ -22,6 +22,10 @@ import org.eclipse.jnosql.communication.keyvalue.KeyValueConfiguration;
 import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -46,22 +50,22 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
 
         @Override
         public <T> List<T> getList(String bucketName, Class<T> type) {
-            return null;
+            return new ArrayList<>();
         }
 
         @Override
         public <T> Set<T> getSet(String bucketName, Class<T> type) {
-            return null;
+            return new HashSet<>();
         }
 
         @Override
         public <T> Queue<T> getQueue(String bucketName, Class<T> type) {
-            return null;
+            return new LinkedList<>();
         }
 
         @Override
         public <K, V> Map<K, V> getMap(String bucketName, Class<K> keyValue, Class<V> valueValue) {
-            return null;
+            return new HashMap<>();
         }
 
         @Override

@@ -26,13 +26,21 @@ import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_DATABASE;
@@ -50,16 +58,55 @@ class CollectionSupplierTest {
     @KeyValue("names")
     private List<String> names;
 
+    @Inject
+    @KeyValue("fruits")
+    private Set<String> fruits;
+
+    @Inject
+    @KeyValue("orders")
+    private Queue<String> orders;
+
+    @Inject
+    @KeyValue("orders")
+    private Map<String, String> map;
+
     @BeforeAll
-    public static void beforeEach(){
+    public static void beforeAll(){
         System.clearProperty(KEY_VALUE_PROVIDER.get());
-        System.clearProperty(KEY_VALUE_DATABASE.get());
+        System.setProperty(KEY_VALUE_PROVIDER.get(), KeyValueConfigurationMock.class.getName());
     }
+
+    @AfterAll
+    public static void afterAll(){
+        System.clearProperty(KEY_VALUE_PROVIDER.get());
+    }
+
 
     @Test
     public void shouldGetList() {
-        System.setProperty(KEY_VALUE_PROVIDER.get(), KeyValueConfigurationMock3.class.getName());
         Assertions.assertNotNull(names);
-        Mockito.verify(KeyValueConfigurationMock3.FACTORY).getList(Mockito.eq("names"), Mockito.eq(String.class));
+        assertThat(names)
+                .isInstanceOf(ArrayList.class);
+    }
+
+    @Test
+    public void shouldGetMap() {
+        Assertions.assertNotNull(map);
+        assertThat(map)
+                .isInstanceOf(HashMap.class);
+    }
+
+    @Test
+    public void shouldGetQueue() {
+        Assertions.assertNotNull(orders);
+        assertThat(orders)
+                .isInstanceOf(LinkedList.class);
+    }
+
+    @Test
+    public void shouldGetSet() {
+        Assertions.assertNotNull(fruits);
+        assertThat(fruits)
+                .isInstanceOf(HashSet.class);
     }
 }
