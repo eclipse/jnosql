@@ -20,6 +20,9 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Define metadata as a module
 - define the default implementation of metadata using reflection
 - enhance the documentation to use metadata
+- Update Apache Tinkerpop to version 3.7.0
+- Update classpath to version 4.8.162
+- Update Mockito version to 5.5.0
 
 === Fixed
 
