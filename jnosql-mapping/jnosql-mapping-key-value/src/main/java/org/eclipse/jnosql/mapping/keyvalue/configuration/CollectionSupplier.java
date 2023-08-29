@@ -26,6 +26,7 @@ import org.eclipse.jnosql.mapping.keyvalue.KeyValue;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -57,6 +58,13 @@ public class CollectionSupplier {
         return factory.getSet(element.bucketName, element.type);
     }
 
+    @Produces
+    @KeyValue("")
+    public <K, V> Map<K, V> getMap(InjectionPoint injectionPoint) {
+        MapElement<K, V> element = MapElement.of(injectionPoint);
+        return factory.getMap(element.bucketName, element.key, element.value);
+    }
+
 
     private record CollectionElement<T>(String bucketName, Class<T> type) {
 
@@ -67,6 +75,21 @@ public class CollectionSupplier {
             if (injectionPoint.getType() instanceof ParameterizedType param) {
                 Type argument = param.getActualTypeArguments()[0];
                 return new CollectionElement<>(bucketName, (Class<T>) argument);
+            }
+            throw new MappingException("There is an issue to load the Queue from the database");
+        }
+    }
+
+    private record MapElement<K, V>(String bucketName, Class<K> key, Class<V> value) {
+
+        @SuppressWarnings("unchecked")
+        private static <K, V> MapElement<K, V> of(InjectionPoint injectionPoint) {
+            KeyValue keyValue = injectionPoint.getAnnotated().getAnnotation(KeyValue.class);
+            String bucketName = keyValue.value();
+            if (injectionPoint.getType() instanceof ParameterizedType param) {
+                Type key = param.getActualTypeArguments()[0];
+                Type value = param.getActualTypeArguments()[1];
+                return new MapElement<>(bucketName, (Class<K>) key, (Class<V>) value);
             }
             throw new MappingException("There is an issue to load the Queue from the database");
         }

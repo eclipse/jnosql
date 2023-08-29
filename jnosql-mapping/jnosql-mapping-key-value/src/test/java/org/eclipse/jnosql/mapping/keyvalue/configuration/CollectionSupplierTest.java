@@ -70,6 +70,9 @@ class CollectionSupplierTest {
     @KeyValue("orders")
     private Map<String, String> map;
 
+    @Inject
+    private CollectionStructure structure;
+
     @BeforeAll
     public static void beforeAll(){
         System.clearProperty(KEY_VALUE_PROVIDER.get());
@@ -108,5 +111,10 @@ class CollectionSupplierTest {
         Assertions.assertNotNull(fruits);
         assertThat(fruits)
                 .isInstanceOf(HashSet.class);
+    }
+
+    @Test
+    public void shouldStructure() {
+        Assertions.assertNotNull(structure);
     }
 }
