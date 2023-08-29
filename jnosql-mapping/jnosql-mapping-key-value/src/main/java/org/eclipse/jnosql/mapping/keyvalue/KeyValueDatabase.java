@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD})
 @Qualifier
-public @interface KeyValue {
+public @interface KeyValueDatabase {
 
     @Nonbinding String value();
 }

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.keyvalue.configuration;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.keyvalue.KeyValue;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueDatabase;
 
 import java.util.List;
 import java.util.Map;
@@ -40,10 +40,10 @@ public class CollectionStructure {
     private Map<String, String> map;
 
     @Inject
-    public CollectionStructure(@KeyValue("names") List<String> names,
-                               @KeyValue("fruits") Set<String> fruits,
-                               @KeyValue("orders") Queue<String> orders,
-                               @KeyValue("map") Map<String, String> map) {
+    public CollectionStructure(@KeyValueDatabase("names") List<String> names,
+                               @KeyValueDatabase("fruits") Set<String> fruits,
+                               @KeyValueDatabase("orders") Queue<String> orders,
+                               @KeyValueDatabase("map") Map<String, String> map) {
         this.names = names;
         this.fruits = fruits;
         this.orders = orders;

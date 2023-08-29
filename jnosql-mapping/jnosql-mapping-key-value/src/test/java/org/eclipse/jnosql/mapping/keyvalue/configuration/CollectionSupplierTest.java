@@ -15,9 +15,8 @@
 package org.eclipse.jnosql.mapping.keyvalue.configuration;
 
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.communication.keyvalue.BucketManagerFactory;
 import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.keyvalue.KeyValue;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueDatabase;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;
 import org.eclipse.jnosql.mapping.keyvalue.MockProducer;
 import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
@@ -29,9 +28,7 @@ import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,9 +40,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_DATABASE;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_PROVIDER;
-import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, KeyValueEntityConverter.class})
@@ -55,19 +50,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class CollectionSupplierTest {
 
     @Inject
-    @KeyValue("names")
+    @KeyValueDatabase("names")
     private List<String> names;
 
     @Inject
-    @KeyValue("fruits")
+    @KeyValueDatabase("fruits")
     private Set<String> fruits;
 
     @Inject
-    @KeyValue("orders")
+    @KeyValueDatabase("orders")
     private Queue<String> orders;
 
     @Inject
-    @KeyValue("orders")
+    @KeyValueDatabase("orders")
     private Map<String, String> map;
 
     @Inject

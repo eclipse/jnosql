@@ -21,7 +21,7 @@ import jakarta.enterprise.inject.Produces;
 import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.keyvalue.BucketManagerFactory;
-import org.eclipse.jnosql.mapping.keyvalue.KeyValue;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueDatabase;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -38,28 +38,28 @@ public class CollectionSupplier {
     private BucketManagerFactory factory;
 
     @Produces
-    @KeyValue("")
+    @KeyValueDatabase("")
     public <T> List<T> getList(InjectionPoint injectionPoint) {
          CollectionElement<T> element = CollectionElement.of(injectionPoint);
          return factory.getList(element.bucketName, element.type);
     }
 
     @Produces
-    @KeyValue("")
+    @KeyValueDatabase("")
     public <T> Queue<T> getQueue(InjectionPoint injectionPoint) {
         CollectionElement<T> element = CollectionElement.of(injectionPoint);
         return factory.getQueue(element.bucketName, element.type);
     }
 
     @Produces
-    @KeyValue("")
+    @KeyValueDatabase("")
     public <T> Set<T> getSet(InjectionPoint injectionPoint) {
         CollectionElement<T> element = CollectionElement.of(injectionPoint);
         return factory.getSet(element.bucketName, element.type);
     }
 
     @Produces
-    @KeyValue("")
+    @KeyValueDatabase("")
     public <K, V> Map<K, V> getMap(InjectionPoint injectionPoint) {
         MapElement<K, V> element = MapElement.of(injectionPoint);
         return factory.getMap(element.bucketName, element.key, element.value);
@@ -70,7 +70,7 @@ public class CollectionSupplier {
 
         @SuppressWarnings("unchecked")
         private static <T> CollectionElement<T> of(InjectionPoint injectionPoint) {
-            KeyValue keyValue = injectionPoint.getAnnotated().getAnnotation(KeyValue.class);
+            KeyValueDatabase keyValue = injectionPoint.getAnnotated().getAnnotation(KeyValueDatabase.class);
             String bucketName = keyValue.value();
             if (injectionPoint.getType() instanceof ParameterizedType param) {
                 Type argument = param.getActualTypeArguments()[0];
@@ -84,7 +84,7 @@ public class CollectionSupplier {
 
         @SuppressWarnings("unchecked")
         private static <K, V> MapElement<K, V> of(InjectionPoint injectionPoint) {
-            KeyValue keyValue = injectionPoint.getAnnotated().getAnnotation(KeyValue.class);
+            KeyValueDatabase keyValue = injectionPoint.getAnnotated().getAnnotation(KeyValueDatabase.class);
             String bucketName = keyValue.value();
             if (injectionPoint.getType() instanceof ParameterizedType param) {
                 Type key = param.getActualTypeArguments()[0];
