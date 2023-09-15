@@ -116,10 +116,11 @@ enum ClassGraphClassScanner implements ClassScanner {
     @SuppressWarnings("rawtypes")
     private static void checkInvalidRepositories(List<Class<DataRepository>> classes) {
         if (!classes.isEmpty()) {
-            String message = classes.stream()
+            String repositories = classes.stream()
                     .map(Class::getName)
                     .collect(Collectors.joining(","));
-            throw new MappingException("The following repositories are invalid because the Entities must have the Entity annotation: " + message);
+            throw new MappingException("The following repositories are invalid because the Entities must have the " +
+                    jakarta.nosql.Entity.class.getName() + " annotation: " + repositories);
         }
     }
 
