@@ -110,6 +110,15 @@ enum ClassGraphClassScanner implements ClassScanner {
                 .toList();
     }
 
+    @SuppressWarnings("rawtypes")
+    private static List<Class<DataRepository>> loadInvalidRepositories(ScanResult scan) {
+        return scan.getClassesWithAnnotation(Repository.class)
+                .getInterfaces()
+                .loadClasses(DataRepository.class)
+                .stream().filter(RepositoryFilter.INSTANCE::isInvalid)
+                .toList();
+    }
+
     private static List<Class<?>> loadEmbeddable(ScanResult scan) {
         return scan.getClassesWithAnnotation(Embeddable.class).loadClasses();
     }

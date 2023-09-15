@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
+import jakarta.data.repository.DataRepository;
 import jakarta.nosql.Entity;
 
 import java.lang.reflect.ParameterizedType;
@@ -38,6 +39,12 @@ enum RepositoryFilter implements Predicate<Class<?>> {
                 .isPresent();
     }
 
+    public boolean isInvalid(Class<?> type) {
+        Optional<Class<?>> entity = getEntity(type);
+        return entity.map(c -> c.getAnnotation(Entity.class))
+                .isEmpty();
+    }
+
 
     private Optional<Class<?>> getEntity(Class<?> repository) {
         Type[] interfaces = repository.getGenericInterfaces();
@@ -55,6 +62,7 @@ enum RepositoryFilter implements Predicate<Class<?>> {
         }
         return Optional.empty();
     }
+
 
 
 }

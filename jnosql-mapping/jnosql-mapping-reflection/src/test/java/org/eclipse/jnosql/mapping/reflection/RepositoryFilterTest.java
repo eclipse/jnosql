@@ -30,27 +30,39 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class RepositoryFilterTest {
 
-    private Predicate<Class<?>> predicate;
+    private Predicate<Class<?>> valid;
+
+    private Predicate<Class<?>> invalid;
 
     @BeforeEach
     public void setUp() {
-        this.predicate = RepositoryFilter.INSTANCE;
+        this.valid = RepositoryFilter.INSTANCE;
+        this.invalid = RepositoryFilter.INSTANCE::isInvalid;
     }
 
     @Test
     public void shouldReturnTrueWhenHasSupportRepository() {
-        assertThat(predicate.test(PersonRepository.class)).isTrue();
-        assertThat(predicate.test(People.class)).isTrue();
-        assertThat(predicate.test(Persons.class)).isTrue();
+        assertThat(valid.test(PersonRepository.class)).isTrue();
+        assertThat(valid.test(People.class)).isTrue();
+        assertThat(valid.test(Persons.class)).isTrue();
 
     }
 
     @Test
     public void shouldReturnFalseWhenHasNotSupportRepository() {
-        assertThat(predicate.test(NoSQLVendor.class)).isFalse();
-        assertThat(predicate.test(Server.class)).isFalse();
-        assertThat(predicate.test(StringSupplier.class)).isFalse();
-        assertThat(predicate.test(Repository.class)).isFalse();
+        assertThat(valid.test(NoSQLVendor.class)).isFalse();
+        assertThat(valid.test(Server.class)).isFalse();
+        assertThat(valid.test(StringSupplier.class)).isFalse();
+        assertThat(valid.test(Repository.class)).isFalse();
+    }
+
+    @Test
+    public void shouldReturnInvalid(){
+        assertThat(invalid.test(PersonRepository.class)).isFalse();
+        assertThat(invalid.test(People.class)).isFalse();
+        assertThat(invalid.test(Persons.class)).isFalse();
+        assertThat(invalid.test(NoSQLVendor.class)).isTrue();
+        assertThat(invalid.test(Server.class)).isTrue();
     }
 
 
