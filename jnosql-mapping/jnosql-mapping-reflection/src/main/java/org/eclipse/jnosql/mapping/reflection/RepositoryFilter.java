@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-import jakarta.data.repository.DataRepository;
 import jakarta.nosql.Entity;
 
 import java.lang.reflect.ParameterizedType;
