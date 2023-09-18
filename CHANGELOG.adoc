@@ -29,6 +29,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Remove exception at the delete methods at the repositories proxies
 - Add support to LIKE conditions parameterized at Repository methods annotated with `@Query`
+- Enhance the error message when the entity in the repository does not have the Entity annotation
 
 == [1.0.1] - 2023-7-31
 

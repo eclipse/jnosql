@@ -38,6 +38,12 @@ enum RepositoryFilter implements Predicate<Class<?>> {
                 .isPresent();
     }
 
+    public boolean isInvalid(Class<?> type) {
+        Optional<Class<?>> entity = getEntity(type);
+        return entity.map(c -> c.getAnnotation(Entity.class))
+                .isEmpty();
+    }
+
 
     private Optional<Class<?>> getEntity(Class<?> repository) {
         Type[] interfaces = repository.getGenericInterfaces();
@@ -55,6 +61,7 @@ enum RepositoryFilter implements Predicate<Class<?>> {
         }
         return Optional.empty();
     }
+
 
 
 }

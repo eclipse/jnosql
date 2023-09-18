@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
+import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.PageableRepository;
@@ -57,8 +58,9 @@ enum ClassGraphClassScanner implements ClassScanner {
         Logger logger = Logger.getLogger(ClassGraphClassScanner.class.getName());
         logger.fine("Starting scan class to find entities, embeddable and repositories.");
         try (ScanResult result = new ClassGraph().enableAllInfo().scan()) {
+            checkInvalidRepositories(loadInvalidRepositories(result));
             this.entities.addAll(loadEntities(result));
-            embeddables.addAll(loadEmbeddable(result));
+            this.embeddables.addAll(loadEmbeddable(result));
             this.repositories.addAll(loadRepositories(result));
         }
         logger.fine(String.format("Finished the class scan with entities %d, embeddables %d and repositories: %d"
@@ -66,7 +68,8 @@ enum ClassGraphClassScanner implements ClassScanner {
 
     }
 
-     @Override
+
+    @Override
     public Set<Class<?>> entities() {
         return unmodifiableSet(entities);
     }
@@ -107,6 +110,27 @@ enum ClassGraphClassScanner implements ClassScanner {
                 .getInterfaces()
                 .loadClasses(DataRepository.class)
                 .stream().filter(RepositoryFilter.INSTANCE)
+                .toList();
+    }
+
+    @SuppressWarnings("rawtypes")
+    private static void checkInvalidRepositories(List<Class<DataRepository>> classes) {
+        if (!classes.isEmpty()) {
+            String repositories = classes.stream()
+                    .map(Class::getName)
+                    .collect(Collectors.joining(","));
+            throw new MappingException("The following repositories are invalid because the Entities must have the " +
+                    jakarta.nosql.Entity.class.getName() + " annotation: " + repositories);
+        }
+    }
+
+
+    @SuppressWarnings("rawtypes")
+    private static List<Class<DataRepository>> loadInvalidRepositories(ScanResult scan) {
+        return scan.getClassesWithAnnotation(Repository.class)
+                .getInterfaces()
+                .loadClasses(DataRepository.class)
+                .stream().filter(RepositoryFilter.INSTANCE::isInvalid)
                 .toList();
     }
 
