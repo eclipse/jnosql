@@ -101,3 +101,6 @@ delete from Person where not age between @age1 and @age
 delete from Person where not age between @age1 and 10 and salary = convert(10,java.lang.Integer)
 #json
 delete from Person where siblings = {"apollo": "brother", "zeus": "father"}
+#dashes
+delete from my-prefix-user where not user-id <= @user_id
+delete from my_prefix_user where not user_id <= @user_id

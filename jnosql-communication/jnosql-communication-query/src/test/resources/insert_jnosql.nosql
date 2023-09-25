@@ -32,3 +32,6 @@ insert Person {"name":"Ada Lovelace"} 10 minute
 insert Person {"name":"Ada Lovelace"} 10 second
 insert Person {"name":"Ada Lovelace"} 10 millisecond
 insert Person {"name":"Ada Lovelace"} 10 nanosecond
+#dashes
+insert from my-prefix-user (user-id = @user-id)
+insert from my_prefix_user (user-id = @user_id)

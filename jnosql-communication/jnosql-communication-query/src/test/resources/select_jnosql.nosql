@@ -102,3 +102,6 @@ select  * from Person where not age between @age1 and @age
 select  * from Person where not age between @age1 and 10 and salary = convert(10,java.lang.Integer)
 #json
 select  * from Person where siblings = {"apollo": "brother", "zeus": "father"}
+#dashes
+select * from my-prefix-user where user-id = 123
+select * from my_prefix_user where user_id = 123
