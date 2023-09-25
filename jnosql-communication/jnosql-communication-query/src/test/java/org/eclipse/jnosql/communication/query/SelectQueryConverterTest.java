@@ -660,6 +660,28 @@ class SelectQueryConverterTest {
         assertEquals(LocalDate.class, params[1]);
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select * from my-prefix-user where user_id = 123"})
+    public void shouldReturnParserQuery30(String query) {
+        DefaultSelectQuery selectQuery = selectQueryConverter.apply(query);
+
+        assertEquals("my-prefix-user", selectQuery.entity());
+        assertTrue(selectQuery.fields().isEmpty());
+        assertTrue(selectQuery.orderBy().isEmpty());
+        assertEquals(0, selectQuery.limit());
+        assertEquals(0, selectQuery.skip());
+        assertTrue(selectQuery.where().isPresent());
+
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("user_id", condition.name());
+        assertTrue(value instanceof NumberQueryValue);
+        Number result = NumberQueryValue.class.cast(value).get();
+        assertThat(result).isEqualTo(123L);
+    }
+
 
 
     private DefaultSelectQuery checkSelectFromStart(String query) {
