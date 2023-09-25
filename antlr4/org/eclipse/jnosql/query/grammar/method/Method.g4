@@ -23,7 +23,7 @@ in: variable not? 'In';
 like: variable not? 'Like';
 not: 'Not';
 variable: ANY_NAME;
-ANY_NAME: [a-zA-Z_.] [a-zA-Z._0-9]*;
+ANY_NAME: [a-zA-Z_.-] [a-zA-Z_.0-9-]*;
 WS: [ \t\r\n]+ -> skip ;
 fragment ESC :   '\\' (["\\/bfnrt] | UNICODE) ;
 fragment UNICODE : 'u' HEX HEX HEX HEX ;
