@@ -1,4 +1,5 @@
 grammar Query;
+
 select: 'select' fields 'from' entity where? skip? limit? order? EOF;
 delete: 'delete' deleteFields? 'from' entity where? EOF;
 insert: 'insert' entity (conditions | json) ttl? EOF;
@@ -55,8 +56,8 @@ parameter: PARAMETER;
 STRING :  '\'' ( ESC | ~('\\'|'\'') )* '\'' |'"' ( ESC | ~('\\'|'"') )* '"';
 INT: [0-9]+;
 NUMBER: INT [.]? INT?;
-ANY_NAME: [a-zA-Z_.-] [a-zA-Z_.0-9-]*;
-PARAMETER:'@'[a-zA-Z._0-9]*;
+ANY_NAME: [a-zA-Z_.][a-zA-Z_.0-9-]*;
+PARAMETER: '@' ANY_NAME;
 WS: [ \t\r\n]+ -> skip ;
 SL_COMMENT: '//' .*? '\n' -> skip;
 fragment ESC :   '\\' (["\\/bfnrt] | UNICODE) ;
