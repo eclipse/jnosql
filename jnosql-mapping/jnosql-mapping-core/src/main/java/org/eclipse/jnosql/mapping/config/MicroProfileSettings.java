@@ -96,7 +96,9 @@ public enum MicroProfileSettings implements Settings {
         Objects.requireNonNull(prefix, "prefix is required");
         return StreamSupport.stream(config.getPropertyNames().spliterator(), false)
                 .filter(p -> p.startsWith(prefix))
-                .map(p -> config.getValue(p, String.class))
+                .map(p -> config.getOptionalValue(p, String.class))
+                .filter(Optional::isPresent)
+                .flatMap(Optional::stream)
                 .collect(Collectors.toUnmodifiableList());
     }
 
@@ -132,7 +134,9 @@ public enum MicroProfileSettings implements Settings {
         return StreamSupport.stream(config.getPropertyNames().spliterator(), false)
                 .filter(prefixCondition)
                 .sorted()
-                .map(p -> config.getValue(p, String.class))
+                .map(p -> config.getOptionalValue(p, String.class))
+                .filter(Optional::isPresent)
+                .flatMap(Optional::stream)
                 .collect(Collectors.toList());
     }
 
