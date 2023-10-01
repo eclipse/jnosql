@@ -37,7 +37,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class MicroProfileSettingsTest {
     @AfterAll
     public static void  afterAll() {
-
+        System.clearProperty("jnosql.jnosql.key");
+        System.clearProperty("jnosql.jnosql.host");
+        System.clearProperty("key.jnosql");
+        System.clearProperty("jnosql.key");
+        System.clearProperty("jnosql.key-number");
+        System.clearProperty("jnosql.host");
+        System.clearProperty("jnosql.host.1");
+        System.clearProperty("jnosql.host.2");
+        System.clearProperty("jnosql.host.3");
+        System.clearProperty("jnosql.server");
+        System.clearProperty("jnosql.server.1");
+        System.clearProperty("jnosql.server.2");
     }
 
     @BeforeAll
