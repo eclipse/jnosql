@@ -60,7 +60,7 @@ class DefaultGenericFieldMetaDataTest {
     @Test
     public void shouldEqualsHashCode(){
         Assertions.assertThat(fieldMetadata).isEqualTo(fieldMetadata);
-        Assertions.assertThat(fieldMetadata.hashCode()).isEqualTo(fieldMetadata.hashCode());
+        Assertions.assertThat(fieldMetadata).hasSameHashCodeAs(fieldMetadata);
     }
 
     @Test

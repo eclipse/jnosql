@@ -49,7 +49,7 @@ class DefaultFieldMetadataTest {
     @Test
     public void shouldEqualsHashCode() {
         assertThat(fieldMetadata).isEqualTo(fieldMetadata);
-        assertThat(fieldMetadata.hashCode()).isEqualTo(fieldMetadata.hashCode());
+        assertThat(fieldMetadata).hasSameHashCodeAs(fieldMetadata);
     }
 
     @Test
