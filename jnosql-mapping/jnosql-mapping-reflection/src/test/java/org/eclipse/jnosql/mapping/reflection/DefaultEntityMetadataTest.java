@@ -120,7 +120,7 @@ class DefaultEntityMetadataTest {
     public void shouldHashCodeEquals(){
         EntityMetadata entityMetadata = converter.apply(Person.class);
         assertThat(entityMetadata).isEqualTo(converter.apply(Person.class));
-        assertThat(entityMetadata.hashCode()).isEqualTo(entityMetadata.hashCode());
+        assertThat(entityMetadata).hasSameHashCodeAs(entityMetadata);
     }
 
 }

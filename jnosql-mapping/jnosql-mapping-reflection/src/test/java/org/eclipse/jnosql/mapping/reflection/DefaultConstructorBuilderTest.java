@@ -96,6 +96,6 @@ class DefaultConstructorBuilderTest {
         ConstructorBuilder builder = DefaultConstructorBuilder.of(constructor);
         ConstructorBuilder other = DefaultConstructorBuilder.of(constructor);
         assertThat(builder).isEqualTo(other);
-        assertThat(builder.hashCode()).isEqualTo(other.hashCode());
+        assertThat(builder).hasSameHashCodeAs(other);
     }
 }

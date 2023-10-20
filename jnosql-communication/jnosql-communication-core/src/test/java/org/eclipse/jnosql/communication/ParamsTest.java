@@ -171,7 +171,7 @@ class ParamsTest {
             Scenario scenario = newScenario();
             Params params = scenario.params;
 
-            assertThat(params.toString()).isEqualTo(String.join(",", scenario.parameterNameList));
+            assertThat(params).hasToString(String.join(",", scenario.parameterNameList));
         }
 
         @Test

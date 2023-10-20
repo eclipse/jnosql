@@ -102,7 +102,7 @@ class ColumnDeleteQueryParamsTest {
         var fistInstance = newInstance(firstQuery, firstParams);
         var secondInstance = newInstance(firstQuery, firstParams);
 
-        assertThat(fistInstance.hashCode()).isEqualTo(secondInstance.hashCode());
+        assertThat(fistInstance).hasSameHashCodeAs(secondInstance);
 
         ColumnDeleteQuery secondQuery = newDummyColumnDeleteQuery();
         Params secondParams = newDummyParams();

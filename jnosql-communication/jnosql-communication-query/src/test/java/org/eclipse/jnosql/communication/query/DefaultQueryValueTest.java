@@ -53,6 +53,6 @@ class DefaultQueryValueTest {
     public void shouldHashCode(){
         ParamQueryValue param = new DefaultQueryValue("name");
         ParamQueryValue paramB = new DefaultQueryValue("name");
-        Assertions.assertThat(param.hashCode()).isEqualTo(paramB.hashCode());
+        Assertions.assertThat(param).hasSameHashCodeAs(paramB);
     }
 }

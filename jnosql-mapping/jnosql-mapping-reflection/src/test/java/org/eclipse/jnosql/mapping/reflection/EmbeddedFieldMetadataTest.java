@@ -48,7 +48,7 @@ class EmbeddedFieldMetadataTest {
     @Test
     public void shouldEqualsHasCode(){
         Assertions.assertThat(metadata).isEqualTo(metadata);
-        Assertions.assertThat(metadata.hashCode()).isEqualTo(metadata.hashCode());
+        Assertions.assertThat(metadata).hasSameHashCodeAs(metadata);
     }
 
 
