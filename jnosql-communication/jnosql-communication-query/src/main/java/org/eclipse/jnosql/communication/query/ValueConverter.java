@@ -35,6 +35,10 @@ final class ValueConverter {
             return StringQueryValue.of(context.string());
         }
 
+        if (Objects.nonNull(context.bool())) {
+            return BooleanQueryValue.of(context.bool());
+        }
+
         if (Objects.nonNull(context.json())) {
             return JSONQueryValue.of(context.json());
         }

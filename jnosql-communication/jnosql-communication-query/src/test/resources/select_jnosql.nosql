@@ -105,3 +105,6 @@ select  * from Person where siblings = {"apollo": "brother", "zeus": "father"}
 #dashes
 select * from my-prefix-user where user-id = 123
 select * from my_prefix_user where user_id = 123
+#boolean
+select * from my-prefix-user where enabled = true
+select * from my-prefix-user where enabled = false

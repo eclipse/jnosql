@@ -104,3 +104,8 @@ delete from Person where siblings = {"apollo": "brother", "zeus": "father"}
 #dashes
 delete from my-prefix-user where not user-id <= @user_id
 delete from my_prefix_user where not user_id <= @user_id
+#boolean
+delete from my-prefix-user where enabled = true
+delete from my-prefix-user where enabled = false
+delete from my-prefix-user where not enabled = true
+delete from my-prefix-user where not enabled = false

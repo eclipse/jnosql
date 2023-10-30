@@ -36,3 +36,6 @@ insert Person {"name":"Ada Lovelace"} 10 nanosecond
 insert my-prefix-user (user-id = @user-id)
 insert my_prefix_user (user-id = @user_id)
 insert my-prefix-user-1 (user-id-1 = @user-id)
+#boolean
+insert my-prefix-user (enable = true)
+insert my_prefix_user (enable = false)

@@ -12,6 +12,8 @@
 package org.eclipse.jnosql.communication.query;
 
 
+import org.eclipse.jnosql.query.grammar.QueryParser;
+
 import java.util.Objects;
 
 /**
@@ -62,4 +64,10 @@ public final class BooleanQueryValue implements QueryValue<Boolean>{
                 "value=" + value +
                 '}';
     }
+
+    public static QueryValue<?> of(QueryParser.BoolContext context) {
+        String text = context.BOOLEAN().getText();
+        return new BooleanQueryValue(Boolean.parseBoolean(text));
+    }
+
 }
