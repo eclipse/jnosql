@@ -9,3 +9,11 @@ get {1, 2, 3, "one", "two"}
 get @diana, @apollo
 get @diana, 12
 get 12, @apollo
+get true
+get false
+get @diana, true
+get @diana, false
+get true, @diana
+get false, @diana
+get {"Ana" : "Sister", "Maria" : "Mother", "hasChildren": true}
+get {"Ana" : "Sister", "Maria" : "Mother", "hasChildren": false}

@@ -8,6 +8,7 @@
  *  You may elect to redistribute this code under either of these licenses.
  *  Contributors:
  *  Otavio Santana
+ *  Maximillian Arruda
  */
 package org.eclipse.jnosql.communication.query;
 
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -281,6 +283,24 @@ public class InsertQueryConverterTest {
         assertEquals("London", address.getString("city"));
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"insert Person {\"enabled\":true, \"visible\":false}"})
+    public void shouldReturnParserQuery22(String query) {
+        InsertQuery insertQuery = insertQueryConverter.apply(query);
+        assertEquals("Person", insertQuery.entity());
+        Assertions.assertTrue(insertQuery.conditions().isEmpty());
+        Assertions.assertTrue(insertQuery.value().isPresent());
+        JSONQueryValue JSONQueryValue = insertQuery.value().get();
+        JsonObject jsonObject = JSONQueryValue.get();
+        var enabled = jsonObject.get("enabled");
+        var visible = jsonObject.get("visible");
+
+        assertNotNull(enabled);
+        assertNotNull(visible);
+        assertTrue(jsonObject.getBoolean("enabled"));
+        assertFalse(jsonObject.getBoolean("visible"));
+
+    }
 
     private void checkJSONInsertQuery(String query, Duration duration) {
         InsertQuery insertQuery = insertQueryConverter.apply(query);

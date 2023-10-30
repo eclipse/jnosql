@@ -19,3 +19,7 @@ put {'Ada', 'goddess of hunt', 10 millisecond}
 put {'Ada', 'goddess of hunt', 10 nanosecond}
 put {"diana", 'goddess of hunt', 10 day}
 put {'Ada', "goddess of hunt", 10 hour}
+put {'enabled', true}
+put {'enabled', false}
+put {'enabled', true, 10 hour}
+put {'enabled', false, 10 nanosecond}

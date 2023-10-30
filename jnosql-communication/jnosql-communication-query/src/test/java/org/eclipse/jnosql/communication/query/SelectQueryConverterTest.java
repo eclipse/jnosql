@@ -682,6 +682,27 @@ class SelectQueryConverterTest {
         assertThat(result).isEqualTo(123L);
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select * from my-prefix-user where enable = true"})
+    public void shouldReturnParserQuery31(String query) {
+        DefaultSelectQuery selectQuery = selectQueryConverter.apply(query);
+
+        assertEquals("my-prefix-user", selectQuery.entity());
+        assertTrue(selectQuery.fields().isEmpty());
+        assertTrue(selectQuery.orderBy().isEmpty());
+        assertEquals(0, selectQuery.limit());
+        assertEquals(0, selectQuery.skip());
+        assertTrue(selectQuery.where().isPresent());
+
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("enable", condition.name());
+        assertTrue(value instanceof BooleanQueryValue);
+        Boolean result = BooleanQueryValue.class.cast(value).get();
+        assertThat(result).isEqualTo(true);
+    }
 
 
     private DefaultSelectQuery checkSelectFromStart(String query) {

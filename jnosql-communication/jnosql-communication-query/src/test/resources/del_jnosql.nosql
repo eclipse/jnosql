@@ -9,3 +9,11 @@ del {1, 2, 3, "one", "two"}
 del @diana, @apollo
 del 1, @diana
 del @diana, 2
+del true
+del false
+del @diana, true
+del @diana, false
+del true, @diana
+del false, @diana
+del {"Ana" : "Sister", "Maria" : "Mother", "hasChildren": true}
+del {"Ana" : "Sister", "Maria" : "Mother", "hasChildren": false}
