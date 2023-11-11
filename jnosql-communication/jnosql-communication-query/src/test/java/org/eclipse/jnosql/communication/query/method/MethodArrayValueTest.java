@@ -37,7 +37,9 @@ class MethodArrayValueTest {
 
     @Test
     public void shouldEquals(){
-        ArrayQueryValue array = MethodArrayValue.of("name");
+        var array = MethodArrayValue.of("name");
+        var array2 = MethodArrayValue.of("name");
+        Assertions.assertNotEquals(array, array2);
         Assertions.assertEquals(array, array);
     }
 

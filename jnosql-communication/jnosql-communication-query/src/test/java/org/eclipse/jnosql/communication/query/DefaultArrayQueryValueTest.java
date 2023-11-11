@@ -51,4 +51,11 @@ class DefaultArrayQueryValueTest {
                 BooleanQueryValue.FALSE, BooleanQueryValue.TRUE});
         Assertions.assertEquals(arrayB.hashCode(), array.hashCode());
     }
+
+    @Test
+    public void shouldToString(){
+        ArrayQueryValue array = DefaultArrayQueryValue.of(new QueryValue<?>[]{
+                BooleanQueryValue.FALSE, BooleanQueryValue.TRUE});
+        assertThat(array.toString()).isEqualTo("[BooleanQueryValue{value=false}, BooleanQueryValue{value=true}]");
+    }
 }
