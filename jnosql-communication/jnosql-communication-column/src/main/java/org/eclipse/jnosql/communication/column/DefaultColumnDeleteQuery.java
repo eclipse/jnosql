@@ -28,19 +28,9 @@ import static java.util.Optional.ofNullable;
 /**
  * The default implementation of {@link ColumnDeleteQuery}
  */
-class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
+record DefaultColumnDeleteQuery(String columnFamily, ColumnCondition columnCondition, List<String> columns)
+        implements ColumnDeleteQuery {
 
-    private final String columnFamily;
-
-    private final ColumnCondition condition;
-
-    private final List<String> columns;
-
-    DefaultColumnDeleteQuery(String columnFamily, ColumnCondition condition, List<String> columns) {
-        this.columnFamily = columnFamily;
-        this.condition = ofNullable(condition).map(ColumnCondition::readOnly).orElse(null);
-        this.columns = columns;
-    }
 
     @Override
     public String name() {
@@ -49,7 +39,7 @@ class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
 
     @Override
     public Optional<ColumnCondition> condition() {
-        return ofNullable(condition);
+        return ofNullable(columnCondition);
     }
 
     @Override
@@ -57,29 +47,4 @@ class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
         return unmodifiableList(columns);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ColumnDeleteQuery that)) {
-            return false;
-        }
-        return Objects.equals(columnFamily, that.name()) &&
-                Objects.equals(condition, that.condition().orElse(null)) &&
-                Objects.equals(columns, that.columns());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(columnFamily, condition, columns);
-    }
-
-    @Override
-    public String toString() {
-        return  "DefaultColumnDeleteQuery{" + "columnFamily='" + columnFamily + '\'' +
-                ", condition=" + condition +
-                ", columns=" + columns +
-                '}';
-    }
 }
