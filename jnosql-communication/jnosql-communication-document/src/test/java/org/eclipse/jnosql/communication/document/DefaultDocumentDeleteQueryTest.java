@@ -34,12 +34,12 @@ public class DefaultDocumentDeleteQueryTest {
 
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         query = delete().from("columnFamily").build();
     }
 
     @Test
-    public void shouldNotEditColumns() {
+    void shouldNotEditColumns() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<String> documents = query.documents();
             assertTrue(documents.isEmpty());
@@ -48,7 +48,7 @@ public class DefaultDocumentDeleteQueryTest {
     }
 
     @Test
-    public void shouldGenerateEquals() {
+    void shouldGenerateEquals() {
         DocumentDeleteQuery query = delete().from("columnFamily").build();
         DocumentDeleteQuery query2 = delete().from("columnFamily").build();
 
@@ -56,7 +56,7 @@ public class DefaultDocumentDeleteQueryTest {
     }
 
     @Test
-    public void shouldGenerateHashCode() {
+    void shouldGenerateHashCode() {
         DocumentDeleteQuery query = delete().from("columnFamily").build();
         DocumentDeleteQuery query2 = delete().from("columnFamily").build();
 

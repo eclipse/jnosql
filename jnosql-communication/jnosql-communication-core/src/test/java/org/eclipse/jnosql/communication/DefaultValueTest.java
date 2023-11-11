@@ -167,14 +167,14 @@ class DefaultValueTest {
     }
 
     @Test
-    public void shouldHasCode(){
+    void shouldHasCode(){
         var value = Value.of(asList(10, 20, 30));
         var valueB = Value.of(asList(10, 20, 30));
         Assertions.assertThat(value.hashCode()).isEqualTo(valueB.hashCode());
     }
 
     @Test
-    public void shouldEquals(){
+    void shouldEquals(){
         var value = Value.of(asList(10, 20, 30));
         var valueB = Value.of(asList(10, 20, 30));
         Assertions.assertThat(value).isEqualTo(valueB);

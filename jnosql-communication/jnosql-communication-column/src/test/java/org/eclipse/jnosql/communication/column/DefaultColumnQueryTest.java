@@ -39,7 +39,7 @@ public class DefaultColumnQueryTest {
     }
 
     @Test
-    public void shouldNotRemoveColumns() {
+    void shouldNotRemoveColumns() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<String> columns = query.columns();
             assertTrue(columns.isEmpty());
@@ -48,7 +48,7 @@ public class DefaultColumnQueryTest {
     }
 
     @Test
-    public void shouldNotRemoveSort() {
+    void shouldNotRemoveSort() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<Sort> sorts = query.sorts();
             assertTrue(sorts.isEmpty());
@@ -57,7 +57,7 @@ public class DefaultColumnQueryTest {
     }
 
     @Test
-    public void shouldConvertCountyBy() {
+    void shouldConvertCountyBy() {
         ColumnQuery query = ColumnQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
@@ -73,7 +73,7 @@ public class DefaultColumnQueryTest {
     }
 
     @Test
-    public void shouldConvertExistsBy() {
+    void shouldConvertExistsBy() {
         ColumnQuery query = ColumnQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
@@ -89,7 +89,7 @@ public class DefaultColumnQueryTest {
     }
 
     @Test
-    public void shouldHasCode(){
+    void shouldHasCode(){
         ColumnQuery query = ColumnQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
@@ -101,7 +101,7 @@ public class DefaultColumnQueryTest {
     }
 
     @Test
-    public void shouldEquals(){
+    void shouldEquals(){
         ColumnQuery query = ColumnQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
