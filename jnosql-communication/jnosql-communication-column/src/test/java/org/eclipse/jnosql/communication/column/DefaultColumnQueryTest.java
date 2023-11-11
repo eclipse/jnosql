@@ -87,4 +87,28 @@ public class DefaultColumnQueryTest {
         ColumnCondition condition = countQuery.condition().orElseThrow();
         Assertions.assertEquals(Condition.EQUALS, condition.condition());
     }
+
+    @Test
+    public void shouldHasCode(){
+        ColumnQuery query = ColumnQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+        ColumnQuery query2 = ColumnQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        Assertions.assertEquals(query.hashCode(), query2.hashCode());
+    }
+
+    @Test
+    public void shouldEquals(){
+        ColumnQuery query = ColumnQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+        ColumnQuery query2 = ColumnQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        Assertions.assertEquals(query, query2);
+    }
 }
