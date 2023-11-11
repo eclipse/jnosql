@@ -21,6 +21,7 @@ import jakarta.data.repository.Sort;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.unmodifiableList;
@@ -45,6 +46,28 @@ record DefaultDocumentQuery(long limit, long skip, String name,
     public List<String> documents() {
         return unmodifiableList(documents);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DocumentQuery that)) {
+            return false;
+        }
+        return limit == that.limit() &&
+                skip == that.skip() &&
+                Objects.equals(name, that.name()) &&
+                Objects.equals(documentCondition, that.condition().orElse(null)) &&
+                Objects.equals(sorts, that.sorts()) &&
+                Objects.equals(documents, that.documents());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(limit, skip, name, documentCondition, sorts, documents);
+    }
+
 
     static DocumentQuery countBy(DocumentQuery query) {
         return new DefaultDocumentQuery(0, 0, query.name(), query.documents(),
