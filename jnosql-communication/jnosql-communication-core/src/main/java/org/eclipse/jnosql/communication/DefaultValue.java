@@ -66,4 +66,8 @@ record DefaultValue(Object value)  implements Value {
         return Objects.equals(value, that.get());
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(value);
+    }
 }
