@@ -92,7 +92,7 @@ class AbstractBeanTest {
 
 
     private AbstractBean<Object> getInstance(){
-        return new AbstractBean<Object>() {
+        return new AbstractBean<>() {
             @Override
             public Class<?> getBeanClass() {
                 return null;

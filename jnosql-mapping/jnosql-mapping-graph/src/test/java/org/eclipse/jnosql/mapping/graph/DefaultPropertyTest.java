@@ -73,8 +73,8 @@ public class DefaultPropertyTest {
     @Test
     public void shouldUnsupportedOperationException() {
         Property element = DefaultProperty.of("key", 10L);
-        assertThrows(UnsupportedOperationException.class, () -> element.remove());
-        assertThrows(UnsupportedOperationException.class, () -> element.element());
+        assertThrows(UnsupportedOperationException.class, element::remove);
+        assertThrows(UnsupportedOperationException.class, element::element);
     }
 
     @Test
