@@ -81,7 +81,7 @@
         <checkstyle.excludes>**/jnosql/query/grammar/**</checkstyle.excludes>
         <weld.se.core.version>5.1.1.SP2</weld.se.core.version>
         <yasson.version>3.0.3</yasson.version>
-        <microprofile.config.version>3.0.3</microprofile.config.version>
+        <microprofile.config.version>3.1</microprofile.config.version>
         <smallrye.config.version>3.4.4</smallrye.config.version>
 
         <checkstyle.version>10.12.4</checkstyle.version>
