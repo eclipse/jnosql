@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,7 +43,7 @@ public class DefaultDocumentQueryTest {
 
 
     @Test
-    public void shouldNotRemoveColumns() {
+    void shouldNotRemoveColumns() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<String> columns = query.documents();
             assertTrue(columns.isEmpty());
@@ -52,7 +53,7 @@ public class DefaultDocumentQueryTest {
 
 
     @Test
-    public void shouldNotRemoveSort() {
+    void shouldNotRemoveSort() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<Sort> sorts = query.sorts();
             assertTrue(sorts.isEmpty());
@@ -61,7 +62,7 @@ public class DefaultDocumentQueryTest {
     }
 
     @Test
-    public void shouldConvertCountyBy() {
+    void shouldConvertCountyBy() {
         DocumentQuery query = DocumentQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
@@ -77,7 +78,7 @@ public class DefaultDocumentQueryTest {
     }
 
     @Test
-    public void shouldConvertExistsBy() {
+    void shouldConvertExistsBy() {
         DocumentQuery query = DocumentQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
@@ -90,5 +91,31 @@ public class DefaultDocumentQueryTest {
         assertTrue(countQuery.sorts().isEmpty());
         DocumentCondition condition = countQuery.condition().orElseThrow();
         Assertions.assertEquals(Condition.EQUALS, condition.condition());
+    }
+
+    @Test
+    void shouldGenerateEquals(){
+        DocumentQuery query = DocumentQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        DocumentQuery query2 = DocumentQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        assertThat(query).isEqualTo(query2);
+    }
+
+    @Test
+    void shouldGenerateHashCode(){
+        DocumentQuery query = DocumentQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        DocumentQuery query2 = DocumentQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        assertThat(query.hashCode()).isEqualTo(query2.hashCode());
     }
 }

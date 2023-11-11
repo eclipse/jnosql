@@ -26,6 +26,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class UpdateQueryTest {
 
     @ParameterizedTest
@@ -46,23 +48,31 @@ public class UpdateQueryTest {
     }
 
     @Test
-    public void shouldCreateFromMethodFactory() {
+    void shouldCreateFromMethodFactory() {
         UpdateQuery query = UpdateQuery.parse("update Person (name = \"Ada Lovelace\")");
         Assertions.assertNotNull(query);
     }
 
     @Test
-    public void shouldEquals() {
+    void shouldEquals() {
         String text = "update Person (name = \"Ada Lovelace\")";
         UpdateQuery query = UpdateQuery.parse(text);
         Assertions.assertEquals(query, UpdateQuery.parse(text));
     }
 
     @Test
-    public void shouldHashCode() {
+    void shouldHashCode() {
         String text = "update Person (name = \"Ada Lovelace\")";
         UpdateQuery query = UpdateQuery.parse(text);
         Assertions.assertEquals(query.hashCode(), UpdateQuery.parse(text).hashCode());
+    }
+
+    @Test
+    void shouldToString(){
+        String text = "update Person (name = \"Ada Lovelace\")";
+        UpdateQuery query = UpdateQuery.parse(text);
+        assertThat(query.toString())
+                .isEqualTo("update Person ([name EQUALS 'Ada Lovelace']) ");
     }
 
     private void testQuery(String query) {

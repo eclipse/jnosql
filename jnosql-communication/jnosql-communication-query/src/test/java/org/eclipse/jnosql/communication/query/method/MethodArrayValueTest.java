@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MethodArrayValueTest {
 
     @Test
-    public void shouldReturnArrayType() {
+    void shouldReturnArrayType() {
         ArrayQueryValue array = MethodArrayValue.of("method");
         assertThat(array).isNotNull();
         ValueType type = array.type();
@@ -30,19 +30,21 @@ class MethodArrayValueTest {
     }
 
     @Test
-    public void shouldReturnArrayValue() {
+    void shouldReturnArrayValue() {
         ArrayQueryValue array = MethodArrayValue.of("name");
         assertThat(array.get()).isInstanceOf(QueryValue[].class);
     }
 
     @Test
-    public void shouldEquals(){
-        ArrayQueryValue array = MethodArrayValue.of("name");
+    void shouldEquals(){
+        var array = MethodArrayValue.of("name");
+        var array2 = MethodArrayValue.of("name");
+        Assertions.assertNotEquals(array, array2);
         Assertions.assertEquals(array, array);
     }
 
     @Test
-    public void shouldHashCode(){
+    void shouldHashCode(){
         ArrayQueryValue array = MethodArrayValue.of("name");
         Assertions.assertEquals(array.hashCode(), array.hashCode());
     }

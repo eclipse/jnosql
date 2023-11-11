@@ -18,6 +18,7 @@
  */
 package org.eclipse.jnosql.communication;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -163,5 +164,19 @@ class DefaultValueTest {
             });
         }).isInstanceOf(UnsupportedOperationException.class)
                 .hasMessage("The type TypeReference{type=java.util.Map<java.lang.String, java.util.List<java.lang.String>>} is not supported");
+    }
+
+    @Test
+    void shouldHasCode(){
+        var value = Value.of(asList(10, 20, 30));
+        var valueB = Value.of(asList(10, 20, 30));
+        Assertions.assertThat(value.hashCode()).isEqualTo(valueB.hashCode());
+    }
+
+    @Test
+    void shouldEquals(){
+        var value = Value.of(asList(10, 20, 30));
+        var valueB = Value.of(asList(10, 20, 30));
+        Assertions.assertThat(value).isEqualTo(valueB);
     }
 }

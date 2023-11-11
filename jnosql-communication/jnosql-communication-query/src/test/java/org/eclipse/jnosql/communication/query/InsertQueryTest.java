@@ -26,6 +26,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class InsertQueryTest {
 
     @ParameterizedTest
@@ -41,26 +43,32 @@ public class InsertQueryTest {
 
     @ParameterizedTest
     @ArgumentsSource(WrongInsertQueryArgumentProvider.class)
-    public void shouldNotExecute(String query) {
+    void shouldNotExecute(String query) {
         Assertions.assertThrows(QueryException.class, () -> testQuery(query));
     }
 
     @Test
-    public void shouldCreateFromStaticMethod() {
+    void shouldCreateFromStaticMethod() {
         InsertQuery query = InsertQuery.parse("insert Person (name = \"Ada Lovelace\")");
         Assertions.assertNotNull(query);
     }
 
     @Test
-    public void shouldEquals(){
+    void shouldEquals(){
         String text = "insert Person (name = \"Ada Lovelace\")";
         Assertions.assertEquals(InsertQuery.parse(text), InsertQuery.parse(text));
     }
 
     @Test
-    public void shouldHashCode() {
+    void shouldHashCode() {
         String text = "insert Person (name = \"Ada Lovelace\")";
         Assertions.assertEquals(InsertQuery.parse(text).hashCode(), InsertQuery.parse(text).hashCode());
+    }
+
+    @Test
+    void shouldToString() {
+        String text = "insert Person (name = \"Ada Lovelace\")";
+        assertThat(InsertQuery.parse(text).toString()).isNotBlank();
     }
 
     private void testQuery(String query) {

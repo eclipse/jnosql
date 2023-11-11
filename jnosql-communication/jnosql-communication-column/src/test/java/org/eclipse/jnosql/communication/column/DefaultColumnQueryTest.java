@@ -39,7 +39,7 @@ public class DefaultColumnQueryTest {
     }
 
     @Test
-    public void shouldNotRemoveColumns() {
+    void shouldNotRemoveColumns() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<String> columns = query.columns();
             assertTrue(columns.isEmpty());
@@ -48,7 +48,7 @@ public class DefaultColumnQueryTest {
     }
 
     @Test
-    public void shouldNotRemoveSort() {
+    void shouldNotRemoveSort() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<Sort> sorts = query.sorts();
             assertTrue(sorts.isEmpty());
@@ -57,7 +57,7 @@ public class DefaultColumnQueryTest {
     }
 
     @Test
-    public void shouldConvertCountyBy() {
+    void shouldConvertCountyBy() {
         ColumnQuery query = ColumnQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
@@ -73,7 +73,7 @@ public class DefaultColumnQueryTest {
     }
 
     @Test
-    public void shouldConvertExistsBy() {
+    void shouldConvertExistsBy() {
         ColumnQuery query = ColumnQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
@@ -86,5 +86,29 @@ public class DefaultColumnQueryTest {
         assertTrue(countQuery.sorts().isEmpty());
         ColumnCondition condition = countQuery.condition().orElseThrow();
         Assertions.assertEquals(Condition.EQUALS, condition.condition());
+    }
+
+    @Test
+    void shouldHasCode(){
+        ColumnQuery query = ColumnQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+        ColumnQuery query2 = ColumnQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        Assertions.assertEquals(query.hashCode(), query2.hashCode());
+    }
+
+    @Test
+    void shouldEquals(){
+        ColumnQuery query = ColumnQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+        ColumnQuery query2 = ColumnQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        Assertions.assertEquals(query, query2);
     }
 }

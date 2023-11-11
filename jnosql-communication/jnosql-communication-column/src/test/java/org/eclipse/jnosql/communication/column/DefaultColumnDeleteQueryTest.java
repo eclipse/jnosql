@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -36,11 +37,25 @@ public class DefaultColumnDeleteQueryTest {
     }
 
     @Test
-    public void shouldNotEditColumns() {
+    void shouldNotEditColumns() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<String> columns = query.columns();
             assertTrue(columns.isEmpty());
             columns.clear();
         });
+    }
+
+    @Test
+    void shouldHasCode(){
+        var query =ColumnDeleteQuery.delete().from("columnFamily").build();
+        var query1 =ColumnDeleteQuery.delete().from("columnFamily").build();
+        assertThat(query.hashCode()).isEqualTo(query1.hashCode());
+    }
+
+    @Test
+    void shouldEquals(){
+        var query =ColumnDeleteQuery.delete().from("columnFamily").build();
+        var query1 =ColumnDeleteQuery.delete().from("columnFamily").build();
+        assertThat(query).isEqualTo(query1);
     }
 }
