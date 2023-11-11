@@ -12,6 +12,7 @@
 
 package org.eclipse.jnosql.communication.query;
 
+import java.util.Arrays;
 
 /**
  * A sequence of elements that can be either {@link NumberQueryValue} or {@link StringQueryValue}
@@ -19,9 +20,31 @@ package org.eclipse.jnosql.communication.query;
 record DefaultArrayQueryValue(QueryValue<?>[] values) implements ArrayQueryValue {
 
 
+
     @Override
     public QueryValue<?>[] get() {
         return values;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DefaultArrayQueryValue that)) {
+            return false;
+        }
+        return Arrays.equals(values, that.values);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(values);
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(values);
     }
 
     static DefaultArrayQueryValue of(QueryValue<?>[] values) {
