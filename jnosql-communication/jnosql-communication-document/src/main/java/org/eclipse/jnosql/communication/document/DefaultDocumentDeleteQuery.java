@@ -19,7 +19,6 @@ package org.eclipse.jnosql.communication.document;
 
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.unmodifiableList;
@@ -28,58 +27,17 @@ import static java.util.Optional.ofNullable;
 /**
  * The default implementation of {@link DocumentDeleteQuery}
  */
-final class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
+record DefaultDocumentDeleteQuery (String name,
 
-    private final String documentCollection;
-
-    private final DocumentCondition condition;
-
-    private final List<String> documents;
-
-    DefaultDocumentDeleteQuery(String documentCollection, DocumentCondition condition, List<String> documents) {
-        this.documentCollection = documentCollection;
-        this.condition = ofNullable(condition).map(DocumentCondition::readOnly).orElse(null);
-        this.documents = documents;
-    }
-
-    @Override
-    public String name() {
-        return documentCollection;
-    }
+        DocumentCondition documentCondition, List<String> documents) implements DocumentDeleteQuery {
 
     @Override
     public Optional<DocumentCondition> condition() {
-        return ofNullable(condition);
+        return ofNullable(documentCondition).map(DocumentCondition::readOnly);
     }
 
     @Override
     public List<String> documents() {
         return unmodifiableList(documents);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof DocumentDeleteQuery that)) {
-            return false;
-        }
-        return Objects.equals(documentCollection, that.name()) &&
-                Objects.equals(condition, that.condition().orElse(null)) &&
-                Objects.equals(documents, that.documents());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(documentCollection, condition, documents);
-    }
-
-    @Override
-    public String toString() {
-        return  "DefaultDocumentDeleteQuery{" + "documentCollection='" + documentCollection + '\'' +
-                ", condition=" + condition +
-                ", documents=" + documents +
-                '}';
     }
 }

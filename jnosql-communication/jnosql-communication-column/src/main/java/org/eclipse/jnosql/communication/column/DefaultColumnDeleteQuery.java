@@ -19,7 +19,6 @@ package org.eclipse.jnosql.communication.column;
 
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.unmodifiableList;
