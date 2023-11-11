@@ -22,38 +22,12 @@ import static java.util.Collections.unmodifiableList;
  * and ({@link org.eclipse.jnosql.communication.Condition#AND}), or ({@link org.eclipse.jnosql.communication.Condition#OR})
  * and negation ({@link org.eclipse.jnosql.communication.Condition#NOT}).
  */
-public class ConditionQueryValue  implements QueryValue<List<QueryCondition>> {
+public record ConditionQueryValue(List<QueryCondition> conditions)  implements QueryValue<List<QueryCondition>> {
 
-    private final List<QueryCondition> conditions;
-
-    private ConditionQueryValue(List<QueryCondition> conditions) {
-        this.conditions = conditions;
-    }
 
     @Override
     public List<QueryCondition> get() {
         return unmodifiableList(conditions);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ConditionQueryValue that)) {
-            return false;
-        }
-        return Objects.equals(conditions, that.conditions);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(conditions);
-    }
-
-    @Override
-    public String toString() {
-        return conditions.toString();
     }
 
     /**
