@@ -26,6 +26,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class GetQueryTest {
 
     @ParameterizedTest
@@ -61,6 +63,13 @@ public class GetQueryTest {
     public void shouldHashCode() {
         String text = "get \"Ada Lovelace\"";
         Assertions.assertEquals(GetQuery.parse(text).hashCode(), GetQuery.parse(text).hashCode());
+    }
+
+    @Test
+    public void shouldToString(){
+        String text = "get \"Ada Lovelace\"";
+        assertThat((GetQuery.parse(text).toString()))
+                .isEqualTo("['Ada Lovelace']");
     }
 
     private void testQuery(String query) {
