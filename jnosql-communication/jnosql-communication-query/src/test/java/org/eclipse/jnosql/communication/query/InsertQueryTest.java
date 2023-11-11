@@ -26,6 +26,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class InsertQueryTest {
 
     @ParameterizedTest
@@ -61,6 +63,12 @@ public class InsertQueryTest {
     public void shouldHashCode() {
         String text = "insert Person (name = \"Ada Lovelace\")";
         Assertions.assertEquals(InsertQuery.parse(text).hashCode(), InsertQuery.parse(text).hashCode());
+    }
+
+    @Test
+    public void shouldToString() {
+        String text = "insert Person (name = \"Ada Lovelace\")";
+        assertThat(InsertQuery.parse(text).toString()).isNotBlank();
     }
 
     private void testQuery(String query) {
