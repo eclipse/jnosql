@@ -11,6 +11,7 @@
  */
 package org.eclipse.jnosql.communication.query;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -53,5 +54,11 @@ class FunctionQueryValueTest {
     public void shouldHashCode() {
         FunctionQueryValue queryValue = new FunctionQueryValue(function);
         assertEquals(queryValue.hashCode(), new FunctionQueryValue(function).hashCode());
+    }
+
+    @Test
+    public void shouldToString(){
+        var queryValue = new FunctionQueryValue(function);
+        Assertions.assertEquals(queryValue.toString(), function.toString());
     }
 }
