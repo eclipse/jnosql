@@ -38,10 +38,9 @@ public final class NumberQueryValue implements QueryValue<Number> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof NumberQueryValue)) {
+        if (!(o instanceof NumberQueryValue that)) {
             return false;
         }
-        NumberQueryValue that = (NumberQueryValue) o;
         return Objects.equals(number, that.number);
     }
 

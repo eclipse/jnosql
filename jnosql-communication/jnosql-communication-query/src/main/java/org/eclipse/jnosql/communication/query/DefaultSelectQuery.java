@@ -95,10 +95,9 @@ final class DefaultSelectQuery implements SelectQuery {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultSelectQuery)) {
+        if (!(o instanceof DefaultSelectQuery that)) {
             return false;
         }
-        DefaultSelectQuery that = (DefaultSelectQuery) o;
         return skip == that.skip &&
                 limit == that.limit &&
                 Objects.equals(entity, that.entity) &&

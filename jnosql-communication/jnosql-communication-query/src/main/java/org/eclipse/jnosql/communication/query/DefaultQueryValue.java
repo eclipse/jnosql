@@ -36,10 +36,9 @@ final class DefaultQueryValue implements ParamQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultQueryValue)) {
+        if (!(o instanceof DefaultQueryValue that)) {
             return false;
         }
-        DefaultQueryValue that = (DefaultQueryValue) o;
         return Objects.equals(value, that.value);
     }
 

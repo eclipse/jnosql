@@ -87,10 +87,9 @@ class DefaultDocumentQuery implements DocumentQuery {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DocumentQuery)) {
+        if (!(o instanceof DocumentQuery that)) {
             return false;
         }
-        DocumentQuery that = (DocumentQuery) o;
         return limit == that.limit() &&
                 skip == that.skip() &&
                 Objects.equals(documentCollection, that.name()) &&

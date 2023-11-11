@@ -36,10 +36,9 @@ public final class StringQueryValue implements QueryValue<String> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof StringQueryValue)) {
+        if (!(o instanceof StringQueryValue that)) {
             return false;
         }
-        StringQueryValue that = (StringQueryValue) o;
         return Objects.equals(value, that.value);
     }
 

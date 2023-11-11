@@ -289,10 +289,9 @@ public class DocumentEntity {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DocumentEntity)) {
+        if (!(o instanceof DocumentEntity that)) {
             return false;
         }
-        DocumentEntity that = (DocumentEntity) o;
         return Objects.equals(this.documents().stream().sorted(comparing(Document::name)).collect(toList()),
                 that.documents().stream().sorted(comparing(Document::name)).collect(toList())) &&
                 Objects.equals(name, that.name());

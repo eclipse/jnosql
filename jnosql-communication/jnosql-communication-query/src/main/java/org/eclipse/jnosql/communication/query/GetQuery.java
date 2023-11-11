@@ -43,10 +43,9 @@ public final class GetQuery implements Query {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof GetQuery)) {
+        if (!(o instanceof GetQuery that)) {
             return false;
         }
-        GetQuery that = (GetQuery) o;
         return Objects.equals(keys, that.keys);
     }
 

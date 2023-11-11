@@ -83,10 +83,9 @@ public final class InsertQuery implements Query {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof InsertQuery)) {
+        if (!(o instanceof InsertQuery that)) {
             return false;
         }
-        InsertQuery that = (InsertQuery) o;
         return Objects.equals(entity, that.entity) &&
                 Objects.equals(duration, that.duration) &&
                 Objects.equals(conditions, that.conditions);

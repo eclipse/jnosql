@@ -41,10 +41,9 @@ public final class Where {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Where)) {
+        if (!(o instanceof Where that)) {
             return false;
         }
-        Where that = (Where) o;
         return Objects.equals(condition, that.condition);
     }
 

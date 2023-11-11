@@ -66,10 +66,9 @@ final class DefaultValue  implements Value {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Value)) {
+        if (!(o instanceof Value that)) {
             return false;
         }
-        Value that = (Value) o;
         return Objects.equals(value, that.get());
     }
 

@@ -39,10 +39,9 @@ public final class FunctionQueryValue implements QueryValue<Function> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof FunctionQueryValue)) {
+        if (!(o instanceof FunctionQueryValue that)) {
             return false;
         }
-        FunctionQueryValue that = (FunctionQueryValue) o;
         return Objects.equals(function, that.function);
     }
 

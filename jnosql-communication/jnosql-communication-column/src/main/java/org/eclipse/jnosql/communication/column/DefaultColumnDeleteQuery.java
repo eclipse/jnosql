@@ -62,10 +62,9 @@ class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ColumnDeleteQuery)) {
+        if (!(o instanceof ColumnDeleteQuery that)) {
             return false;
         }
-        ColumnDeleteQuery that = (ColumnDeleteQuery) o;
         return Objects.equals(columnFamily, that.name()) &&
                 Objects.equals(condition, that.condition().orElse(null)) &&
                 Objects.equals(columns, that.columns());
