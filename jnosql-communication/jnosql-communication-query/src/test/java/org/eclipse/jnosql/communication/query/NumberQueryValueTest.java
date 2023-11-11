@@ -37,7 +37,6 @@ class NumberQueryValueTest {
     @Test
     public void shouldEquals() {
         assertEquals(new NumberQueryValue(10), new NumberQueryValue(10));
-
     }
 
     @Test
