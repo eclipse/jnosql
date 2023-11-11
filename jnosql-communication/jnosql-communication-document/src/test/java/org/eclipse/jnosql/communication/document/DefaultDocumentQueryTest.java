@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -90,5 +91,31 @@ public class DefaultDocumentQueryTest {
         assertTrue(countQuery.sorts().isEmpty());
         DocumentCondition condition = countQuery.condition().orElseThrow();
         Assertions.assertEquals(Condition.EQUALS, condition.condition());
+    }
+
+    @Test
+    public void shouldGenerateEquals(){
+        DocumentQuery query = DocumentQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        DocumentQuery query2 = DocumentQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        assertThat(query).isEqualTo(query2);
+    }
+
+    @Test
+    public void shouldGenerateHashCode(){
+        DocumentQuery query = DocumentQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        DocumentQuery query2 = DocumentQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        assertThat(query.hashCode()).isEqualTo(query2.hashCode());
     }
 }
