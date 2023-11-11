@@ -39,7 +39,7 @@ class NumberQueryValueTest {
         NumberQueryValue value = new NumberQueryValue(10);
         assertEquals(new NumberQueryValue(10), new NumberQueryValue(10));
         assertNotEquals(new NumberQueryValue(10), new NumberQueryValue(1));
-        assertNotEquals(value, value);
+        assertEquals(value, value);
         assertNotEquals(value, "value");
     }
 

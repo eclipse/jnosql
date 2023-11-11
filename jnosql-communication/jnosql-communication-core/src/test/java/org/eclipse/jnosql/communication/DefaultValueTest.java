@@ -179,7 +179,7 @@ class DefaultValueTest {
         var valueB = Value.of(asList(10, 20, 30));
         Assertions.assertThat(value).isEqualTo(valueB);
         Assertions.assertThat(value).isEqualTo(value);
-        Assertions.assertThat(value).isEqualTo("value");
+        Assertions.assertThat(value).isNotEqualTo("value");
     }
 
     @Test
