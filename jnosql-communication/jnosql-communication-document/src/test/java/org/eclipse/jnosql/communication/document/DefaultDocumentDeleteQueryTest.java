@@ -23,6 +23,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.jnosql.communication.document.DocumentDeleteQuery.delete;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultDocumentDeleteQueryTest {
@@ -33,7 +35,7 @@ public class DefaultDocumentDeleteQueryTest {
 
     @BeforeEach
     public void setUp() {
-        query = DocumentDeleteQuery.delete().from("columnFamily").build();
+        query = delete().from("columnFamily").build();
     }
 
     @Test
@@ -43,5 +45,21 @@ public class DefaultDocumentDeleteQueryTest {
             assertTrue(documents.isEmpty());
             documents.clear();
         });
+    }
+
+    @Test
+    public void shouldGenerateEquals() {
+        DocumentDeleteQuery query = delete().from("columnFamily").build();
+        DocumentDeleteQuery query2 = delete().from("columnFamily").build();
+
+        assertThat(query).isEqualTo(query2);
+    }
+
+    @Test
+    public void shouldGenerateHashCode() {
+        DocumentDeleteQuery query = delete().from("columnFamily").build();
+        DocumentDeleteQuery query2 = delete().from("columnFamily").build();
+
+        assertThat(query.hashCode()).isEqualTo(query2.hashCode());
     }
 }
