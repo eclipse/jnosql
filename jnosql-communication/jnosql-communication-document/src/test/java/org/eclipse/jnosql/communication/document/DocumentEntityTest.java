@@ -407,4 +407,28 @@ public class DocumentEntityTest {
         assertTrue(collection.isEmpty());
     }
 
+    @Test
+    public void shouldHashCode(){
+        List<Document> documents = List.of(Document.of("name", 10));
+        var collection = DocumentEntity.of("documentCollection", documents);
+        var collection2 = DocumentEntity.of("documentCollection", documents);
+        assertThat(collection.hashCode()).isEqualTo(collection2.hashCode());
+    }
+
+    @Test
+    public void shouldEquals(){
+        List<Document> documents = List.of(Document.of("name", 10));
+        var collection = DocumentEntity.of("documentCollection", documents);
+        var collection2 = DocumentEntity.of("documentCollection", documents);
+        assertThat(collection).isEqualTo(collection2);
+    }
+
+    @Test
+    public void shouldToString(){
+        List<Document> documents = List.of(Document.of("name", 10));
+        var collection = DocumentEntity.of("documentCollection", documents);
+        assertThat(collection.toString()).isEqualTo("DefaultDocumentEntity{documents={name=DefaultDocument" +
+                "[name=name, value=DefaultValue[value=10]]}, name='documentCollection'}");
+    }
+
 }
