@@ -66,10 +66,9 @@ public class DeleteQuery implements Query {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DeleteQuery)) {
+        if (!(o instanceof DeleteQuery that)) {
             return false;
         }
-        DeleteQuery that = (DeleteQuery) o;
         return Objects.equals(entity, that.entity) &&
                 Objects.equals(fields, that.fields) &&
                 Objects.equals(where, that.where);

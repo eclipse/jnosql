@@ -40,10 +40,9 @@ public class ConditionQueryValue  implements QueryValue<List<QueryCondition>> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ConditionQueryValue)) {
+        if (!(o instanceof ConditionQueryValue that)) {
             return false;
         }
-        ConditionQueryValue that = (ConditionQueryValue) o;
         return Objects.equals(conditions, that.conditions);
     }
 

@@ -41,10 +41,9 @@ final class DefaultFunction implements Function {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultFunction)) {
+        if (!(o instanceof DefaultFunction that)) {
             return false;
         }
-        DefaultFunction that = (DefaultFunction) o;
         return Objects.equals(name, that.name) &&
                 Arrays.equals(args, that.args);
     }

@@ -66,10 +66,9 @@ public final class UpdateQuery implements Query {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof UpdateQuery)) {
+        if (!(o instanceof UpdateQuery that)) {
             return false;
         }
-        UpdateQuery that = (UpdateQuery) o;
         return Objects.equals(entity, that.entity) &&
                 Objects.equals(conditions, that.conditions);
     }

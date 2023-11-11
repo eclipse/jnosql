@@ -35,10 +35,9 @@ final class MethodParamQueryValue implements ParamQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof MethodParamQueryValue)) {
+        if (!(o instanceof MethodParamQueryValue that)) {
             return false;
         }
-        MethodParamQueryValue that = (MethodParamQueryValue) o;
         return Objects.equals(value, that.value);
     }
 

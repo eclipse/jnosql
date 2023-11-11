@@ -65,7 +65,7 @@ public final class BooleanQueryValue implements QueryValue<Boolean>{
                 '}';
     }
 
-    public static QueryValue<?> of(QueryParser.BoolContext context) {
+    public static QueryValue<Boolean> of(QueryParser.BoolContext context) {
         String text = context.BOOLEAN().getText();
         return new BooleanQueryValue(Boolean.parseBoolean(text));
     }

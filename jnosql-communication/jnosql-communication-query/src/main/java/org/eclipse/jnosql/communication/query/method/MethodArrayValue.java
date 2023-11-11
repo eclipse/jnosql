@@ -35,10 +35,9 @@ final class MethodArrayValue implements ArrayQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof MethodArrayValue)) {
+        if (!(o instanceof MethodArrayValue that)) {
             return false;
         }
-        MethodArrayValue that = (MethodArrayValue) o;
         return Arrays.equals(values, that.values);
     }
 

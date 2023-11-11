@@ -135,7 +135,7 @@ class ParamsTest {
     @DisplayName("given a filled Params")
     class GivenFilledParamsTest {
 
-        class Scenario {
+        static class Scenario {
 
             final Params params;
             final List<String> parameterNameList;

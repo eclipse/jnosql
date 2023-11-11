@@ -701,7 +701,7 @@ class SelectQueryConverterTest {
         assertEquals("enable", condition.name());
         assertTrue(value instanceof BooleanQueryValue);
         Boolean result = BooleanQueryValue.class.cast(value).get();
-        assertThat(result).isEqualTo(true);
+        assertThat(result).isTrue();
     }
 
 

@@ -35,10 +35,9 @@ final class DefaultArrayQueryValue implements ArrayQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultArrayQueryValue)) {
+        if (!(o instanceof DefaultArrayQueryValue that)) {
             return false;
         }
-        DefaultArrayQueryValue that = (DefaultArrayQueryValue) o;
         return Arrays.equals(values, that.values);
     }
 

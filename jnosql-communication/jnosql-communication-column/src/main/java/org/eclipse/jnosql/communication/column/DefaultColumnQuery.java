@@ -91,10 +91,9 @@ class DefaultColumnQuery implements ColumnQuery {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ColumnQuery)) {
+        if (!(o instanceof ColumnQuery that)) {
             return false;
         }
-        ColumnQuery that = (ColumnQuery) o;
         return maxResults == that.limit() &&
                 firstResult == that.skip() &&
                 Objects.equals(columnFamily, that.name()) &&

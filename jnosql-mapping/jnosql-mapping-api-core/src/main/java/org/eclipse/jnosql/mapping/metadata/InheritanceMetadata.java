@@ -19,23 +19,8 @@ import java.util.Objects;
 /**
  * The mapping information about {@link org.eclipse.jnosql.mapping.Inheritance}
  */
-public final class InheritanceMetadata {
-
-    private final String discriminatorValue;
-
-    private final String discriminatorColumn;
-
-    private final Class<?> parent;
-
-    private final Class<?> entity;
-
-    public InheritanceMetadata(String discriminatorValue, String discriminatorColumn, Class<?> parent
-    , Class<?> entity) {
-        this.discriminatorValue = discriminatorValue;
-        this.discriminatorColumn = discriminatorColumn;
-        this.parent = parent;
-        this.entity = entity;
-    }
+public record InheritanceMetadata(String discriminatorValue, String discriminatorColumn, Class<?> parent,
+                                  Class<?> entity) {
 
     /**
      * Return the information from the class the annotation {@link org.eclipse.jnosql.mapping.DiscriminatorValue}
@@ -43,6 +28,7 @@ public final class InheritanceMetadata {
      *
      * @return the {@link org.eclipse.jnosql.mapping.DiscriminatorValue} from entity
      */
+    @Override
     public String discriminatorValue() {
         return discriminatorValue;
     }
@@ -53,6 +39,7 @@ public final class InheritanceMetadata {
      *
      * @return the {@link org.eclipse.jnosql.mapping.DiscriminatorValue} from entity
      */
+    @Override
     public String discriminatorColumn() {
         return discriminatorColumn;
     }
@@ -60,6 +47,7 @@ public final class InheritanceMetadata {
     /**
      * @return The parent class
      */
+    @Override
     public Class<?> parent() {
         return parent;
     }
@@ -67,6 +55,7 @@ public final class InheritanceMetadata {
     /**
      * @return the entity class
      */
+    @Override
     public Class<?> entity() {
         return entity;
     }

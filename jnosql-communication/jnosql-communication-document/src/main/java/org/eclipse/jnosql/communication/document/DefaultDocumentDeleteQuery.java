@@ -62,10 +62,9 @@ final class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DocumentDeleteQuery)) {
+        if (!(o instanceof DocumentDeleteQuery that)) {
             return false;
         }
-        DocumentDeleteQuery that = (DocumentDeleteQuery) o;
         return Objects.equals(documentCollection, that.name()) &&
                 Objects.equals(condition, that.condition().orElse(null)) &&
                 Objects.equals(documents, that.documents());
