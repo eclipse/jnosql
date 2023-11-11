@@ -46,4 +46,9 @@ class StringQueryValueTest {
                 , new StringQueryValue("text").hashCode());
 
     }
+
+    @Test
+    public void shouldReturnToString() {
+        assertEquals("'text'", new StringQueryValue("text").toString());
+    }
 }
