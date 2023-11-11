@@ -19,6 +19,7 @@ package org.eclipse.jnosql.communication.column;
 
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.unmodifiableList;
@@ -27,14 +28,9 @@ import static java.util.Optional.ofNullable;
 /**
  * The default implementation of {@link ColumnDeleteQuery}
  */
-record DefaultColumnDeleteQuery(String columnFamily, ColumnCondition columnCondition, List<String> columns)
+record DefaultColumnDeleteQuery(String name, ColumnCondition columnCondition, List<String> columns)
         implements ColumnDeleteQuery {
 
-
-    @Override
-    public String name() {
-        return columnFamily;
-    }
 
     @Override
     public Optional<ColumnCondition> condition() {
@@ -45,5 +41,24 @@ record DefaultColumnDeleteQuery(String columnFamily, ColumnCondition columnCondi
     public List<String> columns() {
         return unmodifiableList(columns);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ColumnDeleteQuery that)) {
+            return false;
+        }
+        return Objects.equals(name, that.name()) &&
+                Objects.equals(columnCondition, that.condition().orElse(null)) &&
+                Objects.equals(columns, that.columns());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, columnCondition, columns);
+    }
+
 
 }

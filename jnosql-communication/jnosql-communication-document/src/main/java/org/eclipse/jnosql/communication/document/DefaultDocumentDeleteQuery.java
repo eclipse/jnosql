@@ -19,6 +19,7 @@ package org.eclipse.jnosql.communication.document;
 
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.unmodifiableList;
@@ -40,4 +41,23 @@ record DefaultDocumentDeleteQuery (String name,
     public List<String> documents() {
         return unmodifiableList(documents);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DocumentDeleteQuery that)) {
+            return false;
+        }
+        return Objects.equals(name, that.name()) &&
+                Objects.equals(documentCondition, that.condition().orElse(null)) &&
+                Objects.equals(documents, that.documents());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, documentCondition, documents);
+    }
+
 }
