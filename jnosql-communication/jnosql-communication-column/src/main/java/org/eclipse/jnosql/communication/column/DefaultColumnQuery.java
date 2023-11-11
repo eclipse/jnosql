@@ -22,6 +22,7 @@ import jakarta.data.repository.Sort;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.unmodifiableList;
@@ -49,6 +50,28 @@ record DefaultColumnQuery(long limit, long skip, String name,
     public List<Sort> sorts() {
         return unmodifiableList(sorts);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ColumnQuery that)) {
+            return false;
+        }
+        return limit == that.limit() &&
+                skip == that.skip() &&
+                Objects.equals(name, that.name()) &&
+                Objects.equals(columns, that.columns()) &&
+                Objects.equals(sorts, that.sorts()) &&
+                Objects.equals(columnCondition, that.condition().orElse(null));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(limit, skip, name, columns, sorts, columnCondition);
+    }
+
 
     static ColumnQuery countBy(ColumnQuery query) {
         return new DefaultColumnQuery(0, 0, query.name(), query.columns(),
