@@ -13,38 +13,15 @@ package org.eclipse.jnosql.communication.query;
 
 import org.eclipse.jnosql.query.grammar.QueryParser;
 
-import java.util.Objects;
 
 /**
  * The default implementation of {@link ParamQueryValue}
- */
-final class DefaultQueryValue implements ParamQueryValue {
+ */ record DefaultQueryValue(String value) implements ParamQueryValue {
 
-    private final String value;
-
-    DefaultQueryValue(String value) {
-        this.value = value;
-    }
 
     @Override
     public String get() {
         return value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof DefaultQueryValue that)) {
-            return false;
-        }
-        return Objects.equals(value, that.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(value);
     }
 
     @Override
