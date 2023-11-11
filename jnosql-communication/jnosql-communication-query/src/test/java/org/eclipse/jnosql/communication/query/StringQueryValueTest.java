@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class StringQueryValueTest {
 
     @Test
-    public void shouldReturnType() {
+    void shouldReturnType() {
         StringQueryValue string = new StringQueryValue("text");
         Assertions.assertThat(string).isNotNull()
                 .extracting(StringQueryValue::type)
@@ -28,7 +28,7 @@ class StringQueryValueTest {
 
 
     @Test
-    public void shouldReturnValue() {
+    void shouldReturnValue() {
         StringQueryValue string = new StringQueryValue("text");
         Assertions.assertThat(string).isNotNull()
                 .extracting(StringQueryValue::get)
@@ -36,19 +36,19 @@ class StringQueryValueTest {
     }
 
     @Test
-    public void shouldEquals() {
+    void shouldEquals() {
         assertEquals(new StringQueryValue("text"), new StringQueryValue("text"));
     }
 
     @Test
-    public void shouldHasCode() {
+    void shouldHasCode() {
         assertEquals(new StringQueryValue("text").hashCode()
                 , new StringQueryValue("text").hashCode());
 
     }
 
     @Test
-    public void shouldReturnToString() {
+    void shouldReturnToString() {
         assertEquals("'text'", new StringQueryValue("text").toString());
     }
 }

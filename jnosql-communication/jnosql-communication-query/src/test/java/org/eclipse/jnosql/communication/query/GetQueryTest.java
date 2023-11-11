@@ -48,25 +48,25 @@ public class GetQueryTest {
     }
 
     @Test
-    public void shouldCreateFromMethodFactory(){
+    void shouldCreateFromMethodFactory(){
         GetQuery query = GetQuery.parse("get \"Ada Lovelace\"");
         Assertions.assertNotNull(query);
     }
 
     @Test
-    public void shouldEquals(){
+    void shouldEquals(){
         String text = "get \"Ada Lovelace\"";
         Assertions.assertEquals(GetQuery.parse(text), GetQuery.parse(text));
     }
 
     @Test
-    public void shouldHashCode() {
+    void shouldHashCode() {
         String text = "get \"Ada Lovelace\"";
         Assertions.assertEquals(GetQuery.parse(text).hashCode(), GetQuery.parse(text).hashCode());
     }
 
     @Test
-    public void shouldToString(){
+    void shouldToString(){
         String text = "get \"Ada Lovelace\"";
         assertThat((GetQuery.parse(text).toString()))
                 .isEqualTo("['Ada Lovelace']");

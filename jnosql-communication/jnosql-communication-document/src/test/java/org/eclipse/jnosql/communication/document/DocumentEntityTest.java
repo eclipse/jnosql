@@ -41,17 +41,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DocumentEntityTest {
 
     @Test
-    public void shouldReturnErrorWhenNameIsNull() {
+    void shouldReturnErrorWhenNameIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> DocumentEntity.of(null));
     }
 
     @Test
-    public void shouldReturnErrorWhenDocumentsIsNull() {
+    void shouldReturnErrorWhenDocumentsIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> DocumentEntity.of("entity", null));
     }
 
     @Test
-    public void shouldReturnOneDocument() {
+    void shouldReturnOneDocument() {
         DocumentEntity entity = DocumentEntity.of("entity");
         assertEquals(Integer.valueOf(0), Integer.valueOf(entity.size()));
         assertTrue(entity.isEmpty());
@@ -64,7 +64,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldDoCopy() {
+    void shouldDoCopy() {
         DocumentEntity entity = DocumentEntity.of("entity", singletonList(Document.of("name", "name")));
         DocumentEntity copy = entity.copy();
         assertNotSame(entity, copy);
@@ -73,7 +73,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldFindDocument() {
+    void shouldFindDocument() {
         Document document = Document.of("name", "name");
         DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
         Optional<Document> name = entity.find("name");
@@ -84,7 +84,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenFindDocumentIsNull() {
+    void shouldReturnErrorWhenFindDocumentIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Document document = Document.of("name", "name");
             DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
@@ -93,7 +93,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldRemoveDocumentByName() {
+    void shouldRemoveDocumentByName() {
         Document document = Document.of("name", "name");
         DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
         assertTrue(entity.remove("name"));
@@ -101,7 +101,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldConvertToMap() {
+    void shouldConvertToMap() {
         Document document = Document.of("name", "name");
         DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
         Map<String, Object> result = entity.toMap();
@@ -112,7 +112,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldConvertSubColumnToMap() {
+    void shouldConvertSubColumnToMap() {
         Document document = Document.of("name", "name");
         DocumentEntity entity = DocumentEntity.of("entity", singletonList(Document.of("sub", document)));
         Map<String, Object> result = entity.toMap();
@@ -123,7 +123,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldConvertSubDocumentListToMap() {
+    void shouldConvertSubDocumentListToMap() {
         DocumentEntity entity = DocumentEntity.of("entity");
         entity.add(Document.of("_id", "id"));
         List<Document> documents = asList(Document.of("name", "Ada"), Document.of("type", "type"),
@@ -140,7 +140,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldConvertSubDocumentListToMap2() {
+    void shouldConvertSubDocumentListToMap2() {
         DocumentEntity entity = DocumentEntity.of("entity");
         entity.add(Document.of("_id", "id"));
         List<List<Document>> documents = new ArrayList<>();
@@ -160,20 +160,20 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldShouldCreateANewInstance() {
+    void shouldShouldCreateANewInstance() {
         String name = "name";
         DocumentEntity entity = new DocumentEntity(name);
         assertEquals(name, entity.name());
     }
 
     @Test
-    public void shouldCreateAnEmptyEntity() {
+    void shouldCreateAnEmptyEntity() {
         DocumentEntity entity = new DocumentEntity("name");
         assertTrue(entity.isEmpty());
     }
 
     @Test
-    public void shouldReturnAnErrorWhenAddANullDocument() {
+    void shouldReturnAnErrorWhenAddANullDocument() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             DocumentEntity entity = new DocumentEntity("name");
             entity.add(null);
@@ -181,7 +181,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldAddANewDocument() {
+    void shouldAddANewDocument() {
         DocumentEntity entity = new DocumentEntity("name");
         entity.add(Document.of("document", 12));
         assertFalse(entity.isEmpty());
@@ -189,7 +189,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenAddAnNullIterable() {
+    void shouldReturnErrorWhenAddAnNullIterable() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             DocumentEntity entity = new DocumentEntity("name");
             entity.addAll(null);
@@ -197,7 +197,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldAddAllDocuments() {
+    void shouldAddAllDocuments() {
         DocumentEntity entity = new DocumentEntity("name");
         entity.addAll(asList(Document.of("name", 12), Document.of("value", "value")));
         assertFalse(entity.isEmpty());
@@ -206,14 +206,14 @@ public class DocumentEntityTest {
 
 
     @Test
-    public void shouldNotFindDocument() {
+    void shouldNotFindDocument() {
         DocumentEntity entity = new DocumentEntity("name");
         Optional<Document> document = entity.find("name");
         assertFalse(document.isPresent());
     }
 
     @Test
-    public void shouldFindValue() {
+    void shouldFindValue() {
         Document document = Document.of("name", "name");
         DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
         Optional<String> name = entity.find("name", String.class);
@@ -223,7 +223,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldNotFindValue() {
+    void shouldNotFindValue() {
         Document document = Document.of("name", "name");
         DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
         Optional<String> name = entity.find("not_found", String.class);
@@ -232,7 +232,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldFindTypeSupplier() {
+    void shouldFindTypeSupplier() {
         Document document = Document.of("name", "name");
         DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
         List<String> names = entity.find("name", new TypeReference<List<String>>() {})
@@ -243,7 +243,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldNotFindTypeSupplier() {
+    void shouldNotFindTypeSupplier() {
         Document document = Document.of("name", "name");
         DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
         List<String> names = entity.find("not_find", new TypeReference<List<String>>() {})
@@ -253,7 +253,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldRemoveByName() {
+    void shouldRemoveByName() {
         DocumentEntity entity = new DocumentEntity("name");
         entity.add(Document.of("value", 32D));
         assertTrue(entity.remove("value"));
@@ -261,7 +261,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldNotRemoveByName() {
+    void shouldNotRemoveByName() {
         DocumentEntity entity = new DocumentEntity("name");
         entity.add(Document.of("value", 32D));
 
@@ -270,7 +270,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenRemoveByNameIsNull() {
+    void shouldReturnErrorWhenRemoveByNameIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             DocumentEntity entity = new DocumentEntity("name");
             entity.remove(null);
@@ -279,7 +279,7 @@ public class DocumentEntityTest {
 
 
     @Test
-    public void shouldAddDocumentAsNameAndObject() {
+    void shouldAddDocumentAsNameAndObject() {
         DocumentEntity entity = new DocumentEntity("documentCollection");
         entity.add("name", 10);
         assertEquals(1, entity.size());
@@ -289,7 +289,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldAddDocumentAsNameAndValue() {
+    void shouldAddDocumentAsNameAndValue() {
         DocumentEntity entity = new DocumentEntity("documentCollection");
         entity.add("name", Value.of(10));
         assertEquals(1, entity.size());
@@ -299,7 +299,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenAddDocumentsObjectWhenHasNullObject() {
+    void shouldReturnErrorWhenAddDocumentsObjectWhenHasNullObject() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             DocumentEntity entity = new DocumentEntity("documentCollection");
             entity.add("name", null);
@@ -307,7 +307,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenAddDocumentsObjectWhenHasNullDocumentName() {
+    void shouldReturnErrorWhenAddDocumentsObjectWhenHasNullDocumentName() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             DocumentEntity entity = new DocumentEntity("documentCollection");
             entity.add(null, 10);
@@ -315,7 +315,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenAddDocumentsValueWhenHasNullDocumentName() {
+    void shouldReturnErrorWhenAddDocumentsValueWhenHasNullDocumentName() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             DocumentEntity entity = new DocumentEntity("documentCollection");
             entity.add(null, Value.of(12));
@@ -324,7 +324,7 @@ public class DocumentEntityTest {
 
 
     @Test
-    public void shouldAvoidDuplicatedDocument() {
+    void shouldAvoidDuplicatedDocument() {
         DocumentEntity entity = new DocumentEntity("documentCollection");
         entity.add("name", 10);
         entity.add("name", 13);
@@ -334,7 +334,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldAvoidDuplicatedDocumentWhenAddList() {
+    void shouldAvoidDuplicatedDocumentWhenAddList() {
         List<Document> documents = asList(Document.of("name", 10), Document.of("name", 13));
         DocumentEntity entity = new DocumentEntity("documentCollection");
         entity.addAll(documents);
@@ -343,7 +343,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnsTheDocumentNames() {
+    void shouldReturnsTheDocumentNames() {
         List<Document> documents = asList(Document.of("name", 10), Document.of("name2", 11),
                 Document.of("name3", 12), Document.of("name4", 13),
                 Document.of("name5", 14), Document.of("name5", 16));
@@ -354,7 +354,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnsTheDocumentValues() {
+    void shouldReturnsTheDocumentValues() {
         List<Document> documents = asList(Document.of("name", 10), Document.of("name2", 11),
                 Document.of("name3", 12), Document.of("name4", 13),
                 Document.of("name5", 14), Document.of("name5", 16));
@@ -365,7 +365,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenContainsElement() {
+    void shouldReturnTrueWhenContainsElement() {
         List<Document> documents = asList(Document.of("name", 10), Document.of("name2", 11),
                 Document.of("name3", 12), Document.of("name4", 13),
                 Document.of("name5", 14), Document.of("name5", 16));
@@ -380,7 +380,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnFalseWhenDoesNotContainElement() {
+    void shouldReturnFalseWhenDoesNotContainElement() {
         List<Document> documents = asList(Document.of("name", 10), Document.of("name2", 11),
                 Document.of("name3", 12), Document.of("name4", 13),
                 Document.of("name5", 14), Document.of("name5", 16));
@@ -395,7 +395,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldRemoveAllElementsWhenUseClearMethod() {
+    void shouldRemoveAllElementsWhenUseClearMethod() {
         List<Document> documents = asList(Document.of("name", 10), Document.of("name2", 11),
                 Document.of("name3", 12), Document.of("name4", 13),
                 Document.of("name5", 14), Document.of("name5", 16));
@@ -408,7 +408,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldHashCode(){
+    void shouldHashCode(){
         List<Document> documents = List.of(Document.of("name", 10));
         var collection = DocumentEntity.of("documentCollection", documents);
         var collection2 = DocumentEntity.of("documentCollection", documents);
@@ -416,7 +416,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldEquals(){
+    void shouldEquals(){
         List<Document> documents = List.of(Document.of("name", 10));
         var collection = DocumentEntity.of("documentCollection", documents);
         var collection2 = DocumentEntity.of("documentCollection", documents);
@@ -424,7 +424,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldToString(){
+    void shouldToString(){
         List<Document> documents = List.of(Document.of("name", 10));
         var collection = DocumentEntity.of("documentCollection", documents);
         assertThat(collection.toString()).isEqualTo("DefaultDocumentEntity{documents={name=DefaultDocument" +

@@ -29,7 +29,7 @@ class DeleteQueryTest {
         where = new Where(condition);
     }
     @Test
-    void testDeleteQueryEquality() {
+    void shouldDeleteQueryEquality() {
         DeleteQuery query1 = DeleteQuery.of("Entity1", Arrays.asList("field1", "field2"), where);
         DeleteQuery query2 = DeleteQuery.of("Entity1", Arrays.asList("field1", "field2"), where);
         DeleteQuery query3 = DeleteQuery.of("Entity2", Arrays.asList("field1", "field2"), where);
@@ -40,7 +40,7 @@ class DeleteQueryTest {
     }
 
     @Test
-    void testDeleteQueryHashcode() {
+    void shouldDeleteQueryHashcode() {
         DeleteQuery query1 = DeleteQuery.of("Entity1", Arrays.asList("field1", "field2"), where);
         DeleteQuery query2 = DeleteQuery.of("Entity1", Arrays.asList("field1", "field2"), where);
         DeleteQuery query3 = DeleteQuery.of("Entity2", Arrays.asList("field1", "field2"), where);
@@ -50,13 +50,13 @@ class DeleteQueryTest {
     }
 
     @Test
-    void testDeleteQueryToString() {
+    void shouldDeleteQueryToString() {
         DeleteQuery query = DeleteQuery.of("Entity1", Arrays.asList("field1", "field2"), where);
         assertEquals("DeleteQuery{entity='Entity1', fields=[field1, field2], where=where name EQUALS BooleanQueryValue{value=true}}", query.toString());
     }
 
     @Test
-    void testCreateDeleteQueryWithEmptyFields() {
+    void shouldCreateDeleteQueryWithEmptyFields() {
         DeleteQuery query = DeleteQuery.of("Entity1", where);
 
         // Test that fields are empty
@@ -64,19 +64,19 @@ class DeleteQueryTest {
     }
 
     @Test
-    void testCreateDeleteQueryWithNullEntity() {
+    void shouldCreateDeleteQueryWithNullEntity() {
         // Test NullPointerException when entity is null
         assertThrows(NullPointerException.class, () -> DeleteQuery.of(null, Arrays.asList("field1", "field2"), where));
     }
 
     @Test
-    void testCreateDeleteQueryWithNullFields() {
+    void shouldCreateDeleteQueryWithNullFields() {
         // Test NullPointerException when fields is null
         assertThrows(NullPointerException.class, () -> DeleteQuery.of("Entity1", null, where));
     }
 
     @Test
-    void testCreateDeleteQueryWithNullWhere() {
+    void shouldCreateDeleteQueryWithNullWhere() {
         // Test creating DeleteQuery with null Where
         DeleteQuery query = DeleteQuery.of("Entity1", Arrays.asList("field1", "field2"), null);
 
