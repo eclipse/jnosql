@@ -45,4 +45,9 @@ class NumberQueryValueTest {
         assertEquals(new NumberQueryValue(10).hashCode(), new NumberQueryValue(10).hashCode());
     }
 
+    @Test
+    public void shouldToString(){
+        assertEquals("10", new NumberQueryValue(10).toString());
+    }
+
 }
