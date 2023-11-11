@@ -17,13 +17,9 @@ import java.util.Arrays;
 /**
  * A sequence of elements that can be either {@link NumberQueryValue} or {@link StringQueryValue}
  */
-final class DefaultArrayQueryValue implements ArrayQueryValue {
+record DefaultArrayQueryValue(QueryValue<?>[] values) implements ArrayQueryValue {
 
-    private final QueryValue<?>[] values;
 
-    private DefaultArrayQueryValue(QueryValue<?>[] values) {
-        this.values = values;
-    }
 
     @Override
     public QueryValue<?>[] get() {

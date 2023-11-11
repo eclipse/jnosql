@@ -27,49 +27,14 @@ import java.util.Optional;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Optional.ofNullable;
 
-class DefaultDocumentQuery implements DocumentQuery {
+record DefaultDocumentQuery(long limit, long skip, String name,
+                            List<String> documents, List<Sort> sorts, DocumentCondition documentCondition) implements DocumentQuery {
 
-    private final long limit;
 
-    private final long skip;
-
-    private final String documentCollection;
-
-    private final DocumentCondition condition;
-
-    private final List<Sort> sorts;
-
-    private final List<String> documents;
-
-    DefaultDocumentQuery(long limit, long skip, String documentCollection,
-                         List<String> documents, List<Sort> sorts, DocumentCondition condition) {
-
-        this.limit = limit;
-        this.skip = skip;
-        this.documentCollection = documentCollection;
-        this.condition = ofNullable(condition).map(DocumentCondition::readOnly).orElse(null);
-        this.sorts = sorts;
-        this.documents = documents;
-    }
-
-    @Override
-    public long limit() {
-        return limit;
-    }
-
-    @Override
-    public long skip() {
-        return skip;
-    }
-
-    @Override
-    public String name() {
-        return documentCollection;
-    }
 
     @Override
     public Optional<DocumentCondition> condition() {
-        return ofNullable(condition);
+        return ofNullable(documentCondition).map(DocumentCondition::readOnly);
     }
 
     @Override
@@ -92,27 +57,17 @@ class DefaultDocumentQuery implements DocumentQuery {
         }
         return limit == that.limit() &&
                 skip == that.skip() &&
-                Objects.equals(documentCollection, that.name()) &&
-                Objects.equals(condition, that.condition().orElse(null)) &&
+                Objects.equals(name, that.name()) &&
+                Objects.equals(documentCondition, that.condition().orElse(null)) &&
                 Objects.equals(sorts, that.sorts()) &&
                 Objects.equals(documents, that.documents());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(limit, skip, documentCollection, condition, sorts, documents);
+        return Objects.hash(limit, skip, name, documentCondition, sorts, documents);
     }
 
-    @Override
-    public String toString() {
-        return "DocumentQuery{" + "maxResult=" + limit +
-                ", firstResult=" + skip +
-                ", documentCollection='" + documentCollection + '\'' +
-                ", condition=" + condition +
-                ", sorts=" + sorts +
-                ", documents=" + documents +
-                '}';
-    }
 
     static DocumentQuery countBy(DocumentQuery query) {
         return new DefaultDocumentQuery(0, 0, query.name(), query.documents(),

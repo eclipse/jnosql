@@ -22,17 +22,11 @@ import java.util.Objects;
 /**
  * Defines the default implementation of {@link Value}
  */
-final class DefaultValue  implements Value {
+record DefaultValue(Object value)  implements Value {
 
     private static final ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
 
     private static final  TypeReferenceReader REFERENCE_READER = TypeReferenceReaderDecorator.getInstance();
-
-    private final Object value;
-
-    DefaultValue(Object value) {
-        this.value = value;
-    }
 
 
     @Override
@@ -75,11 +69,5 @@ final class DefaultValue  implements Value {
     @Override
     public int hashCode() {
         return Objects.hashCode(value);
-    }
-
-    @Override
-    public String toString() {
-        return "DefaultValue{" + "value=" + value +
-                '}';
     }
 }
