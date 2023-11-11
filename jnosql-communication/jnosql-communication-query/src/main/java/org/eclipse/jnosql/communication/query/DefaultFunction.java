@@ -12,8 +12,32 @@
 
 package org.eclipse.jnosql.communication.query;
 
+import java.util.Arrays;
+import java.util.Objects;
 
 record DefaultFunction(String name, Object[] params) implements Function {
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DefaultFunction that)) {
+            return false;
+        }
+        return Objects.equals(name, that.name) &&
+                Arrays.equals(params, that.params);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * Objects.hashCode(name) + Arrays.hashCode(params);
+    }
+
+    @Override
+    public String toString() {
+        return name + "(" + Arrays.toString(params) + ")";
+    }
 
     static Function of(String name, Object[] args) {
         return new DefaultFunction(name, args);
