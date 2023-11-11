@@ -31,49 +31,14 @@ import static java.util.Optional.ofNullable;
 /**
  * The default implementation of column query.
  */
-class DefaultColumnQuery implements ColumnQuery {
+record DefaultColumnQuery(long limit, long skip, String name,
+                          List<String> columns, List<Sort> sorts, ColumnCondition columnCondition)
+        implements ColumnQuery {
 
-    private final long maxResults;
-
-    private final long firstResult;
-
-    private final String columnFamily;
-
-    private final List<String> columns;
-
-    private final List<Sort> sorts;
-
-    private final ColumnCondition condition;
-
-
-    DefaultColumnQuery(long maxResults, long firstResult, String columnFamily,
-                       List<String> columns, List<Sort> sorts, ColumnCondition condition) {
-        this.maxResults = maxResults;
-        this.firstResult = firstResult;
-        this.columnFamily = columnFamily;
-        this.columns = columns;
-        this.sorts = sorts;
-        this.condition = ofNullable(condition).map(ColumnCondition::readOnly).orElse(null);
-    }
-
-    @Override
-    public long limit() {
-        return maxResults;
-    }
-
-    @Override
-    public long skip() {
-        return firstResult;
-    }
-
-    @Override
-    public String name() {
-        return columnFamily;
-    }
 
     @Override
     public Optional<ColumnCondition> condition() {
-        return ofNullable(condition);
+        return ofNullable(columnCondition).map(ColumnCondition::readOnly);
     }
 
     @Override
@@ -86,37 +51,6 @@ class DefaultColumnQuery implements ColumnQuery {
         return unmodifiableList(sorts);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ColumnQuery that)) {
-            return false;
-        }
-        return maxResults == that.limit() &&
-                firstResult == that.skip() &&
-                Objects.equals(columnFamily, that.name()) &&
-                Objects.equals(columns, that.columns()) &&
-                Objects.equals(sorts, that.sorts()) &&
-                Objects.equals(condition, that.condition().orElse(null));
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(maxResults, firstResult, columnFamily, columns, sorts, condition);
-    }
-
-    @Override
-    public String toString() {
-        return  "ColumnQuery{" + "maxResults=" + maxResults +
-                ", firstResult=" + firstResult +
-                ", columnFamily='" + columnFamily + '\'' +
-                ", columns=" + columns +
-                ", sorts=" + sorts +
-                ", condition=" + condition +
-                '}';
-    }
     static ColumnQuery countBy(ColumnQuery query) {
         return new DefaultColumnQuery(0, 0, query.name(), query.columns(),
                 Collections.emptyList(), query.condition().orElse(null));
