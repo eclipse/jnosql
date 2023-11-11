@@ -53,6 +53,8 @@ public class DefaultDocumentDeleteQueryTest {
         DocumentDeleteQuery query2 = delete().from("columnFamily").build();
 
         assertThat(query).isEqualTo(query2);
+        assertThat(query).isEqualTo(query);
+        assertThat(query).isNotEqualTo("query");
     }
 
     @Test

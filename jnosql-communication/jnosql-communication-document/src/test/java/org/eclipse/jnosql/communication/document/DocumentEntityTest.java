@@ -421,6 +421,8 @@ public class DocumentEntityTest {
         var collection = DocumentEntity.of("documentCollection", documents);
         var collection2 = DocumentEntity.of("documentCollection", documents);
         assertThat(collection).isEqualTo(collection2);
+        assertThat(collection).isEqualTo(collection);
+        assertThat(collection).isNotEqualTo("collection");
     }
 
     @Test

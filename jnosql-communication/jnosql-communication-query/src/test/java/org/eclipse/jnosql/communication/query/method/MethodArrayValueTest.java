@@ -40,6 +40,7 @@ class MethodArrayValueTest {
         var array = MethodArrayValue.of("name");
         var array2 = MethodArrayValue.of("name");
         Assertions.assertNotEquals(array, array2);
+        Assertions.assertNotEquals(array, "array2");
         Assertions.assertEquals(array, array);
     }
 

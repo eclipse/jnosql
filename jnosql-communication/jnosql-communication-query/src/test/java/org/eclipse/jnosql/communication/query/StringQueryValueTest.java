@@ -15,6 +15,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class StringQueryValueTest {
 
@@ -37,7 +38,11 @@ class StringQueryValueTest {
 
     @Test
     void shouldEquals() {
+        StringQueryValue queryValue = new StringQueryValue("text");
+        assertEquals(queryValue, queryValue);
         assertEquals(new StringQueryValue("text"), new StringQueryValue("text"));
+        assertNotEquals(new StringQueryValue("text"), new StringQueryValue("text2"));
+        assertNotEquals(new StringQueryValue("text"), "text2");
     }
 
     @Test

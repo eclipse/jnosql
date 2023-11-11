@@ -56,7 +56,10 @@ public class InsertQueryTest {
     @Test
     void shouldEquals(){
         String text = "insert Person (name = \"Ada Lovelace\")";
+        InsertQuery query = InsertQuery.parse(text);
         Assertions.assertEquals(InsertQuery.parse(text), InsertQuery.parse(text));
+        Assertions.assertEquals(query, query);
+        Assertions.assertNotEquals(query, "query");
     }
 
     @Test

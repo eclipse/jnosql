@@ -41,6 +41,8 @@ class DefaultArrayQueryValueTest {
         ArrayQueryValue arrayB = DefaultArrayQueryValue.of(new QueryValue<?>[]{
                 BooleanQueryValue.FALSE, BooleanQueryValue.TRUE});
         Assertions.assertEquals(arrayB, array);
+        Assertions.assertEquals(array, array);
+        Assertions.assertNotEquals(array, "array");
     }
 
     @Test

@@ -56,7 +56,10 @@ public class GetQueryTest {
     @Test
     void shouldEquals(){
         String text = "get \"Ada Lovelace\"";
+        GetQuery query = GetQuery.parse(text);
         Assertions.assertEquals(GetQuery.parse(text), GetQuery.parse(text));
+        Assertions.assertEquals(query, query);
+        Assertions.assertNotEquals(query, text);
     }
 
     @Test

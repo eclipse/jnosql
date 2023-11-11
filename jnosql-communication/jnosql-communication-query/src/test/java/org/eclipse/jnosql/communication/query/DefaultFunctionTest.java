@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class DefaultFunctionTest {
 
@@ -40,6 +41,8 @@ class DefaultFunctionTest {
         Function f = DefaultFunction.of("sum", new Object[]{1, 2});
         Function f2 = DefaultFunction.of("sum", new Object[]{1, 2});
         assertEquals(f, f2);
+        assertEquals(f, f);
+        assertNotEquals(f, "sum");
     }
 
     @Test

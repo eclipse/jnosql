@@ -14,6 +14,7 @@ package org.eclipse.jnosql.communication.query;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.eclipse.jnosql.communication.query.BooleanQueryValue.FALSE;
 import static org.eclipse.jnosql.communication.query.BooleanQueryValue.TRUE;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,6 +37,8 @@ class BooleanQueryValueTest {
     @Test
     public void shouldEquals() {
         assertEquals(TRUE, TRUE);
+        assertNotEquals(TRUE, FALSE);
+        assertNotEquals(TRUE, Boolean.TRUE);
     }
 
     @Test

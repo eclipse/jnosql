@@ -36,7 +36,9 @@ class DeleteQueryTest {
 
         // Test equality
         assertEquals(query1, query2);
+        assertEquals(query1, query1);
         assertNotEquals(query1, query3);
+        assertNotEquals(query1, "query3");
     }
 
     @Test

@@ -58,6 +58,8 @@ public class UpdateQueryTest {
         String text = "update Person (name = \"Ada Lovelace\")";
         UpdateQuery query = UpdateQuery.parse(text);
         Assertions.assertEquals(query, UpdateQuery.parse(text));
+        Assertions.assertEquals(query, query);
+        Assertions.assertNotEquals(query, text);
     }
 
     @Test

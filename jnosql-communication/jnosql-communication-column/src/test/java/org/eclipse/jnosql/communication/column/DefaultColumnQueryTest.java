@@ -110,5 +110,7 @@ public class DefaultColumnQueryTest {
                 .orderBy("name").asc().build();
 
         Assertions.assertEquals(query, query2);
+        Assertions.assertEquals(query, query);
+        Assertions.assertNotEquals(query, "query");
     }
 }

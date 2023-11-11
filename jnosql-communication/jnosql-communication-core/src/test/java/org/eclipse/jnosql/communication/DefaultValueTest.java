@@ -178,5 +178,14 @@ class DefaultValueTest {
         var value = Value.of(asList(10, 20, 30));
         var valueB = Value.of(asList(10, 20, 30));
         Assertions.assertThat(value).isEqualTo(valueB);
+        Assertions.assertThat(value).isEqualTo(value);
+        Assertions.assertThat(value).isEqualTo("value");
+    }
+
+    @Test
+    public void shouldInstanceOf(){
+        var value = Value.of(10);
+        Assertions.assertThat(value.isInstanceOf(Integer.class)).isTrue();
+        Assertions.assertThat(value.isInstanceOf(boolean.class)).isFalse();
     }
 }

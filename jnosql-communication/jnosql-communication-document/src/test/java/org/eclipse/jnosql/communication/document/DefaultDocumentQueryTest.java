@@ -104,6 +104,8 @@ public class DefaultDocumentQueryTest {
                 .orderBy("name").asc().build();
 
         assertThat(query).isEqualTo(query2);
+        assertThat(query).isEqualTo(query);
+        assertThat(query).isNotEqualTo("query");
     }
 
     @Test

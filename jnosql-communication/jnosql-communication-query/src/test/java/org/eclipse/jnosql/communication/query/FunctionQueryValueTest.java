@@ -47,6 +47,8 @@ class FunctionQueryValueTest {
     void shouldEquals() {
         FunctionQueryValue queryValue = new FunctionQueryValue(function);
         assertEquals(queryValue, new FunctionQueryValue(function));
+        assertEquals(queryValue, queryValue);
+        assertNotEquals(queryValue, "queryValue");
     }
 
 
