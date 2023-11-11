@@ -77,7 +77,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.maven.version>3.9.1.2184</sonar.maven.version>
-        <commons.io.version>2.14.0</commons.io.version>
+        <commons.io.version>2.15.0</commons.io.version>
         <checkstyle.excludes>**/jnosql/query/grammar/**</checkstyle.excludes>
         <weld.se.core.version>5.1.1.SP2</weld.se.core.version>
         <yasson.version>3.0.3</yasson.version>
