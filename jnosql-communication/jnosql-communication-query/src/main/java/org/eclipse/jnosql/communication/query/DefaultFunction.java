@@ -12,51 +12,8 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import java.util.Arrays;
-import java.util.Objects;
 
-final class DefaultFunction implements Function {
-
-    private final String name;
-
-    private final Object[] args;
-
-    private DefaultFunction(String name, Object[] args) {
-        this.name = name;
-        this.args = args;
-    }
-
-    @Override
-    public String name() {
-        return name;
-    }
-
-    @Override
-    public Object[] params() {
-        return args;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof DefaultFunction that)) {
-            return false;
-        }
-        return Objects.equals(name, that.name) &&
-                Arrays.equals(args, that.args);
-    }
-
-    @Override
-    public int hashCode() {
-        return 31 * Objects.hashCode(name) + Arrays.hashCode(args);
-    }
-
-    @Override
-    public String toString() {
-        return name + "(" + Arrays.toString(args) + ")";
-    }
+record DefaultFunction(String name, Object[] params) implements Function {
 
     static Function of(String name, Object[] args) {
         return new DefaultFunction(name, args);
