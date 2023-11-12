@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ParameterMetaDataBuilderTest {
 
     @Test
-    public void shouldConvertIdParameter() {
+    void shouldConvertIdParameter() {
         Constructor<Computer> constructor = (Constructor<Computer>) Computer.class.getDeclaredConstructors()[0];
         ParameterMetaData id = ParameterMetaDataBuilder.of(constructor.getParameters()[0]);
         Assertions.assertNotNull(id);
@@ -49,7 +49,7 @@ class ParameterMetaDataBuilderTest {
     }
 
     @Test
-    public void shouldConvertDefaultParameterWithoutDefinedName() {
+    void shouldConvertDefaultParameterWithoutDefinedName() {
         Constructor<Smartphone> constructor = (Constructor<Smartphone>) Smartphone.class.getDeclaredConstructors()[0];
         ParameterMetaData name = ParameterMetaDataBuilder.of(constructor.getParameters()[1]);
         Assertions.assertNotNull(name);
@@ -61,7 +61,7 @@ class ParameterMetaDataBuilderTest {
     }
 
     @Test
-    public void shouldConvertDefaultParameter() {
+    void shouldConvertDefaultParameter() {
         Constructor<Computer> constructor = (Constructor<Computer>) Computer.class.getDeclaredConstructors()[0];
         ParameterMetaData name = ParameterMetaDataBuilder.of(constructor.getParameters()[1]);
         Assertions.assertNotNull(name);
@@ -73,7 +73,7 @@ class ParameterMetaDataBuilderTest {
     }
 
     @Test
-    public void shouldConvertConverterParameter() {
+    void shouldConvertConverterParameter() {
         Constructor<Computer> constructor = (Constructor<Computer>) Computer.class.getDeclaredConstructors()[0];
         ParameterMetaData price = ParameterMetaDataBuilder.of(constructor.getParameters()[4]);
         Assertions.assertNotNull(price);
@@ -90,7 +90,7 @@ class ParameterMetaDataBuilderTest {
     //parameter with map
 
     @Test
-    public void shouldConvertEntityParameter() {
+    void shouldConvertEntityParameter() {
         Constructor<PetOwner> constructor = (Constructor<PetOwner>) PetOwner.class.getDeclaredConstructors()[0];
         ParameterMetaData animal = ParameterMetaDataBuilder.of(constructor.getParameters()[2]);
         Assertions.assertNotNull(animal);
@@ -102,7 +102,7 @@ class ParameterMetaDataBuilderTest {
     }
 
     @Test
-    public void shouldConvertCollectionParameter() {
+    void shouldConvertCollectionParameter() {
         Constructor<BookUser> constructor = (Constructor<BookUser>) BookUser.class.getDeclaredConstructors()[0];
         ParameterMetaData books = ParameterMetaDataBuilder.of(constructor.getParameters()[2]);
         Assertions.assertNotNull(books);
@@ -116,7 +116,7 @@ class ParameterMetaDataBuilderTest {
     }
 
     @Test
-    public void shouldConvertMapParameter() {
+    void shouldConvertMapParameter() {
         Constructor<Foo> constructor = (Constructor<Foo>) Foo.class.getDeclaredConstructors()[0];
         ParameterMetaData map = ParameterMetaDataBuilder.of(constructor.getParameters()[0]);
         Assertions.assertNotNull(map);
