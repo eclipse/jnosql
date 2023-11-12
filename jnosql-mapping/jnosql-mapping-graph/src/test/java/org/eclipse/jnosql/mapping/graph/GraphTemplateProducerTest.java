@@ -34,19 +34,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @AddPackages(BookRepository.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
-public class GraphTemplateProducerTest {
+class GraphTemplateProducerTest {
 
     @Inject
     private GraphTemplateProducer producer;
 
     @Test
-    public void shouldReturnErrorWhenManagerNull() {
+    void shouldReturnErrorWhenManagerNull() {
         assertThrows(NullPointerException.class, () -> producer.get((Graph) null));
         assertThrows(NullPointerException.class, () -> producer.get((GraphTraversalSourceSupplier) null));
     }
 
     @Test
-    public void shouldReturnGraphTemplateWhenGetGraph() {
+    void shouldReturnGraphTemplateWhenGetGraph() {
         Graph graph = Mockito.mock(Graph.class);
         GraphTemplate template = producer.get(graph);
         assertNotNull(template);
@@ -54,7 +54,7 @@ public class GraphTemplateProducerTest {
 
 
     @Test
-    public void shouldReturnGraphTemplateWhenGetGraphTraversalSourceSupplier() {
+    void shouldReturnGraphTemplateWhenGetGraphTraversalSourceSupplier() {
         GraphTraversalSourceSupplier supplier = Mockito.mock(GraphTraversalSourceSupplier.class);
         GraphTemplate template = producer.get(supplier);
         assertNotNull(template);
