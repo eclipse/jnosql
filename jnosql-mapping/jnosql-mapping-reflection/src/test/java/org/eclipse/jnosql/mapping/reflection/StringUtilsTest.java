@@ -24,42 +24,42 @@ class StringUtilsTest {
 
 
     @Test
-    public void testIsBlankWithNull() {
+    void testIsBlankWithNull() {
         assertTrue(StringUtils.isBlank(null));
     }
 
     @Test
-    public void testIsBlankWithEmptyString() {
+    void testIsBlankWithEmptyString() {
         assertTrue(StringUtils.isBlank(""));
     }
 
     @Test
-    public void testIsBlankWithSpaces() {
+    void testIsBlankWithSpaces() {
         assertTrue(StringUtils.isBlank("   "));
     }
 
     @Test
-    public void testIsBlankWithNonBlankString() {
+    void testIsBlankWithNonBlankString() {
         assertFalse(StringUtils.isBlank("Hello, world!"));
     }
 
     @Test
-    public void testIsNotBlankWithNull() {
+    void testIsNotBlankWithNull() {
         assertFalse(StringUtils.isNotBlank(null));
     }
 
     @Test
-    public void testIsNotBlankWithEmptyString() {
+    void testIsNotBlankWithEmptyString() {
         assertFalse(StringUtils.isNotBlank(""));
     }
 
     @Test
-    public void testIsNotBlankWithSpaces() {
+    void testIsNotBlankWithSpaces() {
         assertFalse(StringUtils.isNotBlank("   "));
     }
 
     @Test
-    public void testIsNotBlankWithNonBlankString() {
+    void testIsNotBlankWithNonBlankString() {
         assertTrue(StringUtils.isNotBlank("Hello, world!"));
     }
 
