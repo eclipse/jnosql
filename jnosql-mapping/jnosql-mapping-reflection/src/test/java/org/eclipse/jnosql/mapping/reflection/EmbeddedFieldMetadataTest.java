@@ -29,24 +29,24 @@ class EmbeddedFieldMetadataTest {
     private EmbeddedFieldMetadata metadata;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         ClassConverter converter = new ReflectionClassConverter();
         EntityMetadata entity = converter.apply(Worker.class);
         metadata = (EmbeddedFieldMetadata) entity.fieldsGroupByName().get("job");
     }
 
     @Test
-    public void shouldId(){
+    void shouldId(){
         Assertions.assertThat(metadata.isId()).isFalse();
     }
 
     @Test
-    public void shouldToString(){
+    void shouldToString(){
         Assertions.assertThat(metadata.toString()).isNotEmpty();
     }
 
     @Test
-    public void shouldEqualsHasCode(){
+    void shouldEqualsHasCode(){
         Assertions.assertThat(metadata).isEqualTo(metadata);
         Assertions.assertThat(metadata).hasSameHashCodeAs(metadata);
     }
