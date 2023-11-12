@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class RepositoryDocumentObserverParserTest {
 
     @Test
-    public void shouldCreateFromRepository() {
+    void shouldCreateFromRepository() {
         EntityMetadata entityMetadata = Mockito.mock(EntityMetadata.class);
         DocumentObserverParser parser = RepositoryDocumentObserverParser.of(entityMetadata);
         assertNotNull(parser);
