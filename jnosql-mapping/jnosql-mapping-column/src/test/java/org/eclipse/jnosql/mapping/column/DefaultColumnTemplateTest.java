@@ -60,7 +60,7 @@ import static org.mockito.Mockito.verify;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
-public class DefaultColumnTemplateTest {
+class DefaultColumnTemplateTest {
 
     private final Person person = Person.builder().
             withAge().
@@ -95,7 +95,7 @@ public class DefaultColumnTemplateTest {
 
     @SuppressWarnings("unchecked")
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         managerMock = Mockito.mock(ColumnManager.class);
         columnEventPersistManager = Mockito.mock(ColumnEventPersistManager.class);
         captor = ArgumentCaptor.forClass(ColumnEntity.class);
@@ -106,7 +106,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldInsert() {
+    void shouldInsert() {
         ColumnEntity columnEntity = ColumnEntity.of("Person");
         columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
@@ -125,7 +125,7 @@ public class DefaultColumnTemplateTest {
 
 
     @Test
-    public void shouldMergeOnInsert() {
+    void shouldMergeOnInsert() {
         ColumnEntity columnEntity = ColumnEntity.of("Person");
         columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
@@ -147,7 +147,7 @@ public class DefaultColumnTemplateTest {
 
 
     @Test
-    public void shouldInsertTTL() {
+    void shouldInsertTTL() {
         ColumnEntity columnEntity = ColumnEntity.of("Person");
         columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
@@ -166,7 +166,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldUpdate() {
+    void shouldUpdate() {
         ColumnEntity columnEntity = ColumnEntity.of("Person");
         columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
@@ -184,7 +184,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldMergeOnUpdate() {
+    void shouldMergeOnUpdate() {
         ColumnEntity columnEntity = ColumnEntity.of("Person");
         columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
@@ -203,7 +203,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldInsertEntitiesTTL() {
+    void shouldInsertEntitiesTTL() {
         ColumnEntity columnEntity = ColumnEntity.of("Person");
         columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
         Duration duration = Duration.ofHours(2);
@@ -217,7 +217,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldInsertEntities() {
+    void shouldInsertEntities() {
         ColumnEntity columnEntity = ColumnEntity.of("Person");
         columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
@@ -230,7 +230,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldUpdateEntities() {
+    void shouldUpdateEntities() {
         ColumnEntity columnEntity = ColumnEntity.of("Person");
         columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
@@ -243,7 +243,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldDelete() {
+    void shouldDelete() {
 
         ColumnDeleteQuery query = delete().from("delete").build();
         template.delete(query);
@@ -251,28 +251,28 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldSelect() {
+    void shouldSelect() {
         ColumnQuery query = select().from("person").build();
         template.select(query);
         verify(managerMock).select(query);
     }
 
     @Test
-    public void shouldCountBy() {
+    void shouldCountBy() {
         ColumnQuery query = select().from("person").build();
         template.count(query);
         verify(managerMock).count(query);
     }
 
     @Test
-    public void shouldExist() {
+    void shouldExist() {
         ColumnQuery query = select().from("person").build();
         template.exists(query);
         verify(managerMock).exists(query);
     }
 
     @Test
-    public void shouldReturnSingleResult() {
+    void shouldReturnSingleResult() {
         ColumnEntity columnEntity = ColumnEntity.of("Person");
         columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
@@ -287,7 +287,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldReturnSingleResultIsEmpty() {
+    void shouldReturnSingleResultIsEmpty() {
         Mockito.when(managerMock
                 .select(any(ColumnQuery.class)))
                 .thenReturn(Stream.empty());
@@ -299,7 +299,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenThereMoreThanASingleResult() {
+    void shouldReturnErrorWhenThereMoreThanASingleResult() {
         Assertions.assertThrows(NonUniqueResultException.class, () -> {
             ColumnEntity columnEntity = ColumnEntity.of("Person");
             columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
@@ -316,22 +316,22 @@ public class DefaultColumnTemplateTest {
 
 
     @Test
-    public void shouldReturnErrorWhenFindIdHasIdNull() {
+    void shouldReturnErrorWhenFindIdHasIdNull() {
         Assertions.assertThrows(NullPointerException.class, () -> template.find(Person.class, null));
     }
 
     @Test
-    public void shouldReturnErrorWhenFindIdHasClassNull() {
+    void shouldReturnErrorWhenFindIdHasClassNull() {
         Assertions.assertThrows(NullPointerException.class, () -> template.find(null, "10"));
     }
 
     @Test
-    public void shouldReturnErrorWhenThereIsNotIdInFind() {
+    void shouldReturnErrorWhenThereIsNotIdInFind() {
         Assertions.assertThrows(IdNotFoundException.class, () -> template.find(Job.class, "10"));
     }
 
     @Test
-    public void shouldReturnFind() {
+    void shouldReturnFind() {
         template.find(Person.class, "10");
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
@@ -343,7 +343,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldDeleteEntity() {
+    void shouldDeleteEntity() {
         template.delete(Person.class, "10");
         ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         verify(managerMock).delete(queryCaptor.capture());
@@ -357,7 +357,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldExecuteQuery() {
+    void shouldExecuteQuery() {
         template.query("select * from Person");
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
@@ -366,7 +366,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldConvertEntity() {
+    void shouldConvertEntity() {
         template.query("select * from Movie");
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
@@ -375,7 +375,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldConvertEntityName() {
+    void shouldConvertEntityName() {
         template.query("select * from download");
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
@@ -383,7 +383,7 @@ public class DefaultColumnTemplateTest {
         assertEquals("download", query.name());
     }
     @Test
-    public void shouldConvertEntityNameClassName() {
+    void shouldConvertEntityNameClassName() {
         template.query("select * from " + Person.class.getName());
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
@@ -392,7 +392,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldConvertConvertFromAnnotationEntity(){
+    void shouldConvertConvertFromAnnotationEntity(){
         template.query("select * from Vendor" );
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
@@ -401,7 +401,7 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldPreparedStatement() {
+    void shouldPreparedStatement() {
         PreparedStatement preparedStatement = template.prepare("select * from Person where name = @name");
         preparedStatement.bind("name", "Ada");
         preparedStatement.result();
@@ -412,26 +412,26 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
-    public void shouldCount() {
+    void shouldCount() {
         template.count("Person");
         verify(managerMock).count("Person");
     }
 
     @Test
-    public void shouldCountFromEntityClass() {
+    void shouldCountFromEntityClass() {
         template.count(Person.class);
         verify(managerMock).count("Person");
     }
 
 
     @Test
-    public void shouldFindAll(){
+    void shouldFindAll(){
         template.findAll(Person.class);
         verify(managerMock).select(select().from("Person").build());
     }
 
     @Test
-    public void shouldDeleteAll(){
+    void shouldDeleteAll(){
         template.deleteAll(Person.class);
         verify(managerMock).delete(delete().from("Person").build());
     }
