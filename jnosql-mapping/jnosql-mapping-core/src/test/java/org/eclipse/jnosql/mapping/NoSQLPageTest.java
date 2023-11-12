@@ -30,7 +30,7 @@ class NoSQLPageTest {
 
 
     @Test
-    public void shouldReturnErrorWhenNull() {
+    void shouldReturnErrorWhenNull() {
         assertThrows(NullPointerException.class, ()->
                 NoSQLPage.of(Collections.emptyList(), null));
 
@@ -40,7 +40,7 @@ class NoSQLPageTest {
 
 
     @Test
-    public void shouldReturnUnsupportedOperation() {
+    void shouldReturnUnsupportedOperation() {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 Pageable.ofPage(2));
 
@@ -50,7 +50,7 @@ class NoSQLPageTest {
     }
 
     @Test
-    public void shouldReturnHasContent() {
+    void shouldReturnHasContent() {
 
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 Pageable.ofPage(2));
@@ -62,7 +62,7 @@ class NoSQLPageTest {
     }
 
     @Test
-    public void shouldNumberOfElements() {
+    void shouldNumberOfElements() {
 
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 Pageable.ofPage(2));
@@ -71,14 +71,14 @@ class NoSQLPageTest {
     }
 
     @Test
-    public void shouldIterator() {
+    void shouldIterator() {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 Pageable.ofPage(2));
         Assertions.assertNotNull(page.iterator());
     }
 
     @Test
-    public void shouldPageable() {
+    void shouldPageable() {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 Pageable.ofPage(2));
         Pageable pageable = page.pageable();
@@ -87,7 +87,7 @@ class NoSQLPageTest {
     }
 
     @Test
-    public void shouldNextPageable() {
+    void shouldNextPageable() {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 Pageable.ofPage(2));
         Pageable pageable = page.nextPageable();
@@ -95,25 +95,25 @@ class NoSQLPageTest {
     }
 
     @Test
-    public void shouldThrowNullPointerExceptionWhenPageableIsNull() {
+    void shouldThrowNullPointerExceptionWhenPageableIsNull() {
         assertThrows(NullPointerException.class, () -> NoSQLPage.skip(null));
     }
 
     @Test
-    public void shouldCalculateSkip() {
+    void shouldCalculateSkip() {
         long skipValue = NoSQLPage.skip(Pageable.ofPage(2).size(10));
         assertEquals(10, skipValue);
     }
 
     @Test
-    public void shouldCalculateSkipForFirstPage() {
+    void shouldCalculateSkipForFirstPage() {
         // Create a pageable with page=1 and size=5
         long skipValue = NoSQLPage.skip(Pageable.ofPage(1).size(5));
         assertEquals(0, skipValue);
     }
 
     @Test
-    public void shouldToString(){
+    void shouldToString(){
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 Pageable.ofPage(2));
 
@@ -121,7 +121,7 @@ class NoSQLPageTest {
     }
 
     @Test
-    public void shouldEqualsHasCode(){
+    void shouldEqualsHasCode(){
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 Pageable.ofPage(2));
         Page<Person> page2 = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
