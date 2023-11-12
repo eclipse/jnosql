@@ -25,10 +25,10 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class ConstructorBuilderTest {
+class ConstructorBuilderTest {
 
     @Test
-    public void shouldReturnValidConstructorBuilder() {
+    void shouldReturnValidConstructorBuilder() {
         ConstructorMetadata constructorMetadata = mock(ConstructorMetadata.class);
         ConstructorBuilderSupplier supplier = mock(ConstructorBuilderSupplier.class);
         ConstructorBuilder expectedBuilder = mock(ConstructorBuilder.class);
@@ -49,7 +49,7 @@ public class ConstructorBuilderTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenNoImplementationFound() {
+    void shouldThrowExceptionWhenNoImplementationFound() {
         ConstructorMetadata constructorMetadata = mock(ConstructorMetadata.class);
 
         // Mock static method to return an empty ServiceLoader
