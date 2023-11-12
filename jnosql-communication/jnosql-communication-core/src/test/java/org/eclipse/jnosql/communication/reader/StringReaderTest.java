@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class StringReaderTest {
+class StringReaderTest {
 
     private final ValueReader valueReader = new StringReader();
 
