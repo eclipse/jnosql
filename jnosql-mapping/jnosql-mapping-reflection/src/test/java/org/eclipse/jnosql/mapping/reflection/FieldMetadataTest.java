@@ -37,19 +37,19 @@ import static org.eclipse.jnosql.mapping.metadata.MappingType.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class FieldMetadataTest {
+class FieldMetadataTest {
 
 
     private ClassConverter converter;
 
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.converter = new ReflectionClassConverter();
     }
 
     @Test
-    public void shouldReadDefaultField() {
+    void shouldReadDefaultField() {
         EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
@@ -63,7 +63,7 @@ public class FieldMetadataTest {
     }
 
     @Test
-    public void shouldReadCollectionField() {
+    void shouldReadCollectionField() {
         EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
         FieldMetadata field = fields.stream()
@@ -75,7 +75,7 @@ public class FieldMetadataTest {
     }
 
     @Test
-    public void shouldReadMapField() {
+    void shouldReadMapField() {
         EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
         FieldMetadata field = fields.stream()
@@ -88,7 +88,7 @@ public class FieldMetadataTest {
     }
 
     @Test
-    public void shouldReadEmbeddableField() {
+    void shouldReadEmbeddableField() {
         EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
         FieldMetadata field = fields.stream()
@@ -100,7 +100,7 @@ public class FieldMetadataTest {
     }
 
     @Test
-    public void shouldUserFieldReader() {
+    void shouldUserFieldReader() {
         ForClass forClass = new ForClass();
         forClass.string = "text";
         forClass.list = Collections.singletonList("text");
@@ -123,7 +123,7 @@ public class FieldMetadataTest {
     }
 
     @Test
-    public void shouldUserFieldWriter() {
+    void shouldUserFieldWriter() {
         ForClass forClass = new ForClass();
         BarClass value = new BarClass();
         value.integer = 10;
@@ -147,7 +147,7 @@ public class FieldMetadataTest {
     }
 
     @Test
-    public void shouldReadFromAnnotation(){
+    void shouldReadFromAnnotation(){
         EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
@@ -161,7 +161,7 @@ public class FieldMetadataTest {
     }
 
     @Test
-    public void shouldReturnEmptyWhenThereIsNotAnnotation(){
+    void shouldReturnEmptyWhenThereIsNotAnnotation(){
         EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
@@ -174,7 +174,7 @@ public class FieldMetadataTest {
     }
 
     @Test
-    public void shouldReturnEmptyWhenThereIsValueMethod(){
+    void shouldReturnEmptyWhenThereIsValueMethod(){
         EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
@@ -188,7 +188,7 @@ public class FieldMetadataTest {
 
 
     @Test
-    public void shouldReturnEmptyWhenThereIsValueMethod2(){
+    void shouldReturnEmptyWhenThereIsValueMethod2(){
         EntityMetadata entityMetadata = converter.apply(ForClass.class);
         List<FieldMetadata> fields = entityMetadata.fields();
 
