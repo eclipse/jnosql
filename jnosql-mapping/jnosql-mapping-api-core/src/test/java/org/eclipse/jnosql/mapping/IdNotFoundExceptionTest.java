@@ -23,14 +23,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class IdNotFoundExceptionTest {
     @Test
-    public void testConstructorWithMessage() {
+    void testConstructorWithMessage() {
         String errorMessage = "Test error message";
         IdNotFoundException exception = new IdNotFoundException(errorMessage);
         assertEquals(errorMessage, exception.getMessage());
     }
 
     @Test
-    public void testNewInstance() {
+    void testNewInstance() {
         Class<?> entityType = MyClass.class;
         String expectedMessage = "The entity " + entityType.getName() + " must have a field annotated with @Id";
         IdNotFoundException exception = IdNotFoundException.newInstance(entityType);
@@ -38,7 +38,7 @@ class IdNotFoundExceptionTest {
     }
 
     @Test
-    public void testKeyNotFoundExceptionSupplier() {
+    void testKeyNotFoundExceptionSupplier() {
         Supplier<IdNotFoundException> supplier = IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
         assertNotNull(supplier);
         IdNotFoundException exception = supplier.get();
