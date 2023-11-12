@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class GraphEventPersistManagerTest {
+class GraphEventPersistManagerTest {
 
     @InjectMocks
     private GraphEventPersistManager subject;
@@ -44,7 +44,7 @@ public class GraphEventPersistManagerTest {
     private Vertex vertex;
 
     @Test
-    public void shouldFirePreEntity() {
+    void shouldFirePreEntity() {
         Jedi jedi = new Jedi();
         jedi.name = "Luke";
         subject.firePreEntity(jedi);
@@ -55,7 +55,7 @@ public class GraphEventPersistManagerTest {
     }
 
     @Test
-    public void shouldFirePostEntity() {
+    void shouldFirePostEntity() {
         Jedi jedi = new Jedi();
         jedi.name = "Luke";
         subject.firePostEntity(jedi);
