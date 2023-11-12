@@ -44,12 +44,12 @@ class DynamicQueryTest {
     private Limit limit;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void shouldCreateDynamicQuery() {
+    void shouldCreateDynamicQuery() {
         when(special.isEmpty()).thenReturn(true);
         when(query.condition()).thenReturn(Optional.empty());
         when(query.name()).thenReturn("sampleQuery");
@@ -60,7 +60,7 @@ class DynamicQueryTest {
     }
 
     @Test
-    public void shouldCreateDynamicQueryWithSortsAndLimit() {
+    void shouldCreateDynamicQueryWithSortsAndLimit() {
         when(special.isEmpty()).thenReturn(false);
         when(special.hasOnlySort()).thenReturn(true);
         when(special.sorts()).thenReturn(List.of(mock(Sort.class)));
@@ -81,7 +81,7 @@ class DynamicQueryTest {
     }
 
     @Test
-    public void shouldCreateDynamicQueryWithLimit() {
+    void shouldCreateDynamicQueryWithLimit() {
         when(special.isEmpty()).thenReturn(false);
         when(special.hasOnlySort()).thenReturn(false);
         when(limit.startAt()).thenReturn(1L);
@@ -101,7 +101,7 @@ class DynamicQueryTest {
     }
 
     @Test
-    public void shouldCreateDynamicQueryWithPageable() {
+    void shouldCreateDynamicQueryWithPageable() {
         when(special.isEmpty()).thenReturn(false);
         when(special.pageable()).thenReturn(Optional.of(mock(Pageable.class)));
         when(special.sorts()).thenReturn(List.of(mock(Sort.class)));
@@ -120,7 +120,7 @@ class DynamicQueryTest {
     }
 
     @Test
-    public void shouldReturnWhenThereIsLimitAndSort(){
+    void shouldReturnWhenThereIsLimitAndSort(){
         when(special.isEmpty()).thenReturn(false);
         when(special.pageable()).thenReturn(Optional.of(mock(Pageable.class)));
         when(query.condition()).thenReturn(Optional.empty());
