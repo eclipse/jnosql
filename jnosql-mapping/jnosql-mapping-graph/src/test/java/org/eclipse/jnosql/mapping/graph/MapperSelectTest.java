@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AddPackages(BookRepository.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
-public class MapperSelectTest {
+class MapperSelectTest {
 
 
     @Inject
@@ -63,13 +63,13 @@ public class MapperSelectTest {
     private Person poliana;
 
     @AfterEach
-    public void after() {
+    void after() {
         graph.traversal().V().toList().forEach(Vertex::remove);
         graph.traversal().E().toList().forEach(Edge::remove);
     }
 
     @BeforeEach
-    public void before() {
+    void before() {
         otavio = template.insert(Person.builder().withName("Otavio")
                 .withAge(35).build());
         ada = template.insert(Person.builder().withName("Ada")
@@ -79,7 +79,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldExecuteSelectFrom() {
+    void shouldExecuteSelectFrom() {
 
         List<Person> people = template.select(Person.class).result();
 
@@ -91,7 +91,7 @@ public class MapperSelectTest {
 
 
     @Test
-    public void shouldSelectOrderAsc() {
+    void shouldSelectOrderAsc() {
 
         List<Person> people = template.select(Person.class).orderBy("name").asc().result();
         assertThat(people).hasSize(3).map(Person::getName)
@@ -99,7 +99,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectOrderDesc() {
+    void shouldSelectOrderDesc() {
 
         List<Person> people = template.select(Person.class).orderBy("name").desc().result();
         assertThat(people).hasSize(3).map(Person::getName)
@@ -107,7 +107,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectLimit() {
+    void shouldSelectLimit() {
         List<Person> people = template.select(Person.class).orderBy("name").desc().limit(2).result();
 
         assertThat(people).hasSize(2).map(Person::getName)
@@ -115,7 +115,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectStart() {
+    void shouldSelectStart() {
         List<Person> people = template.select(Person.class).orderBy("name").desc().skip(1).result();
 
         assertThat(people).hasSize(2).map(Person::getName)
@@ -123,7 +123,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereEq() {
+    void shouldSelectWhereEq() {
         Optional<Person> person = template.select(Person.class)
                 .where("name").eq("Otavio").singleResult();
 
@@ -133,7 +133,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereGt() {
+    void shouldSelectWhereGt() {
         List<Person> people = template.select(Person.class).where("age")
                 .gt(30).result();
         assertThat(people).hasSize(1).map(Person::getName)
@@ -141,7 +141,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereGte() {
+    void shouldSelectWhereGte() {
         List<Person> people = template.select(Person.class).where("age")
                 .gte(30).result();
         assertThat(people).hasSize(2).map(Person::getName)
@@ -149,7 +149,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereLt() {
+    void shouldSelectWhereLt() {
         List<Person> people = template.select(Person.class).where("age")
                 .lt(30).result();
         assertThat(people).hasSize(1).map(Person::getName)
@@ -157,7 +157,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereLte() {
+    void shouldSelectWhereLte() {
         List<Person> people = template.select(Person.class).where("age")
                 .lte(30).result();
         assertThat(people).hasSize(2).map(Person::getName)
@@ -165,7 +165,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereBetween() {
+    void shouldSelectWhereBetween() {
         List<Person> people = template.select(Person.class).where("age")
                 .between(30, 40).result();
         assertThat(people).hasSize(2).map(Person::getName)
@@ -173,7 +173,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNot() {
+    void shouldSelectWhereNot() {
         List<Person> people = template.select(Person.class).where("name")
                 .not().eq("Otavio").result();
         assertThat(people).hasSize(2).map(Person::getName)
@@ -181,7 +181,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereAnd() {
+    void shouldSelectWhereAnd() {
         List<Person> people = template.select(Person.class).where("name")
                 .not().eq("Otavio").and("age").lt(30).result();
         assertThat(people).hasSize(1).map(Person::getName)
@@ -189,7 +189,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereOr() {
+    void shouldSelectWhereOr() {
         List<Person> people = template.select(Person.class).where("name")
                 .not().eq("Otavio").or("age").lt(30).result();
         assertThat(people).hasSize(2).map(Person::getName)
@@ -197,7 +197,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldConvertField() {
+    void shouldConvertField() {
         List<Person> people = template.select(Person.class).where("name")
                 .not().eq("Otavio").or("age").lt("30").result();
         assertThat(people).hasSize(2).map(Person::getName)
@@ -205,7 +205,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldUseAttributeConverter() {
+    void shouldUseAttributeConverter() {
         Job job = new Job();
         job.setCity("Salvador");
         job.setDescription("Java Developer");
@@ -224,7 +224,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldFindByIdUsingQuery() {
+    void shouldFindByIdUsingQuery() {
         Optional<Person> person = template.select(Person.class).where("id").eq(poliana.getId()).singleResult();
 
         Assertions.assertNotNull(person);
@@ -233,7 +233,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldResult() {
+    void shouldResult() {
         List<Person> people = template.select(Person.class).result();
         Assertions.assertNotNull(people);
         assertThat(people).hasSize(3).map(Person::getName)
@@ -241,7 +241,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldStream() {
+    void shouldStream() {
         Stream<Person> people = template.select(Person.class).stream();
         Assertions.assertNotNull(people);
 
@@ -251,7 +251,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSingleResult() {
+    void shouldSingleResult() {
         Assertions.assertThrows(NonUniqueResultException.class, () -> template.select(Person.class).singleResult());
 
         Optional<Person> person = template.select(Person.class).where("name").eq("Jono").singleResult();
