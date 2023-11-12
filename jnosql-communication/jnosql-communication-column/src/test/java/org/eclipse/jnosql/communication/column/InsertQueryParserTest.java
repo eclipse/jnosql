@@ -44,7 +44,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = \"Diana\")"})
-    public void shouldReturnParserQuery(String query) {
+    void shouldReturnParserQuery(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).insert(captor.capture());
@@ -57,7 +57,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (age = 30, name = \"Artemis\")"})
-    public void shouldReturnParserQuery1(String query) {
+    void shouldReturnParserQuery1(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).insert(captor.capture());
@@ -70,7 +70,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = \"Diana\") 10 day"})
-    public void shouldReturnParserQuery2(String query) {
+    void shouldReturnParserQuery2(String query) {
 
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
@@ -87,7 +87,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = \"Diana\") 10 hour"})
-    public void shouldReturnParserQuery3(String query) {
+    void shouldReturnParserQuery3(String query) {
 
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
@@ -104,7 +104,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = \"Diana\") 10 minute"})
-    public void shouldReturnParserQuery4(String query) {
+    void shouldReturnParserQuery4(String query) {
 
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
@@ -121,7 +121,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = \"Diana\") 10 second"})
-    public void shouldReturnParserQuery5(String query) {
+    void shouldReturnParserQuery5(String query) {
 
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
@@ -139,7 +139,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = \"Diana\") 10 millisecond"})
-    public void shouldReturnParserQuery6(String query) {
+    void shouldReturnParserQuery6(String query) {
 
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
@@ -156,7 +156,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = \"Diana\") 10 nanosecond"})
-    public void shouldReturnParserQuery7(String query) {
+    void shouldReturnParserQuery7(String query) {
 
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
@@ -173,7 +173,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert Person {\"name\":\"Ada Lovelace\"}"})
-    public void shouldReturnParserQuery8(String query) {
+    void shouldReturnParserQuery8(String query) {
 
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
 
@@ -187,7 +187,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert Person {\"name\":\"Ada Lovelace\"} 10 nanosecond"})
-    public void shouldReturnParserQuery9(String query) {
+    void shouldReturnParserQuery9(String query) {
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
 
@@ -205,7 +205,7 @@ class InsertQueryParserTest {
     @ValueSource(strings = {"insert Person {\"name\": \"Ada Lovelace\", \"age\": 12, \"sibling\":" +
             " [\"Ana\" ,\"Maria\"]," +
             " \"address\":{\"country\": \"United Kingdom\", \"city\": \"London\"}}"})
-    public void shouldReturnParserQuery10(String query) {
+    void shouldReturnParserQuery10(String query) {
 
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
 
@@ -227,7 +227,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = @name)"})
-    public void shouldReturnErrorWhenShouldUsePrepareStatement(String query) {
+    void shouldReturnErrorWhenShouldUsePrepareStatement(String query) {
 
         assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
     }
@@ -235,7 +235,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = @name)"})
-    public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
+    void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
         assertThrows(QueryException.class, prepare::result);
@@ -244,7 +244,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = @name)"})
-    public void shouldExecutePrepareStatement(String query) {
+    void shouldExecutePrepareStatement(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("name", "Diana");
