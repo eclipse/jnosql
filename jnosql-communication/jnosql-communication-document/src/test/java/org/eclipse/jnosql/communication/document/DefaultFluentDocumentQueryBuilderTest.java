@@ -37,16 +37,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class DefaultFluentDocumentQueryBuilderTest {
+class DefaultFluentDocumentQueryBuilderTest {
 
 
     @Test
-    public void shouldReturnErrorWhenHasNullElementInSelect() {
+    void shouldReturnErrorWhenHasNullElementInSelect() {
         assertThrows(NullPointerException.class, () -> select("document", "document'", null));
     }
 
     @Test
-    public void shouldSelect() {
+    void shouldSelect() {
         String documentCollection = "documentCollection";
         DocumentQuery query = select().from(documentCollection).build();
         assertTrue(query.documents().isEmpty());
@@ -55,7 +55,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectDocument() {
+    void shouldSelectDocument() {
         String documentCollection = "documentCollection";
         DocumentQuery query = select("document", "document2").from(documentCollection).build();
         assertThat(query.documents()).contains("document", "document2");
@@ -64,13 +64,13 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenFromIsNull() {
+    void shouldReturnErrorWhenFromIsNull() {
         assertThrows(NullPointerException.class, () -> select().from(null));
     }
 
 
     @Test
-    public void shouldSelectOrderAsc() {
+    void shouldSelectOrderAsc() {
         String documentCollection = "documentCollection";
         DocumentQuery query = select().from(documentCollection).orderBy("name").asc().build();
         assertTrue(query.documents().isEmpty());
@@ -80,7 +80,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectOrderDesc() {
+    void shouldSelectOrderDesc() {
         String documentCollection = "documentCollection";
         DocumentQuery query = select().from(documentCollection).orderBy("name").desc().build();
         assertTrue(query.documents().isEmpty());
@@ -91,7 +91,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
 
 
     @Test
-    public void shouldReturnErrorSelectWhenOrderIsNull() {
+    void shouldReturnErrorSelectWhenOrderIsNull() {
         assertThrows(NullPointerException.class,() -> {
             String documentCollection = "documentCollection";
             select().from(documentCollection).orderBy(null);
@@ -99,7 +99,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectLimit() {
+    void shouldSelectLimit() {
         String documentCollection = "documentCollection";
         DocumentQuery query = select().from(documentCollection).limit(10).build();
         assertTrue(query.documents().isEmpty());
@@ -109,13 +109,13 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenLimitIsNegative() {
+    void shouldReturnErrorWhenLimitIsNegative() {
         String documentCollection = "documentCollection";
         assertThrows(IllegalArgumentException.class, () -> select().from(documentCollection).limit(-1));
     }
 
     @Test
-    public void shouldSelectSkip() {
+    void shouldSelectSkip() {
         String documentCollection = "documentCollection";
         DocumentQuery query = select().from(documentCollection).skip(10).build();
         assertTrue(query.documents().isEmpty());
@@ -125,13 +125,13 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenSkipIsNegative() {
+    void shouldReturnErrorWhenSkipIsNegative() {
         String documentCollection = "documentCollection";
         assertThrows(IllegalArgumentException.class, () -> select().from(documentCollection).skip(-1));
     }
 
     @Test
-    public void shouldSelectWhereNameEq() {
+    void shouldSelectWhereNameEq() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         DocumentQuery query = select().from(documentCollection).where("name").eq(name).build();
@@ -148,7 +148,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLike() {
+    void shouldSelectWhereNameLike() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         DocumentQuery query = select().from(documentCollection).where("name").like(name).build();
@@ -164,7 +164,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGt() {
+    void shouldSelectWhereNameGt() {
         String documentCollection = "documentCollection";
         Number value = 10;
         DocumentQuery query = select().from(documentCollection).where("name").gt(value).build();
@@ -180,7 +180,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGte() {
+    void shouldSelectWhereNameGte() {
         String documentCollection = "documentCollection";
         Number value = 10;
         DocumentQuery query = select().from(documentCollection).where("name").gte(value).build();
@@ -196,7 +196,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLt() {
+    void shouldSelectWhereNameLt() {
         String documentCollection = "documentCollection";
         Number value = 10;
         DocumentQuery query = select().from(documentCollection).where("name").lt(value).build();
@@ -212,7 +212,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLte() {
+    void shouldSelectWhereNameLte() {
         String documentCollection = "documentCollection";
         Number value = 10;
         DocumentQuery query = select().from(documentCollection).where("name").lte(value).build();
@@ -228,7 +228,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameBetween() {
+    void shouldSelectWhereNameBetween() {
         String documentCollection = "documentCollection";
         Number valueA = 10;
         Number valueB = 20;
@@ -246,7 +246,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameNot() {
+    void shouldSelectWhereNameNot() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         DocumentQuery query = select().from(documentCollection).where("name").not().eq(name).build();
@@ -264,7 +264,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
 
 
     @Test
-    public void shouldSelectWhereNameAnd() {
+    void shouldSelectWhereNameAnd() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         DocumentQuery query = select().from(documentCollection).where("name").eq(name).and("age")
@@ -280,7 +280,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameOr() {
+    void shouldSelectWhereNameOr() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         DocumentQuery query = select().from(documentCollection).where("name").eq(name).or("age").gt(10).build();
@@ -296,7 +296,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
 
 
     @Test
-    public void shouldSelectNegate() {
+    void shouldSelectNegate() {
         String columnFamily = "columnFamily";
         DocumentQuery query = select().from(columnFamily).where("city").not().eq("Assis")
                 .and("name").not().eq("Lucas").build();
@@ -315,7 +315,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
 
 
     @Test
-    public void shouldExecuteManager() {
+    void shouldExecuteManager() {
         DocumentManager manager = Mockito.mock(DocumentManager.class);
         ArgumentCaptor<DefaultDocumentQuery> queryCaptor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
         String collection = "collection";
@@ -325,7 +325,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     }
 
     @Test
-    public void shouldExecuteSingleResultManager() {
+    void shouldExecuteSingleResultManager() {
         DocumentManager manager = Mockito.mock(DocumentManager.class);
         ArgumentCaptor<DefaultDocumentQuery> queryCaptor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
         String collection = "collection";
