@@ -42,7 +42,7 @@ class UpdateQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = \"Diana\")"})
-    public void shouldReturnParserQuery(String query) {
+    void shouldReturnParserQuery(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).update(captor.capture());
@@ -55,7 +55,7 @@ class UpdateQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (age = 30, name = \"Artemis\")"})
-    public void shouldReturnParserQuery1(String query) {
+    void shouldReturnParserQuery1(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).update(captor.capture());
@@ -68,13 +68,13 @@ class UpdateQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldReturnParserQuery2(String query) {
+    void shouldReturnParserQuery2(String query) {
 
         assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
     }
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update Person {\"name\":\"Ada Lovelace\"}"})
-    public void shouldReturnParserQuery3(String query) {
+    void shouldReturnParserQuery3(String query) {
 
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
 
@@ -91,7 +91,7 @@ class UpdateQueryParserTest {
     @ValueSource(strings = {"update Person {\"name\": \"Ada Lovelace\", \"age\": 12, \"sibling\":" +
             " [\"Ana\" ,\"Maria\"]," +
             " \"address\":{\"country\": \"United Kingdom\", \"city\": \"London\"}}"})
-    public void shouldReturnParserQuery4(String query) {
+    void shouldReturnParserQuery4(String query) {
 
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
 
@@ -113,7 +113,7 @@ class UpdateQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
+    void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
         assertThrows(QueryException.class, prepare::result);
@@ -121,7 +121,7 @@ class UpdateQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldExecutePrepareStatement(String query) {
+    void shouldExecutePrepareStatement(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("name", "Diana");
