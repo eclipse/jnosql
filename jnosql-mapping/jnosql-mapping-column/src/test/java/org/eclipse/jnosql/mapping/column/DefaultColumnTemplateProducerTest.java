@@ -35,18 +35,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
-public class DefaultColumnTemplateProducerTest {
+class DefaultColumnTemplateProducerTest {
 
     @Inject
     private ColumnTemplateProducer producer;
 
     @Test
-    public void shouldReturnErrorWhenColumnManagerNull() {
+    void shouldReturnErrorWhenColumnManagerNull() {
         Assertions.assertThrows(NullPointerException.class, () -> producer.apply(null));
     }
 
     @Test
-    public void shouldReturn() {
+    void shouldReturn() {
         ColumnManager manager = Mockito.mock(ColumnManager.class);
         ColumnTemplate columnTemplate = producer.apply(manager);
         assertNotNull(columnTemplate);
