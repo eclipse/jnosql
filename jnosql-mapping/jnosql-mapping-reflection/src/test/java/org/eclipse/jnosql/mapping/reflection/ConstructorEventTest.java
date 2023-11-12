@@ -23,10 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class ConstructorEventTest {
+class ConstructorEventTest {
 
     @Test
-    public void shouldCreateConstructorEvent() throws NoSuchMethodException {
+    void shouldCreateConstructorEvent() throws NoSuchMethodException {
         // Create a sample class to get the constructor
         Class<?> sampleClass = SampleClass.class;
 
@@ -49,13 +49,13 @@ public class ConstructorEventTest {
     }
 
     @Test
-    public void shouldThrowNullPointerException() {
+    void shouldThrowNullPointerException() {
         Assertions.assertThrows(NullPointerException.class, () -> ConstructorEvent.of(null, new Object[]{1}));
         Assertions.assertThrows(NullPointerException.class, () -> ConstructorEvent.of(ConstructorEventTest.class.getDeclaredConstructors()[0], null));
     }
 
     @Test
-    public void shouldToString()  throws NoSuchMethodException{
+    void shouldToString()  throws NoSuchMethodException{
         Class<?> sampleClass = SampleClass.class;
 
         Constructor<?> constructor = sampleClass.getConstructor(int.class, String.class);
@@ -68,7 +68,7 @@ public class ConstructorEventTest {
     }
 
     @Test
-    public void shouldEqualsHasCode() throws NoSuchMethodException {
+    void shouldEqualsHasCode() throws NoSuchMethodException {
         Class<?> sampleClass = SampleClass.class;
         Constructor<?> constructor = sampleClass.getConstructor(int.class, String.class);
 
