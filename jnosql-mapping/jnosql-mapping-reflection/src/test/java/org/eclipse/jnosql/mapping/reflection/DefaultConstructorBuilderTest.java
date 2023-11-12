@@ -37,20 +37,20 @@ class DefaultConstructorBuilderTest {
     private ConstructorMetadata constructor;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         ClassConverter converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(BookUser.class);
         this.constructor = entityMetadata.constructor();
     }
 
     @Test
-    public void shouldToString(){
+    void shouldToString(){
         ConstructorBuilder builder = DefaultConstructorBuilder.of(constructor);
         assertThat(builder.toString()).isNotEmpty().isNotBlank().isNotNull();
     }
 
     @Test
-    public void shouldCreateEmpty(){
+    void shouldCreateEmpty(){
         ConstructorBuilder builder = DefaultConstructorBuilder.of(constructor);
         builder.addEmptyParameter();
         builder.addEmptyParameter();
@@ -66,7 +66,7 @@ class DefaultConstructorBuilderTest {
 
 
     @Test
-    public void shouldCreateWithValues(){
+    void shouldCreateWithValues(){
         ConstructorBuilder builder = DefaultConstructorBuilder.of(constructor);
         builder.add("id");
         builder.add("name");
@@ -82,7 +82,7 @@ class DefaultConstructorBuilderTest {
     }
 
     @Test
-    public void shouldParameters(){
+    void shouldParameters(){
         ConstructorBuilder builder = DefaultConstructorBuilder.of(constructor);
         builder.add("id");
         builder.add("name");
@@ -92,7 +92,7 @@ class DefaultConstructorBuilderTest {
     }
 
     @Test
-    public void shouldEqualsHashCode(){
+    void shouldEqualsHashCode(){
         ConstructorBuilder builder = DefaultConstructorBuilder.of(constructor);
         ConstructorBuilder other = DefaultConstructorBuilder.of(constructor);
         assertThat(builder).isEqualTo(other);
