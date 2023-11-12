@@ -45,7 +45,7 @@ class PageRepositoryReturnTest {
     private Page<Person> page;
 
     @Test
-    public void shouldReturnIsCompatible() {
+    void shouldReturnIsCompatible() {
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Page.class));
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Slice.class));
         assertFalse(repositoryReturn.isCompatible(Object.class, Person.class));
@@ -53,7 +53,7 @@ class PageRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnPage() {
+    void shouldReturnPage() {
 
         Person ada = new Person("Ada");
 
@@ -78,7 +78,7 @@ class PageRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnSlice() {
+    void shouldReturnSlice() {
 
         Person ada = new Person("Ada");
 
@@ -103,7 +103,7 @@ class PageRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenUsePage() {
+    void shouldReturnErrorWhenUsePage() {
 
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
