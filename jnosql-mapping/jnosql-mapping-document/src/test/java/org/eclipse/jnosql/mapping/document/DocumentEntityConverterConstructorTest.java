@@ -47,13 +47,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
-public class DocumentEntityConverterConstructorTest {
+class DocumentEntityConverterConstructorTest {
 
     @Inject
     private DocumentEntityConverter converter;
 
     @Test
-    public void shouldConverterEntityComputer() {
+    void shouldConverterEntityComputer() {
         DocumentEntity communication = DocumentEntity.of("Computer");
         communication.add("_id", 10L);
         communication.add("name", "Dell");
@@ -70,7 +70,7 @@ public class DocumentEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConvertComputerToCommunication() {
+    void shouldConvertComputerToCommunication() {
         Computer computer = new Computer(10L, "Dell", 2020, "Dell 2020",
                 Money.parse("USD 20"));
         DocumentEntity communication = this.converter.toDocument(computer);
@@ -84,7 +84,7 @@ public class DocumentEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConvertPetOwner() {
+    void shouldConvertPetOwner() {
         DocumentEntity communication = DocumentEntity.of("PetOwner");
         communication.add("_id", 10L);
         communication.add("name", "Otavio");
@@ -101,7 +101,7 @@ public class DocumentEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConvertPetOwnerCommunication() {
+    void shouldConvertPetOwnerCommunication() {
         Animal ada = new Animal("Ada");
         PetOwner petOwner = new PetOwner(10L, "Poliana", ada);
         DocumentEntity communication = this.converter.toDocument(petOwner);
@@ -115,7 +115,7 @@ public class DocumentEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConvertBookUser() {
+    void shouldConvertBookUser() {
         DocumentEntity communication = DocumentEntity.of("BookUser");
         communication.add("_id", "otaviojava");
         communication.add("native_name", "Otavio Santana");
@@ -133,7 +133,7 @@ public class DocumentEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConverterFieldsOnEntityComputer() {
+    void shouldConverterFieldsOnEntityComputer() {
         DocumentEntity communication = DocumentEntity.of("Computer");
         communication.add("_id", "10");
         communication.add("name", "Dell");
@@ -150,7 +150,7 @@ public class DocumentEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConverterEntityBookRelease() {
+    void shouldConverterEntityBookRelease() {
         DocumentEntity communication = DocumentEntity.of("BookRelease");
         communication.add("isbn", "9780132345286");
         communication.add("title", "Effective Java");
@@ -165,7 +165,7 @@ public class DocumentEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConverterEntityBookReleaseOnStringYear() {
+    void shouldConverterEntityBookReleaseOnStringYear() {
         DocumentEntity communication = DocumentEntity.of("BookRelease");
         communication.add("isbn", "9780132345286");
         communication.add("title", "Effective Java");
