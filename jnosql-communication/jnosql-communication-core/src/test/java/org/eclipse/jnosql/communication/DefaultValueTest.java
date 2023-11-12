@@ -183,7 +183,7 @@ class DefaultValueTest {
     }
 
     @Test
-    public void shouldInstanceOf(){
+    void shouldInstanceOf(){
         var value = Value.of(10);
         Assertions.assertThat(value.isInstanceOf(Integer.class)).isTrue();
         Assertions.assertThat(value.isInstanceOf(boolean.class)).isFalse();
