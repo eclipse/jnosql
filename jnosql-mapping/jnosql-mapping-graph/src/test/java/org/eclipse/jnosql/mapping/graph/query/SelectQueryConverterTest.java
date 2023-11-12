@@ -67,26 +67,26 @@ class SelectQueryConverterTest {
     private Graph graph;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         graph.traversal().E().toList().forEach(Edge::remove);
         graph.traversal().V().toList().forEach(Vertex::remove);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByName"})
-    public void shouldRunQuery(String methodName) {
+    void shouldRunQuery(String methodName) {
         checkEquals(methodName);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByNameEquals"})
-    public void shouldRunQuery1(String methodName) {
+    void shouldRunQuery1(String methodName) {
         checkEquals(methodName);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByNameNotEquals"})
-    public void shouldRunQuery2(String methodName) {
+    void shouldRunQuery2(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -105,7 +105,7 @@ class SelectQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeLessThan"})
-    public void shouldRunQuery3(String methodName) {
+    void shouldRunQuery3(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -123,7 +123,7 @@ class SelectQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeLessThanEqual"})
-    public void shouldRunQuery4(String methodName) {
+    void shouldRunQuery4(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -143,7 +143,7 @@ class SelectQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeGreaterThan"})
-    public void shouldRunQuery5(String methodName) {
+    void shouldRunQuery5(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -161,7 +161,7 @@ class SelectQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeGreaterThanEqual"})
-    public void shouldRunQuery6(String methodName) {
+    void shouldRunQuery6(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -180,7 +180,7 @@ class SelectQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeBetween"})
-    public void shouldRunQuery7(String methodName) {
+    void shouldRunQuery7(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -200,7 +200,7 @@ class SelectQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeLessThanOrderByName"})
-    public void shouldRunQuery8(String methodName) {
+    void shouldRunQuery8(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -221,7 +221,7 @@ class SelectQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeLessThanOrderByNameDesc"})
-    public void shouldRunQuery9(String methodName) {
+    void shouldRunQuery9(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -241,7 +241,7 @@ class SelectQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeLessThanOrderByNameDescAgeAsc"})
-    public void shouldRunQuery10(String methodName) {
+    void shouldRunQuery10(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -261,7 +261,7 @@ class SelectQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeIn"})
-    public void shouldRunQuery11(String methodName) {
+    void shouldRunQuery11(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -282,7 +282,7 @@ class SelectQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByNameIn"})
-    public void shouldRunQuery12(String methodName) {
+    void shouldRunQuery12(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
