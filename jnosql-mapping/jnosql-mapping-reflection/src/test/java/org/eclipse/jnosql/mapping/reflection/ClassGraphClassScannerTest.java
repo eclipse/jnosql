@@ -35,7 +35,7 @@ class ClassGraphClassScannerTest {
     private ClassGraphClassScanner classScanner = ClassGraphClassScanner.INSTANCE;
 
     @Test
-    public void shouldReturnEntities() {
+    void shouldReturnEntities() {
         Set<Class<?>> entities = classScanner.entities();
         Assertions.assertNotNull(entities);
         assertThat(entities).hasSize(26)
@@ -43,7 +43,7 @@ class ClassGraphClassScannerTest {
     }
 
     @Test
-    public void shouldReturnEmbeddables() {
+    void shouldReturnEmbeddables() {
         Set<Class<?>> embeddables = classScanner.embeddables();
         Assertions.assertNotNull(embeddables);
         assertThat(embeddables).hasSize(4)
@@ -52,7 +52,7 @@ class ClassGraphClassScannerTest {
 
 
     @Test
-    public void shouldReturnRepositories() {
+    void shouldReturnRepositories() {
         Set<Class<?>> reepositores = classScanner.repositories();
         Assertions.assertNotNull(reepositores);
 
@@ -63,7 +63,7 @@ class ClassGraphClassScannerTest {
     }
 
     @Test
-    public void shouldFilterRepositories() {
+    void shouldFilterRepositories() {
         Set<Class<?>> repositories = classScanner.repositories(NoSQLVendor.class);
         Assertions.assertNotNull(repositories);
 
@@ -72,7 +72,7 @@ class ClassGraphClassScannerTest {
     }
 
     @Test
-    public void shouldFieldByCrudRepository() {
+    void shouldFieldByCrudRepository() {
         Set<Class<?>> repositories = classScanner.repositories(CrudRepository.class);
         Assertions.assertNotNull(repositories);
 
@@ -81,7 +81,7 @@ class ClassGraphClassScannerTest {
     }
 
     @Test
-    public void shouldFieldByPageable() {
+    void shouldFieldByPageable() {
         Set<Class<?>> repositories = classScanner.repositories(PageableRepository.class);
         Assertions.assertNotNull(repositories);
 
@@ -90,7 +90,7 @@ class ClassGraphClassScannerTest {
     }
 
     @Test
-    public void shouldReturnStandardRepositories() {
+    void shouldReturnStandardRepositories() {
         Set<Class<?>> repositories = classScanner.repositoriesStandard();
         assertThat(repositories).hasSize(2)
                 .contains(PersonRepository.class, MovieRepository.class);
