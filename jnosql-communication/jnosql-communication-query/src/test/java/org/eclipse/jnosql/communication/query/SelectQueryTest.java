@@ -26,22 +26,22 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-public class SelectQueryTest {
+class SelectQueryTest {
 
     @ParameterizedTest
     @ArgumentsSource(SelectQueryArgumentProvider.class)
-    public void shouldExecuteQuery(String query) {
+    void shouldExecuteQuery(String query) {
         testQuery(query);
     }
 
     @Test
-    public void shouldIgnoreComments() {
+    void shouldIgnoreComments() {
         testQuery("//ignore this line \n select * from Person");
     }
 
     @ParameterizedTest
     @ArgumentsSource(WrongSelectQueryArgumentProvider.class)
-    public void shouldNotExecute(String query) {
+    void shouldNotExecute(String query) {
         Assertions.assertThrows(QueryException.class, () -> testQuery(query));
     }
 
