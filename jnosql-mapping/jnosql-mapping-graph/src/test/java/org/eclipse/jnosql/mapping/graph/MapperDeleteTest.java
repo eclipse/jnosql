@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @AddPackages(BookRepository.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
-public class MapperDeleteTest {
+class MapperDeleteTest {
 
     @Inject
     private GraphTemplate template;
@@ -57,13 +57,13 @@ public class MapperDeleteTest {
     private Person poliana;
 
     @AfterEach
-    public void after() {
+    void after() {
         graph.traversal().V().toList().forEach(Vertex::remove);
         graph.traversal().E().toList().forEach(Edge::remove);
     }
 
     @BeforeEach
-    public void before() {
+    void before() {
         otavio = template.insert(Person.builder().withName("Otavio")
                 .withAge(35).build());
         ada = template.insert(Person.builder().withName("Ada")
@@ -73,14 +73,14 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldReturnDeleteFrom() {
+    void shouldReturnDeleteFrom() {
         template.delete(Person.class).execute();
         List<Person> people = template.select(Person.class).result();
         assertThat(people).isEmpty();
     }
 
     @Test
-    public void shouldDeleteWhereNameEq() {
+    void shouldDeleteWhereNameEq() {
         template.delete(Person.class).where("name").eq(otavio.getName()).execute();
         List<Person> people = template.select(Person.class).result();
         assertThat(people).hasSize(2).map(Person::getName)
@@ -88,7 +88,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldThrownAnExceptionWhenDeleteWhereNameLike() {
+    void shouldThrownAnExceptionWhenDeleteWhereNameLike() {
         assertThrows(UnsupportedOperationException.class, () ->
                 template.delete(Person.class).where("name").like("test"));
         List<Person> people = template.select(Person.class).result();
@@ -97,7 +97,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldDeleteWhereGt() {
+    void shouldDeleteWhereGt() {
         template.delete(Person.class).where("age").gt(30).execute();
 
         List<Person> people = template.select(Person.class).result();
@@ -106,7 +106,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldDeleteWhereGte() {
+    void shouldDeleteWhereGte() {
         template.delete(Person.class).where("age").gte(30).execute();
 
         List<Person> people = template.select(Person.class).result();
@@ -116,7 +116,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldDeleteWhereLt() {
+    void shouldDeleteWhereLt() {
         template.delete(Person.class).where("age").lt(30).execute();
 
         List<Person> people = template.select(Person.class).result();
@@ -125,7 +125,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldDeleteWhereLte() {
+    void shouldDeleteWhereLte() {
 
         template.delete(Person.class).where("age").lte(30).execute();
 
@@ -135,7 +135,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldDeleteWhereBetween() {
+    void shouldDeleteWhereBetween() {
         template.delete(Person.class).where("age").between(29, 40).execute();
         List<Person> people = template.select(Person.class).result();
         assertThat(people).hasSize(1).map(Person::getName)
@@ -143,7 +143,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldDeleteWhereNot() {
+    void shouldDeleteWhereNot() {
         template.delete(Person.class).where("name").not().eq(otavio.getName()).execute();
         List<Person> people = template.select(Person.class).result();
         assertThat(people).hasSize(1).map(Person::getName)
@@ -152,7 +152,7 @@ public class MapperDeleteTest {
 
 
     @Test
-    public void shouldDeleteWhereAnd() {
+    void shouldDeleteWhereAnd() {
         template.delete(Person.class).where("name").eq(otavio.getName())
                 .and("age").gte(20).execute();
         List<Person> people = template.select(Person.class).result();
@@ -161,7 +161,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldDeleteWhereOr() {
+    void shouldDeleteWhereOr() {
         template.delete(Person.class).where("name").eq(otavio.getName())
                 .or("age").gte(20).execute();
         List<Person> people = template.select(Person.class).result();
@@ -170,7 +170,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldConvertField() {
+    void shouldConvertField() {
          template.delete(Person.class).where("name")
                 .not().eq("Otavio").or("age").lt("30").execute();
 
@@ -180,7 +180,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldUseAttributeConverter() {
+    void shouldUseAttributeConverter() {
         Job job = new Job();
         job.setCity("Salvador");
         job.setDescription("Java Developer");
