@@ -32,13 +32,13 @@ class ReflectionConstructorBuilderSupplierTest {
     private ReflectionConstructorBuilderSupplier supplier;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         supplier = new ReflectionConstructorBuilderSupplier();
     }
 
     @Test
-    public void shouldApply() {
+    void shouldApply() {
         // Mocking ConstructorBuilder
         ConstructorBuilder constructorBuilder = DefaultConstructorBuilder.of(constructorMetadata);
         when(constructorBuilder.toString()).thenReturn("MockedConstructorBuilder");
