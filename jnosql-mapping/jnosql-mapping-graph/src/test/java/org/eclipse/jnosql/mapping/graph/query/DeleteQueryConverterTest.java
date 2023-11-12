@@ -66,26 +66,26 @@ class DeleteQueryConverterTest {
     private Graph graph;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         graph.traversal().E().toList().forEach(Edge::remove);
         graph.traversal().V().toList().forEach(Vertex::remove);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"deleteByName"})
-    public void shouldRunQuery(String methodName) {
+    void shouldRunQuery(String methodName) {
         checkEquals(methodName);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"deleteByNameEquals"})
-    public void shouldRunQuery1(String methodName) {
+    void shouldRunQuery1(String methodName) {
         checkEquals(methodName);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"deleteByNameNotEquals"})
-    public void shouldRunQuery2(String methodName) {
+    void shouldRunQuery2(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -104,7 +104,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"deleteByAgeLessThan"})
-    public void shouldRunQuery3(String methodName) {
+    void shouldRunQuery3(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -122,7 +122,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"deleteByAgeLessThanEqual"})
-    public void shouldRunQuery4(String methodName) {
+    void shouldRunQuery4(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -142,7 +142,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"deleteByAgeGreaterThan"})
-    public void shouldRunQuery5(String methodName) {
+    void shouldRunQuery5(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -160,7 +160,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"deleteByAgeGreaterThanEqual"})
-    public void shouldRunQuery6(String methodName) {
+    void shouldRunQuery6(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -179,7 +179,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"deleteByAgeBetween"})
-    public void shouldRunQuery7(String methodName) {
+    void shouldRunQuery7(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -199,7 +199,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"deleteByAgeIn"})
-    public void shouldRunQuery11(String methodName) {
+    void shouldRunQuery11(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
@@ -220,7 +220,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"deleteByNameIn"})
-    public void shouldRunQuery12(String methodName) {
+    void shouldRunQuery12(String methodName) {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals(methodName)).findFirst().get();
 
