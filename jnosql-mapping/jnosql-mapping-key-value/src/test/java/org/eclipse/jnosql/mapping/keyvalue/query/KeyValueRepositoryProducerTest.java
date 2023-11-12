@@ -43,14 +43,14 @@ class KeyValueRepositoryProducerTest {
     private KeyValueRepositoryProducer producer;
 
     @Test
-    public void shouldCreateFromManager() {
+    void shouldCreateFromManager() {
         BucketManager manager = Mockito.mock(BucketManager.class);
         PersonRepository personRepository = producer.get(PersonRepository.class, manager);
         assertNotNull(personRepository);
     }
 
     @Test
-    public void shouldCreateFromTemplate() {
+    void shouldCreateFromTemplate() {
         KeyValueTemplate template = Mockito.mock(KeyValueTemplate.class);
         PersonRepository personRepository = producer.get(PersonRepository.class, template);
         assertNotNull(personRepository);
