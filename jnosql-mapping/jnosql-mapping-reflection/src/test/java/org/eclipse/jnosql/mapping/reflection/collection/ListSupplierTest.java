@@ -29,12 +29,12 @@ class ListSupplierTest {
     private CollectionSupplier<?> supplier;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.supplier = new ListSupplier();
     }
 
     @Test
-    public void shouldTest() {
+    void shouldTest() {
         Assertions.assertTrue(supplier.test(List.class));
         Assertions.assertTrue(supplier.test(Iterable.class));
         Assertions.assertTrue(supplier.test(Collection.class));
@@ -42,7 +42,7 @@ class ListSupplierTest {
     }
 
     @Test
-    public void shouldGet() {
+    void shouldGet() {
         final Collection<?> collection = this.supplier.get();
         Assertions.assertNotNull(collection);
         Assertions.assertTrue(collection instanceof ArrayList);
