@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class InsertQueryConverterTest {
+class InsertQueryConverterTest {
 
     private final InsertQueryConverter insertQueryConverter = new InsertQueryConverter();
 
