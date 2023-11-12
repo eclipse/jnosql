@@ -528,7 +528,7 @@ class GraphRepositoryProxyTest {
     }
 
     @Test
-    public void shouldExecuteCustomRepository(){
+    void shouldExecuteCustomRepository(){
         PersonStatisticRepository.PersonStatistic statistics = personRepository.statistics("Salvador");
         assertThat(statistics).isNotNull();
         SoftAssertions.assertSoftly(softly -> {
