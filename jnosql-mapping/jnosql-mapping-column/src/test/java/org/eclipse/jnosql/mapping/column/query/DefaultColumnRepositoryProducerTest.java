@@ -44,7 +44,7 @@ class DefaultColumnRepositoryProducerTest {
 
 
     @Test
-    public void shouldCreateFromManager() {
+    void shouldCreateFromManager() {
         ColumnManager manager= Mockito.mock(ColumnManager.class);
         PersonRepository personRepository = producer.get(PersonRepository.class, manager);
         assertNotNull(personRepository);
@@ -52,7 +52,7 @@ class DefaultColumnRepositoryProducerTest {
 
 
     @Test
-    public void shouldCreateFromTemplate() {
+    void shouldCreateFromTemplate() {
         JNoSQLColumnTemplate template= Mockito.mock(JNoSQLColumnTemplate.class);
         PersonRepository personRepository = producer.get(PersonRepository.class, template);
         assertNotNull(personRepository);
