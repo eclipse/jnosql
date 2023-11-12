@@ -31,7 +31,7 @@ class AbstractBeanTest {
 
 
     @Test
-    public void shouldGetInjectionPoints() {
+    void shouldGetInjectionPoints() {
         // Create the AbstractBean instance
         AbstractBean<Object> abstractBean = getInstance();
 
@@ -43,7 +43,7 @@ class AbstractBeanTest {
     }
 
     @Test
-    public void shouldReturnScope() {
+    void shouldReturnScope() {
         // Create the AbstractBean instance
         AbstractBean<Object> abstractBean = getInstance();
 
@@ -55,7 +55,7 @@ class AbstractBeanTest {
     }
 
     @Test
-    public void shouldReturnNameAsNull() {
+    void shouldReturnNameAsNull() {
         // Create the AbstractBean instance
         AbstractBean<Object> abstractBean = getInstance();
 
@@ -67,7 +67,7 @@ class AbstractBeanTest {
     }
 
     @Test
-    public void shouldReturnEmptyStereotypes() {
+    void shouldReturnEmptyStereotypes() {
         // Create the AbstractBean instance
         AbstractBean<Object> abstractBean = getInstance();
 
@@ -79,7 +79,7 @@ class AbstractBeanTest {
     }
 
     @Test
-    public void shouldReturnIsAlternativeAsFalse() {
+    void shouldReturnIsAlternativeAsFalse() {
         // Create the AbstractBean instance
         AbstractBean<Object> abstractBean = getInstance();
 
