@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
-public class ColumnEntityImmutableTest {
+class ColumnEntityImmutableTest {
 
     @Inject
     private DefaultColumnEntityConverter converter;
@@ -51,7 +51,7 @@ public class ColumnEntityImmutableTest {
     private Car car;
 
     @BeforeEach
-    public void init() {
+    void init() {
 
         this.car = new Car("123456789", "SF90", "Ferrari", Year.now());
 
@@ -63,7 +63,7 @@ public class ColumnEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertCommunicationEntity() {
+    void shouldConvertCommunicationEntity() {
 
         ColumnEntity entity = converter.toColumn(car);
         assertEquals("Car", entity.name());
@@ -75,7 +75,7 @@ public class ColumnEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertCommunicationEntity2() {
+    void shouldConvertCommunicationEntity2() {
 
         ColumnEntity entity = converter.toColumn(car);
         assertEquals("Car", entity.name());
@@ -85,7 +85,7 @@ public class ColumnEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertEntity() {
+    void shouldConvertEntity() {
         ColumnEntity entity = ColumnEntity.of("Car");
         Stream.of(columns).forEach(entity::add);
 
@@ -99,7 +99,7 @@ public class ColumnEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertExistRecord() {
+    void shouldConvertExistRecord() {
         ColumnEntity entity = ColumnEntity.of("Car");
         Stream.of(columns).forEach(entity::add);
         Car ferrari = new Car(null, null, null, null);
@@ -124,7 +124,7 @@ public class ColumnEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertExist() {
+    void shouldConvertExist() {
         ColumnEntity entity = ColumnEntity.of("Hero");
         entity.add("_id", "2342");
         entity.add("name", "Iron man");
