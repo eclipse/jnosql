@@ -44,7 +44,7 @@ class DocumentRepositoryProducerTest {
 
 
     @Test
-    public void shouldCreateFromManager() {
+    void shouldCreateFromManager() {
         DocumentManager manager= Mockito.mock(DocumentManager.class);
         PersonRepository personRepository = producer.get(PersonRepository.class, manager);
         assertNotNull(personRepository);
@@ -52,7 +52,7 @@ class DocumentRepositoryProducerTest {
 
 
     @Test
-    public void shouldCreateFromTemplate() {
+    void shouldCreateFromTemplate() {
         JNoSQLDocumentTemplate template= Mockito.mock(JNoSQLDocumentTemplate.class);
         PersonRepository personRepository = producer.get(PersonRepository.class, template);
         assertNotNull(personRepository);
