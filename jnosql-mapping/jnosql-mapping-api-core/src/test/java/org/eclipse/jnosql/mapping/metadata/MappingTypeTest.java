@@ -37,44 +37,44 @@ import java.util.Map;
 class MappingTypeTest {
 
     @Test
-    public void shouldReturnList() throws NoSuchFieldException {
+    void shouldReturnList() throws NoSuchFieldException {
         Field field = Person.class.getDeclaredField("phones");
         assertEquals(MappingType.COLLECTION, MappingType.of(field.getType()));
     }
 
     @Test
-    public void shouldReturnSet() throws NoSuchFieldException {
+    void shouldReturnSet() throws NoSuchFieldException {
         Field field = Movie.class.getDeclaredField("actors");
         assertEquals(MappingType.COLLECTION, MappingType.of(field.getType()));
     }
 
     @Test
-    public void shouldReturnMap() throws NoSuchFieldException {
+    void shouldReturnMap() throws NoSuchFieldException {
         Field field = Actor.class.getDeclaredField("movieCharacter");
         assertEquals(MappingType.MAP, MappingType.of(field.getType()));
     }
 
     @Test
-    public void shouldReturnDefault() throws NoSuchFieldException {
+    void shouldReturnDefault() throws NoSuchFieldException {
         Field field = Person.class.getDeclaredField("name");
         assertEquals(MappingType.DEFAULT, MappingType.of(field.getType()));
     }
 
 
     @Test
-    public void shouldReturnEmbedded() throws NoSuchFieldException {
+    void shouldReturnEmbedded() throws NoSuchFieldException {
         Field field = Worker.class.getDeclaredField("job");
         assertEquals(MappingType.EMBEDDED, MappingType.of(field.getType()));
     }
 
     @Test
-    public void shouldReturnEntity() throws NoSuchFieldException {
+    void shouldReturnEntity() throws NoSuchFieldException {
         Field field = Address.class.getDeclaredField("zipCode");
         assertEquals(MappingType.ENTITY, MappingType.of(field.getType()));
     }
 
     @Test
-    public void shouldReturnParameterDefault() throws NoSuchMethodException {
+    void shouldReturnParameterDefault() throws NoSuchMethodException {
         Constructor<BookUser> constructor = (Constructor<BookUser>) BookUser.class.getDeclaredConstructors()[0];
         Parameter id = constructor.getParameters()[0];
         Parameter name = constructor.getParameters()[1];
@@ -83,28 +83,28 @@ class MappingTypeTest {
     }
 
     @Test
-    public void shouldReturnParameterCollection() {
+    void shouldReturnParameterCollection() {
         Constructor<BookUser> constructor = (Constructor<BookUser>) BookUser.class.getDeclaredConstructors()[0];
         Parameter books = constructor.getParameters()[2];
         assertEquals(MappingType.COLLECTION, MappingType.of(books.getType()));
     }
 
     @Test
-    public void shouldReturnParameterEntity() {
+    void shouldReturnParameterEntity() {
         Constructor<PetOwner> constructor = (Constructor<PetOwner>) PetOwner.class.getDeclaredConstructors()[0];
         Parameter animal = constructor.getParameters()[2];
         assertEquals(MappingType.ENTITY, MappingType.of(animal.getType()));
     }
 
     @Test
-    public void shouldReturnParameterMap() {
+    void shouldReturnParameterMap() {
         Constructor<ForClass> constructor = (Constructor<ForClass>) ForClass.class.getDeclaredConstructors()[0];
         Parameter map = constructor.getParameters()[0];
         assertEquals(MappingType.MAP, MappingType.of(map.getType()));
     }
 
     @Test
-    public void shouldReturnParameterEmbedded() {
+    void shouldReturnParameterEmbedded() {
         Constructor<ForClass> constructor = (Constructor<ForClass>) ForClass.class.getDeclaredConstructors()[0];
         Parameter map = constructor.getParameters()[1];
         assertEquals(MappingType.EMBEDDED, MappingType.of(map.getType()));
