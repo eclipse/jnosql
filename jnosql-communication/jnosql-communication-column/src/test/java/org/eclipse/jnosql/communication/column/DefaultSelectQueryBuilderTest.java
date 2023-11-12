@@ -38,16 +38,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DefaultSelectQueryBuilderTest {
+class DefaultSelectQueryBuilderTest {
 
 
     @Test
-    public void shouldReturnErrorWhenHasNullElementInSelect() {
+    void shouldReturnErrorWhenHasNullElementInSelect() {
         Assertions.assertThrows(NullPointerException.class, () -> select("column", "column", null));
     }
 
     @Test
-    public void shouldSelect() {
+    void shouldSelect() {
         String columnFamily = "columnFamily";
         ColumnQuery query = select().from(columnFamily).build();
         assertTrue(query.columns().isEmpty());
@@ -56,7 +56,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectColumns() {
+    void shouldSelectColumns() {
         String columnFamily = "columnFamily";
         ColumnQuery query = select("column", "column2").from(columnFamily).build();
         assertThat(query.columns()).contains("column", "column2");
@@ -65,13 +65,13 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenFromIsNull() {
+    void shouldReturnErrorWhenFromIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> select().from(null));
     }
 
 
     @Test
-    public void shouldSelectOrderAsc() {
+    void shouldSelectOrderAsc() {
         String columnFamily = "columnFamily";
         ColumnQuery query = select().from(columnFamily).orderBy("name").asc().build();
         assertTrue(query.columns().isEmpty());
@@ -81,7 +81,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectOrderDesc() {
+    void shouldSelectOrderDesc() {
         String columnFamily = "columnFamily";
         ColumnQuery query = select().from(columnFamily).orderBy("name").desc().build();
         assertTrue(query.columns().isEmpty());
@@ -91,7 +91,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldReturnErrorSelectWhenOrderIsNull() {
+    void shouldReturnErrorSelectWhenOrderIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             String columnFamily = "columnFamily";
             select().from(columnFamily).orderBy(null);
@@ -99,7 +99,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectLimit() {
+    void shouldSelectLimit() {
         String columnFamily = "columnFamily";
         ColumnQuery query = select().from(columnFamily).limit(10).build();
         assertTrue(query.columns().isEmpty());
@@ -109,13 +109,13 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenLimitIsNegative() {
+    void shouldReturnErrorWhenLimitIsNegative() {
         String columnFamily = "columnFamily";
         Assertions.assertThrows(IllegalArgumentException.class, () -> builder().from(columnFamily).limit(-1));
     }
 
     @Test
-    public void shouldSelectSkip() {
+    void shouldSelectSkip() {
         String columnFamily = "columnFamily";
         ColumnQuery query = select().from(columnFamily).skip(10).build();
         assertTrue(query.columns().isEmpty());
@@ -125,13 +125,13 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenSkipIsNegative() {
+    void shouldReturnErrorWhenSkipIsNegative() {
         String columnFamily = "columnFamily";
         Assertions.assertThrows(IllegalArgumentException.class, () -> builder().from(columnFamily).skip(-1));
     }
 
     @Test
-    public void shouldSelectWhereNameEq() {
+    void shouldSelectWhereNameEq() {
         String columnFamily = "columnFamily";
         String name = "Ada Lovelace";
         ColumnQuery query = select().from(columnFamily).where("name").eq(name).build();
@@ -148,7 +148,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLike() {
+    void shouldSelectWhereNameLike() {
         String columnFamily = "columnFamily";
         String name = "Ada Lovelace";
         ColumnQuery query = select().from(columnFamily).where("name").like(name).build();
@@ -164,7 +164,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGt() {
+    void shouldSelectWhereNameGt() {
         String columnFamily = "columnFamily";
         Number value = 10;
         ColumnQuery query = select().from(columnFamily).where("name").gt(value).build();
@@ -180,7 +180,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGte() {
+    void shouldSelectWhereNameGte() {
         String columnFamily = "columnFamily";
         Number value = 10;
         ColumnQuery query = select().from(columnFamily).where("name").gte(value).build();
@@ -196,7 +196,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLt() {
+    void shouldSelectWhereNameLt() {
         String columnFamily = "columnFamily";
         Number value = 10;
         ColumnQuery query = select().from(columnFamily).where("name").lt(value).build();
@@ -212,7 +212,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLte() {
+    void shouldSelectWhereNameLte() {
         String columnFamily = "columnFamily";
         Number value = 10;
         ColumnQuery query = select().from(columnFamily).where("name").lte(value).build();
@@ -228,7 +228,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameBetween() {
+    void shouldSelectWhereNameBetween() {
         String columnFamily = "columnFamily";
         Number valueA = 10;
         Number valueB = 20;
@@ -246,7 +246,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameNot() {
+    void shouldSelectWhereNameNot() {
         String columnFamily = "columnFamily";
         String name = "Ada Lovelace";
         ColumnQuery query = select().from(columnFamily).where("name").not().eq(name).build();
@@ -264,7 +264,7 @@ public class DefaultSelectQueryBuilderTest {
 
 
     @Test
-    public void shouldSelectWhereNameAnd() {
+    void shouldSelectWhereNameAnd() {
         String columnFamily = "columnFamily";
         String name = "Ada Lovelace";
         ColumnQuery query = select().from(columnFamily).where("name").eq(name).and("age").gt(10).build();
@@ -279,7 +279,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameOr() {
+    void shouldSelectWhereNameOr() {
         String columnFamily = "columnFamily";
         String name = "Ada Lovelace";
         ColumnQuery query = select().from(columnFamily).where("name").eq(name).or("age").gt(10).build();
@@ -294,7 +294,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectNegate() {
+    void shouldSelectNegate() {
         String columnFamily = "columnFamily";
         ColumnQuery query = select().from(columnFamily).where("city").not().eq("Assis")
                 .and("name").not().eq("Lucas").build();
@@ -313,7 +313,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldExecuteManager() {
+    void shouldExecuteManager() {
         ColumnManager manager = Mockito.mock(ColumnManager.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String columnFamily = "columnFamily";
@@ -324,7 +324,7 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldExecuteSingleResultManager() {
+    void shouldExecuteSingleResultManager() {
         ColumnManager manager = Mockito.mock(ColumnManager.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String columnFamily = "columnFamily";
