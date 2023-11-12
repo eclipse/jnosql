@@ -58,7 +58,7 @@ import static org.mockito.Mockito.when;
 @AddPackages(BookRepository.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
-public class GraphRepositoryProxyPageableTest {
+class GraphRepositoryProxyPageableTest {
 
     private GraphTemplate template;
 
@@ -79,7 +79,7 @@ public class GraphRepositoryProxyPageableTest {
     private PersonRepository personRepository;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
 
         graph.traversal().V().toList().forEach(Vertex::remove);
         graph.traversal().E().toList().forEach(Edge::remove);
@@ -101,14 +101,14 @@ public class GraphRepositoryProxyPageableTest {
     }
 
     @AfterEach
-    public void after() {
+    void after() {
         graph.traversal().V().toList().forEach(Vertex::remove);
         graph.traversal().E().toList().forEach(Edge::remove);
 
     }
 
     @Test
-    public void shouldFindByNameAndAge() {
+    void shouldFindByNameAndAge() {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
@@ -123,7 +123,7 @@ public class GraphRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByAgeAndName() {
+    void shouldFindByAgeAndName() {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
@@ -136,7 +136,7 @@ public class GraphRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByAge() {
+    void shouldFindByAge() {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         Optional<Person> person = personRepository.findByAge(20, Pageable.ofPage(1).size(2));
@@ -145,7 +145,7 @@ public class GraphRepositoryProxyPageableTest {
 
 
     @Test
-    public void shouldFindAll() {
+    void shouldFindAll() {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         List<Person> people = personRepository.findAll(Pageable.ofPage(2).size(1)).content();
@@ -154,13 +154,13 @@ public class GraphRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldReturnEmptyAtFindAll() {
+    void shouldReturnEmptyAtFindAll() {
         List<Person> people = personRepository.findAll(Pageable.ofPage(1).size(2)).content();
         assertTrue(people.isEmpty());
     }
 
     @Test
-    public void shouldFindByName() {
+    void shouldFindByName() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
         List<Person> people = personRepository.findByName("Otavio", Pageable.ofPage(2).size(1)
@@ -172,7 +172,7 @@ public class GraphRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByNameOrderByAge() {
+    void shouldFindByNameOrderByAge() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
         Page<Person> page = personRepository.findByNameOrderByAge("Otavio", Pageable.ofPage(1).size(1));
@@ -187,7 +187,7 @@ public class GraphRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByAgeOrderByName() {
+    void shouldFindByAgeOrderByName() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
         Slice<Person> slice = personRepository.findByAgeOrderByName(20, Pageable.ofPage(1).size(1));
@@ -198,7 +198,7 @@ public class GraphRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByNameSort() {
+    void shouldFindByNameSort() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
         List<Person> people = personRepository.findByName("Otavio", Sort.desc("age"));
@@ -207,7 +207,7 @@ public class GraphRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindNameSortPageable() {
+    void shouldFindNameSortPageable() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 30);
@@ -220,7 +220,7 @@ public class GraphRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindNameLimit() {
+    void shouldFindNameLimit() {
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20);
