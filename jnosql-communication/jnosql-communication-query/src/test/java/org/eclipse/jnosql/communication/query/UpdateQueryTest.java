@@ -28,22 +28,22 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UpdateQueryTest {
+class UpdateQueryTest {
 
     @ParameterizedTest
     @ArgumentsSource(UpdateQueryArgumentProvider.class)
-    public void shouldExecuteQuery(String query) {
+    void shouldExecuteQuery(String query) {
         testQuery(query);
     }
 
     @Test
-    public void shouldIgnoreComments() {
+    void shouldIgnoreComments() {
         testQuery("//ignore this line \n update Person (name = \"Ada Lovelace\")");
     }
 
     @ParameterizedTest
     @ArgumentsSource(WrongUpdateQueryArgumentProvider.class)
-    public void shouldNotExecute(String query) {
+    void shouldNotExecute(String query) {
         Assertions.assertThrows(QueryException.class, () -> testQuery(query));
     }
 
