@@ -35,25 +35,25 @@ class DefaultFieldMetadataTest {
     private DefaultFieldMetadata fieldMetadata;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         this.converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(Person.class);
         FieldMetadata name = entityMetadata.fieldMapping("name").orElseThrow();
         this.fieldMetadata = (DefaultFieldMetadata) name;
     }
     @Test
-    public void shouldToString() {
+    void shouldToString() {
         assertThat(fieldMetadata.toString()).isNotEmpty().isNotNull();
     }
 
     @Test
-    public void shouldEqualsHashCode() {
+    void shouldEqualsHashCode() {
         assertThat(fieldMetadata).isEqualTo(fieldMetadata);
         assertThat(fieldMetadata).hasSameHashCodeAs(fieldMetadata);
     }
 
     @Test
-    public void shouldCreateNewInstanceConverter(){
+    void shouldCreateNewInstanceConverter(){
         EntityMetadata entityMetadata = converter.apply(Worker.class);
         FieldMetadata name = entityMetadata.fieldMapping("salary").orElseThrow();
         fieldMetadata = (DefaultFieldMetadata) name;
