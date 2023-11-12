@@ -29,18 +29,18 @@ class SetSupplierTest {
     private CollectionSupplier<?> supplier;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.supplier = new SetSupplier();
     }
 
     @Test
-    public void shouldTest() {
+    void shouldTest() {
         Assertions.assertTrue(supplier.test(Set.class));
         Assertions.assertFalse(supplier.test(List.class));
     }
 
     @Test
-    public void shouldGet() {
+    void shouldGet() {
         final Collection<?> collection = this.supplier.get();
         Assertions.assertNotNull(collection);
         Assertions.assertTrue(collection instanceof HashSet);
