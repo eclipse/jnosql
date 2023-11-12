@@ -42,14 +42,14 @@ class SetRepositoryReturnTest {
     private Page<Person> page;
 
     @Test
-    public void shouldReturnIsCompatible() {
+    void shouldReturnIsCompatible() {
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Set.class));
         assertFalse(repositoryReturn.isCompatible(Object.class, Person.class));
         assertFalse(repositoryReturn.isCompatible(Person.class, Object.class));
     }
 
     @Test
-    public void shouldReturnSet() {
+    void shouldReturnSet() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
@@ -69,7 +69,7 @@ class SetRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnSetPage() {
+    void shouldReturnSetPage() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
