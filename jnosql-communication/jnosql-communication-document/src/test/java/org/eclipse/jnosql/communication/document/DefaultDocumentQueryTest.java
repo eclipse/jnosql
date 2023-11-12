@@ -30,14 +30,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class DefaultDocumentQueryTest {
+class DefaultDocumentQueryTest {
 
 
     private DocumentQuery query;
 
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         query = select().from("columnFamily").build();
     }
 
