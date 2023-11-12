@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 class DeleteMethodProviderTest {
 
     @Test
-    public void shouldCreate() {
+    void shouldCreate() {
         Method method = PersonRepository.class.getDeclaredMethods()[0];
         DeleteQuery query = DeleteMethodProvider.INSTANCE.apply(method, "Person");
         Assertions.assertNotNull(query);
