@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AddPackages(BookRepository.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
-public class DefaultEntityTreeTest {
+class DefaultEntityTreeTest {
 
     @Inject
     protected GraphTemplate graphTemplate;
@@ -57,7 +57,7 @@ public class DefaultEntityTreeTest {
     private Animal grass;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         graph.traversal().V().toList().forEach(Vertex::remove);
         graph.traversal().E().toList().forEach(Edge::remove);
         lion = graphTemplate.insert(new Animal("lion"));
@@ -72,7 +72,7 @@ public class DefaultEntityTreeTest {
     }
 
     @Test
-    public void shouldCreateLeaf() {
+    void shouldCreateLeaf() {
         EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .in("eats")
@@ -91,7 +91,7 @@ public class DefaultEntityTreeTest {
     }
 
     @Test
-    public void shouldGetLeafTrees() {
+    void shouldGetLeafTrees() {
         EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .in("eats")
@@ -114,7 +114,7 @@ public class DefaultEntityTreeTest {
     }
 
     @Test
-    public void shouldGetParents() {
+    void shouldGetParents() {
         EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .in("eats")
@@ -135,7 +135,7 @@ public class DefaultEntityTreeTest {
     }
 
     @Test
-    public void shouldGetParentId() {
+    void shouldGetParentId() {
         EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .out("eats")
@@ -158,7 +158,7 @@ public class DefaultEntityTreeTest {
     }
 
     @Test
-    public void shouldIsLeaf() {
+    void shouldIsLeaf() {
         EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .out("eats")
@@ -171,7 +171,7 @@ public class DefaultEntityTreeTest {
     }
 
     @Test
-    public void shouldGetTreesAtDepth() {
+    void shouldGetTreesAtDepth() {
         EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .out("eats")
@@ -184,7 +184,7 @@ public class DefaultEntityTreeTest {
     }
 
     @Test
-    public void shouldGetLeafsAtDepth() {
+    void shouldGetLeafsAtDepth() {
         EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .out("eats")
