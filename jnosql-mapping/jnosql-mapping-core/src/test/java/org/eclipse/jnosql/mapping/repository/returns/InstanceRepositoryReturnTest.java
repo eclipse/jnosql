@@ -40,14 +40,14 @@ class InstanceRepositoryReturnTest {
     private Page<Person> page;
 
     @Test
-    public void shouldReturnIsCompatible() {
+    void shouldReturnIsCompatible() {
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Person.class));
         Assertions.assertFalse(repositoryReturn.isCompatible(Object.class, Person.class));
         Assertions.assertFalse(repositoryReturn.isCompatible(Person.class, Object.class));
     }
 
     @Test
-    public void shouldReturnInstancePage() {
+    void shouldReturnInstancePage() {
 
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
@@ -66,7 +66,7 @@ class InstanceRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnNullAsInstancePage() {
+    void shouldReturnNullAsInstancePage() {
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withSingleResult(Optional::empty)
@@ -82,7 +82,7 @@ class InstanceRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnInstance() {
+    void shouldReturnInstance() {
 
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
@@ -97,7 +97,7 @@ class InstanceRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnNullAsInstance() {
+    void shouldReturnNullAsInstance() {
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
