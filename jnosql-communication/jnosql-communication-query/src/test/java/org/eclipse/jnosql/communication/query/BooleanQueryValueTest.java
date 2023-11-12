@@ -21,28 +21,28 @@ import static org.junit.jupiter.api.Assertions.*;
 class BooleanQueryValueTest {
 
     @Test
-    public void shouldReturnType() {
+    void shouldReturnType() {
         BooleanQueryValue value = TRUE;
         Assertions.assertThat(value).isNotNull().extracting(BooleanQueryValue::type)
                 .isEqualTo(ValueType.BOOLEAN);
     }
 
     @Test
-    public void shouldGet() {
+    void shouldGet() {
         BooleanQueryValue value = TRUE;
         Assertions.assertThat(value).isNotNull().extracting(BooleanQueryValue::get)
                 .isEqualTo(Boolean.TRUE);
     }
 
     @Test
-    public void shouldEquals() {
+    void shouldEquals() {
         assertEquals(TRUE, TRUE);
         assertNotEquals(TRUE, FALSE);
         assertNotEquals(TRUE, Boolean.TRUE);
     }
 
     @Test
-    public void shouldHashCode() {
+    void shouldHashCode() {
         assertEquals(TRUE.hashCode(), TRUE.hashCode());
     }
 }
