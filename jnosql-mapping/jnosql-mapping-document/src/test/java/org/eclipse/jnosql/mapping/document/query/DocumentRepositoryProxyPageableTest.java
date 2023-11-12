@@ -86,7 +86,7 @@ class DocumentRepositoryProxyPageableTest {
     private VendorRepository vendorRepository;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.template = Mockito.mock(JNoSQLDocumentTemplate.class);
 
         DocumentRepositoryProxy personHandler = new DocumentRepositoryProxy(template,
@@ -110,7 +110,7 @@ class DocumentRepositoryProxyPageableTest {
 
 
     @Test
-    public void shouldFindByNameInstance() {
+    void shouldFindByNameInstance() {
 
         when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
@@ -139,7 +139,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByNameANDAge() {
+    void shouldFindByNameANDAge() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -160,7 +160,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByAgeANDName() {
+    void shouldFindByAgeANDName() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -180,7 +180,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByNameANDAgeOrderByName() {
+    void shouldFindByNameANDAgeOrderByName() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -201,7 +201,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByNameANDAgeOrderByAge() {
+    void shouldFindByNameANDAgeOrderByAge() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -223,7 +223,7 @@ class DocumentRepositoryProxyPageableTest {
 
 
     @Test
-    public void shouldFindAll() {
+    void shouldFindAll() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -244,7 +244,7 @@ class DocumentRepositoryProxyPageableTest {
 
 
     @Test
-    public void shouldFindByNameAndAgeGreaterEqualThan() {
+    void shouldFindByNameAndAgeGreaterEqualThan() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -276,7 +276,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByGreaterThan() {
+    void shouldFindByGreaterThan() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -298,7 +298,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByAgeLessThanEqual() {
+    void shouldFindByAgeLessThanEqual() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -320,7 +320,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByAgeLessEqual() {
+    void shouldFindByAgeLessEqual() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -342,7 +342,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByAgeBetween() {
+    void shouldFindByAgeBetween() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -367,7 +367,7 @@ class DocumentRepositoryProxyPageableTest {
 
 
     @Test
-    public void shouldFindByNameLike() {
+    void shouldFindByNameLike() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -390,7 +390,7 @@ class DocumentRepositoryProxyPageableTest {
 
 
     @Test
-    public void shouldFindByStringWhenFieldIsSet() {
+    void shouldFindByStringWhenFieldIsSet() {
         Vendor vendor = new Vendor("vendor");
         vendor.setPrefixes(Collections.singleton("prefix"));
 
@@ -413,7 +413,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByIn() {
+    void shouldFindByIn() {
         Vendor vendor = new Vendor("vendor");
         vendor.setPrefixes(Collections.singleton("prefix"));
 
@@ -436,7 +436,7 @@ class DocumentRepositoryProxyPageableTest {
 
 
     @Test
-    public void shouldConvertFieldToTheType() {
+    void shouldConvertFieldToTheType() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
@@ -459,7 +459,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByNameOrderName() {
+    void shouldFindByNameOrderName() {
 
         when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
@@ -487,7 +487,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByNameOrderName2() {
+    void shouldFindByNameOrderName2() {
 
         when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
@@ -517,7 +517,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByNameSort() {
+    void shouldFindByNameSort() {
         when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
@@ -536,7 +536,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByNameSortPagination() {
+    void shouldFindByNameSortPagination() {
         when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
@@ -555,7 +555,7 @@ class DocumentRepositoryProxyPageableTest {
 
 
     @Test
-    public void shouldFindByNameLimit() {
+    void shouldFindByNameLimit() {
         when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
@@ -574,7 +574,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByNameLimit2() {
+    void shouldFindByNameLimit2() {
         when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
@@ -593,7 +593,7 @@ class DocumentRepositoryProxyPageableTest {
     }
 
     @Test
-    public void shouldFindByNameLimit3() {
+    void shouldFindByNameLimit3() {
         when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
