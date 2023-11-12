@@ -69,25 +69,25 @@ class MicroProfileSettingsTest {
 
 
     @Test
-    public void shouldReturnNPEWhenInstanceIsNull() {
+    void shouldReturnNPEWhenInstanceIsNull() {
         assertThrows(NullPointerException.class, () -> Settings.of((Map<String, Object>) null));
 
     }
 
     @Test
-    public void shouldReturnNewInstance() {
+    void shouldReturnNewInstance() {
         Settings settings = MicroProfileSettings.INSTANCE;
         Assertions.assertNotNull(settings);
     }
 
     @Test
-    public void shouldCreateFromMap() {
+    void shouldCreateFromMap() {
         Settings settings = MicroProfileSettings.INSTANCE;
         assertFalse(settings.isEmpty());
     }
 
     @Test
-    public void shouldContainsKeys() {
+    void shouldContainsKeys() {
         Settings settings = MicroProfileSettings.INSTANCE;
         assertTrue(settings.containsKey("jnosql.key"));
         assertFalse(settings.containsKey("key2"));
@@ -95,27 +95,27 @@ class MicroProfileSettingsTest {
 
 
     @Test
-    public void shouldGetKeys() {
+    void shouldGetKeys() {
         Settings settings = MicroProfileSettings.INSTANCE;
         assertThat(settings.keySet()).contains("jnosql.key");
     }
 
 
     @Test
-    public void shouldSize() {
+    void shouldSize() {
         Settings settings = Settings.of(singletonMap("jnosql.key", "value"));
         assertTrue(settings.size() >= 1);
 
     }
 
     @Test
-    public void shouldIsEmpty() {
+    void shouldIsEmpty() {
         Settings settings = MicroProfileSettings.INSTANCE;
         assertFalse(settings.isEmpty());
     }
 
     @Test
-    public void shouldGet() {
+    void shouldGet() {
         Settings settings = MicroProfileSettings.INSTANCE;
         Optional<Object> value = settings.get("jnosql.key-number");
         Assertions.assertNotNull(value);
@@ -123,7 +123,7 @@ class MicroProfileSettingsTest {
     }
 
     @Test
-    public void shouldGetSupplier() {
+    void shouldGetSupplier() {
         Settings settings = MicroProfileSettings.INSTANCE;
         Optional<Object> value = settings.get(() -> "jnosql.key-number");
         Assertions.assertNotNull(value);
@@ -131,14 +131,14 @@ class MicroProfileSettingsTest {
     }
 
     @Test
-    public void shouldNPEGet() {
+    void shouldNPEGet() {
         Settings settings = MicroProfileSettings.INSTANCE;
         Assertions.assertThrows(NullPointerException.class, () -> settings.get((String) null));
         Assertions.assertThrows(NullPointerException.class, () -> settings.get((Supplier<String>) null));
     }
 
     @Test
-    public void shouldGetIterable() {
+    void shouldGetIterable() {
         Settings settings = MicroProfileSettings.INSTANCE;
         Optional<Object> value = settings.get(Collections.singleton("jnosql.key-number"));
         Assertions.assertNotNull(value);
@@ -146,7 +146,7 @@ class MicroProfileSettingsTest {
     }
 
     @Test
-    public void shouldGetIterableSupplier() {
+    void shouldGetIterableSupplier() {
         Settings settings = MicroProfileSettings.INSTANCE;
         Optional<Object> value = settings.getSupplier(Collections.singleton(() -> "jnosql.key-number"));
         Assertions.assertNotNull(value);
@@ -154,14 +154,14 @@ class MicroProfileSettingsTest {
     }
 
     @Test
-    public void shouldNPEGetIterable() {
+    void shouldNPEGetIterable() {
         Settings settings = MicroProfileSettings.INSTANCE;
         Assertions.assertThrows(NullPointerException.class, () -> settings.get((Iterable<String>) null));
         Assertions.assertThrows(NullPointerException.class, () -> settings.getSupplier(null));
     }
 
     @Test
-    public void shouldGetValueClass() {
+    void shouldGetValueClass() {
         Settings settings = MicroProfileSettings.INSTANCE;
 
         Integer value = settings.get("jnosql.key-number", Integer.class).get();
@@ -170,7 +170,7 @@ class MicroProfileSettingsTest {
     }
 
     @Test
-    public void shouldGetValueClassSupplier() {
+    void shouldGetValueClassSupplier() {
         Settings settings = MicroProfileSettings.INSTANCE;
 
         Integer value = settings.get(() -> "jnosql.key-number", Integer.class).get();
@@ -179,21 +179,21 @@ class MicroProfileSettingsTest {
     }
 
     @Test
-    public void shouldGetOrDefault() {
+    void shouldGetOrDefault() {
         Settings settings = MicroProfileSettings.INSTANCE;
         assertEquals("12", settings.getOrDefault("jnosql.key-number", "13"));
         assertEquals("13", settings.getOrDefault("key-1", "13"));
     }
 
     @Test
-    public void shouldGetOrDefaultSupplier() {
+    void shouldGetOrDefaultSupplier() {
         Settings settings = MicroProfileSettings.INSTANCE;
         assertEquals("12", settings.getOrDefault(() -> "jnosql.key-number", "13"));
         assertEquals("13", settings.getOrDefault(() -> "key-1", "13"));
     }
 
     @Test
-    public void shouldReturnErrorWhenPrefixIsNull() {
+    void shouldReturnErrorWhenPrefixIsNull() {
 
         Settings settings = MicroProfileSettings.INSTANCE;
 
@@ -201,7 +201,7 @@ class MicroProfileSettingsTest {
     }
 
     @Test
-    public void shouldFindPrefix() {
+    void shouldFindPrefix() {
         Settings settings = MicroProfileSettings.INSTANCE;
 
         List<Object> hosts = settings.prefix("jnosql.host");
@@ -211,7 +211,7 @@ class MicroProfileSettingsTest {
     }
 
     @Test
-    public void shouldFindPrefixSupplier() {
+    void shouldFindPrefixSupplier() {
         Settings settings = MicroProfileSettings.INSTANCE;
 
         List<Object> hosts = settings.prefix(() -> "jnosql.host");
@@ -221,7 +221,7 @@ class MicroProfileSettingsTest {
     }
 
     @Test
-    public void shouldFindPrefixWithOrder() {
+    void shouldFindPrefixWithOrder() {
         Settings settings = MicroProfileSettings.INSTANCE;
         List<Object> hosts = settings.prefix("jnosql.host");
         assertThat(hosts).hasSize(4).contains("host", "host-1", "host-2", "host-3");
@@ -229,14 +229,14 @@ class MicroProfileSettingsTest {
 
 
     @Test
-    public void shouldReturnErrorWhenPrefixesIsNull() {
+    void shouldReturnErrorWhenPrefixesIsNull() {
         Settings settings = MicroProfileSettings.INSTANCE;
         assertThrows(NullPointerException.class, () -> settings.prefix((Collection<String>) null));
 
     }
 
     @Test
-    public void shouldFindPrefixes() {
+    void shouldFindPrefixes() {
 
         Settings settings = MicroProfileSettings.INSTANCE;
 
@@ -245,7 +245,7 @@ class MicroProfileSettingsTest {
     }
 
     @Test
-    public void shouldFindPrefixesSupplier() {
+    void shouldFindPrefixesSupplier() {
 
         Settings settings = MicroProfileSettings.INSTANCE;
         List<Object> hosts = settings.prefixSupplier(Arrays.asList(() -> "jnosql.host", () -> "jnosql.server"));
@@ -253,7 +253,7 @@ class MicroProfileSettingsTest {
     }
 
     @Test
-    public void shouldFindPrefixesSort() {
+    void shouldFindPrefixesSort() {
 
         Settings settings = MicroProfileSettings.INSTANCE;
 
