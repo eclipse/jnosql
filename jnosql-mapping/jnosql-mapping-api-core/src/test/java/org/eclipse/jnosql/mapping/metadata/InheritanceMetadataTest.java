@@ -19,10 +19,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class InheritanceMetadataTest {
+class InheritanceMetadataTest {
 
     @Test
-    public void shouldConstructorAndGetters() {
+    void shouldConstructorAndGetters() {
         String discriminatorValue = "testValue";
         String discriminatorColumn = "testColumn";
         Class<?> parentClass = Object.class;
@@ -37,7 +37,7 @@ public class InheritanceMetadataTest {
     }
 
     @Test
-    public void shouldEqualsAndHashCode() {
+    void shouldEqualsAndHashCode() {
         InheritanceMetadata metadata1 = new InheritanceMetadata("value1", "column1", String.class, Integer.class);
         InheritanceMetadata metadata2 = new InheritanceMetadata("value1", "column1", String.class, Integer.class);
         InheritanceMetadata metadata3 = new InheritanceMetadata("value2", "column1", String.class, Integer.class);
@@ -60,7 +60,7 @@ public class InheritanceMetadataTest {
     }
 
     @Test
-    public void shouldIsParent() {
+    void shouldIsParent() {
         Class<?> parentClass = String.class;
         InheritanceMetadata metadata = new InheritanceMetadata("value", "column", parentClass, Integer.class);
 
@@ -69,13 +69,13 @@ public class InheritanceMetadataTest {
     }
 
     @Test
-    public void shouldIsParentWithNull() {
+    void shouldIsParentWithNull() {
         InheritanceMetadata metadata = new InheritanceMetadata("value", "column", String.class, Integer.class);
         assertThrows(NullPointerException.class, () -> metadata.isParent(null));
     }
 
     @Test
-    public void shouldToString() {
+    void shouldToString() {
         InheritanceMetadata metadata = new InheritanceMetadata("testValue", "testColumn", String.class, Integer.class);
         String expected = "InheritanceMetadata{discriminatorValue='testValue', discriminatorColumn='testColumn', parent=class java.lang.String}";
         assertEquals(expected, metadata.toString());
