@@ -60,7 +60,7 @@ import static org.mockito.Mockito.when;
 @AddPackages(PersonStatisticRepository.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
-public class KeyValueRepositoryProxyTest {
+class KeyValueRepositoryProxyTest {
 
 
     private KeyValueTemplate template;
@@ -70,7 +70,7 @@ public class KeyValueRepositoryProxyTest {
     @Inject
     private EntitiesMetadata entitiesMetadata;
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.template = Mockito.mock(KeyValueTemplate.class);
         KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(UserRepository.class, entitiesMetadata, template);
         userRepository = (UserRepository) Proxy.newProxyInstance(UserRepository.class.getClassLoader(),
@@ -79,7 +79,7 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    public void shouldSave() {
+    void shouldSave() {
         ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
 
         User user = new User("ada", "Ada", 10);
@@ -91,7 +91,7 @@ public class KeyValueRepositoryProxyTest {
 
 
     @Test
-    public void shouldSaveIterable() {
+    void shouldSaveIterable() {
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
 
         User user = new User("ada", "Ada", 10);
@@ -103,7 +103,7 @@ public class KeyValueRepositoryProxyTest {
 
 
     @Test
-    public void shouldDelete() {
+    void shouldDelete() {
         userRepository.deleteById("key");
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         Mockito.verify(template).delete(captor.capture());
@@ -111,7 +111,7 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    public void shouldDeleteIterable() {
+    void shouldDeleteIterable() {
         userRepository.deleteAllById(Collections.singletonList("key"));
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
         Mockito.verify(template).delete(captor.capture());
@@ -119,7 +119,7 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    public void shouldDeleteEntity() {
+    void shouldDeleteEntity() {
         User user = new User("ada", "Ada", 10);
         userRepository.delete(user);
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
@@ -128,7 +128,7 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    public void shouldDeleteEntities() {
+    void shouldDeleteEntities() {
         User user = new User("ada", "Ada", 10);
         userRepository.deleteAll(Collections.singletonList(user));
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
@@ -138,7 +138,7 @@ public class KeyValueRepositoryProxyTest {
 
 
     @Test
-    public void shouldFindById() {
+    void shouldFindById() {
         User user = new User("ada", "Ada", 10);
         when(template.get("key", User.class)).thenReturn(
                 Optional.of(user));
@@ -147,7 +147,7 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    public void shouldExistsById() {
+    void shouldExistsById() {
         User user = new User("ada", "Ada", 10);
         when(template.get("key", User.class)).thenReturn(
                 Optional.of(user));
@@ -157,7 +157,7 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByIdIterable() {
+    void shouldFindByIdIterable() {
         User user = new User("ada", "Ada", 10);
         User user2 = new User("ada", "Ada", 10);
         List<String> keys = Arrays.asList("key", "key2");
@@ -168,7 +168,7 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByQuery() {
+    void shouldFindByQuery() {
         User user = new User("12", "Ada", 10);
         when(template.query("get \"12\"", User.class)).thenReturn(Stream.of(user));
 
@@ -178,7 +178,7 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByQueryWithParameter() {
+    void shouldFindByQueryWithParameter() {
         User user = new User("12", "Ada", 10);
         List<String> keys = Arrays.asList("key", "key2");
         PreparedStatement prepare = Mockito.mock(PreparedStatement.class);
@@ -190,7 +190,7 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    public void shouldExecuteDefaultMethod() {
+    void shouldExecuteDefaultMethod() {
         User user = new User("12", "Otavio", 30);
         PreparedStatement prepare = Mockito.mock(PreparedStatement.class);
         Mockito.when(template.prepare("get @id", User.class))
@@ -202,7 +202,7 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    public void shouldUseQueriesFromOtherInterface() {
+    void shouldUseQueriesFromOtherInterface() {
         User user = new User("12", "Ada", 30);
         PreparedStatement prepare = Mockito.mock(PreparedStatement.class);
         Mockito.when(template.prepare("get @key", User.class))
@@ -214,7 +214,7 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    public void shouldUseDefaultMethodFromOtherInterface() {
+    void shouldUseDefaultMethodFromOtherInterface() {
         User user = new User("12", "Poliana", 30);
         PreparedStatement prepare = Mockito.mock(PreparedStatement.class);
         Mockito.when(template.prepare("get @key", User.class))
@@ -226,22 +226,22 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenExecuteMethodQuery() {
+    void shouldReturnErrorWhenExecuteMethodQuery() {
         Assertions.assertThrows(DynamicQueryException.class, () -> userRepository.findByName("name"));
     }
 
     @Test
-    public void shouldReturnToString() {
+    void shouldReturnToString() {
         assertNotNull(userRepository.toString());
     }
 
     @Test
-    public void shouldReturnHasCode() {
+    void shouldReturnHasCode() {
         assertEquals(userRepository.hashCode(), userRepository.hashCode());
     }
 
     @Test
-    public void shouldReturnUnsupportedOperationException() {
+    void shouldReturnUnsupportedOperationException() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll());
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.count());
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll(null));
@@ -250,7 +250,7 @@ public class KeyValueRepositoryProxyTest {
 
 
     @Test
-    public void shouldExecuteCustomRepository(){
+    void shouldExecuteCustomRepository(){
         PersonStatisticRepository.PersonStatistic statistics = userRepository
                 .statistics("Salvador");
         assertThat(statistics).isNotNull();
