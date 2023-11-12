@@ -46,13 +46,13 @@ class ColumnManagerSupplierTest {
     private ColumnManagerSupplier supplier;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         System.clearProperty(COLUMN_PROVIDER.get());
         System.clearProperty(COLUMN_DATABASE.get());
     }
 
     @Test
-    public void shouldGetManager() {
+    void shouldGetManager() {
         System.setProperty(COLUMN_PROVIDER.get(), ColumnConfigurationMock.class.getName());
         System.setProperty(COLUMN_DATABASE.get(), "database");
         ColumnManager manager = supplier.get();
@@ -62,7 +62,7 @@ class ColumnManagerSupplierTest {
 
 
     @Test
-    public void shouldUseDefaultConfigurationWhenProviderIsWrong() {
+    void shouldUseDefaultConfigurationWhenProviderIsWrong() {
         System.setProperty(COLUMN_PROVIDER.get(), Integer.class.getName());
         System.setProperty(COLUMN_DATABASE.get(), "database");
         ColumnManager manager = supplier.get();
@@ -71,7 +71,7 @@ class ColumnManagerSupplierTest {
     }
 
     @Test
-    public void shouldUseDefaultConfiguration() {
+    void shouldUseDefaultConfiguration() {
         System.setProperty(COLUMN_DATABASE.get(), "database");
         ColumnManager manager = supplier.get();
         Assertions.assertNotNull(manager);
@@ -79,12 +79,12 @@ class ColumnManagerSupplierTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenThereIsNotDatabase() {
+    void shouldReturnErrorWhenThereIsNotDatabase() {
         Assertions.assertThrows(MappingException.class, () -> supplier.get());
     }
 
     @Test
-    public void shouldClose(){
+    void shouldClose(){
         ColumnManager manager = Mockito.mock(ColumnManager.class);
         supplier.close(manager);
         Mockito.verify(manager).close();
