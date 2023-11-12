@@ -36,7 +36,7 @@ class DefaultRepositoryReturnTest {
     private Page<Person> page;
 
     @Test
-    public void shouldReturnIsCompatible() {
+    void shouldReturnIsCompatible() {
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Optional.class));
         Assertions.assertTrue(repositoryReturn.isCompatible(Object.class, Person.class));
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Object.class));
@@ -44,7 +44,7 @@ class DefaultRepositoryReturnTest {
 
 
     @Test
-    public void shouldReturnDefaultPage() {
+    void shouldReturnDefaultPage() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
@@ -61,7 +61,7 @@ class DefaultRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnDefault() {
+    void shouldReturnDefault() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic  = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)
