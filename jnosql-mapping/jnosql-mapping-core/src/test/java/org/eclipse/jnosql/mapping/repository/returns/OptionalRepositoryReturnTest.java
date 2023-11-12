@@ -40,14 +40,14 @@ class OptionalRepositoryReturnTest {
     private Page<Person> page;
 
     @Test
-    public void shouldReturnIsCompatible() {
+    void shouldReturnIsCompatible() {
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Optional.class));
         Assertions.assertFalse(repositoryReturn.isCompatible(Object.class, Person.class));
         Assertions.assertFalse(repositoryReturn.isCompatible(Person.class, Object.class));
     }
 
     @Test
-    public void shouldReturnOptional() {
+    void shouldReturnOptional() {
 
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
@@ -63,7 +63,7 @@ class OptionalRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnEmptyOptional() {
+    void shouldReturnEmptyOptional() {
 
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
@@ -79,7 +79,7 @@ class OptionalRepositoryReturnTest {
 
 
     @Test
-    public void shouldReturnOptionalPage() {
+    void shouldReturnOptionalPage() {
 
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
@@ -99,7 +99,7 @@ class OptionalRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnOptionalEmptyPage() {
+    void shouldReturnOptionalEmptyPage() {
 
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
