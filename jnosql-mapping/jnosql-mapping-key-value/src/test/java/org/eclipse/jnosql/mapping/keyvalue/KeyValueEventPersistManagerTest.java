@@ -29,7 +29,7 @@ import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
-public class KeyValueEventPersistManagerTest {
+class KeyValueEventPersistManagerTest {
 
     @InjectMocks
     private KeyValueEventPersistManager subject;
@@ -43,7 +43,7 @@ public class KeyValueEventPersistManagerTest {
 
 
     @Test
-    public void shouldFirePreEntity() {
+    void shouldFirePreEntity() {
         Actor actor = new Actor();
         actor.name = "Luke";
         subject.firePreEntity(actor);
@@ -54,7 +54,7 @@ public class KeyValueEventPersistManagerTest {
     }
 
     @Test
-    public void shouldFirePostEntity() {
+    void shouldFirePostEntity() {
         Actor actor = new Actor();
         actor.name = "Luke";
         subject.firePostEntity(actor);

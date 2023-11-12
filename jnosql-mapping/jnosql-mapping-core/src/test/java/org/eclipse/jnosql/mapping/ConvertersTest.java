@@ -37,13 +37,13 @@ class ConvertersTest {
     @Inject
     private Converters converters;
     @Test
-    public void shouldReturnNPEWhenClassIsNull() {
+    void shouldReturnNPEWhenClassIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> converters.get(null));
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void shouldCreateAttributeConverterWithInjections() {
+    void shouldCreateAttributeConverterWithInjections() {
         FieldMetadata fieldMetadata = Mockito.mock(FieldMetadata.class);
         Optional<?> converter = Optional.of(MyConverter.class);
         Optional<?> newInstance = Optional.of(new MyConverter());
@@ -59,7 +59,7 @@ class ConvertersTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void shouldCreateNotUsingInjections() {
+    void shouldCreateNotUsingInjections() {
 
         FieldMetadata fieldMetadata = Mockito.mock(FieldMetadata.class);
         Optional<?> converter = Optional.of(VetedConverter.class);
@@ -77,7 +77,7 @@ class ConvertersTest {
     }
 
     @Test
-    public void shouldGetToString(){
+    void shouldGetToString(){
         assertThat(this.converters.toString()).isNotNull().isNotBlank().isNotEmpty();
     }
 

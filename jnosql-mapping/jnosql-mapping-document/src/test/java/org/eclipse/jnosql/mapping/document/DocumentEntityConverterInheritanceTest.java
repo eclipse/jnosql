@@ -60,7 +60,7 @@ class DocumentEntityConverterInheritanceTest {
     private DocumentEntityConverter converter;
 
     @Test
-    public void shouldConvertProjectToSmallProject() {
+    void shouldConvertProjectToSmallProject() {
         DocumentEntity entity = DocumentEntity.of("Project");
         entity.add("_id", "Small Project");
         entity.add("investor", "Otavio Santana");
@@ -73,7 +73,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertProjectToLargeProject() {
+    void shouldConvertProjectToLargeProject() {
         DocumentEntity entity = DocumentEntity.of("Project");
         entity.add("_id", "Large Project");
         entity.add("budget", BigDecimal.TEN);
@@ -86,7 +86,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertProject() {
+    void shouldConvertProject() {
         DocumentEntity entity = DocumentEntity.of("Project");
         entity.add("_id", "Project");
         entity.add("size", "Project");
@@ -95,7 +95,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertProjectToCommunicationEntity() {
+    void shouldConvertProjectToCommunicationEntity() {
         Project project = new Project();
         project.setName("Large Project");
         DocumentEntity entity = this.converter.toDocument(project);
@@ -106,7 +106,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertLargeProjectToCommunicationEntity() {
+    void shouldConvertLargeProjectToCommunicationEntity() {
         LargeProject project = new LargeProject();
         project.setName("Large Project");
         project.setBudget(BigDecimal.TEN);
@@ -119,7 +119,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertSmallProjectToCommunicationEntity() {
+    void shouldConvertSmallProjectToCommunicationEntity() {
         SmallProject project = new SmallProject();
         project.setName("Small Project");
         project.setInvestor("Otavio Santana");
@@ -132,7 +132,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertDocumentEntityToSocialMedia(){
+    void shouldConvertDocumentEntityToSocialMedia(){
         LocalDate date = LocalDate.now();
         DocumentEntity entity = DocumentEntity.of("Notification");
         entity.add("_id", 100L);
@@ -148,7 +148,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertDocumentEntityToSms(){
+    void shouldConvertDocumentEntityToSms(){
         LocalDate date = LocalDate.now();
         DocumentEntity entity = DocumentEntity.of("Notification");
         entity.add("_id", 100L);
@@ -164,7 +164,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertDocumentEntityToEmail(){
+    void shouldConvertDocumentEntityToEmail(){
         LocalDate date = LocalDate.now();
         DocumentEntity entity = DocumentEntity.of("Notification");
         entity.add("_id", 100L);
@@ -180,7 +180,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertSocialMediaToCommunicationEntity(){
+    void shouldConvertSocialMediaToCommunicationEntity(){
         SocialMediaNotification notification = new SocialMediaNotification();
         notification.setId(100L);
         notification.setName("Social Media");
@@ -196,7 +196,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertSmsToCommunicationEntity(){
+    void shouldConvertSmsToCommunicationEntity(){
         SmsNotification notification = new SmsNotification();
         notification.setId(100L);
         notification.setName("SMS");
@@ -212,7 +212,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertEmailToCommunicationEntity(){
+    void shouldConvertEmailToCommunicationEntity(){
         EmailNotification notification = new EmailNotification();
         notification.setId(100L);
         notification.setName("Email Media");
@@ -228,7 +228,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenConvertMissingColumn(){
+    void shouldReturnErrorWhenConvertMissingColumn(){
         LocalDate date = LocalDate.now();
         DocumentEntity entity = DocumentEntity.of("Notification");
         entity.add("_id", 100L);
@@ -239,7 +239,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenMismatchField() {
+    void shouldReturnErrorWhenMismatchField() {
         LocalDate date = LocalDate.now();
         DocumentEntity entity = DocumentEntity.of("Notification");
         entity.add("_id", 100L);
@@ -251,7 +251,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertCommunicationNotificationReaderEmail() {
+    void shouldConvertCommunicationNotificationReaderEmail() {
         DocumentEntity entity = DocumentEntity.of("NotificationReader");
         entity.add("_id", "poli");
         entity.add("name", "Poliana Santana");
@@ -277,7 +277,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertCommunicationNotificationReaderSms() {
+    void shouldConvertCommunicationNotificationReaderSms() {
         DocumentEntity entity = DocumentEntity.of("NotificationReader");
         entity.add("_id", "poli");
         entity.add("name", "Poliana Santana");
@@ -303,7 +303,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertCommunicationNotificationReaderSocial() {
+    void shouldConvertCommunicationNotificationReaderSocial() {
         DocumentEntity entity = DocumentEntity.of("NotificationReader");
         entity.add("_id", "poli");
         entity.add("name", "Poliana Santana");
@@ -329,7 +329,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertSocialCommunication() {
+    void shouldConvertSocialCommunication() {
         SocialMediaNotification notification = new SocialMediaNotification();
         notification.setId(10L);
         notification.setName("Ada");
@@ -352,7 +352,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertConvertProjectManagerCommunication() {
+    void shouldConvertConvertProjectManagerCommunication() {
         LargeProject large = new LargeProject();
         large.setBudget(BigDecimal.TEN);
         large.setName("large");
@@ -391,7 +391,7 @@ class DocumentEntityConverterInheritanceTest {
     }
 
     @Test
-    public void shouldConvertConvertCommunicationProjectManager() {
+    void shouldConvertConvertCommunicationProjectManager() {
         DocumentEntity communication = DocumentEntity.of("ProjectManager");
         communication.add("_id", 10L);
         communication.add("name", "manager");

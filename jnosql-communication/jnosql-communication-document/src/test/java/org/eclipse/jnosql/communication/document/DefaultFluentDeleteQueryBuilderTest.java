@@ -34,15 +34,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 
-public class DefaultFluentDeleteQueryBuilderTest {
+class DefaultFluentDeleteQueryBuilderTest {
 
     @Test
-    public void shouldReturnErrorWhenHasNullElementInSelect() {
+    void shouldReturnErrorWhenHasNullElementInSelect() {
         Assertions.assertThrows(NullPointerException.class,() -> delete("document", "document", null));
     }
 
     @Test
-    public void shouldDelete() {
+    void shouldDelete() {
         String documentCollection = "documentCollection";
         DocumentDeleteQuery query = delete().from(documentCollection).build();
         assertTrue(query.documents().isEmpty());
@@ -51,7 +51,7 @@ public class DefaultFluentDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldDeleteDocuments() {
+    void shouldDeleteDocuments() {
         String documentCollection = "documentCollection";
         DocumentDeleteQuery query = delete("document", "document2").from(documentCollection).build();
         assertThat(query.documents()).contains("document", "document2");
@@ -61,12 +61,12 @@ public class DefaultFluentDeleteQueryBuilderTest {
 
 
     @Test
-    public void shouldReturnErrorWhenFromIsNull() {
+    void shouldReturnErrorWhenFromIsNull() {
         Assertions.assertThrows(NullPointerException.class,() -> delete().from(null));
     }
 
     @Test
-    public void shouldSelectWhereNameEq() {
+    void shouldSelectWhereNameEq() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").eq(name).build();
@@ -83,7 +83,7 @@ public class DefaultFluentDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLike() {
+    void shouldSelectWhereNameLike() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").like(name).build();
@@ -99,7 +99,7 @@ public class DefaultFluentDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGt() {
+    void shouldSelectWhereNameGt() {
         String documentCollection = "documentCollection";
         Number value = 10;
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").gt(value).build();
@@ -115,7 +115,7 @@ public class DefaultFluentDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGte() {
+    void shouldSelectWhereNameGte() {
         String documentCollection = "documentCollection";
         Number value = 10;
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").gte(value).build();
@@ -131,7 +131,7 @@ public class DefaultFluentDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLt() {
+    void shouldSelectWhereNameLt() {
         String documentCollection = "documentCollection";
         Number value = 10;
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").lt(value).build();
@@ -147,7 +147,7 @@ public class DefaultFluentDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLte() {
+    void shouldSelectWhereNameLte() {
         String documentCollection = "documentCollection";
         Number value = 10;
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").lte(value).build();
@@ -163,7 +163,7 @@ public class DefaultFluentDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameBetween() {
+    void shouldSelectWhereNameBetween() {
         String documentCollection = "documentCollection";
         Number valueA = 10;
         Number valueB = 20;
@@ -180,7 +180,7 @@ public class DefaultFluentDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameNot() {
+    void shouldSelectWhereNameNot() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").not().eq(name).build();
@@ -198,7 +198,7 @@ public class DefaultFluentDeleteQueryBuilderTest {
 
 
     @Test
-    public void shouldSelectWhereNameAnd() {
+    void shouldSelectWhereNameAnd() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").eq(name).and("age")
@@ -214,7 +214,7 @@ public class DefaultFluentDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameOr() {
+    void shouldSelectWhereNameOr() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").eq(name)
@@ -232,7 +232,7 @@ public class DefaultFluentDeleteQueryBuilderTest {
 
 
     @Test
-    public void shouldDeleteNegate() {
+    void shouldDeleteNegate() {
         String columnFamily = "columnFamily";
         DocumentDeleteQuery query = delete().from(columnFamily).where("city").not().eq("Assis")
                 .and("name").not().eq("Lucas").build();
@@ -251,7 +251,7 @@ public class DefaultFluentDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldExecuteDelete() {
+    void shouldExecuteDelete() {
         String collection = "collection";
         DocumentManager manager = Mockito.mock(DocumentManager.class);
         ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);

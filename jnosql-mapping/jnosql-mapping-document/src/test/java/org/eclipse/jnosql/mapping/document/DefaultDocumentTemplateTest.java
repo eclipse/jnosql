@@ -59,7 +59,7 @@ import static org.mockito.Mockito.*;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
-public class DefaultDocumentTemplateTest {
+class DefaultDocumentTemplateTest {
 
     private final Person person = Person.builder().
             withAge().
@@ -94,7 +94,7 @@ public class DefaultDocumentTemplateTest {
     private DocumentEventPersistManager documentEventPersistManager;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         managerMock = Mockito.mock(DocumentManager.class);
         documentEventPersistManager = Mockito.mock(DocumentEventPersistManager.class);
         captor = ArgumentCaptor.forClass(DocumentEntity.class);
@@ -105,7 +105,7 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldInsert() {
+    void shouldInsert() {
         DocumentEntity document = DocumentEntity.of("Person");
         document.addAll(Stream.of(documents).collect(Collectors.toList()));
 
@@ -123,7 +123,7 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldMergeOnInsert() {
+    void shouldMergeOnInsert() {
         DocumentEntity document = DocumentEntity.of("Person");
         document.addAll(Stream.of(documents).collect(Collectors.toList()));
 
@@ -143,7 +143,7 @@ public class DefaultDocumentTemplateTest {
 
 
     @Test
-    public void shouldSaveTTL() {
+    void shouldSaveTTL() {
 
         Duration twoHours = Duration.ofHours(2L);
 
@@ -165,7 +165,7 @@ public class DefaultDocumentTemplateTest {
 
 
     @Test
-    public void shouldUpdate() {
+    void shouldUpdate() {
         DocumentEntity document = DocumentEntity.of("Person");
         document.addAll(Stream.of(documents).collect(Collectors.toList()));
 
@@ -183,7 +183,7 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldMergeOnUpdate() {
+    void shouldMergeOnUpdate() {
         DocumentEntity document = DocumentEntity.of("Person");
         document.addAll(Stream.of(documents).collect(Collectors.toList()));
 
@@ -205,7 +205,7 @@ public class DefaultDocumentTemplateTest {
 
 
     @Test
-    public void shouldInsertEntitiesTTL() {
+    void shouldInsertEntitiesTTL() {
         DocumentEntity documentEntity = DocumentEntity.of("Person");
         documentEntity.addAll(Stream.of(documents).collect(Collectors.toList()));
         Duration duration = Duration.ofHours(2);
@@ -219,7 +219,7 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldInsertEntities() {
+    void shouldInsertEntities() {
         DocumentEntity documentEntity = DocumentEntity.of("Person");
         documentEntity.addAll(Stream.of(documents).collect(Collectors.toList()));
 
@@ -232,7 +232,7 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldUpdateEntities() {
+    void shouldUpdateEntities() {
         DocumentEntity documentEntity = DocumentEntity.of("Person");
         documentEntity.addAll(Stream.of(documents).collect(Collectors.toList()));
 
@@ -246,7 +246,7 @@ public class DefaultDocumentTemplateTest {
 
 
     @Test
-    public void shouldDelete() {
+    void shouldDelete() {
 
         DocumentDeleteQuery query = delete().from("delete").build();
         template.delete(query);
@@ -254,21 +254,21 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldSelect() {
+    void shouldSelect() {
         DocumentQuery query = select().from("Person").build();
         template.select(query);
         verify(managerMock).select(query);
     }
 
     @Test
-    public void shouldCountBy() {
+    void shouldCountBy() {
         DocumentQuery query = select().from("Person").where("age").gt(10).build();
         template.count(query);
         verify(managerMock).count(query);
     }
 
     @Test
-    public void shouldGroupBy() {
+    void shouldGroupBy() {
         DocumentQuery query = select().from("Person").where("age").gt(10)
                 .limit(1).build();
         template.count(query);
@@ -276,7 +276,7 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldReturnSingleResult() {
+    void shouldReturnSingleResult() {
         DocumentEntity documentEntity = DocumentEntity.of("Person");
         documentEntity.addAll(Stream.of(documents).collect(Collectors.toList()));
 
@@ -291,7 +291,7 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldReturnSingleResultIsEmpty() {
+    void shouldReturnSingleResultIsEmpty() {
         Mockito.when(managerMock
                 .select(any(DocumentQuery.class)))
                 .thenReturn(Stream.empty());
@@ -303,7 +303,7 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenThereMoreThanASingleResult() {
+    void shouldReturnErrorWhenThereMoreThanASingleResult() {
         Assertions.assertThrows(NonUniqueResultException.class, () -> {
             DocumentEntity documentEntity = DocumentEntity.of("Person");
             documentEntity.addAll(Stream.of(documents).collect(Collectors.toList()));
@@ -319,22 +319,22 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenFindIdHasIdNull() {
+    void shouldReturnErrorWhenFindIdHasIdNull() {
         Assertions.assertThrows(NullPointerException.class, () -> template.find(Person.class, null));
     }
 
     @Test
-    public void shouldReturnErrorWhenFindIdHasClassNull() {
+    void shouldReturnErrorWhenFindIdHasClassNull() {
         Assertions.assertThrows(NullPointerException.class, () -> template.find(null, "10"));
     }
 
     @Test
-    public void shouldReturnErrorWhenThereIsNotIdInFind() {
+    void shouldReturnErrorWhenThereIsNotIdInFind() {
         Assertions.assertThrows(IdNotFoundException.class, () -> template.find(Job.class, "10"));
     }
 
     @Test
-    public void shouldReturnFind() {
+    void shouldReturnFind() {
         template.find(Person.class, "10");
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
@@ -347,7 +347,7 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldDeleteEntity() {
+    void shouldDeleteEntity() {
         template.delete(Person.class, "10");
         ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
         verify(managerMock).delete(queryCaptor.capture());
@@ -361,7 +361,7 @@ public class DefaultDocumentTemplateTest {
 
 
     @Test
-    public void shouldExecuteQuery() {
+    void shouldExecuteQuery() {
         template.query("select * from Person");
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
@@ -370,7 +370,7 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldConvertEntity() {
+    void shouldConvertEntity() {
         template.query("select * from Movie");
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
@@ -380,7 +380,7 @@ public class DefaultDocumentTemplateTest {
 
 
     @Test
-    public void shouldConvertEntityName() {
+    void shouldConvertEntityName() {
         template.query("select * from download");
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
@@ -388,7 +388,7 @@ public class DefaultDocumentTemplateTest {
         assertEquals("download", query.name());
     }
     @Test
-    public void shouldConvertEntityNameClassName() {
+    void shouldConvertEntityNameClassName() {
         template.query("select * from " + Person.class.getName());
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
@@ -397,7 +397,7 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldConvertConvertFromAnnotationEntity(){
+    void shouldConvertConvertFromAnnotationEntity(){
         template.query("select * from Vendor" );
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
@@ -406,7 +406,7 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldPreparedStatement() {
+    void shouldPreparedStatement() {
         PreparedStatement preparedStatement = template.prepare("select * from Person where name = @name");
         preparedStatement.bind("name", "Ada");
         preparedStatement.result();
@@ -417,25 +417,25 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldCount() {
+    void shouldCount() {
         template.count("Person");
         verify(managerMock).count("Person");
     }
 
     @Test
-    public void shouldCountFromEntityClass() {
+    void shouldCountFromEntityClass() {
         template.count(Person.class);
         verify(managerMock).count("Person");
     }
 
     @Test
-    public void shouldFindAll(){
+    void shouldFindAll(){
         template.findAll(Person.class);
         verify(managerMock).select(select().from("Person").build());
     }
 
     @Test
-    public void shouldDeleteAll(){
+    void shouldDeleteAll(){
         template.deleteAll(Person.class);
         verify(managerMock).delete(delete().from("Person").build());
     }

@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class DefaultFieldValueTest {
+class DefaultFieldValueTest {
 
     @Test
-    public void shouldConstructWithValidArguments() {
+    void shouldConstructWithValidArguments() {
         FieldMetadata fieldMetadata = mock(FieldMetadata.class);
         when(fieldMetadata.name()).thenReturn("fieldName");
 
@@ -37,13 +37,13 @@ public class DefaultFieldValueTest {
     }
 
     @Test
-    public void shouldThrowExceptionForNullFieldMetadataInConstructor() {
+    void shouldThrowExceptionForNullFieldMetadataInConstructor() {
         Object value = "testValue";
         assertThrows(NullPointerException.class, () -> new DefaultFieldValue(value, null));
     }
 
     @Test
-    public void shouldReturnTrueForIsNotEmptyWithValue() {
+    void shouldReturnTrueForIsNotEmptyWithValue() {
         FieldMetadata fieldMetadata = mock(FieldMetadata.class);
         when(fieldMetadata.name()).thenReturn("fieldName");
         DefaultFieldValue fieldValue = new DefaultFieldValue("testValue", fieldMetadata);
@@ -51,7 +51,7 @@ public class DefaultFieldValueTest {
     }
 
     @Test
-    public void shouldReturnFalseForIsNotEmptyWithNullValue() {
+    void shouldReturnFalseForIsNotEmptyWithNullValue() {
         FieldMetadata fieldMetadata = mock(FieldMetadata.class);
         when(fieldMetadata.name()).thenReturn("fieldName");
         DefaultFieldValue fieldValue = new DefaultFieldValue(null, fieldMetadata);
@@ -59,7 +59,7 @@ public class DefaultFieldValueTest {
     }
 
     @Test
-    public void shouldReturnCorrectStringRepresentation() {
+    void shouldReturnCorrectStringRepresentation() {
         FieldMetadata fieldMetadata = mock(FieldMetadata.class);
         when(fieldMetadata.name()).thenReturn("fieldName");
         DefaultFieldValue fieldValue = new DefaultFieldValue("testValue", fieldMetadata);

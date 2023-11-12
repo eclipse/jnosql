@@ -89,7 +89,7 @@ class DocumentRepositoryProxyTest {
 
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.template = Mockito.mock(JNoSQLDocumentTemplate.class);
 
         DocumentRepositoryProxy personHandler = new DocumentRepositoryProxy(template,
@@ -335,14 +335,14 @@ class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldDeleteEntity(){
+    void shouldDeleteEntity(){
         Person person = Person.builder().withId(1L).withAge(20).withName("Ada").build();
         personRepository.delete(person);
         verify(template).delete(Person.class, 1L);
     }
 
     @Test
-    public void shouldDeleteEntities(){
+    void shouldDeleteEntities(){
         Person person = Person.builder().withId(1L).withAge(20).withName("Ada").build();
         personRepository.deleteAll(List.of(person));
         verify(template).delete(Person.class, 1L);
@@ -698,7 +698,7 @@ class DocumentRepositoryProxyTest {
     }
 
     @Test
-    public void shouldExecuteCustomRepository(){
+    void shouldExecuteCustomRepository(){
         PersonStatisticRepository.PersonStatistic statistics = personRepository.statistics("Salvador");
         assertThat(statistics).isNotNull();
         SoftAssertions.assertSoftly(softly -> {

@@ -45,7 +45,7 @@ class SortedSetRepositoryReturnTest {
     private Page<Person> page;
 
     @Test
-    public void shouldReturnIsCompatible() {
+    void shouldReturnIsCompatible() {
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, NavigableSet.class));
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, SortedSet.class));
         assertFalse(repositoryReturn.isCompatible(Object.class, Person.class));
@@ -54,7 +54,7 @@ class SortedSetRepositoryReturnTest {
 
 
     @Test
-    public void shouldReturnTreeSetPage() {
+    void shouldReturnTreeSetPage() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
@@ -73,7 +73,7 @@ class SortedSetRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnTreeSet() {
+    void shouldReturnTreeSet() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)
@@ -88,7 +88,7 @@ class SortedSetRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnErrorOnTreeSetPage() {
+    void shouldReturnErrorOnTreeSetPage() {
         Animal animal = new Animal();
         DynamicReturn<Animal> dynamic = DynamicReturn.builder()
                 .withClassSource(Animal.class)
@@ -104,7 +104,7 @@ class SortedSetRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnErrorOnTreeSet() {
+    void shouldReturnErrorOnTreeSet() {
         Animal animal = new Animal();
         DynamicReturn<Animal> dynamic = DynamicReturn.builder()
                 .withClassSource(Animal.class)

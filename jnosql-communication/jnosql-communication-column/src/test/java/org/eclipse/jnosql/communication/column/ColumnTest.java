@@ -27,26 +27,26 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ColumnTest {
+class ColumnTest {
 
     private static final Value DEFAULT_VALUE = Value.of(12);
 
     @Test
-    public void shouldReturnNameWhenNameIsNull() {
+    void shouldReturnNameWhenNameIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Column column = Column.of(null, DEFAULT_VALUE);
+            Column.of(null, DEFAULT_VALUE);
         });
     }
 
     @Test
-    public void shouldReturnNameWhenValueIsNull() {
+    void shouldReturnNameWhenValueIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Column column = Column.of("Name", null);
+           Column.of("Name", null);
         });
     }
 
     @Test
-    public void shouldCreateAnColumnInstance() {
+    void shouldCreateAnColumnInstance() {
         String name = "name";
         Column column = Column.of(name, DEFAULT_VALUE);
         assertNotNull(column);
@@ -55,19 +55,19 @@ public class ColumnTest {
     }
 
     @Test
-    public void shouldBeEquals() {
+    void shouldBeEquals() {
         assertEquals(Column.of("name", DEFAULT_VALUE), Column.of("name", DEFAULT_VALUE));
     }
 
     @Test
-    public void shouldReturnGetObject() {
+    void shouldReturnGetObject() {
         Value value = Value.of("text");
         Column column = Column.of("name", value);
         assertEquals(value.get(), column.get());
     }
 
     @Test
-    public void shouldReturnGetClass() {
+    void shouldReturnGetClass() {
         Value value = Value.of("text");
         Column column = Column.of("name", value);
         assertEquals(value.get(String.class), column.get(String.class));
@@ -75,7 +75,7 @@ public class ColumnTest {
 
 
     @Test
-    public void shouldReturnGetType() {
+    void shouldReturnGetType() {
         Value value = Value.of("text");
         Column column = Column.of("name", value);
         TypeReference<List<String>> typeReference = new TypeReference<>() {

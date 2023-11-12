@@ -30,14 +30,14 @@ class RemoveProviderTest {
     private final DelQueryConverter provider = new DelQueryConverter();
 
     @Test
-    public void shouldReturnErrorWhenStringIsNull() {
+    void shouldReturnErrorWhenStringIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> provider.apply(null));
     }
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"del \"Diana\""})
-    public void shouldReturnParserQuery(String query) {
+    void shouldReturnParserQuery(String query) {
         DelQuery delQuery = provider.apply(query);
         List<QueryValue<?>> keys = delQuery.keys();
         assertEquals(1, keys.size());
@@ -48,7 +48,7 @@ class RemoveProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"del 12"})
-    public void shouldReturnParserQuery1(String query) {
+    void shouldReturnParserQuery1(String query) {
         DelQuery delQuery = provider.apply(query);
         List<QueryValue<?>> keys = delQuery.keys();
         assertEquals(1, keys.size());
@@ -59,7 +59,7 @@ class RemoveProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"del 12.12"})
-    public void shouldReturnParserQuery2(String query) {
+    void shouldReturnParserQuery2(String query) {
         DelQuery delQuery = provider.apply(query);
         List<QueryValue<?>> keys = delQuery.keys();
         assertEquals(1, keys.size());
@@ -70,7 +70,7 @@ class RemoveProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"del -12"})
-    public void shouldReturnParserQuery3(String query) {
+    void shouldReturnParserQuery3(String query) {
         DelQuery delQuery = provider.apply(query);
         List<QueryValue<?>> keys = delQuery.keys();
         assertEquals(1, keys.size());
@@ -81,7 +81,7 @@ class RemoveProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"del -12.12"})
-    public void shouldReturnParserQuery4(String query) {
+    void shouldReturnParserQuery4(String query) {
         DelQuery delQuery = provider.apply(query);
         List<QueryValue<?>> keys = delQuery.keys();
         assertEquals(1, keys.size());
@@ -93,7 +93,7 @@ class RemoveProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"del {1,12}"})
-    public void shouldReturnParserQuery5(String query) {
+    void shouldReturnParserQuery5(String query) {
         DelQuery delQuery = provider.apply(query);
         List<QueryValue<?>> keys = delQuery.keys();
         assertEquals(1, keys.size());

@@ -47,7 +47,7 @@ class DefaultEntitiesMetadataTest {
     private DefaultEntitiesMetadata mappings;
 
     @Test
-    public void shouldGet(){
+    void shouldGet(){
         this.mappings.load(Person.class);
         this.mappings.load(Vendor.class);
 
@@ -57,7 +57,7 @@ class DefaultEntitiesMetadataTest {
     }
 
     @Test
-    public void shouldFindByName(){
+    void shouldFindByName(){
         this.mappings.load(Person.class);
         this.mappings.load(Vendor.class);
 
@@ -66,7 +66,7 @@ class DefaultEntitiesMetadataTest {
         Assertions.assertEquals(Vendor.class, mapping.type());
     }
     @Test
-    public void shouldFindBySimpleName(){
+    void shouldFindBySimpleName(){
         this.mappings.load(Person.class);
         this.mappings.load(Vendor.class);
 
@@ -79,7 +79,7 @@ class DefaultEntitiesMetadataTest {
     }
 
     @Test
-    public void shouldFindByClassName(){
+    void shouldFindByClassName(){
         this.mappings.load(Person.class);
         this.mappings.load(Vendor.class);
 
@@ -92,7 +92,7 @@ class DefaultEntitiesMetadataTest {
     }
 
     @Test
-    public void shouldLoadGetPriorityOnParent() {
+    void shouldLoadGetPriorityOnParent() {
         this.mappings.load(Notification.class);
         this.mappings.load(EmailNotification.class);
         this.mappings.load(SmsNotification.class);
@@ -113,7 +113,7 @@ class DefaultEntitiesMetadataTest {
     }
 
     @Test
-    public void shouldFindByParentGroupByDiscriminatorValue() {
+    void shouldFindByParentGroupByDiscriminatorValue() {
         Map<String, InheritanceMetadata> group = this.mappings
                 .findByParentGroupByDiscriminatorValue(Notification.class);
 
@@ -124,7 +124,7 @@ class DefaultEntitiesMetadataTest {
     }
 
     @Test
-    public void shouldFindByParentGroupByDiscriminatorValue2() {
+    void shouldFindByParentGroupByDiscriminatorValue2() {
         Map<String, InheritanceMetadata> group = this.mappings
                 .findByParentGroupByDiscriminatorValue(Project.class);
 
@@ -135,7 +135,7 @@ class DefaultEntitiesMetadataTest {
     }
 
     @Test
-    public void shouldLoadUsingGet(){
+    void shouldLoadUsingGet(){
         this.mappings.load(Movie.class);
         EntityMetadata mapping = mappings.findByName("Movie");
         assertThat(mapping).isNotNull();

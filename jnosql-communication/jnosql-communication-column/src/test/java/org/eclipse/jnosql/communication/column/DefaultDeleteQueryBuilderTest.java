@@ -34,15 +34,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 
-public class DefaultDeleteQueryBuilderTest {
+class DefaultDeleteQueryBuilderTest {
 
     @Test
-    public void shouldReturnErrorWhenHasNullElementInSelect() {
+    void shouldReturnErrorWhenHasNullElementInSelect() {
         Assertions.assertThrows(NullPointerException.class, () -> delete("column", "column", null));
     }
 
     @Test
-    public void shouldDelete() {
+    void shouldDelete() {
         String columnFamily = "columnFamily";
         ColumnDeleteQuery query = delete().from(columnFamily).build();
         assertTrue(query.columns().isEmpty());
@@ -51,7 +51,7 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldDeleteColumns() {
+    void shouldDeleteColumns() {
         String columnFamily = "columnFamily";
         ColumnDeleteQuery query = delete("column", "column2").from(columnFamily).build();
         assertThat(query.columns()).contains("column", "column2");
@@ -61,13 +61,13 @@ public class DefaultDeleteQueryBuilderTest {
 
 
     @Test
-    public void shouldReturnErrorWhenFromIsNull() {
+    void shouldReturnErrorWhenFromIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> delete().from(null));
     }
 
 
     @Test
-    public void shouldSelectWhereNameEq() {
+    void shouldSelectWhereNameEq() {
         String columnFamily = "columnFamily";
         String name = "Ada Lovelace";
         ColumnDeleteQuery query = delete().from(columnFamily).where("name").eq(name).build();
@@ -84,7 +84,7 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLike() {
+    void shouldSelectWhereNameLike() {
         String columnFamily = "columnFamily";
         String name = "Ada Lovelace";
         ColumnDeleteQuery query = delete().from(columnFamily).where("name").like(name).build();
@@ -100,7 +100,7 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGt() {
+    void shouldSelectWhereNameGt() {
         String columnFamily = "columnFamily";
         Number value = 10;
         ColumnDeleteQuery query = delete().from(columnFamily).where("name").gt(value).build();
@@ -116,7 +116,7 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGte() {
+    void shouldSelectWhereNameGte() {
         String columnFamily = "columnFamily";
         Number value = 10;
         ColumnDeleteQuery query = delete().from(columnFamily).where("name").gte(value).build();
@@ -132,7 +132,7 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLt() {
+    void shouldSelectWhereNameLt() {
         String columnFamily = "columnFamily";
         Number value = 10;
         ColumnDeleteQuery query = delete().from(columnFamily).where("name").lt(value).build();
@@ -148,7 +148,7 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLte() {
+    void shouldSelectWhereNameLte() {
         String columnFamily = "columnFamily";
         Number value = 10;
         ColumnDeleteQuery query = delete().from(columnFamily).where("name").lte(value).build();
@@ -164,7 +164,7 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameBetween() {
+    void shouldSelectWhereNameBetween() {
         String columnFamily = "columnFamily";
         Number valueA = 10;
         Number valueB = 20;
@@ -182,7 +182,7 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameNot() {
+    void shouldSelectWhereNameNot() {
         String columnFamily = "columnFamily";
         String name = "Ada Lovelace";
         ColumnDeleteQuery query = delete().from(columnFamily).where("name").not().eq(name).build();
@@ -200,7 +200,7 @@ public class DefaultDeleteQueryBuilderTest {
 
 
     @Test
-    public void shouldSelectWhereNameAnd() {
+    void shouldSelectWhereNameAnd() {
         String columnFamily = "columnFamily";
         String name = "Ada Lovelace";
         ColumnDeleteQuery query = delete().from(columnFamily).where("name").eq(name).and("age").gt(10).build();
@@ -215,7 +215,7 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameOr() {
+    void shouldSelectWhereNameOr() {
         String columnFamily = "columnFamily";
         String name = "Ada Lovelace";
         ColumnDeleteQuery query = delete().from(columnFamily).where("name").eq(name).or("age").gt(10).build();
@@ -230,7 +230,7 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldDeleteNegate() {
+    void shouldDeleteNegate() {
         String columnFamily = "columnFamily";
         ColumnDeleteQuery query = delete().from(columnFamily).where("city").not().eq("Assis")
                 .and("name").not().eq("Lucas").build();
@@ -249,7 +249,7 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
     @Test
-    public void shouldExecuteDelete() {
+    void shouldExecuteDelete() {
         String columnFamily = "columnFamily";
         ColumnManager manager = Mockito.mock(ColumnManager.class);
         ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);

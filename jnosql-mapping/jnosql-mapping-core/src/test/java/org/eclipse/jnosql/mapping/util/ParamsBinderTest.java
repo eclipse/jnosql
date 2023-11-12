@@ -56,13 +56,13 @@ class ParamsBinderTest {
     private ParamsBinder binder;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.metadata = entities.get(Person.class);
         this.binder = new ParamsBinder(metadata, converters);
     }
 
     @Test
-    public void shouldReturnNPEWhenThereIsNullParameter() {
+    void shouldReturnNPEWhenThereIsNullParameter() {
         Params params = Params.newParams();
         Assertions.assertThrows(NullPointerException.class, () ->
                 binder.bind(params, null, null)
@@ -74,7 +74,7 @@ class ParamsBinderTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenParamsIsBiggerThanArgs() {
+    void shouldReturnErrorWhenParamsIsBiggerThanArgs() {
         Method method = PersonRepository.class.getDeclaredMethods()[0];
         Params params = Params.newParams();
         params.add("name");
@@ -84,7 +84,7 @@ class ParamsBinderTest {
     }
 
     @Test
-    public void shouldBindParameterFindById() {
+    void shouldBindParameterFindById() {
         Method method = PersonRepository.class.getDeclaredMethods()[0];
         Params params = Params.newParams();
         Value value = params.add("name");
@@ -96,7 +96,7 @@ class ParamsBinderTest {
     }
 
     @Test
-    public void shouldBindParameterFindByUnderLineParameter() {
+    void shouldBindParameterFindByUnderLineParameter() {
         Method method = PersonRepository.class.getDeclaredMethods()[0];
         Params params = Params.newParams();
         Value value = params.add("name_1212");
@@ -108,7 +108,7 @@ class ParamsBinderTest {
     }
 
     @Test
-    public void shouldBindParameterInSingleParameter() {
+    void shouldBindParameterInSingleParameter() {
         Method method = PersonRepository.class.getDeclaredMethods()[1];
         Params params = Params.newParams();
         Value value = params.add("name_1212");
@@ -120,7 +120,7 @@ class ParamsBinderTest {
     }
 
     @Test
-    public void shouldBindParameterInIterableParameter() {
+    void shouldBindParameterInIterableParameter() {
         Method method = PersonRepository.class.getDeclaredMethods()[1];
         Params params = Params.newParams();
         Value value = params.add("name_1212");
@@ -133,7 +133,7 @@ class ParamsBinderTest {
     }
 
     @Test
-    public void shouldConvertParamBinder() {
+    void shouldConvertParamBinder() {
         Method method = PersonRepository.class.getDeclaredMethods()[2];
         Params params = Params.newParams();
         Value value = params.add("age_1212");
@@ -145,7 +145,7 @@ class ParamsBinderTest {
     }
 
     @Test
-    public void shouldConvertIterable() {
+    void shouldConvertIterable() {
         Method method = PersonRepository.class.getDeclaredMethods()[1];
         Params params = Params.newParams();
         Value value = params.add("age");

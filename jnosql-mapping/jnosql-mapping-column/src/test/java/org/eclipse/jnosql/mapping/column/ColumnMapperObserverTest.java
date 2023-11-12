@@ -45,48 +45,48 @@ class ColumnMapperObserverTest {
     private ColumnObserverParser parser;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.parser = new ColumnMapperObserver(mappings);
     }
 
     @Test
-    public void shouldFireEntity(){
+    void shouldFireEntity(){
         var entity = parser.fireEntity("Vendor");
         Assertions.assertEquals("vendors", entity);
     }
 
     @Test
-    public void shouldFireFromClass(){
+    void shouldFireFromClass(){
         var entity = parser.fireEntity(Car.class.getSimpleName());
         Assertions.assertEquals("Car", entity);
     }
 
     @Test
-    public void shouldFireFromClassName(){
+    void shouldFireFromClassName(){
         var entity = parser.fireEntity(Car.class.getSimpleName());
         Assertions.assertEquals("Car", entity);
     }
 
     @Test
-    public void shouldFireField(){
+    void shouldFireField(){
         var field = parser.fireField("Worker", "salary");
         Assertions.assertEquals("money", field);
     }
 
     @Test
-    public void shouldFireFieldFromClassName(){
+    void shouldFireFieldFromClassName(){
         var field = parser.fireField(Worker.class.getName(), "salary");
         Assertions.assertEquals("money", field);
     }
 
     @Test
-    public void shouldFireFieldFromSimplesName(){
+    void shouldFireFieldFromSimplesName(){
         var field = parser.fireField(Worker.class.getSimpleName(), "salary");
         Assertions.assertEquals("money", field);
     }
 
     @Test
-    public void shouldFireFieldFromEntity(){
+    void shouldFireFieldFromEntity(){
         var field = parser.fireField(Vendor.class.getSimpleName(), "name");
         Assertions.assertEquals("_id", field);
     }

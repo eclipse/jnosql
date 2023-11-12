@@ -44,7 +44,7 @@ class QueueRepositoryReturnTest {
     private Page<Person> page;
 
     @Test
-    public void shouldReturnIsCompatible() {
+    void shouldReturnIsCompatible() {
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Queue.class));
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Deque.class));
         assertFalse(repositoryReturn.isCompatible(Object.class, Person.class));
@@ -52,7 +52,7 @@ class QueueRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnLinkedListPage() {
+    void shouldReturnLinkedListPage() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
@@ -71,7 +71,7 @@ class QueueRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnLinkedList() {
+    void shouldReturnLinkedList() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)

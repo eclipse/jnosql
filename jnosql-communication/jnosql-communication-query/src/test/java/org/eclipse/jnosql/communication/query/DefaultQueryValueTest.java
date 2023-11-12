@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DefaultQueryValueTest {
 
     @Test
-    public void shouldCreateInstance(){
+    void shouldCreateInstance(){
         ParamQueryValue param = new DefaultQueryValue("name");
         assertThat(param).isNotNull()
                 .extracting(ParamQueryValue::type)
@@ -27,7 +27,7 @@ class DefaultQueryValueTest {
     }
 
     @Test
-    public void shouldReturnType(){
+    void shouldReturnType(){
         ParamQueryValue param = new DefaultQueryValue("name");
         assertThat(param).isNotNull()
                 .extracting(ParamQueryValue::type)
@@ -35,7 +35,7 @@ class DefaultQueryValueTest {
     }
 
     @Test
-    public void shouldReturnValue(){
+    void shouldReturnValue(){
         ParamQueryValue param = new DefaultQueryValue("name");
         assertThat(param).isNotNull()
                 .extracting(ParamQueryValue::get)
@@ -43,14 +43,14 @@ class DefaultQueryValueTest {
     }
 
     @Test
-    public void shouldEquals(){
+    void shouldEquals(){
         ParamQueryValue param = new DefaultQueryValue("name");
         ParamQueryValue paramB = new DefaultQueryValue("name");
         Assertions.assertThat(param).isEqualTo(paramB);
     }
 
     @Test
-    public void shouldHashCode(){
+    void shouldHashCode(){
         ParamQueryValue param = new DefaultQueryValue("name");
         ParamQueryValue paramB = new DefaultQueryValue("name");
         Assertions.assertThat(param).hasSameHashCodeAs(paramB);

@@ -37,7 +37,7 @@ class DefaultParameterMetaDataTest {
 
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         ClassConverter converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(BookUser.class);
         ConstructorMetadata constructor = entityMetadata.constructor();
@@ -48,33 +48,33 @@ class DefaultParameterMetaDataTest {
 
 
     @Test
-    public void shouldParamType() {
+    void shouldParamType() {
         assertEquals(MappingType.DEFAULT, parameterMetaData.mappingType());
     }
 
     @Test
-    public void shouldName() {
+    void shouldName() {
         assertEquals("native_name", parameterMetaData.name());
     }
 
     @Test
-    public void shouldType() {
+    void shouldType() {
         assertEquals(String.class, parameterMetaData.type());
     }
 
     @Test
-    public void shouldIsId() {
+    void shouldIsId() {
         assertFalse(parameterMetaData.isId());
     }
 
     @Test
-    public void shouldConverter() {
+    void shouldConverter() {
         Optional<Class<AttributeConverter<Object, Object>>> converter = parameterMetaData.converter();
         assertFalse(converter.isPresent());
     }
 
     @Test
-    public void testNewConverter() {
+    void testNewConverter() {
         Assertions.assertThat(parameterMetaData.newConverter()).isEmpty();
     }
 }

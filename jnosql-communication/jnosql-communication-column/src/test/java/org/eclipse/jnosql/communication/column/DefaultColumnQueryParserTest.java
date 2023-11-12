@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DefaultColumnQueryParserTest {
+class DefaultColumnQueryParserTest {
     
     private final ColumnQueryParser parser = new ColumnQueryParser();
 
@@ -41,20 +41,20 @@ public class DefaultColumnQueryParserTest {
     private final ColumnManager manager = Mockito.mock(ColumnManager.class);
 
     @Test
-    public void shouldReturnNPEWhenThereIsNullParameter() {
+    void shouldReturnNPEWhenThereIsNullParameter() {
         assertThrows(NullPointerException.class, () -> parser.query(null, manager, ColumnObserverParser.EMPTY));
         assertThrows(NullPointerException.class, () -> parser.query("select * from God", null, ColumnObserverParser.EMPTY));
     }
 
     @Test
-    public void shouldReturnErrorWhenHasInvalidQuery() {
+    void shouldReturnErrorWhenHasInvalidQuery() {
         assertThrows(QueryException.class, () -> parser.query("inva", manager, ColumnObserverParser.EMPTY));
         assertThrows(QueryException.class, () -> parser.query("invalid", manager, ColumnObserverParser.EMPTY));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God"})
-    public void shouldReturnParserQuery(String query) {
+    void shouldReturnParserQuery(String query) {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         parser.query(query, manager, ColumnObserverParser.EMPTY);
         Mockito.verify(manager).select(captor.capture());
@@ -72,7 +72,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God"})
-    public void shouldReturnParserQuery1(String query) {
+    void shouldReturnParserQuery1(String query) {
         ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         parser.query(query, manager, ColumnObserverParser.EMPTY);
         Mockito.verify(manager).delete(captor.capture());
@@ -85,7 +85,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = \"Diana\")"})
-    public void shouldReturnParserQuery2(String query) {
+    void shouldReturnParserQuery2(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         parser.query(query, manager, ColumnObserverParser.EMPTY);
         Mockito.verify(manager).insert(captor.capture());
@@ -99,7 +99,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = \"Diana\")"})
-    public void shouldReturnParserQuery3(String query) {
+    void shouldReturnParserQuery3(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         parser.query(query, manager, ColumnObserverParser.EMPTY);
         Mockito.verify(manager).update(captor.capture());
@@ -112,7 +112,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age = @age"})
-    public void shouldExecutePrepareStatement(String query) {
+    void shouldExecutePrepareStatement(String query) {
         ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
@@ -129,7 +129,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = @name)"})
-    public void shouldExecutePrepareStatement1(String query) {
+    void shouldExecutePrepareStatement1(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("name", "Diana");
@@ -143,7 +143,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldExecutePrepareStatement2(String query) {
+    void shouldExecutePrepareStatement2(String query) {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
@@ -161,7 +161,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldExecutePrepareStatement3(String query) {
+    void shouldExecutePrepareStatement3(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("name", "Diana");
@@ -174,7 +174,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldSingleResult(String query) {
+    void shouldSingleResult(String query) {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
 
         Mockito.when(manager.select(Mockito.any(ColumnQuery.class)))
@@ -195,7 +195,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldReturnEmptySingleResult(String query) {
+    void shouldReturnEmptySingleResult(String query) {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
 
         Mockito.when(manager.select(Mockito.any(ColumnQuery.class)))
@@ -216,7 +216,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldReturnErrorSingleResult(String query) {
+    void shouldReturnErrorSingleResult(String query) {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
 
         Mockito.when(manager.select(Mockito.any(ColumnQuery.class)))

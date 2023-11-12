@@ -14,15 +14,18 @@
  */
 package org.eclipse.jnosql.mapping.metadata;
 
+import org.assertj.core.api.SoftAssertionsProvider;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.assertj.core.api.SoftAssertionsProvider.assertSoftly;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class InheritanceMetadataTest {
+class InheritanceMetadataTest {
 
     @Test
-    public void shouldConstructorAndGetters() {
+    void shouldConstructorAndGetters() {
         String discriminatorValue = "testValue";
         String discriminatorColumn = "testColumn";
         Class<?> parentClass = Object.class;
@@ -30,14 +33,16 @@ public class InheritanceMetadataTest {
 
         InheritanceMetadata metadata = new InheritanceMetadata(discriminatorValue, discriminatorColumn, parentClass, entityClass);
 
-        assertEquals(discriminatorValue, metadata.discriminatorValue());
-        assertEquals(discriminatorColumn, metadata.discriminatorColumn());
-        assertEquals(parentClass, metadata.parent());
-        assertEquals(entityClass, metadata.entity());
+        assertSoftly(softly -> {
+            softly.assertThat(metadata.discriminatorValue()).as("unexpected discriminatorValue value").isEqualTo(discriminatorValue);
+            softly.assertThat(metadata.discriminatorColumn()).as("unexpected discriminatorColumn value").isEqualTo(discriminatorColumn);
+            softly.assertThat(metadata.parent()).as("unexpected parent value").isEqualTo(parentClass);
+            softly.assertThat(metadata.entity()).as("unexpected entity value").isEqualTo(entityClass);
+        });
     }
 
     @Test
-    public void shouldEqualsAndHashCode() {
+    void shouldEqualsAndHashCode() {
         InheritanceMetadata metadata1 = new InheritanceMetadata("value1", "column1", String.class, Integer.class);
         InheritanceMetadata metadata2 = new InheritanceMetadata("value1", "column1", String.class, Integer.class);
         InheritanceMetadata metadata3 = new InheritanceMetadata("value2", "column1", String.class, Integer.class);
@@ -45,37 +50,45 @@ public class InheritanceMetadataTest {
         InheritanceMetadata metadata5 = new InheritanceMetadata("value1", "column1", Integer.class, Integer.class);
         InheritanceMetadata metadata6 = new InheritanceMetadata("value1", "column1", String.class, String.class);
 
-        // Reflexive
-        assertEquals(metadata1, metadata1);
-        // Symmetric
-        assertEquals(metadata1, metadata2);
-        assertEquals(metadata2, metadata1);
-        assertEquals(metadata1, metadata2);
+        assertSoftly(softly -> {
+            softly.assertThat(metadata1).as("it should be reflexive").isEqualTo(metadata1);
 
-        assertNotEquals(metadata1, metadata4);
-        assertNotEquals(metadata1, metadata5);
+            softly.assertThat(metadata1).as("it should be symmetric").isEqualTo(metadata2);
+            softly.assertThat(metadata2).as("it should be symmetric").isEqualTo(metadata1);
+            softly.assertThat(metadata1).as("it should be symmetric").isEqualTo(metadata6);
+            softly.assertThat(metadata6).as("it should be symmetric").isEqualTo(metadata1);
 
-        assertNotEquals(metadata1, null);
-        assertEquals(metadata1.hashCode(), metadata2.hashCode());
+            softly.assertThat(metadata1).isNotEqualTo(metadata3);
+            softly.assertThat(metadata1).isNotEqualTo(metadata4);
+            softly.assertThat(metadata1).isNotEqualTo(metadata5);
+
+            softly.assertThat(metadata1).isNotEqualTo(null);
+            softly.assertThat(metadata1).isNotEqualTo(new Object());
+
+            softly.assertThat(metadata1).hasSameHashCodeAs(metadata2);
+        });
     }
 
     @Test
-    public void shouldIsParent() {
+    void shouldIsParent() {
         Class<?> parentClass = String.class;
         InheritanceMetadata metadata = new InheritanceMetadata("value", "column", parentClass, Integer.class);
 
-        assertTrue(metadata.isParent(parentClass));
-        assertFalse(metadata.isParent(Integer.class));
+        assertSoftly(softly -> {
+            softly.assertThat(metadata.isParent(parentClass)).isTrue();
+            softly.assertThat(metadata.isParent(Integer.class)).isFalse();
+        });
+
     }
 
     @Test
-    public void shouldIsParentWithNull() {
+    void shouldIsParentWithNull() {
         InheritanceMetadata metadata = new InheritanceMetadata("value", "column", String.class, Integer.class);
         assertThrows(NullPointerException.class, () -> metadata.isParent(null));
     }
 
     @Test
-    public void shouldToString() {
+    void shouldToString() {
         InheritanceMetadata metadata = new InheritanceMetadata("testValue", "testColumn", String.class, Integer.class);
         String expected = "InheritanceMetadata{discriminatorValue='testValue', discriminatorColumn='testColumn', parent=class java.lang.String}";
         assertEquals(expected, metadata.toString());

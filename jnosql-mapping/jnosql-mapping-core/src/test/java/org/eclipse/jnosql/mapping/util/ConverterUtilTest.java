@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AddPackages(value = VetedConverter.class)
 @AddPackages(value = Reflections.class)
 @AddExtensions(EntityMetadataExtension.class)
-public class ConverterUtilTest {
+class ConverterUtilTest {
 
 
     @Inject
@@ -49,7 +49,7 @@ public class ConverterUtilTest {
     private EntitiesMetadata mappings;
 
     @Test
-    public void shouldNotConvert() {
+    void shouldNotConvert() {
         EntityMetadata mapping = mappings.get(Person.class);
         Object value = 10_000L;
         Object id = ConverterUtil.getValue(value, mapping, "id", converters);
@@ -57,7 +57,7 @@ public class ConverterUtilTest {
     }
 
     @Test
-    public void shouldConvert() {
+    void shouldConvert() {
         EntityMetadata mapping = mappings.get(Person.class);
         String value = "100";
         Object id = ConverterUtil.getValue(value, mapping, "id", converters);
@@ -65,7 +65,7 @@ public class ConverterUtilTest {
     }
 
     @Test
-    public void shouldUseAttributeConvert() {
+    void shouldUseAttributeConvert() {
         EntityMetadata mapping = mappings.get(Worker.class);
         Object value = new Money("BRL", BigDecimal.TEN);
         Object converted = ConverterUtil.getValue(value, mapping, "salary", converters);

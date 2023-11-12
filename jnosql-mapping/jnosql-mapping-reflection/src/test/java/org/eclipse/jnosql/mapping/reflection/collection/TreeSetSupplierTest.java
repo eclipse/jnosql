@@ -30,19 +30,19 @@ class TreeSetSupplierTest {
     private CollectionSupplier<?> supplier;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.supplier = new TreeSetSupplier();
     }
 
     @Test
-    public void shouldTest() {
+    void shouldTest() {
         Assertions.assertTrue(supplier.test(NavigableSet.class));
         Assertions.assertTrue(supplier.test(SortedSet.class));
         Assertions.assertFalse(supplier.test(Set.class));
     }
 
     @Test
-    public void shouldGet() {
+    void shouldGet() {
         final Collection<?> collection = this.supplier.get();
         Assertions.assertNotNull(collection);
         Assertions.assertTrue(collection instanceof TreeSet);

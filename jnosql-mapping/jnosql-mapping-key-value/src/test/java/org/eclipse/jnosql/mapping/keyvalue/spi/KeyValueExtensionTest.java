@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
 @AddPackages(Reflections.class)
-public class KeyValueExtensionTest {
+class KeyValueExtensionTest {
 
     @Inject
     private KeyValueTemplate template;
@@ -58,7 +58,7 @@ public class KeyValueExtensionTest {
     private UserRepository userRepositoryMock;
 
     @Test
-    public void shouldUseMock() {
+    void shouldUseMock() {
         Person person = template.get(10L, Person.class).get();
 
         Person personMock = templateMock.get(10L, Person.class).get();
@@ -70,7 +70,7 @@ public class KeyValueExtensionTest {
 
 
     @Test
-    public void shouldUseRepository() {
+    void shouldUseRepository() {
         User user = userRepository.findById("user").get();
         User userDefault = userRepositoryDefault.findById("user").get();
         User userMock = userRepositoryMock.findById("user").get();

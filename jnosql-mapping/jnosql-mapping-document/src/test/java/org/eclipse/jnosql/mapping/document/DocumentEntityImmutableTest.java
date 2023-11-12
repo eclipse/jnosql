@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
-public class DocumentEntityImmutableTest {
+class DocumentEntityImmutableTest {
 
 
     @Inject
@@ -52,7 +52,7 @@ public class DocumentEntityImmutableTest {
     private Car car;
 
     @BeforeEach
-    public void init() {
+    void init() {
 
         this.car = new Car("123456789", "SF90", "Ferrari", Year.now());
 
@@ -64,7 +64,7 @@ public class DocumentEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertCommunicationEntity() {
+    void shouldConvertCommunicationEntity() {
 
         DocumentEntity entity = converter.toDocument(car);
         assertEquals("Car", entity.name());
@@ -76,7 +76,7 @@ public class DocumentEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertCommunicationEntity2() {
+    void shouldConvertCommunicationEntity2() {
 
         DocumentEntity entity = converter.toDocument(car);
         assertEquals("Car", entity.name());
@@ -86,7 +86,7 @@ public class DocumentEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertEntity() {
+    void shouldConvertEntity() {
         DocumentEntity entity = DocumentEntity.of("Car");
         Stream.of(columns).forEach(entity::add);
 
@@ -100,7 +100,7 @@ public class DocumentEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertExistRecord() {
+    void shouldConvertExistRecord() {
         DocumentEntity entity = DocumentEntity.of("Car");
         Stream.of(columns).forEach(entity::add);
         Car ferrari = new Car(null, null, null, null);
@@ -125,7 +125,7 @@ public class DocumentEntityImmutableTest {
     }
 
     @Test
-    public void shouldConvertExist() {
+    void shouldConvertExist() {
         DocumentEntity entity = DocumentEntity.of("Hero");
         entity.add("_id", "2342");
         entity.add("name", "Iron man");

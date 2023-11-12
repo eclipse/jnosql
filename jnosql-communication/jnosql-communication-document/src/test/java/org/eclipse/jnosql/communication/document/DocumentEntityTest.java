@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class DocumentEntityTest {
+class DocumentEntityTest {
 
     @Test
     void shouldReturnErrorWhenNameIsNull() {

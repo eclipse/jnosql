@@ -23,13 +23,13 @@ class JSONQueryValueTest {
     private JsonObject json;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.json = JsonObject.EMPTY_JSON_OBJECT.asJsonObject();
     }
 
 
     @Test
-    public void shouldGetType() {
+    void shouldGetType() {
         JSONQueryValue queryValue = new JSONQueryValue(json);
         assertThat(queryValue).isNotNull()
                 .extracting(JSONQueryValue::type)
@@ -37,7 +37,7 @@ class JSONQueryValueTest {
     }
 
     @Test
-    public void shouldGet() {
+    void shouldGet() {
         JSONQueryValue queryValue = new JSONQueryValue(json);
         assertThat(queryValue).isNotNull()
                 .extracting(JSONQueryValue::get)
@@ -45,13 +45,13 @@ class JSONQueryValueTest {
     }
 
     @Test
-    public void shouldEquals(){
+    void shouldEquals(){
         JSONQueryValue queryValue = new JSONQueryValue(json);
         assertEquals(queryValue, new JSONQueryValue(json));
     }
 
     @Test
-    public void shouldHashCode() {
+    void shouldHashCode() {
         JSONQueryValue queryValue = new JSONQueryValue(json);
         assertEquals(queryValue.hashCode(), new JSONQueryValue(json).hashCode());
     }

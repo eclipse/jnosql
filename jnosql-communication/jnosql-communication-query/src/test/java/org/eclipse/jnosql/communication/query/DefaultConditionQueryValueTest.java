@@ -28,13 +28,13 @@ class DefaultConditionQueryValueTest {
     private QueryValue<Boolean> queryValue;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.queryValue = BooleanQueryValue.TRUE;
         this.condition = new DefaultQueryCondition("active", Condition.EQUALS, queryValue);
     }
 
     @Test
-    public void shouldReturnType() {
+    void shouldReturnType() {
         ConditionQueryValue conditionQueryValue = ConditionQueryValue.of(List.of(condition));
         Assertions.assertThat(conditionQueryValue).isNotNull()
                 .extracting(ConditionQueryValue::type)
@@ -42,7 +42,7 @@ class DefaultConditionQueryValueTest {
     }
 
     @Test
-    public void shouldGet() {
+    void shouldGet() {
         ConditionQueryValue conditionQueryValue = ConditionQueryValue.of(List.of(condition));
         Assertions.assertThat(conditionQueryValue).isNotNull()
                 .extracting(ConditionQueryValue::get)
@@ -50,14 +50,14 @@ class DefaultConditionQueryValueTest {
     }
 
     @Test
-    public void shouldEquals(){
+    void shouldEquals(){
         ConditionQueryValue conditionQueryValue = ConditionQueryValue.of(List.of(condition));
         assertEquals(conditionQueryValue,
                 ConditionQueryValue.of(List.of(condition)));
     }
 
     @Test
-    public void shouldHashCode(){
+    void shouldHashCode(){
         ConditionQueryValue conditionQueryValue = ConditionQueryValue.of(List.of(condition));
         assertEquals(conditionQueryValue.hashCode(),
                 ConditionQueryValue.of(List.of(condition)).hashCode());

@@ -36,19 +36,19 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
-public class DefaultDocumentTemplateProducerTest {
+class DefaultDocumentTemplateProducerTest {
 
     @Inject
     private DocumentTemplateProducer producer;
 
 
     @Test
-    public void shouldReturnErrorWhenManagerNull() {
+    void shouldReturnErrorWhenManagerNull() {
         Assertions.assertThrows(NullPointerException.class, () -> producer.get(null));
     }
 
     @Test
-    public void shouldReturn() {
+    void shouldReturn() {
         DocumentManager manager = Mockito.mock(DocumentManager.class);
         DocumentTemplate documentTemplate = producer.get(manager);
         assertNotNull(documentTemplate);

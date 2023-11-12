@@ -29,14 +29,14 @@ class PutProviderTest {
     private final PutQueryConverter provider = new PutQueryConverter();
 
     @Test
-    public void shouldReturnErrorWhenStringIsNull() {
+    void shouldReturnErrorWhenStringIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> provider.apply(null));
     }
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"put {\"Ada\", \"Hunt\"}\n"})
-    public void shouldReturnParserQuery(String query) {
+    void shouldReturnParserQuery(String query) {
         PutQuery putQuery = provider.apply(query);
         QueryValue<?> key = putQuery.key();
         QueryValue<?> value = putQuery.value();
@@ -54,7 +54,7 @@ class PutProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"put {12, \"Hunt\"}\n"})
-    public void shouldReturnParserQuery1(String query) {
+    void shouldReturnParserQuery1(String query) {
         PutQuery putQuery = provider.apply(query);
         QueryValue<?> key = putQuery.key();
         QueryValue<?> value = putQuery.value();
@@ -70,7 +70,7 @@ class PutProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"put {12, 12.12}\n"})
-    public void shouldReturnParserQuery2(String query) {
+    void shouldReturnParserQuery2(String query) {
         PutQuery putQuery = provider.apply(query);
         QueryValue<?> key = putQuery.key();
         QueryValue<?> value = putQuery.value();
@@ -87,7 +87,7 @@ class PutProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"put {@name, @value, 10 hour}\n"})
-    public void shouldReturnParserQuery3(String query) {
+    void shouldReturnParserQuery3(String query) {
         PutQuery putQuery = provider.apply(query);
         QueryValue<?> key = putQuery.key();
         QueryValue<?> value = putQuery.value();
@@ -104,7 +104,7 @@ class PutProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"put {@name, @value, 10 minute}\n"})
-    public void shouldReturnParserQuery4(String query) {
+    void shouldReturnParserQuery4(String query) {
         PutQuery putQuery = provider.apply(query);
         QueryValue<?> key = putQuery.key();
         QueryValue<?> value = putQuery.value();
@@ -121,7 +121,7 @@ class PutProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"put {@name, @value, 10 second}\n"})
-    public void shouldReturnParserQuery5(String query) {
+    void shouldReturnParserQuery5(String query) {
         PutQuery putQuery = provider.apply(query);
         QueryValue<?> key = putQuery.key();
         QueryValue<?> value = putQuery.value();
@@ -138,7 +138,7 @@ class PutProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"put {@name, @value, 10 millisecond}\n"})
-    public void shouldReturnParserQuery6(String query) {
+    void shouldReturnParserQuery6(String query) {
         PutQuery putQuery = provider.apply(query);
         QueryValue<?> key = putQuery.key();
         QueryValue<?> value = putQuery.value();
@@ -155,7 +155,7 @@ class PutProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"put {@name, @value, 10 nanosecond}\n"})
-    public void shouldReturnParserQuery7(String query) {
+    void shouldReturnParserQuery7(String query) {
         PutQuery putQuery = provider.apply(query);
         QueryValue<?> key = putQuery.key();
         QueryValue<?> value = putQuery.value();

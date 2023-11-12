@@ -43,7 +43,7 @@ class GraphRepositoryProducerTest {
 
 
     @Test
-    public void shouldCreateFromManager() {
+    void shouldCreateFromManager() {
         Graph manager= Mockito.mock(Graph.class);
         GraphRepositoryProxyTest.PersonRepository personRepository = producer.get(GraphRepositoryProxyTest.PersonRepository.class, manager);
         assertNotNull(personRepository);

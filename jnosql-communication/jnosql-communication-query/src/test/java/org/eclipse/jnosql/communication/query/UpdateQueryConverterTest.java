@@ -25,18 +25,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class UpdateQueryConverterTest {
+class UpdateQueryConverterTest {
 
     private final UpdateQueryConverter update = new UpdateQueryConverter();
 
     @Test
-    public void shouldReturnErrorWhenStringIsNull() {
+    void shouldReturnErrorWhenStringIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> update.apply(null));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = \"Diana\")"})
-    public void shouldReturnParserQuery(String query) {
+    void shouldReturnParserQuery(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
         List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(1, conditions.size());
@@ -50,7 +50,7 @@ public class UpdateQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (age = 30)"})
-    public void shouldReturnParserQuery1(String query) {
+    void shouldReturnParserQuery1(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
         List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(1, conditions.size());
@@ -64,7 +64,7 @@ public class UpdateQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (stamina = 32.23)"})
-    public void shouldReturnParserQuery2(String query) {
+    void shouldReturnParserQuery2(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
         List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(1, conditions.size());
@@ -78,7 +78,7 @@ public class UpdateQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (siblings = {\"Apollo\": \"Brother\", \"Zeus\": \"Father\"})"})
-    public void shouldReturnParserQuery3(String query) {
+    void shouldReturnParserQuery3(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
         List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(1, conditions.size());
@@ -94,7 +94,7 @@ public class UpdateQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (age = @age)"})
-    public void shouldReturnParserQuery4(String query) {
+    void shouldReturnParserQuery4(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
         List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(1, conditions.size());
@@ -108,7 +108,7 @@ public class UpdateQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (birthday = convert(\"1988-01-01\", java.time.LocalDate))"})
-    public void shouldReturnParserQuery5(String query) {
+    void shouldReturnParserQuery5(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
         List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(1, conditions.size());
@@ -127,7 +127,7 @@ public class UpdateQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (age = 30, name = \"Artemis\")"})
-    public void shouldReturnParserQuery6(String query) {
+    void shouldReturnParserQuery6(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
         List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(2, conditions.size());
@@ -148,7 +148,7 @@ public class UpdateQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update Person {\"name\":\"Ada Lovelace\"}"})
-    public void shouldReturnParserQuery7(String query) {
+    void shouldReturnParserQuery7(String query) {
         UpdateQuery updateQuery = update.apply(query);
         assertEquals("Person", updateQuery.entity());
         Assertions.assertTrue(updateQuery.conditions().isEmpty());
@@ -163,7 +163,7 @@ public class UpdateQueryConverterTest {
     @ValueSource(strings = {"update Person {\"name\": \"Ada Lovelace\", \"age\": 12, \"sibling\":" +
             " [\"Ana\" ,\"Maria\"]," +
             " \"address\":{\"country\": \"United Kingdom\", \"city\": \"London\"}}"})
-    public void shouldReturnParserQuery8(String query) {
+    void shouldReturnParserQuery8(String query) {
         UpdateQuery updateQuery = update.apply(query);
         assertEquals("Person", updateQuery.entity());
         Assertions.assertTrue(updateQuery.conditions().isEmpty());

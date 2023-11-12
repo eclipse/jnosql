@@ -23,18 +23,17 @@ import static org.eclipse.jnosql.mapping.DatabaseType.KEY_VALUE;
 import static org.eclipse.jnosql.mapping.DatabaseType.GRAPH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
-public class DatabaseQualifierTest {
+class DatabaseQualifierTest {
 
     @Test
-    public void shouldReturnDefaultColumn() {
+    void shouldReturnDefaultColumn() {
         DatabaseQualifier qualifier = DatabaseQualifier.ofColumn();
         assertEquals("", qualifier.provider());
         assertEquals(COLUMN, qualifier.value());
     }
 
     @Test
-    public void shouldReturnColumnProvider() {
+    void shouldReturnColumnProvider() {
         String provider = "provider";
         DatabaseQualifier qualifier = DatabaseQualifier.ofColumn(provider);
         assertEquals(provider, qualifier.provider());
@@ -42,19 +41,19 @@ public class DatabaseQualifierTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenColumnNull() {
+    void shouldReturnErrorWhenColumnNull() {
         Assertions.assertThrows(NullPointerException.class, () -> DatabaseQualifier.ofColumn(null));
     }
 
     @Test
-    public void shouldReturnDefaultDocument() {
+    void shouldReturnDefaultDocument() {
         DatabaseQualifier qualifier = DatabaseQualifier.ofDocument();
         assertEquals("", qualifier.provider());
         assertEquals(DOCUMENT, qualifier.value());
     }
 
     @Test
-    public void shouldReturnDocumentProvider() {
+    void shouldReturnDocumentProvider() {
         String provider = "provider";
         DatabaseQualifier qualifier = DatabaseQualifier.ofDocument(provider);
         assertEquals(provider, qualifier.provider());
@@ -62,17 +61,17 @@ public class DatabaseQualifierTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenDocumentNull() {
+    void shouldReturnErrorWhenDocumentNull() {
         Assertions.assertThrows(NullPointerException.class, () -> DatabaseQualifier.ofDocument(null));
     }
 
     @Test
-    public void shouldReturnErrorWhenKeyValueNull() {
+    void shouldReturnErrorWhenKeyValueNull() {
         Assertions.assertThrows(NullPointerException.class, () -> DatabaseQualifier.ofKeyValue(null));
     }
 
     @Test
-    public void shouldReturnKeyValueProvider() {
+    void shouldReturnKeyValueProvider() {
         String provider = "provider";
         DatabaseQualifier qualifier = DatabaseQualifier.ofKeyValue(provider);
         assertEquals(provider, qualifier.provider());
@@ -80,7 +79,7 @@ public class DatabaseQualifierTest {
     }
 
     @Test
-    public void shouldReturnDefaultKeyValue() {
+    void shouldReturnDefaultKeyValue() {
         DatabaseQualifier qualifier = DatabaseQualifier.ofKeyValue();
         assertEquals("", qualifier.provider());
         assertEquals(KEY_VALUE, qualifier.value());
@@ -88,12 +87,12 @@ public class DatabaseQualifierTest {
 
 
     @Test
-    public void shouldReturnErrorWhenGraphNull() {
+    void shouldReturnErrorWhenGraphNull() {
         Assertions.assertThrows(NullPointerException.class, () -> DatabaseQualifier.ofGraph(null));
     }
 
     @Test
-    public void shouldReturnGraphProvider() {
+    void shouldReturnGraphProvider() {
         String provider = "provider";
         DatabaseQualifier qualifier = DatabaseQualifier.ofGraph(provider);
         assertEquals(provider, qualifier.provider());
@@ -101,7 +100,7 @@ public class DatabaseQualifierTest {
     }
 
     @Test
-    public void shouldReturnDefaultGraph() {
+    void shouldReturnDefaultGraph() {
         DatabaseQualifier qualifier = DatabaseQualifier.ofGraph();
         assertEquals("", qualifier.provider());
         assertEquals(GRAPH, qualifier.value());

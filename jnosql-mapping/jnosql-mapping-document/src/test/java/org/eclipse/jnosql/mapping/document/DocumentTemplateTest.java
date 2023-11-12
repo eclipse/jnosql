@@ -45,12 +45,12 @@ class DocumentTemplateTest {
 
 
     @Test
-    public void shouldInjectTemplate() {
+    void shouldInjectTemplate() {
         Assertions.assertNotNull(template);
     }
 
     @Test
-    public void shouldInjectQualifier() {
+    void shouldInjectQualifier() {
         Assertions.assertNotNull(qualifier);
     }
 }

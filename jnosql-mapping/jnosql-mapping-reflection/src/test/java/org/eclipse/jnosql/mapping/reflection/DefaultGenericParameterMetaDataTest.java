@@ -34,7 +34,7 @@ class DefaultGenericParameterMetaDataTest {
     private GenericParameterMetaData fieldMetadata;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         ClassConverter converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(BookUser.class);
         ConstructorMetadata constructor = entityMetadata.constructor();
@@ -43,17 +43,17 @@ class DefaultGenericParameterMetaDataTest {
                 .findFirst().orElseThrow();
     }
     @Test
-    public void shouldToString() {
+    void shouldToString() {
         assertThat(fieldMetadata.toString()).isNotEmpty().isNotNull();
     }
 
     @Test
-    public void shouldGetElementType(){
+    void shouldGetElementType(){
         assertThat(fieldMetadata.elementType()).isEqualTo(Book.class);
     }
 
     @Test
-    public void shouldCollectionInstance(){
+    void shouldCollectionInstance(){
         Collection<?> collection = this.fieldMetadata.collectionInstance();
         assertThat(collection).isInstanceOf(List.class);
     }

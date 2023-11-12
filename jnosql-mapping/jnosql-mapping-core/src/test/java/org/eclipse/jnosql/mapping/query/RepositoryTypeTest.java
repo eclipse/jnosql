@@ -34,7 +34,7 @@ class RepositoryTypeTest {
 
 
     @Test
-    public void shouldReturnDefault() throws NoSuchMethodException {
+    void shouldReturnDefault() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "save"), CrudRepository.class));
         Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "deleteById"), CrudRepository.class));
         Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "findById"), CrudRepository.class));
@@ -45,49 +45,49 @@ class RepositoryTypeTest {
 
 
     @Test
-    public void shouldReturnObjectMethod() throws NoSuchMethodException {
+    void shouldReturnObjectMethod() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.OBJECT_METHOD, RepositoryType.of(getMethod(Object.class, "equals"), CrudRepository.class));
         Assertions.assertEquals(RepositoryType.OBJECT_METHOD, RepositoryType.of(getMethod(Object.class, "hashCode"), CrudRepository.class));
     }
 
 
     @Test
-    public void shouldReturnFindBy() throws NoSuchMethodException {
+    void shouldReturnFindBy() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.FIND_BY, RepositoryType.of(getMethod(DevRepository.class, "findByName"), CrudRepository.class));
     }
 
     @Test
-    public void shouldReturnDeleteBy() throws NoSuchMethodException {
+    void shouldReturnDeleteBy() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.DELETE_BY, RepositoryType.of(getMethod(DevRepository.class, "deleteByName"), CrudRepository.class));
     }
 
     @Test
-    public void shouldReturnFindAllBy() throws NoSuchMethodException {
+    void shouldReturnFindAllBy() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.FIND_ALL, RepositoryType.of(getMethod(DevRepository.class, "findAll"), CrudRepository.class));
     }
 
     @Test
-    public void shouldReturnJNoSQLQuery() throws NoSuchMethodException {
+    void shouldReturnJNoSQLQuery() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.QUERY, RepositoryType.of(getMethod(DevRepository.class, "query"), CrudRepository.class));
     }
 
     @Test
-    public void shouldReturnUnknown() throws NoSuchMethodException {
+    void shouldReturnUnknown() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.UNKNOWN, RepositoryType.of(getMethod(DevRepository.class, "nope"), CrudRepository.class));
     }
 
     @Test
-    public void shouldReturnCountBy() throws NoSuchMethodException {
+    void shouldReturnCountBy() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.COUNT_BY, RepositoryType.of(getMethod(DevRepository.class, "countByName"), CrudRepository.class));
     }
 
     @Test
-    public void shouldReturnExistsBy() throws NoSuchMethodException {
+    void shouldReturnExistsBy() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.EXISTS_BY, RepositoryType.of(getMethod(DevRepository.class, "existsByName"), CrudRepository.class));
     }
 
     @Test
-    public void shouldReturnOrder() throws NoSuchMethodException {
+    void shouldReturnOrder() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.ORDER_BY, RepositoryType.of(getMethod(DevRepository.class,
                 "order"), CrudRepository.class));
 
@@ -96,13 +96,13 @@ class RepositoryTypeTest {
     }
 
     @Test
-    public void shouldDefaultMethod() throws NoSuchMethodException {
+    void shouldDefaultMethod() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.DEFAULT_METHOD, RepositoryType.of(getMethod(DevRepository.class,
                 "duplicate"), CrudRepository.class));
     }
 
     @Test
-    public void shouldReturnCustom() throws NoSuchMethodException {
+    void shouldReturnCustom() throws NoSuchMethodException {
         try (MockedStatic<CDI> cdi = Mockito.mockStatic(CDI.class)) {
             CDI<Object> current = Mockito.mock(CDI.class);
             Instance<Calculate> instance = Mockito.mock(Instance.class);
@@ -115,7 +115,7 @@ class RepositoryTypeTest {
     }
 
     @Test
-    public void shouldReturnFindByCustom() throws NoSuchMethodException {
+    void shouldReturnFindByCustom() throws NoSuchMethodException {
         try (MockedStatic<CDI> cdi = Mockito.mockStatic(CDI.class)) {
             CDI<Object> current = Mockito.mock(CDI.class);
             Instance<Calculate> instance = Mockito.mock(Instance.class);
@@ -128,7 +128,7 @@ class RepositoryTypeTest {
     }
 
     @Test
-    public void shouldReturnFindByCustom2() throws NoSuchMethodException {
+    void shouldReturnFindByCustom2() throws NoSuchMethodException {
         try (MockedStatic<CDI> cdi = Mockito.mockStatic(CDI.class)) {
             CDI<Object> current = Mockito.mock(CDI.class);
             Instance<Calculate> instance = Mockito.mock(Instance.class);

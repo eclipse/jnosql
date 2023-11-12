@@ -31,14 +31,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class DocumentsTest {
     @Test
-    public void shouldCreateDocument() {
+    void shouldCreateDocument() {
         Document column = Documents.of("name", "Ada");
         assertEquals("name", column.name());
         assertEquals("Ada", column.get());
     }
 
     @Test
-    public void shouldCreateColumnsFromMap() {
+    void shouldCreateColumnsFromMap() {
         Map<String, String> map = singletonMap("name", "Ada");
         List<Document> documents = Documents.of(map);
         assertFalse(documents.isEmpty());
@@ -46,7 +46,7 @@ public class DocumentsTest {
     }
 
     @Test
-    public void shouldCreateRecursiveMap() {
+    void shouldCreateRecursiveMap() {
         List<List<Map<String, String>>> list = new ArrayList<>();
         Map<String, String> map = singletonMap("mobile", "55 1234-4567");
         list.add(singletonList(map));

@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.communication.document.DocumentDeleteQuery.delete;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DefaultDocumentDeleteQueryTest {
+class DefaultDocumentDeleteQueryTest {
 
 
     private DocumentDeleteQuery query;

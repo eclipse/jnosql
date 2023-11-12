@@ -22,7 +22,7 @@ class SelectMethodProviderTest {
 
 
     @Test
-    public void shouldCreateFromProvider() {
+    void shouldCreateFromProvider() {
         Method method = PersonRepository.class.getDeclaredMethods()[0];
         SelectQuery query = SelectMethodProvider.INSTANCE.apply(method, "Person");
         Assertions.assertNotNull(query);

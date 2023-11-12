@@ -34,20 +34,20 @@ class DeleteQueryConverterTest {
     private final DeleteQueryConverter selectProvider = new DeleteQueryConverter();
 
     @Test
-    public void shouldReturnErrorWhenStringIsNull() {
+    void shouldReturnErrorWhenStringIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> selectProvider.apply(null));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God"})
-    public void shouldReturnParserQuery(String query) {
+    void shouldReturnParserQuery(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertFalse(deleteQuery.where().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete name, address from God"})
-    public void shouldReturnParserQuery2(String query) {
+    void shouldReturnParserQuery2(String query) {
         DeleteQuery deleteQuery = selectProvider.apply(query);
         assertEquals("God", deleteQuery.entity());
         assertFalse(deleteQuery.fields().isEmpty());
@@ -59,7 +59,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age = 10"})
-    public void shouldReturnParserQuery3(String query) {
+    void shouldReturnParserQuery3(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -74,7 +74,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where stamina > 10.23"})
-    public void shouldReturnParserQuery4(String query) {
+    void shouldReturnParserQuery4(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -89,7 +89,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where stamina >= 10.23"})
-    public void shouldReturnParserQuery5(String query) {
+    void shouldReturnParserQuery5(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -104,7 +104,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where stamina <= 10.23"})
-    public void shouldReturnParserQuery6(String query) {
+    void shouldReturnParserQuery6(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -119,7 +119,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where stamina < 10.23"})
-    public void shouldReturnParserQuery7(String query) {
+    void shouldReturnParserQuery7(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -135,7 +135,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age between 10 and 30"})
-    public void shouldReturnParserQuery8(String query) {
+    void shouldReturnParserQuery8(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -153,7 +153,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name = \"diana\""})
-    public void shouldReturnParserQuery9(String query) {
+    void shouldReturnParserQuery9(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -168,7 +168,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name = {\"diana\"}"})
-    public void shouldReturnParserQuery10(String query) {
+    void shouldReturnParserQuery10(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -185,7 +185,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name = {\"diana\", 17, 20.21}"})
-    public void shouldReturnParserQuery11(String query) {
+    void shouldReturnParserQuery11(String query) {
         DeleteQuery selectQuery = checkDeleteFromStart(query);
         assertTrue(selectQuery.where().isPresent());
 
@@ -202,7 +202,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
-    public void shouldReturnParserQuery12(String query) {
+    void shouldReturnParserQuery12(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -219,7 +219,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name = @name"})
-    public void shouldReturnParserQuery13(String query) {
+    void shouldReturnParserQuery13(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
 
         assertTrue(deleteQuery.where().isPresent());
@@ -235,7 +235,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age = convert(12, java.lang.Integer)"})
-    public void shouldReturnParserQuery14(String query) {
+    void shouldReturnParserQuery14(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -254,7 +254,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name in (\"Ada\", \"Apollo\")"})
-    public void shouldReturnParserQuery15(String query) {
+    void shouldReturnParserQuery15(String query) {
 
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
@@ -272,7 +272,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name like \"Ada\""})
-    public void shouldReturnParserQuery16(String query) {
+    void shouldReturnParserQuery16(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -287,7 +287,7 @@ class DeleteQueryConverterTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name not like \"Ada\""})
-    public void shouldReturnParserQuery17(String query) {
+    void shouldReturnParserQuery17(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -310,7 +310,7 @@ class DeleteQueryConverterTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name = \"Ada\" and age = 20 and" +
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
-    public void shouldReturnParserQuery18(String query) {
+    void shouldReturnParserQuery18(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -349,7 +349,7 @@ class DeleteQueryConverterTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name = \"Ada\" or age = 20 or" +
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
-    public void shouldReturnParserQuery19(String query) {
+    void shouldReturnParserQuery19(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -389,7 +389,7 @@ class DeleteQueryConverterTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name = \"Ada\" and age = 20 or" +
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
-    public void shouldReturnParserQuery20(String query) {
+    void shouldReturnParserQuery20(String query) {
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
 
@@ -439,7 +439,7 @@ class DeleteQueryConverterTest {
     @ValueSource(strings = {"delete from God where name = \"Ada\" and age = 20 or" +
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"} or birthday =" +
             " convert(\"2007-12-03\", java.time.LocalDate)"})
-    public void shouldReturnParserQuery21(String query) {
+    void shouldReturnParserQuery21(String query) {
 
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());
@@ -502,7 +502,7 @@ class DeleteQueryConverterTest {
     @ValueSource(strings = {"delete from God where name = \"Ada\" and age = 20 or" +
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"} and birthday =" +
             " convert(\"2007-12-03\", java.time.LocalDate)"})
-    public void shouldReturnParserQuery22(String query) {
+    void shouldReturnParserQuery22(String query) {
 
         DeleteQuery deleteQuery = checkDeleteFromStart(query);
         assertTrue(deleteQuery.where().isPresent());

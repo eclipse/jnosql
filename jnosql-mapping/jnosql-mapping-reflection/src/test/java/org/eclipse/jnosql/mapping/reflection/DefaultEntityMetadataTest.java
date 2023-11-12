@@ -36,25 +36,25 @@ class DefaultEntityMetadataTest {
 
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.converter = new ReflectionClassConverter();
     }
 
     @Test
-    public void shouldToString(){
+    void shouldToString(){
         EntityMetadata entityMetadata = converter.apply(Person.class);
         assertThat(entityMetadata.toString()).isNotBlank();
     }
 
     @Test
-    public void shouldCreateInstance(){
+    void shouldCreateInstance(){
         EntityMetadata entityMetadata = converter.apply(Person.class);
         Object person = entityMetadata.newInstance();
         assertThat(person).isNotNull().isInstanceOf(Person.class);
     }
 
     @Test
-    public void shouldGetId(){
+    void shouldGetId(){
         EntityMetadata entityMetadata = converter.apply(Person.class);
         Optional<FieldMetadata> id = entityMetadata.id();
         assertThat(id).isNotEmpty();
@@ -67,7 +67,7 @@ class DefaultEntityMetadataTest {
     }
 
     @Test
-    public void shouldIsInheritance(){
+    void shouldIsInheritance(){
         EntityMetadata entityMetadata = converter.apply(Person.class);
        assertThat(entityMetadata.isInheritance()).isFalse();
 
@@ -76,7 +76,7 @@ class DefaultEntityMetadataTest {
     }
 
     @Test
-    public void shouldGroupByName(){
+    void shouldGroupByName(){
         EntityMetadata entityMetadata = converter.apply(Person.class);
         Map<String, FieldMetadata> map = entityMetadata.fieldsGroupByName();
 
@@ -86,38 +86,38 @@ class DefaultEntityMetadataTest {
     }
 
     @Test
-    public void shouldGetClass(){
+    void shouldGetClass(){
         EntityMetadata entityMetadata = converter.apply(Person.class);
         assertThat(entityMetadata.type()).isEqualTo(Person.class);
     }
 
     @Test
-    public void shouldName(){
+    void shouldName(){
         EntityMetadata entityMetadata = converter.apply(Person.class);
         assertThat(entityMetadata.name()).isEqualTo(Person.class.getSimpleName());
     }
 
     @Test
-    public void shouldClassName(){
+    void shouldClassName(){
         EntityMetadata entityMetadata = converter.apply(Person.class);
         assertThat(entityMetadata.className()).isEqualTo(Person.class.getName());
     }
 
     @Test
-    public void shouldSimpleName(){
+    void shouldSimpleName(){
         EntityMetadata entityMetadata = converter.apply(Person.class);
         assertThat(entityMetadata.simpleName()).isEqualTo(Person.class.getSimpleName());
     }
 
     @Test
-    public void shouldNewInstance(){
+    void shouldNewInstance(){
         EntityMetadata entityMetadata = converter.apply(Person.class);
         Object instance = entityMetadata.newInstance();
         assertThat(instance).isNotNull().isInstanceOf(Person.class);
     }
 
     @Test
-    public void shouldHashCodeEquals(){
+    void shouldHashCodeEquals(){
         EntityMetadata entityMetadata = converter.apply(Person.class);
         assertThat(entityMetadata).isEqualTo(converter.apply(Person.class));
         assertThat(entityMetadata).hasSameHashCodeAs(entityMetadata);

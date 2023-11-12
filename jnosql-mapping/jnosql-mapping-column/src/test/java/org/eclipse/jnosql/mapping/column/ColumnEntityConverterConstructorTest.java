@@ -54,7 +54,7 @@ class ColumnEntityConverterConstructorTest {
     private ColumnEntityConverter converter;
 
     @Test
-    public void shouldConverterEntityComputer() {
+    void shouldConverterEntityComputer() {
         ColumnEntity communication = ColumnEntity.of("Computer");
         communication.add("_id", 10L);
         communication.add("name", "Dell");
@@ -71,7 +71,7 @@ class ColumnEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConvertComputerToCommunication() {
+    void shouldConvertComputerToCommunication() {
         Computer computer = new Computer(10L, "Dell", 2020, "Dell 2020",
                 Money.parse("USD 20"));
         ColumnEntity communication = this.converter.toColumn(computer);
@@ -85,7 +85,7 @@ class ColumnEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConvertPetOwner() {
+    void shouldConvertPetOwner() {
         ColumnEntity communication = ColumnEntity.of("PetOwner");
         communication.add("_id", 10L);
         communication.add("name", "Otavio");
@@ -102,7 +102,7 @@ class ColumnEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConvertPetOwnerCommunication() {
+    void shouldConvertPetOwnerCommunication() {
         Animal ada = new Animal("Ada");
         PetOwner petOwner = new PetOwner(10L, "Poliana", ada);
         ColumnEntity communication = this.converter.toColumn(petOwner);
@@ -115,7 +115,7 @@ class ColumnEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConvertBookUser() {
+    void shouldConvertBookUser() {
         ColumnEntity communication = ColumnEntity.of("BookUser");
         communication.add("_id", "otaviojava");
         communication.add("native_name", "Otavio Santana");
@@ -135,7 +135,7 @@ class ColumnEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConverterFieldsOnEntityComputer() {
+    void shouldConverterFieldsOnEntityComputer() {
         ColumnEntity communication = ColumnEntity.of("Computer");
         communication.add("_id", "10");
         communication.add("name", "Dell");
@@ -152,7 +152,7 @@ class ColumnEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConverterEntityBookRelease() {
+    void shouldConverterEntityBookRelease() {
         ColumnEntity communication = ColumnEntity.of("BookRelease");
         communication.add("isbn", "9780132345286");
         communication.add("title", "Effective Java");
@@ -167,7 +167,7 @@ class ColumnEntityConverterConstructorTest {
     }
 
     @Test
-    public void shouldConverterEntityBookReleaseOnStringYear() {
+    void shouldConverterEntityBookReleaseOnStringYear() {
         ColumnEntity communication = ColumnEntity.of("BookRelease");
         communication.add("isbn", "9780132345286");
         communication.add("title", "Effective Java");

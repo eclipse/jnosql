@@ -46,13 +46,13 @@ class DocumentManagerSupplierTest {
     private DocumentManagerSupplier supplier;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         System.clearProperty(DOCUMENT_PROVIDER.get());
         System.clearProperty(DOCUMENT_DATABASE.get());
     }
 
     @Test
-    public void shouldGetManager() {
+    void shouldGetManager() {
         System.setProperty(DOCUMENT_PROVIDER.get(), DocumentConfigurationMock.class.getName());
         System.setProperty(DOCUMENT_DATABASE.get(), "database");
         DocumentManager manager = supplier.get();
@@ -62,7 +62,7 @@ class DocumentManagerSupplierTest {
 
 
     @Test
-    public void shouldUseDefaultConfigurationWhenProviderIsWrong() {
+    void shouldUseDefaultConfigurationWhenProviderIsWrong() {
         System.setProperty(DOCUMENT_PROVIDER.get(), Integer.class.getName());
         System.setProperty(DOCUMENT_DATABASE.get(), "database");
         DocumentManager manager = supplier.get();
@@ -71,7 +71,7 @@ class DocumentManagerSupplierTest {
     }
 
     @Test
-    public void shouldUseDefaultConfiguration() {
+    void shouldUseDefaultConfiguration() {
         System.setProperty(DOCUMENT_DATABASE.get(), "database");
         DocumentManager manager = supplier.get();
         Assertions.assertNotNull(manager);
@@ -79,12 +79,12 @@ class DocumentManagerSupplierTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenThereIsNotDatabase() {
+    void shouldReturnErrorWhenThereIsNotDatabase() {
         Assertions.assertThrows(MappingException.class, () -> supplier.get());
     }
 
     @Test
-    public void shouldClose(){
+    void shouldClose(){
         DocumentManager manager = Mockito.mock(DocumentManager.class);
         supplier.close(manager);
         Mockito.verify(manager).close();

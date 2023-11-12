@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
-public class DocumentExtensionTest {
+class DocumentExtensionTest {
 
 
     @Inject
@@ -59,27 +59,27 @@ public class DocumentExtensionTest {
 
 
     @Test
-    public void shouldInitiate() {
+    void shouldInitiate() {
         assertNotNull(repository);
         Person person = repository.save(Person.builder().build());
         assertEquals("Default", person.getName());
     }
 
     @Test
-    public void shouldUseMock(){
+    void shouldUseMock(){
         assertNotNull(repositoryMock);
         Person person = repositoryMock.save(Person.builder().build());
         assertEquals("documentRepositoryMock", person.getName());
     }
 
     @Test
-    public void shouldInjectTemplate() {
+    void shouldInjectTemplate() {
         assertNotNull(templateMock);
         assertNotNull(template);
     }
 
     @Test
-    public void shouldInjectRepository() {
+    void shouldInjectRepository() {
         assertNotNull(repository);
         assertNotNull(repositoryMock);
     }

@@ -47,26 +47,26 @@ class ConstructorMetadataBuilderTest {
     private ConstructorMetadataBuilder builder;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.builder = new ConstructorMetadataBuilder(reflections);
     }
 
     @Test
-    public void shouldReturnEmptyMetadata() {
+    void shouldReturnEmptyMetadata() {
         ConstructorMetadata metadata = builder.build(Person.class);
         Assertions.assertNotNull(metadata);
         Assertions.assertTrue(metadata.parameters().isEmpty());
     }
 
     @Test
-    public void shouldReturnEmptyDefaultConstructor() {
+    void shouldReturnEmptyDefaultConstructor() {
         ConstructorMetadata metadata = builder.build(Worker.class);
         Assertions.assertNotNull(metadata);
         Assertions.assertTrue(metadata.parameters().isEmpty());
     }
 
     @Test
-    public void shouldReturnComputerEntityConstructor() {
+    void shouldReturnComputerEntityConstructor() {
         ConstructorMetadata metadata = builder.build(Computer.class);
         List<ParameterMetaData> parameters = metadata.parameters();
         assertEquals(5, parameters.size());
@@ -78,7 +78,7 @@ class ConstructorMetadataBuilderTest {
     }
 
     @Test
-    public void shouldReturnBookUserEntityConstructor() {
+    void shouldReturnBookUserEntityConstructor() {
         ConstructorMetadata metadata = builder.build(BookUser.class);
         List<ParameterMetaData> parameters = metadata.parameters();
         assertEquals(3, parameters.size());
@@ -90,7 +90,7 @@ class ConstructorMetadataBuilderTest {
     }
 
     @Test
-    public void shouldReturnSmartphoneEntityConstructor() {
+    void shouldReturnSmartphoneEntityConstructor() {
         ConstructorMetadata metadata = builder.build(Smartphone.class);
         List<ParameterMetaData> parameters = metadata.parameters();
         assertEquals(2, parameters.size());
@@ -102,7 +102,7 @@ class ConstructorMetadataBuilderTest {
     }
 
     @Test
-    public void shouldReturnPetOwnerEntityConstructor() {
+    void shouldReturnPetOwnerEntityConstructor() {
         ConstructorMetadata metadata = builder.build(PetOwner.class);
         List<ParameterMetaData> parameters = metadata.parameters();
         assertEquals(3, parameters.size());

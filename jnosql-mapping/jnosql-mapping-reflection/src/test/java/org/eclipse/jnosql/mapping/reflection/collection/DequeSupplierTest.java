@@ -31,19 +31,19 @@ class DequeSupplierTest {
     private CollectionSupplier<?> supplier;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.supplier = new DequeSupplier();
     }
 
     @Test
-    public void shouldTest() {
+    void shouldTest() {
         Assertions.assertTrue(supplier.test(Deque.class));
         Assertions.assertTrue(supplier.test(Queue.class));
         Assertions.assertFalse(supplier.test(List.class));
     }
 
     @Test
-    public void shouldGet() {
+    void shouldGet() {
         final Collection<?> collection = this.supplier.get();
         Assertions.assertNotNull(collection);
         Assertions.assertTrue(collection instanceof LinkedList);

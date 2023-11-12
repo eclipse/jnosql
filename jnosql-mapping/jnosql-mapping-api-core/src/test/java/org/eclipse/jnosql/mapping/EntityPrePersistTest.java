@@ -17,17 +17,17 @@ package org.eclipse.jnosql.mapping;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-public class EntityPrePersistTest {
+class EntityPrePersistTest {
 
     @Test
-    public void shouldGet() {
+    void shouldGet() {
         Object value = new Object();
         EntityPrePersist entity = new EntityPrePersist(value);
         assertEquals(value, entity.get());
     }
 
     @Test
-    public void shouldEqualsAndHashCode() {
+    void shouldEqualsAndHashCode() {
         Object value1 = new Object();
         Object value2 = new Object();
 
@@ -43,7 +43,7 @@ public class EntityPrePersistTest {
     }
 
     @Test
-    public void shouldToString() {
+    void shouldToString() {
         Object value = new Object();
         EntityPrePersist entity = new EntityPrePersist(value);
         String expected = "DefaultEntityPrePersist{value=" + value + "}";
@@ -51,14 +51,14 @@ public class EntityPrePersistTest {
     }
 
     @Test
-    public void shouldOf() {
+    void shouldOf() {
         Object value = new Object();
         EntityPrePersist entity = EntityPrePersist.of(value);
         assertEquals(value, entity.get());
     }
 
     @Test
-    public void shouldOfWithNullValue() {
+    void shouldOfWithNullValue() {
         assertThrows(NullPointerException.class, () -> EntityPrePersist.of(null));
     }
 }

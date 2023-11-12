@@ -73,53 +73,53 @@ class CollectionSupplierTest {
 
 
     @BeforeAll
-    public static void beforeAll(){
+    static void beforeAll(){
         System.clearProperty(KEY_VALUE_PROVIDER.get());
         System.setProperty(KEY_VALUE_PROVIDER.get(), KeyValueConfigurationMock.class.getName());
     }
 
     @AfterAll
-    public static void afterAll(){
+    static void afterAll(){
         System.clearProperty(KEY_VALUE_PROVIDER.get());
     }
 
 
     @Test
-    public void shouldGetList() {
+    void shouldGetList() {
         Assertions.assertNotNull(names);
         assertThat(names)
                 .isInstanceOf(ArrayList.class);
     }
 
     @Test
-    public void shouldGetMap() {
+    void shouldGetMap() {
         Assertions.assertNotNull(map);
         assertThat(map)
                 .isInstanceOf(HashMap.class);
     }
 
     @Test
-    public void shouldGetQueue() {
+    void shouldGetQueue() {
         Assertions.assertNotNull(orders);
         assertThat(orders)
                 .isInstanceOf(LinkedList.class);
     }
 
     @Test
-    public void shouldGetSet() {
+    void shouldGetSet() {
         Assertions.assertNotNull(fruits);
         assertThat(fruits)
                 .isInstanceOf(HashSet.class);
     }
 
     @Test
-    public void shouldStructure() {
+    void shouldStructure() {
         Assertions.assertNotNull(structure);
     }
 
 
     @Test
-    public void shouldGetFromQualifier() {
+    void shouldGetFromQualifier() {
         CDI<Object> current = CDI.current();
         TypeLiteral<List<Integer>> literal = new TypeLiteral<>(){};
         List<Integer> integers = current.select(literal, KeyValueDatabaseQualifier.of("numbers")).get();

@@ -30,14 +30,14 @@ class GetProviderTest {
     private final GetQueryConverter queryProvider = new GetQueryConverter();
 
     @Test
-    public void shouldReturnErrorWhenStringIsNull() {
+    void shouldReturnErrorWhenStringIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> queryProvider.apply(null));
     }
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get \"Diana\""})
-    public void shouldReturnParserQuery(String query) {
+    void shouldReturnParserQuery(String query) {
         GetQuery getQuery = queryProvider.apply(query);
         List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
@@ -48,7 +48,7 @@ class GetProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get 12"})
-    public void shouldReturnParserQuery1(String query) {
+    void shouldReturnParserQuery1(String query) {
         GetQuery getQuery = queryProvider.apply(query);
         List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
@@ -59,7 +59,7 @@ class GetProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get 12.12"})
-    public void shouldReturnParserQuery2(String query) {
+    void shouldReturnParserQuery2(String query) {
         GetQuery getQuery = queryProvider.apply(query);
         List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
@@ -70,7 +70,7 @@ class GetProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get -12"})
-    public void shouldReturnParserQuery3(String query) {
+    void shouldReturnParserQuery3(String query) {
         GetQuery getQuery = queryProvider.apply(query);
         List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
@@ -81,7 +81,7 @@ class GetProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get -12.12"})
-    public void shouldReturnParserQuery4(String query) {
+    void shouldReturnParserQuery4(String query) {
         GetQuery getQuery = queryProvider.apply(query);
         List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
@@ -93,7 +93,7 @@ class GetProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get {1,12}"})
-    public void shouldReturnParserQuery5(String query) {
+    void shouldReturnParserQuery5(String query) {
         GetQuery getQuery = queryProvider.apply(query);
         List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());

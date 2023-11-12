@@ -49,7 +49,7 @@ class GraphSupplierTest {
     }
 
     @Test
-    public void shouldGetGraph() {
+    void shouldGetGraph() {
         System.setProperty(GRAPH_PROVIDER.get(), GraphConfigurationMock.class.getName());
         Graph graph = supplier.get();
         Assertions.assertNotNull(graph);
@@ -58,7 +58,7 @@ class GraphSupplierTest {
 
 
     @Test
-    public void shouldUseDefaultConfigurationWhenProviderIsWrong() {
+    void shouldUseDefaultConfigurationWhenProviderIsWrong() {
         System.setProperty(GRAPH_PROVIDER.get(), Integer.class.getName());
         Graph graph = supplier.get();
         Assertions.assertNotNull(graph);
@@ -66,14 +66,14 @@ class GraphSupplierTest {
     }
 
     @Test
-    public void shouldUseDefaultConfiguration() {
+    void shouldUseDefaultConfiguration() {
         Graph graph = supplier.get();
         Assertions.assertNotNull(graph);
         assertThat(graph).isInstanceOf(GraphConfigurationMock2.GraphMock.class);
     }
 
     @Test
-    public void shouldClose() throws Exception {
+    void shouldClose() throws Exception {
         Graph graph = Mockito.mock(Graph.class);
         supplier.close(graph);
         Mockito.verify(graph).close();

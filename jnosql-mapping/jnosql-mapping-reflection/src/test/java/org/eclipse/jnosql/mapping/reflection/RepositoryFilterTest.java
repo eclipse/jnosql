@@ -35,13 +35,13 @@ class RepositoryFilterTest {
     private Predicate<Class<?>> invalid;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.valid = RepositoryFilter.INSTANCE;
         this.invalid = RepositoryFilter.INSTANCE::isInvalid;
     }
 
     @Test
-    public void shouldReturnTrueWhenHasSupportRepository() {
+    void shouldReturnTrueWhenHasSupportRepository() {
         assertThat(valid.test(PersonRepository.class)).isTrue();
         assertThat(valid.test(People.class)).isTrue();
         assertThat(valid.test(Persons.class)).isTrue();
@@ -49,7 +49,7 @@ class RepositoryFilterTest {
     }
 
     @Test
-    public void shouldReturnFalseWhenHasNotSupportRepository() {
+    void shouldReturnFalseWhenHasNotSupportRepository() {
         assertThat(valid.test(NoSQLVendor.class)).isFalse();
         assertThat(valid.test(Server.class)).isFalse();
         assertThat(valid.test(StringSupplier.class)).isFalse();
@@ -57,7 +57,7 @@ class RepositoryFilterTest {
     }
 
     @Test
-    public void shouldReturnInvalid(){
+    void shouldReturnInvalid(){
         assertThat(invalid.test(PersonRepository.class)).isFalse();
         assertThat(invalid.test(People.class)).isFalse();
         assertThat(invalid.test(Persons.class)).isFalse();

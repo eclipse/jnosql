@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class RepositoryReflectionUtilsTest {
 
     @Test
-    public void shouldGetParams(){
+    void shouldGetParams(){
         Method method = PersonRepository.class.getDeclaredMethods()[0];
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, new Object[]{"Ada"});
         assertThat(params)
@@ -41,7 +41,7 @@ class RepositoryReflectionUtilsTest {
     }
 
     @Test
-    public void shouldQuery(){
+    void shouldQuery(){
         Method method = PersonRepository.class.getDeclaredMethods()[0];
         String query = RepositoryReflectionUtils.INSTANCE.getQuery(method);
         assertEquals("select * from Person where name = @name", query);

@@ -50,13 +50,13 @@ class GraphImmutableConveterTest {
     private Graph graph;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.graph.traversal().V().toList().forEach(Vertex::remove);
         this.graph.traversal().E().toList().forEach(Edge::remove);
     }
 
     @Test
-    public void shouldConvertEntity() {
+    void shouldConvertEntity() {
         Car car = new Car(null, "SF90", "Ferrari", 2023);
         Vertex vertex = this.converter.toVertex(car);
         SoftAssertions.assertSoftly(soft -> {
@@ -73,7 +73,7 @@ class GraphImmutableConveterTest {
     }
 
     @Test
-    public void shouldConvertVertex() {
+    void shouldConvertVertex() {
         Vertex vertex = graph.addVertex("Car");
         vertex.property("model", "SF90");
         vertex.property("manufacturer", "Ferrari");
@@ -89,7 +89,7 @@ class GraphImmutableConveterTest {
     }
 
     @Test
-    public void shouldConvertToExistRecordEntity() {
+    void shouldConvertToExistRecordEntity() {
         Vertex vertex = graph.addVertex("Car");
         vertex.property("model", "SF90");
         vertex.property("manufacturer", "Ferrari");
@@ -112,7 +112,7 @@ class GraphImmutableConveterTest {
     }
 
     @Test
-    public void shouldConvertToExistEntity() {
+    void shouldConvertToExistEntity() {
         Vertex vertex = graph.addVertex("Hero");
         vertex.property("name", "Iron Man");
         Hero hero = new Hero(null, null);

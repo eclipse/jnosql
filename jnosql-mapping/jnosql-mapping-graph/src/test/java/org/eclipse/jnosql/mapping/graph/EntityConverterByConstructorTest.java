@@ -50,7 +50,7 @@ class EntityConverterByConstructorTest {
     private EntitiesMetadata entities;
 
     @Test
-    public void shouldCreateRecordEntity() {
+    void shouldCreateRecordEntity() {
         Vertex vertex = graph.addVertex("Car");
         vertex.property("model", "500");
         vertex.property("manufacturer", "Fiat");
@@ -68,7 +68,7 @@ class EntityConverterByConstructorTest {
     }
 
     @Test
-    public void shouldCreateRecordClass() {
+    void shouldCreateRecordClass() {
         Vertex vertex = graph.addVertex("Hero");
         vertex.property("name", "Super man");
         EntityMetadata metadata = entities.get(Hero.class);

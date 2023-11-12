@@ -41,7 +41,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findBy", "countBy", "existsBy"})
-    public void shouldReturnParserQuery(String query) {
+    void shouldReturnParserQuery(String query) {
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
@@ -56,27 +56,27 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByName", "countByName", "existsByName"})
-    public void shouldReturnParserQuery1(String query) {
+    void shouldReturnParserQuery1(String query) {
         String entity = "entity";
         checkEqualsQuery(query, entity);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByNameEquals", "countByNameEquals", "existsByNameEquals"})
-    public void shouldReturnParserQuery2(String query) {
+    void shouldReturnParserQuery2(String query) {
         String entity = "entity";
         checkEqualsQuery(query, entity);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByNameNotEquals", "countByNameNotEquals", "existsByNameNotEquals"})
-    public void shouldReturnParserQuery3(String query) {
+    void shouldReturnParserQuery3(String query) {
         checkNotCondition(query, Condition.EQUALS, "name");
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeGreaterThan", "countByAgeGreaterThan", "existsByAgeGreaterThan"})
-    public void shouldReturnParserQuery4(String query) {
+    void shouldReturnParserQuery4(String query) {
 
         Condition operator = Condition.GREATER_THAN;
         String variable = "age";
@@ -85,7 +85,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeNotGreaterThan", "countByAgeNotGreaterThan", "existsByAgeNotGreaterThan"})
-    public void shouldReturnParserQuery5(String query) {
+    void shouldReturnParserQuery5(String query) {
         Condition operator = Condition.GREATER_THAN;
         String variable = "age";
         checkNotCondition(query, operator, variable);
@@ -93,7 +93,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeGreaterThanEqual", "countByAgeGreaterThanEqual", "existsByAgeGreaterThanEqual"})
-    public void shouldReturnParserQuery6(String query) {
+    void shouldReturnParserQuery6(String query) {
 
         Condition operator = Condition.GREATER_EQUALS_THAN;
         String variable = "age";
@@ -102,7 +102,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeNotGreaterThanEqual", "countByAgeNotGreaterThanEqual", "existsByAgeNotGreaterThanEqual"})
-    public void shouldReturnParserQuery7(String query) {
+    void shouldReturnParserQuery7(String query) {
         Condition operator = Condition.GREATER_EQUALS_THAN;
         String variable = "age";
         checkNotCondition(query, operator, variable);
@@ -110,7 +110,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeLessThan", "countByAgeLessThan", "existsByAgeLessThan"})
-    public void shouldReturnParserQuery8(String query) {
+    void shouldReturnParserQuery8(String query) {
 
         Condition operator = Condition.LESSER_THAN;
         String variable = "age";
@@ -119,7 +119,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeNotLessThan", "countByAgeNotLessThan", "existsByAgeNotLessThan"})
-    public void shouldReturnParserQuery9(String query) {
+    void shouldReturnParserQuery9(String query) {
         Condition operator = Condition.LESSER_THAN;
         String variable = "age";
         checkNotCondition(query, operator, variable);
@@ -127,7 +127,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeLessThanEqual", "countByAgeLessThanEqual", "existsByAgeLessThanEqual"})
-    public void shouldReturnParserQuery10(String query) {
+    void shouldReturnParserQuery10(String query) {
 
         Condition operator = Condition.LESSER_EQUALS_THAN;
         String variable = "age";
@@ -136,7 +136,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeNotLessThanEqual", "countByAgeNotLessThanEqual", "existsByAgeNotLessThanEqual"})
-    public void shouldReturnParserQuery11(String query) {
+    void shouldReturnParserQuery11(String query) {
         Condition operator = Condition.LESSER_EQUALS_THAN;
         String variable = "age";
         checkNotCondition(query, operator, variable);
@@ -144,7 +144,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeLike", "countByAgeLike", "existsByAgeLike"})
-    public void shouldReturnParserQuery12(String query) {
+    void shouldReturnParserQuery12(String query) {
 
         Condition operator = Condition.LIKE;
         String variable = "age";
@@ -153,7 +153,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeNotLike", "countByAgeNotLike", "existsByAgeNotLike"})
-    public void shouldReturnParserQuery13(String query) {
+    void shouldReturnParserQuery13(String query) {
         Condition operator = Condition.LIKE;
         String variable = "age";
         checkNotCondition(query, operator, variable);
@@ -162,7 +162,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeIn", "countByAgeIn", "existsByAgeIn"})
-    public void shouldReturnParserQuery14(String query) {
+    void shouldReturnParserQuery14(String query) {
 
         Condition operator = Condition.IN;
         String variable = "age";
@@ -171,7 +171,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeNotIn", "countByAgeNotIn", "existsByAgeNotIn"})
-    public void shouldReturnParserQuery15(String query) {
+    void shouldReturnParserQuery15(String query) {
         Condition operator = Condition.IN;
         String variable = "age";
         checkNotCondition(query, operator, variable);
@@ -179,7 +179,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeAndName", "countByAgeAndName", "existsByAgeAndName"})
-    public void shouldReturnParserQuery16(String query) {
+    void shouldReturnParserQuery16(String query) {
 
         Condition operator = Condition.EQUALS;
         Condition operator2 = Condition.EQUALS;
@@ -191,7 +191,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeOrName", "countByAgeOrName", "existsByAgeOrName"})
-    public void shouldReturnParserQuery17(String query) {
+    void shouldReturnParserQuery17(String query) {
 
         Condition operator = Condition.EQUALS;
         Condition operator2 = Condition.EQUALS;
@@ -204,7 +204,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeOrNameLessThan", "countByAgeOrNameLessThan", "existsByAgeOrNameLessThan"})
-    public void shouldReturnParserQuery18(String query) {
+    void shouldReturnParserQuery18(String query) {
 
         Condition operator = Condition.EQUALS;
         Condition operator2 = Condition.LESSER_THAN;
@@ -216,7 +216,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeGreaterThanOrNameIn", "countByAgeGreaterThanOrNameIn", "existsByAgeGreaterThanOrNameIn"})
-    public void shouldReturnParserQuery19(String query) {
+    void shouldReturnParserQuery19(String query) {
 
         Condition operator = Condition.GREATER_THAN;
         Condition operator2 = Condition.IN;
@@ -228,26 +228,26 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByName", "countByOrderByName", "existsByOrderByName"})
-    public void shouldReturnParserQuery20(String query) {
+    void shouldReturnParserQuery20(String query) {
         checkOrderBy(query, Direction.ASC);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByNameAsc", "countByOrderByNameAsc", "existsByOrderByNameAsc"})
-    public void shouldReturnParserQuery21(String query) {
+    void shouldReturnParserQuery21(String query) {
         Direction type = Direction.ASC;
         checkOrderBy(query, type);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByNameDesc", "countByOrderByNameDesc", "existsByOrderByNameDesc"})
-    public void shouldReturnParserQuery22(String query) {
+    void shouldReturnParserQuery22(String query) {
         checkOrderBy(query, Direction.DESC);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByNameDescAgeAsc", "countByOrderByNameDescAgeAsc", "existsByOrderByNameDescAgeAsc"})
-    public void shouldReturnParserQuery23(String query) {
+    void shouldReturnParserQuery23(String query) {
 
         Direction type = Direction.DESC;
         Direction type2 = Direction.ASC;
@@ -256,26 +256,26 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByNameDescAge", "countByOrderByNameDescAge", "existsByOrderByNameDescAge"})
-    public void shouldReturnParserQuery24(String query) {
+    void shouldReturnParserQuery24(String query) {
         checkOrderBy(query, Direction.DESC, Direction.ASC);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByNameDescAgeDesc", "countByOrderByNameDescAgeDesc", "existsByOrderByNameDescAgeDesc"})
-    public void shouldReturnParserQuery25(String query) {
+    void shouldReturnParserQuery25(String query) {
         checkOrderBy(query, Direction.DESC, Direction.DESC);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByNameAscAgeAsc", "countByOrderByNameAscAgeAsc", "existsByOrderByNameAscAgeAsc"})
-    public void shouldReturnParserQuery26(String query) {
+    void shouldReturnParserQuery26(String query) {
         checkOrderBy(query, Direction.ASC, Direction.ASC);
     }
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeBetween", "countByAgeBetween", "existsByAgeBetween"})
-    public void shouldReturnParserQuery27(String query) {
+    void shouldReturnParserQuery27(String query) {
 
         Condition operator = Condition.BETWEEN;
         String entity = "entity";
@@ -299,7 +299,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeNotBetween", "countByAgeNotBetween", "existsByAgeNotBetween"})
-    public void shouldReturnParserQuery28(String query) {
+    void shouldReturnParserQuery28(String query) {
 
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
@@ -326,7 +326,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findBySalary_Currency", "countBySalary_Currency", "existsBySalary_Currency"})
-    public void shouldRunQuery29(String query) {
+    void shouldRunQuery29(String query) {
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
@@ -346,7 +346,7 @@ class SelectMethodQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findBySalary_CurrencyAndCredential_Role", "countBySalary_CurrencyAndCredential_Role",
             "existsBySalary_CurrencyAndCredential_Role"})
-    public void shouldRunQuery30(String query) {
+    void shouldRunQuery30(String query) {
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
@@ -369,7 +369,7 @@ class SelectMethodQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findBySalary_CurrencyAndName", "countBySalary_CurrencyAndName",
             "existsBySalary_CurrencyAndName"})
-    public void shouldRunQuery31(String query) {
+    void shouldRunQuery31(String query) {
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
@@ -392,7 +392,7 @@ class SelectMethodQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findBySalary_CurrencyOrderBySalary_Value", "countBySalary_CurrencyOrderBySalary_Value"
     ,"existsBySalary_CurrencyOrderBySalary_Value"})
-    public void shouldRunQuery32(String query) {
+    void shouldRunQuery32(String query) {
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
@@ -413,7 +413,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByActiveTrue", "countByActiveTrue", "existsByActiveTrue"})
-    public void shouldRunQuery33(String query) {
+    void shouldRunQuery33(String query) {
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
@@ -432,7 +432,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByActiveFalse", "countByActiveFalse", "existsByActiveFalse"})
-    public void shouldRunQuery34(String query) {
+    void shouldRunQuery34(String query) {
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
@@ -451,7 +451,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByNameNot", "countByNameNot", "existsByNameNot"})
-    public void shouldReturnParserQuery35(String query) {
+    void shouldReturnParserQuery35(String query) {
         checkNotCondition(query, Condition.EQUALS, "name");
     }
 

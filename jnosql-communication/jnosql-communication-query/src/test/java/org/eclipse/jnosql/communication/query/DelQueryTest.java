@@ -26,39 +26,39 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-public class DelQueryTest {
+class DelQueryTest {
 
     @ParameterizedTest
     @ArgumentsSource(DelQueryArgumentProvider.class)
-    public void shouldExecuteQuery(String query) {
+    void shouldExecuteQuery(String query) {
         testQuery(query);
     }
 
     @Test
-    public void shouldIgnoreComments() {
+    void shouldIgnoreComments() {
         testQuery("//ignore this line \n del 12");
     }
 
     @ParameterizedTest
     @ArgumentsSource(WrongDelQueryArgumentProvider.class)
-    public void shouldNotExecute(String query) {
+    void shouldNotExecute(String query) {
         Assertions.assertThrows(QueryException.class, () -> testQuery(query));
     }
 
     @Test
-    public void shouldCreateFromMethodFactory(){
+    void shouldCreateFromMethodFactory(){
         DelQuery query = DelQuery.parse("del \"Ada Lovelace\"");
         Assertions.assertNotNull(query);
     }
 
     @Test
-    public void shouldEquals(){
+    void shouldEquals(){
         String text = "del \"Ada Lovelace\"";
         Assertions.assertEquals(DelQuery.parse(text), DelQuery.parse(text));
     }
 
     @Test
-    public void shouldHashCode(){
+    void shouldHashCode(){
         String text = "del \"Ada Lovelace\"";
         Assertions.assertEquals(DelQuery.parse(text).hashCode(), DelQuery.parse(text).hashCode());
     }

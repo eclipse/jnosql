@@ -20,14 +20,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class MethodParamQueryValueTest {
 
     @Test
-    public void shouldReturnType() {
+    void shouldReturnType() {
         MethodParamQueryValue param = new MethodParamQueryValue("name");
         Assertions.assertThat(param).isNotNull()
                 .extracting(MethodParamQueryValue::type)
                 .isNotNull().isEqualTo(ValueType.PARAMETER);
     }
     @Test
-    public void shouldCreateInstance() {
+    void shouldCreateInstance() {
         MethodParamQueryValue param = new MethodParamQueryValue("name");
         Assertions.assertThat(param).isNotNull()
                 .extracting(MethodParamQueryValue::get)
@@ -36,13 +36,13 @@ class MethodParamQueryValueTest {
     }
 
     @Test
-    public void shouldEquals() {
+    void shouldEquals() {
         MethodParamQueryValue param = new MethodParamQueryValue("name");
         assertEquals(param, param);
     }
 
     @Test
-    public void shouldHashCode() {
+    void shouldHashCode() {
         MethodParamQueryValue param = new MethodParamQueryValue("name");
         assertEquals(param.hashCode(), param.hashCode());
     }

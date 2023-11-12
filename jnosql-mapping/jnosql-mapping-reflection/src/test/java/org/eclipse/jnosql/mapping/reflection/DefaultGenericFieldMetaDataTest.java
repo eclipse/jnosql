@@ -35,48 +35,48 @@ class DefaultGenericFieldMetaDataTest {
     private GenericFieldMetadata fieldMetadata;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         ClassConverter converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(Person.class);
         FieldMetadata phones = entityMetadata.fieldMapping("phones").orElseThrow();
         this.fieldMetadata = (GenericFieldMetadata) phones;
     }
     @Test
-    public void shouldToString() {
+    void shouldToString() {
         assertThat(fieldMetadata.toString()).isNotEmpty().isNotNull();
     }
 
     @Test
-    public void shouldGetElementType(){
+    void shouldGetElementType(){
         assertThat(fieldMetadata.elementType()).isEqualTo(String.class);
     }
 
     @Test
-    public void shouldCollectionInstance(){
+    void shouldCollectionInstance(){
         Collection<?> collection = this.fieldMetadata.collectionInstance();
         assertThat(collection).isInstanceOf(List.class);
     }
 
     @Test
-    public void shouldEqualsHashCode(){
+    void shouldEqualsHashCode(){
         Assertions.assertThat(fieldMetadata).isEqualTo(fieldMetadata);
         Assertions.assertThat(fieldMetadata).hasSameHashCodeAs(fieldMetadata);
     }
 
     @Test
-    public void shouldValue(){
+    void shouldValue(){
         List<String> phones = List.of("Ada", "Lovelace");
         Object value = fieldMetadata.value(Value.of(phones));
         assertThat(value).isNotNull().isInstanceOf(List.class);
     }
 
     @Test
-    public void shouldConverter(){
+    void shouldConverter(){
         assertThat(fieldMetadata.converter()).isNotNull().isEmpty();
     }
 
     @Test
-    public void shouldNewConverter(){
+    void shouldNewConverter(){
         assertThat(fieldMetadata.newConverter()).isNotNull().isEmpty();
     }
 }

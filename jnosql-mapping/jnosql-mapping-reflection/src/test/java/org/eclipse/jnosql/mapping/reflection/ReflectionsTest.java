@@ -49,13 +49,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
 @AddPackages(value = ReflectionGroupEntityMetadata.class)
-public class ReflectionsTest {
+class ReflectionsTest {
 
     @Inject
     private Reflections reflections;
 
     @Test
-    public void shouldReturnsEntityName() {
+    void shouldReturnsEntityName() {
         assertSoftly(softly -> {
             softly.assertThat(reflections.getEntityName(Person.class))
                     .as("getting entity name from annotated class with @Entity without name")
@@ -73,7 +73,7 @@ public class ReflectionsTest {
     }
 
     @Test
-    public void shouldReturnsConstructor() {
+    void shouldReturnsConstructor() {
         assertSoftly(softly -> {
 
             Constructor<Person> personConstructor = reflections.getConstructor(Person.class);
@@ -97,7 +97,7 @@ public class ReflectionsTest {
     }
 
     @Test
-    public void shouldListFields() {
+    void shouldListFields() {
         assertSoftly(softly -> {
             softly.assertThat(reflections.getFields(Person.class))
                     .as("list fields from a class with field not annotated with @Column")
@@ -115,7 +115,7 @@ public class ReflectionsTest {
     }
 
     @Test
-    public void shouldReturnColumnName() throws NoSuchFieldException {
+    void shouldReturnColumnName() throws NoSuchFieldException {
         Field phones = Person.class.getDeclaredField("phones");
         Field id = Person.class.getDeclaredField("id");
 
@@ -125,20 +125,20 @@ public class ReflectionsTest {
     }
 
     @Test
-    public void shouldGetEntityNameWhenThereIsNoAnnotation() {
+    void shouldGetEntityNameWhenThereIsNoAnnotation() {
         String entityName = reflections.getEntityName(Person.class);
         assertEquals(Person.class.getSimpleName(), entityName);
     }
 
     @Test
-    public void shouldGetEntityNameFromAnnotation() {
+    void shouldGetEntityNameFromAnnotation() {
         String entityName = reflections.getEntityName(Download.class);
         assertEquals("download", entityName);
         assertEquals("vendors", reflections.getEntityName(Vendor.class));
     }
 
     @Test
-    public void shouldGetEntityFromInheritance() {
+    void shouldGetEntityFromInheritance() {
         assertEquals("Notification", reflections.getEntityName(SocialMediaNotification.class));
         assertEquals("Notification", reflections.getEntityName(SmsNotification.class));
         assertEquals("Notification", reflections.getEntityName(EmailNotification.class));
@@ -148,13 +148,13 @@ public class ReflectionsTest {
     }
 
     @Test
-    public void shouldReturnEmptyGetInheritance() {
+    void shouldReturnEmptyGetInheritance() {
         Optional<InheritanceMetadata> inheritance = this.reflections.getInheritance(Person.class);
         assertTrue(inheritance.isEmpty());
     }
 
     @Test
-    public void shouldReturnGetInheritance() {
+    void shouldReturnGetInheritance() {
         Optional<InheritanceMetadata> inheritance = this.reflections.getInheritance(LargeProject.class);
         assertFalse(inheritance.isEmpty());
         InheritanceMetadata project = inheritance.get();
@@ -165,7 +165,7 @@ public class ReflectionsTest {
     }
 
     @Test
-    public void shouldReturnGetInheritanceWithoutColumn() {
+    void shouldReturnGetInheritanceWithoutColumn() {
         Optional<InheritanceMetadata> inheritance = this.reflections.getInheritance(SmsNotification.class);
         assertFalse(inheritance.isEmpty());
         InheritanceMetadata project = inheritance.get();
@@ -176,7 +176,7 @@ public class ReflectionsTest {
     }
 
     @Test
-    public void shouldReturnGetInheritanceWithoutDiscriminatorValue() {
+    void shouldReturnGetInheritanceWithoutDiscriminatorValue() {
         Optional<InheritanceMetadata> inheritance = this.reflections.getInheritance(SocialMediaNotification.class);
         assertFalse(inheritance.isEmpty());
         InheritanceMetadata project = inheritance.get();
@@ -187,7 +187,7 @@ public class ReflectionsTest {
     }
 
     @Test
-    public void shouldGetInheritanceParent() {
+    void shouldGetInheritanceParent() {
         Optional<InheritanceMetadata> inheritance = this.reflections.getInheritance(Project.class);
         assertFalse(inheritance.isEmpty());
         InheritanceMetadata project = inheritance.get();
@@ -198,7 +198,7 @@ public class ReflectionsTest {
     }
 
     @Test
-    public void shouldReturnHasInheritanceAnnotation() {
+    void shouldReturnHasInheritanceAnnotation() {
         assertFalse(this.reflections.hasInheritanceAnnotation(Person.class));
         assertFalse(this.reflections.hasInheritanceAnnotation(Worker.class));
         assertFalse(this.reflections.hasInheritanceAnnotation(SmsNotification.class));

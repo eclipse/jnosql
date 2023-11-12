@@ -33,19 +33,19 @@ class SpecialParametersTest {
 //should keep the precedence
 
     @Test
-    public void shouldReturnEmpty() {
+    void shouldReturnEmpty() {
         SpecialParameters parameters = SpecialParameters.of(new Object[0]);
         assertTrue(parameters.isEmpty());
     }
 
     @Test
-    public void shouldReturnEmptyNonSpecialParameters() {
+    void shouldReturnEmptyNonSpecialParameters() {
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio"});
         assertTrue(parameters.isEmpty());
     }
 
     @Test
-    public void shouldReturnPageable() {
+    void shouldReturnPageable() {
         Pageable pageable = Pageable.ofPage(10);
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", pageable});
         assertFalse(parameters.isEmpty());
@@ -54,7 +54,7 @@ class SpecialParametersTest {
     }
 
     @Test
-    public void shouldReturnPageableWithSort() {
+    void shouldReturnPageableWithSort() {
         Pageable pageable = Pageable.ofPage(10).sortBy(Sort.asc("name"),
                 Sort.desc("age"));
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", pageable});
@@ -67,7 +67,7 @@ class SpecialParametersTest {
     }
 
     @Test
-    public void shouldReturnSort() {
+    void shouldReturnSort() {
         Sort sort = Sort.asc("name");
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", sort});
         assertFalse(parameters.isEmpty());
@@ -79,7 +79,7 @@ class SpecialParametersTest {
     }
 
     @Test
-    public void shouldKeepOrder() {
+    void shouldKeepOrder() {
         Sort sort = Sort.asc("name");
         Pageable pageable = Pageable.ofPage(10).sortBy(Sort.asc("name"),
                 Sort.desc("age"));
@@ -95,7 +95,7 @@ class SpecialParametersTest {
     }
 
     @Test
-    public void shouldReturnLimit() {
+    void shouldReturnLimit() {
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", Limit.of(10)});
         assertFalse(parameters.isEmpty());
         Optional<Limit> limit = parameters.limit();
@@ -106,7 +106,7 @@ class SpecialParametersTest {
     }
 
     @Test
-    public void shouldReturnIterableSort(){
+    void shouldReturnIterableSort(){
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio",
                 List.of(Sort.asc("name"), Sort.desc("age"))});
         assertFalse(parameters.isEmpty());

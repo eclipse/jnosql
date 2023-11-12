@@ -37,12 +37,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class DefaultColumnQueryBuilderTest {
 
     @Test
-    public void shouldReturnErrorWhenHasNullElementInSelect() {
+    void shouldReturnErrorWhenHasNullElementInSelect() {
         assertThrows(NullPointerException.class, () -> builder("document", "document'", null));
     }
 
     @Test
-    public void shouldBuilder() {
+    void shouldBuilder() {
         String documentCollection = "documentCollection";
         ColumnQuery query = builder().from(documentCollection).build();
         assertTrue(query.columns().isEmpty());
@@ -51,7 +51,7 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectDocument() {
+    void shouldSelectDocument() {
         String documentCollection = "documentCollection";
         ColumnQuery query = builder("document", "document2").from(documentCollection).build();
         assertThat(query.columns()).contains("document", "document2");
@@ -60,13 +60,13 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenFromIsNull() {
+    void shouldReturnErrorWhenFromIsNull() {
         assertThrows(NullPointerException.class, () -> builder().from(null));
     }
 
 
     @Test
-    public void shouldSelectOrderAsc() {
+    void shouldSelectOrderAsc() {
         String documentCollection = "documentCollection";
         ColumnQuery query = builder().from(documentCollection).sort(Sort.asc("name")).build();
         assertTrue(query.columns().isEmpty());
@@ -76,7 +76,7 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectOrderDesc() {
+    void shouldSelectOrderDesc() {
         String documentCollection = "documentCollection";
         ColumnQuery query = builder().from(documentCollection).sort(Sort.desc("name")).build();
         assertTrue(query.columns().isEmpty());
@@ -87,7 +87,7 @@ class DefaultColumnQueryBuilderTest {
 
 
     @Test
-    public void shouldReturnErrorSelectWhenOrderIsNull() {
+    void shouldReturnErrorSelectWhenOrderIsNull() {
         assertThrows(NullPointerException.class,() -> {
             String documentCollection = "documentCollection";
             builder().from(documentCollection).sort((Sort) null);
@@ -95,7 +95,7 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectLimit() {
+    void shouldSelectLimit() {
         String documentCollection = "documentCollection";
         ColumnQuery query = builder().from(documentCollection).limit(10).build();
         assertTrue(query.columns().isEmpty());
@@ -105,13 +105,13 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenLimitIsNegative() {
+    void shouldReturnErrorWhenLimitIsNegative() {
         String documentCollection = "documentCollection";
         Assertions.assertThrows(IllegalArgumentException.class, () -> builder().from(documentCollection).limit(-1));
     }
 
     @Test
-    public void shouldSelectSkip() {
+    void shouldSelectSkip() {
         String documentCollection = "documentCollection";
         ColumnQuery query = builder().from(documentCollection).skip(10).build();
         assertTrue(query.columns().isEmpty());
@@ -121,13 +121,13 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenSkipIsNegative() {
+    void shouldReturnErrorWhenSkipIsNegative() {
         String documentCollection = "documentCollection";
         Assertions.assertThrows(IllegalArgumentException.class, () -> builder().from(documentCollection).skip(-1));
     }
 
     @Test
-    public void shouldSelectWhereNameEq() {
+    void shouldSelectWhereNameEq() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
 
@@ -147,7 +147,7 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLike() {
+    void shouldSelectWhereNameLike() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         ColumnQuery query = builder().from(documentCollection)
@@ -165,7 +165,7 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGt() {
+    void shouldSelectWhereNameGt() {
         String documentCollection = "documentCollection";
         Number value = 10;
 
@@ -184,7 +184,7 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGte() {
+    void shouldSelectWhereNameGte() {
         String documentCollection = "documentCollection";
         Number value = 10;
         ColumnCondition gteName = ColumnCondition.gte("name", value);
@@ -201,7 +201,7 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLt() {
+    void shouldSelectWhereNameLt() {
         String documentCollection = "documentCollection";
         Number value = 10;
 
@@ -219,7 +219,7 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLte() {
+    void shouldSelectWhereNameLte() {
         String documentCollection = "documentCollection";
         Number value = 10;
         ColumnQuery query = builder().from(documentCollection).where(ColumnCondition.lte("name", value))
@@ -236,7 +236,7 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameBetween() {
+    void shouldSelectWhereNameBetween() {
         String documentCollection = "documentCollection";
         Number valueA = 10;
         Number valueB = 20;
@@ -257,7 +257,7 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameNot() {
+    void shouldSelectWhereNameNot() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
 
@@ -277,7 +277,7 @@ class DefaultColumnQueryBuilderTest {
 
 
     @Test
-    public void shouldSelectWhereNameAnd() {
+    void shouldSelectWhereNameAnd() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         ColumnCondition nameEqualsAda = eq("name", name);
@@ -296,7 +296,7 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectWhereNameOr() {
+    void shouldSelectWhereNameOr() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         ColumnCondition nameEqualsAda = eq("name", name);
@@ -315,7 +315,7 @@ class DefaultColumnQueryBuilderTest {
 
 
     @Test
-    public void shouldSelectNegate() {
+    void shouldSelectNegate() {
         String columnFamily = "columnFamily";
         ColumnCondition nameNotEqualsLucas = eq("name", "Lucas").negate();
         ColumnQuery query = builder().from(columnFamily)
@@ -334,7 +334,7 @@ class DefaultColumnQueryBuilderTest {
 
 
     @Test
-    public void shouldExecuteManager() {
+    void shouldExecuteManager() {
         ColumnManager manager = Mockito.mock(ColumnManager.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String collection = "collection";
@@ -344,7 +344,7 @@ class DefaultColumnQueryBuilderTest {
     }
 
     @Test
-    public void shouldExecuteSingleResultManager() {
+    void shouldExecuteSingleResultManager() {
         ColumnManager manager = Mockito.mock(ColumnManager.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String collection = "collection";

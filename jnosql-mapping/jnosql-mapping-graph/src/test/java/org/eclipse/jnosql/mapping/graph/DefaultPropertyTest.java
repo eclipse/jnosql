@@ -23,33 +23,33 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-public class DefaultPropertyTest {
+class DefaultPropertyTest {
 
 
     @Test
-    public void shouldReturnErrorWhenKeyINull() {
+    void shouldReturnErrorWhenKeyINull() {
         assertThrows(NullPointerException.class, () -> DefaultProperty.of(null, 10L));
     }
 
     @Test
-    public void shouldReturnErrorWhenValueINull() {
+    void shouldReturnErrorWhenValueINull() {
         assertThrows(NullPointerException.class, () -> DefaultProperty.of("key", null));
     }
 
     @Test
-    public void shouldReturnKey() {
+    void shouldReturnKey() {
         Property element = DefaultProperty.of("key", 10L);
         assertEquals("key", element.key());
     }
 
     @Test
-    public void shouldReturnValue() {
+    void shouldReturnValue() {
         Property element = DefaultProperty.of("key", 10L);
         assertEquals(10L, element.value());
     }
 
     @Test
-    public void shouldReturnValueAsObject() {
+    void shouldReturnValueAsObject() {
         long value = 10L;
         Property element = DefaultProperty.of("key", value);
         assertEquals(value, element.value());
@@ -57,7 +57,7 @@ public class DefaultPropertyTest {
 
 
     @Test
-    public void shouldCreateInstanceValue() {
+    void shouldCreateInstanceValue() {
         Property element = DefaultProperty.of("key", Value.of(10L));
         assertEquals(Value.of(10L), element.value());
         assertEquals("key", element.key());
@@ -65,20 +65,20 @@ public class DefaultPropertyTest {
     }
 
     @Test
-    public void shouldToString() {
+    void shouldToString() {
         Property element = DefaultProperty.of("key", 10L);
         assertEquals("DefaultProperty{key='key', value=10}", element.toString());
     }
 
     @Test
-    public void shouldUnsupportedOperationException() {
+    void shouldUnsupportedOperationException() {
         Property element = DefaultProperty.of("key", 10L);
         assertThrows(UnsupportedOperationException.class, element::remove);
         assertThrows(UnsupportedOperationException.class, element::element);
     }
 
     @Test
-    public void shouldEqualsHashCode() {
+    void shouldEqualsHashCode() {
         Property element = DefaultProperty.of("key", 10L);
         assertEquals(element, element);
         assertEquals(element, DefaultProperty.of("key", 10L));
@@ -86,7 +86,7 @@ public class DefaultPropertyTest {
     }
 
     @Test
-    public void shouldIsPresent(){
+    void shouldIsPresent(){
         Property element = DefaultProperty.of("key", 10L);
         Assertions.assertThat(element.isPresent()).isTrue();
     }

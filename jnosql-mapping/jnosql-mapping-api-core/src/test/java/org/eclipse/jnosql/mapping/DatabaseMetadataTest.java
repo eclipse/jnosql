@@ -23,12 +23,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class DatabaseMetadataTest {
 
     @Test
-    public void shouldReturnErrorWhenDatabaseIsNull() {
+    void shouldReturnErrorWhenDatabaseIsNull() {
         assertThrows(NullPointerException.class, () -> DatabaseMetadata.of(null));
     }
 
     @Test
-    public void shouldReturnMetadata() {
+    void shouldReturnMetadata() {
         Database database = Mockito.mock(Database.class);
         Mockito.when(database.value()).thenReturn(DatabaseType.COLUMN);
         Mockito.when(database.provider()).thenReturn("column");
@@ -38,7 +38,7 @@ class DatabaseMetadataTest {
     }
 
     @Test
-    public void shouldReturnToString() {
+    void shouldReturnToString() {
         Database database = Mockito.mock(Database.class);
         Mockito.when(database.value()).thenReturn(DatabaseType.COLUMN);
         Mockito.when(database.provider()).thenReturn("column");
@@ -47,7 +47,7 @@ class DatabaseMetadataTest {
     }
 
     @Test
-    public void shouldReturnToString2() {
+    void shouldReturnToString2() {
         Database database = Mockito.mock(Database.class);
         Mockito.when(database.value()).thenReturn(DatabaseType.COLUMN);
         DatabaseMetadata metadata = DatabaseMetadata.of(database);

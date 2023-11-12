@@ -26,14 +26,14 @@ class ConstructorComparableTest {
 
 
     @Test
-    public void shouldReturnDefaultConstructor(){
+    void shouldReturnDefaultConstructor(){
         Constructor<?> constructor = Stream.of(Person.class.getDeclaredConstructors()).min(ConstructorComparable.INSTANCE).orElseThrow();
 
         Assertions.assertNotNull(constructor);
     }
 
     @Test
-    public void shouldReturnDefault() {
+    void shouldReturnDefault() {
         Constructor<?> constructor = Stream.of(Animal.class.getDeclaredConstructors())
                 .min(ConstructorComparable.INSTANCE).orElseThrow();
 

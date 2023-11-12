@@ -18,47 +18,16 @@ import java.util.Objects;
 
 /**
  * The mapping information about {@link org.eclipse.jnosql.mapping.Inheritance}
+ *
+ * @param discriminatorValue  the information from the annotation {@link org.eclipse.jnosql.mapping.DiscriminatorValue}
+ *                            from entity or the {@link Class#getSimpleName()} of the entity
+ * @param discriminatorColumn the information parent from the annotation {@link org.eclipse.jnosql.mapping.DiscriminatorColumn}
+ *                            * or the "type"
+ * @param parent              the parent class
+ * @param entity              the entity class
  */
 public record InheritanceMetadata(String discriminatorValue, String discriminatorColumn, Class<?> parent,
                                   Class<?> entity) {
-
-    /**
-     * Return the information from the class the annotation {@link org.eclipse.jnosql.mapping.DiscriminatorValue}
-     * or the {@link Class#getSimpleName()}.
-     *
-     * @return the {@link org.eclipse.jnosql.mapping.DiscriminatorValue} from entity
-     */
-    @Override
-    public String discriminatorValue() {
-        return discriminatorValue;
-    }
-
-    /**
-     * Return the information parent from the annotation {@link org.eclipse.jnosql.mapping.DiscriminatorColumn}
-     * or the "type".
-     *
-     * @return the {@link org.eclipse.jnosql.mapping.DiscriminatorValue} from entity
-     */
-    @Override
-    public String discriminatorColumn() {
-        return discriminatorColumn;
-    }
-
-    /**
-     * @return The parent class
-     */
-    @Override
-    public Class<?> parent() {
-        return parent;
-    }
-
-    /**
-     * @return the entity class
-     */
-    @Override
-    public Class<?> entity() {
-        return entity;
-    }
 
     /**
      * Checks if the parent is equals to the parameter

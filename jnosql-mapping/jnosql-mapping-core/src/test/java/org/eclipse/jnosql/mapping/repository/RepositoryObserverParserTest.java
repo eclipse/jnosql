@@ -40,14 +40,14 @@ class RepositoryObserverParserTest {
     private EntitiesMetadata entities;
 
     @Test
-    public void shouldCreateInstance() {
+    void shouldCreateInstance() {
         EntityMetadata metadata = entities.get(Person.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser).isNotNull();
     }
 
     @Test
-    public void shouldFireEvent() {
+    void shouldFireEvent() {
         EntityMetadata metadata = entities.get(Person.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)
@@ -57,7 +57,7 @@ class RepositoryObserverParserTest {
 
 
     @Test
-    public void shouldKeepName() {
+    void shouldKeepName() {
         EntityMetadata metadata = entities.get(Person.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)
@@ -66,7 +66,7 @@ class RepositoryObserverParserTest {
     }
 
     @Test
-    public void shouldReplaceName(){
+    void shouldReplaceName(){
         EntityMetadata metadata = entities.get(Worker.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)
@@ -75,7 +75,7 @@ class RepositoryObserverParserTest {
     }
 
     @Test
-    public void shouldKeepWhenDoesNotFind() {
+    void shouldKeepWhenDoesNotFind() {
         EntityMetadata metadata = entities.get(Address.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)
@@ -84,7 +84,7 @@ class RepositoryObserverParserTest {
     }
 
     @Test
-    public void shouldConcatSmart() {
+    void shouldConcatSmart() {
         EntityMetadata metadata = entities.get(Address.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)

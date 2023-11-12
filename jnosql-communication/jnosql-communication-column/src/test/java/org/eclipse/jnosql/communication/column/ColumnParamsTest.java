@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ColumnParamsTest {
 
     @Test
-    public void shouldSetParameter() {
+    void shouldSetParameter() {
         Params params = Params.newParams();
         Value name = params.add("name");
         Column column = Column.of("name", name);

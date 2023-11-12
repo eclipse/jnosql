@@ -41,14 +41,14 @@ class DocumentQueryParserTest {
     private final DocumentManager manager = Mockito.mock(DocumentManager.class);
 
     @Test
-    public void shouldReturnNPEWhenThereIsNullParameter() {
+    void shouldReturnNPEWhenThereIsNullParameter() {
 
         assertThrows(NullPointerException.class, () -> parser.query(null, manager, DocumentObserverParser.EMPTY));
         assertThrows(NullPointerException.class, () -> parser.query("select * from God", null, DocumentObserverParser.EMPTY));
     }
 
     @Test
-    public void shouldReturnErrorWhenHasInvalidQuery() {
+    void shouldReturnErrorWhenHasInvalidQuery() {
 
         assertThrows(QueryException.class, () -> parser.query("inva", manager, DocumentObserverParser.EMPTY));
         assertThrows(QueryException.class, () -> parser.query("invalid", manager, DocumentObserverParser.EMPTY));
@@ -56,7 +56,7 @@ class DocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God"})
-    public void shouldReturnParserQuery(String query) {
+    void shouldReturnParserQuery(String query) {
         ArgumentCaptor<DefaultDocumentQuery> captor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
         parser.query(query, manager, DocumentObserverParser.EMPTY);
         Mockito.verify(manager).select(captor.capture());
@@ -74,7 +74,7 @@ class DocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
         @ValueSource(strings = {"delete from God"})
-    public void shouldReturnParserQuery1(String query) {
+    void shouldReturnParserQuery1(String query) {
         ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
         parser.query(query, manager, DocumentObserverParser.EMPTY);
         Mockito.verify(manager).delete(captor.capture());
@@ -87,7 +87,7 @@ class DocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = \"Diana\")"})
-    public void shouldReturnParserQuery2(String query) {
+    void shouldReturnParserQuery2(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         parser.query(query, manager, DocumentObserverParser.EMPTY);
         Mockito.verify(manager).insert(captor.capture());
@@ -101,7 +101,7 @@ class DocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = \"Diana\")"})
-    public void shouldReturnParserQuery3(String query) {
+    void shouldReturnParserQuery3(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         parser.query(query, manager, DocumentObserverParser.EMPTY);
         Mockito.verify(manager).update(captor.capture());
@@ -114,7 +114,7 @@ class DocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age = @age"})
-    public void shouldExecutePrepareStatement(String query) {
+    void shouldExecutePrepareStatement(String query) {
         ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
 
         DocumentPreparedStatement prepare = parser.prepare(query, manager, DocumentObserverParser.EMPTY);
@@ -131,7 +131,7 @@ class DocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = @name)"})
-    public void shouldExecutePrepareStatement1(String query) {
+    void shouldExecutePrepareStatement1(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatement prepare = parser.prepare(query, manager, DocumentObserverParser.EMPTY);
         prepare.bind("name", "Diana");
@@ -145,7 +145,7 @@ class DocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldExecutePrepareStatement2(String query) {
+    void shouldExecutePrepareStatement2(String query) {
         ArgumentCaptor<DefaultDocumentQuery> captor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
 
         DocumentPreparedStatement prepare = parser.prepare(query, manager, DocumentObserverParser.EMPTY);
@@ -162,7 +162,7 @@ class DocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldExecutePrepareStatement3(String query) {
+    void shouldExecutePrepareStatement3(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatement prepare = parser.prepare(query, manager, DocumentObserverParser.EMPTY);
         prepare.bind("name", "Diana");
@@ -176,7 +176,7 @@ class DocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldSingleResult(String query) {
+    void shouldSingleResult(String query) {
         ArgumentCaptor<DefaultDocumentQuery> captor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
 
         Mockito.when(manager.select(Mockito.any(DefaultDocumentQuery.class)))
@@ -197,7 +197,7 @@ class DocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldReturnEmptySingleResult(String query) {
+    void shouldReturnEmptySingleResult(String query) {
         ArgumentCaptor<DefaultDocumentQuery> captor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
 
         Mockito.when(manager.select(Mockito.any(DefaultDocumentQuery.class)))
@@ -218,7 +218,7 @@ class DocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldReturnErrorSingleResult(String query) {
+    void shouldReturnErrorSingleResult(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
 
         Mockito.when(manager.select(Mockito.any(DefaultDocumentQuery.class)))

@@ -32,16 +32,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-public class DocumentConditionTest {
+class DocumentConditionTest {
 
 
     @Test
-    public void shouldReturnErrorWhenDocumentIsNull() {
+    void shouldReturnErrorWhenDocumentIsNull() {
         assertThrows(NullPointerException.class, () -> DocumentCondition.of(null, Condition.AND));
     }
 
     @Test
-    public void shouldCreateAnInstance() {
+    void shouldCreateAnInstance() {
         Document name = Document.of("name", "Otavio");
         DocumentCondition condition = DocumentCondition.of(name, Condition.EQUALS);
         assertNotNull(condition);
@@ -50,7 +50,7 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldCreateNegationCondition() {
+    void shouldCreateNegationCondition() {
         Document age = Document.of("age", 26);
         DocumentCondition condition = DocumentCondition.of(age, Condition.GREATER_THAN);
         DocumentCondition negate = condition.negate();
@@ -61,7 +61,7 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldReturnValidDoubleNegation() {
+    void shouldReturnValidDoubleNegation() {
         Document age = Document.of("age", 26);
         DocumentCondition condition = DocumentCondition.of(age, Condition.GREATER_THAN);
         DocumentCondition affirmative = condition.negate().negate();
@@ -69,7 +69,7 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldCreateAndCondition() {
+    void shouldCreateAndCondition() {
         Document age = Document.of("age", 26);
         Document name = Document.of("name", "Otavio");
         DocumentCondition condition1 = DocumentCondition.of(name, Condition.EQUALS);
@@ -85,7 +85,7 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldCreateOrCondition() {
+    void shouldCreateOrCondition() {
         Document age = Document.of("age", 26);
         Document name = Document.of("name", "Otavio");
         DocumentCondition condition1 = DocumentCondition.of(name, Condition.EQUALS);
@@ -101,19 +101,19 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenCreateAndWithNullValues() {
+    void shouldReturnErrorWhenCreateAndWithNullValues() {
         assertThrows(NullPointerException.class, () -> DocumentCondition.and((DocumentCondition[]) null));
     }
 
 
     @Test
-    public void shouldReturnErrorWhenCreateOrWithNullValues() {
+    void shouldReturnErrorWhenCreateOrWithNullValues() {
         assertThrows(NullPointerException.class, () -> DocumentCondition.or((DocumentCondition[]) null));
     }
 
 
     @Test
-    public void shouldAppendAnd() {
+    void shouldAppendAnd() {
         DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
         DocumentCondition gt = DocumentCondition.gt(Document.of("age", 10));
         DocumentCondition and = DocumentCondition.and(eq, gt);
@@ -124,7 +124,7 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldAppendOr() {
+    void shouldAppendOr() {
         DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
         DocumentCondition gt = DocumentCondition.gt(Document.of("age", 10));
         DocumentCondition and = DocumentCondition.or(eq, gt);
@@ -135,7 +135,7 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldAnd() {
+    void shouldAnd() {
         DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
         DocumentCondition gt = DocumentCondition.gt(Document.of("age", 10));
         DocumentCondition lte = DocumentCondition.lte(Document.of("salary", 10_000.00));
@@ -154,7 +154,7 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldOr() {
+    void shouldOr() {
         DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
         DocumentCondition gt = DocumentCondition.gt(Document.of("age", 10));
         DocumentCondition lte = DocumentCondition.lte(Document.of("salary", 10_000.00));
@@ -173,7 +173,7 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldNegate() {
+    void shouldNegate() {
         DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
         DocumentCondition negate = eq.negate();
         assertEquals(Condition.NOT, negate.condition());
@@ -182,7 +182,7 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldAffirmDoubleNegate() {
+    void shouldAffirmDoubleNegate() {
         DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
         DocumentCondition affirm = eq.negate().negate();
         assertEquals(eq.condition(), affirm.condition());
@@ -190,12 +190,12 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenBetweenIsNull() {
+    void shouldReturnErrorWhenBetweenIsNull() {
         assertThrows(NullPointerException.class, () -> DocumentCondition.between(null));
     }
 
     @Test
-    public void shouldReturnErrorWhenBetweenIsNotIterable() {
+    void shouldReturnErrorWhenBetweenIsNotIterable() {
         assertThrows(IllegalArgumentException.class, () -> {
             Document document = Document.of("age", 12);
             DocumentCondition.between(document);
@@ -203,7 +203,7 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenIterableHasOneElement() {
+    void shouldReturnErrorWhenIterableHasOneElement() {
         assertThrows(IllegalArgumentException.class, () -> {
             Document document = Document.of("age", Collections.singleton(12));
             DocumentCondition.between(document);
@@ -211,7 +211,7 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenIterableHasMoreThanTwoElement2() {
+    void shouldReturnErrorWhenIterableHasMoreThanTwoElement2() {
         assertThrows(IllegalArgumentException.class, () -> {
             Document document = Document.of("age", Arrays.asList(12, 12, 12));
             DocumentCondition.between(document);
@@ -219,7 +219,7 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldReturnBetween() {
+    void shouldReturnBetween() {
         Document document = Document.of("age", Arrays.asList(12, 13));
         DocumentCondition between = DocumentCondition.between(document);
         assertEquals(Condition.BETWEEN, between.condition());
@@ -229,13 +229,13 @@ public class DocumentConditionTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenInConditionIsInvalid() {
+    void shouldReturnErrorWhenInConditionIsInvalid() {
         assertThrows(NullPointerException.class, () -> DocumentCondition.in(null));
         assertThrows(IllegalArgumentException.class, () -> DocumentCondition.in(Document.of("value", 10)));
     }
 
     @Test
-    public void shouldReturnInClause() {
+    void shouldReturnInClause() {
         Document column = Document.of("age", Arrays.asList(12, 13));
         DocumentCondition in = DocumentCondition.in(column);
         assertEquals(Condition.IN, in.condition());

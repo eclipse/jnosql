@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AddPackages(BookRepository.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
-public class BookTemplateTest {
+class BookTemplateTest {
 
     @Inject
     private BookTemplate template;
@@ -49,7 +49,7 @@ public class BookTemplateTest {
     private Graph graph;
 
     @Test
-    public void shouldSaveWithTransaction() {
+    void shouldSaveWithTransaction() {
         AtomicReference<Status> status = new AtomicReference<>();
 
         Book book = Book.builder().withName("The Book").build();
@@ -61,7 +61,7 @@ public class BookTemplateTest {
     }
 
     @Test
-    public void shouldSaveWithRollback() {
+    void shouldSaveWithRollback() {
         AtomicReference<Status> status = new AtomicReference<>();
 
         Book book = Book.builder().withName("The Book").build();
@@ -79,7 +79,7 @@ public class BookTemplateTest {
     }
 
     @Test
-    public void shouldUseAutomaticNormalTransaction() {
+    void shouldUseAutomaticNormalTransaction() {
         AtomicReference<Status> status = new AtomicReference<>();
 
         Book book = Book.builder().withName("The Book").build();

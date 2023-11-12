@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class DocumentEventPersistManagerTest {
+class DocumentEventPersistManagerTest {
 
     @InjectMocks
     private DocumentEventPersistManager subject;
@@ -45,7 +45,7 @@ public class DocumentEventPersistManagerTest {
 
 
     @Test
-    public void shouldFirePreEntity() {
+    void shouldFirePreEntity() {
         Jedi jedi = new Jedi();
         jedi.name = "Luke";
         subject.firePreEntity(jedi);
@@ -56,7 +56,7 @@ public class DocumentEventPersistManagerTest {
     }
 
     @Test
-    public void shouldFirePostEntity() {
+    void shouldFirePostEntity() {
         Jedi jedi = new Jedi();
         jedi.name = "Luke";
         subject.firePostEntity(jedi);

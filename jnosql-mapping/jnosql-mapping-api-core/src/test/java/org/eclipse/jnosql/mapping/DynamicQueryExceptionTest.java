@@ -17,17 +17,17 @@ package org.eclipse.jnosql.mapping;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-public class DynamicQueryExceptionTest {
+class DynamicQueryExceptionTest {
 
     @Test
-    public void testConstructorWithMessage() {
+    void testConstructorWithMessage() {
         String errorMessage = "Test error message";
         DynamicQueryException exception = new DynamicQueryException(errorMessage);
         assertEquals(errorMessage, exception.getMessage());
     }
 
     @Test
-    public void testEmptyMessage() {
+    void testEmptyMessage() {
         String emptyMessage = "";
         DynamicQueryException exception = new DynamicQueryException(emptyMessage);
         assertEquals(emptyMessage, exception.getMessage());

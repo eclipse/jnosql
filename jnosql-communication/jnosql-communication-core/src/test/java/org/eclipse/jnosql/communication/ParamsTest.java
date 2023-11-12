@@ -34,7 +34,7 @@ class ParamsTest {
 
     @Test
     @DisplayName("Should not use Value when is invalid")
-    public void shouldNotUseValueWhenIsInvalid() {
+    void shouldNotUseValueWhenIsInvalid() {
         String paramValue = UUID.randomUUID().toString();
 
         Params params = Params.newParams();
@@ -50,7 +50,7 @@ class ParamsTest {
     }
 
     @Test
-    public void shouldPrefix(){
+    void shouldPrefix(){
         Params params = Params.newParams();
         Value value = params.add("name_2342342");
         params.prefix("name", "Ada");
