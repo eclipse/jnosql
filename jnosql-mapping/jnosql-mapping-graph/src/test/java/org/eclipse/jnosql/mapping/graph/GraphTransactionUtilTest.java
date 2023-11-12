@@ -22,12 +22,12 @@ import static org.eclipse.jnosql.mapping.config.MappingConfigurations.GRAPH_TRAN
 class GraphTransactionUtilTest {
 
     @Test
-    public void shouldReturnTrue() {
+    void shouldReturnTrue() {
         Assertions.assertTrue(GraphTransactionUtil.isAutomatic());
     }
 
     @Test
-    public void shouldReturnFalse() {
+    void shouldReturnFalse() {
         synchronized (GraphTransactionUtil.class) {
             System.setProperty(GRAPH_TRANSACTION_AUTOMATIC.get(), Boolean.FALSE.toString());
             Assertions.assertFalse(GraphTransactionUtil.isAutomatic());
