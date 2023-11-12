@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class ClassConverterTest {
 
     @Test
-    public void shouldCreateClassConverter() {
+    void shouldCreateClassConverter() {
         ClassConverter converter = ClassConverter.load();
         assertNotNull(converter);
     }
