@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ClassInformationNotFoundExceptionTest {
 
     @Test
-    public void shouldConstructWithValidMessage() {
+    void shouldConstructWithValidMessage() {
         String errorMessage = "Class information not found.";
         ClassInformationNotFoundException exception = new ClassInformationNotFoundException(errorMessage);
         assertEquals(errorMessage, exception.getMessage());
