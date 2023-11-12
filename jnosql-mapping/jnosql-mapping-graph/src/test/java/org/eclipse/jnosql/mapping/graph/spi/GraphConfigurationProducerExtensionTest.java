@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AddPackages(BookRepository.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
-public class GraphConfigurationProducerExtensionTest {
+class GraphConfigurationProducerExtensionTest {
 
     @Inject
     @Database(value = GRAPH, provider = "graphRepositoryMock")
@@ -57,20 +57,20 @@ public class GraphConfigurationProducerExtensionTest {
 
 
     @Test
-    public void shouldInstance() {
+    void shouldInstance() {
         assertNotNull(manager);
         assertNotNull(managerMock);
     }
 
     @Test
-    public void shouldSave() {
+    void shouldSave() {
         Person personMock = managerMock.insert(Person.builder().withId(10L).build());
 
         assertEquals(Long.valueOf(10L), personMock.getId());
     }
 
     @Test
-    public void shouldInjectRepository() {
+    void shouldInjectRepository() {
         repositoryMock.save(Book.builder().withName("book").build());
         assertNotNull(repository.findById("10"));
     }
