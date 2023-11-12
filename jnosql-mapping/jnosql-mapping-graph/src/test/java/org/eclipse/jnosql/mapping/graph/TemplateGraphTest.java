@@ -34,7 +34,7 @@ import static org.eclipse.jnosql.mapping.DatabaseType.GRAPH;
 @AddPackages(BookRepository.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
-public class TemplateGraphTest {
+class TemplateGraphTest {
 
     @Inject
     private Template template;
@@ -44,12 +44,12 @@ public class TemplateGraphTest {
     private Template qualifier;
 
     @Test
-    public void shouldInjectTemplate() {
+    void shouldInjectTemplate() {
         Assertions.assertNotNull(template);
     }
 
     @Test
-    public void shouldInjectQualifier() {
+    void shouldInjectQualifier() {
         Assertions.assertNotNull(qualifier);
     }
 }
