@@ -63,7 +63,7 @@ class ParamsBinderTest {
     private ParamsBinder paramsBinder;
 
     @Test
-    public void shouldConvert() {
+    void shouldConvert() {
 
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals("findByAge")).findFirst().get();
@@ -86,7 +86,7 @@ class ParamsBinderTest {
     }
 
     @Test
-    public void shouldConvert2() {
+    void shouldConvert2() {
 
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals("findByAgeAndName")).findFirst().get();
