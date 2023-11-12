@@ -26,20 +26,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class AnnotationLiteralUtilTest {
 
     @Test
-    public void shouldDefaultAnnotationLiteral() {
+    void shouldDefaultAnnotationLiteral() {
         AnnotationLiteral<Default> defaultAnnotation = AnnotationLiteralUtil.DEFAULT_ANNOTATION;
         assertEquals(Default.class, defaultAnnotation.annotationType());
     }
 
     @Test
-    public void shouldAnyAnnotationLiteral() {
+    void shouldAnyAnnotationLiteral() {
         AnnotationLiteral<Any> anyAnnotation = AnnotationLiteralUtil.ANY_ANNOTATION;
 
         assertEquals(Any.class, anyAnnotation.annotationType());
     }
 
     @Test
-    public void shouldCustomAnnotationLiteral() {
+    void shouldCustomAnnotationLiteral() {
         AnnotationLiteral<Named> namedLiteral = NamedLiteral.of("test");
 
         assertEquals(Named.class, namedLiteral.annotationType());
