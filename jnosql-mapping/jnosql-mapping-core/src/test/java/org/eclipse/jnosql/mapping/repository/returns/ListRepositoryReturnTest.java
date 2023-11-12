@@ -43,7 +43,7 @@ class ListRepositoryReturnTest {
     private Page<Person> page;
 
     @Test
-    public void shouldReturnIsCompatible() {
+    void shouldReturnIsCompatible() {
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, List.class));
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Iterable.class));
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Collection.class));
@@ -52,7 +52,7 @@ class ListRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnList() {
+    void shouldReturnList() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)
@@ -67,7 +67,7 @@ class ListRepositoryReturnTest {
     }
 
     @Test
-    public void shouldReturnListPage() {
+    void shouldReturnListPage() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
