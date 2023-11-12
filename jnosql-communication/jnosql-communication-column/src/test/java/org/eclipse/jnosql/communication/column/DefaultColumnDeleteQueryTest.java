@@ -26,13 +26,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class DefaultColumnDeleteQueryTest {
+class DefaultColumnDeleteQueryTest {
 
     private ColumnDeleteQuery query;
 
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         query = ColumnDeleteQuery.delete().from("columnFamily").build();
     }
 
