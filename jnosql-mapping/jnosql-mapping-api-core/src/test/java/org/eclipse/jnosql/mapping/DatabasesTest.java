@@ -28,10 +28,10 @@ import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class DatabasesTest {
+class DatabasesTest {
 
     @Test
-    public void shouldAddDatabaseValidDatabaseTypeAddsMetadataToSet() {
+    void shouldAddDatabaseValidDatabaseTypeAddsMetadataToSet() {
         ProcessProducer processProducer = mock(ProcessProducer.class);
         AnnotatedMember annotatedMember = mock(AnnotatedMember.class);
         DatabaseType type = DatabaseType.DOCUMENT;
@@ -54,7 +54,7 @@ public class DatabasesTest {
     }
 
     @Test
-    public void shouldAddDatabase_NoDatabaseAnnotation_NoMetadataAdded() {
+    void shouldAddDatabase_NoDatabaseAnnotation_NoMetadataAdded() {
         ProcessProducer processProducer = mock(ProcessProducer.class);
         DatabaseType type = DatabaseType.DOCUMENT;
         AnnotatedMember annotatedMember = mock(AnnotatedMember.class);
