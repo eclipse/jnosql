@@ -56,7 +56,7 @@ class GremlinExecutorTest {
     private GremlinExecutor executor;
 
     @BeforeEach
-    public void before() {
+    void before() {
         executor = new GremlinExecutor(converter);
         graph.traversal().V().toList().forEach(Vertex::remove);
         graph.traversal().E().toList().forEach(Edge::remove);
@@ -67,7 +67,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryEdges() {
+    void shouldExecuteQueryEdges() {
 
         List<EdgeEntity> edges = executor.<EdgeEntity> executeGremlin(graph.traversal(), "g.E()")
                 .toList();
@@ -82,7 +82,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryEdges2() {
+    void shouldExecuteQueryEdges2() {
 
         List<EdgeEntity> edges = executor.<EdgeEntity> executeGremlin(graph.traversal(), "g.E().toList()")
                 .toList();
@@ -97,7 +97,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryVertex() {
+    void shouldExecuteQueryVertex() {
         List<Person> people = executor.<Person>executeGremlin(graph.traversal(), "g.V()")
                 .toList();
         assertFalse(people.isEmpty());
@@ -107,7 +107,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryVertex2() {
+    void shouldExecuteQueryVertex2() {
         List<Person> people = executor.<Person>executeGremlin(graph.traversal(), "g.V().toList()")
                 .toList();
         assertFalse(people.isEmpty());
@@ -117,7 +117,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryVertex3() {
+    void shouldExecuteQueryVertex3() {
         List<Person> people = executor.<Person>executeGremlin(graph.traversal(), "g.V().in('loves').toList()")
                 .toList();
         List<String> names = people.stream().map(Person::getName).collect(toList());
@@ -126,7 +126,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryVertex4() {
+    void shouldExecuteQueryVertex4() {
         List<Person> people = executor.<Person>executeGremlin(graph.traversal(), "g.V().in('loves').toSet()")
                 .toList();
         List<String> names = people.stream().map(Person::getName).collect(toList());
@@ -135,7 +135,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryVertex5() {
+    void shouldExecuteQueryVertex5() {
         List<Person> people = executor.<Person>executeGremlin(graph.traversal(), "g.V().in('loves').toList()")
                 .toList();
         List<String> names = people.stream().map(Person::getName).collect(toList());
@@ -144,7 +144,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryCount() {
+    void shouldExecuteQueryCount() {
         List<Long> count = executor.<Long>executeGremlin(graph.traversal(), "g.V().count().toList()")
                 .collect(toList());
         assertFalse(count.isEmpty());
@@ -152,7 +152,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryCount2() {
+    void shouldExecuteQueryCount2() {
         List<Long> count = executor.<Long>executeGremlin(graph.traversal(), "g.V().count()")
                 .collect(toList());
         assertFalse(count.isEmpty());
@@ -160,7 +160,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryProperties() {
+    void shouldExecuteQueryProperties() {
         List<Object> properties = executor.executeGremlin(graph.traversal(), "g.V().values()")
                 .collect(toList());
         assertFalse(properties.isEmpty());
@@ -169,7 +169,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryProperties2() {
+    void shouldExecuteQueryProperties2() {
         List<Object> properties = executor.executeGremlin(graph.traversal(), "g.V().values().toList()")
                 .collect(toList());
         assertFalse(properties.isEmpty());
@@ -178,7 +178,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryPropertiesMap() {
+    void shouldExecuteQueryPropertiesMap() {
         List<Map<String, List<String>>> properties = executor.<Map<String, List<String>>>
                 executeGremlin(graph.traversal(), "g.V().valueMap('name')")
                 .toList();
@@ -189,7 +189,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryPropertiesMap2() {
+    void shouldExecuteQueryPropertiesMap2() {
         List<Map<String, List<String>>> properties = executor.<Map<String, List<String>>>
                 executeGremlin(graph.traversal(), "g.V().valueMap('name').toList()")
                 .toList();
@@ -199,7 +199,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteWithParams() {
+    void shouldExecuteWithParams() {
 
         List<Person> people = executor.<Person>executeGremlin(graph.traversal(),
                 "g.V().in(@param).toList()",singletonMap("param", "loves"))
