@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 class DynamicQueryMethodReturnTest {
 
     @Test
-    public void shouldReturnEmptyOptional() throws NoSuchMethodException {
+    void shouldReturnEmptyOptional() throws NoSuchMethodException {
 
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getOptional");
@@ -54,7 +54,7 @@ class DynamicQueryMethodReturnTest {
     }
 
     @Test
-    public void shouldReturnOptional() throws NoSuchMethodException {
+    void shouldReturnOptional() throws NoSuchMethodException {
 
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getOptional");
@@ -74,7 +74,7 @@ class DynamicQueryMethodReturnTest {
     }
 
     @Test
-    public void shouldReturnOptionalError() throws NoSuchMethodException {
+    void shouldReturnOptionalError() throws NoSuchMethodException {
 
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getOptional");
@@ -92,7 +92,7 @@ class DynamicQueryMethodReturnTest {
     }
 
     @Test
-    public void shouldReturnAnInstance() throws NoSuchMethodException {
+    void shouldReturnAnInstance() throws NoSuchMethodException {
 
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getInstance");
@@ -111,7 +111,7 @@ class DynamicQueryMethodReturnTest {
     }
 
     @Test
-    public void shouldReturnNull() throws NoSuchMethodException {
+    void shouldReturnNull() throws NoSuchMethodException {
 
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getInstance");
@@ -128,7 +128,7 @@ class DynamicQueryMethodReturnTest {
     }
 
     @Test
-    public void shouldReturnList() throws NoSuchMethodException {
+    void shouldReturnList() throws NoSuchMethodException {
 
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getList");
@@ -149,7 +149,7 @@ class DynamicQueryMethodReturnTest {
 
 
     @Test
-    public void shouldReturnIterable() throws NoSuchMethodException {
+    void shouldReturnIterable() throws NoSuchMethodException {
 
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getIterable");
@@ -168,7 +168,7 @@ class DynamicQueryMethodReturnTest {
     }
 
     @Test
-    public void shouldReturnCollection() throws NoSuchMethodException {
+    void shouldReturnCollection() throws NoSuchMethodException {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getCollection");
 
@@ -188,7 +188,7 @@ class DynamicQueryMethodReturnTest {
 
 
     @Test
-    public void shouldReturnQueue() throws NoSuchMethodException {
+    void shouldReturnQueue() throws NoSuchMethodException {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getQueue");
 
@@ -207,7 +207,7 @@ class DynamicQueryMethodReturnTest {
     }
 
     @Test
-    public void shouldReturnStream() throws NoSuchMethodException {
+    void shouldReturnStream() throws NoSuchMethodException {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getStream");
 
@@ -225,7 +225,7 @@ class DynamicQueryMethodReturnTest {
     }
 
     @Test
-    public void shouldReturnFromPrepareStatement() throws NoSuchMethodException {
+    void shouldReturnFromPrepareStatement() throws NoSuchMethodException {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Mockito.when(preparedStatement.<Person>result())
                 .thenReturn(Stream.of(new Person("Ada")));
