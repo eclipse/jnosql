@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
-public class ColumnExtensionTest {
+class ColumnExtensionTest {
 
     @Inject
     @Database(value = DatabaseType.COLUMN, provider = "columnRepositoryMock")
@@ -56,13 +56,13 @@ public class ColumnExtensionTest {
     private PersonRepository repositoryMock;
 
     @Test
-    public void shouldInstance() {
+    void shouldInstance() {
         assertNotNull(template);
         assertNotNull(templateMock);
     }
 
     @Test
-    public void shouldSave() {
+    void shouldSave() {
         Person person = template.insert(Person.builder().build());
         Person personMock = templateMock.insert(Person.builder().build());
 
@@ -71,13 +71,13 @@ public class ColumnExtensionTest {
     }
 
     @Test
-    public void shouldInjectRepository() {
+    void shouldInjectRepository() {
         assertNotNull(repository);
         assertNotNull(repositoryMock);
     }
 
     @Test
-    public void shouldInjectTemplate() {
+    void shouldInjectTemplate() {
         assertNotNull(templateMock);
         assertNotNull(template);
     }
