@@ -66,7 +66,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
-public class DocumentEntityConverterTest {
+class DocumentEntityConverterTest {
 
     @Inject
     private DefaultDocumentEntityConverter converter;
@@ -82,7 +82,7 @@ public class DocumentEntityConverterTest {
             .build();
 
     @BeforeEach
-    public void init() {
+    void init() {
 
         documents = new Document[]{Document.of("_id", 12L),
                 Document.of("age", 10), Document.of("name", "Otavio"), Document.of("phones", Arrays.asList("234", "2342"))
@@ -91,7 +91,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertDocumentEntityFromEntity() {
+    void shouldConvertDocumentEntityFromEntity() {
 
         Person person = Person.builder().withAge()
                 .withId(12)
@@ -108,7 +108,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertEntityFromDocumentEntity() {
+    void shouldConvertEntityFromDocumentEntity() {
 
 
         DocumentEntity entity = converter.toDocument(actor);
@@ -120,7 +120,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertDocumentEntityFromEntity2() {
+    void shouldConvertDocumentEntityFromEntity2() {
         DocumentEntity entity = DocumentEntity.of("Actor");
         Stream.of(documents).forEach(entity::add);
 
@@ -135,7 +135,7 @@ public class DocumentEntityConverterTest {
 
 
     @Test
-    public void shouldConvertColumnEntityToExistEntity() {
+    void shouldConvertColumnEntityToExistEntity() {
         DocumentEntity entity = DocumentEntity.of("Actor");
         Stream.of(documents).forEach(entity::add);
         Actor actor = Actor.actorBuilder().build();
@@ -150,7 +150,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenToEntityIsNull() {
+    void shouldReturnErrorWhenToEntityIsNull() {
         DocumentEntity entity = DocumentEntity.of("Actor");
         Stream.of(documents).forEach(entity::add);
         Actor actor = Actor.actorBuilder().build();
@@ -161,7 +161,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertDocumentEntityFromEntity3() {
+    void shouldConvertDocumentEntityFromEntity3() {
         DocumentEntity entity = DocumentEntity.of("Actor");
         Stream.of(documents).forEach(entity::add);
 
@@ -175,7 +175,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertEntityFromDocumentEntity2() {
+    void shouldConvertEntityFromDocumentEntity2() {
 
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
         Director director = Director.builderDirector().withAge(12)
@@ -206,7 +206,7 @@ public class DocumentEntityConverterTest {
 
 
     @Test
-    public void shouldConvertToEmbeddedClassWhenHasSubDocument() {
+    void shouldConvertToEmbeddedClassWhenHasSubDocument() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
         Director director = Director.builderDirector().withAge(12)
                 .withId(12)
@@ -223,7 +223,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertToEmbeddedClassWhenHasSubDocument2() {
+    void shouldConvertToEmbeddedClassWhenHasSubDocument2() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
         Director director = Director.builderDirector().withAge(12)
                 .withId(12)
@@ -245,7 +245,7 @@ public class DocumentEntityConverterTest {
 
 
     @Test
-    public void shouldConvertToEmbeddedClassWhenHasSubDocument3() {
+    void shouldConvertToEmbeddedClassWhenHasSubDocument3() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
         Director director = Director.builderDirector().withAge(12)
                 .withId(12)
@@ -270,7 +270,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertToDocumentWhenHaConverter() {
+    void shouldConvertToDocumentWhenHaConverter() {
         Worker worker = new Worker();
         Job job = new Job();
         job.setCity("Sao Paulo");
@@ -287,7 +287,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertToEntityWhenHasConverter() {
+    void shouldConvertToEntityWhenHasConverter() {
         Worker worker = new Worker();
         Job job = new Job();
         job.setCity("Sao Paulo");
@@ -303,7 +303,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertEmbeddableLazily() {
+    void shouldConvertEmbeddableLazily() {
         DocumentEntity entity = DocumentEntity.of("Worker");
         entity.add("name", "Otavio");
         entity.add("money", "BRL 10");
@@ -316,7 +316,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertToListEmbeddable() {
+    void shouldConvertToListEmbeddable() {
         AppointmentBook appointmentBook = new AppointmentBook("ids");
         appointmentBook.add(Contact.builder().withType(ContactType.EMAIL)
                 .withName("Ada").withInformation("ada@lovelace.com").build());
@@ -336,7 +336,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertFromListEmbeddable() {
+    void shouldConvertFromListEmbeddable() {
         DocumentEntity entity = DocumentEntity.of("AppointmentBook");
         entity.add(Document.of("_id", "ids"));
         List<List<Document>> documents = new ArrayList<>();
@@ -362,7 +362,7 @@ public class DocumentEntityConverterTest {
 
 
     @Test
-    public void shouldConvertSubEntity() {
+    void shouldConvertSubEntity() {
         ZipCode zipcode = new ZipCode();
         zipcode.setZip("12321");
         zipcode.setPlusFour("1234");
@@ -387,7 +387,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertDocumentInSubEntity() {
+    void shouldConvertDocumentInSubEntity() {
 
         DocumentEntity entity = DocumentEntity.of("Address");
 
@@ -409,7 +409,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldReturnNullWhenThereIsNotSubEntity() {
+    void shouldReturnNullWhenThereIsNotSubEntity() {
 
         DocumentEntity entity = DocumentEntity.of("Address");
 
@@ -430,7 +430,7 @@ public class DocumentEntityConverterTest {
 
 
     @Test
-    public void shouldConvertAndDoNotUseUnmodifiableCollection() {
+    void shouldConvertAndDoNotUseUnmodifiableCollection() {
         DocumentEntity entity = DocumentEntity.of("vendors");
         entity.add("name", "name");
         entity.add("prefixes", Arrays.asList("value", "value2"));
@@ -443,7 +443,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertEntityToDocumentWithArray() {
+    void shouldConvertEntityToDocumentWithArray() {
         byte[] contents = {1, 2, 3, 4, 5, 6};
 
         DocumentEntity entity = DocumentEntity.of("download");
@@ -456,7 +456,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertDocumentToEntityWithArray() {
+    void shouldConvertDocumentToEntityWithArray() {
         byte[] contents = {1, 2, 3, 4, 5, 6};
 
         Download download = new Download();
@@ -472,7 +472,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldCreateUserScope() {
+    void shouldCreateUserScope() {
         DocumentEntity entity = DocumentEntity.of("UserScope");
         entity.add("_id", "userName");
         entity.add("scope", "scope");
@@ -487,7 +487,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldCreateUserScope2() {
+    void shouldCreateUserScope2() {
         DocumentEntity entity = DocumentEntity.of("UserScope");
         entity.add("_id", "userName");
         entity.add("scope", "scope");
@@ -506,7 +506,7 @@ public class DocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldCreateLazilyEntity() {
+    void shouldCreateLazilyEntity() {
         DocumentEntity entity = DocumentEntity.of("Citizen");
         entity.add("id", "10");
         entity.add("name", "Salvador");
