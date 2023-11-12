@@ -41,7 +41,7 @@ class StreamRepositoryReturnTest {
     private Page<Person> page;
 
     @Test
-    public void shouldReturnIsCompatible() {
+    void shouldReturnIsCompatible() {
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Stream.class));
         assertFalse(repositoryReturn.isCompatible(Object.class, Person.class));
         assertFalse(repositoryReturn.isCompatible(Person.class, Object.class));
@@ -49,7 +49,7 @@ class StreamRepositoryReturnTest {
 
 
     @Test
-    public void shouldReturnStreamPage() {
+    void shouldReturnStreamPage() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
@@ -69,7 +69,7 @@ class StreamRepositoryReturnTest {
 
 
     @Test
-    public void shouldReturnStream() {
+    void shouldReturnStream() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)
