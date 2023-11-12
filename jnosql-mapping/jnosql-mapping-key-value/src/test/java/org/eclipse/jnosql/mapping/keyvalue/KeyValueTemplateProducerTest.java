@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @AddPackages(MockProducer.class)
 @AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
 @AddPackages(Reflections.class)
-public class KeyValueTemplateProducerTest {
+class KeyValueTemplateProducerTest {
 
 
     @Inject
@@ -43,12 +43,12 @@ public class KeyValueTemplateProducerTest {
 
 
     @Test
-    public void shouldReturnErrorWhenManagerNull() {
+    void shouldReturnErrorWhenManagerNull() {
         assertThrows(NullPointerException.class, () -> producer.apply(null));
     }
 
     @Test
-    public void shouldReturn() {
+    void shouldReturn() {
         BucketManager manager = Mockito.mock(BucketManager.class);
         KeyValueTemplate repository = producer.apply(manager);
         assertNotNull(repository);
