@@ -46,13 +46,13 @@ class BucketManagerSupplierTest {
     private BucketManagerSupplier supplier;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         System.clearProperty(KEY_VALUE_PROVIDER.get());
         System.clearProperty(KEY_VALUE_DATABASE.get());
     }
 
     @Test
-    public void shouldGetBucketManager() {
+    void shouldGetBucketManager() {
         System.setProperty(KEY_VALUE_PROVIDER.get(), KeyValueConfigurationMock.class.getName());
         System.setProperty(KEY_VALUE_DATABASE.get(), "database");
         BucketManager manager = supplier.get();
@@ -62,7 +62,7 @@ class BucketManagerSupplierTest {
 
 
     @Test
-    public void shouldUseDefaultConfigurationWhenProviderIsWrong() {
+    void shouldUseDefaultConfigurationWhenProviderIsWrong() {
         System.setProperty(KEY_VALUE_PROVIDER.get(), Integer.class.getName());
         System.setProperty(KEY_VALUE_DATABASE.get(), "database");
         BucketManager manager = supplier.get();
@@ -71,7 +71,7 @@ class BucketManagerSupplierTest {
     }
 
     @Test
-    public void shouldUseDefaultConfiguration() {
+    void shouldUseDefaultConfiguration() {
         System.setProperty(KEY_VALUE_DATABASE.get(), "database");
         BucketManager manager = supplier.get();
         Assertions.assertNotNull(manager);
@@ -79,12 +79,12 @@ class BucketManagerSupplierTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenThereIsNotDatabase() {
+    void shouldReturnErrorWhenThereIsNotDatabase() {
         Assertions.assertThrows(MappingException.class, () -> supplier.get());
     }
 
     @Test
-    public void shouldClose(){
+    void shouldClose(){
         BucketManager manager = Mockito.mock(BucketManager.class);
         supplier.close(manager);
         Mockito.verify(manager).close();
