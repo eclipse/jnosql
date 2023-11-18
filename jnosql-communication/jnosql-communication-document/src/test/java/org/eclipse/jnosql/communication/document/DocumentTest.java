@@ -16,6 +16,7 @@
  */
 package org.eclipse.jnosql.communication.document;
 
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
@@ -39,9 +40,12 @@ public class DocumentTest {
 
     @Test
     public void shouldReturnNameWhenValueIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Document document = Document.of("Name", null);
+        Document document = Document.of("Name", null);
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(document.name()).isEqualTo("Name");
+            soft.assertThat(document.value().isNull()).isTrue();
         });
+
     }
 
     @Test
