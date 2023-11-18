@@ -62,7 +62,6 @@ public abstract class ColumnEntityConverter {
         ColumnEntity communication = ColumnEntity.of(mapping.name());
         mapping.fields().stream()
                 .map(f -> to(f, entity))
-                .filter(FieldValue::isNotEmpty)
                 .map(f -> f.toColumn(this, getConverters()))
                 .flatMap(List::stream)
                 .forEach(communication::add);
