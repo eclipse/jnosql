@@ -535,4 +535,16 @@ public abstract class AbstractGraphTemplateTest {
         assertNotNull(person);
         assertFalse(person.isPresent());
     }
+
+    @Test
+    void shouldUpdateNullValues(){
+        final Person otavio = getGraphTemplate().insert(Person.builder().withAge()
+                .withName("Otavio").build());
+
+        assertEquals("Otavio", otavio.getName());
+        otavio.setName(null);
+        final Person person = getGraphTemplate().update(otavio);
+        assertNull(person.getName());
+
+    }
 }
