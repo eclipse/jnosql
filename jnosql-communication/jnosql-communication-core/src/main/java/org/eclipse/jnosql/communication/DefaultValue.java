@@ -31,7 +31,7 @@ record DefaultValue(Object value)  implements Value {
      * The {@code NULL} instance is immutable and can be used to compare against other {@link Value} instances
      * to determine if they encapsulate a null value.
      */
-    public static final Value NULL = new NullValue();
+    public static final Value NULL = NullValue.INSTANCE;
     private static final ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
 
     private static final  TypeReferenceReader REFERENCE_READER = TypeReferenceReaderDecorator.getInstance();
@@ -85,32 +85,4 @@ record DefaultValue(Object value)  implements Value {
         return Objects.hashCode(value);
     }
 
-
-    private record NullValue() implements Value {
-
-        @Override
-        public Object get() {
-            return null;
-        }
-
-        @Override
-        public <T> T get(Class<T> type) {
-            return null;
-        }
-
-        @Override
-        public <T> T get(TypeSupplier<T> supplier) {
-            return null;
-        }
-
-        @Override
-        public boolean isInstanceOf(Class<?> typeClass) {
-            return false;
-        }
-
-        @Override
-        public boolean isNull() {
-            return true;
-        }
-    }
 }
