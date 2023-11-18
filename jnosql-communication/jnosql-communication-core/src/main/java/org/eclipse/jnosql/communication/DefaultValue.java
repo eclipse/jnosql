@@ -55,6 +55,11 @@ record DefaultValue(Object value)  implements Value {
         return typeClass.isInstance(value);
     }
 
+    @Override
+    public boolean isNull() {
+        return value == null;
+    }
+
 
     @Override
     public boolean equals(Object o) {
