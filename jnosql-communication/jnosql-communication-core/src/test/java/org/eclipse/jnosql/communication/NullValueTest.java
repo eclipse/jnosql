@@ -33,7 +33,7 @@ class NullValueTest {
 
     @Test
     void shouldReturnNullForGetWithTypeSupplier() {
-        assertNull(NullValue.INSTANCE.get(new TypeReference<Object>() {
+        assertNull(NullValue.INSTANCE.get(new TypeReference<>() {
         }));
     }
 
