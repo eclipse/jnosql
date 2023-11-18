@@ -517,6 +517,9 @@ class ColumnEntityConverterTest {
             soft.assertThat(entity.find("age")).isPresent();
             soft.assertThat(entity.find("phones")).isPresent();
             soft.assertThat(entity.find("ignore")).isNotPresent();
+
+            soft.assertThat(entity.find("name", String.class)).isNotPresent();
+            soft.assertThat(entity.find("phones", String.class)).isNotPresent();
         });
     }
 
