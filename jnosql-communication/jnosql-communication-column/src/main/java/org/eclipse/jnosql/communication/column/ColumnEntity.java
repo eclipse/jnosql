@@ -79,11 +79,10 @@ public class ColumnEntity {
      * @param name  a name of the column
      * @param value the information of the column
      * @throws UnsupportedOperationException when this method is not supported
-     * @throws NullPointerException          when either name or value are null
+     * @throws NullPointerException          when either name is null
      */
     public void add(String name, Object value) {
         requireNonNull(name, "name is required");
-        requireNonNull(value, "value is required");
         this.columns.put(name, Column.of(name, Value.of(value)));
     }
 
