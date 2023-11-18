@@ -68,12 +68,11 @@ public interface Document extends Entry {
      * @param value - document's value
      * @param <V>   the value type
      * @return a document instance
-     * @throws NullPointerException when there is any null parameter
+     * @throws NullPointerException when name is null
      * @see Documents
      */
     static <V> Document of(String name, V value) {
         Objects.requireNonNull(name, "name is required");
-        Objects.requireNonNull(value, "value is required");
         return new DefaultDocument(name, getValue(value));
     }
 
