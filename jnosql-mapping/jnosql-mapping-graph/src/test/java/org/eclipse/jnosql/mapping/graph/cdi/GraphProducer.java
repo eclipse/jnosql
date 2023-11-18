@@ -90,7 +90,7 @@ public class GraphProducer implements Supplier<Graph> {
         when(vertex.keys()).thenReturn(singleton("name"));
         when(vertex.value("name")).thenReturn("nameMock");
         when(graphMock.addVertex(Mockito.anyString())).thenReturn(vertex);
-
+        when(graphMock.vertices(Mockito.any())).thenReturn(Collections.emptyIterator());
         return graphMock;
     }
 

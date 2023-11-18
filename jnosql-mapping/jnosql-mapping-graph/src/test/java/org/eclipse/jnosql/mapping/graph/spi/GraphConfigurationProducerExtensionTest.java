@@ -71,7 +71,7 @@ class GraphConfigurationProducerExtensionTest {
 
     @Test
     void shouldInjectRepository() {
-        repositoryMock.save(Book.builder().withName("book").build());
+        repositoryMock.save(Book.builder().withName("book").withAge(12).build());
         assertNotNull(repository.findById("10"));
     }
 

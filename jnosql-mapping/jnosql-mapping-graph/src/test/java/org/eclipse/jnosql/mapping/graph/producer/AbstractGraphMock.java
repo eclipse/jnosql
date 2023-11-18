@@ -22,6 +22,7 @@ import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.communication.Settings;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -51,7 +52,7 @@ public class AbstractGraphMock implements Graph {
 
     @Override
     public Iterator<Vertex> vertices(Object... vertexIds) {
-        return null;
+        return Collections.emptyIterator();
     }
 
     @Override
