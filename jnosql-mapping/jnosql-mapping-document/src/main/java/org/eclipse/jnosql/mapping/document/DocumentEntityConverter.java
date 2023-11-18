@@ -23,7 +23,6 @@ import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.metadata.FieldValue;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
@@ -61,7 +60,6 @@ public abstract class DocumentEntityConverter {
         DocumentEntity communication = DocumentEntity.of(mapping.name());
         mapping.fields().stream()
                 .map(f -> to(f, entity))
-                .filter(FieldValue::isNotEmpty)
                 .map(f -> f.toDocument(this, getConverters()))
                 .flatMap(List::stream)
                 .forEach(communication::add);
