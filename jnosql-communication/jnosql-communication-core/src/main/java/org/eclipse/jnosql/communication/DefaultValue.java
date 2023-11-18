@@ -24,7 +24,7 @@ import java.util.Objects;
  */
 record DefaultValue(Object value)  implements Value {
 
-    static final Value NULL = new DefaultValue(null);
+    public static final Value NULL = new DefaultValue(null);
     private static final ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
 
     private static final  TypeReferenceReader REFERENCE_READER = TypeReferenceReaderDecorator.getInstance();
