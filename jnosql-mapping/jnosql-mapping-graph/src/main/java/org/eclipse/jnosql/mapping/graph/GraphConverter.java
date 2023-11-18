@@ -66,7 +66,7 @@ public abstract class GraphConverter {
 
         List<FieldGraph> fields = mapping.fields().stream()
                 .map(f -> to(f, entity))
-                .filter(FieldGraph::isNotEmpty).toList();
+                .toList();
 
         Optional<FieldGraph> id = fields.stream().filter(FieldGraph::isId).findFirst();
         final Function<Property, Vertex> findVertexOrCreateWithId = p -> {
