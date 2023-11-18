@@ -59,10 +59,9 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     @SuppressWarnings("unchecked")
     @Override
     public <X, Y> List<Column> toColumn(ColumnEntityConverter converter, Converters converters) {
-        if(value() == null) {
+        if (value() == null) {
             return singletonList(Column.of(getName(), null));
-        }
-        else if (EMBEDDED.equals(getType())) {
+        } else if (EMBEDDED.equals(getType())) {
             return converter.toColumn(value()).columns();
         } else if (ENTITY.equals(getType())) {
             return singletonList(Column.of(getName(), converter.toColumn(value()).columns()));
