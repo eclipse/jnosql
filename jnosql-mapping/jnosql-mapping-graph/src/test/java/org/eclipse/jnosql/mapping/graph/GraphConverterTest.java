@@ -322,4 +322,13 @@ abstract class GraphConverterTest {
         assertEquals(Year.of(2001), book.getYear());
     }
 
+    @Test
+    public void shouldConvertWithNullValues() {
+        Person person = Person.builder().withAge(22).build();
+        Vertex vertex = getConverter().toVertex(person);
+
+        assertEquals("Person", vertex.label());
+        assertEquals("Ada", vertex.value("name"));
+        assertEquals(Integer.valueOf(22), vertex.value("age"));
+    }
 }
