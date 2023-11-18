@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.column;
 
 import jakarta.inject.Inject;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.column.Column;
@@ -503,6 +504,20 @@ class ColumnEntityConverterTest {
         Citizen citizen = converter.toEntity(entity);
         Assertions.assertNotNull(citizen);
         Assertions.assertNull(citizen.getCity());
+    }
+
+
+    @Test
+    public void shouldReturnNullValuePresent() {
+        Person person = Person.builder().build();
+
+        ColumnEntity entity = converter.toColumn(person);
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(entity.find("name")).isPresent();
+            soft.assertThat(entity.find("age")).isPresent();
+            soft.assertThat(entity.find("phones")).isPresent();
+            soft.assertThat(entity.find("ignore")).isNotPresent();
+        });
     }
 
     private Object getValue(Optional<Column> column) {
