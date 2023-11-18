@@ -75,10 +75,11 @@ public interface Value {
      *
      * @param value - the information to {@link Value}
      * @return a {@link Value} instance within a value informed
-     * @throws NullPointerException when the parameter is null
      */
     static Value of(Object value) {
-        Objects.requireNonNull(value, "value is required");
+        if(value == null) {
+            return DefaultValue.NULL;
+        }
         return new DefaultValue(value);
     }
 }
