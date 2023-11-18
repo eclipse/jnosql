@@ -51,13 +51,13 @@ public abstract class AbstractGraphTemplateTest {
     protected abstract GraphTemplate getGraphTemplate();
 
     @AfterEach
-    public void after() {
+    void after() {
         getGraph().traversal().V().toList().forEach(Vertex::remove);
         getGraph().traversal().E().toList().forEach(Edge::remove);
     }
 
     @Test
-    public void shouldReturnErrorWhenThereIsNotId() {
+    void shouldReturnErrorWhenThereIsNotId() {
         assertThrows(IdNotFoundException.class, () -> {
             WrongEntity entity = new WrongEntity("lion");
             getGraphTemplate().insert(entity);
@@ -65,12 +65,12 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenEntityIsNull() {
+    void shouldReturnErrorWhenEntityIsNull() {
         assertThrows(NullPointerException.class, () -> getGraphTemplate().insert(null));
     }
 
     @Test
-    public void shouldInsertAnEntity() {
+    void shouldInsertAnEntity() {
         Person person = Person.builder().withAge()
                 .withName("Otavio").build();
         Person updated = getGraphTemplate().insert(person);
@@ -80,7 +80,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenInsertWithTTL() {
+    void shouldReturnErrorWhenInsertWithTTL() {
         Person person = Person.builder().withAge()
                 .withName("Otavio").build();
         Assertions.assertThrows(UnsupportedOperationException.class,
@@ -88,7 +88,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenInsertIterableWithTTL() {
+    void shouldReturnErrorWhenInsertIterableWithTTL() {
         Person person = Person.builder().withAge()
                 .withName("Otavio").build();
         Assertions.assertThrows(UnsupportedOperationException.class,
@@ -96,7 +96,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldInsertEntities() {
+    void shouldInsertEntities() {
         Person otavio = Person.builder().withAge()
                 .withName("Otavio").build();
 
@@ -113,7 +113,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldMergeOnInsert() {
+    void shouldMergeOnInsert() {
         Person person = Person.builder().withAge()
                 .withName("Otavio").build();
         Person updated = getGraphTemplate().insert(person);
@@ -121,7 +121,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldGetErrorWhenIdIsNullWhenUpdate() {
+    void shouldGetErrorWhenIdIsNullWhenUpdate() {
         assertThrows(IllegalStateException.class, () -> {
             Person person = Person.builder().withAge()
                     .withName("Otavio").build();
@@ -130,7 +130,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldGetErrorWhenEntityIsNotSavedYet() {
+    void shouldGetErrorWhenEntityIsNotSavedYet() {
         assertThrows(EmptyResultException.class, () -> {
             Person person = Person.builder().withAge()
                     .withId(10L)
@@ -141,7 +141,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldUpdate() {
+    void shouldUpdate() {
         Person person = Person.builder().withAge()
                 .withName("Otavio").build();
         Person updated = getGraphTemplate().insert(person);
@@ -158,7 +158,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldUpdateEntities() {
+    void shouldUpdateEntities() {
         Person otavio = Person.builder().withAge()
                 .withName("Otavio").build();
 
@@ -181,7 +181,7 @@ public abstract class AbstractGraphTemplateTest {
 
 
     @Test
-    public void shouldMergeOnUpdate() {
+    void shouldMergeOnUpdate() {
         Person person = Person.builder().withAge()
                 .withName("Otavio").build();
         Person updated = getGraphTemplate().insert(person);
@@ -196,12 +196,12 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldReturnErrorInFindWhenIdIsNull() {
+    void shouldReturnErrorInFindWhenIdIsNull() {
         assertThrows(NullPointerException.class, () -> getGraphTemplate().find(null));
     }
 
     @Test
-    public void shouldFindAnEntity() {
+    void shouldFindAnEntity() {
         Person person = Person.builder().withAge()
                 .withName("Otavio").build();
         Person updated = getGraphTemplate().insert(person);
@@ -214,13 +214,13 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldNotFindAnEntity() {
+    void shouldNotFindAnEntity() {
         Optional<Person> personFound = getGraphTemplate().find(0L);
         assertFalse(personFound.isPresent());
     }
 
     @Test
-    public void shouldDeleteById() {
+    void shouldDeleteById() {
 
         Person person = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
@@ -232,7 +232,7 @@ public abstract class AbstractGraphTemplateTest {
 
 
     @Test
-    public void shouldDeleteAnEntityFromTemplate() {
+    void shouldDeleteAnEntityFromTemplate() {
 
         Person person = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
@@ -243,7 +243,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldNotDeleteAnEntityFromTemplate() {
+    void shouldNotDeleteAnEntityFromTemplate() {
 
         Person person = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
@@ -257,7 +257,7 @@ public abstract class AbstractGraphTemplateTest {
 
 
     @Test
-    public void shouldDeleteEntitiesById() {
+    void shouldDeleteEntitiesById() {
 
         Person otavio = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
@@ -272,23 +272,23 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenGetEdgesIdHasNullId() {
+    void shouldReturnErrorWhenGetEdgesIdHasNullId() {
         assertThrows(NullPointerException.class, () -> getGraphTemplate().edgesById(null, Direction.BOTH));
     }
 
     @Test
-    public void shouldReturnErrorWhenGetEdgesIdHasNullDirection() {
+    void shouldReturnErrorWhenGetEdgesIdHasNullDirection() {
         assertThrows(NullPointerException.class, () -> getGraphTemplate().edgesById(10, null));
     }
 
     @Test
-    public void shouldReturnEmptyWhenVertexDoesNotExist() {
+    void shouldReturnEmptyWhenVertexDoesNotExist() {
         Collection<EdgeEntity> edges = getGraphTemplate().edgesById(10, Direction.BOTH);
         assertTrue(edges.isEmpty());
     }
 
     @Test
-    public void shouldReturnEdgesById() {
+    void shouldReturnEdgesById() {
         Person otavio = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
 
@@ -313,7 +313,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldDeleteEdge() {
+    void shouldDeleteEdge() {
         Person otavio = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
         Animal dog = getGraphTemplate().insert(new Animal("Ada"));
@@ -328,7 +328,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldDeleteEdges() {
+    void shouldDeleteEdges() {
         Person otavio = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
         Animal dog = getGraphTemplate().insert(new Animal("Ada"));
@@ -346,12 +346,12 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenGetEdgesHasNullId() {
+    void shouldReturnErrorWhenGetEdgesHasNullId() {
         assertThrows(NullPointerException.class, () -> getGraphTemplate().edges(null, Direction.BOTH));
     }
 
     @Test
-    public void shouldReturnErrorWhenGetEdgesHasNullId2() {
+    void shouldReturnErrorWhenGetEdgesHasNullId2() {
         assertThrows(IllegalStateException.class, () -> {
             Person otavio = Person.builder().withAge().withName("Otavio").build();
             getGraphTemplate().edges(otavio, Direction.BOTH);
@@ -359,7 +359,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenGetEdgesHasNullDirection() {
+    void shouldReturnErrorWhenGetEdgesHasNullDirection() {
         assertThrows(NullPointerException.class, () -> {
             Person otavio = getGraphTemplate().insert(Person.builder().withAge()
                     .withName("Otavio").build());
@@ -368,7 +368,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldReturnEmptyWhenEntityDoesNotExist() {
+    void shouldReturnEmptyWhenEntityDoesNotExist() {
         Person otavio = Person.builder().withAge().withName("Otavio").withId(10L).build();
         Collection<EdgeEntity> edges = getGraphTemplate().edges(otavio, Direction.BOTH);
         assertTrue(edges.isEmpty());
@@ -376,7 +376,7 @@ public abstract class AbstractGraphTemplateTest {
 
 
     @Test
-    public void shouldReturnEdges() {
+    void shouldReturnEdges() {
         Person otavio = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
 
@@ -401,13 +401,13 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldGetTransaction() {
+    void shouldGetTransaction() {
         Transaction transaction = getGraphTemplate().transaction();
         assertNotNull(transaction);
     }
 
     @Test
-    public void shouldExecuteQuery() {
+    void shouldExecuteQuery() {
         Person person = Person.builder().withAge()
                 .withName("Otavio").build();
         getGraphTemplate().insert(person);
@@ -418,13 +418,13 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldReturnEmpty() {
+    void shouldReturnEmpty() {
         Optional<Person> person = getGraphTemplate().singleResult("g.V().hasLabel('Person')");
         assertFalse(person.isPresent());
     }
 
     @Test
-    public void shouldReturnOneElement() {
+    void shouldReturnOneElement() {
         Person otavio = Person.builder().withAge()
                 .withName("Otavio").build();
         getGraphTemplate().insert(otavio);
@@ -433,7 +433,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenHasNoneThanOneElement() {
+    void shouldReturnErrorWhenHasNoneThanOneElement() {
 
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
         getGraphTemplate().insert(Person.builder().withAge().withName("Poliana").build());
@@ -441,7 +441,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldExecutePrepareStatement() {
+    void shouldExecutePrepareStatement() {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
         PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(@param)");
         prepare.bind("param", "Person");
@@ -450,7 +450,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldExecutePrepareStatementSingleton() {
+    void shouldExecutePrepareStatementSingleton() {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
         PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(@param)");
         prepare.bind("param", "Person");
@@ -459,7 +459,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldExecutePrepareStatementSingletonEmpty() {
+    void shouldExecutePrepareStatementSingletonEmpty() {
         PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(@param)");
         prepare.bind("param", "Person");
         Optional<Person> otavio = prepare.singleResult();
@@ -467,7 +467,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldExecutePrepareStatementWithErrorWhenThereIsMoreThanOneResult() {
+    void shouldExecutePrepareStatementWithErrorWhenThereIsMoreThanOneResult() {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
         getGraphTemplate().insert(Person.builder().withAge().withName("Poliana").build());
         PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(@param)");
@@ -476,14 +476,14 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldCount() {
+    void shouldCount() {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
         getGraphTemplate().insert(Person.builder().withAge().withName("Poliana").build());
         assertEquals(2L, getGraphTemplate().count("Person"));
     }
 
     @Test
-    public void shouldCountFromEntity() {
+    void shouldCountFromEntity() {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
         getGraphTemplate().insert(Person.builder().withAge().withName("Poliana").build());
         assertEquals(2L, getGraphTemplate().count(Person.class));
@@ -491,7 +491,7 @@ public abstract class AbstractGraphTemplateTest {
 
 
     @Test
-    public void shouldFindById() {
+    void shouldFindById() {
         final Person otavio = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
 
@@ -502,7 +502,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldFindAll() {
+    void shouldFindAll() {
         final Person otavio = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
         List<Person> people = getGraphTemplate().findAll(Person.class).toList();
@@ -513,7 +513,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldDeleteAll() {
+    void shouldDeleteAll() {
         final Person otavio = getGraphTemplate().insert(Person.builder().withAge()
                 .withName("Otavio").build());
         List<Person> people = getGraphTemplate().findAll(Person.class).toList();
@@ -529,7 +529,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldReturnEmptyWhenFindByIdNotFound() {
+    void shouldReturnEmptyWhenFindByIdNotFound() {
 
         final Optional<Person> person = getGraphTemplate().find(Person.class, -2L);
         assertNotNull(person);
