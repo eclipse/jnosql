@@ -32,8 +32,9 @@ class DefaultPropertyTest {
     }
 
     @Test
-    void shouldReturnErrorWhenValueINull() {
-        assertThrows(NullPointerException.class, () -> DefaultProperty.of("key", null));
+    void shouldNotReturnErrorWhenValueINull() {
+        Property<Object> property = DefaultProperty.of("key", null);
+       Assertions.assertThat(property.isPresent()).isFalse();
     }
 
     @Test

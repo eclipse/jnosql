@@ -76,7 +76,7 @@ final class DefaultProperty<V> implements Property<V> {
 
     @Override
     public boolean isPresent() {
-        return true;
+        return null != value;
     }
 
     @Override
