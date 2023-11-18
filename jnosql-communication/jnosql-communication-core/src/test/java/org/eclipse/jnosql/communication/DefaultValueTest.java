@@ -33,7 +33,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -42,9 +41,9 @@ class DefaultValueTest {
     private static final Value VALUE_OF_DOUBLE = Value.of(10L);
 
     @Test
-    @DisplayName("Should return NullPointerException when element is null")
-    void shouldReturnErrorWhenElementIsNull() {
-        assertThatNullPointerException().isThrownBy(() -> Value.of(null)).withMessage("value is required");
+    @DisplayName("Should return Null element when element is null")
+    void shouldReturnNullElementWhenElementIsNull() {
+        assertThat(Value.of(null)).isEqualTo(DefaultValue.NULL);
     }
 
     @Test
@@ -164,6 +163,12 @@ class DefaultValueTest {
             });
         }).isInstanceOf(UnsupportedOperationException.class)
                 .hasMessage("The type TypeReference{type=java.util.Map<java.lang.String, java.util.List<java.lang.String>>} is not supported");
+    }
+
+    @Test
+    public void shouldReturnFalseWhenIsNull() {
+        Value value = Value.of(10);
+        Assertions.assertThat(value.isNull()).isFalse();
     }
 
     @Test
