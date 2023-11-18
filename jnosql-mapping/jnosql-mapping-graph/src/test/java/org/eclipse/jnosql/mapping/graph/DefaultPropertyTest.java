@@ -34,7 +34,7 @@ class DefaultPropertyTest {
     @Test
     void shouldNotReturnErrorWhenValueINull() {
         Property<Object> property = DefaultProperty.of("key", null);
-       Assertions.assertThat(property.isPresent()).isFalse();
+        Assertions.assertThat(property.isPresent()).isFalse();
     }
 
     @Test
