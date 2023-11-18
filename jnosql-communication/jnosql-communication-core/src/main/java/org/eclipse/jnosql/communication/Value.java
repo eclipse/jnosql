@@ -70,6 +70,14 @@ public interface Value {
      */
     boolean isInstanceOf(Class<?> type);
 
+    /**
+     * Checks whether the current instance represents a null value.
+     *
+     * @return {@code true} if the value encapsulated by this instance is null,
+     *         {@code false} otherwise.
+     */
+    boolean isNull();
+
 
     /**
      * Creates a new {@link Value} instance.
