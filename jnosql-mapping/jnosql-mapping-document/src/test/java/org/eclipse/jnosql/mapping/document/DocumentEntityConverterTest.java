@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.document;
 
 import jakarta.inject.Inject;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.document.Document;
@@ -501,10 +502,6 @@ class DocumentEntityConverterTest {
 
     }
 
-    private Object getValue(Optional<Document> document) {
-        return document.map(Document::value).map(Value::get).orElse(null);
-    }
-
     @Test
     void shouldCreateLazilyEntity() {
         DocumentEntity entity = DocumentEntity.of("Citizen");
@@ -514,6 +511,26 @@ class DocumentEntityConverterTest {
         Citizen citizen = converter.toEntity(entity);
         Assertions.assertNotNull(citizen);
         assertNull(citizen.getCity());
+    }
+
+    @Test
+    void shouldReturnNullValuePresent() {
+        Person person = Person.builder().build();
+
+        DocumentEntity entity = converter.toDocument(person);
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(entity.find("name")).isPresent();
+            soft.assertThat(entity.find("age")).isPresent();
+            soft.assertThat(entity.find("phones")).isPresent();
+            soft.assertThat(entity.find("ignore")).isNotPresent();
+
+            soft.assertThat(entity.find("name", String.class)).isNotPresent();
+            soft.assertThat(entity.find("phones", String.class)).isNotPresent();
+        });
+    }
+
+    private Object getValue(Optional<Document> document) {
+        return document.map(Document::value).map(Value::get).orElse(null);
     }
 
 
