@@ -109,11 +109,10 @@ public class DocumentEntity {
      * @param documentName a name of the document
      * @param value        the information of the document
      * @throws UnsupportedOperationException when this method is not supported
-     * @throws NullPointerException          when either name or value are null
+     * @throws NullPointerException          when name is null
      */
     public void add(String documentName, Object value) {
         requireNonNull(documentName, "documentName is required");
-        requireNonNull(value, "value is required");
         this.documents.put(documentName, Document.of(documentName, Value.of(value)));
     }
 
