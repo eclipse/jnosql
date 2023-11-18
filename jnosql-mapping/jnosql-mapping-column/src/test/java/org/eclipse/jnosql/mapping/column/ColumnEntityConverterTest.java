@@ -508,7 +508,7 @@ class ColumnEntityConverterTest {
 
 
     @Test
-    public void shouldReturnNullValuePresent() {
+    void shouldReturnNullValuePresent() {
         Person person = Person.builder().build();
 
         ColumnEntity entity = converter.toColumn(person);
