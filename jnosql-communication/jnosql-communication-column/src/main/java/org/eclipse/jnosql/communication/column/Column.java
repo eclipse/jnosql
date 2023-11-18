@@ -27,9 +27,6 @@ import java.util.Objects;
  * A {@link ColumnEntity} has one or more Columns.
  */
 public interface Column extends Entry {
-
-
-
     /**
      * Alias to {@link Value#get(Class)}
      *
@@ -67,18 +64,17 @@ public interface Column extends Entry {
      * @param value - column's value
      * @param <V>   the value type
      * @return a column instance
-     * @throws NullPointerException when there is any null parameter
+     * @throws NullPointerException when name is null
      * @see Columns
      */
     static <V> Column of(String name, V value) {
         Objects.requireNonNull(name, "name is required");
-        Objects.requireNonNull(value, "value is required");
         return new DefaultColumn(name, getValue(value));
     }
 
     private static Value getValue(Object value) {
         if (value instanceof Value) {
-            return Value.class.cast(value);
+            return (Value) value;
         } else {
             return Value.of(value);
         }
