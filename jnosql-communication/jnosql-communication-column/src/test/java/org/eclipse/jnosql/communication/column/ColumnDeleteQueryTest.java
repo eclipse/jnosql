@@ -32,9 +32,7 @@ class ColumnDeleteQueryTest {
 
     @Test
     void shouldBuilderThrownException() {
-        assertThrows(NullPointerException.class, () -> {
-            ColumnDeleteQuery.builder(new String[]{null});
-        });
+        assertThrows(NullPointerException.class, () -> ColumnDeleteQuery.builder(new String[]{null}));
     }
 
     @ParameterizedTest(name = "{0} passed to build method then a valid builder should be returned")
@@ -46,9 +44,7 @@ class ColumnDeleteQueryTest {
 
     @Test
     void shouldDeleteThrownException() {
-        assertThrows(NullPointerException.class, () -> {
-            ColumnDeleteQuery.delete(new String[]{null});
-        });
+        assertThrows(NullPointerException.class, () -> ColumnDeleteQuery.delete(new String[]{null}));
     }
 
     @ParameterizedTest(name = "{0} passed to delete method then a valid builder should be returned")

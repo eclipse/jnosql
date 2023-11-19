@@ -34,9 +34,7 @@ class ColumnTest {
 
     @Test
     void shouldReturnNameWhenNameIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Column.of(null, DEFAULT_VALUE);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> Column.of(null, DEFAULT_VALUE));
     }
 
     @Test
