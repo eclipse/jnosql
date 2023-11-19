@@ -17,6 +17,7 @@
 
 package org.eclipse.jnosql.communication.column;
 
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
@@ -310,10 +311,14 @@ class ColumnEntityTest {
     }
 
     @Test
-    void shouldReturnErrorWhenAddColumnsObjectWhenHasNullObject() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            ColumnEntity entity = new ColumnEntity("columnFamily");
-            entity.add("name", null);
+    void shouldReturnWhenAddColumnsObjectWhenHasNullObject() {
+        ColumnEntity entity = new ColumnEntity("columnFamily");
+        entity.add("name", null);
+        assertEquals(1, entity.size());
+        Column name = entity.find("name").orElseThrow();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(name.name()).isEqualTo("name");
+            softly.assertThat(name.get()).isNull();
         });
     }
 
