@@ -126,7 +126,6 @@ public class DocumentEntity {
      */
     public void add(String documentName, Value value) {
         requireNonNull(documentName, "documentName is required");
-        requireNonNull(value, "value is required");
         this.documents.put(documentName, Document.of(documentName, value));
     }
 
