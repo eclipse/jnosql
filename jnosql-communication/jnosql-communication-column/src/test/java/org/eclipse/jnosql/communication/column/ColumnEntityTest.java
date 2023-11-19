@@ -426,4 +426,16 @@ class ColumnEntityTest {
         assertTrue(columnFamily.isEmpty());
     }
 
+
+    @Test
+    void shouldCreateNull(){
+        ColumnEntity entity = ColumnEntity.of("entity");
+        entity.addNull("name");
+        Column name = entity.find("name").orElseThrow();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(name.name()).isEqualTo("name");
+            softly.assertThat(name.get()).isNull();
+        });
+    }
+
 }
