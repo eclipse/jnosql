@@ -437,4 +437,15 @@ class DocumentEntityTest {
                 "[name=name, value=DefaultValue[value=10]]}, name='documentCollection'}");
     }
 
+    @Test
+    void shouldCreateNull(){
+        DocumentEntity entity = DocumentEntity.of("entity");
+        entity.addNull("name");
+        Document name = entity.find("name").orElseThrow();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(name.name()).isEqualTo("name");
+            softly.assertThat(name.get()).isNull();
+        });
+    }
+
 }
