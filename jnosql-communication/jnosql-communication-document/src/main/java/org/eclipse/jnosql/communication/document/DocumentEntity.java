@@ -332,4 +332,15 @@ public class DocumentEntity {
         entity.addAll(documents);
         return entity;
     }
+
+    /**
+     * Adds a document with a null value to the collection of documents.
+     *
+     * @param name the name of the document to add; must not be {@code null}
+     * @throws NullPointerException if the provided {@code name} is {@code null}
+     */
+    public void addNull(String name) {
+        requireNonNull(name, "name is required");
+        this.documents.put(name, Document.of(name, Value.ofNull()));
+    }
 }
