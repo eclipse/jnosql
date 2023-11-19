@@ -91,4 +91,16 @@ public interface Value {
         }
         return new DefaultValue(value);
     }
+
+    /**
+     * Creates and returns a {@link Value} instance representing a null value.
+     * This method provides a convenient way to obtain a {@link Value} instance that encapsulates a null value.
+     * The returned instance is often used to signify the absence of a meaningful value in scenarios
+     * where a valid value is expected but none is available.
+     *
+     * @return a {@link Value} instance representing a null value, typically {@link DefaultValue#NULL}.
+     */
+    static Value ofNull() {
+        return DefaultValue.NULL;
+    }
 }
