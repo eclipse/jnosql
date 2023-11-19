@@ -17,6 +17,7 @@
 
 package org.eclipse.jnosql.communication.column;
 
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
@@ -33,7 +34,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -310,10 +310,14 @@ class ColumnEntityTest {
     }
 
     @Test
-    void shouldReturnErrorWhenAddColumnsObjectWhenHasNullObject() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            ColumnEntity entity = new ColumnEntity("columnFamily");
-            entity.add("name", null);
+    void shouldReturnWhenAddColumnsObjectWhenHasNullObject() {
+        ColumnEntity entity = new ColumnEntity("columnFamily");
+        entity.add("name", null);
+        assertEquals(1, entity.size());
+        Column name = entity.find("name").orElseThrow();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(name.name()).isEqualTo("name");
+            softly.assertThat(name.get()).isNull();
         });
     }
 
@@ -415,10 +419,20 @@ class ColumnEntityTest {
 
         ColumnEntity columnFamily = ColumnEntity.of("columnFamily", columns);
 
-
         assertFalse(columnFamily.isEmpty());
         columnFamily.clear();
         assertTrue(columnFamily.isEmpty());
+    }
+
+    @Test
+    void shouldCreateNull(){
+        ColumnEntity entity = ColumnEntity.of("entity");
+        entity.addNull("name");
+        Column name = entity.find("name").orElseThrow();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(name.name()).isEqualTo("name");
+            softly.assertThat(name.get()).isNull();
+        });
     }
 
 }

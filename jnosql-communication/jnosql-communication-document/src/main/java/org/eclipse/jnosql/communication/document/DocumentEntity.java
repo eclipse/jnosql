@@ -109,11 +109,10 @@ public class DocumentEntity {
      * @param documentName a name of the document
      * @param value        the information of the document
      * @throws UnsupportedOperationException when this method is not supported
-     * @throws NullPointerException          when either name or value are null
+     * @throws NullPointerException          when name is null
      */
     public void add(String documentName, Object value) {
         requireNonNull(documentName, "documentName is required");
-        requireNonNull(value, "value is required");
         this.documents.put(documentName, Document.of(documentName, Value.of(value)));
     }
 
@@ -127,7 +126,6 @@ public class DocumentEntity {
      */
     public void add(String documentName, Value value) {
         requireNonNull(documentName, "documentName is required");
-        requireNonNull(value, "value is required");
         this.documents.put(documentName, Document.of(documentName, value));
     }
 
@@ -333,5 +331,16 @@ public class DocumentEntity {
         DocumentEntity entity = new DocumentEntity(requireNonNull(name, "name is required"));
         entity.addAll(documents);
         return entity;
+    }
+
+    /**
+     * Adds a document with a null value to the collection of documents.
+     *
+     * @param name the name of the document to add; must not be {@code null}
+     * @throws NullPointerException if the provided {@code name} is {@code null}
+     */
+    public void addNull(String name) {
+        requireNonNull(name, "name is required");
+        this.documents.put(name, Document.of(name, Value.ofNull()));
     }
 }

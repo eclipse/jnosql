@@ -17,7 +17,6 @@
 package org.eclipse.jnosql.communication;
 
 
-import java.util.Objects;
 
 /**
  * It represents an information unit that is to/from a database.
@@ -32,28 +31,30 @@ public interface Value {
     /**
      * Returns the value without conversion.
      *
-     * @return the instance inside {@link Value}
+     * @return the instance inside {@link Value}, or {@code null} if the value is null
      */
     Object get();
 
     /**
-     * Converts {@link Value#get()} to specified class
+     * Converts {@link Value#get()} to the specified class.
+     * When the value is {@code null}, it will return null.
      *
      * @param type the class type
      * @param <T>  the new instance type
-     * @return a new instance converted to informed class
+     * @return a new instance converted to the informed class, or {@code null} if the value is null
      * @throws NullPointerException          when the class is null
      * @throws UnsupportedOperationException when the type is unsupported
      * @see ValueReader
      */
     <T> T get(Class<T> type);
 
+
     /**
-     * Converts {@link Value#get()} to specified class
+     * Converts {@link Value#get()} to the specified class.
      *
      * @param supplier the type supplier
      * @param <T>      the new instance type
-     * @return a new instance converted to informed class
+     * @return a new instance converted to the informed class, or {@code null} if the value is null
      * @throws NullPointerException          when the class is null
      * @throws UnsupportedOperationException when the type is unsupported
      * @see ValueReader
@@ -61,24 +62,45 @@ public interface Value {
     <T> T get(TypeSupplier<T> supplier);
 
     /**
-     * A wrapper of {@link Class#isInstance(Object)} to check the value instance within the {@link Value}
+     * A wrapper of {@link Class#isInstance(Object)} to check the value instance within the {@link Value}.
      *
      * @param type the type
      * @return {@link Class#isInstance(Object)}
-     * @throws NullPointerException when type is null
+     * @throws NullPointerException when the type is null
      */
     boolean isInstanceOf(Class<?> type);
 
+    /**
+     * Checks whether the current instance represents a null value.
+     *
+     * @return {@code true} if the value encapsulated by this instance is null,
+     *         {@code false} otherwise.
+     */
+    boolean isNull();
+
 
     /**
-     * Creates a new {@link Value} instance
+     * Creates a new {@link Value} instance.
      *
      * @param value - the information to {@link Value}
-     * @return a {@link Value} instance within a value informed
-     * @throws NullPointerException when the parameter is null
+     * @return a {@link Value} instance within a value informed, or {@link DefaultValue#NULL} if the value is null
      */
     static Value of(Object value) {
-        Objects.requireNonNull(value, "value is required");
+        if(value == null) {
+            return DefaultValue.NULL;
+        }
         return new DefaultValue(value);
+    }
+
+    /**
+     * Creates and returns a {@link Value} instance representing a null value.
+     * This method provides a convenient way to obtain a {@link Value} instance that encapsulates a null value.
+     * The returned instance is often used to signify the absence of a meaningful value in scenarios
+     * where a valid value is expected but none is available.
+     *
+     * @return a {@link Value} instance representing a null value, typically {@link DefaultValue#NULL}.
+     */
+    static Value ofNull() {
+        return DefaultValue.NULL;
     }
 }

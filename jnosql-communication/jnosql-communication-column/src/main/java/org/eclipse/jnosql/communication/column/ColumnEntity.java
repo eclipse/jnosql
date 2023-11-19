@@ -79,11 +79,10 @@ public class ColumnEntity {
      * @param name  a name of the column
      * @param value the information of the column
      * @throws UnsupportedOperationException when this method is not supported
-     * @throws NullPointerException          when either name or value are null
+     * @throws NullPointerException          when either name is null
      */
     public void add(String name, Object value) {
         requireNonNull(name, "name is required");
-        requireNonNull(value, "value is required");
         this.columns.put(name, Column.of(name, Value.of(value)));
     }
 
@@ -93,12 +92,22 @@ public class ColumnEntity {
      * @param name  a name of the column
      * @param value the information of the column
      * @throws UnsupportedOperationException when this method is not supported
-     * @throws NullPointerException          when either name or value are null
+     * @throws NullPointerException          when either name is null
      */
     public void add(String name, Value value) {
         requireNonNull(name, "name is required");
-        requireNonNull(value, "value is required");
         this.columns.put(name, Column.of(name, value));
+    }
+
+    /**
+     * Adds a column with a null value to the collection of columns.
+     *
+     * @param name the name of the column to add; must not be {@code null}
+     * @throws NullPointerException if the provided {@code name} is {@code null}
+     */
+    public void addNull(String name){
+        requireNonNull(name, "name is required");
+        this.columns.put(name, Column.of(name, Value.ofNull()));
     }
 
     /**

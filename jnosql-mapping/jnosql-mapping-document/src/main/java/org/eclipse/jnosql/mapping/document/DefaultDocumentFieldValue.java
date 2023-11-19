@@ -53,6 +53,9 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
 
     @Override
     public <X, Y> List<Document> toDocument(DocumentEntityConverter converter, Converters converters) {
+        if(value() == null) {
+            return singletonList(Document.of(getName(), null));
+        }
         if (EMBEDDED.equals(getType())) {
             return converter.toDocument(value()).documents();
         }  else if (ENTITY.equals(getType())) {

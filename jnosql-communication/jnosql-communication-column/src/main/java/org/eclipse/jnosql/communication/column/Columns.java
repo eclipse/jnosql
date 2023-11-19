@@ -44,7 +44,7 @@ public final class Columns {
      * @param name  column's name
      * @param value column's value
      * @return a column's instance
-     * @throws NullPointerException when either name or value are null
+     * @throws NullPointerException when name is null
      */
     public static Column of(String name, Object value) {
         return Column.of(name, Value.of(value));

@@ -63,6 +63,11 @@ final class ParamValue implements Value {
         return typeClass.isInstance(value);
     }
 
+    @Override
+    public boolean isNull() {
+        return false;
+    }
+
     public boolean isEmpty() {
         return Objects.isNull(value);
     }

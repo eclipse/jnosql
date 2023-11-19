@@ -17,6 +17,7 @@
 package org.eclipse.jnosql.communication.column;
 
 
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
@@ -33,15 +34,15 @@ class ColumnTest {
 
     @Test
     void shouldReturnNameWhenNameIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Column.of(null, DEFAULT_VALUE);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> Column.of(null, DEFAULT_VALUE));
     }
 
     @Test
     void shouldReturnNameWhenValueIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-           Column.of("Name", null);
+        Column column = Column.of("Name", null);
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(column.name()).isEqualTo("Name");
+            softly.assertThat(column.value().isNull()).isTrue();
         });
     }
 

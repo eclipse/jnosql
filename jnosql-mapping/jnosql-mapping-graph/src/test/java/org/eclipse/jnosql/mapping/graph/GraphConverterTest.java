@@ -19,6 +19,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.eclipse.jnosql.mapping.graph.entities.BookRelease;
 import org.eclipse.jnosql.mapping.graph.entities.Computer;
 import org.eclipse.jnosql.mapping.graph.entities.Job;
@@ -26,6 +27,7 @@ import org.eclipse.jnosql.mapping.graph.entities.Money;
 import org.eclipse.jnosql.mapping.graph.entities.Movie;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.graph.entities.Worker;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -322,4 +324,14 @@ abstract class GraphConverterTest {
         assertEquals(Year.of(2001), book.getYear());
     }
 
+    @Test
+    public void shouldConvertWithNullValues() {
+        Person person = Person.builder().withAge(22).build();
+        Vertex vertex = getConverter().toVertex(person);
+
+        assertEquals("Person", vertex.label());
+        VertexProperty<Object> name = vertex.property("name");
+        Assertions.assertFalse(name.isPresent());
+        assertEquals(Integer.valueOf(22), vertex.value("age"));
+    }
 }

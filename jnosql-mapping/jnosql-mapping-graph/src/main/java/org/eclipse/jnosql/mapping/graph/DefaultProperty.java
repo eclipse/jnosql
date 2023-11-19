@@ -35,7 +35,7 @@ final class DefaultProperty<V> implements Property<V> {
 
     private DefaultProperty(String key, V value) {
         this.key = requireNonNull(key, "key is required");
-        this.value = requireNonNull(value, "value is required");
+        this.value = value;
     }
 
 
@@ -76,7 +76,7 @@ final class DefaultProperty<V> implements Property<V> {
 
     @Override
     public boolean isPresent() {
-        return true;
+        return null != value;
     }
 
     @Override

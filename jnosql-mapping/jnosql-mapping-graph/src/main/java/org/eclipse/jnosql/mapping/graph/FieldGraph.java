@@ -45,6 +45,11 @@ record FieldGraph(Object value, FieldMetadata field) {
     }
 
     public <X, Y> List<Property<?>> toElements(GraphConverter converter, Converters converters) {
+
+        if (value() == null) {
+            return singletonList(DefaultProperty.of(field.name(), null));
+        }
+
         if (EMBEDDED.equals(field.mappingType())) {
             return converter.getProperties(value);
         }

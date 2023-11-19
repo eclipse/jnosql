@@ -17,6 +17,7 @@
 
 package org.eclipse.jnosql.communication.document;
 
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
@@ -299,10 +300,13 @@ class DocumentEntityTest {
     }
 
     @Test
-    void shouldReturnErrorWhenAddDocumentsObjectWhenHasNullObject() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            DocumentEntity entity = new DocumentEntity("documentCollection");
-            entity.add("name", null);
+    void shouldReturnWhenAddDocumentsObjectWhenHasNullObject() {
+        DocumentEntity entity = new DocumentEntity("documentCollection");
+        entity.add("name", null);
+        Document name = entity.find("name").orElseThrow();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(name.name()).isEqualTo("name");
+            softly.assertThat(name.get()).isNull();
         });
     }
 
@@ -431,6 +435,17 @@ class DocumentEntityTest {
         var collection = DocumentEntity.of("documentCollection", documents);
         assertThat(collection.toString()).isEqualTo("DefaultDocumentEntity{documents={name=DefaultDocument" +
                 "[name=name, value=DefaultValue[value=10]]}, name='documentCollection'}");
+    }
+
+    @Test
+    void shouldCreateNull(){
+        DocumentEntity entity = DocumentEntity.of("entity");
+        entity.addNull("name");
+        Document name = entity.find("name").orElseThrow();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(name.name()).isEqualTo("name");
+            softly.assertThat(name.get()).isNull();
+        });
     }
 
 }
