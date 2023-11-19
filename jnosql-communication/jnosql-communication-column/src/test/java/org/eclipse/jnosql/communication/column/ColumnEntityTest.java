@@ -420,12 +420,10 @@ class ColumnEntityTest {
 
         ColumnEntity columnFamily = ColumnEntity.of("columnFamily", columns);
 
-
         assertFalse(columnFamily.isEmpty());
         columnFamily.clear();
         assertTrue(columnFamily.isEmpty());
     }
-
 
     @Test
     void shouldCreateNull(){
