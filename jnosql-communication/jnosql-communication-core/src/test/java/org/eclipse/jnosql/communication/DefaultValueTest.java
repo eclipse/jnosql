@@ -19,6 +19,7 @@
 package org.eclipse.jnosql.communication;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -192,5 +193,14 @@ class DefaultValueTest {
         var value = Value.of(10);
         Assertions.assertThat(value.isInstanceOf(Integer.class)).isTrue();
         Assertions.assertThat(value.isInstanceOf(boolean.class)).isFalse();
+    }
+
+    @Test
+    void shouldOfNull(){
+        var value = Value.ofNull();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(value.get()).isNull();
+            soft.assertThat(value.isNull()).isTrue();
+        });
     }
 }
