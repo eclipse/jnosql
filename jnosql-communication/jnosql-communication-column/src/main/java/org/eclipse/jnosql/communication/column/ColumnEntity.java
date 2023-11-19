@@ -99,6 +99,12 @@ public class ColumnEntity {
         this.columns.put(name, Column.of(name, value));
     }
 
+    /**
+     * Adds a column with a null value to the collection of columns.
+     *
+     * @param name the name of the column to add; must not be {@code null}
+     * @throws NullPointerException if the provided {@code name} is {@code null}
+     */
     public void addNull(String name){
         requireNonNull(name, "name is required");
         this.columns.put(name, Column.of(name, Value.ofNull()));
