@@ -99,6 +99,11 @@ public class ColumnEntity {
         this.columns.put(name, Column.of(name, value));
     }
 
+    public void addNull(String name){
+        requireNonNull(name, "name is required");
+        this.columns.put(name, Column.of(name, Value.ofNull()));
+    }
+
     /**
      * Converts the columns to a Map where:
      * the key is the name the column
