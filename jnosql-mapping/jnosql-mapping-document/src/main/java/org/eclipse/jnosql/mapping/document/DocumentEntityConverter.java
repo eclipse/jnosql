@@ -167,7 +167,7 @@ public abstract class DocumentEntityConverter {
                     .filter(c -> c.name().equals(parameter.name()))
                     .findFirst();
             document.ifPresentOrElse(c -> {
-                ParameterConverter converter = ParameterConverter.of(parameter);
+                ParameterConverter converter = ParameterConverter.of(parameter, getEntities());
                 converter.convert(this, c, parameter, builder);
             }, builder::addEmptyParameter);
         }
