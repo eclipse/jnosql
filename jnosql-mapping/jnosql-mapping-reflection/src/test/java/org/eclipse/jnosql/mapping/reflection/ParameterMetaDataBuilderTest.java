@@ -25,6 +25,7 @@ import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.test.entities.constructor.Computer;
 import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
 import org.eclipse.jnosql.mapping.test.entities.constructor.Smartphone;
+import org.eclipse.jnosql.mapping.test.entities.constructor.SuperHero;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -127,6 +128,20 @@ class ParameterMetaDataBuilderTest {
         Assertions.assertTrue(map.converter().isEmpty());
         assertEquals(DefaultGenericParameterMetaData.class, map.getClass());
     }
+
+    @Test
+    void shouldConvertListParameter() {
+        Constructor<Foo> constructor = (Constructor<Foo>) SuperHero.class.getDeclaredConstructors()[0];
+        ParameterMetaData map = ParameterMetaDataBuilder.of(constructor.getParameters()[2]);
+        Assertions.assertNotNull(map);
+        Assertions.assertFalse(map.isId());
+        Assertions.assertEquals("powers", map.name());
+        Assertions.assertEquals(List.class, map.type());
+        Assertions.assertEquals(MappingType.COLLECTION, map.mappingType());
+        Assertions.assertTrue(map.converter().isEmpty());
+        assertEquals(DefaultGenericParameterMetaData.class, map.getClass());
+    }
+
 
     static class Foo{
         private Map<String, String> map;
