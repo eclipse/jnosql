@@ -21,5 +21,5 @@ import jakarta.nosql.Id;
 import java.util.List;
 
 @Entity
-public record Hero(@Id String id, @Column String name, @Column List<String> powers) {
+public record SuperHero(@Id String id, @Column String name, @Column List<String> powers) {
 }
