@@ -96,7 +96,7 @@ enum ParameterConverter {
         GenericParameterMetaData genericParameter = (GenericParameterMetaData) parameter;
         Class<?> type = genericParameter.elementType();
         if (entities.findByClassName(type.getName()).isPresent()) {
-            return ENTITY;
+            return COLLECTION;
         }
         return DEFAULT;
     }
