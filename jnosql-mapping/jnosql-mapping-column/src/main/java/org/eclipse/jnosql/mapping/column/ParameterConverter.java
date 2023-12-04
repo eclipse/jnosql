@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.column;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.mapping.metadata.ConstructorBuilder;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.GenericParameterMetaData;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
@@ -83,11 +84,20 @@ enum ParameterConverter {
                           Column column, ParameterMetaData metaData,
                           ConstructorBuilder builder);
 
-    static ParameterConverter of(ParameterMetaData parameter) {
+    static ParameterConverter of(ParameterMetaData parameter, EntitiesMetadata entities) {
         return switch (parameter.mappingType()) {
-            case COLLECTION -> COLLECTION;
+            case COLLECTION -> validateCollection(parameter, entities);
             case ENTITY -> ENTITY;
             default -> DEFAULT;
         };
+    }
+
+    private static ParameterConverter validateCollection(ParameterMetaData parameter, EntitiesMetadata entities) {
+        GenericParameterMetaData genericParameter = (GenericParameterMetaData) parameter;
+        Class<?> type = genericParameter.elementType();
+        if (entities.findByClassName(type.getName()).isPresent()) {
+            return ENTITY;
+        }
+        return DEFAULT;
     }
 }
