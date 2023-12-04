@@ -170,7 +170,7 @@ public abstract class ColumnEntityConverter {
                     .filter(c -> c.name().equals(parameter.name()))
                     .findFirst();
             column.ifPresentOrElse(c -> {
-                ParameterConverter converter = ParameterConverter.of(parameter);
+                ParameterConverter converter = ParameterConverter.of(parameter, getEntities());
                 converter.convert(this, c, parameter, builder);
             }, builder::addEmptyParameter);
         }
