@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.column;
 
 import jakarta.inject.Inject;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
@@ -26,6 +27,7 @@ import org.eclipse.jnosql.mapping.column.entities.Money;
 import org.eclipse.jnosql.mapping.column.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.column.entities.constructor.Computer;
 import org.eclipse.jnosql.mapping.column.entities.constructor.PetOwner;
+import org.eclipse.jnosql.mapping.column.entities.constructor.SuperHero;
 import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
@@ -180,4 +182,20 @@ class ColumnEntityConverterConstructorTest {
         assertEquals("Joshua Bloch", book.getAuthor());
         assertEquals(Year.of(2001), book.getYear());
     }
+
+    @Test
+    void shouldConvertHero() {
+        ColumnEntity communication = ColumnEntity.of("SuperHero");
+        communication.add("_id", "10L");
+        communication.add("name", "Otavio");
+        communication.add("powers", List.of("speed", "strength"));
+
+        SuperHero hero = this.converter.toEntity(communication);
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(hero.id()).isEqualTo("10L");
+            softly.assertThat(hero.name()).isEqualTo("Otavio");
+            softly.assertThat(hero.powers()).contains("speed", "strength");
+        });
+    }
+
 }
