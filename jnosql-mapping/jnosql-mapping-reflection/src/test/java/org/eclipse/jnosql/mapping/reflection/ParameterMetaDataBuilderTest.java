@@ -132,14 +132,14 @@ class ParameterMetaDataBuilderTest {
     @Test
     void shouldConvertListParameter() {
         Constructor<Foo> constructor = (Constructor<Foo>) SuperHero.class.getDeclaredConstructors()[0];
-        ParameterMetaData map = ParameterMetaDataBuilder.of(constructor.getParameters()[2]);
-        Assertions.assertNotNull(map);
-        Assertions.assertFalse(map.isId());
-        Assertions.assertEquals("powers", map.name());
-        Assertions.assertEquals(List.class, map.type());
-        Assertions.assertEquals(MappingType.COLLECTION, map.mappingType());
-        Assertions.assertTrue(map.converter().isEmpty());
-        assertEquals(DefaultGenericParameterMetaData.class, map.getClass());
+        ParameterMetaData powers = ParameterMetaDataBuilder.of(constructor.getParameters()[2]);
+        Assertions.assertNotNull(powers);
+        Assertions.assertFalse(powers.isId());
+        Assertions.assertEquals("powers", powers.name());
+        Assertions.assertEquals(List.class, powers.type());
+        Assertions.assertEquals(MappingType.COLLECTION, powers.mappingType());
+        Assertions.assertTrue(powers.converter().isEmpty());
+        assertEquals(DefaultGenericParameterMetaData.class, powers.getClass());
     }
 
 
