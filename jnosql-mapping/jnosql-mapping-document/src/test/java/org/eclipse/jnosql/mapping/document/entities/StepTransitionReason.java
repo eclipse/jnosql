@@ -14,12 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.document.entities;
 
-import jakarta.nosql.Column;
-import org.eclipse.jnosql.mapping.Embeddable;
 
-@Embeddable
-public class StepTransitionReason {
+public enum StepTransitionReason {
 
-    @Column
-    private String text;
+    REPEAT
 }

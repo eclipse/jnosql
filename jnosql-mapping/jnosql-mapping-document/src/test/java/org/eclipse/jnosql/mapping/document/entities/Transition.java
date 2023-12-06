@@ -31,4 +31,16 @@ public class Transition {
     @Column
     private List<String> restrictedRoleGroups;
 
+    public Transition(String targetWorkflowStepKey,
+                      StepTransitionReason stepTransitionReason,
+                      String mailTemplateKey,
+                      List<String> restrictedRoleGroups) {
+        this.targetWorkflowStepKey = targetWorkflowStepKey;
+        this.stepTransitionReason = stepTransitionReason;
+        this.mailTemplateKey = mailTemplateKey;
+        this.restrictedRoleGroups = restrictedRoleGroups;
+    }
+
+    public Transition() {
+    }
 }

@@ -30,11 +30,14 @@ import org.eclipse.jnosql.mapping.document.entities.ContactType;
 import org.eclipse.jnosql.mapping.document.entities.Director;
 import org.eclipse.jnosql.mapping.document.entities.Download;
 import org.eclipse.jnosql.mapping.document.entities.Job;
+import org.eclipse.jnosql.mapping.document.entities.MainStepType;
 import org.eclipse.jnosql.mapping.document.entities.Money;
 import org.eclipse.jnosql.mapping.document.entities.Movie;
 import org.eclipse.jnosql.mapping.document.entities.Person;
+import org.eclipse.jnosql.mapping.document.entities.Transition;
 import org.eclipse.jnosql.mapping.document.entities.Vendor;
 import org.eclipse.jnosql.mapping.document.entities.Worker;
+import org.eclipse.jnosql.mapping.document.entities.WorkflowStep;
 import org.eclipse.jnosql.mapping.document.entities.ZipCode;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
@@ -60,6 +63,7 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.jnosql.mapping.document.entities.StepTransitionReason.REPEAT;
 import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoWeld
@@ -527,6 +531,24 @@ class DocumentEntityConverterTest {
             soft.assertThat(entity.find("name", String.class)).isNotPresent();
             soft.assertThat(entity.find("phones", String.class)).isNotPresent();
         });
+    }
+
+    @Test
+    void shouldConvertWorkflow(){
+        var workflowStep = WorkflowStep.builder()
+                .id("id")
+                .key("key")
+                .workflowSchemaKey("workflowSchemaKey")
+                .stepName("stepName")
+                .mainStepType(MainStepType.MAIN)
+                .stepNo(1)
+                .componentConfigurationKey("componentConfigurationKey")
+                .relationTypeKey("relationTypeKey")
+                .availableTransitions(List.of(new Transition("TEST_WORKFLOW_STEP_KEY", REPEAT,
+                        null, List.of("ADMIN"))))
+                .build();
+
+        DocumentEntity document = this.converter.toDocument(workflowStep);
     }
 
     private Object getValue(Optional<Document> document) {

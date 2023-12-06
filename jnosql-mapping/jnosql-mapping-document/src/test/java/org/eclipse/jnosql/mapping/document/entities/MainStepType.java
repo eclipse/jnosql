@@ -15,5 +15,5 @@
 package org.eclipse.jnosql.mapping.document.entities;
 
 public enum MainStepType {
-    ENTRY;
+    MAIN, ENTRY
 }

@@ -14,62 +14,66 @@
  */
 package org.eclipse.jnosql.mapping.document.entities;
 
-import jakarta.nosql.Column;
-import jakarta.nosql.Entity;
-import jakarta.nosql.Id;
-
 import java.util.List;
 
-@Entity("workflow_step")
-public class WorkflowStep {
-
-    @Id
+public class WorkflowStepBuilder {
     private String id;
-
-    @Column("_key")
     private String key;
-
-    @Column
     private String workflowSchemaKey;
-
-    @Column
     private String stepName;
-
-    @Column
     private MainStepType mainStepType;
-
-    @Column
     private Integer stepNo;
-
-    @Column
     private String componentConfigurationKey;
-
-    @Column
     private String relationTypeKey;
-
-    @Column
     private List<Transition> availableTransitions;
 
-    WorkflowStep(String id, String key, String workflowSchemaKey,
-                 String stepName, MainStepType mainStepType,
-                 Integer stepNo, String componentConfigurationKey,
-                 String relationTypeKey, List<Transition> availableTransitions) {
+    public WorkflowStepBuilder id(String id) {
         this.id = id;
+        return this;
+    }
+
+    public WorkflowStepBuilder key(String key) {
         this.key = key;
+        return this;
+    }
+
+    public WorkflowStepBuilder workflowSchemaKey(String workflowSchemaKey) {
         this.workflowSchemaKey = workflowSchemaKey;
+        return this;
+    }
+
+    public WorkflowStepBuilder stepName(String stepName) {
         this.stepName = stepName;
+        return this;
+    }
+
+    public WorkflowStepBuilder mainStepType(MainStepType mainStepType) {
         this.mainStepType = mainStepType;
+        return this;
+    }
+
+    public WorkflowStepBuilder stepNo(Integer stepNo) {
         this.stepNo = stepNo;
+        return this;
+    }
+
+    public WorkflowStepBuilder componentConfigurationKey(String componentConfigurationKey) {
         this.componentConfigurationKey = componentConfigurationKey;
+        return this;
+    }
+
+    public WorkflowStepBuilder relationTypeKey(String relationTypeKey) {
         this.relationTypeKey = relationTypeKey;
+        return this;
+    }
+
+    public WorkflowStepBuilder availableTransitions(List<Transition> availableTransitions) {
         this.availableTransitions = availableTransitions;
+        return this;
     }
 
-    WorkflowStep() {
+    public WorkflowStep build() {
+        return new WorkflowStep(id, key, workflowSchemaKey, stepName, mainStepType,
+                stepNo, componentConfigurationKey, relationTypeKey, availableTransitions);
     }
-
-    public static WorkflowStepBuilder builder() {
-        return new WorkflowStepBuilder();
-    }
-
 }
