@@ -18,6 +18,8 @@ import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 
+import java.util.List;
+
 @Entity("workflow_step")
 public class WorkflowStep {
 
@@ -39,18 +41,12 @@ public class WorkflowStep {
     @Column
     private Integer stepNo;
 
-
     @Column
-    @Nullable
-    @Index
     private String componentConfigurationKey;
 
     @Column
-    @Nullable
-    @Index
     private String relationTypeKey;
 
     @Column
-    @Nullable
     private List<Transition> availableTransitions;
 }
