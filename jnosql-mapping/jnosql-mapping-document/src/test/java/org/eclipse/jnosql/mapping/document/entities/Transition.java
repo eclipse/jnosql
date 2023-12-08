@@ -43,4 +43,20 @@ public class Transition {
 
     public Transition() {
     }
+
+    public String targetWorkflowStepKey() {
+        return targetWorkflowStepKey;
+    }
+
+    public StepTransitionReason stepTransitionReason() {
+        return stepTransitionReason;
+    }
+
+    public String mailTemplateKey() {
+        return mailTemplateKey;
+    }
+
+    public List<String> restrictedRoleGroups() {
+        return restrictedRoleGroups;
+    }
 }

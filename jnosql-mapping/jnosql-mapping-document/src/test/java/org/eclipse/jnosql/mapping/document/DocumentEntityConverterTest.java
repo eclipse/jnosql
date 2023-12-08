@@ -549,7 +549,25 @@ class DocumentEntityConverterTest {
                 .build();
 
         var document = this.converter.toDocument(workflowStep);
-        this.converter.toEntity(document);
+        WorkflowStep result = this.converter.toEntity(document);
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(result).isNotNull();
+            soft.assertThat(result.id()).isEqualTo("id");
+            soft.assertThat(result.key()).isEqualTo("key");
+            soft.assertThat(result.workflowSchemaKey()).isEqualTo("workflowSchemaKey");
+            soft.assertThat(result.stepName()).isEqualTo("stepName");
+            soft.assertThat(result.mainStepType()).isEqualTo(MainStepType.MAIN);
+            soft.assertThat(result.stepNo()).isEqualTo(1L);
+            soft.assertThat(result.componentConfigurationKey()).isEqualTo("componentConfigurationKey");
+            soft.assertThat(result.relationTypeKey()).isEqualTo("relationTypeKey");
+            soft.assertThat(result.availableTransitions()).hasSize(1);
+            soft.assertThat(result.availableTransitions().get(0).targetWorkflowStepKey()).isEqualTo("TEST_WORKFLOW_STEP_KEY");
+            soft.assertThat(result.availableTransitions().get(0).stepTransitionReason()).isEqualTo(REPEAT);
+            soft.assertThat(result.availableTransitions().get(0).mailTemplateKey()).isNull();
+            soft.assertThat(result.availableTransitions().get(0).restrictedRoleGroups()).hasSize(1);
+            soft.assertThat(result.availableTransitions().get(0).restrictedRoleGroups().get(0)).isEqualTo("ADMIN");
+        });
+
     }
 
     @Test
@@ -566,7 +584,20 @@ class DocumentEntityConverterTest {
                 .availableTransitions(null)
                 .build();
         var document = this.converter.toDocument(workflowStep);
-        this.converter.toEntity(document);
+        WorkflowStep result = this.converter.toEntity(document);
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(result).isNotNull();
+            soft.assertThat(result.id()).isEqualTo("id");
+            soft.assertThat(result.key()).isEqualTo("key");
+            soft.assertThat(result.workflowSchemaKey()).isEqualTo("workflowSchemaKey");
+            soft.assertThat(result.stepName()).isEqualTo("stepName");
+            soft.assertThat(result.mainStepType()).isEqualTo(MainStepType.MAIN);
+            soft.assertThat(result.stepNo()).isNull();
+            soft.assertThat(result.componentConfigurationKey()).isEqualTo("componentConfigurationKey");
+            soft.assertThat(result.relationTypeKey()).isEqualTo("relationTypeKey");
+            soft.assertThat(result.availableTransitions()).isNull();
+
+        });
 
     }
 
