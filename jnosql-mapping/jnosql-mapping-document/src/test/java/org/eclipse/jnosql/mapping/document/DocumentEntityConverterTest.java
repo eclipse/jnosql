@@ -548,7 +548,26 @@ class DocumentEntityConverterTest {
                         null, List.of("ADMIN"))))
                 .build();
 
-        DocumentEntity document = this.converter.toDocument(workflowStep);
+        var document = this.converter.toDocument(workflowStep);
+        this.converter.toEntity(document);
+    }
+
+    @Test
+    void shouldUpdateEmbeddable2() {
+        var workflowStep = WorkflowStep.builder()
+                .id("id")
+                .key("key")
+                .workflowSchemaKey("workflowSchemaKey")
+                .stepName("stepName")
+                .mainStepType(MainStepType.MAIN)
+                .stepNo(null)
+                .componentConfigurationKey("componentConfigurationKey")
+                .relationTypeKey("relationTypeKey")
+                .availableTransitions(null)
+                .build();
+        var document = this.converter.toDocument(workflowStep);
+        this.converter.toEntity(document);
+
     }
 
     private Object getValue(Optional<Document> document) {
