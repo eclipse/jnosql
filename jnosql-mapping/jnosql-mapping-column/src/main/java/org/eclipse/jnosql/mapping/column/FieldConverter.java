@@ -76,6 +76,7 @@ enum FieldConverter {
             }
         }
     }, COLLECTION {
+        @SuppressWarnings("unchecked")
         @Override
         public <X, Y, T> void convert(T instance, List<Column> columns, Column column, FieldMetadata field,
                                       ColumnEntityConverter converter) {
@@ -84,6 +85,9 @@ enum FieldConverter {
                 GenericFieldMetadata genericField = (GenericFieldMetadata) field;
                 Collection elements = genericField.collectionInstance();
                 List<List<Column>> embeddable = (List<List<Column>>) column.get();
+                if(Objects.isNull(embeddable)) {
+                    return;
+                }
                 for (List<Column> columnList : embeddable) {
                     Object element = converter.toEntity(genericField.elementType(), columnList);
                     elements.add(element);
