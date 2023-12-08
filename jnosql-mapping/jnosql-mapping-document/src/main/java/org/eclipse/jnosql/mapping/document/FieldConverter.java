@@ -78,6 +78,7 @@ enum FieldConverter {
             }
         }
     }, COLLECTION {
+        @SuppressWarnings("unchecked")
         @Override
         public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
                                       FieldMetadata field, DocumentEntityConverter converter) {
@@ -86,6 +87,9 @@ enum FieldConverter {
                 GenericFieldMetadata genericField = (GenericFieldMetadata) field;
                 Collection collection = genericField.collectionInstance();
                 List<List<Document>> embeddable = (List<List<Document>>) document.get();
+                if (embeddable == null) {
+                    return;
+                }
                 for (List<Document> documentList : embeddable) {
                     Object element = converter.toEntity(genericField.elementType(), documentList);
                     collection.add(element);
