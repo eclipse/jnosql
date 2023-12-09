@@ -22,8 +22,8 @@ import org.eclipse.jnosql.mapping.test.entities.Address;
 import org.eclipse.jnosql.mapping.test.entities.Movie;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Worker;
-import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
-import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
+import org.eclipse.jnosql.mapping.reflection.entities.constructor.BookUser;
+import org.eclipse.jnosql.mapping.reflection.entities.constructor.PetOwner;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;

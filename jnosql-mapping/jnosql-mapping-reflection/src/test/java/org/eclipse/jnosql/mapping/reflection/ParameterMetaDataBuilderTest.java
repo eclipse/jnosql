@@ -21,11 +21,11 @@ import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 import org.eclipse.jnosql.mapping.test.entities.Animal;
 import org.eclipse.jnosql.mapping.test.entities.Money;
 import org.eclipse.jnosql.mapping.test.entities.MoneyConverter;
-import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
-import org.eclipse.jnosql.mapping.test.entities.constructor.Computer;
-import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
-import org.eclipse.jnosql.mapping.test.entities.constructor.Smartphone;
-import org.eclipse.jnosql.mapping.test.entities.constructor.SuperHero;
+import org.eclipse.jnosql.mapping.reflection.entities.constructor.BookUser;
+import org.eclipse.jnosql.mapping.reflection.entities.constructor.Computer;
+import org.eclipse.jnosql.mapping.reflection.entities.constructor.PetOwner;
+import org.eclipse.jnosql.mapping.reflection.entities.constructor.Smartphone;
+import org.eclipse.jnosql.mapping.reflection.entities.constructor.SuperHero;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

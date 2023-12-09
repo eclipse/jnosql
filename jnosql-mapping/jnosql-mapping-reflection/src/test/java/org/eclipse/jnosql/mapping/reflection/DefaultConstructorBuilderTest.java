@@ -16,12 +16,11 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.ReflectionGroupEntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
-import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
+import org.eclipse.jnosql.mapping.reflection.entities.constructor.BookUser;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.BeforeEach;

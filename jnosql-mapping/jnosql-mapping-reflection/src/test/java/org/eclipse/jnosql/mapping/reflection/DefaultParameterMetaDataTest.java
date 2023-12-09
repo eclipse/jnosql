@@ -21,7 +21,7 @@ import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
-import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
+import org.eclipse.jnosql.mapping.reflection.entities.constructor.BookUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
