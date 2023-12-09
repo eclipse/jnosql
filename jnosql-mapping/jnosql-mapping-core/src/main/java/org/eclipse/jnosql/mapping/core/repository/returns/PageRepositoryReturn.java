@@ -12,12 +12,12 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.repository.returns;
+package org.eclipse.jnosql.mapping.core.repository.returns;
 
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Slice;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
-import org.eclipse.jnosql.mapping.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 
 public class PageRepositoryReturn extends AbstractRepositoryReturn {
 

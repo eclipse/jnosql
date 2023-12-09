@@ -18,8 +18,9 @@ import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.test.entities.Money;
-import org.eclipse.jnosql.mapping.test.entities.MoneyConverter;
+import org.eclipse.jnosql.mapping.reflection.entities.Money;
+import org.eclipse.jnosql.mapping.reflection.entities.MoneyConverter;
+
 
 @Entity
 public class Computer {

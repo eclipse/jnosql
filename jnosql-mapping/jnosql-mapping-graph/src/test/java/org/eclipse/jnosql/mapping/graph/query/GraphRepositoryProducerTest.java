@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.graph.BookRepository;
 import org.eclipse.jnosql.mapping.graph.Transactional;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;

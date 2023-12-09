@@ -12,15 +12,15 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.util;
+package org.eclipse.jnosql.mapping.core.util;
 
 import jakarta.data.repository.CrudRepository;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
-import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.core.VetedConverter;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.Reflections;

@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.data.exceptions.NonUniqueResultException;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;

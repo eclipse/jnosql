@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document;
 
 import org.eclipse.jnosql.communication.document.Document;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 
 import org.eclipse.jnosql.mapping.metadata.FieldValue;
 

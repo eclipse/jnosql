@@ -19,7 +19,7 @@ import jakarta.data.repository.PageableRepository;
 import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
 import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.repository.ThrowingSupplier;

@@ -12,34 +12,13 @@
  *
  *    Otavio Santana
  */
-package org.eclipse.jnosql.mapping.test.entities;
+package org.eclipse.jnosql.mapping.keyvalue.entities;
 
+
+import java.math.BigDecimal;
 import java.util.Objects;
 
-public final class Plate {
-
-    private final int prefix;
-
-    private final String sufix;
-
-
-    private Plate(int prefix, String sufix) {
-        this.prefix = prefix;
-        this.sufix = sufix;
-    }
-
-    public int getPrefix() {
-        return prefix;
-    }
-
-    public String getSufix() {
-        return sufix;
-    }
-
-    @Override
-    public String toString() {
-        return Integer.toString(prefix) + '-' + sufix;
-    }
+public record Money(String currency, BigDecimal value) {
 
     @Override
     public boolean equals(Object o) {
@@ -49,20 +28,26 @@ public final class Plate {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Plate plate = (Plate) o;
-        return prefix == plate.prefix &&
-                Objects.equals(sufix, plate.sufix);
+        Money money = (Money) o;
+        return Objects.equals(currency, money.currency) &&
+                Objects.equals(value.doubleValue(), money.value.doubleValue());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(prefix, sufix);
+        return Objects.hash(currency, value.doubleValue());
     }
 
-    public static Plate of(String value) {
-        String[] values = value.split("-");
-        return new Plate(Integer.valueOf(values[0]), values[1]);
+    @Override
+    public String toString() {
+        return currency + " " + value.toString();
     }
 
-
+    public static Money parse(String dbData) {
+        String[] values = dbData.split(" ");
+        String currency = values[0];
+        BigDecimal value = BigDecimal.valueOf(Double.valueOf(values[1]));
+        return new Money(currency, value);
+    }
 }
+

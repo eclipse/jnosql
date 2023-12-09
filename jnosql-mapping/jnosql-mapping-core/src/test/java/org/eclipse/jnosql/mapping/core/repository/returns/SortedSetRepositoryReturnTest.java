@@ -12,13 +12,13 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.repository.returns;
+package org.eclipse.jnosql.mapping.core.repository.returns;
 
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
-import org.eclipse.jnosql.mapping.repository.DynamicReturn;
-import org.eclipse.jnosql.mapping.repository.RepositoryReturn;
+import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.core.repository.RepositoryReturn;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

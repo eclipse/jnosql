@@ -19,7 +19,7 @@ import jakarta.enterprise.inject.Vetoed;
 import jakarta.inject.Inject;
 import jakarta.nosql.column.ColumnTemplate;
 import org.eclipse.jnosql.communication.column.ColumnManager;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 import java.util.Objects;

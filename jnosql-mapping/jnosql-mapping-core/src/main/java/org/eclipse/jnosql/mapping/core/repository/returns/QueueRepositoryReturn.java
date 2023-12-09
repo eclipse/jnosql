@@ -12,9 +12,9 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.repository.returns;
+package org.eclipse.jnosql.mapping.core.repository.returns;
 
-import org.eclipse.jnosql.mapping.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 
 import java.util.Deque;
 import java.util.LinkedList;

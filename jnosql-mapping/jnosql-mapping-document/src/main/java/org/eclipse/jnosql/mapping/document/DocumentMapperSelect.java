@@ -25,7 +25,7 @@ import jakarta.nosql.QueryMapper.MapperOrder;
 import jakarta.nosql.QueryMapper.MapperSkip;
 import jakarta.nosql.QueryMapper.MapperWhere;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import java.util.ArrayList;

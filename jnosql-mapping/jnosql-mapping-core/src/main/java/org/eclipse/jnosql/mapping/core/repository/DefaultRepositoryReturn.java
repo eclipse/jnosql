@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.repository;
+package org.eclipse.jnosql.mapping.core.repository;
 
 class DefaultRepositoryReturn implements RepositoryReturn {
 

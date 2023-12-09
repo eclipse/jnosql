@@ -12,7 +12,7 @@
  *
  *   Georg Leber
  */
-package org.eclipse.jnosql.mapping.repository;
+package org.eclipse.jnosql.mapping.core.repository;
 
 @FunctionalInterface
 public interface ThrowingSupplier<T> {

@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.graph.spi;
 
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.graph.BookRepository;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;

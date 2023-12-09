@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column.query;
 import jakarta.data.repository.PageableRepository;
 import jakarta.nosql.column.ColumnTemplate;
 import org.eclipse.jnosql.communication.column.ColumnManager;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.column.ColumnTemplateProducer;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;

@@ -12,11 +12,11 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.repository;
+package org.eclipse.jnosql.mapping.core.repository;
 
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.mapping.core.VetedConverter;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.Reflections;

@@ -20,6 +20,7 @@ import jakarta.enterprise.context.spi.CreationalContext;
 import jakarta.enterprise.inject.spi.Bean;
 import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.FieldParameterMetadata;
 
 import java.util.Iterator;
@@ -28,7 +29,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
- * The {@link Convert} collection, this instance will generate/create an instance.
+ * The {@link org.eclipse.jnosql.mapping.Convert} collection, this instance will generate/create an instance.
  */
 @ApplicationScoped
 public class Converters {

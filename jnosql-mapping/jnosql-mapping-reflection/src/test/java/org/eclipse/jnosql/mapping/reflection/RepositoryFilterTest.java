@@ -17,9 +17,12 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.data.repository.PageableRepository;
 import jakarta.nosql.Column;
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.test.entities.NoSQLVendor;
-import org.eclipse.jnosql.mapping.test.entities.Person;
-import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
+import org.eclipse.jnosql.mapping.reflection.entities.NoSQLVendor;
+import org.eclipse.jnosql.mapping.reflection.entities.Person;
+import org.eclipse.jnosql.mapping.reflection.entities.PersonRepository;
+import org.eclipse.jnosql.mapping.reflection.entities.NoSQLVendor;
+import org.eclipse.jnosql.mapping.reflection.entities.Person;
+import org.eclipse.jnosql.mapping.reflection.entities.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

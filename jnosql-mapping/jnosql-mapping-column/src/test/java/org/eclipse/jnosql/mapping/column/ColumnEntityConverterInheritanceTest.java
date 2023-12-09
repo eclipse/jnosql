@@ -19,7 +19,7 @@ import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.column.entities.inheritance.EmailNotification;
 import org.eclipse.jnosql.mapping.column.entities.inheritance.LargeProject;
 import org.eclipse.jnosql.mapping.column.entities.inheritance.Notification;

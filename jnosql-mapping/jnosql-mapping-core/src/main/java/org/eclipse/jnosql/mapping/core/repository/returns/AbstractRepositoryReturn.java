@@ -12,9 +12,9 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.repository.returns;
+package org.eclipse.jnosql.mapping.core.repository.returns;
 
-import org.eclipse.jnosql.mapping.repository.RepositoryReturn;
+import org.eclipse.jnosql.mapping.core.repository.RepositoryReturn;
 
 abstract class AbstractRepositoryReturn implements RepositoryReturn {
 

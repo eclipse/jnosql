@@ -19,7 +19,7 @@ import jakarta.nosql.QueryMapper.MapperDeleteNameCondition;
 import jakarta.nosql.QueryMapper.MapperDeleteNotCondition;
 import jakarta.nosql.QueryMapper.MapperDeleteWhere;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import static java.util.Objects.requireNonNull;

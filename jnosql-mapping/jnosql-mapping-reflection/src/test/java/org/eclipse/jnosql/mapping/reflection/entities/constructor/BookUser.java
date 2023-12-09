@@ -18,7 +18,7 @@ package org.eclipse.jnosql.mapping.reflection.entities.constructor;
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.test.entities.Book;
+import org.eclipse.jnosql.mapping.reflection.entities.Book;
 
 import java.util.List;
 import java.util.Objects;

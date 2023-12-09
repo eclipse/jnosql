@@ -18,9 +18,10 @@ import jakarta.nosql.Column;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
-import org.eclipse.jnosql.mapping.test.entities.Animal;
-import org.eclipse.jnosql.mapping.test.entities.Money;
-import org.eclipse.jnosql.mapping.test.entities.MoneyConverter;
+
+import org.eclipse.jnosql.mapping.reflection.entities.Animal;
+import org.eclipse.jnosql.mapping.reflection.entities.Money;
+import org.eclipse.jnosql.mapping.reflection.entities.MoneyConverter;
 import org.eclipse.jnosql.mapping.reflection.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.reflection.entities.constructor.Computer;
 import org.eclipse.jnosql.mapping.reflection.entities.constructor.PetOwner;

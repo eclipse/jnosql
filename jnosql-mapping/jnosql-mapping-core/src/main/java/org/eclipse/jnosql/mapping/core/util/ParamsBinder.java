@@ -12,10 +12,10 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.util;
+package org.eclipse.jnosql.mapping.core.util;
 
 import org.eclipse.jnosql.communication.Params;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;

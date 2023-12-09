@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.column;
 
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.column.ColumnObserverParser;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.column.entities.Car;
 import org.eclipse.jnosql.mapping.column.entities.Vendor;
 import org.eclipse.jnosql.mapping.column.entities.Worker;

@@ -12,13 +12,38 @@
  *
  *    Otavio Santana
  */
-package org.eclipse.jnosql.mapping.test.entities;
+package org.eclipse.jnosql.mapping.keyvalue.entities;
 
 
-import java.math.BigDecimal;
+import jakarta.nosql.Column;
+import org.eclipse.jnosql.mapping.Embeddable;
+
 import java.util.Objects;
 
-public record Money(String currency, BigDecimal value) {
+@Embeddable
+public class Job {
+
+    @Column
+    private String description;
+
+    @Column
+    private String city;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -28,26 +53,12 @@ public record Money(String currency, BigDecimal value) {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Money money = (Money) o;
-        return Objects.equals(currency, money.currency) &&
-                Objects.equals(value.doubleValue(), money.value.doubleValue());
+        Job job = (Job) o;
+        return Objects.equals(description, job.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(currency, value.doubleValue());
-    }
-
-    @Override
-    public String toString() {
-        return currency + " " + value.toString();
-    }
-
-    public static Money parse(String dbData) {
-        String[] values = dbData.split(" ");
-        String currency = values[0];
-        BigDecimal value = BigDecimal.valueOf(Double.valueOf(values[1]));
-        return new Money(currency, value);
+        return Objects.hashCode(description);
     }
 }
-

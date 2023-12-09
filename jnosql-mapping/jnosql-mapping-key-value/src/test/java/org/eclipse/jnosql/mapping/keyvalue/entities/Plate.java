@@ -12,37 +12,33 @@
  *
  *    Otavio Santana
  */
-package org.eclipse.jnosql.mapping.test.entities;
-
-
-import jakarta.nosql.Column;
-import org.eclipse.jnosql.mapping.Embeddable;
+package org.eclipse.jnosql.mapping.keyvalue.entities;
 
 import java.util.Objects;
 
-@Embeddable
-public class Job {
+public final class Plate {
 
-    @Column
-    private String description;
+    private final int prefix;
 
-    @Column
-    private String city;
+    private final String sufix;
 
-    public String getDescription() {
-        return description;
+
+    private Plate(int prefix, String sufix) {
+        this.prefix = prefix;
+        this.sufix = sufix;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public int getPrefix() {
+        return prefix;
     }
 
-    public String getCity() {
-        return city;
+    public String getSufix() {
+        return sufix;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    @Override
+    public String toString() {
+        return Integer.toString(prefix) + '-' + sufix;
     }
 
     @Override
@@ -53,12 +49,20 @@ public class Job {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Job job = (Job) o;
-        return Objects.equals(description, job.description);
+        Plate plate = (Plate) o;
+        return prefix == plate.prefix &&
+                Objects.equals(sufix, plate.sufix);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(description);
+        return Objects.hash(prefix, sufix);
     }
+
+    public static Plate of(String value) {
+        String[] values = value.split("-");
+        return new Plate(Integer.valueOf(values[0]), values[1]);
+    }
+
+
 }

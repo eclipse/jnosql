@@ -16,13 +16,13 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.PageableRepository;
-import org.eclipse.jnosql.mapping.test.entities.AnimalRepository;
-import org.eclipse.jnosql.mapping.test.entities.Contact;
-import org.eclipse.jnosql.mapping.test.entities.Job;
-import org.eclipse.jnosql.mapping.test.entities.MovieRepository;
-import org.eclipse.jnosql.mapping.test.entities.NoSQLVendor;
-import org.eclipse.jnosql.mapping.test.entities.Person;
-import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
+import org.eclipse.jnosql.mapping.reflection.entities.AnimalRepository;
+import org.eclipse.jnosql.mapping.reflection.entities.Contact;
+import org.eclipse.jnosql.mapping.reflection.entities.Job;
+import org.eclipse.jnosql.mapping.reflection.entities.MovieRepository;
+import org.eclipse.jnosql.mapping.reflection.entities.NoSQLVendor;
+import org.eclipse.jnosql.mapping.reflection.entities.Person;
+import org.eclipse.jnosql.mapping.reflection.entities.PersonRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
