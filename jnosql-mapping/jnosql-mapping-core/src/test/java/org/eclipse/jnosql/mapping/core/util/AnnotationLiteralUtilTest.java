@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.util;
+package org.eclipse.jnosql.mapping.core.util;
 
 import jakarta.enterprise.inject.Any;
 import jakarta.enterprise.inject.Default;

@@ -22,7 +22,7 @@ import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
-import org.eclipse.jnosql.mapping.repository.RepositoryObserverParser;
+import org.eclipse.jnosql.mapping.core.repository.RepositoryObserverParser;
 import org.eclipse.jnosql.mapping.core.repository.SpecialParameters;
 
 import java.util.function.BiFunction;

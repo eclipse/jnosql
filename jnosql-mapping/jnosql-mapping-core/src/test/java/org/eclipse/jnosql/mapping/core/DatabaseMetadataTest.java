@@ -14,6 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.core;
 
+import org.eclipse.jnosql.mapping.Database;
+import org.eclipse.jnosql.mapping.DatabaseMetadata;
+import org.eclipse.jnosql.mapping.DatabaseType;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

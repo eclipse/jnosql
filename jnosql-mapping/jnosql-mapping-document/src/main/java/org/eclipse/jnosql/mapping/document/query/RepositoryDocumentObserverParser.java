@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import org.eclipse.jnosql.communication.document.DocumentObserverParser;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
-import org.eclipse.jnosql.mapping.repository.RepositoryObserverParser;
+import org.eclipse.jnosql.mapping.core.repository.RepositoryObserverParser;
 
 import java.util.Objects;
 

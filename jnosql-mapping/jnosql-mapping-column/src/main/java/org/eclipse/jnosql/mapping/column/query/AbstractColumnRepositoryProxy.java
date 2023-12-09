@@ -21,8 +21,8 @@ import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
-import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
-import org.eclipse.jnosql.mapping.repository.ThrowingSupplier;
+import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
+import org.eclipse.jnosql.mapping.core.repository.ThrowingSupplier;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;

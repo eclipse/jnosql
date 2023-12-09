@@ -12,9 +12,9 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.util;
+package org.eclipse.jnosql.mapping.core.util;
 
-import org.eclipse.jnosql.mapping.VetedConverter;
+import org.eclipse.jnosql.mapping.core.VetedConverter;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Money;

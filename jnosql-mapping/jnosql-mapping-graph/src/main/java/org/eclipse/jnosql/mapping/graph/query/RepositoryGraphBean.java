@@ -24,7 +24,7 @@ import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
-import org.eclipse.jnosql.mapping.util.AnnotationLiteralUtil;
+import org.eclipse.jnosql.mapping.core.util.AnnotationLiteralUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;

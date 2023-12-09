@@ -24,7 +24,7 @@ import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.Where;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
-import org.eclipse.jnosql.mapping.repository.RepositoryObserverParser;
+import org.eclipse.jnosql.mapping.core.repository.RepositoryObserverParser;
 
 import java.util.Optional;
 import java.util.function.Supplier;

@@ -21,7 +21,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.util.ConverterUtil;
+import org.eclipse.jnosql.mapping.core.util.ConverterUtil;
 
 import java.util.List;
 import java.util.Optional;
