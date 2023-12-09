@@ -17,10 +17,10 @@ package org.eclipse.jnosql.mapping.document.query;
 import jakarta.data.repository.Limit;
 import jakarta.data.repository.Sort;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
-import org.eclipse.jnosql.mapping.NoSQLPage;
+import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.document.MappingDocumentQuery;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
-import org.eclipse.jnosql.mapping.repository.SpecialParameters;
+import org.eclipse.jnosql.mapping.core.repository.SpecialParameters;
 
 import java.util.ArrayList;
 import java.util.List;

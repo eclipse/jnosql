@@ -30,11 +30,11 @@ import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.method.DeleteMethodProvider;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.NoSQLPage;
+import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
-import org.eclipse.jnosql.mapping.util.ParamsBinder;
+import org.eclipse.jnosql.mapping.core.util.ParamsBinder;
 
 import java.lang.reflect.Method;
 import java.util.Objects;

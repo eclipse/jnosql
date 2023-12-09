@@ -18,7 +18,7 @@ import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
-import org.eclipse.jnosql.mapping.NoSQLPage;
+import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.column.MappingColumnQuery;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
