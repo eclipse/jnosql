@@ -12,31 +12,34 @@
  *
  *    Otavio Santana
  */
-package org.eclipse.jnosql.mapping.test.entities.constructor;
+package org.eclipse.jnosql.mapping.core.entities;
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.test.entities.Animal;
 
 import java.util.Objects;
 
 @Entity
-public class PetOwner {
+public final class Book {
 
     @Id
-    private final Long id;
+    private Long id;
 
     @Column
-    private final String name;
+    private String name;
 
     @Column
-    private final Animal animal;
+    private Integer age;
 
-    public PetOwner(@Id Long id, @Column("name") String name, @Column("animal") Animal animal) {
+
+    Book() {
+    }
+
+    Book(Long id, String name, Integer age) {
         this.id = id;
         this.name = name;
-        this.animal = animal;
+        this.age = age;
     }
 
     public Long getId() {
@@ -47,8 +50,8 @@ public class PetOwner {
         return name;
     }
 
-    public Animal getAnimal() {
-        return animal;
+    public Integer getAge() {
+        return age;
     }
 
     @Override
@@ -56,11 +59,11 @@ public class PetOwner {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Book)) {
             return false;
         }
-        PetOwner petOwner = (PetOwner) o;
-        return Objects.equals(id, petOwner.id);
+        Book book = (Book) o;
+        return Objects.equals(id, book.id);
     }
 
     @Override
@@ -70,10 +73,42 @@ public class PetOwner {
 
     @Override
     public String toString() {
-        return "PetOwner{" +
+        return "Book{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", animal=" + animal +
+                ", age=" + age +
                 '}';
+    }
+
+    public static BookBuilder builder() {
+        return new BookBuilder();
+    }
+
+    public static class BookBuilder {
+        private String name;
+        private Integer age;
+        private Long id;
+
+        private BookBuilder() {
+        }
+
+        public BookBuilder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public BookBuilder withAge(Integer age) {
+            this.age = age;
+            return this;
+        }
+
+        public BookBuilder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Book build() {
+            return new Book(id, name, age);
+        }
     }
 }

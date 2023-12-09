@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping;
+package org.eclipse.jnosql.mapping.core;
 
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;

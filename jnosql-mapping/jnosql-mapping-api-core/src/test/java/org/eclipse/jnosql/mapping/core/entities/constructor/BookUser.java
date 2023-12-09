@@ -12,36 +12,47 @@
  *
  *    Otavio Santana
  */
-package org.eclipse.jnosql.mapping.test.entities;
+package org.eclipse.jnosql.mapping.core.entities.constructor;
+
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
+import org.eclipse.jnosql.mapping.core.entities.Book;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Animal {
+public class BookUser {
 
     @Id
-    private Long id;
+    private final String nickname;
 
     @Column
-    private String name;
+    private final String name;
 
-    Animal() {
-    }
+    @Column
+    private final List<Book> books;
 
-    public Animal(String name) {
+    BookUser(@Id String nickname,
+             @Column("native_name") String name,
+             @Column("books") List<Book> books) {
+        this.nickname = nickname;
         this.name = name;
+        this.books = books;
     }
 
-    public Long getId() {
-        return id;
+    public String getNickname() {
+        return nickname;
     }
 
     public String getName() {
         return name;
+    }
+
+    public List<Book> getBooks() {
+        return books;
     }
 
     @Override
@@ -49,22 +60,24 @@ public class Animal {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Animal)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Animal animal = (Animal) o;
-        return Objects.equals(id, animal.id) &&
-                Objects.equals(name, animal.name);
+        BookUser bookUser = (BookUser) o;
+        return Objects.equals(nickname, bookUser.nickname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hashCode(nickname);
     }
 
     @Override
     public String toString() {
-        return  "Animal{" + "name='" + name + '\'' +
+        return "BookUser{" +
+                "nickname='" + nickname + '\'' +
+                ", name='" + name + '\'' +
+                ", books=" + books +
                 '}';
     }
 }

@@ -12,14 +12,24 @@
  *
  *   Otavio Santana
  */
+package org.eclipse.jnosql.mapping.core;
 
-/**
- * The {@code core} package in the Eclipse JNoSQL project contains the fundamental classes and interfaces
- * that form the core of the JNoSQL framework for NoSQL database integration and object-mapping.
- *
- * <p>Developers can use the classes and interfaces provided in this package to interact with various NoSQL
- * databases and perform CRUD (Create, Read, Update, Delete) operations on entities mapped to these databases.
- * The core package provides a flexible and extensible foundation for building NoSQL-based applications with JNoSQL.
- *
- */
-package org.eclipse.jnosql.mapping;
+import jakarta.enterprise.context.ApplicationScoped;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+
+@ApplicationScoped
+public class RandomText {
+
+    public String get() {
+        List<Character> collect = ThreadLocalRandom.
+                current().ints(10)
+                .mapToObj(i -> (char) i)
+                .toList();
+
+        return collect.stream().map(Objects::toString)
+                .collect(Collectors.joining(","));
+    }
+}

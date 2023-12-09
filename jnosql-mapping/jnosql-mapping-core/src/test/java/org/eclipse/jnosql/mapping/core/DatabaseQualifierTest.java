@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping;
+package org.eclipse.jnosql.mapping.core;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -12,47 +12,43 @@
  *
  *    Otavio Santana
  */
-package org.eclipse.jnosql.mapping.test.entities.constructor;
-
+package org.eclipse.jnosql.mapping.core.entities.constructor;
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.test.entities.Book;
+import org.eclipse.jnosql.mapping.core.entities.Animal;
 
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class BookUser {
+public class PetOwner {
 
     @Id
-    private final String nickname;
+    private final Long id;
 
     @Column
     private final String name;
 
     @Column
-    private final List<Book> books;
+    private final Animal animal;
 
-    BookUser(@Id String nickname,
-             @Column("native_name") String name,
-             @Column("books") List<Book> books) {
-        this.nickname = nickname;
+    public PetOwner(@Id Long id, @Column("name") String name, @Column("animal") Animal animal) {
+        this.id = id;
         this.name = name;
-        this.books = books;
+        this.animal = animal;
     }
 
-    public String getNickname() {
-        return nickname;
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public Animal getAnimal() {
+        return animal;
     }
 
     @Override
@@ -63,21 +59,21 @@ public class BookUser {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        BookUser bookUser = (BookUser) o;
-        return Objects.equals(nickname, bookUser.nickname);
+        PetOwner petOwner = (PetOwner) o;
+        return Objects.equals(id, petOwner.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(nickname);
+        return Objects.hashCode(id);
     }
 
     @Override
     public String toString() {
-        return "BookUser{" +
-                "nickname='" + nickname + '\'' +
+        return "PetOwner{" +
+                "id=" + id +
                 ", name='" + name + '\'' +
-                ", books=" + books +
+                ", animal=" + animal +
                 '}';
     }
 }
