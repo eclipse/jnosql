@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.data.repository.PageableRepository;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.graph.GraphTemplateProducer;

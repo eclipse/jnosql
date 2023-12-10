@@ -18,8 +18,8 @@ import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.GenericParameterMetaData;
-import org.eclipse.jnosql.mapping.test.entities.Book;
-import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
+import org.eclipse.jnosql.mapping.reflection.entities.Book;
+import org.eclipse.jnosql.mapping.reflection.entities.constructor.BookUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

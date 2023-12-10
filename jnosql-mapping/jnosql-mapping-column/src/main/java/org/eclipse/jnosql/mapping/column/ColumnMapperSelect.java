@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column;
 import jakarta.data.repository.Direction;
 import jakarta.data.repository.Sort;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import jakarta.nosql.QueryMapper.MapperFrom;
 import jakarta.nosql.QueryMapper.MapperLimit;
 import jakarta.nosql.QueryMapper.MapperNameCondition;

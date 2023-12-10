@@ -17,9 +17,9 @@ package org.eclipse.jnosql.mapping.document;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
 
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
-import org.eclipse.jnosql.mapping.util.ConverterUtil;
+import org.eclipse.jnosql.mapping.core.util.ConverterUtil;
 
 import java.util.List;
 import java.util.stream.StreamSupport;

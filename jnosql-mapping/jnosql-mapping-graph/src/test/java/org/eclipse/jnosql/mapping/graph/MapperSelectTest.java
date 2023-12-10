@@ -20,7 +20,7 @@ import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.graph.entities.Job;
 import org.eclipse.jnosql.mapping.graph.entities.Money;
 import org.eclipse.jnosql.mapping.graph.entities.Person;

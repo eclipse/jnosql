@@ -19,13 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import jakarta.nosql.Column;
 import org.eclipse.jnosql.mapping.Embeddable;
-import org.eclipse.jnosql.mapping.test.entities.Actor;
-import org.eclipse.jnosql.mapping.test.entities.Address;
-import org.eclipse.jnosql.mapping.test.entities.Movie;
-import org.eclipse.jnosql.mapping.test.entities.Person;
-import org.eclipse.jnosql.mapping.test.entities.Worker;
-import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
-import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
+import org.eclipse.jnosql.mapping.core.entities.Actor;
+import org.eclipse.jnosql.mapping.core.entities.Address;
+import org.eclipse.jnosql.mapping.core.entities.Movie;
+import org.eclipse.jnosql.mapping.core.entities.Person;
+import org.eclipse.jnosql.mapping.core.entities.Worker;
+import org.eclipse.jnosql.mapping.core.entities.constructor.BookUser;
+import org.eclipse.jnosql.mapping.core.entities.constructor.PetOwner;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;

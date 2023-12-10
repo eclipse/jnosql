@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.document;
 import jakarta.inject.Inject;
 import jakarta.nosql.document.DocumentTemplate;
 import org.eclipse.jnosql.communication.document.DocumentManager;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;

@@ -13,6 +13,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Fix serialization when the entity has constructor with simple generic types
 - null Embeddable list of nested object cannot be saved
 
+=== Changed
+
+- Change package name to avoid duplicated name in different modules
+
 == [1.0.3] - 2023-12-02
 
 === Changed

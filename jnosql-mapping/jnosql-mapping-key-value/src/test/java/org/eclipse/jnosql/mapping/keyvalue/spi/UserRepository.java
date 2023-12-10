@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.keyvalue.spi;
 
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
-import org.eclipse.jnosql.mapping.test.entities.User;
+import org.eclipse.jnosql.mapping.keyvalue.entities.User;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, String> {

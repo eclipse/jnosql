@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.document.DocumentObserverParser;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.document.entities.Car;
 import org.eclipse.jnosql.mapping.document.entities.Vendor;
 import org.eclipse.jnosql.mapping.document.entities.Worker;

@@ -24,8 +24,8 @@ import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
-import org.eclipse.jnosql.mapping.test.entities.Person;
-import org.eclipse.jnosql.mapping.test.entities.User;
+import org.eclipse.jnosql.mapping.keyvalue.entities.Person;
+import org.eclipse.jnosql.mapping.keyvalue.entities.User;
 import org.mockito.Mockito;
 
 import java.util.Optional;

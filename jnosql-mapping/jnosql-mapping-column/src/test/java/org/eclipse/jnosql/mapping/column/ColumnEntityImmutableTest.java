@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.column.entities.Car;
 import org.eclipse.jnosql.mapping.column.entities.Hero;
 import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;

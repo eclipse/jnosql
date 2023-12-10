@@ -21,7 +21,7 @@ import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
-import org.eclipse.jnosql.mapping.util.AnnotationLiteralUtil;
+import org.eclipse.jnosql.mapping.core.util.AnnotationLiteralUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;

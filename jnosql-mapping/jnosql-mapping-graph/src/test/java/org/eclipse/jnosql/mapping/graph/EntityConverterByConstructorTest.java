@@ -18,7 +18,7 @@ import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.assertj.core.api.SoftAssertions;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.graph.entities.Car;
 import org.eclipse.jnosql.mapping.graph.entities.Hero;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;

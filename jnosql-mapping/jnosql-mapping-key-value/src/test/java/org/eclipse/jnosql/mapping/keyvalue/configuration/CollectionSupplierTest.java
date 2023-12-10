@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.keyvalue.configuration;
 import jakarta.enterprise.inject.spi.CDI;
 import jakarta.enterprise.util.TypeLiteral;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueDatabase;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueDatabaseQualifier;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;

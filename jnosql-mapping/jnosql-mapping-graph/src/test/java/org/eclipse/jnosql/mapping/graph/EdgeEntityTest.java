@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.graph;
 import jakarta.data.exceptions.EmptyResultException;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
