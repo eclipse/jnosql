@@ -283,9 +283,9 @@ class DocumentCrudRepositoryProxyTest {
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
-        personRepository.findAllById(singletonList(10L)).toList();
+        personRepository.findByIdIn(singletonList(10L)).toList();
         verify(template).find(Person.class, 10L);
-        personRepository.findAllById(Arrays.asList(10L, 11L, 12L)).toList();
+        personRepository.findByIdIn(Arrays.asList(10L, 11L, 12L)).toList();
         verify(template, times(4)).find(Mockito.eq(Person.class), any(Long.class));
     }
 
@@ -298,10 +298,10 @@ class DocumentCrudRepositoryProxyTest {
 
     @Test
     void shouldDeleteByIds() {
-        personRepository.deleteAllById(singletonList(10L));
+        personRepository.deleteByIdIn(singletonList(10L));
         verify(template).delete(Person.class, 10L);
 
-        personRepository.deleteAllById(asList(1L, 2L, 3L));
+        personRepository.deleteByIdIn(asList(1L, 2L, 3L));
         verify(template, times(4)).delete(Mockito.eq(Person.class), any(Long.class));
     }
 

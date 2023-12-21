@@ -112,7 +112,7 @@ class KeyValueRepositoryProxyTest {
 
     @Test
     void shouldDeleteIterable() {
-        userRepository.deleteAllById(Collections.singletonList("key"));
+        userRepository.deleteByIdIn(Collections.singletonList("key"));
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
         Mockito.verify(template).delete(captor.capture());
         assertEquals("key", captor.getValue().iterator().next());
@@ -164,7 +164,7 @@ class KeyValueRepositoryProxyTest {
         when(template.get(keys, User.class)).thenReturn(
                 Arrays.asList(user, user2));
 
-        assertThat(userRepository.findAllById(keys)).contains(user, user2);
+        assertThat(userRepository.findByIdIn(keys)).contains(user, user2);
     }
 
     @Test

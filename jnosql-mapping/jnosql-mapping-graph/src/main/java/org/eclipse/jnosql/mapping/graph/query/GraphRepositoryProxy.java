@@ -23,7 +23,6 @@ import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.stream.Stream;
 
 /**
  * Proxy handle to generate {@link jakarta.data.repository.PageableRepository}

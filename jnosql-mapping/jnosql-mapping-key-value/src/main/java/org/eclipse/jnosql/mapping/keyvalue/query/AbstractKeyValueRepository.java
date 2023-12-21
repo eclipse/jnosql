@@ -65,7 +65,7 @@ public abstract class AbstractKeyValueRepository<T> implements PageableRepositor
     }
 
     @Override
-    public void deleteAllById(Iterable ids) {
+    public void deleteByIdIn(Iterable ids) {
         getTemplate().delete(ids);
     }
 
@@ -75,7 +75,7 @@ public abstract class AbstractKeyValueRepository<T> implements PageableRepositor
     }
 
     @Override
-    public Stream findAllById(Iterable keys) {
+    public Stream findByIdIn(Iterable keys) {
         return StreamSupport.stream(getTemplate().get(keys, type).spliterator(), false);
     }
 

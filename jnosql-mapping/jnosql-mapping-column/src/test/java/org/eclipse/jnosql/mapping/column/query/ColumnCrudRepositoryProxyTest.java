@@ -277,10 +277,10 @@ class ColumnCrudRepositoryProxyTest {
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
-        personRepository.findAllById(singletonList(10L)).toList();
+        personRepository.findByIdIn(singletonList(10L)).toList();
         verify(template).find(Person.class, 10L);
 
-        personRepository.findAllById(asList(1L, 2L, 3L)).toList();
+        personRepository.findByIdIn(asList(1L, 2L, 3L)).toList();
         verify(template, times(4)).find(Mockito.eq(Person.class), Mockito.any(Long.class));
     }
 
@@ -294,7 +294,7 @@ class ColumnCrudRepositoryProxyTest {
     @Test
     void shouldDeleteByIds() {
         ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-        personRepository.deleteAllById(singletonList(10L));
+        personRepository.deleteByIdIn(singletonList(10L));
         verify(template).delete(Person.class, 10L);
     }
 

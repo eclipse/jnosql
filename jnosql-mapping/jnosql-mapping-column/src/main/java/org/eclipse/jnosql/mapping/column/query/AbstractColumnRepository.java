@@ -74,7 +74,7 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
     }
 
     @Override
-    public void deleteAllById(Iterable<K> ids) {
+    public void deleteByIdIn(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
         ids.forEach(this::deleteById);
     }
@@ -96,7 +96,7 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
     }
 
     @Override
-    public Stream<T> findAllById(Iterable<K> ids) {
+    public Stream<T> findByIdIn(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
         return stream(ids.spliterator(), false)
                 .flatMap(optionalToStream());
