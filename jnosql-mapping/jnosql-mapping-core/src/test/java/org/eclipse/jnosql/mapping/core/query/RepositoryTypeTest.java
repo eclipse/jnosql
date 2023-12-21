@@ -18,7 +18,6 @@ package org.eclipse.jnosql.mapping.core.query;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.OrderBy;
-import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Query;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.spi.CDI;
