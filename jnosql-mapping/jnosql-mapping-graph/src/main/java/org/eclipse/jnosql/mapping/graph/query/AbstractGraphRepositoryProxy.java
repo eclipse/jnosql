@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.data.exceptions.MappingException;
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
+import jakarta.data.page.Page;
+import jakarta.data.page.Pageable;
 import jakarta.data.repository.PageableRepository;
 import jakarta.enterprise.inject.spi.CDI;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;

@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
 
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
+import jakarta.data.page.Page;
+import jakarta.data.page.Pageable;
 import jakarta.data.repository.PageableRepository;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;

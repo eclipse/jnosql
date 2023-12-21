@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
+import jakarta.data.page.Page;
+import jakarta.data.page.Pageable;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
@@ -66,7 +66,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
     }
 
     @Override
-    public void deleteAllById(Iterable<K> ids) {
+    public void deleteByIdIn(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
         ids.forEach(this::deleteById);
     }
@@ -78,7 +78,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
     }
 
     @Override
-    public Stream<T> findAllById(Iterable<K> ids) {
+    public Stream<T> findByIdIn(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
         return stream(ids.spliterator(), false)
                 .flatMap(optionalToStream());

@@ -17,10 +17,10 @@
 package org.eclipse.jnosql.communication.document;
 
 
-import jakarta.data.repository.Direction;
+import jakarta.data.Direction;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
-import jakarta.data.repository.Sort;
+import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.SelectQueryConverter;
 

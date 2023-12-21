@@ -12,8 +12,8 @@
 package org.eclipse.jnosql.communication.query.method;
 
 import org.eclipse.jnosql.communication.Condition;
-import jakarta.data.repository.Sort;
-import jakarta.data.repository.Direction;
+import jakarta.data.Sort;
+import jakarta.data.Direction;
 import org.eclipse.jnosql.communication.query.BooleanQueryValue;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.ParamQueryValue;

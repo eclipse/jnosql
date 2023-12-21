@@ -17,8 +17,8 @@
 package org.eclipse.jnosql.communication.document;
 
 import org.eclipse.jnosql.communication.Condition;
-import jakarta.data.repository.Sort;
-import jakarta.data.repository.Direction;
+import jakarta.data.Sort;
+import jakarta.data.Direction;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

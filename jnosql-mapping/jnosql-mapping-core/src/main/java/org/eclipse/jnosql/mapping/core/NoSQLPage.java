@@ -14,8 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.core;
 
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
+
+import jakarta.data.page.Page;
+import jakarta.data.page.Pageable;
 
 import java.util.Collections;
 import java.util.Iterator;

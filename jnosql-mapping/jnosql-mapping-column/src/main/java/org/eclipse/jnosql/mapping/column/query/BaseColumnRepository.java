@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
+import jakarta.data.page.Page;
+import jakarta.data.page.Pageable;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQueryParams;

@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.data.repository.Direction;
-import jakarta.data.repository.Sort;
+import jakarta.data.Direction;
+import jakarta.data.Sort;
 import jakarta.nosql.QueryMapper.MapperFrom;
 import jakarta.nosql.QueryMapper.MapperLimit;
 import jakarta.nosql.QueryMapper.MapperNameCondition;

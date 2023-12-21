@@ -14,12 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
-import jakarta.data.repository.Limit;
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
+import jakarta.data.Limit;
+import jakarta.data.page.Page;
+import jakarta.data.page.Pageable;
 import jakarta.data.repository.PageableRepository;
-import jakarta.data.repository.Slice;
-import jakarta.data.repository.Sort;
+import jakarta.data.page.Slice;
+import jakarta.data.Sort;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;

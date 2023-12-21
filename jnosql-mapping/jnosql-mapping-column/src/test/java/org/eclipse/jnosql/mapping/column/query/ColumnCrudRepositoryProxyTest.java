@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column.query;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
-import jakarta.data.repository.Sort;
+import jakarta.data.Sort;
 import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
 import org.assertj.core.api.Assertions;

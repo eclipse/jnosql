@@ -18,7 +18,7 @@ package org.eclipse.jnosql.communication.document;
 
 import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.communication.Condition;
-import jakarta.data.repository.Sort;
+import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

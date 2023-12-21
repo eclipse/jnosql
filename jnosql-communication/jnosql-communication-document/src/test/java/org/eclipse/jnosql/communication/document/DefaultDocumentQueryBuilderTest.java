@@ -16,7 +16,7 @@
 
 package org.eclipse.jnosql.communication.document;
 
-import jakarta.data.repository.Sort;
+import jakarta.data.Sort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
