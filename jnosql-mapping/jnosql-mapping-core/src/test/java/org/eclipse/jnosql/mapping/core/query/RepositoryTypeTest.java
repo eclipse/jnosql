@@ -12,8 +12,10 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.query;
+package org.eclipse.jnosql.mapping.core.query;
 
+
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
@@ -22,6 +24,8 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.spi.CDI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -30,17 +34,17 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class RepositoryTypeTest {
 
 
-    @Test
-    void shouldReturnDefault() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "save"), CrudRepository.class));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "deleteById"), CrudRepository.class));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "findById"), CrudRepository.class));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "existsById"), CrudRepository.class));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "count"), CrudRepository.class));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(PageableRepository.class, "findAll"), CrudRepository.class));
+    @ParameterizedTest
+    @ValueSource(strings = {"save", "deleteById", "findById", "existsById", "count", "findAll"})
+    void shouldReturnDefault(String methodName) throws NoSuchMethodException {
+        Method method = getMethod(BasicRepository.class, methodName);
+        var type = RepositoryType.of(method, BasicRepository.class);
+        assertThat(type).isEqualTo(RepositoryType.DEFAULT);
     }
 
 
