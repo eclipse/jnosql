@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.keyvalue.query;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.PageableRepository;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -34,7 +35,7 @@ import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEP
 /**
  * The template method to key-value repository
  */
-public abstract class AbstractKeyValueRepository<T> implements PageableRepository {
+public abstract class AbstractKeyValueRepository<T, K> implements PageableRepository<T, K>, CrudRepository<T, K> {
 
 
     private final Class<T> type;
@@ -50,38 +51,38 @@ public abstract class AbstractKeyValueRepository<T> implements PageableRepositor
 
 
     @Override
-    public Object save(Object entity) {
+    public <S extends T> S save(S entity) {
         return getTemplate().put(entity);
     }
 
     @Override
-    public Iterable saveAll(Iterable entities) {
+    public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
         return getTemplate().put(entities);
     }
 
     @Override
-    public void deleteById(Object key) {
+    public void deleteById(K key) {
         getTemplate().delete(key);
     }
 
     @Override
-    public void deleteByIdIn(Iterable ids) {
+    public void deleteByIdIn(Iterable<K> ids) {
         getTemplate().delete(ids);
     }
 
     @Override
-    public Optional findById(Object key) {
-        return getTemplate().get(key, type);
+    public Optional<T> findById(K id) {
+        return getTemplate().get(id, type);
     }
 
     @Override
-    public Stream findByIdIn(Iterable keys) {
-        return StreamSupport.stream(getTemplate().get(keys, type).spliterator(), false);
+    public Stream<T> findByIdIn(Iterable<K> ids) {
+        return StreamSupport.stream(getTemplate().get(ids, type).spliterator(), false);
     }
 
     @Override
-    public boolean existsById(Object key) {
-        return getTemplate().get(key, type).isPresent();
+    public boolean existsById(K id) {
+        return getTemplate().get(id, type).isPresent();
     }
 
     @Override
@@ -90,12 +91,12 @@ public abstract class AbstractKeyValueRepository<T> implements PageableRepositor
     }
 
     @Override
-    public Page findAll(Pageable pageable) {
+    public Page<T> findAll(Pageable pageable) {
         throw new UnsupportedOperationException("The key-value type does not support count method");
     }
 
     @Override
-    public Stream findAll() {
+    public Stream<T> findAll() {
         throw new UnsupportedOperationException("The key-value type does not support count method");
     }
 
