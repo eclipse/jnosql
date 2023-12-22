@@ -102,5 +102,6 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
             return entityMetadata;
         }
 
+
     }
 }

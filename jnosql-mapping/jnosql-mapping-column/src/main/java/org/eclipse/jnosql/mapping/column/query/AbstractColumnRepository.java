@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
@@ -40,7 +41,7 @@ import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEP
 /**
  * The {@link PageableRepository} template method
  */
-public abstract class AbstractColumnRepository<T, K> implements PageableRepository<T, K> {
+public abstract class AbstractColumnRepository<T, K> implements PageableRepository<T, K>, CrudRepository<T, K> {
 
     protected abstract JNoSQLColumnTemplate getTemplate();
 
@@ -112,19 +113,19 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
     }
 
     @Override
-    public Page findAll(Pageable pageable) {
+    public Page<T> findAll(Pageable pageable) {
         Objects.requireNonNull(pageable, "pageable is required");
         EntityMetadata metadata = getEntityMetadata();
         ColumnQuery query = new MappingColumnQuery(pageable.sorts(),
                 pageable.size(), NoSQLPage.skip(pageable)
                 , null ,metadata.name());
 
-        List<Object> entities = getTemplate().select(query).toList();
+        List<T> entities = getTemplate().<T>select(query).toList();
         return NoSQLPage.of(entities, pageable);
     }
 
     @Override
-    public Stream findAll() {
+    public Stream<T> findAll() {
         return getTemplate().findAll(getType());
     }
 
@@ -137,7 +138,7 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
     }
 
     @Override
-    public void deleteAll(Iterable entities) {
+    public void deleteAll(Iterable<? extends T> entities) {
         Objects.requireNonNull(entities, "entity is required");
         StreamSupport.stream(entities.spliterator(), false)
                 .forEach(this::delete);
@@ -146,6 +147,31 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
     @Override
     public void deleteAll() {
         getTemplate().deleteAll(getType());
+    }
+
+    @Override
+    public <S extends T> S insert(S entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return getTemplate().insert(entity);
+    }
+
+    @Override
+    public <S extends T> Iterable<S> insertAll(Iterable<S> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        return getTemplate().insert(entities);
+    }
+
+    @Override
+    public boolean update(T entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return getTemplate().update(entity) != null;
+    }
+
+    @Override
+    public int updateAll(Iterable<T> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        getTemplate().update(entities);
+        return (int) StreamSupport.stream(entities.spliterator(), false).count();
     }
 
     private Function optionalToStream() {
