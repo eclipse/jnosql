@@ -75,7 +75,7 @@ public class DocumentRepositoryProducer {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
 
-        DocumentRepositoryProxy<R> handler = new DocumentRepositoryProxy<>(template,
+        DocumentRepositoryProxy<T, K>  handler = new DocumentRepositoryProxy<>(template,
                 entities, repositoryClass, converters);
         return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},

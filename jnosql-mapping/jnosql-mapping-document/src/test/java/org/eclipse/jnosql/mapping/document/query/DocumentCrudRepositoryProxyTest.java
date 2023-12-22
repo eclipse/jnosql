@@ -175,6 +175,63 @@ class DocumentCrudRepositoryProxyTest {
     }
 
     @Test
+    void shouldInsert() {
+
+        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        assertNotNull(personRepository.insert(person));
+        verify(template).insert(captor.capture());
+        Person value = captor.getValue();
+        assertEquals(person, value);
+    }
+
+    @Test
+    void shouldUpdate() {
+
+        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.update(person);
+        verify(template).update(captor.capture());
+        Person value = captor.getValue();
+        assertEquals(person, value);
+    }
+
+    @Test
+    void shouldInsertIterable() {
+
+        ArgumentCaptor<List<Person>> captor = ArgumentCaptor.forClass(List.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        assertNotNull(personRepository.insertAll(List.of(person)));
+        verify(template).insert(captor.capture());
+        List<Person> value = captor.getValue();
+        assertThat(value).contains(person);
+    }
+
+    @Test
+    void shouldUpdateIterable() {
+
+        ArgumentCaptor<List<Person>> captor = ArgumentCaptor.forClass(List.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.updateAll(List.of(person));
+        verify(template).update(captor.capture());
+        List<Person> value = captor.getValue();
+        assertThat(value).contains(person);
+    }
+
+
+    @Test
     void shouldFindByNameInstance() {
 
         when(template.singleResult(Mockito.any(DocumentQuery.class))).thenReturn(Optional

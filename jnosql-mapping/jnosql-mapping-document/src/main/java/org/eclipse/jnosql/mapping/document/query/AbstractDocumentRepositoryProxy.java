@@ -30,13 +30,14 @@ import java.lang.reflect.Method;
 import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
 
 /**
- * The template method to {@link PageableRepository} to Document
+ * Template method to Repository proxy on column
  *
- * @param <T> the class type
+ * @param <T> the entity type
+ * @param <K> the key type
  */
-public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRepository implements InvocationHandler {
+public abstract class AbstractDocumentRepositoryProxy<T, K> extends BaseDocumentRepository<T> implements InvocationHandler {
 
-    protected abstract PageableRepository getRepository();
+    protected abstract PageableRepository<T, K> getRepository();
 
     protected abstract Class<?> repositoryType();
 

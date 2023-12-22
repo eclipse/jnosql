@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
@@ -40,7 +41,7 @@ import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEP
 /**
  * The {@link PageableRepository} template method
  */
-public abstract class AbstractDocumentRepository<T, K> implements PageableRepository<T, K> {
+public abstract class AbstractDocumentRepository<T, K> implements PageableRepository<T, K>, CrudRepository<T, K> {
 
     protected abstract JNoSQLDocumentTemplate getTemplate();
 
@@ -86,7 +87,7 @@ public abstract class AbstractDocumentRepository<T, K> implements PageableReposi
     @Override
     public Stream<T> findByIdIn(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
-        return  stream(ids.spliterator(), false)
+        return stream(ids.spliterator(), false)
                 .flatMap(optionalToStream());
     }
 
@@ -112,7 +113,7 @@ public abstract class AbstractDocumentRepository<T, K> implements PageableReposi
         EntityMetadata metadata = getEntityMetadata();
         DocumentQuery query = new MappingDocumentQuery(pageable.sorts(),
                 pageable.size(), NoSQLPage.skip(pageable)
-                , null ,metadata.name());
+                , null, metadata.name());
 
         List<Object> entities = getTemplate().select(query).toList();
         return NoSQLPage.of(entities, pageable);
@@ -141,6 +142,31 @@ public abstract class AbstractDocumentRepository<T, K> implements PageableReposi
     @Override
     public void deleteAll() {
         getTemplate().deleteAll(getType());
+    }
+
+    @Override
+    public <S extends T> S insert(S entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return getTemplate().insert(entity);
+    }
+
+    @Override
+    public <S extends T> Iterable<S> insertAll(Iterable<S> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        return getTemplate().insert(entities);
+    }
+
+    @Override
+    public boolean update(T entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return getTemplate().update(entity) != null;
+    }
+
+    @Override
+    public int updateAll(Iterable<T> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        getTemplate().update(entities);
+        return (int) StreamSupport.stream(entities.spliterator(), false).count();
     }
 
     private Class<T> getType() {
