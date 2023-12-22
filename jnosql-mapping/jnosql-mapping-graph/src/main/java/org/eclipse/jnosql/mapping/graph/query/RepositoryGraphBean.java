@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
 import jakarta.enterprise.context.spi.CreationalContext;
 import org.apache.tinkerpop.gremlin.structure.Graph;
