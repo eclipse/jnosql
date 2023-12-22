@@ -14,10 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-import jakarta.data.repository.BasicRepository;
-import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
-import jakarta.data.repository.PageableRepository;
 import jakarta.enterprise.context.spi.CreationalContext;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
