@@ -18,18 +18,21 @@ package org.eclipse.jnosql.mapping.core.query;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.OrderBy;
+import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Query;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.spi.CDI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -38,13 +41,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RepositoryTypeTest {
 
 
+
     @ParameterizedTest
-    @ValueSource(strings = {"save", "deleteById", "findById", "existsById", "count", "findAll"})
-    void shouldReturnDefault(String methodName) throws NoSuchMethodException {
-        Method method = getMethod(BasicRepository.class, methodName);
+    @MethodSource("getBasicRepositoryMethods")
+    void shouldReturnDefaultAtBasicRepository(Method method)  {
         var type = RepositoryType.of(method, BasicRepository.class);
         assertThat(type).isEqualTo(RepositoryType.DEFAULT);
     }
+
+    @ParameterizedTest
+    @MethodSource("getCrudRepositoryMethods")
+    void shouldReturnDefaultAtCrudRepository(Method method)  {
+        var type = RepositoryType.of(method, BasicRepository.class);
+        assertThat(type).isEqualTo(RepositoryType.DEFAULT);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getPageableRepositoryMethods")
+    void shouldReturnDefaultAtPageableRepository(Method method)  {
+        var type = RepositoryType.of(method, BasicRepository.class);
+        assertThat(type).isEqualTo(RepositoryType.DEFAULT);
+    }
+
 
 
     @Test
@@ -182,6 +200,21 @@ class RepositoryTypeTest {
         BigDecimal sum();
 
         List<String> findBySum(String name);
+    }
+
+    private static Stream<Arguments> getBasicRepositoryMethods() {
+        return Arrays.stream(BasicRepository.class.getDeclaredMethods())
+                .map(Arguments::of);
+    }
+
+    private static Stream<Arguments> getCrudRepositoryMethods() {
+        return Arrays.stream(CrudRepository.class.getDeclaredMethods())
+                .map(Arguments::of);
+    }
+
+    private static Stream<Arguments> getPageableRepositoryMethods() {
+        return Arrays.stream(PageableRepository.class.getDeclaredMethods())
+                .map(Arguments::of);
     }
 
 }
