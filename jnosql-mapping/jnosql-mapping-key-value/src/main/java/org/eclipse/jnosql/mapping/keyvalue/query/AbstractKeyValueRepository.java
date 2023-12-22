@@ -125,25 +125,25 @@ public abstract class AbstractKeyValueRepository<T, K> implements PageableReposi
     @Override
     public <S extends T> S insert(S entity) {
         Objects.requireNonNull(entity, "entity is required");
-        return getTemplate().insert(entity);
+        return getTemplate().put(entity);
     }
 
     @Override
     public <S extends T> Iterable<S> insertAll(Iterable<S> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        return getTemplate().insert(entities);
+        return getTemplate().put(entities);
     }
 
     @Override
     public boolean update(T entity) {
         Objects.requireNonNull(entity, "entity is required");
-        return getTemplate().update(entity) != null;
+        return getTemplate().put(entity) != null;
     }
 
     @Override
     public int updateAll(Iterable<T> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        getTemplate().update(entities);
+        getTemplate().put(entities);
         return (int) StreamSupport.stream(entities.spliterator(), false).count();
     }
 }

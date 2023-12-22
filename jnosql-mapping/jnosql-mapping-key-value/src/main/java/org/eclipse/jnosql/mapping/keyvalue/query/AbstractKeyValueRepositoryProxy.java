@@ -26,10 +26,10 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHandler {
+public abstract class AbstractKeyValueRepositoryProxy<T, K> implements InvocationHandler {
 
 
-    protected abstract PageableRepository getRepository();
+    protected abstract PageableRepository<T, K> getRepository();
 
     protected abstract KeyValueTemplate getTemplate();
 

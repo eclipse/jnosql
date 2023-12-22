@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
@@ -101,6 +102,52 @@ class KeyValueRepositoryProxyTest {
         assertEquals(user, value);
     }
 
+    @Test
+    void shouldInsert() {
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+
+        User user = new User("ada", "Ada", 10);
+        userRepository.insert(user);
+        Mockito.verify(template).put(captor.capture());
+        User value = captor.getValue();
+        assertEquals(user, value);
+    }
+
+
+    @Test
+    void shouldInsertIterable() {
+        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
+
+        User user = new User("ada", "Ada", 10);
+        userRepository.insertAll(Collections.singleton(user));
+        Mockito.verify(template).put(captor.capture());
+        User value = (User) captor.getValue().iterator().next();
+        assertEquals(user, value);
+    }
+
+    @Test
+    void shouldUpdate() {
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+
+        User user = new User("ada", "Ada", 10);
+        userRepository.update(user);
+        Mockito.verify(template).put(captor.capture());
+        User value = captor.getValue();
+        assertEquals(user, value);
+    }
+
+
+    @Test
+    void shouldUpdateIterable() {
+        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
+
+        User user = new User("ada", "Ada", 10);
+        userRepository.updateAll(Collections.singleton(user));
+        Mockito.verify(template).put(captor.capture());
+        User value = (User) captor.getValue().iterator().next();
+        assertEquals(user, value);
+    }
+
 
     @Test
     void shouldDelete() {
@@ -135,6 +182,8 @@ class KeyValueRepositoryProxyTest {
         Mockito.verify(template).delete(captor.capture());
         assertEquals("ada", captor.getValue().iterator().next());
     }
+
+
 
 
     @Test
@@ -274,7 +323,7 @@ class KeyValueRepositoryProxyTest {
         }
     }
 
-    interface UserRepository extends PageableRepository<User, String>, BaseQuery<User>, PersonStatisticRepository {
+    interface UserRepository extends PageableRepository<User, String>, CrudRepository<User, String>, BaseQuery<User>, PersonStatisticRepository {
 
         Optional<User> findByName(String name);
 
