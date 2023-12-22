@@ -30,6 +30,7 @@ import java.lang.reflect.ParameterizedType;
  * @param <T>  the type
  * @param <K> the K type
  */
+@SuppressWarnings("rawtypes")
 class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
 
     private final JNoSQLColumnTemplate template;
