@@ -34,9 +34,9 @@ import java.lang.reflect.Method;
  * @param <T> the entity type
  * @param <K> the K entity
  */
-public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepository implements InvocationHandler {
+public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepository<T> implements InvocationHandler {
 
-    protected abstract PageableRepository getRepository();
+    protected abstract PageableRepository<T, K> getRepository();
 
     protected abstract Converters getConverters();
 

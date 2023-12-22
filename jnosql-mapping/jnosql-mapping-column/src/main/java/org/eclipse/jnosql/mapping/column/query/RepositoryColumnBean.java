@@ -14,7 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.PageableRepository;
 import jakarta.enterprise.context.spi.CreationalContext;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
@@ -32,9 +35,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Artemis discoveryBean to CDI extension to register Repository
+ * JNoSQL discoveryBean to CDI extension to register Repository
  */
-public class RepositoryColumnBean<T extends CrudRepository> extends AbstractBean<T> {
+public class RepositoryColumnBean<T extends DataRepository<T, ?>> extends AbstractBean<T> {
 
     private final Class type;
 
