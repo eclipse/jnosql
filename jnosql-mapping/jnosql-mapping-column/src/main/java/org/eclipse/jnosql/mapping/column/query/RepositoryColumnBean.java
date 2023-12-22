@@ -34,7 +34,7 @@ import java.util.Set;
 /**
  * JNoSQL discoveryBean to CDI extension to register Repository
  */
-public class RepositoryColumnBean<T extends DataRepository<T, ?>> extends AbstractBean<T> {
+public class RepositoryColumnBean<T extends DataRepository<?, ?>> extends AbstractBean<T> {
 
     private final Class<T> type;
 

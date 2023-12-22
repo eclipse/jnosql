@@ -130,7 +130,7 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
     }
 
     @Override
-    public void delete(Object entity) {
+    public void delete(T entity) {
         Objects.requireNonNull(entity, "entity is required");
         EntityMetadata metadata = getEntityMetadata();
         FieldMetadata id = metadata.id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
