@@ -23,9 +23,9 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import java.lang.reflect.ParameterizedType;
 
-class KeyValueRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
+class KeyValueRepositoryProxy<T, K> extends AbstractKeyValueRepositoryProxy<T, K> {
 
-    private final DefaultKeyValueRepository repository;
+    private final DefaultKeyValueRepository<T, K>  repository;
     private final KeyValueTemplate template;
     private final Class<T> type;
 
@@ -36,14 +36,14 @@ class KeyValueRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
         EntityMetadata metadata = entitiesMetadata.get(typeClass);
-        this.repository = new DefaultKeyValueRepository(typeClass, metadata, template);
+        this.repository = new DefaultKeyValueRepository<>(typeClass, metadata, template);
         this.template = template;
         this.type = typeClass;
         this.repositoryType = repositoryType;
     }
 
     @Override
-    protected PageableRepository getRepository() {
+    protected PageableRepository<T, K>  getRepository() {
         return repository;
     }
 
@@ -53,7 +53,7 @@ class KeyValueRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
     }
 
     @Override
-    protected Class getType() {
+    protected Class<T> getType() {
         return type;
     }
 

@@ -14,9 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.core.repository;
 
-import jakarta.data.repository.Limit;
-import jakarta.data.repository.Pageable;
-import jakarta.data.repository.Sort;
+
+import jakarta.data.Limit;
+import jakarta.data.page.Pageable;
+import jakarta.data.Sort;
 
 import java.util.ArrayList;
 import java.util.Collections;

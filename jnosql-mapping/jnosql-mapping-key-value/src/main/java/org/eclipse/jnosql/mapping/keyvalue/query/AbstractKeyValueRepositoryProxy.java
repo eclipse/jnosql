@@ -18,7 +18,7 @@ import jakarta.data.repository.PageableRepository;
 import jakarta.enterprise.inject.spi.CDI;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
-import org.eclipse.jnosql.mapping.query.RepositoryType;
+import org.eclipse.jnosql.mapping.core.query.RepositoryType;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.core.repository.ThrowingSupplier;
 
@@ -26,10 +26,10 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHandler {
+public abstract class AbstractKeyValueRepositoryProxy<T, K> implements InvocationHandler {
 
 
-    protected abstract PageableRepository getRepository();
+    protected abstract PageableRepository<T, K> getRepository();
 
     protected abstract KeyValueTemplate getTemplate();
 

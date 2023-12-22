@@ -45,7 +45,7 @@ public class KeyValueRepositoryProducer {
     public <T, K, R extends PageableRepository<T, K>> R get(Class<R> repositoryClass, KeyValueTemplate template) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
-        KeyValueRepositoryProxy<T> handler = new KeyValueRepositoryProxy<>(repositoryClass, entities, template);
+        KeyValueRepositoryProxy<T, K> handler = new KeyValueRepositoryProxy<>(repositoryClass, entities, template);
         return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);

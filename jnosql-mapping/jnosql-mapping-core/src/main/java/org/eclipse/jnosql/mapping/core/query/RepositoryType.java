@@ -12,8 +12,9 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.query;
+package org.eclipse.jnosql.mapping.core.query;
 
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
@@ -32,7 +33,7 @@ import java.util.function.Predicate;
 public enum RepositoryType {
 
     /**
-     * Methods from either {@link CrudRepository} or {@link  PageableRepository}
+     * Methods from either {@link CrudRepository}, {@link  PageableRepository} and {@link  BasicRepository}
      */
     DEFAULT(""),
     /**
@@ -78,7 +79,8 @@ public enum RepositoryType {
     CUSTOM_REPOSITORY("");
 
     private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(CrudRepository.class)
-            .or(Predicate.isEqual(PageableRepository.class));
+            .or(Predicate.isEqual(PageableRepository.class))
+            .or(Predicate.isEqual(BasicRepository.class));
 
     private static final Set<RepositoryType> KEY_WORLD_METHODS = EnumSet.of(FIND_BY, DELETE_BY, COUNT_BY, EXISTS_BY);
     private final String keyword;

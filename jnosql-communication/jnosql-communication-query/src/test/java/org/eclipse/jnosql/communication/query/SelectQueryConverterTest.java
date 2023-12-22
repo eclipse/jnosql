@@ -13,7 +13,7 @@
 package org.eclipse.jnosql.communication.query;
 
 import org.eclipse.jnosql.communication.Condition;
-import jakarta.data.repository.Sort;
+import jakarta.data.Sort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

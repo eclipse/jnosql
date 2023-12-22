@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
@@ -29,11 +30,11 @@ import java.lang.reflect.ParameterizedType;
  *
  * @param <T> the type
  */
-class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
+class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K> {
 
     private final JNoSQLDocumentTemplate template;
 
-    private final DocumentRepository repository;
+    private final DocumentRepository<T, K> repository;
 
     private final EntityMetadata entityMetadata;
 
@@ -45,7 +46,7 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
     DocumentRepositoryProxy(JNoSQLDocumentTemplate template, EntitiesMetadata entities,
                             Class<?> repositoryType, Converters converters) {
         this.template = template;
-        Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
+        Class<T> typeClass = (Class<T>) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
         this.entityMetadata = entities.get(typeClass);
         this.repository = new DocumentRepository(template, entityMetadata);
@@ -55,7 +56,7 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
 
 
     @Override
-    protected PageableRepository getRepository() {
+    protected PageableRepository<T, K> getRepository() {
         return repository;
     }
 
@@ -80,7 +81,8 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
     }
 
 
-    static class DocumentRepository extends AbstractDocumentRepository implements PageableRepository {
+    static class DocumentRepository<T, K> extends AbstractDocumentRepository<T, K> implements PageableRepository<T, K>,
+            CrudRepository<T, K> {
 
         private final JNoSQLDocumentTemplate template;
 

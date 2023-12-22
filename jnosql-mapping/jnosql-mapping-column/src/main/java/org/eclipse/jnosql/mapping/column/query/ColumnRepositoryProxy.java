@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
@@ -30,11 +31,11 @@ import java.lang.reflect.ParameterizedType;
  * @param <T>  the type
  * @param <K> the K type
  */
-class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
+class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T, K> {
 
     private final JNoSQLColumnTemplate template;
 
-    private final ColumnRepository repository;
+    private final ColumnRepository<T, K> repository;
 
     private final EntityMetadata entityMetadata;
 
@@ -49,13 +50,13 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
         this.entityMetadata = entities.get(typeClass);
-        this.repository = new ColumnRepository(template, entityMetadata);
+        this.repository = new ColumnRepository<>(template, entityMetadata);
         this.converters = converters;
         this.repositoryType =  repositoryType;
     }
 
     @Override
-    protected PageableRepository getRepository() {
+    protected PageableRepository<T, K> getRepository() {
         return repository;
     }
 
@@ -80,7 +81,8 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
     }
 
 
-    static class ColumnRepository extends AbstractColumnRepository implements PageableRepository {
+    static class ColumnRepository<T, K> extends AbstractColumnRepository<T, K> implements PageableRepository<T, K>,
+            CrudRepository<T, K> {
 
         private final JNoSQLColumnTemplate template;
 
@@ -100,6 +102,7 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
         protected EntityMetadata getEntityMetadata() {
             return entityMetadata;
         }
+
 
     }
 }

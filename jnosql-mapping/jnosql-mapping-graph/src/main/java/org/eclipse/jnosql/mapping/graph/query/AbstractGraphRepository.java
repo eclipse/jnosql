@@ -14,8 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
+import jakarta.data.page.Page;
+import jakarta.data.page.Pageable;
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
@@ -35,7 +36,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 
-abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K> {
+abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>, CrudRepository<T, K> {
 
     protected abstract GraphTemplate getTemplate();
 
@@ -66,7 +67,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
     }
 
     @Override
-    public void deleteAllById(Iterable<K> ids) {
+    public void deleteByIdIn(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
         ids.forEach(this::deleteById);
     }
@@ -78,7 +79,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
     }
 
     @Override
-    public Stream<T> findAllById(Iterable<K> ids) {
+    public Stream<T> findByIdIn(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
         return stream(ids.spliterator(), false)
                 .flatMap(optionalToStream());
@@ -95,26 +96,28 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
     }
 
     @Override
-    public Page findAll(Pageable pageable) {
+    public Page<T> findAll(Pageable pageable) {
         Objects.requireNonNull(pageable, "pageable is required");
         EntityMetadata metadata = getEntityMetadata();
 
-        List<Object> entities = getTemplate().traversalVertex()
+        List<T> entities = getTemplate().traversalVertex()
                 .hasLabel(metadata.type())
                 .skip(NoSQLPage.skip(pageable))
-                .limit(pageable.size()).result()
+                .limit(pageable.size())
+                .<T>result()
                 .toList();
 
         return NoSQLPage.of(entities, pageable);
     }
 
     @Override
-    public Stream findAll() {
-        return getTemplate().findAll(getEntityMetadata().type());
+    public Stream<T> findAll() {
+        return getTemplate()
+                .<T>findAll((Class<T>) getEntityMetadata().type());
     }
 
     @Override
-    public void delete(Object entity) {
+    public void delete(T entity) {
         requireNonNull(entity, "entity is required");
         EntityMetadata metadata = getEntityMetadata();
         FieldMetadata id = metadata.id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
@@ -123,7 +126,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
     }
 
     @Override
-    public void deleteAll(Iterable entities) {
+    public void deleteAll(Iterable<? extends T> entities) {
         requireNonNull(entities, "entities is required");
         EntityMetadata metadata = getEntityMetadata();
         FieldMetadata id = metadata.id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
@@ -134,6 +137,31 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
     @Override
     public void deleteAll() {
         getTemplate().deleteAll(getEntityMetadata().type());
+    }
+
+    @Override
+    public <S extends T> S insert(S entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return getTemplate().insert(entity);
+    }
+
+    @Override
+    public <S extends T> Iterable<S> insertAll(Iterable<S> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        return getTemplate().insert(entities);
+    }
+
+    @Override
+    public boolean update(T entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return getTemplate().update(entity) != null;
+    }
+
+    @Override
+    public int updateAll(Iterable<T> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        getTemplate().update(entities);
+        return (int) StreamSupport.stream(entities.spliterator(), false).count();
     }
 
     private FieldMetadata getIdField() {

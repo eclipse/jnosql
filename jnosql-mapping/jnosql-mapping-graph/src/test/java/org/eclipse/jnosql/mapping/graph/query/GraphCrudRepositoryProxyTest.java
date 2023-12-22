@@ -19,6 +19,7 @@ import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
+import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
@@ -164,6 +165,66 @@ class GraphCrudRepositoryProxyTest {
     }
 
     @Test
+    void shouldInsert() {
+        when(template.find(Mockito.any(Long.class))).thenReturn(Optional.empty());
+
+        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        assertNotNull(personRepository.insert(person));
+        verify(template).insert(captor.capture());
+        Person value = captor.getValue();
+        assertEquals(person, value);
+    }
+
+    @Test
+    void shouldInsertIterable() {
+        when(template.find(Mockito.any(Long.class))).thenReturn(Optional.empty());
+
+        ArgumentCaptor<List<Person>> captor = ArgumentCaptor.forClass(List.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.insertAll(List.of(person));
+        verify(template).insert(captor.capture());
+        List<Person> value = captor.getValue();
+        assertThat(value).containsExactly(person);
+    }
+
+    @Test
+    void shouldUpdate() {
+        when(template.find(Mockito.any(Long.class))).thenReturn(Optional.of(Person.builder().build()));
+
+        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.update(person);
+        verify(template).update(captor.capture());
+        Person value = captor.getValue();
+        assertEquals(person, value);
+    }
+
+    @Test
+    void shouldUpdateIterable() {
+        when(template.find(Mockito.any(Long.class))).thenReturn(Optional.of(Person.builder().build()));
+
+        ArgumentCaptor<List<Person>> captor = ArgumentCaptor.forClass(List.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.updateAll(List.of(person));
+        verify(template).update(captor.capture());
+        List<Person> value = captor.getValue();
+        assertThat(value).containsExactly(person);
+    }
+
+    @Test
     void shouldFindByNameInstance() {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
@@ -242,10 +303,10 @@ class GraphCrudRepositoryProxyTest {
 
         when(template.find(any(Object.class))).thenReturn(Optional.empty());
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
-        personRepository.findAllById(singletonList(10L)).toList();
+        personRepository.findByIdIn(singletonList(10L)).toList();
         verify(template).find(captor.capture());
 
-        personRepository.findAllById(asList(1L, 2L, 3L)).toList();
+        personRepository.findByIdIn(asList(1L, 2L, 3L)).toList();
         verify(template, times(4)).find(any(Long.class));
     }
 
@@ -260,10 +321,10 @@ class GraphCrudRepositoryProxyTest {
 
     @Test
     void shouldDeleteByIds() {
-        personRepository.deleteAllById(singletonList(10L));
+        personRepository.deleteByIdIn(singletonList(10L));
         verify(template).delete(10L);
 
-        personRepository.deleteAllById(asList(1L, 2L, 3L));
+        personRepository.deleteByIdIn(asList(1L, 2L, 3L));
         verify(template, times(4)).delete(any(Long.class));
     }
 

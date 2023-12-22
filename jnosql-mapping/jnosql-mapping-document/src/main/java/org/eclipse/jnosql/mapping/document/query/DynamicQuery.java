@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
-import jakarta.data.repository.Limit;
-import jakarta.data.repository.Sort;
+import jakarta.data.Limit;
+import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.document.MappingDocumentQuery;

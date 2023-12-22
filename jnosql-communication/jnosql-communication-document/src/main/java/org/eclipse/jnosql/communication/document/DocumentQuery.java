@@ -18,7 +18,7 @@ package org.eclipse.jnosql.communication.document;
 
 
 
-import jakarta.data.repository.Sort;
+import jakarta.data.Sort;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -446,14 +446,14 @@ public interface DocumentQuery {
     interface DocumentOrder {
 
         /**
-         * Defines the order as {@link jakarta.data.repository.Direction#ASC}
+         * Defines the order as {@link jakarta.data.Direction#ASC}
          *
          * @return the {@link DocumentNameOrder} instance
          */
         DocumentNameOrder asc();
 
         /**
-         * Defines the order as {@link jakarta.data.repository.Direction#DESC}
+         * Defines the order as {@link jakarta.data.Direction#DESC}
          *
          * @return the {@link DocumentNameOrder} instance
          */

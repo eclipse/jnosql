@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.DataRepository;
 import jakarta.enterprise.context.spi.CreationalContext;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
@@ -32,11 +32,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Artemis discoveryBean to CDI extension to register Repository
+ * JNoSQL discoveryBean to CDI extension to register Repository
  */
-public class RepositoryColumnBean<T extends CrudRepository> extends AbstractBean<T> {
+public class RepositoryColumnBean<T extends DataRepository<?, ?>> extends AbstractBean<T> {
 
-    private final Class type;
+    private final Class<T> type;
 
     private final Set<Type> types;
 
@@ -50,8 +50,9 @@ public class RepositoryColumnBean<T extends CrudRepository> extends AbstractBean
      * @param type        the tye
      * @param provider    the provider name, that must be a
      */
-    public RepositoryColumnBean(Class type, String provider) {
-        this.type = type;
+    @SuppressWarnings("unchecked")
+    public RepositoryColumnBean(Class<?> type, String provider) {
+        this.type = (Class<T>) type;
         this.types = Collections.singleton(type);
         this.provider = provider;
         if (provider.isEmpty()) {

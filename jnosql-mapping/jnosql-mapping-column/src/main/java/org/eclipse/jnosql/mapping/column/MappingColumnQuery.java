@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.column;
 
 
-import jakarta.data.repository.Sort;
+import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.column.ColumnCondition;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
 

@@ -17,8 +17,8 @@
 package org.eclipse.jnosql.communication.document;
 
 
-import jakarta.data.repository.Sort;
-import jakarta.data.repository.Direction;
+import jakarta.data.Sort;
+import jakarta.data.Direction;
 import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentFrom;
 import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentLimit;
 import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentNameCondition;

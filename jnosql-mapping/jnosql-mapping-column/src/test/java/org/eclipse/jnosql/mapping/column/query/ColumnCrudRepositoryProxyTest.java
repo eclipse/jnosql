@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column.query;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
-import jakarta.data.repository.Sort;
+import jakarta.data.Sort;
 import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
 import org.assertj.core.api.Assertions;
@@ -169,6 +169,64 @@ class ColumnCrudRepositoryProxyTest {
 
 
     @Test
+    void shouldInsert() {
+
+        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        assertNotNull(personRepository.insert(person));
+        verify(template).insert(captor.capture());
+        Person value = captor.getValue();
+        assertEquals(person, value);
+    }
+
+    @Test
+    void shouldUpdate() {
+
+        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.update(person);
+        verify(template).update(captor.capture());
+        Person value = captor.getValue();
+        assertEquals(person, value);
+    }
+
+
+    @Test
+    void shouldInsertIterable() {
+
+        ArgumentCaptor<List<Person>> captor = ArgumentCaptor.forClass(List.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        assertNotNull(personRepository.insertAll(List.of(person)));
+        verify(template).insert(captor.capture());
+        List<Person> value = captor.getValue();
+        assertThat(value).contains(person);
+    }
+
+    @Test
+    void shouldUpdateIterable() {
+
+        ArgumentCaptor<List<Person>> captor = ArgumentCaptor.forClass(List.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.updateAll(List.of(person));
+        verify(template).update(captor.capture());
+        List<Person> value = captor.getValue();
+        assertThat(value).contains(person);
+    }
+
+
+    @Test
     void shouldFindByNameInstance() {
 
         when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
@@ -277,10 +335,10 @@ class ColumnCrudRepositoryProxyTest {
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
-        personRepository.findAllById(singletonList(10L)).toList();
+        personRepository.findByIdIn(singletonList(10L)).toList();
         verify(template).find(Person.class, 10L);
 
-        personRepository.findAllById(asList(1L, 2L, 3L)).toList();
+        personRepository.findByIdIn(asList(1L, 2L, 3L)).toList();
         verify(template, times(4)).find(Mockito.eq(Person.class), Mockito.any(Long.class));
     }
 
@@ -294,7 +352,7 @@ class ColumnCrudRepositoryProxyTest {
     @Test
     void shouldDeleteByIds() {
         ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-        personRepository.deleteAllById(singletonList(10L));
+        personRepository.deleteByIdIn(singletonList(10L));
         verify(template).delete(Person.class, 10L);
     }
 

@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.reflection;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 import jakarta.data.exceptions.MappingException;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.PageableRepository;
@@ -99,7 +100,10 @@ enum ClassGraphClassScanner implements ClassScanner {
         return repositories.stream()
                 .filter(c -> {
                     List<Class<?>> interfaces = Arrays.asList(c.getInterfaces());
-                    return interfaces.contains(CrudRepository.class) || interfaces.contains(PageableRepository.class);
+                    return interfaces.contains(CrudRepository.class)
+                            || interfaces.contains(PageableRepository.class)
+                            || interfaces.contains(BasicRepository.class)
+                            || interfaces.contains(DataRepository.class);
                 }).collect(Collectors.toUnmodifiableSet());
     }
 

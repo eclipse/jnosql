@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
+import jakarta.data.page.Page;
+import jakarta.data.page.Pageable;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQueryParams;
@@ -42,6 +42,13 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+/**
+ * A base abstract class for implementing column-oriented repositories in a Java NoSQL database.
+ * This class provides common functionality for executing CRUD operations using column queries.
+ *
+ * @param <T> The type of entities managed by the repository.
+ *
+ */
 public abstract class BaseColumnRepository<T> {
 
     private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();
@@ -49,10 +56,25 @@ public abstract class BaseColumnRepository<T> {
     private static final DeleteQueryParser DELETE_PARSER = new DeleteQueryParser();
     private static final Object[] EMPTY_PARAM = new Object[0];
 
+    /**
+     * Retrieves the Converters instance responsible for converting data types.
+     *
+     * @return The Converters instance.
+     */
     protected abstract Converters getConverters();
 
+    /**
+     * Retrieves the metadata information about the entity managed by the repository.
+     *
+     * @return The EntityMetadata instance.
+     */
     protected abstract EntityMetadata getEntityMetadata();
 
+    /**
+     * Retrieves the JNoSQLColumnTemplate instance for executing column queries.
+     *
+     * @return The JNoSQLColumnTemplate instance.
+     */
     protected abstract JNoSQLColumnTemplate getTemplate();
 
     private ColumnObserverParser parser;
@@ -84,6 +106,11 @@ public abstract class BaseColumnRepository<T> {
         return query;
     }
 
+    /**
+     * Retrieves the ColumnObserverParser instance for parsing column observations.
+     *
+     * @return The ColumnObserverParser instance.
+     */
 
     protected ColumnObserverParser getParser() {
         if (parser == null) {
@@ -92,6 +119,11 @@ public abstract class BaseColumnRepository<T> {
         return parser;
     }
 
+    /**
+     * Retrieves the ParamsBinder instance for binding parameters to queries.
+     *
+     * @return The ParamsBinder instance.
+     */
     protected ParamsBinder getParamsBinder() {
         if (Objects.isNull(paramsBinder)) {
             this.paramsBinder = new ParamsBinder(getEntityMetadata(), getConverters());

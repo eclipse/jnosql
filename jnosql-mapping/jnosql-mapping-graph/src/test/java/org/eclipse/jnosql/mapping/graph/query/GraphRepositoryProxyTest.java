@@ -249,10 +249,10 @@ class GraphRepositoryProxyTest {
 
         when(template.find(any(Object.class))).thenReturn(Optional.empty());
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
-        personRepository.findAllById(singletonList(10L)).toList();
+        personRepository.findByIdIn(singletonList(10L)).toList();
         verify(template).find(captor.capture());
 
-        personRepository.findAllById(asList(1L, 2L, 3L)).toList();
+        personRepository.findByIdIn(asList(1L, 2L, 3L)).toList();
         verify(template, times(4)).find(any(Long.class));
     }
 
@@ -277,10 +277,10 @@ class GraphRepositoryProxyTest {
 
     @Test
     void shouldDeleteByIds() {
-        personRepository.deleteAllById(singletonList(10L));
+        personRepository.deleteByIdIn(singletonList(10L));
         verify(template).delete(10L);
 
-        personRepository.deleteAllById(asList(1L, 2L, 3L));
+        personRepository.deleteByIdIn(asList(1L, 2L, 3L));
         verify(template, times(4)).delete(any(Long.class));
     }
 

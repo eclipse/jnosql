@@ -14,8 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.core.repository.returns;
 
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Slice;
+import jakarta.data.page.Page;
+
+import jakarta.data.page.Slice;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 

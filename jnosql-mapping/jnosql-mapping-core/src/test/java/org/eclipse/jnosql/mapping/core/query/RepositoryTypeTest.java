@@ -12,8 +12,10 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.query;
+package org.eclipse.jnosql.mapping.core.query;
 
+
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
@@ -22,26 +24,45 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.spi.CDI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class RepositoryTypeTest {
 
 
-    @Test
-    void shouldReturnDefault() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "save"), CrudRepository.class));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "deleteById"), CrudRepository.class));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "findById"), CrudRepository.class));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "existsById"), CrudRepository.class));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "count"), CrudRepository.class));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(PageableRepository.class, "findAll"), CrudRepository.class));
+
+    @ParameterizedTest
+    @MethodSource("getBasicRepositoryMethods")
+    void shouldReturnDefaultAtBasicRepository(Method method)  {
+        var type = RepositoryType.of(method, BasicRepository.class);
+        assertThat(type).isEqualTo(RepositoryType.DEFAULT);
     }
+
+    @ParameterizedTest
+    @MethodSource("getCrudRepositoryMethods")
+    void shouldReturnDefaultAtCrudRepository(Method method)  {
+        var type = RepositoryType.of(method, BasicRepository.class);
+        assertThat(type).isEqualTo(RepositoryType.DEFAULT);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getPageableRepositoryMethods")
+    void shouldReturnDefaultAtPageableRepository(Method method)  {
+        var type = RepositoryType.of(method, BasicRepository.class);
+        assertThat(type).isEqualTo(RepositoryType.DEFAULT);
+    }
+
 
 
     @Test
@@ -179,6 +200,21 @@ class RepositoryTypeTest {
         BigDecimal sum();
 
         List<String> findBySum(String name);
+    }
+
+    private static Stream<Arguments> getBasicRepositoryMethods() {
+        return Arrays.stream(BasicRepository.class.getDeclaredMethods())
+                .map(Arguments::of);
+    }
+
+    private static Stream<Arguments> getCrudRepositoryMethods() {
+        return Arrays.stream(CrudRepository.class.getDeclaredMethods())
+                .map(Arguments::of);
+    }
+
+    private static Stream<Arguments> getPageableRepositoryMethods() {
+        return Arrays.stream(PageableRepository.class.getDeclaredMethods())
+                .map(Arguments::of);
     }
 
 }

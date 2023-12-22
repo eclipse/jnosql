@@ -18,7 +18,16 @@ package org.eclipse.jnosql.mapping.keyvalue.query;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
-class DefaultKeyValueRepository<T>  extends AbstractKeyValueRepository<T> {
+/**
+ * Default implementation of a key-value repository for Java NoSQL databases.
+ * This class extends the AbstractKeyValueRepository and provides the necessary
+ * functionality for interacting with a key-value store using a KeyValueTemplate.
+ *
+ * @param <T> The type of entities managed by the repository.
+ * @param <K> The type of the key used for key-value operations.
+ *
+ */
+class DefaultKeyValueRepository<T, K>  extends AbstractKeyValueRepository<T, K> {
 
 
     private final KeyValueTemplate repository;

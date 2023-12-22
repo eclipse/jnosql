@@ -17,8 +17,8 @@
 package org.eclipse.jnosql.communication.column;
 
 
-import jakarta.data.repository.Direction;
-import jakarta.data.repository.Sort;
+import jakarta.data.Direction;
+import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.query.SelectQuery;

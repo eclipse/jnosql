@@ -20,7 +20,7 @@ import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.query.RepositoryType;
+import org.eclipse.jnosql.mapping.core.query.RepositoryType;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.core.repository.ThrowingSupplier;
 
@@ -34,9 +34,9 @@ import java.lang.reflect.Method;
  * @param <T> the entity type
  * @param <K> the K entity
  */
-public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepository implements InvocationHandler {
+public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepository<T> implements InvocationHandler {
 
-    protected abstract PageableRepository getRepository();
+    protected abstract PageableRepository<T, K> getRepository();
 
     protected abstract Converters getConverters();
 

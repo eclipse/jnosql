@@ -12,9 +12,10 @@
 
 package org.eclipse.jnosql.communication.query;
 
+
 import org.antlr.v4.runtime.tree.ParseTree;
-import jakarta.data.repository.Sort;
-import jakarta.data.repository.Direction;
+import jakarta.data.Sort;
+import jakarta.data.Direction;
 import org.eclipse.jnosql.query.grammar.QueryParser;
 
 import java.util.List;
