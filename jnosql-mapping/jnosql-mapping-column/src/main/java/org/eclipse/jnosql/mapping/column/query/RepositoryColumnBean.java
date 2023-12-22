@@ -39,7 +39,7 @@ import java.util.Set;
  */
 public class RepositoryColumnBean<T extends DataRepository<T, ?>> extends AbstractBean<T> {
 
-    private final Class type;
+    private final Class<T> type;
 
     private final Set<Type> types;
 
@@ -53,8 +53,9 @@ public class RepositoryColumnBean<T extends DataRepository<T, ?>> extends Abstra
      * @param type        the tye
      * @param provider    the provider name, that must be a
      */
-    public RepositoryColumnBean(Class type, String provider) {
-        this.type = type;
+    @SuppressWarnings("unchecked")
+    public RepositoryColumnBean(Class<?> type, String provider) {
+        this.type = (Class<T>) type;
         this.types = Collections.singleton(type);
         this.provider = provider;
         if (provider.isEmpty()) {
