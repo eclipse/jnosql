@@ -121,4 +121,29 @@ public abstract class AbstractKeyValueRepository<T, K> implements PageableReposi
         List<Object> ids = stream(entities.spliterator(), false).map(id::read).toList();
         getTemplate().delete(ids);
     }
+
+    @Override
+    public <S extends T> S insert(S entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return getTemplate().insert(entity);
+    }
+
+    @Override
+    public <S extends T> Iterable<S> insertAll(Iterable<S> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        return getTemplate().insert(entities);
+    }
+
+    @Override
+    public boolean update(T entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return getTemplate().update(entity) != null;
+    }
+
+    @Override
+    public int updateAll(Iterable<T> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        getTemplate().update(entities);
+        return (int) StreamSupport.stream(entities.spliterator(), false).count();
+    }
 }
