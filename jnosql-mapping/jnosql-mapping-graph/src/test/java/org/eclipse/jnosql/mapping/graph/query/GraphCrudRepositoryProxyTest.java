@@ -19,6 +19,7 @@ import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
+import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
@@ -161,6 +162,66 @@ class GraphCrudRepositoryProxyTest {
         verify(template).insert(captor.capture());
         Person personCapture = captor.getValue();
         assertEquals(person, personCapture);
+    }
+
+    @Test
+    void shouldInsert() {
+        when(template.find(Mockito.any(Long.class))).thenReturn(Optional.empty());
+
+        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        assertNotNull(personRepository.insert(person));
+        verify(template).insert(captor.capture());
+        Person value = captor.getValue();
+        assertEquals(person, value);
+    }
+
+    @Test
+    void shouldInsertIterable() {
+        when(template.find(Mockito.any(Long.class))).thenReturn(Optional.empty());
+
+        ArgumentCaptor<List<Person>> captor = ArgumentCaptor.forClass(List.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.insertAll(List.of(person));
+        verify(template).insert(captor.capture());
+        List<Person> value = captor.getValue();
+        assertThat(value).containsExactly(person);
+    }
+
+    @Test
+    void shouldUpdate() {
+        when(template.find(Mockito.any(Long.class))).thenReturn(Optional.of(Person.builder().build()));
+
+        ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.update(person);
+        verify(template).update(captor.capture());
+        Person value = captor.getValue();
+        assertEquals(person, value);
+    }
+
+    @Test
+    void shouldUpdateIterable() {
+        when(template.find(Mockito.any(Long.class))).thenReturn(Optional.of(Person.builder().build()));
+
+        ArgumentCaptor<List<Person>> captor = ArgumentCaptor.forClass(List.class);
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.updateAll(List.of(person));
+        verify(template).update(captor.capture());
+        List<Person> value = captor.getValue();
+        assertThat(value).containsExactly(person);
     }
 
     @Test
