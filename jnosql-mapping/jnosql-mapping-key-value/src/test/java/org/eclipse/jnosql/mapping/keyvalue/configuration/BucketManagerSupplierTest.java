@@ -22,7 +22,7 @@ import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;
 import org.eclipse.jnosql.mapping.keyvalue.MockProducer;
 import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
-import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -32,8 +32,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_DATABASE;
-import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_PROVIDER;
+import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.KEY_VALUE_DATABASE;
+import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.KEY_VALUE_PROVIDER;
 
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, KeyValueEntityConverter.class})

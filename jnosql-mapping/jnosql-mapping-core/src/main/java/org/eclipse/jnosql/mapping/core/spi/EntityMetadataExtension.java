@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.spi;
+package org.eclipse.jnosql.mapping.core.spi;
 
 
 import jakarta.enterprise.context.ApplicationScoped;

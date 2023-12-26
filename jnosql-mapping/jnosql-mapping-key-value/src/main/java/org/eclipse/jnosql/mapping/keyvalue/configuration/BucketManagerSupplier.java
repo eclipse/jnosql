@@ -19,7 +19,7 @@ import org.eclipse.jnosql.communication.Settings;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 import org.eclipse.jnosql.communication.keyvalue.BucketManagerFactory;
 import org.eclipse.jnosql.communication.keyvalue.KeyValueConfiguration;
-import org.eclipse.jnosql.mapping.config.MicroProfileSettings;
+import org.eclipse.jnosql.mapping.core.config.MicroProfileSettings;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -31,8 +31,8 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_DATABASE;
-import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_PROVIDER;
+import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.KEY_VALUE_DATABASE;
+import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.KEY_VALUE_PROVIDER;
 
 @ApplicationScoped
 class BucketManagerSupplier implements Supplier<BucketManager> {

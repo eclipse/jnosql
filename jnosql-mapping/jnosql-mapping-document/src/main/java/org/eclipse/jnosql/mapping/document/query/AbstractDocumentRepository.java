@@ -16,167 +16,50 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
-import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
+import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.MappingDocumentQuery;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
-import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
-import static java.util.Objects.nonNull;
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.StreamSupport.stream;
-import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 
 /**
  * The {@link PageableRepository} template method
  */
-public abstract class AbstractDocumentRepository<T, K> implements PageableRepository<T, K>, CrudRepository<T, K> {
+public abstract class AbstractDocumentRepository<T, K> extends AbstractRepository<T, K> {
 
-    protected abstract JNoSQLDocumentTemplate getTemplate();
-
-    protected abstract EntityMetadata getEntityMetadata();
-
-    @Override
-    public <S extends T> S save(S entity) {
-        Objects.requireNonNull(entity, "Entity is required");
-        Object id = getIdField().read(entity);
-        if (nonNull(id) && existsById((K) id)) {
-            return getTemplate().update(entity);
-        } else {
-            return getTemplate().insert(entity);
-        }
-    }
-
-    @Override
-    public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
-        requireNonNull(entities, "entities is required");
-        return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(toList());
-    }
-
-
-    @Override
-    public void deleteById(K id) {
-        requireNonNull(id, "is is required");
-        getTemplate().delete(getType(), id);
-    }
-
-    @Override
-    public void deleteByIdIn(Iterable<K> ids) {
-        requireNonNull(ids, "ids is required");
-        ids.forEach(this::deleteById);
-    }
-
-    @Override
-    public Optional<T> findById(K id) {
-        requireNonNull(id, "id is required");
-        return getTemplate().find(getType(), id);
-    }
-
-
-    @Override
-    public Stream<T> findByIdIn(Iterable<K> ids) {
-        requireNonNull(ids, "ids is required");
-        return stream(ids.spliterator(), false)
-                .flatMap(optionalToStream());
-    }
-
+    protected abstract JNoSQLDocumentTemplate template();
 
     @Override
     public long count() {
-        return getTemplate().count(getType());
-    }
-
-
-    private FieldMetadata getIdField() {
-        return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return template().count(type());
     }
 
     @Override
-    public boolean existsById(K id) {
-        return findById(id).isPresent();
-    }
-
-    @Override
-    public Page findAll(Pageable pageable) {
+    public Page<T> findAll(Pageable pageable) {
         Objects.requireNonNull(pageable, "pageable is required");
-        EntityMetadata metadata = getEntityMetadata();
+        EntityMetadata metadata = entityMetadata();
         DocumentQuery query = new MappingDocumentQuery(pageable.sorts(),
                 pageable.size(), NoSQLPage.skip(pageable)
                 , null, metadata.name());
 
-        List<Object> entities = getTemplate().select(query).toList();
+        List<T> entities = template().<T>select(query).toList();
         return NoSQLPage.of(entities, pageable);
     }
 
     @Override
-    public Stream findAll() {
-        return getTemplate().findAll(getType());
-    }
-
-    @Override
-    public void delete(Object entity) {
-        Objects.requireNonNull(entity, "entity is required");
-        EntityMetadata metadata = getEntityMetadata();
-        FieldMetadata id = metadata.id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
-        getTemplate().delete(metadata.type(), id.read(entity));
-    }
-
-    @Override
-    public void deleteAll(Iterable entities) {
-        Objects.requireNonNull(entities, "entities is required");
-        StreamSupport.stream(entities.spliterator(), false)
-                .forEach(this::delete);
+    public Stream<T> findAll() {
+        return template().findAll(type());
     }
 
     @Override
     public void deleteAll() {
-        getTemplate().deleteAll(getType());
-    }
-
-    @Override
-    public <S extends T> S insert(S entity) {
-        Objects.requireNonNull(entity, "entity is required");
-        return getTemplate().insert(entity);
-    }
-
-    @Override
-    public <S extends T> Iterable<S> insertAll(Iterable<S> entities) {
-        Objects.requireNonNull(entities, "entities is required");
-        return getTemplate().insert(entities);
-    }
-
-    @Override
-    public boolean update(T entity) {
-        Objects.requireNonNull(entity, "entity is required");
-        return getTemplate().update(entity) != null;
-    }
-
-    @Override
-    public int updateAll(Iterable<T> entities) {
-        Objects.requireNonNull(entities, "entities is required");
-        getTemplate().update(entities);
-        return (int) StreamSupport.stream(entities.spliterator(), false).count();
-    }
-
-    private Class<T> getType() {
-        return (Class<T>) getEntityMetadata().type();
-    }
-
-    private Function optionalToStream() {
-        return id -> {
-            Optional entity = this.findById((K) id);
-            return entity.isPresent() ? Stream.of(entity.get()) : Stream.empty();
-        };
+        template().deleteAll(type());
     }
 }

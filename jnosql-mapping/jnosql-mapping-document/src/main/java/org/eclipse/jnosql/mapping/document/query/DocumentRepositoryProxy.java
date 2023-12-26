@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 
-import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
@@ -81,8 +80,7 @@ class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K
     }
 
 
-    static class DocumentRepository<T, K> extends AbstractDocumentRepository<T, K> implements PageableRepository<T, K>,
-            CrudRepository<T, K> {
+    static class DocumentRepository<T, K> extends AbstractDocumentRepository<T, K>  {
 
         private final JNoSQLDocumentTemplate template;
 
@@ -94,12 +92,12 @@ class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K
         }
 
         @Override
-        protected JNoSQLDocumentTemplate getTemplate() {
+        protected JNoSQLDocumentTemplate template() {
             return template;
         }
 
         @Override
-        protected EntityMetadata getEntityMetadata() {
+        protected EntityMetadata entityMetadata() {
             return entityMetadata;
         }
 

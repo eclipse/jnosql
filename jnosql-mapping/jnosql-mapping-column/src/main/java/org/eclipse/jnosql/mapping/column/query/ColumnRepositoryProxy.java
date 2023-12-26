@@ -94,12 +94,12 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T, K> {
         }
 
         @Override
-        protected JNoSQLColumnTemplate getTemplate() {
+        protected JNoSQLColumnTemplate template() {
             return template;
         }
 
         @Override
-        protected EntityMetadata getEntityMetadata() {
+        protected EntityMetadata entityMetadata() {
             return entityMetadata;
         }
 

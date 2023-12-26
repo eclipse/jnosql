@@ -18,7 +18,7 @@ import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import org.assertj.core.api.Assertions;
-import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.core.entities.Person;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;

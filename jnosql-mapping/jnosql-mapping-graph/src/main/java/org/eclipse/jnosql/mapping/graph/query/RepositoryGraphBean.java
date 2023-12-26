@@ -23,7 +23,7 @@ import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.spi.AbstractBean;
+import org.eclipse.jnosql.mapping.core.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.core.util.AnnotationLiteralUtil;
 
 import java.lang.annotation.Annotation;

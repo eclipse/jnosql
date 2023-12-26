@@ -18,7 +18,7 @@ import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;

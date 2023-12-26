@@ -37,7 +37,7 @@ import org.eclipse.jnosql.mapping.graph.entities.Vendor;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
-import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -141,7 +141,7 @@ class GraphRepositoryProxyTest {
 
     @Test
     void shouldSaveUsingUpdateWhenDataExists() {
-        when(template.find(Mockito.any(Long.class))).thenReturn(Optional.of(Person.builder().build()));
+        when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class))).thenReturn(Optional.of(Person.builder().build()));
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
         Person person = Person.builder().withName("Ada")
@@ -237,7 +237,7 @@ class GraphRepositoryProxyTest {
     void shouldFindById() {
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         personRepository.findById(10L);
-        verify(template).find(captor.capture());
+        verify(template).find(Mockito.eq(Person.class), captor.capture());
 
         Object id = captor.getValue();
 
@@ -250,17 +250,17 @@ class GraphRepositoryProxyTest {
         when(template.find(any(Object.class))).thenReturn(Optional.empty());
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         personRepository.findByIdIn(singletonList(10L)).toList();
-        verify(template).find(captor.capture());
+        verify(template).find(Mockito.eq(Person.class), captor.capture());
 
         personRepository.findByIdIn(asList(1L, 2L, 3L)).toList();
-        verify(template, times(4)).find(any(Long.class));
+        verify(template, times(4)).find(Mockito.eq(Person.class), any(Long.class));
     }
 
     @Test
     void shouldDeleteById() {
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         personRepository.deleteById(10L);
-        verify(template).delete(captor.capture());
+        verify(template).delete(Mockito.eq(Person.class), captor.capture());
 
         assertEquals(10L, captor.getValue());
     }
@@ -270,7 +270,7 @@ class GraphRepositoryProxyTest {
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         Person person = Person.builder().withId(10L).build();
         personRepository.delete(person);
-        verify(template).delete(captor.capture());
+        verify(template).delete(Mockito.eq(Person.class), captor.capture());
 
         assertEquals(10L, captor.getValue());
     }
@@ -278,30 +278,30 @@ class GraphRepositoryProxyTest {
     @Test
     void shouldDeleteByIds() {
         personRepository.deleteByIdIn(singletonList(10L));
-        verify(template).delete(10L);
+        verify(template).delete(Person.class, 10L);
 
         personRepository.deleteByIdIn(asList(1L, 2L, 3L));
-        verify(template, times(4)).delete(any(Long.class));
+        verify(template, times(4)).delete(Mockito.eq(Person.class), any(Long.class));
     }
 
     @Test
     void shouldDeleteByEntities() {
         Person person = Person.builder().withId(10L).build();
         personRepository.deleteAll(singletonList(person));
-        verify(template).delete(singletonList(10L));
+        verify(template).delete(Person.class, 10L);
 
         personRepository.deleteAll(asList(person, person, person));
-        verify(template, times(2)).delete(any(List.class));
+        verify(template, times(4)).delete(Mockito.eq(Person.class), any(Long.class));
     }
 
     @Test
     void shouldContainsById() {
-        when(template.find(any(Long.class))).thenReturn(Optional.of(Person.builder().build()));
+        when(template.find(Mockito.eq(Person.class), any(Long.class))).thenReturn(Optional.of(Person.builder().build()));
 
         assertTrue(personRepository.existsById(10L));
-        verify(template).find(any(Long.class));
+        verify(template).find(Mockito.eq(Person.class), any(Long.class));
 
-        when(template.find(any(Long.class))).thenReturn(Optional.empty());
+        when(template.find(Mockito.eq(Person.class), any(Long.class))).thenReturn(Optional.empty());
         assertFalse(personRepository.existsById(10L));
 
     }

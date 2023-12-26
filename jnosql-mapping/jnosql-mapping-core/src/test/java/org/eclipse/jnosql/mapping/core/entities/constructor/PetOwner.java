@@ -12,12 +12,12 @@
  *
  *    Otavio Santana
  */
-package org.eclipse.jnosql.mapping.test.entities.constructor;
+package org.eclipse.jnosql.mapping.core.entities.constructor;
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.test.entities.Animal;
+import org.eclipse.jnosql.mapping.core.entities.Animal;
 
 import java.util.Objects;
 

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.core;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
-import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.core.entities.Person;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.config;
+package org.eclipse.jnosql.mapping.core.config;
 
 import java.util.function.Supplier;
 

@@ -13,7 +13,7 @@
  *    Maximillian Arruda
  */
 
-package org.eclipse.jnosql.mapping.test.entities.constructor;
+package org.eclipse.jnosql.mapping.core.entities.constructor;
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;

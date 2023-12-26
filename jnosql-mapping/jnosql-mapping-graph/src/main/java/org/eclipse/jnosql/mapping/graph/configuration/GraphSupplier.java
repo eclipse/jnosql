@@ -20,13 +20,13 @@ import jakarta.enterprise.inject.Produces;
 import jakarta.enterprise.inject.spi.CDI;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.communication.Settings;
-import org.eclipse.jnosql.mapping.config.MicroProfileSettings;
+import org.eclipse.jnosql.mapping.core.config.MicroProfileSettings;
 import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 
 import java.util.function.Supplier;
 
-import static org.eclipse.jnosql.mapping.config.MappingConfigurations.GRAPH_PROVIDER;
+import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.GRAPH_PROVIDER;
 
 
 @ApplicationScoped

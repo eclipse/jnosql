@@ -14,4 +14,4 @@
  * For instance, the engine will work in tight integration with Eclipse Microprofile Configuration.
  * Shortly, you may replace it with Jakarta Config.
  */
-package org.eclipse.jnosql.mapping.config;
+package org.eclipse.jnosql.mapping.core.config;
