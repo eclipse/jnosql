@@ -24,23 +24,15 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
 @AddPackages(value = VetedConverter.class)
-@AddExtensions(org.eclipse.jnosql.mapping.spi.EntityMetadataExtension.class)
-@ExtendWith(MockitoExtension.class)
+@AddExtensions(org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension.class)
 class AbstractRepositoryTest {
 
-    @Mock
     private Template template;
 
     @Inject
@@ -50,13 +42,11 @@ class AbstractRepositoryTest {
 
     @Test
     void shouldInsert() {
+        this.template = Mockito.mock(Template.class);
         Person person = Person.builder().withAge(10).withName("Ada").build();
         this.repository.insert(person);
         Mockito.verify(template).insert(person);
     }
-
-
-
 
     class PeopleRepository extends AbstractRepository<Person, Long> {
 

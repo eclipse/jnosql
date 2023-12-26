@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.config;
+package org.eclipse.jnosql.mapping.core.config;
 
 import org.eclipse.jnosql.communication.Settings;
 import org.junit.jupiter.api.AfterAll;
