@@ -51,7 +51,7 @@ public abstract class AbstractRepository<T, K> implements PageableRepository<T, 
      *
      * @return The template used for database operations.
      */
-    protected abstract Template getTemplate();
+    protected abstract Template template();
 
     /**
      * Retrieves the metadata information about the entity managed by this repository.
@@ -106,9 +106,9 @@ public abstract class AbstractRepository<T, K> implements PageableRepository<T, 
         Objects.requireNonNull(entity, "Entity is required");
         Object id = getIdField().read(entity);
         if (nonNull(id) && existsById((K) id)) {
-            return getTemplate().update(entity);
+            return template().update(entity);
         } else {
-            return getTemplate().insert(entity);
+            return template().insert(entity);
         }
     }
 
@@ -123,7 +123,7 @@ public abstract class AbstractRepository<T, K> implements PageableRepository<T, 
     @Override
     public void deleteById(K id) {
         requireNonNull(id, "is is required");
-        getTemplate().delete(getType(), id);
+        template().delete(getType(), id);
     }
 
     @Override
@@ -135,7 +135,7 @@ public abstract class AbstractRepository<T, K> implements PageableRepository<T, 
     @Override
     public Optional<T> findById(K id) {
         requireNonNull(id, "id is required");
-        return getTemplate().find(getType(), id);
+        return template().find(getType(), id);
     }
 
 
@@ -156,7 +156,7 @@ public abstract class AbstractRepository<T, K> implements PageableRepository<T, 
         Objects.requireNonNull(entity, "entity is required");
         EntityMetadata metadata = getEntityMetadata();
         FieldMetadata id = metadata.id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
-        getTemplate().delete(metadata.type(), id.read(entity));
+        template().delete(metadata.type(), id.read(entity));
     }
 
     @Override
@@ -169,25 +169,25 @@ public abstract class AbstractRepository<T, K> implements PageableRepository<T, 
     @Override
     public <S extends T> S insert(S entity) {
         Objects.requireNonNull(entity, "entity is required");
-        return getTemplate().insert(entity);
+        return template().insert(entity);
     }
 
     @Override
     public <S extends T> Iterable<S> insertAll(Iterable<S> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        return getTemplate().insert(entities);
+        return template().insert(entities);
     }
 
     @Override
     public boolean update(T entity) {
         Objects.requireNonNull(entity, "entity is required");
-        return getTemplate().update(entity) != null;
+        return template().update(entity) != null;
     }
 
     @Override
     public int updateAll(Iterable<T> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        getTemplate().update(entities);
+        template().update(entities);
         return (int) StreamSupport.stream(entities.spliterator(), false).count();
     }
 

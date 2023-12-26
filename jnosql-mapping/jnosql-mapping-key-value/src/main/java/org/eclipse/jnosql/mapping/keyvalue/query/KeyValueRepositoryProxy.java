@@ -36,7 +36,7 @@ class KeyValueRepositoryProxy<T, K> extends AbstractKeyValueRepositoryProxy<T, K
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
         EntityMetadata metadata = entitiesMetadata.get(typeClass);
-        this.repository = new DefaultKeyValueRepository<>(typeClass, metadata, template);
+        this.repository = new DefaultKeyValueRepository<>(metadata, template);
         this.template = template;
         this.type = typeClass;
         this.repositoryType = repositoryType;

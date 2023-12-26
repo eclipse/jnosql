@@ -34,14 +34,13 @@ class DefaultKeyValueRepository<T, K>  extends AbstractKeyValueRepository<T, K> 
 
     private final EntityMetadata metadata;
 
-    public DefaultKeyValueRepository(Class<T> typeClass, EntityMetadata metadata, KeyValueTemplate repository) {
-        super(typeClass);
+    public DefaultKeyValueRepository(EntityMetadata metadata, KeyValueTemplate repository) {
         this.repository = repository;
         this.metadata = metadata;
     }
 
     @Override
-    protected KeyValueTemplate getTemplate() {
+    protected KeyValueTemplate template() {
         return repository;
     }
 
