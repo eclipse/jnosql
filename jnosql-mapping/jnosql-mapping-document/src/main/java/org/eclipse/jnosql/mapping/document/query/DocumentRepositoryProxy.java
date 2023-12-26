@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 
-import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
