@@ -13,7 +13,7 @@
  *    Otavio Santana
  */
 
-package org.eclipse.jnosql.mapping.test.entities;
+package org.eclipse.jnosql.mapping.core.entities;
 
 import java.util.Objects;
 

@@ -12,14 +12,15 @@
  *
  *    Otavio Santana
  */
-package org.eclipse.jnosql.mapping.test.entities.constructor;
+package org.eclipse.jnosql.mapping.core.entities.constructor;
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.test.entities.Money;
-import org.eclipse.jnosql.mapping.test.entities.MoneyConverter;
+import org.eclipse.jnosql.mapping.core.entities.Money;
+import org.eclipse.jnosql.mapping.core.entities.MoneyConverter;
+
 
 @Entity
 public class Computer {

@@ -12,13 +12,13 @@
  *
  *    Otavio Santana
  */
-package org.eclipse.jnosql.mapping.test.entities.constructor;
+package org.eclipse.jnosql.mapping.core.entities.constructor;
 
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.test.entities.Book;
+import org.eclipse.jnosql.mapping.core.entities.Book;
 
 import java.util.List;
 import java.util.Objects;

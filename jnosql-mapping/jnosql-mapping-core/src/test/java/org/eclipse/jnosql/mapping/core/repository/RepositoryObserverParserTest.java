@@ -17,13 +17,14 @@ package org.eclipse.jnosql.mapping.core.repository;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.VetedConverter;
+import org.eclipse.jnosql.mapping.core.entities.Address;
+import org.eclipse.jnosql.mapping.core.entities.Person;
+import org.eclipse.jnosql.mapping.core.entities.Worker;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.spi.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.test.entities.Address;
-import org.eclipse.jnosql.mapping.test.entities.Person;
-import org.eclipse.jnosql.mapping.test.entities.Worker;
+
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;

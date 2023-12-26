@@ -13,7 +13,7 @@
  *    Otavio Santana
  */
 
-package org.eclipse.jnosql.mapping.test.entities.inheritance;
+package org.eclipse.jnosql.mapping.core.entities.inheritance;
 
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
