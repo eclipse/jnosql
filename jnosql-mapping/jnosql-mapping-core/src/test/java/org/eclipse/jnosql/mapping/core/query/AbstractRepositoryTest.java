@@ -19,18 +19,26 @@ import jakarta.nosql.Template;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.core.VetedConverter;
 import org.eclipse.jnosql.mapping.core.entities.Person;
+import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.ReflectionClassConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.List;
+import java.util.Optional;
+
 @EnableAutoWeld
 @AddPackages(value = Convert.class)
+@AddPackages(value = EntitiesMetadata.class)
 @AddPackages(value = VetedConverter.class)
-@AddExtensions(org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension.class)
+@AddExtensions(EntityMetadataExtension.class)
+@AddPackages(value = ReflectionClassConverter.class)
 class AbstractRepositoryTest {
 
     private Template template;
@@ -40,12 +48,101 @@ class AbstractRepositoryTest {
 
     private PeopleRepository repository;
 
+    @BeforeEach
+    void setUp(){
+        this.template = Mockito.mock(Template.class);
+        this.repository = new PeopleRepository();
+    }
+
     @Test
     void shouldInsert() {
-        this.template = Mockito.mock(Template.class);
+
         Person person = Person.builder().withAge(10).withName("Ada").build();
         this.repository.insert(person);
         Mockito.verify(template).insert(person);
+    }
+
+    @Test
+    void shouldUpdate() {
+        Person person = Person.builder().withAge(10).withName("Ada").build();
+        this.repository.update(person);
+        Mockito.verify(template).update(person);
+    }
+
+    @Test
+    void shouldInsertAll() {
+        Person person = Person.builder().withAge(10).withName("Ada").build();
+        this.repository.insertAll(List.of(person));
+        Mockito.verify(template).insert((List.of(person)));
+    }
+
+    @Test
+    void shouldUpdateAll() {
+        Person person = Person.builder().withAge(10).withName("Ada").build();
+        this.repository.updateAll(List.of(person));
+        Mockito.verify(template).update((List.of(person)));
+    }
+
+
+    @Test
+    void shouldDeleteById() {
+        this.repository.deleteById(10L);
+        Mockito.verify(template).delete(Person.class, 10L);
+    }
+
+    @Test
+    void shouldDeleteByIdIn() {
+        this.repository.deleteByIdIn(List.of(10L));
+        Mockito.verify(template).delete(Person.class, 10L);
+    }
+
+    @Test
+    void shouldFindByID() {
+        this.template = Mockito.mock(Template.class);
+        this.repository.findById(10L);
+        Mockito.verify(template).find(Person.class, 10L);
+    }
+
+    @Test
+    void shouldFindByIDIn() {
+        this.repository.findByIdIn(List.of(10L)).toList();
+        Mockito.verify(template).find(Person.class, 10L);
+    }
+
+    @Test
+    void shouldExistsById() {
+        this.repository.existsById(10L);
+        Mockito.verify(template).find(Person.class, 10L);
+    }
+
+    @Test
+    void shouldDelete() {
+        Person person = Person.builder().withId(10L).withAge(10).withName("Ada").build();
+        this.repository.delete(person);
+        Mockito.verify(template).delete(Person.class, 10L);
+    }
+
+    @Test
+    void shouldDeleteAll() {
+        Person person = Person.builder().withId(10L).withAge(10).withName("Ada").build();
+        this.repository.deleteAll(List.of(person));
+        Mockito.verify(template).delete(Person.class, 10L);
+    }
+
+    @Test
+    void shouldSaveAsInsert() {
+        Person person = Person.builder().withId(10L).withAge(10).withName("Ada").build();
+        this.repository.save(person);
+        Mockito.verify(template).insert(person);
+    }
+
+    @Test
+    void shouldSaveAsUpdate() {
+        var person = Person.builder().withId(10L).withAge(10).withName("Ada").build();
+        Mockito.when(template.find(Person.class, 10L))
+                .thenReturn(Optional.of(person));
+        this.repository.save(person);
+        Mockito.verify(template).update(person);
     }
 
     class PeopleRepository extends AbstractRepository<Person, Long> {
