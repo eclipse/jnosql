@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.graph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.eclipse.jnosql.mapping.config.MappingConfigurations.GRAPH_TRANSACTION_AUTOMATIC;
+import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.GRAPH_TRANSACTION_AUTOMATIC;
 
 class GraphTransactionUtilTest {
 

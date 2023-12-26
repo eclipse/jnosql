@@ -26,7 +26,7 @@ import org.eclipse.jnosql.mapping.reflection.Reflections;
 
 import java.util.function.Supplier;
 
-import static org.eclipse.jnosql.mapping.config.MappingConfigurations.GRAPH_PROVIDER;
+import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.GRAPH_PROVIDER;
 
 
 @ApplicationScoped
