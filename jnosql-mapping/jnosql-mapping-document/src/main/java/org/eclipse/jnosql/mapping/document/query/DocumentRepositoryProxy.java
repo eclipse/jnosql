@@ -81,8 +81,7 @@ class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K
     }
 
 
-    static class DocumentRepository<T, K> extends AbstractDocumentRepository<T, K> implements PageableRepository<T, K>,
-            CrudRepository<T, K> {
+    static class DocumentRepository<T, K> extends AbstractDocumentRepository<T, K>  {
 
         private final JNoSQLDocumentTemplate template;
 
@@ -94,12 +93,12 @@ class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K
         }
 
         @Override
-        protected JNoSQLDocumentTemplate getTemplate() {
+        protected JNoSQLDocumentTemplate template() {
             return template;
         }
 
         @Override
-        protected EntityMetadata getEntityMetadata() {
+        protected EntityMetadata entityMetadata() {
             return entityMetadata;
         }
 

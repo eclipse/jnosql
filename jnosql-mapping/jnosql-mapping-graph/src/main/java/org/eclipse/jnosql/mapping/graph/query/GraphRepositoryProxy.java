@@ -114,12 +114,12 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
         }
 
         @Override
-        protected GraphTemplate getTemplate() {
+        protected GraphTemplate template() {
             return template;
         }
 
         @Override
-        protected EntityMetadata getEntityMetadata() {
+        protected EntityMetadata entityMetadata() {
             return entityMetadata;
         }
 

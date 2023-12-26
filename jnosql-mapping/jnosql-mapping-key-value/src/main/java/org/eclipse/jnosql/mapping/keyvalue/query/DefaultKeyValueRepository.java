@@ -45,7 +45,7 @@ class DefaultKeyValueRepository<T, K>  extends AbstractKeyValueRepository<T, K> 
     }
 
     @Override
-    protected EntityMetadata getEntityMetadata() {
+    protected EntityMetadata entityMetadata() {
         return metadata;
     }
 

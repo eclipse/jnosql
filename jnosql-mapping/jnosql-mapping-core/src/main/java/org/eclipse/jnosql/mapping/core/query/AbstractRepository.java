@@ -58,7 +58,7 @@ public abstract class AbstractRepository<T, K> implements PageableRepository<T, 
      *
      * @return The entity metadata information.
      */
-    protected abstract EntityMetadata getEntityMetadata();
+    protected abstract EntityMetadata entityMetadata();
 
     /**
      * Retrieves the Class object representing the entity type managed by this repository.
@@ -66,8 +66,8 @@ public abstract class AbstractRepository<T, K> implements PageableRepository<T, 
      * @return The Class object of the entity type.
      */
     @SuppressWarnings("unchecked")
-    protected Class<T> getType() {
-        return (Class<T>) getEntityMetadata().type();
+    protected Class<T> type() {
+        return (Class<T>) entityMetadata().type();
     }
 
     /**
@@ -89,7 +89,7 @@ public abstract class AbstractRepository<T, K> implements PageableRepository<T, 
      * @throws org.eclipse.jnosql.mapping.IdNotFoundException if the ID field metadata is not found.
      */
     protected FieldMetadata getIdField() {
-        return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return entityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     /**
@@ -123,7 +123,7 @@ public abstract class AbstractRepository<T, K> implements PageableRepository<T, 
     @Override
     public void deleteById(K id) {
         requireNonNull(id, "is is required");
-        template().delete(getType(), id);
+        template().delete(type(), id);
     }
 
     @Override
@@ -135,7 +135,7 @@ public abstract class AbstractRepository<T, K> implements PageableRepository<T, 
     @Override
     public Optional<T> findById(K id) {
         requireNonNull(id, "id is required");
-        return template().find(getType(), id);
+        return template().find(type(), id);
     }
 
 
@@ -154,7 +154,7 @@ public abstract class AbstractRepository<T, K> implements PageableRepository<T, 
     @Override
     public void delete(T entity) {
         Objects.requireNonNull(entity, "entity is required");
-        EntityMetadata metadata = getEntityMetadata();
+        EntityMetadata metadata = entityMetadata();
         FieldMetadata id = metadata.id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
         template().delete(metadata.type(), id.read(entity));
     }
