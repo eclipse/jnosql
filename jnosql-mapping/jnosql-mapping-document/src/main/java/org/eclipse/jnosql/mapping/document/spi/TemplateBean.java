@@ -22,7 +22,7 @@ import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.document.DocumentTemplateProducer;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
-import org.eclipse.jnosql.mapping.spi.AbstractBean;
+import org.eclipse.jnosql.mapping.core.spi.AbstractBean;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
