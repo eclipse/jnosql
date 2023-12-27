@@ -75,13 +75,13 @@ public enum RepositoryType {
      */
     CUSTOM_REPOSITORY(""),
     /**
+     * Method that has {@link jakarta.data.repository.OrderBy} annotation
+     */
+    ORDER_BY(""),
+    /**
      * Method that has {@link Query} annotation
      */
     QUERY("", Query.class),
-    /**
-     * Method that has {@link jakarta.data.repository.OrderBy} annotation
-     */
-    ORDER_BY("", OrderBy.class),
     /**
      * Method that has {@link jakarta.data.repository.Save} annotation
      */
@@ -104,6 +104,8 @@ public enum RepositoryType {
             .or(Predicate.isEqual(BasicRepository.class));
 
     private static final Set<RepositoryType> KEY_WORLD_METHODS = EnumSet.of(FIND_BY, DELETE_BY, COUNT_BY, EXISTS_BY);
+
+    private static final Set<RepositoryType> OPERATION_ANNOTATIONS = EnumSet.of(INSERT, SAVE, DELETE, UPDATE);
     private final String keyword;
 
     private final Class<? extends Annotation> annotation;
@@ -140,15 +142,19 @@ public enum RepositoryType {
         if (method.getAnnotationsByType(OrderBy.class).length > 0) {
             return ORDER_BY;
         }
-        if (Objects.nonNull(method.getAnnotation(Query.class))) {
-            return QUERY;
-        }
+
         if (!repositoryType.equals(declaringClass) && isCustomRepository(declaringClass)) {
             return CUSTOM_REPOSITORY;
         }
         String methodName = method.getName();
         if (FIND_ALL.keyword.equals(methodName)) {
             return FIND_ALL;
+        }
+        Predicate<RepositoryType> hasAnnotation = a -> method.getAnnotation(a.annotation) != null;
+        if (OPERATION_ANNOTATIONS.stream().anyMatch(hasAnnotation)) {
+            return OPERATION_ANNOTATIONS.stream()
+                    .filter(hasAnnotation)
+                    .findFirst().orElseThrow();
         }
         return KEY_WORLD_METHODS.stream()
                 .filter(k -> methodName.startsWith(k.keyword))
