@@ -19,6 +19,7 @@ import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
+import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
@@ -56,7 +57,7 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T, K> {
     }
 
     @Override
-    protected PageableRepository<T, K> repository() {
+    protected AbstractRepository<T, K> repository() {
         return repository;
     }
 
