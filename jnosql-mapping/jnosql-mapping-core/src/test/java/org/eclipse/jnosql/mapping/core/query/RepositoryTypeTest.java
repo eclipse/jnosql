@@ -40,8 +40,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class RepositoryTypeTest {
 
-
-
     @ParameterizedTest
     @MethodSource("getBasicRepositoryMethods")
     void shouldReturnDefaultAtBasicRepository(Method method)  {

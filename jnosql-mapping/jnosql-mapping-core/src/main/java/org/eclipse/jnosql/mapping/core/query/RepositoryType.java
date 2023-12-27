@@ -105,7 +105,7 @@ public enum RepositoryType {
 
     private static final Set<RepositoryType> KEY_WORLD_METHODS = EnumSet.of(FIND_BY, DELETE_BY, COUNT_BY, EXISTS_BY);
 
-    private static final Set<RepositoryType> OPERATION_ANNOTATIONS = EnumSet.of(INSERT, SAVE, DELETE, UPDATE);
+    private static final Set<RepositoryType> OPERATION_ANNOTATIONS = EnumSet.of(INSERT, SAVE, DELETE, UPDATE, QUERY);
     private final String keyword;
 
     private final Class<? extends Annotation> annotation;
