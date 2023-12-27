@@ -61,48 +61,48 @@ public abstract class BaseColumnRepository<T> {
      *
      * @return The Converters instance.
      */
-    protected abstract Converters getConverters();
+    protected abstract Converters converters();
 
     /**
      * Retrieves the metadata information about the entity managed by the repository.
      *
      * @return The EntityMetadata instance.
      */
-    protected abstract EntityMetadata getEntityMetadata();
+    protected abstract EntityMetadata entityMetadata();
 
     /**
      * Retrieves the JNoSQLColumnTemplate instance for executing column queries.
      *
      * @return The JNoSQLColumnTemplate instance.
      */
-    protected abstract JNoSQLColumnTemplate getTemplate();
+    protected abstract JNoSQLColumnTemplate template();
 
     private ColumnObserverParser parser;
 
     private ParamsBinder paramsBinder;
 
 
-    protected ColumnQuery getQuery(Method method, Object[] args) {
+    protected ColumnQuery query(Method method, Object[] args) {
         SelectMethodProvider provider = SelectMethodProvider.INSTANCE;
-        SelectQuery selectQuery = provider.apply(method, getEntityMetadata().name());
-        ColumnQueryParams queryParams = SELECT_PARSER.apply(selectQuery, getParser());
+        SelectQuery selectQuery = provider.apply(method, entityMetadata().name());
+        ColumnQueryParams queryParams = SELECT_PARSER.apply(selectQuery, parser());
         ColumnQuery query = queryParams.query();
         Params params = queryParams.params();
-        getParamsBinder().bind(params, getArgs(args), method);
-        return updateQueryDynamically(getArgs(args), query);
+        paramsBinder().bind(params, args(args), method);
+        return updateQueryDynamically(args(args), query);
     }
 
-    private static Object[] getArgs(Object[] args) {
+    private static Object[] args(Object[] args) {
         return args == null ? EMPTY_PARAM : args;
     }
 
-    protected ColumnDeleteQuery getDeleteQuery(Method method, Object[] args) {
+    protected ColumnDeleteQuery deleteQuery(Method method, Object[] args) {
         DeleteMethodProvider deleteMethodFactory = DeleteMethodProvider.INSTANCE;
-        DeleteQuery deleteQuery = deleteMethodFactory.apply(method, getEntityMetadata().name());
-        ColumnDeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, getParser());
+        DeleteQuery deleteQuery = deleteMethodFactory.apply(method, entityMetadata().name());
+        ColumnDeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, parser());
         ColumnDeleteQuery query = queryParams.query();
         Params params = queryParams.params();
-        getParamsBinder().bind(params, getArgs(args), method);
+        paramsBinder().bind(params, args(args), method);
         return query;
     }
 
@@ -112,9 +112,9 @@ public abstract class BaseColumnRepository<T> {
      * @return The ColumnObserverParser instance.
      */
 
-    protected ColumnObserverParser getParser() {
+    protected ColumnObserverParser parser() {
         if (parser == null) {
-            this.parser = new RepositoryColumnObserverParser(getEntityMetadata());
+            this.parser = new RepositoryColumnObserverParser(entityMetadata());
         }
         return parser;
     }
@@ -124,9 +124,9 @@ public abstract class BaseColumnRepository<T> {
      *
      * @return The ParamsBinder instance.
      */
-    protected ParamsBinder getParamsBinder() {
+    protected ParamsBinder paramsBinder() {
         if (Objects.isNull(paramsBinder)) {
-            this.paramsBinder = new ParamsBinder(getEntityMetadata(), getConverters());
+            this.paramsBinder = new ParamsBinder(entityMetadata(), converters());
         }
         return paramsBinder;
     }
@@ -135,8 +135,8 @@ public abstract class BaseColumnRepository<T> {
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
-                .withResult(() -> getTemplate().select(query))
-                .withSingleResult(() -> getTemplate().singleResult(query))
+                .withResult(() -> template().select(query))
+                .withSingleResult(() -> template().singleResult(query))
                 .withPagination(DynamicReturn.findPageable(args))
                 .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
@@ -146,27 +146,27 @@ public abstract class BaseColumnRepository<T> {
     }
 
     protected Long executeCountByQuery(ColumnQuery query) {
-        return getTemplate().count(query);
+        return template().count(query);
     }
 
     protected boolean executeExistsByQuery(ColumnQuery query) {
-        return getTemplate().exists(query);
+        return template().exists(query);
     }
 
 
     protected Function<Pageable, Page<T>> getPage(ColumnQuery query) {
         return p -> {
-            Stream<T> entities = getTemplate().select(query);
+            Stream<T> entities = template().select(query);
             return NoSQLPage.of(entities.toList(), p);
         };
     }
 
     protected Function<Pageable, Optional<T>> getSingleResult(ColumnQuery query) {
-        return p -> getTemplate().singleResult(query);
+        return p -> template().singleResult(query);
     }
 
     protected Function<Pageable, Stream<T>> streamPagination(ColumnQuery query) {
-        return p -> getTemplate().select(query);
+        return p -> template().select(query);
     }
 
 

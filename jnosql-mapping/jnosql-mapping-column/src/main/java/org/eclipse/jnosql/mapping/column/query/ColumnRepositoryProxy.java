@@ -56,22 +56,22 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T, K> {
     }
 
     @Override
-    protected PageableRepository<T, K> getRepository() {
+    protected PageableRepository<T, K> repository() {
         return repository;
     }
 
     @Override
-    protected EntityMetadata getEntityMetadata() {
+    protected EntityMetadata entityMetadata() {
         return entityMetadata;
     }
 
     @Override
-    protected JNoSQLColumnTemplate getTemplate() {
+    protected JNoSQLColumnTemplate template() {
         return template;
     }
 
     @Override
-    protected Converters getConverters() {
+    protected Converters converters() {
         return converters;
     }
 

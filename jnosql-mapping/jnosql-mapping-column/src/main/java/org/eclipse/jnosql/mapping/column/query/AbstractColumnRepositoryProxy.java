@@ -15,11 +15,10 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.data.exceptions.MappingException;
-import jakarta.data.repository.PageableRepository;
 import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
-import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.core.query.RepositoryType;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.core.repository.ThrowingSupplier;
@@ -36,37 +35,35 @@ import java.lang.reflect.Method;
  */
 public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepository<T> implements InvocationHandler {
 
-    protected abstract PageableRepository<T, K> getRepository();
-
-    protected abstract Converters getConverters();
+    protected abstract AbstractRepository<T, K> repository();
 
     protected abstract Class<?> repositoryType();
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
         RepositoryType type = RepositoryType.of(method, repositoryType());
-        Class<?> typeClass = getEntityMetadata().type();
+        Class<?> typeClass = entityMetadata().type();
 
         switch (type) {
             case DEFAULT -> {
-                return unwrapInvocationTargetException(() -> method.invoke(getRepository(), args));
+                return unwrapInvocationTargetException(() -> method.invoke(repository(), args));
             }
             case FIND_BY -> {
-                return executeFindByQuery(method, args, typeClass, getQuery(method, args));
+                return executeFindByQuery(method, args, typeClass, query(method, args));
             }
             case COUNT_BY -> {
-                return executeCountByQuery(getQuery(method, args));
+                return executeCountByQuery(query(method, args));
             }
             case EXISTS_BY -> {
-                return executeExistsByQuery(getQuery(method, args));
+                return executeExistsByQuery(query(method, args));
             }
             case FIND_ALL -> {
-                ColumnQuery queryFindAll = ColumnQuery.select().from(getEntityMetadata().name()).build();
+                ColumnQuery queryFindAll = ColumnQuery.select().from(entityMetadata().name()).build();
                 return executeFindByQuery(method, args, typeClass, updateQueryDynamically(args, queryFindAll));
             }
             case DELETE_BY -> {
-                ColumnDeleteQuery deleteQuery = getDeleteQuery(method, args);
-                getTemplate().delete(deleteQuery);
+                ColumnDeleteQuery deleteQuery = deleteQuery(method, args);
+                template().delete(deleteQuery);
                 return Void.class;
             }
             case OBJECT_METHOD -> {
@@ -82,8 +79,8 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepo
                         .withArgs(args)
                         .withMethod(method)
                         .withTypeClass(typeClass)
-                        .withPrepareConverter(q -> getTemplate().prepare(q))
-                        .withQueryConverter(q -> getTemplate().query(q)).build();
+                        .withPrepareConverter(q -> template().prepare(q))
+                        .withQueryConverter(q -> template().query(q)).build();
                 return methodReturn.execute();
             }
             case CUSTOM_REPOSITORY -> {

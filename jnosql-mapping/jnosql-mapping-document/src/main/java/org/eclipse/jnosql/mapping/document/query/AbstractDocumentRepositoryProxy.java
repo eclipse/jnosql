@@ -15,10 +15,10 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.data.exceptions.MappingException;
-import jakarta.data.repository.PageableRepository;
 import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.core.query.RepositoryType;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.core.repository.ThrowingSupplier;
@@ -37,7 +37,7 @@ import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
  */
 public abstract class AbstractDocumentRepositoryProxy<T, K> extends BaseDocumentRepository<T> implements InvocationHandler {
 
-    protected abstract PageableRepository<T, K> getRepository();
+    protected abstract AbstractRepository<T, K> repository();
 
     protected abstract Class<?> repositoryType();
 
@@ -45,28 +45,28 @@ public abstract class AbstractDocumentRepositoryProxy<T, K> extends BaseDocument
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
         RepositoryType type = RepositoryType.of(method, repositoryType());
-        Class<?> typeClass = getEntityMetadata().type();
+        Class<?> typeClass = entityMetadata().type();
 
         switch (type) {
             case DEFAULT -> {
-                return unwrapInvocationTargetException(() -> method.invoke(getRepository(), args));
+                return unwrapInvocationTargetException(() -> method.invoke(repository(), args));
             }
             case FIND_BY -> {
-                return executeFindByQuery(method, args, typeClass, getQuery(method, args));
+                return executeFindByQuery(method, args, typeClass, query(method, args));
             }
             case COUNT_BY -> {
-                return executeCountByQuery(getQuery(method, args));
+                return executeCountByQuery(query(method, args));
             }
             case EXISTS_BY -> {
-                return executeExistsByQuery(getQuery(method, args));
+                return executeExistsByQuery(query(method, args));
             }
             case FIND_ALL -> {
-                DocumentQuery queryFindAll = select().from(getEntityMetadata().name()).build();
+                DocumentQuery queryFindAll = select().from(entityMetadata().name()).build();
                 return executeFindByQuery(method, args, typeClass, updateQueryDynamically(args, queryFindAll));
             }
             case DELETE_BY -> {
-                DocumentDeleteQuery documentDeleteQuery = getDeleteQuery(method, args);
-                getTemplate().delete(documentDeleteQuery);
+                DocumentDeleteQuery documentDeleteQuery = deleteQuery(method, args);
+                template().delete(documentDeleteQuery);
                 return null;
             }
             case OBJECT_METHOD -> {
@@ -82,8 +82,8 @@ public abstract class AbstractDocumentRepositoryProxy<T, K> extends BaseDocument
                         .withArgs(args)
                         .withMethod(method)
                         .withTypeClass(typeClass)
-                        .withPrepareConverter(q -> getTemplate().prepare(q))
-                        .withQueryConverter(q -> getTemplate().query(q)).build();
+                        .withPrepareConverter(q -> template().prepare(q))
+                        .withQueryConverter(q -> template().query(q)).build();
                 return methodReturn.execute();
             }
             case CUSTOM_REPOSITORY -> {

@@ -24,6 +24,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
+import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
@@ -50,17 +51,17 @@ import java.util.stream.Stream;
 abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
 
-    protected abstract EntityMetadata getEntityMetadata();
+    protected abstract EntityMetadata entityMetadata();
 
-    protected abstract PageableRepository getRepository();
+    protected abstract AbstractRepository<T, K> repository();
 
-    protected abstract Graph getGraph();
+    protected abstract Graph graph();
 
-    protected abstract GraphConverter getConverter();
+    protected abstract GraphConverter converter();
 
-    protected abstract GraphTemplate getTemplate();
+    protected abstract GraphTemplate template();
 
-    protected abstract Converters getConverters();
+    protected abstract Converters converters();
 
     protected abstract Class<?> repositoryType();
 
@@ -69,11 +70,11 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
         RepositoryType type = RepositoryType.of(method, repositoryType());
-        Class<?> typeClass = getEntityMetadata().type();
+        Class<?> typeClass = entityMetadata().type();
 
         switch (type) {
             case DEFAULT -> {
-                return unwrapInvocationTargetException(() -> method.invoke(getRepository(), args));
+                return unwrapInvocationTargetException(() -> method.invoke(repository(), args));
             }
             case FIND_BY -> {
                 return findBy(method, args, typeClass);
@@ -103,8 +104,8 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                         .withArgs(args)
                         .withMethod(method)
                         .withTypeClass(typeClass)
-                        .withPrepareConverter(q -> getTemplate().prepare(q))
-                        .withQueryConverter(q -> getTemplate().query(q)).build();
+                        .withPrepareConverter(q -> template().prepare(q))
+                        .withQueryConverter(q -> template().query(q)).build();
                 return methodReturn.execute();
             }case CUSTOM_REPOSITORY -> {
                 Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
@@ -120,11 +121,11 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
         Supplier<Stream<?>> querySupplier = () -> {
 
-            GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V().hasLabel(getEntityMetadata().name());
+            GraphTraversal<Vertex, Vertex> traversal = graph().traversal().V().hasLabel(entityMetadata().name());
 
-            SelectQueryConverter.updateDynamicParameter(args, traversal, getEntityMetadata());
+            SelectQueryConverter.updateDynamicParameter(args, traversal, entityMetadata());
             return traversal.toStream()
-                    .map(getConverter()::toEntity);
+                    .map(converter()::toEntity);
         };
 
         return converter(method, typeClass, querySupplier, args);
@@ -138,9 +139,9 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
     private Object countBy(Method method, Object[] args) {
 
         Supplier<Long> querySupplier = () -> {
-            GraphQueryMethod queryMethod = new GraphQueryMethod(getEntityMetadata(),
-                    getGraph().traversal().V(),
-                    getConverters(), method, args);
+            GraphQueryMethod queryMethod = new GraphQueryMethod(entityMetadata(),
+                    graph().traversal().V(),
+                    converters(), method, args);
             return CountQueryConverter.INSTANCE.apply(queryMethod, args);
         };
 
@@ -150,12 +151,12 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
     private Object findBy(Method method, Object[] args, Class<?> typeClass) {
 
         Supplier<Stream<?>> querySupplier = () -> {
-            GraphQueryMethod queryMethod = new GraphQueryMethod(getEntityMetadata(),
-                    getGraph().traversal().V(),
-                    getConverters(), method, args);
+            GraphQueryMethod queryMethod = new GraphQueryMethod(entityMetadata(),
+                    graph().traversal().V(),
+                    converters(), method, args);
 
             return SelectQueryConverter.INSTANCE.apply(queryMethod, args)
-                    .map(getConverter()::toEntity);
+                    .map(converter()::toEntity);
         };
 
         return converter(method, typeClass, querySupplier, args);
@@ -189,9 +190,9 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
     private Object executeDeleteMethod(Method method, Object[] args) {
 
-        GraphQueryMethod queryMethod = new GraphQueryMethod(getEntityMetadata(),
-                getGraph().traversal().V(),
-                getConverters(), method, args);
+        GraphQueryMethod queryMethod = new GraphQueryMethod(entityMetadata(),
+                graph().traversal().V(),
+                converters(), method, args);
 
         List<Vertex> vertices = DeleteQueryConverter.INSTANCE.apply(queryMethod);
         vertices.forEach(Vertex::remove);
