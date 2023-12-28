@@ -68,6 +68,37 @@ class AnnotationOperationTest {
     }
 
 
+    @Test
+    void shouldUpdateSingleParameter() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("same", Person.class);
+        Person person = Person.builder().build();
+        Mockito.when(repository.update(person)).thenReturn(true);
+        Object invoked = AnnotationOperation.UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{person}, repository));
+        Mockito.verify(repository).update(person);
+        Assertions.assertThat(person).isEqualTo(invoked);
+    }
+
+    @Test
+    void shouldUpdateIterableParameter() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("iterable", List.class);
+        Person person = Person.builder().build();
+        Mockito.when(repository.updateAll(List.of(person))).thenReturn(1);
+        Object invoked = AnnotationOperation.UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{List.of(person)}, repository));
+        Mockito.verify(repository).updateAll(List.of(person));
+        Assertions.assertThat(List.of(person)).isEqualTo(invoked);
+    }
+
+
+    @Test
+    void shouldUpdateArrayParameter() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("array", Person[].class);
+        Person person = Person.builder().build();
+        Mockito.when(repository.updateAll(List.of(person))).thenReturn(1);
+        Object invoked = AnnotationOperation.UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
+                repository));
+        Mockito.verify(repository).updateAll(List.of(person));
+        Assertions.assertThat(new Person[]{person}).isEqualTo(invoked);
+    }
 
 
     interface PersonRepository extends DataRepository<Person, Long>{

@@ -47,34 +47,18 @@ public enum AnnotationOperation {
                     || operation.method.getReturnType().equals(Boolean.TYPE);
             boolean isInt = operation.method.getReturnType().equals(Integer.class)
                     || operation.method.getReturnType().equals(Integer.TYPE);
-            boolean isSame = operation.method.getReturnType().equals(param.getClass());
             if (param instanceof Iterable entities) {
-                return executeIterable(operation, entities, isVoid, isBoolean, isInt, isSame);
+                return executeIterable(operation, entities, isVoid, isBoolean, isInt, false, null);
             } else if (param.getClass().isArray()) {
                 List<Object> entities = Arrays.asList((Object[]) param);
-                return executeIterable(operation, entities, isVoid, isBoolean, isInt, isSame);
+                return executeIterable(operation, entities, isVoid, isBoolean, isInt, true, param);
             } else {
-                return executeSingleEntity(operation, param, isVoid, isBoolean, isInt, isSame);
+                return executeSingleEntity(operation, param, isVoid, isBoolean, isInt);
             }
         }
 
-        private static Object executeSingleEntity(Operation operation, Object param, boolean isVoid, boolean isBoolean, boolean isInt, boolean isSame) {
-            boolean result = operation.repository.update(param);
-            if(isVoid) {
-                return Void.TYPE;
-            } else if(isBoolean) {
-                return result;
-            } else if(isInt) {
-                return 1;
-            } else if(isSame) {
-                return param;
-            } else {
-                throw new UnsupportedOperationException("We don't have support to this return at update operation, please check the method: "
-                        + operation.method);
-            }
-        }
-
-        private static Object executeIterable(Operation operation, Iterable entities, boolean isVoid, boolean isBoolean, boolean isInt, boolean isSame) {
+        private static Object executeIterable(Operation operation, Iterable entities, boolean isVoid, boolean isBoolean,
+                                              boolean isInt, boolean isArray, Object param) {
             int count = operation.repository.updateAll(entities);
             if (isVoid) {
                 return Void.TYPE;
@@ -82,14 +66,26 @@ public enum AnnotationOperation {
                 return true;
             } else if (isInt) {
                 return count;
-            } else if (isSame) {
-                return entities;
+            }  else if(isArray){
+                return param;
             } else {
-                throw new UnsupportedOperationException("We don't have support to this return at update operation, please check the method: "
-                        + operation.method);
+                return entities;
             }
         }
     };
+
+    private static Object executeSingleEntity(Operation operation, Object param, boolean isVoid, boolean isBoolean, boolean isInt) {
+        boolean result = operation.repository.update(param);
+        if(isVoid) {
+            return Void.TYPE;
+        } else if(isBoolean) {
+            return result;
+        } else if(isInt) {
+            return 1;
+        } else {
+            return param;
+        }
+    }
 
     private static void checkParameterNumber(Operation operation) {
         if (operation.params.length != 1) {
