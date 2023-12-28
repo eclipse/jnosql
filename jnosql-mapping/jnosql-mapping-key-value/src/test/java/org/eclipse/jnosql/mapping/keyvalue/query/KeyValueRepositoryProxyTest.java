@@ -308,7 +308,7 @@ class KeyValueRepositoryProxyTest {
         });
     }
 
-    interface BaseQuery<T> {
+    public interface BaseQuery<T> {
 
         @Query("get @key")
         List<T> key(@Param("key") String name);
@@ -318,7 +318,7 @@ class KeyValueRepositoryProxyTest {
         }
     }
 
-    interface UserRepository extends PageableRepository<User, String>, CrudRepository<User, String>, BaseQuery<User>, PersonStatisticRepository {
+    public interface UserRepository extends PageableRepository<User, String>, CrudRepository<User, String>, BaseQuery<User>, PersonStatisticRepository {
 
         Optional<User> findByName(String name);
 
