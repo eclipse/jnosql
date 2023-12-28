@@ -14,17 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-import jakarta.data.exceptions.MappingException;
-import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
-import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
-import org.eclipse.jnosql.mapping.core.query.RepositoryType;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
-import org.eclipse.jnosql.mapping.core.repository.ThrowingSupplier;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
