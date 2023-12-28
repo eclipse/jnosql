@@ -15,9 +15,8 @@
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
 
-
-import jakarta.data.repository.PageableRepository;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
@@ -31,11 +30,12 @@ class KeyValueRepositoryProxy<T, K> extends AbstractKeyValueRepositoryProxy<T, K
 
     private final Class<?> repositoryType;
 
+    private final EntityMetadata metadata;
 
     KeyValueRepositoryProxy(Class<?> repositoryType, EntitiesMetadata entitiesMetadata, KeyValueTemplate template) {
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
-        EntityMetadata metadata = entitiesMetadata.get(typeClass);
+        this.metadata = entitiesMetadata.get(typeClass);
         this.repository = new DefaultKeyValueRepository<>(metadata, template);
         this.template = template;
         this.type = typeClass;
@@ -43,23 +43,28 @@ class KeyValueRepositoryProxy<T, K> extends AbstractKeyValueRepositoryProxy<T, K
     }
 
     @Override
-    protected PageableRepository<T, K>  getRepository() {
+    protected AbstractRepository<T, K> repository() {
         return repository;
     }
 
     @Override
-    protected KeyValueTemplate getTemplate() {
+    protected KeyValueTemplate template() {
         return template;
     }
 
     @Override
-    protected Class<T> getType() {
+    protected Class<T> type() {
         return type;
     }
 
     @Override
     protected Class<?> repositoryType() {
         return repositoryType;
+    }
+
+    @Override
+    protected EntityMetadata entityMetadata() {
+        return metadata;
     }
 
 
