@@ -27,14 +27,14 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
  * @param <K> The type of the key used for key-value operations.
  *
  */
-class DefaultKeyValueRepository<T, K>  extends AbstractKeyValueRepository<T, K> {
+public class DefaultKeyValueRepository<T, K>  extends AbstractKeyValueRepository<T, K> {
 
 
     private final KeyValueTemplate repository;
 
     private final EntityMetadata metadata;
 
-    public DefaultKeyValueRepository(EntityMetadata metadata, KeyValueTemplate repository) {
+    DefaultKeyValueRepository(EntityMetadata metadata, KeyValueTemplate repository) {
         this.repository = repository;
         this.metadata = metadata;
     }
@@ -49,4 +49,8 @@ class DefaultKeyValueRepository<T, K>  extends AbstractKeyValueRepository<T, K> 
         return metadata;
     }
 
+
+    public static <T, K> DefaultKeyValueRepository<T, K> of(KeyValueTemplate template, EntityMetadata metadata) {
+        return new DefaultKeyValueRepository<>(metadata, template);
+    }
 }

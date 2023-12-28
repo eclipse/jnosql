@@ -15,8 +15,6 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
-import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
@@ -32,7 +30,7 @@ import java.lang.reflect.ParameterizedType;
  * @param <T>  the type
  * @param <K> the K type
  */
-class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T, K> {
+public class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T, K> {
 
     private final JNoSQLColumnTemplate template;
 
@@ -82,8 +80,7 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T, K> {
     }
 
 
-    static class ColumnRepository<T, K> extends AbstractColumnRepository<T, K> implements PageableRepository<T, K>,
-            CrudRepository<T, K> {
+    public static class ColumnRepository<T, K> extends AbstractColumnRepository<T, K> {
 
         private final JNoSQLColumnTemplate template;
 
@@ -102,6 +99,10 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T, K> {
         @Override
         protected EntityMetadata entityMetadata() {
             return entityMetadata;
+        }
+
+        public static <T, K> ColumnRepository<T, K> of(JNoSQLColumnTemplate template, EntityMetadata metadata) {
+            return new ColumnRepository<>(template, metadata);
         }
 
 

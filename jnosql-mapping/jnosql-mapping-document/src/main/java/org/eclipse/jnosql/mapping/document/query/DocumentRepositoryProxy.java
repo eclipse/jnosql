@@ -30,7 +30,7 @@ import java.lang.reflect.ParameterizedType;
  *
  * @param <T> the type
  */
-class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K> {
+public class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K> {
 
     private final JNoSQLDocumentTemplate template;
 
@@ -81,7 +81,7 @@ class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K
     }
 
 
-    static class DocumentRepository<T, K> extends AbstractDocumentRepository<T, K>  {
+    public static class DocumentRepository<T, K> extends AbstractDocumentRepository<T, K>  {
 
         private final JNoSQLDocumentTemplate template;
 
@@ -102,6 +102,9 @@ class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K
             return entityMetadata;
         }
 
+        public static <T, K> DocumentRepository<T, K> of(JNoSQLDocumentTemplate template, EntityMetadata metadata) {
+            return new DocumentRepository<>(template, metadata);
+        }
 
     }
 }
