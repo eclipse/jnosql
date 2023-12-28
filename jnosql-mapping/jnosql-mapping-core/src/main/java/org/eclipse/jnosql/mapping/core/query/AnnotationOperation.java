@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.core.query;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public enum AnnotationOperation {
@@ -79,6 +80,45 @@ public enum AnnotationOperation {
             } else {
                 return param;
             }
+        }
+    }, DELETE {
+        @Override
+        public Object invoke(Operation operation) {
+            checkParameterNumber(operation);
+            Object param = operation.params[0];
+            ReturnType returnType = new ReturnType(operation.method);
+            if (param instanceof Iterable entities) {
+                return executeIterable(operation, entities, returnType);
+            } else if (param.getClass().isArray()) {
+                List<Object> entities = Arrays.asList((Object[]) param);
+                return executeIterable(operation, entities, returnType  );
+            } else {
+                return executeSingleEntity(operation, param, returnType);
+            }
+        }
+
+        private static Object executeIterable(Operation operation, Iterable entities, ReturnType returnType) {
+
+            operation.repository.deleteAll(entities);
+            if (returnType.isVoid()) {
+                return Void.TYPE;
+            } else if (returnType.isBoolean()) {
+                return true;
+            } else if (returnType.isInt()) {
+                return StreamSupport.stream(entities.spliterator(), false).count();
+            }
+            return null;
+        }
+        private static Object executeSingleEntity(Operation operation, Object param, ReturnType returnType) {
+            operation.repository.delete(param);
+            if (returnType.isVoid()) {
+                return Void.TYPE;
+            } else if (returnType.isBoolean()) {
+                return true;
+            } else if (returnType.isInt()) {
+                return 1;
+            }
+            return null;
         }
     };
 
