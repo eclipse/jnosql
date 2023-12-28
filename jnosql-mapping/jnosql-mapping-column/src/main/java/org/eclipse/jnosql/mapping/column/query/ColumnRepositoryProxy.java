@@ -22,13 +22,14 @@ import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Objects;
 
 
 /**
- * Proxy handle to generate {@link jakarta.data.repository.PageableRepository}
+ * Proxy handler to generate {@link jakarta.data.repository.PageableRepository} for column-based repositories.
  *
- * @param <T>  the type
- * @param <K> the K type
+ * @param <T> The entity type managed by the repository.
+ * @param <K> The key type used for column-based operations.
  */
 public class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T, K> {
 
@@ -80,6 +81,12 @@ public class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T
     }
 
 
+    /**
+     * Repository implementation for column-based repositories.
+     *
+     * @param <T> The entity type managed by the repository.
+     * @param <K> The key type used for column-based operations.
+     */
     public static class ColumnRepository<T, K> extends AbstractColumnRepository<T, K> {
 
         private final JNoSQLColumnTemplate template;
@@ -101,10 +108,20 @@ public class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T
             return entityMetadata;
         }
 
+        /**
+         * Creates a new instance of ColumnRepository.
+         *
+         * @param <T>      The entity type managed by the repository.
+         * @param <K>      The key type used for column-based operations.
+         * @param template The JNoSQLColumnTemplate used for column database operations. Must not be {@code null}.
+         * @param metadata The metadata of the entity. Must not be {@code null}.
+         * @return A new instance of ColumnRepository.
+         * @throws NullPointerException If either the template or metadata is {@code null}.
+         */
         public static <T, K> ColumnRepository<T, K> of(JNoSQLColumnTemplate template, EntityMetadata metadata) {
+            Objects.requireNonNull(template,"template is required");
+            Objects.requireNonNull(metadata,"metadata is required");
             return new ColumnRepository<>(template, metadata);
         }
-
-
     }
 }
