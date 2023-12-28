@@ -105,7 +105,7 @@ public enum AnnotationOperation {
             } else if (returnType.isBoolean()) {
                 return true;
             } else if (returnType.isInt()) {
-                return StreamSupport.stream(entities.spliterator(), false).count();
+                return (int) StreamSupport.stream(entities.spliterator(), false).count();
             }
             return null;
         }
