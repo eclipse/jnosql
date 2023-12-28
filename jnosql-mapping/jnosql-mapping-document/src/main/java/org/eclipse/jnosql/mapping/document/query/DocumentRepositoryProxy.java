@@ -23,14 +23,16 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Objects;
 
 
 /**
- * Proxy handle to generate {@link PageableRepository}
+ * Proxy handle to generate {@link PageableRepository} for document-based repositories.
  *
  * @param <T> the type
+ * @param <K> the key type
  */
-class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K> {
+public class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K> {
 
     private final JNoSQLDocumentTemplate template;
 
@@ -80,8 +82,13 @@ class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K
         return converters;
     }
 
-
-    static class DocumentRepository<T, K> extends AbstractDocumentRepository<T, K>  {
+    /**
+     * DocumentRepository that interacts with the underlying document database.
+     *
+     * @param <T> the type
+     * @param <K> the key type
+     */
+    public static class DocumentRepository<T, K> extends AbstractDocumentRepository<T, K>  {
 
         private final JNoSQLDocumentTemplate template;
 
@@ -102,6 +109,21 @@ class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K
             return entityMetadata;
         }
 
+        /**
+         * Creates a new instance of DocumentRepository with the provided JNoSQLDocumentTemplate and EntityMetadata.
+         *
+         * @param <T>      The type of entities managed by the repository.
+         * @param <K>      The type of the key used for document-based operations.
+         * @param template The JNoSQLDocumentTemplate used for document database operations. Must not be {@code null}.
+         * @param metadata The metadata information about the entity. Must not be {@code null}.
+         * @return A new instance of DocumentRepository.
+         * @throws NullPointerException If either the template or metadata is {@code null}.
+         */
+        public static <T, K> DocumentRepository<T, K> of(JNoSQLDocumentTemplate template, EntityMetadata metadata) {
+            Objects.requireNonNull(template,"template is required");
+            Objects.requireNonNull(metadata,"metadata is required");
+            return new DocumentRepository<>(template, metadata);
+        }
 
     }
 }
