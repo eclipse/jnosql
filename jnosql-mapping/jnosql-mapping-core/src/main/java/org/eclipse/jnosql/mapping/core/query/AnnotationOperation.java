@@ -68,20 +68,21 @@ public enum AnnotationOperation {
                 return entities;
             }
         }
+        private static Object executeSingleEntity(Operation operation, Object param, ReturnType returnType) {
+            boolean result = operation.repository.update(param);
+            if (returnType.isVoid()) {
+                return Void.TYPE;
+            } else if (returnType.isBoolean()) {
+                return result;
+            } else if (returnType.isInt()) {
+                return 1;
+            } else {
+                return param;
+            }
+        }
     };
 
-    private static Object executeSingleEntity(Operation operation, Object param, ReturnType returnType) {
-        boolean result = operation.repository.update(param);
-        if (returnType.isVoid()) {
-            return Void.TYPE;
-        } else if (returnType.isBoolean()) {
-            return result;
-        } else if (returnType.isInt()) {
-            return 1;
-        } else {
-            return param;
-        }
-    }
+
 
     private static void checkParameterNumber(Operation operation) {
         if (operation.params.length != 1) {
