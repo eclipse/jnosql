@@ -541,7 +541,7 @@ class GraphRepositoryProxyTest {
         });
     }
 
-    interface BaseQuery<T> {
+    public interface BaseQuery<T> {
 
         List<T> findByScoreLessThan(int value);
 
@@ -550,7 +550,7 @@ class GraphRepositoryProxyTest {
         }
     }
 
-    interface PersonRepository extends PageableRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
+    public interface PersonRepository extends PageableRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
 
         List<Person> findByActiveTrue();
 
