@@ -19,6 +19,7 @@ import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
+import org.eclipse.jnosql.mapping.core.query.AnnotationOperation;
 import org.eclipse.jnosql.mapping.core.query.RepositoryType;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.core.repository.ThrowingSupplier;
@@ -28,6 +29,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
+import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.DELETE;
+import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.INSERT;
+import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.SAVE;
+import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.UPDATE;
 
 /**
  * Template method to Repository proxy on column
@@ -89,6 +94,18 @@ public abstract class AbstractDocumentRepositoryProxy<T, K> extends BaseDocument
             case CUSTOM_REPOSITORY -> {
                 Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
                 return unwrapInvocationTargetException(() -> method.invoke(customRepository, args));
+            }
+            case SAVE -> {
+                return unwrapInvocationTargetException(() -> SAVE.invoke(new AnnotationOperation.Operation(method, args, repository())));
+            }
+            case INSERT -> {
+                return unwrapInvocationTargetException(() -> INSERT.invoke(new AnnotationOperation.Operation(method, args, repository())));
+            }
+            case DELETE -> {
+                return unwrapInvocationTargetException(() -> DELETE.invoke(new AnnotationOperation.Operation(method, args, repository())));
+            }
+            case UPDATE -> {
+                return unwrapInvocationTargetException(() -> UPDATE.invoke(new AnnotationOperation.Operation(method, args, repository())));
             }
             default -> {
                 return Void.class;
