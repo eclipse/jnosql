@@ -15,9 +15,13 @@
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
 import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.Delete;
+import jakarta.data.repository.Insert;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
+import jakarta.data.repository.Save;
+import jakarta.data.repository.Update;
 import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
@@ -48,6 +52,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -308,6 +313,34 @@ class KeyValueRepositoryProxyTest {
         });
     }
 
+    @Test
+    void shouldInsertUsingAnnotation(){
+        User user = new User("12", "Poliana", 30);
+        userRepository.insertUser(user);
+        Mockito.verify(template).insert(user);
+    }
+
+    @Test
+    void shouldUpdateUsingAnnotation(){
+        User user = new User("12", "Poliana", 30);
+        userRepository.updateUser(user);
+        Mockito.verify(template).update(user);
+    }
+
+    @Test
+    void shouldDeleteUsingAnnotation(){
+        User user = new User("12", "Poliana", 30);
+        userRepository.deleteUser(user);
+        Mockito.verify(template).delete(User.class, "12");
+    }
+
+    @Test
+    void shouldSaveUsingAnnotation(){
+        User user = new User("12", "Poliana", 30);
+        userRepository.saveUser(user);
+        Mockito.verify(template).insert(user);
+    }
+
     public interface BaseQuery<T> {
 
         @Query("get @key")
@@ -334,6 +367,17 @@ class KeyValueRepositoryProxyTest {
 
         @Query("get @id")
         Optional<User> findByQuery(@Param("id") String id);
+
+        @Insert
+        User insertUser(User user);
+        @Update
+        User updateUser(User user);
+
+        @Save
+        User saveUser(User user);
+
+        @Delete
+        void deleteUser(User user);
     }
 
 }
