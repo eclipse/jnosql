@@ -28,6 +28,7 @@ import java.util.List;
 
 import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.DELETE;
 import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.INSERT;
+import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.SAVE;
 import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.UPDATE;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -78,7 +79,6 @@ class AnnotationOperationTest {
         Mockito.verify(repository).insertAll(List.of(person));
         Assertions.assertThat(List.of(person)).isEqualTo(invoked);
     }
-
 
     @Test
     void shouldUpdateSingleParameter() throws Throwable {
@@ -204,8 +204,6 @@ class AnnotationOperationTest {
         Assertions.assertThat(invoked).isEqualTo(Void.TYPE);
     }
 
-    // delete
-
     @Test
     void shouldDeleteSingleParameter() throws Throwable {
         Method method = PersonRepository.class.getDeclaredMethod("same", Person.class);
@@ -318,6 +316,37 @@ class AnnotationOperationTest {
         Assertions.assertThat(invoked).isEqualTo(Void.TYPE);
     }
 
+    @Test
+    void shouldSaveSingleParameter() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("same", Person.class);
+        Person person = Person.builder().build();
+        Mockito.when(repository.save(person)).thenReturn(person);
+        Object invoked = SAVE.invoke(new AnnotationOperation.Operation(method, new Object[]{person}, repository));
+        Mockito.verify(repository).save(person);
+        Assertions.assertThat(person).isEqualTo(invoked);
+    }
+
+    @Test
+    void shouldSaveIterableParameter() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("iterable", List.class);
+        Person person = Person.builder().build();
+        Mockito.when(repository.saveAll(List.of(person))).thenReturn(List.of(person));
+        Object invoked = SAVE.invoke(new AnnotationOperation.Operation(method, new Object[]{List.of(person)}, repository));
+        Mockito.verify(repository).saveAll(List.of(person));
+        Assertions.assertThat(List.of(person)).isEqualTo(invoked);
+    }
+
+
+    @Test
+    void shouldSaveArrayParameter() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("array", Person[].class);
+        Person person = Person.builder().build();
+        Mockito.when(repository.saveAll(List.of(person))).thenReturn(List.of(person));
+        Object invoked = SAVE.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
+                repository));
+        Mockito.verify(repository).saveAll(List.of(person));
+        Assertions.assertThat(List.of(person)).isEqualTo(invoked);
+    }
 
     interface PersonRepository extends DataRepository<Person, Long>{
 
