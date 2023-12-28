@@ -19,8 +19,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
+/**
+ * Enumeration representing the operations with annotations.
+ * Each operation defines a specific behavior when invoked.
+ */
 @SuppressWarnings({"rawtypes", "unchecked"})
 public enum AnnotationOperation {
+
+    /**
+     * Represents the {@link jakarta.data.repository.Insert} operation.
+     */
     INSERT {
         @Override
         public Object invoke(Operation operation) {
@@ -38,7 +46,11 @@ public enum AnnotationOperation {
                 return returnType.isVoid() ? Void.TYPE : result;
             }
         }
-    }, UPDATE {
+    },
+    /**
+     * Represents the {@link jakarta.data.repository.Update} operation.
+     */
+    UPDATE {
         @Override
         public Object invoke(Operation operation) {
             checkParameterNumber(operation);
@@ -82,7 +94,11 @@ public enum AnnotationOperation {
                 return param;
             }
         }
-    }, DELETE {
+    },
+    /**
+     * Represents the {@link jakarta.data.repository.Delete} operation.
+     */
+    DELETE {
         @Override
         public Object invoke(Operation operation) {
             checkParameterNumber(operation);
@@ -122,7 +138,11 @@ public enum AnnotationOperation {
             }
             return null;
         }
-    }, SAVE {
+    },
+    /**
+     * Represents the {@link jakarta.data.repository.Save} operation.
+     */
+    SAVE {
         @Override
         public Object invoke(Operation operation) {
             checkParameterNumber(operation);
