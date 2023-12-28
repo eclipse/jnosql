@@ -91,7 +91,7 @@ public enum AnnotationOperation {
                 return executeIterable(operation, entities, returnType);
             } else if (param.getClass().isArray()) {
                 List<Object> entities = Arrays.asList((Object[]) param);
-                return executeIterable(operation, entities, returnType  );
+                return executeIterable(operation, entities, returnType);
             } else {
                 return executeSingleEntity(operation, param, returnType);
             }
