@@ -872,7 +872,7 @@ class DocumentCrudRepositoryProxyTest {
     }
 
 
-    interface BaseQuery<T> {
+    public interface BaseQuery<T> {
 
         List<T> findByNameLessThan(String name);
 
@@ -881,7 +881,7 @@ class DocumentCrudRepositoryProxyTest {
         }
     }
 
-    interface PersonRepository extends CrudRepository<Person, Long>, BaseQuery<Person> {
+    public interface PersonRepository extends CrudRepository<Person, Long>, BaseQuery<Person> {
 
         List<Person> findBySalary_Currency(String currency);
 
