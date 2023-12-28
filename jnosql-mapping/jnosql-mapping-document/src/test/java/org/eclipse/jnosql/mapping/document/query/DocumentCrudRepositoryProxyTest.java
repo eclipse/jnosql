@@ -16,10 +16,14 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.Delete;
+import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.Sort;
+import jakarta.data.repository.Save;
+import jakarta.data.repository.Update;
 import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
 import org.assertj.core.api.Assertions;
@@ -827,7 +831,48 @@ class DocumentCrudRepositoryProxyTest {
         assertEquals(Document.of("name", "Ada"), condition.document());
     }
 
-    interface BaseQuery<T> {
+    @Test
+    void shouldInsertUsingAnnotation(){
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.insertPerson(person);
+        Mockito.verify(template).insert(person);
+    }
+
+    @Test
+    void shouldUpdateUsingAnnotation(){
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.updatePerson(person);
+        Mockito.verify(template).update(person);
+    }
+
+    @Test
+    void shouldDeleteUsingAnnotation(){
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.deletePerson(person);
+        Mockito.verify(template).delete(Person.class, 10L);
+    }
+
+    @Test
+    void shouldSaveUsingAnnotation(){
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.savePerson(person);
+        Mockito.verify(template).insert(person);
+    }
+
+
+    public interface BaseQuery<T> {
 
         List<T> findByNameLessThan(String name);
 
@@ -836,7 +881,7 @@ class DocumentCrudRepositoryProxyTest {
         }
     }
 
-    interface PersonRepository extends CrudRepository<Person, Long>, BaseQuery<Person> {
+    public interface PersonRepository extends CrudRepository<Person, Long>, BaseQuery<Person> {
 
         List<Person> findBySalary_Currency(String currency);
 
@@ -875,6 +920,17 @@ class DocumentCrudRepositoryProxyTest {
         Set<Person> findByAgeBetween(Integer ageA, Integer ageB);
 
         Set<Person> findByNameLike(String name);
+
+        @Insert
+        Person insertPerson(Person person);
+        @Update
+        Person updatePerson(Person person);
+
+        @Save
+        Person savePerson(Person person);
+
+        @Delete
+        void deletePerson(Person person);
 
         @Query("select * from Person")
         Optional<Person> findByQuery();

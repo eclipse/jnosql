@@ -12,6 +12,9 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Upgrade Jakarta Data to version 1.0.0-M2
 
+=== Added
+
+- Add support to operations annotations (Insert, Update, Delete and Save) from Jakarta Data
 
 == [1.0.4] - 2023-12-19
 

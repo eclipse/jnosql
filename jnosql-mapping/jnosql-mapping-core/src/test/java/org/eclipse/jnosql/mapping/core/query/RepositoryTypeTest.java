@@ -17,9 +17,13 @@ package org.eclipse.jnosql.mapping.core.query;
 
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.Delete;
+import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Query;
+import jakarta.data.repository.Save;
+import jakarta.data.repository.Update;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.spi.CDI;
 import org.junit.jupiter.api.Assertions;
@@ -39,8 +43,6 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RepositoryTypeTest {
-
-
 
     @ParameterizedTest
     @MethodSource("getBasicRepositoryMethods")
@@ -75,6 +77,26 @@ class RepositoryTypeTest {
     @Test
     void shouldReturnFindBy() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.FIND_BY, RepositoryType.of(getMethod(DevRepository.class, "findByName"), CrudRepository.class));
+    }
+
+    @Test
+    void shouldReturnSave() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.SAVE, RepositoryType.of(getMethod(DevRepository.class, "save"), DevRepository.class));
+    }
+
+    @Test
+    void shouldReturnInsert() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.INSERT, RepositoryType.of(getMethod(DevRepository.class, "insert"), DevRepository.class));
+    }
+
+    @Test
+    void shouldReturnDelete() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.DELETE, RepositoryType.of(getMethod(DevRepository.class, "delete"), DevRepository.class));
+    }
+
+    @Test
+    void shouldReturnUpdate() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.UPDATE, RepositoryType.of(getMethod(DevRepository.class, "update"), DevRepository.class));
     }
 
     @Test
@@ -194,6 +216,19 @@ class RepositoryTypeTest {
         default int duplicate(int value) {
             return value * 2;
         }
+
+        @Delete
+        void delete(String name);
+
+        @Insert
+        void insert(String name);
+
+        @Update
+        void update(String name);
+
+        @Save
+        void save(String name);
+
     }
 
     interface Calculate {

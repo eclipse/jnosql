@@ -16,11 +16,16 @@ package org.eclipse.jnosql.mapping.core.query;
 
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.Delete;
+import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Query;
+import jakarta.data.repository.Save;
+import jakarta.data.repository.Update;
 import jakarta.enterprise.inject.spi.CDI;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.EnumSet;
 import java.util.Objects;
@@ -62,31 +67,57 @@ public enum RepositoryType {
      */
     OBJECT_METHOD(""),
     /**
-     * Method that has {@link Query} annotation
-     */
-    QUERY(""),
-    /**
-     * Method that has {@link jakarta.data.repository.OrderBy} annotation
-     */
-    ORDER_BY(""),
-    /**
      * The method that belongs to the interface using a default method.
      */
     DEFAULT_METHOD(""),
     /**
      * The method that belongs to the interface using a custom repository.
      */
-    CUSTOM_REPOSITORY("");
+    CUSTOM_REPOSITORY(""),
+    /**
+     * Method that has {@link jakarta.data.repository.OrderBy} annotation
+     */
+    ORDER_BY(""),
+    /**
+     * Method that has {@link Query} annotation
+     */
+    QUERY("", Query.class),
+    /**
+     * Method that has {@link jakarta.data.repository.Save} annotation
+     */
+    SAVE("", Save.class),
+    /**
+     * Method that has {@link jakarta.data.repository.Insert} annotation
+     */
+    INSERT("", Insert.class),
+    /**
+     * Method that has {@link jakarta.data.repository.Delete} annotation
+     */
+    DELETE("", Delete.class),
+    /**
+     * Method that has {@link jakarta.data.repository.Update} annotation
+     */
+    UPDATE("", Update.class);
 
     private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(CrudRepository.class)
             .or(Predicate.isEqual(PageableRepository.class))
             .or(Predicate.isEqual(BasicRepository.class));
 
     private static final Set<RepositoryType> KEY_WORLD_METHODS = EnumSet.of(FIND_BY, DELETE_BY, COUNT_BY, EXISTS_BY);
+
+    private static final Set<RepositoryType> OPERATION_ANNOTATIONS = EnumSet.of(INSERT, SAVE, DELETE, UPDATE, QUERY);
     private final String keyword;
+
+    private final Class<? extends Annotation> annotation;
 
     RepositoryType(String keyword) {
         this.keyword = keyword;
+        this.annotation = null;
+    }
+
+    RepositoryType(String keyword, Class<? extends Annotation> annotation) {
+        this.keyword = keyword;
+        this.annotation = annotation;
     }
 
 
@@ -111,15 +142,19 @@ public enum RepositoryType {
         if (method.getAnnotationsByType(OrderBy.class).length > 0) {
             return ORDER_BY;
         }
-        if (Objects.nonNull(method.getAnnotation(Query.class))) {
-            return QUERY;
-        }
+
         if (!repositoryType.equals(declaringClass) && isCustomRepository(declaringClass)) {
             return CUSTOM_REPOSITORY;
         }
         String methodName = method.getName();
         if (FIND_ALL.keyword.equals(methodName)) {
             return FIND_ALL;
+        }
+        Predicate<RepositoryType> hasAnnotation = a -> method.getAnnotation(a.annotation) != null;
+        if (OPERATION_ANNOTATIONS.stream().anyMatch(hasAnnotation)) {
+            return OPERATION_ANNOTATIONS.stream()
+                    .filter(hasAnnotation)
+                    .findFirst().orElseThrow();
         }
         return KEY_WORLD_METHODS.stream()
                 .filter(k -> methodName.startsWith(k.keyword))

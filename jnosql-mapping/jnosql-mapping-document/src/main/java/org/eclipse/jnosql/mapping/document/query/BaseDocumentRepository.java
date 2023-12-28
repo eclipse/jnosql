@@ -32,6 +32,7 @@ import org.eclipse.jnosql.communication.query.method.DeleteMethodProvider;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
+import org.eclipse.jnosql.mapping.core.query.AbstractRepositoryProxy;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.MappingDocumentQuery;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -47,7 +48,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public abstract class BaseDocumentRepository<T> {
+public abstract class BaseDocumentRepository<T, K> extends AbstractRepositoryProxy<T, K> {
 
     private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();
 
@@ -55,39 +56,39 @@ public abstract class BaseDocumentRepository<T> {
     private static final Object[] EMPTY_PARAM = new Object[0];
 
 
-    protected abstract Converters getConverters();
+    protected abstract Converters converters();
 
-    protected abstract EntityMetadata getEntityMetadata();
+    protected abstract EntityMetadata entityMetadata();
 
-    protected abstract JNoSQLDocumentTemplate getTemplate();
+    protected abstract JNoSQLDocumentTemplate template();
 
     private DocumentObserverParser parser;
 
     private ParamsBinder paramsBinder;
 
 
-    protected DocumentQuery getQuery(Method method, Object[] args) {
+    protected DocumentQuery query(Method method, Object[] args) {
         SelectMethodProvider provider = SelectMethodProvider.INSTANCE;
-        SelectQuery selectQuery = provider.apply(method, getEntityMetadata().name());
-        DocumentQueryParams queryParams = SELECT_PARSER.apply(selectQuery, getParser());
+        SelectQuery selectQuery = provider.apply(method, entityMetadata().name());
+        DocumentQueryParams queryParams = SELECT_PARSER.apply(selectQuery, parser());
         DocumentQuery query = queryParams.query();
         Params params = queryParams.params();
-        getParamsBinder().bind(params, getArgs(args), method);
-        return updateQueryDynamically(getArgs(args), query);
+        paramsBinder().bind(params, args(args), method);
+        return updateQueryDynamically(args(args), query);
     }
 
 
-    protected DocumentDeleteQuery getDeleteQuery(Method method, Object[] args) {
+    protected DocumentDeleteQuery deleteQuery(Method method, Object[] args) {
         DeleteMethodProvider deleteMethodFactory = DeleteMethodProvider.INSTANCE;
-        DeleteQuery deleteQuery = deleteMethodFactory.apply(method, getEntityMetadata().name());
-        DocumentDeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, getParser());
+        DeleteQuery deleteQuery = deleteMethodFactory.apply(method, entityMetadata().name());
+        DocumentDeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, parser());
         DocumentDeleteQuery query = queryParams.query();
         Params params = queryParams.params();
-        getParamsBinder().bind(params, getArgs(args), method);
+        paramsBinder().bind(params, args(args), method);
         return query;
     }
 
-    private static Object[] getArgs(Object[] args) {
+    private static Object[] args(Object[] args) {
         return args == null ? EMPTY_PARAM : args;
     }
 
@@ -135,55 +136,55 @@ public abstract class BaseDocumentRepository<T> {
 
     }
 
-    protected DocumentObserverParser getParser() {
+    protected DocumentObserverParser parser() {
         if (parser == null) {
-            this.parser = new RepositoryDocumentObserverParser(getEntityMetadata());
+            this.parser = new RepositoryDocumentObserverParser(entityMetadata());
         }
         return parser;
     }
 
-    protected ParamsBinder getParamsBinder() {
+    protected ParamsBinder paramsBinder() {
         if (Objects.isNull(paramsBinder)) {
-            this.paramsBinder = new ParamsBinder(getEntityMetadata(), getConverters());
+            this.paramsBinder = new ParamsBinder(entityMetadata(), converters());
         }
         return paramsBinder;
     }
 
     protected Long executeCountByQuery(DocumentQuery query) {
-       return getTemplate().count(query);
+       return template().count(query);
     }
 
     protected boolean executeExistsByQuery(DocumentQuery query) {
-        return getTemplate().exists(query);
+        return template().exists(query);
     }
 
     protected Object executeFindByQuery(Method method, Object[] args, Class<?> typeClass, DocumentQuery query) {
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
-                .withResult(() -> getTemplate().select(query))
-                .withSingleResult(() -> getTemplate().singleResult(query))
+                .withResult(() -> template().select(query))
+                .withSingleResult(() -> template().singleResult(query))
                 .withPagination(DynamicReturn.findPageable(args))
                 .withStreamPagination(streamPagination(query))
-                .withSingleResultPagination(getSingleResult(query))
-                .withPage(getPage(query))
+                .withSingleResultPagination(singleResult(query))
+                .withPage(page(query))
                 .build();
         return dynamicReturn.execute();
     }
 
-    protected Function<Pageable, Page<T>> getPage(DocumentQuery query) {
+    protected Function<Pageable, Page<T>> page(DocumentQuery query) {
         return p -> {
-            Stream<T> entities = getTemplate().select(query);
+            Stream<T> entities = template().select(query);
             return NoSQLPage.of(entities.toList(), p);
         };
     }
 
-    protected Function<Pageable, Optional<T>> getSingleResult(DocumentQuery query) {
-        return p -> getTemplate().singleResult(query);
+    protected Function<Pageable, Optional<T>> singleResult(DocumentQuery query) {
+        return p -> template().singleResult(query);
     }
 
     protected Function<Pageable, Stream<T>> streamPagination(DocumentQuery query) {
-        return p -> getTemplate().select(query);
+        return p -> template().select(query);
     }
 
 }

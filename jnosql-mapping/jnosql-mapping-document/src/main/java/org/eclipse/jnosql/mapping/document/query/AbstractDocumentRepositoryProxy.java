@@ -14,17 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
-import jakarta.data.exceptions.MappingException;
-import jakarta.data.repository.PageableRepository;
-import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
-import org.eclipse.jnosql.mapping.core.query.RepositoryType;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
-import org.eclipse.jnosql.mapping.core.repository.ThrowingSupplier;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
@@ -35,72 +28,50 @@ import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
  * @param <T> the entity type
  * @param <K> the key type
  */
-public abstract class AbstractDocumentRepositoryProxy<T, K> extends BaseDocumentRepository<T> implements InvocationHandler {
+public abstract class AbstractDocumentRepositoryProxy<T, K> extends BaseDocumentRepository<T, K> {
 
-    protected abstract PageableRepository<T, K> getRepository();
-
-    protected abstract Class<?> repositoryType();
 
     @Override
-    public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
-
-        RepositoryType type = RepositoryType.of(method, repositoryType());
-        Class<?> typeClass = getEntityMetadata().type();
-
-        switch (type) {
-            case DEFAULT -> {
-                return unwrapInvocationTargetException(() -> method.invoke(getRepository(), args));
-            }
-            case FIND_BY -> {
-                return executeFindByQuery(method, args, typeClass, getQuery(method, args));
-            }
-            case COUNT_BY -> {
-                return executeCountByQuery(getQuery(method, args));
-            }
-            case EXISTS_BY -> {
-                return executeExistsByQuery(getQuery(method, args));
-            }
-            case FIND_ALL -> {
-                DocumentQuery queryFindAll = select().from(getEntityMetadata().name()).build();
-                return executeFindByQuery(method, args, typeClass, updateQueryDynamically(args, queryFindAll));
-            }
-            case DELETE_BY -> {
-                DocumentDeleteQuery documentDeleteQuery = getDeleteQuery(method, args);
-                getTemplate().delete(documentDeleteQuery);
-                return null;
-            }
-            case OBJECT_METHOD -> {
-                return unwrapInvocationTargetException(() -> method.invoke(this, args));
-            }
-            case DEFAULT_METHOD -> {
-                return unwrapInvocationTargetException(() -> InvocationHandler.invokeDefault(instance, method, args));
-            }
-            case ORDER_BY ->
-                    throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
-            case QUERY -> {
-                DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
-                        .withArgs(args)
-                        .withMethod(method)
-                        .withTypeClass(typeClass)
-                        .withPrepareConverter(q -> getTemplate().prepare(q))
-                        .withQueryConverter(q -> getTemplate().query(q)).build();
-                return methodReturn.execute();
-            }
-            case CUSTOM_REPOSITORY -> {
-                Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
-                return unwrapInvocationTargetException(() -> method.invoke(customRepository, args));
-            }
-            default -> {
-                return Void.class;
-            }
-        }
+    protected Object executeQuery(Object instance, Method method, Object[] params) {
+        Class<?> type = entityMetadata().type();
+        DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
+                .withArgs(params)
+                .withMethod(method)
+                .withTypeClass(type)
+                .withPrepareConverter(q -> template().prepare(q))
+                .withQueryConverter(q -> template().query(q)).build();
+        return methodReturn.execute();
     }
 
-    private Object unwrapInvocationTargetException(ThrowingSupplier<Object> supplier) throws Throwable {
-        try {
-            return supplier.get();
-        } catch (InvocationTargetException ex) {
-            throw ex.getCause();
-        }
+    @Override
+    protected Object executeDeleteByAll(Object instance, Method method, Object[] params) {
+        DocumentDeleteQuery documentDeleteQuery = deleteQuery(method, params);
+        template().delete(documentDeleteQuery);
+        return null;
     }
+
+    @Override
+    protected Object executeFindAll(Object instance, Method method, Object[] params) {
+        Class<?> typeClass = entityMetadata().type();
+        DocumentQuery queryFindAll = select().from(entityMetadata().name()).build();
+        return executeFindByQuery(method, params, typeClass, updateQueryDynamically(params, queryFindAll));
+    }
+
+    @Override
+    protected Object executeExistByQuery(Object instance, Method method, Object[] params) {
+        return executeExistsByQuery(query(method, params));
+    }
+
+    @Override
+    protected Object executeCountByQuery(Object instance, Method method, Object[] params) {
+        return executeCountByQuery(query(method, params));
+    }
+
+    @Override
+    protected Object executeFindByQuery(Object instance, Method method, Object[] params) {
+        Class<?> type = entityMetadata().type();
+        return executeFindByQuery(method, params, type, query(method, params));
+    }
+
+
 }

@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.graph.query;
 import jakarta.data.repository.PageableRepository;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -67,32 +68,32 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
     }
 
     @Override
-    protected EntityMetadata getEntityMetadata() {
+    protected EntityMetadata entityMetadata() {
         return entityMetadata;
     }
 
     @Override
-    protected PageableRepository getRepository() {
+    protected AbstractRepository<T, K> repository() {
         return repository;
     }
 
     @Override
-    protected Graph getGraph() {
+    protected Graph graph() {
         return graph;
     }
 
     @Override
-    protected GraphConverter getConverter() {
+    protected GraphConverter converter() {
         return converter;
     }
 
     @Override
-    protected GraphTemplate getTemplate() {
+    protected GraphTemplate template() {
         return template;
     }
 
     @Override
-    protected Converters getConverters() {
+    protected Converters converters() {
         return converters;
     }
 

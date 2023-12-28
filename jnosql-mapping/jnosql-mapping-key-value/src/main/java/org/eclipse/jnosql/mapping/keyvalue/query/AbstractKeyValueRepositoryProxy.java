@@ -14,66 +14,57 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
-import jakarta.data.repository.PageableRepository;
-import jakarta.enterprise.inject.spi.CDI;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
-import org.eclipse.jnosql.mapping.core.query.RepositoryType;
+import org.eclipse.jnosql.mapping.core.query.AbstractRepositoryProxy;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
-import org.eclipse.jnosql.mapping.core.repository.ThrowingSupplier;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public abstract class AbstractKeyValueRepositoryProxy<T, K> implements InvocationHandler {
+public abstract class AbstractKeyValueRepositoryProxy<T, K> extends AbstractRepositoryProxy<T, K> {
 
 
-    protected abstract PageableRepository<T, K> getRepository();
+    protected abstract KeyValueTemplate template();
 
-    protected abstract KeyValueTemplate getTemplate();
-
-    protected abstract Class<T> getType();
+    protected abstract Class<T> type();
 
     protected abstract Class<?> repositoryType();
 
-    @Override
-    public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
-        RepositoryType type = RepositoryType.of(method, repositoryType());
-        switch (type) {
-            case DEFAULT -> {
-                return unwrapInvocationTargetException(() -> method.invoke(getRepository(), args));
-            }
-            case OBJECT_METHOD -> {
-                return unwrapInvocationTargetException(() -> method.invoke(this, args));
-            }
-            case DEFAULT_METHOD -> {
-                return unwrapInvocationTargetException(() -> InvocationHandler.invokeDefault(instance, method, args));
-            }
-            case QUERY -> {
-                Class<?> typeClass = getType();
-                DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
-                        .withArgs(args)
-                        .withMethod(method)
-                        .withTypeClass(typeClass)
-                        .withPrepareConverter(q -> getTemplate().prepare(q, typeClass))
-                        .withQueryConverter(q -> getTemplate().query(q, typeClass)).build();
-                return methodReturn.execute();
-            }
-            case CUSTOM_REPOSITORY -> {
-                Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
-                return unwrapInvocationTargetException(() -> method.invoke(customRepository, args));
-            }
-            default -> throw new DynamicQueryException("Key Value repository does not support query method");
-        }
+    @Override
+    protected Object executeQuery(Object instance, Method method, Object[] params) {
+        Class<?> typeClass = type();
+        DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
+                .withArgs(params)
+                .withMethod(method)
+                .withTypeClass(typeClass)
+                .withPrepareConverter(q -> template().prepare(q, typeClass))
+                .withQueryConverter(q -> template().query(q, typeClass)).build();
+        return methodReturn.execute();
     }
 
-    private Object unwrapInvocationTargetException(ThrowingSupplier<Object> supplier) throws Throwable {
-        try {
-            return supplier.get();
-        } catch (InvocationTargetException ex) {
-            throw ex.getCause();
-        }
+    @Override
+    protected Object executeDeleteByAll(Object instance, Method method, Object[] params) {
+        throw new DynamicQueryException("Key Value repository does not support query method");
+    }
+
+    @Override
+    protected Object executeFindAll(Object instance, Method method, Object[] params) {
+        throw new DynamicQueryException("Key Value repository does not support query method");
+    }
+
+    @Override
+    protected Object executeExistByQuery(Object instance, Method method, Object[] params) {
+        throw new DynamicQueryException("Key Value repository does not support query method");
+    }
+
+    @Override
+    protected Object executeCountByQuery(Object instance, Method method, Object[] params) {
+        throw new DynamicQueryException("Key Value repository does not support query method");
+    }
+
+    @Override
+    protected Object executeFindByQuery(Object instance, Method method, Object[] params) {
+        throw new DynamicQueryException("Key Value repository does not support query method");
     }
 }

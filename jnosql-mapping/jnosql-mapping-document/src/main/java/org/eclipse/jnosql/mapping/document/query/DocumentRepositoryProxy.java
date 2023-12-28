@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -48,14 +49,14 @@ class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K
         Class<T> typeClass = (Class<T>) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
         this.entityMetadata = entities.get(typeClass);
-        this.repository = new DocumentRepository(template, entityMetadata);
+        this.repository = new DocumentRepository<>(template, entityMetadata);
         this.converters = converters;
         this.repositoryType = repositoryType;
     }
 
 
     @Override
-    protected PageableRepository<T, K> getRepository() {
+    protected AbstractRepository<T, K> repository() {
         return repository;
     }
 
@@ -65,17 +66,17 @@ class DocumentRepositoryProxy<T, K> extends AbstractDocumentRepositoryProxy<T, K
     }
 
     @Override
-    protected JNoSQLDocumentTemplate getTemplate() {
+    protected JNoSQLDocumentTemplate template() {
         return template;
     }
 
     @Override
-    protected EntityMetadata getEntityMetadata() {
+    protected EntityMetadata entityMetadata() {
         return entityMetadata;
     }
 
     @Override
-    protected Converters getConverters() {
+    protected Converters converters() {
         return converters;
     }
 

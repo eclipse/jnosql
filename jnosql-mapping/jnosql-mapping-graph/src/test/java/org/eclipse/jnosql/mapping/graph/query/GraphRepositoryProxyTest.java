@@ -15,10 +15,14 @@
 package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.data.exceptions.MappingException;
+import jakarta.data.repository.Delete;
+import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
+import jakarta.data.repository.Save;
+import jakarta.data.repository.Update;
 import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
 import org.apache.tinkerpop.gremlin.structure.Edge;
@@ -541,7 +545,47 @@ class GraphRepositoryProxyTest {
         });
     }
 
-    interface BaseQuery<T> {
+    @Test
+    void shouldInsertUsingAnnotation(){
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.insertPerson(person);
+        Mockito.verify(template).insert(person);
+    }
+
+    @Test
+    void shouldUpdateUsingAnnotation(){
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.updatePerson(person);
+        Mockito.verify(template).update(person);
+    }
+
+    @Test
+    void shouldDeleteUsingAnnotation(){
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.deletePerson(person);
+        Mockito.verify(template).delete(Person.class, 10L);
+    }
+
+    @Test
+    void shouldSaveUsingAnnotation(){
+        Person person = Person.builder().withName("Ada")
+                .withId(10L)
+                .withPhones(singletonList("123123"))
+                .build();
+        personRepository.savePerson(person);
+        Mockito.verify(template).insert(person);
+    }
+
+    public interface BaseQuery<T> {
 
         List<T> findByScoreLessThan(int value);
 
@@ -550,7 +594,7 @@ class GraphRepositoryProxyTest {
         }
     }
 
-    interface PersonRepository extends PageableRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
+    public interface PersonRepository extends PageableRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
 
         List<Person> findByActiveTrue();
 
@@ -577,6 +621,17 @@ class GraphRepositoryProxyTest {
         Set<Person> findByAgeAndName(Integer age, String name);
 
         Set<Person> findByNameAndAgeGreaterThanEqual(String name, Integer age);
+
+        @Insert
+        Person insertPerson(Person person);
+        @Update
+        Person updatePerson(Person person);
+
+        @Save
+        Person savePerson(Person person);
+
+        @Delete
+        void deletePerson(Person person);
 
         @Query("g.V().hasLabel('Person').toList()")
         List<Person> findByQuery();
