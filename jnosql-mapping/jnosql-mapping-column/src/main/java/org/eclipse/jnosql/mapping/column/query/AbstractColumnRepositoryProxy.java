@@ -33,71 +33,48 @@ import java.lang.reflect.Method;
  * @param <T> the entity type
  * @param <K> the K entity
  */
-public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepository<T> implements InvocationHandler {
-
-    protected abstract AbstractRepository<T, K> repository();
-
-    protected abstract Class<?> repositoryType();
+public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepository<T, K>  {
 
     @Override
-    public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
-        RepositoryType type = RepositoryType.of(method, repositoryType());
-        Class<?> typeClass = entityMetadata().type();
-
-        switch (type) {
-            case DEFAULT -> {
-                return unwrapInvocationTargetException(() -> method.invoke(repository(), args));
-            }
-            case FIND_BY -> {
-                return executeFindByQuery(method, args, typeClass, query(method, args));
-            }
-            case COUNT_BY -> {
-                return executeCountByQuery(query(method, args));
-            }
-            case EXISTS_BY -> {
-                return executeExistsByQuery(query(method, args));
-            }
-            case FIND_ALL -> {
-                ColumnQuery queryFindAll = ColumnQuery.select().from(entityMetadata().name()).build();
-                return executeFindByQuery(method, args, typeClass, updateQueryDynamically(args, queryFindAll));
-            }
-            case DELETE_BY -> {
-                ColumnDeleteQuery deleteQuery = deleteQuery(method, args);
-                template().delete(deleteQuery);
-                return Void.class;
-            }
-            case OBJECT_METHOD -> {
-                return unwrapInvocationTargetException(() -> method.invoke(this, args));
-            }
-            case DEFAULT_METHOD -> {
-                return unwrapInvocationTargetException(() -> InvocationHandler.invokeDefault(instance, method, args));
-            }
-            case ORDER_BY ->
-                    throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
-            case QUERY -> {
-                DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
-                        .withArgs(args)
-                        .withMethod(method)
-                        .withTypeClass(typeClass)
-                        .withPrepareConverter(q -> template().prepare(q))
-                        .withQueryConverter(q -> template().query(q)).build();
-                return methodReturn.execute();
-            }
-            case CUSTOM_REPOSITORY -> {
-                Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
-                return unwrapInvocationTargetException(() -> method.invoke(customRepository, args));
-            }
-            default -> {
-                return Void.class;
-            }
-        }
+    protected Object executeQuery(Object instance, Method method, Object[] params) {
+        Class<?> type = entityMetadata().type();
+        DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
+                .withArgs(params)
+                .withMethod(method)
+                .withTypeClass(type)
+                .withPrepareConverter(q -> template().prepare(q))
+                .withQueryConverter(q -> template().query(q)).build();
+        return methodReturn.execute();
     }
 
-    private Object unwrapInvocationTargetException(ThrowingSupplier<Object> supplier) throws Throwable {
-        try {
-            return supplier.get();
-        } catch (InvocationTargetException ex) {
-            throw ex.getCause();
-        }
+    @Override
+    protected Object executeDeleteByAll(Object instance, Method method, Object[] params) {
+        ColumnDeleteQuery deleteQuery = deleteQuery(method, params);
+        template().delete(deleteQuery);
+        return Void.class;
     }
+
+    @Override
+    protected Object executeFindAll(Object instance, Method method, Object[] params) {
+        Class<?> type = entityMetadata().type();
+        ColumnQuery queryFindAll = ColumnQuery.select().from(entityMetadata().name()).build();
+        return executeFindByQuery(method, params, type, updateQueryDynamically(params, queryFindAll));
+    }
+
+    @Override
+    protected Object executeExistByQuery(Object instance, Method method, Object[] params) {
+        return executeExistsByQuery(query(method, params));
+    }
+
+    @Override
+    protected Object executeCountByQuery(Object instance, Method method, Object[] params) {
+        return executeCountByQuery(query(method, params));
+    }
+
+    @Override
+    protected Object executeFindByQuery(Object instance, Method method, Object[] params) {
+        Class<?> type = entityMetadata().type();
+        return executeFindByQuery(method, params, type, query(method, params));
+    }
+
 }
