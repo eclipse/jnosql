@@ -348,6 +348,47 @@ class AnnotationOperationTest {
         Assertions.assertThat(List.of(person)).isEqualTo(invoked);
     }
 
+    @Test
+    void shouldEqualsAnnotationOperation() throws NoSuchMethodException {
+        Person person = Person.builder().build();
+        Method method = PersonRepository.class.getDeclaredMethod("array", Person[].class);
+        Object[] params = {new Person[]{person}};
+        AnnotationOperation.Operation operation = new AnnotationOperation.Operation(method, params,
+                repository);
+
+        AnnotationOperation.Operation operation2 = new AnnotationOperation.Operation(method, params,
+                repository);
+
+        Assertions.assertThat(operation).isEqualTo(operation2);
+        Assertions.assertThat(operation).isEqualTo(operation);
+        Assertions.assertThat(operation).isNotEqualTo(123);
+    }
+
+    @Test
+    void shouldHashcodeAnnotationOperation() throws NoSuchMethodException {
+        Person person = Person.builder().build();
+        Method method = PersonRepository.class.getDeclaredMethod("array", Person[].class);
+        Object[] params = {new Person[]{person}};
+        AnnotationOperation.Operation operation = new AnnotationOperation.Operation(method, params,
+                repository);
+
+        AnnotationOperation.Operation operation2 = new AnnotationOperation.Operation(method, params,
+                repository);
+
+        Assertions.assertThat(operation.hashCode()).isEqualTo(operation2.hashCode());
+    }
+
+    @Test
+    void shouldToStringAnnotationOperation() throws NoSuchMethodException {
+        Person person = Person.builder().build();
+        Method method = PersonRepository.class.getDeclaredMethod("array", Person[].class);
+        Object[] params = {new Person[]{person}};
+        AnnotationOperation.Operation operation = new AnnotationOperation.Operation(method, params,
+                repository);
+
+        Assertions.assertThat(operation.toString()).isNotEmpty();
+    }
+
     interface PersonRepository extends DataRepository<Person, Long>{
 
         void invalid(Person person, Person person2);

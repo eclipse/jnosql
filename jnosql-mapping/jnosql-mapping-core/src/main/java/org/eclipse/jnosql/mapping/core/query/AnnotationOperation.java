@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.core.query;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.StreamSupport;
 
 /**
@@ -171,7 +172,35 @@ public enum AnnotationOperation {
     public abstract Object invoke(Operation operation);
 
     public record Operation(Method method, Object[] params, AbstractRepository repository) {
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Operation operation = (Operation) o;
+            return Objects.equals(method, operation.method)
+                    && Arrays.equals(params, operation.params)
+                    && Objects.equals(repository, operation.repository);
+        }
 
+
+
+        @Override
+        public int hashCode() {
+          return Objects.hash(method, repository) + 31 * Arrays.hashCode(params);
+        }
+
+        @Override
+        public String toString() {
+            return "Operation{" +
+                    "method=" + method +
+                    ", params=" + Arrays.toString(params) +
+                    ", repository=" + repository +
+                    '}';
+        }
     }
 
 
