@@ -26,6 +26,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.DELETE;
 import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.INSERT;
 import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.UPDATE;
 import static org.junit.jupiter.api.Assertions.*;
@@ -200,6 +201,120 @@ class AnnotationOperationTest {
         Object invoked = UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
                 repository));
         Mockito.verify(repository).updateAll(List.of(person));
+        Assertions.assertThat(invoked).isEqualTo(Void.TYPE);
+    }
+
+    // delete
+
+    @Test
+    void shouldDeleteSingleParameter() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("same", Person.class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{person}, repository));
+        Mockito.verify(repository).delete(person);
+        Assertions.assertThat(invoked).isNull();
+    }
+
+    @Test
+    void shouldDeleteSingleParameterBoolean() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("sameBoolean", Person.class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{person}, repository));
+        Mockito.verify(repository).delete(person);
+        Assertions.assertThat(invoked).isEqualTo(true);
+    }
+
+    @Test
+    void shouldDeleteSingleParameterVoid() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("sameVoid", Person.class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{person}, repository));
+        Mockito.verify(repository).delete(person);
+        Assertions.assertThat(invoked).isEqualTo(Void.TYPE);
+    }
+
+    @Test
+    void shouldDeleteSingleParameterInt() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("sameInt", Person.class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{person}, repository));
+        Mockito.verify(repository).delete(person);
+        Assertions.assertThat(invoked).isEqualTo(1);
+    }
+
+    @Test
+    void shouldDeleteIterableParameter() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("iterable", List.class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{List.of(person)}, repository));
+        Mockito.verify(repository).deleteAll(List.of(person));
+        Assertions.assertThat(invoked).isNull();
+    }
+
+    @Test
+    void shouldDeleteIterableParameterVoid() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("iterableVoid", List.class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{List.of(person)}, repository));
+        Mockito.verify(repository).deleteAll(List.of(person));
+        Assertions.assertThat(invoked).isEqualTo(Void.TYPE);
+    }
+
+    @Test
+    void shouldDeleteIterableParameterInt() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("iterableInt", List.class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{List.of(person)}, repository));
+        Mockito.verify(repository).deleteAll(List.of(person));
+        Assertions.assertThat(invoked).isEqualTo(1);
+    }
+
+    @Test
+    void shouldDeleteIterableParameterBoolean() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("iterableBoolean", List.class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{List.of(person)}, repository));
+        Mockito.verify(repository).deleteAll(List.of(person));
+        Assertions.assertThat(invoked).isEqualTo(true);
+    }
+
+    @Test
+    void shouldDeleteArrayParameter() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("array", Person[].class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
+                repository));
+        Mockito.verify(repository).deleteAll(List.of(person));
+        Assertions.assertThat(invoked).isNull();
+    }
+
+    @Test
+    void shouldDeleteArrayParameterBoolean() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("arrayBoolean", Person[].class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
+                repository));
+        Mockito.verify(repository).deleteAll(List.of(person));
+        Assertions.assertThat(invoked).isEqualTo(true);
+    }
+
+    @Test
+    void shouldDeleteArrayParameterInt() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("arrayInt", Person[].class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
+                repository));
+        Mockito.verify(repository).deleteAll(List.of(person));
+        Assertions.assertThat(invoked).isEqualTo(1);
+    }
+
+    @Test
+    void shouldDeleteArrayParameterVoid() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("arrayVoid", Person[].class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
+                repository));
+        Mockito.verify(repository).deleteAll(List.of(person));
         Assertions.assertThat(invoked).isEqualTo(Void.TYPE);
     }
 
