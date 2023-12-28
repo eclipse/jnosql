@@ -23,7 +23,7 @@ import java.util.stream.StreamSupport;
 public enum AnnotationOperation {
     INSERT {
         @Override
-        public Object invoke(Operation operation)  {
+        public Object invoke(Operation operation) {
             checkParameterNumber(operation);
             Object param = operation.params[0];
             ReturnType returnType = new ReturnType(operation.method);
@@ -63,12 +63,13 @@ public enum AnnotationOperation {
                 return true;
             } else if (returnType.isInt()) {
                 return count;
-            }  else if(isArray){
+            } else if (isArray) {
                 return param;
             } else {
                 return entities;
             }
         }
+
         private static Object executeSingleEntity(Operation operation, Object param, ReturnType returnType) {
             boolean result = operation.repository.update(param);
             if (returnType.isVoid()) {
@@ -109,6 +110,7 @@ public enum AnnotationOperation {
             }
             return null;
         }
+
         private static Object executeSingleEntity(Operation operation, Object param, ReturnType returnType) {
             operation.repository.delete(param);
             if (returnType.isVoid()) {
@@ -120,9 +122,24 @@ public enum AnnotationOperation {
             }
             return null;
         }
+    }, SAVE {
+        @Override
+        public Object invoke(Operation operation) {
+            checkParameterNumber(operation);
+            Object param = operation.params[0];
+            ReturnType returnType = new ReturnType(operation.method);
+            if (param instanceof Iterable entities) {
+                Iterable<?> result = operation.repository.saveAll(entities);
+                return returnType.isVoid() ? Void.TYPE : result;
+            } else if (param.getClass().isArray()) {
+                Iterable<?> result = operation.repository.saveAll(Arrays.asList((Object[]) param));
+                return returnType.isVoid() ? Void.TYPE : result;
+            } else {
+                Object result = operation.repository.save(param);
+                return returnType.isVoid() ? Void.TYPE : result;
+            }
+        }
     };
-
-
 
     private static void checkParameterNumber(Operation operation) {
         if (operation.params.length != 1) {
@@ -133,7 +150,7 @@ public enum AnnotationOperation {
 
     public abstract Object invoke(Operation operation);
 
-    public record Operation(Method method, Object[] params, AbstractRepository repository){
+    public record Operation(Method method, Object[] params, AbstractRepository repository) {
 
     }
 
@@ -143,13 +160,15 @@ public enum AnnotationOperation {
         boolean isVoid() {
             return method.getReturnType().equals(Void.TYPE);
         }
-        boolean isBoolean(){
+
+        boolean isBoolean() {
             return method.getReturnType().equals(Boolean.class)
                     || method.getReturnType().equals(Boolean.TYPE);
         }
-        boolean isInt(){
-          return method.getReturnType().equals(Integer.class)
-                  || method.getReturnType().equals(Integer.TYPE);
+
+        boolean isInt() {
+            return method.getReturnType().equals(Integer.class)
+                    || method.getReturnType().equals(Integer.TYPE);
         }
     }
 }
