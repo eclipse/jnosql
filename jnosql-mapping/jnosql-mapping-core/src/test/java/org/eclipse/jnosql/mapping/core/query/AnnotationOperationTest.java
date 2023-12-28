@@ -99,6 +99,16 @@ class AnnotationOperationTest {
     }
 
     @Test
+    void shouldUpdateSingleParameterInt() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("sameInt", Person.class);
+        Person person = Person.builder().build();
+        Mockito.when(repository.update(person)).thenReturn(true);
+        Object invoked = AnnotationOperation.UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{person}, repository));
+        Mockito.verify(repository).update(person);
+        Assertions.assertThat(invoked).isEqualTo(1);
+    }
+
+    @Test
     void shouldUpdateIterableParameter() throws Throwable {
         Method method = PersonRepository.class.getDeclaredMethod("iterable", List.class);
         Person person = Person.builder().build();
@@ -123,15 +133,21 @@ class AnnotationOperationTest {
 
     interface PersonRepository extends DataRepository<Person, Long>{
 
-        void methodVoid(Person person);
-
         Person same(Person person);
 
         boolean sameBoolean(Person person);
 
         void sameVoid(Person person);
 
+        int sameInt(Person person);
+
         Person[] array(Person[] people);
+
+        boolean arrayBoolean(Person[] people);
+
+        void arrayVoid(Person[] people);
+
+        int arrayInt(Person[] people);
 
         List<Person> iterable(List<Person> people);
     }
