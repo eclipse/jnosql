@@ -159,7 +159,6 @@ class AnnotationOperationTest {
         Assertions.assertThat(invoked).isEqualTo(true);
     }
 
-
     @Test
     void shouldUpdateArrayParameter() throws Throwable {
         Method method = PersonRepository.class.getDeclaredMethod("array", Person[].class);
