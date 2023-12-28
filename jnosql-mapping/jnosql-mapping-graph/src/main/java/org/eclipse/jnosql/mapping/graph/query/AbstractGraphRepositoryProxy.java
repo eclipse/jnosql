@@ -14,27 +14,20 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.data.exceptions.MappingException;
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.PageableRepository;
-import jakarta.enterprise.inject.spi.CDI;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
-import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
+import org.eclipse.jnosql.mapping.core.query.AbstractRepositoryProxy;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
+import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
-import org.eclipse.jnosql.mapping.core.query.RepositoryType;
-import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
-import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
-import org.eclipse.jnosql.mapping.core.repository.ThrowingSupplier;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
@@ -48,12 +41,9 @@ import java.util.stream.Stream;
  * @param <T> the entity type
  * @param <K> the K entity
  */
-abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
+abstract class AbstractGraphRepositoryProxy<T, K> extends AbstractRepositoryProxy<T, K> {
 
 
-    protected abstract EntityMetadata entityMetadata();
-
-    protected abstract AbstractRepository<T, K> repository();
 
     protected abstract Graph graph();
 
@@ -63,59 +53,45 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
     protected abstract Converters converters();
 
-    protected abstract Class<?> repositoryType();
-
+    @Override
+    protected Object executeQuery(Object instance, Method method, Object[] params) {
+        Class<?> type = entityMetadata().type();
+        DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
+                .withArgs(params)
+                .withMethod(method)
+                .withTypeClass(type)
+                .withPrepareConverter(q -> template().prepare(q))
+                .withQueryConverter(q -> template().query(q)).build();
+        return methodReturn.execute();
+    }
 
     @Override
-    public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
-
-        RepositoryType type = RepositoryType.of(method, repositoryType());
-        Class<?> typeClass = entityMetadata().type();
-
-        switch (type) {
-            case DEFAULT -> {
-                return unwrapInvocationTargetException(() -> method.invoke(repository(), args));
-            }
-            case FIND_BY -> {
-                return findBy(method, args, typeClass);
-            }
-            case FIND_ALL -> {
-                return findAll(method, typeClass, args);
-            }
-            case DELETE_BY -> {
-                return executeDeleteMethod(method, args);
-            }
-            case OBJECT_METHOD -> {
-                return unwrapInvocationTargetException(() -> method.invoke(this, args));
-            }
-            case COUNT_BY -> {
-                return countBy(method, args);
-            }
-            case EXISTS_BY -> {
-                return existsBy(method, args);
-            }
-            case DEFAULT_METHOD -> {
-                return unwrapInvocationTargetException(() -> InvocationHandler.invokeDefault(instance, method, args));
-            }
-            case ORDER_BY ->
-                    throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
-            case QUERY -> {
-                DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
-                        .withArgs(args)
-                        .withMethod(method)
-                        .withTypeClass(typeClass)
-                        .withPrepareConverter(q -> template().prepare(q))
-                        .withQueryConverter(q -> template().query(q)).build();
-                return methodReturn.execute();
-            }case CUSTOM_REPOSITORY -> {
-                Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
-                return unwrapInvocationTargetException(() -> method.invoke(customRepository, args));
-            }
-            default -> {
-                return Void.class;
-            }
-        }
+    protected Object executeDeleteByAll(Object instance, Method method, Object[] params) {
+        return executeDeleteMethod(method, params);
     }
+
+    @Override
+    protected Object executeFindAll(Object instance, Method method, Object[] params) {
+        Class<?> type = entityMetadata().type();
+        return findAll(method, type, params);
+    }
+
+    @Override
+    protected Object executeExistByQuery(Object instance, Method method, Object[] params) {
+        return existsBy(method, params);
+    }
+
+    @Override
+    protected Object executeCountByQuery(Object instance, Method method, Object[] params) {
+        return countBy(method, params);
+    }
+
+    @Override
+    protected Object executeFindByQuery(Object instance, Method method, Object[] params) {
+        Class<?> type = entityMetadata().type();
+        return findBy(method, params, type);
+    }
+
 
     private Object findAll(Method method, Class<?> typeClass, Object[] args) {
 
@@ -199,11 +175,4 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
         return Void.class;
     }
 
-    private Object unwrapInvocationTargetException(ThrowingSupplier<Object> supplier) throws Throwable {
-        try {
-            return supplier.get();
-        } catch (InvocationTargetException ex) {
-            throw ex.getCause();
-        }
-    }
 }
