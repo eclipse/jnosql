@@ -25,16 +25,16 @@ public enum AnnotationOperation {
         public Object invoke(Operation operation)  {
             checkParameterNumber(operation);
             Object param = operation.params[0];
-            boolean isVoid = operation.method.getReturnType().equals(Void.TYPE);
+            ReturnType returnType = new ReturnType(operation.method);
             if (param instanceof Iterable entities) {
                 Iterable<?> result = operation.repository.insertAll(entities);
-                return isVoid ? Void.TYPE : result;
+                return returnType.isVoid() ? Void.TYPE : result;
             } else if (param.getClass().isArray()) {
                 Iterable<?> result = operation.repository.insertAll(Arrays.asList((Object[]) param));
-                return isVoid ? Void.TYPE : result;
+                return returnType.isVoid() ? Void.TYPE : result;
             } else {
                 Object result = operation.repository.insert(param);
-                return isVoid ? Void.TYPE : result;
+                return returnType.isVoid() ? Void.TYPE : result;
             }
         }
     }, UPDATE {
@@ -42,29 +42,25 @@ public enum AnnotationOperation {
         public Object invoke(Operation operation) {
             checkParameterNumber(operation);
             Object param = operation.params[0];
-            boolean isVoid = operation.method.getReturnType().equals(Void.TYPE);
-            boolean isBoolean = operation.method.getReturnType().equals(Boolean.class)
-                    || operation.method.getReturnType().equals(Boolean.TYPE);
-            boolean isInt = operation.method.getReturnType().equals(Integer.class)
-                    || operation.method.getReturnType().equals(Integer.TYPE);
+            ReturnType returnType = new ReturnType(operation.method);
             if (param instanceof Iterable entities) {
-                return executeIterable(operation, entities, isVoid, isBoolean, isInt, false, null);
+                return executeIterable(operation, entities, returnType, false, null);
             } else if (param.getClass().isArray()) {
                 List<Object> entities = Arrays.asList((Object[]) param);
-                return executeIterable(operation, entities, isVoid, isBoolean, isInt, true, param);
+                return executeIterable(operation, entities, returnType, true, param);
             } else {
-                return executeSingleEntity(operation, param, isVoid, isBoolean, isInt);
+                return executeSingleEntity(operation, param, returnType);
             }
         }
 
-        private static Object executeIterable(Operation operation, Iterable entities, boolean isVoid, boolean isBoolean,
-                                              boolean isInt, boolean isArray, Object param) {
+        private static Object executeIterable(Operation operation, Iterable entities, ReturnType returnType,
+                                              boolean isArray, Object param) {
             int count = operation.repository.updateAll(entities);
-            if (isVoid) {
+            if (returnType.isVoid()) {
                 return Void.TYPE;
-            } else if (isBoolean) {
+            } else if (returnType.isBoolean()) {
                 return true;
-            } else if (isInt) {
+            } else if (returnType.isInt()) {
                 return count;
             }  else if(isArray){
                 return param;
@@ -74,13 +70,13 @@ public enum AnnotationOperation {
         }
     };
 
-    private static Object executeSingleEntity(Operation operation, Object param, boolean isVoid, boolean isBoolean, boolean isInt) {
+    private static Object executeSingleEntity(Operation operation, Object param, ReturnType returnType) {
         boolean result = operation.repository.update(param);
-        if(isVoid) {
+        if (returnType.isVoid()) {
             return Void.TYPE;
-        } else if(isBoolean) {
+        } else if (returnType.isBoolean()) {
             return result;
-        } else if(isInt) {
+        } else if (returnType.isInt()) {
             return 1;
         } else {
             return param;
@@ -96,10 +92,23 @@ public enum AnnotationOperation {
 
     public abstract Object invoke(Operation operation);
 
-
-
-
     public record Operation(Method method, Object[] params, AbstractRepository repository){
 
+    }
+
+
+    private record ReturnType(Method method) {
+
+        boolean isVoid() {
+            return method.getReturnType().equals(Void.TYPE);
+        }
+        boolean isBoolean(){
+            return method.getReturnType().equals(Boolean.class)
+                    || method.getReturnType().equals(Boolean.TYPE);
+        }
+        boolean isInt(){
+          return method.getReturnType().equals(Integer.class)
+                  || method.getReturnType().equals(Integer.TYPE);
+        }
     }
 }
