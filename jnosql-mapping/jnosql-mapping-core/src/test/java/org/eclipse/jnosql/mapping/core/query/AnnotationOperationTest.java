@@ -79,6 +79,26 @@ class AnnotationOperationTest {
     }
 
     @Test
+    void shouldUpdateSingleParameterBoolean() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("sameBoolean", Person.class);
+        Person person = Person.builder().build();
+        Mockito.when(repository.update(person)).thenReturn(true);
+        Object invoked = AnnotationOperation.UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{person}, repository));
+        Mockito.verify(repository).update(person);
+        Assertions.assertThat(invoked).isEqualTo(true);
+    }
+
+    @Test
+    void shouldUpdateSingleParameterVoid() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("sameVoid", Person.class);
+        Person person = Person.builder().build();
+        Mockito.when(repository.update(person)).thenReturn(true);
+        Object invoked = AnnotationOperation.UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{person}, repository));
+        Mockito.verify(repository).update(person);
+        Assertions.assertThat(invoked).isEqualTo(Void.TYPE);
+    }
+
+    @Test
     void shouldUpdateIterableParameter() throws Throwable {
         Method method = PersonRepository.class.getDeclaredMethod("iterable", List.class);
         Person person = Person.builder().build();
@@ -106,6 +126,10 @@ class AnnotationOperationTest {
         void methodVoid(Person person);
 
         Person same(Person person);
+
+        boolean sameBoolean(Person person);
+
+        void sameVoid(Person person);
 
         Person[] array(Person[] people);
 
