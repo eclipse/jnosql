@@ -16,33 +16,33 @@
  */
 package org.eclipse.jnosql.communication.writer;
 
-import org.eclipse.jnosql.communication.ValueWriter;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class OptionalValueWriterTest {
-
-    private final ValueWriter<Optional<String>, String> writer = new OptionalValueWriter<>();
-
+class TemporalValueWriterTest {
 
     @Test
-    void shouldReturnSupportedOptional() {
+    void shouldTestTemporal() {
+        TemporalValueWriter writer = new TemporalValueWriter();
 
-        assertTrue(writer.test(Optional.class));
+        assertTrue(writer.test(Temporal.class));
         assertFalse(writer.test(String.class));
     }
 
     @Test
-    void shouldReturnValueFromOptional() {
+    void shouldWriteTemporal() {
+        TemporalValueWriter writer = new TemporalValueWriter();
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        Optional<String> nonEmptyOptional = Optional.of("TestValue");
-        assertEquals("TestValue", writer.write(nonEmptyOptional));
+        assertEquals(now.toString(), writer.write(now));
 
-        Optional<String> emptyOptional = Optional.empty();
-        assertNull(writer.write(emptyOptional));
+        Temporal customTemporal = LocalDateTime.parse("2022-01-01 12:00:00", formatter);
+        assertEquals("2022-01-01T12:00", writer.write(customTemporal));
     }
-
 }
