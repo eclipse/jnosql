@@ -22,6 +22,13 @@ import org.eclipse.jnosql.communication.ValueWriter;
 
 import java.util.Optional;
 
+/**
+ * A {@code ValueWriter} implementation for handling {@code Optional} types.
+ * This class is responsible for converting {@code Optional<T>} instances to their
+ * underlying values.
+ *
+ * @param <T> the type of the elements in the Optional
+ */
 public final class OptionalValueWriter<T> implements ValueWriter<Optional<T>, T> {
 
     @Override
@@ -31,6 +38,6 @@ public final class OptionalValueWriter<T> implements ValueWriter<Optional<T>, T>
 
     @Override
     public T write(Optional<T> optional) {
-        return optional.get();
+        return optional.orElse(null);
     }
 }
