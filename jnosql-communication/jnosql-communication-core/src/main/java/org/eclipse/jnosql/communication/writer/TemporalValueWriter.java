@@ -22,6 +22,10 @@ import org.eclipse.jnosql.communication.ValueWriter;
 import java.time.temporal.Temporal;
 
 
+/**
+ * A {@code ValueWriter} implementation for handling types that implement the {@code Temporal} interface.
+ * This class is responsible for converting {@code Temporal} instances to their string representations.
+ */
 public class TemporalValueWriter implements ValueWriter<Temporal, String> {
 
     @Override
