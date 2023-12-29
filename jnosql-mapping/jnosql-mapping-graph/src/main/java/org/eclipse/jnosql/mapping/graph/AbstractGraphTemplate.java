@@ -46,7 +46,6 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.function.Supplier;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -177,14 +176,14 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> Iterable<T> insert(Iterable<T> entities) {
         requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false)
-                .map(this::insert).collect(Collectors.toList());
+                .map(this::insert).toList();
     }
 
     @Override
     public <T> Iterable<T> update(Iterable<T> entities) {
         requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false)
-                .map(this::update).collect(Collectors.toList());
+                .map(this::update).toList();
     }
 
     @Override
@@ -392,14 +391,14 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         if (vertices.hasNext()) {
             List<Edge> edges = new ArrayList<>();
             vertices.next().edges(direction, labels).forEachRemaining(edges::add);
-            return edges.stream().map(getConverter()::toEdgeEntity).collect(Collectors.toList());
+            return edges.stream().map(getConverter()::toEdgeEntity).toList();
         }
         return Collections.emptyList();
     }
 
     private <T> Optional<Vertex> vertex(T entity) {
         EntityMetadata entityMetadata = getEntities().get(entity.getClass());
-        FieldMetadata field = entityMetadata.id().get();
+        FieldMetadata field = entityMetadata.id().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
         Object id = field.read(entity);
         Iterator<Vertex> vertices = vertices(id);
         if (vertices.hasNext()) {
@@ -430,7 +429,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     private <T> boolean isIdNull(T entity) {
         EntityMetadata entityMetadata = getEntities().get(entity.getClass());
-        FieldMetadata field = entityMetadata.id().get();
+        FieldMetadata field = entityMetadata.id().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
         return isNull(field.read(entity));
 
     }
