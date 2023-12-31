@@ -84,7 +84,6 @@
         <microprofile.config.version>3.1</microprofile.config.version>
         <smallrye.config.version>3.4.4</smallrye.config.version>
 
-        <checkstyle.version>10.12.6</checkstyle.version>
         <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
 
@@ -345,13 +344,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>${maven.checkstyle.plugin.version}</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>${checkstyle.version}</version>
-                    </dependency>
-                </dependencies>
                 <executions>
                     <execution>
                         <id>verify-style</id>
