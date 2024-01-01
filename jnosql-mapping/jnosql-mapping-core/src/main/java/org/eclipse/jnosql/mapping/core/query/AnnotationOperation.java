@@ -69,17 +69,17 @@ public enum AnnotationOperation {
 
         private static Object executeIterable(Operation operation, Iterable entities, ReturnType returnType,
                                               boolean isArray, Object param) {
-            int count = operation.repository.updateAll(entities);
+            var entityUpdated = operation.repository.template().update(entities);
             if (returnType.isVoid()) {
                 return Void.TYPE;
             } else if (returnType.isBoolean()) {
                 return true;
             } else if (returnType.isInt()) {
-                return count;
+                return StreamSupport.stream(entities.spliterator(), false).count();
             } else if (isArray) {
                 return param;
             } else {
-                return entities;
+                return entityUpdated;
             }
         }
 
