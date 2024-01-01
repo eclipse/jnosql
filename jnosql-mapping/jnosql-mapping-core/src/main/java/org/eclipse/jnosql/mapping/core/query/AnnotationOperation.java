@@ -44,7 +44,7 @@ public enum AnnotationOperation {
                 return returnType.isVoid() ? Void.TYPE : result;
             } else {
                 Object result = operation.repository.insert(param);
-                return returnType.isVoid() ? Void.TYPE : result;
+                return returnType.isVoid() ? Void.TYPE : param;
             }
         }
     },
@@ -69,17 +69,17 @@ public enum AnnotationOperation {
 
         private static Object executeIterable(Operation operation, Iterable entities, ReturnType returnType,
                                               boolean isArray, Object param) {
-            var entityUpdated = operation.repository.template().update(entities);
+            int count = operation.repository.updateAll(entities);
             if (returnType.isVoid()) {
                 return Void.TYPE;
             } else if (returnType.isBoolean()) {
                 return true;
             } else if (returnType.isInt()) {
-                return StreamSupport.stream(entities.spliterator(), false).count();
+                return count;
             } else if (isArray) {
                 return param;
             } else {
-                return entityUpdated;
+                return entities;
             }
         }
 
