@@ -61,7 +61,11 @@ public enum RepositoryType {
      * Exists projection, returning typically a boolean result. It starts with "existsBy" keyword
      */
     EXISTS_BY("existsBy"),
-    UNKNOWN(""),
+
+    /**
+     * The last condition is parameter based. That will match the parameter in a simple query.
+     */
+    PARAMETER_BASED(""),
     /**
      * Methods from {@link Object}
      */
@@ -158,7 +162,7 @@ public enum RepositoryType {
         }
         return KEY_WORLD_METHODS.stream()
                 .filter(k -> methodName.startsWith(k.keyword))
-                .findFirst().orElse(UNKNOWN);
+                .findFirst().orElse(PARAMETER_BASED);
     }
 
     private static boolean isCustomRepository(Class<?> type) {
