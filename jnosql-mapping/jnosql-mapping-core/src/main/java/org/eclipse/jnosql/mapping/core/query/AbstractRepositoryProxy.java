@@ -118,6 +118,8 @@ public abstract class AbstractRepositoryProxy<T, K> implements InvocationHandler
      */
     protected abstract Object executeFindByQuery(Object instance, Method method, Object[] params);
 
+    protected abstract Object executeParameterBased(Object instance, Method method, Object[] params);
+
     @Override
     public Object invoke(Object instance, Method method, Object[] params) throws Throwable {
 
@@ -128,22 +130,22 @@ public abstract class AbstractRepositoryProxy<T, K> implements InvocationHandler
                 return unwrapInvocationTargetException(() -> method.invoke(repository(), params));
             }
             case FIND_BY -> {
-                return executeFindByQuery(instance, method, params);
+                return unwrapInvocationTargetException(() ->   executeFindByQuery(instance, method, params));
             }
             case COUNT_BY -> {
-                return executeCountByQuery(instance, method, params);
+                return unwrapInvocationTargetException(() ->   executeCountByQuery(instance, method, params));
             }
             case EXISTS_BY -> {
-                return executeExistByQuery(instance, method, params);
+                return unwrapInvocationTargetException(() ->   executeExistByQuery(instance, method, params));
             }
             case FIND_ALL -> {
-                return executeFindAll(instance, method, params);
+                return unwrapInvocationTargetException(() ->   executeFindAll(instance, method, params));
             }
             case DELETE_BY -> {
-                return executeDeleteByAll(instance, method, params);
+                return unwrapInvocationTargetException(() ->   executeDeleteByAll(instance, method, params));
             }
             case OBJECT_METHOD -> {
-                return unwrapInvocationTargetException(() -> method.invoke(this, params));
+                return unwrapInvocationTargetException(() ->  unwrapInvocationTargetException(() -> method.invoke(this, params)));
             }
             case DEFAULT_METHOD -> {
                 return unwrapInvocationTargetException(() -> InvocationHandler.invokeDefault(instance, method, params));
@@ -151,7 +153,10 @@ public abstract class AbstractRepositoryProxy<T, K> implements InvocationHandler
             case ORDER_BY ->
                     throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
             case QUERY -> {
-                return executeQuery(instance, method, params);
+                return unwrapInvocationTargetException(() ->  executeQuery(instance, method, params));
+            }
+            case PARAMETER_BASED -> {
+                return unwrapInvocationTargetException(() -> executeParameterBased(instance, method, params));
             }
             case CUSTOM_REPOSITORY -> {
                 Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
