@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
+import jakarta.data.Sort;
+import jakarta.data.page.Pageable;
 import jakarta.inject.Inject;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
@@ -104,6 +106,22 @@ class ColumnParameterBasedQueryTest {
             soft.assertThat(query.name()).isEqualTo("Person");
             soft.assertThat(query.sorts()).isEmpty();
             soft.assertThat(query.condition()).isEmpty();
+        });
+    }
+
+    @Test
+    void shouldCreateQueryPageable(){
+        Map<String, Object> params = Map.of("name", "Ada");
+        var pageable = Pageable.ofPage(2).size(10).sortBy(Sort.asc("name"));
+        ColumnQuery query = ColumnParameterBasedQuery.INSTANCE.toQuery(params, pageable, metadata);
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.condition()).isNotEmpty();
+            soft.assertThat(query.condition()).get().isEqualTo(ColumnCondition.eq(Column.of("name", "Ada")));
+            soft.assertThat(query.limit()).isEqualTo(10L);
+            soft.assertThat(query.skip()).isEqualTo(10L);
+            soft.assertThat(query.sorts()).hasSize(1).contains(Sort.asc("name"));
         });
     }
 
