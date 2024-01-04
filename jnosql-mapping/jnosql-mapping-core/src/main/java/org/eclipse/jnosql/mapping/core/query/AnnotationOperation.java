@@ -38,13 +38,25 @@ public enum AnnotationOperation {
             ReturnType returnType = new ReturnType(operation.method);
             if (param instanceof Iterable entities) {
                 Iterable<?> result = operation.repository.insertAll(entities);
-                return returnType.isVoid() ? Void.TYPE : result;
+                return returnInsert(returnType, result);
             } else if (param.getClass().isArray()) {
                 Iterable<?> result = operation.repository.insertAll(Arrays.asList((Object[]) param));
-                return returnType.isVoid() ? Void.TYPE : result;
+                return returnInsert(returnType, result);
             } else {
                 var result = operation.repository.insert(param);
-                return returnType.isVoid() ? Void.TYPE : result;
+                return returnInsert(returnType, result);
+            }
+        }
+
+        private static Object returnInsert(ReturnType returnType, Object result) {
+            if(returnType.isVoid()){
+                return Void.TYPE;
+            }else if(returnType.isInt()){
+                return 1;
+            } else if(returnType.isLong()){
+                return 1L;
+            }else {
+                return result;
             }
         }
     },
@@ -76,7 +88,9 @@ public enum AnnotationOperation {
                 return true;
             } else if (returnType.isInt()) {
                 return count;
-            } else if (isArray) {
+            } else if(returnType.isLong()){
+                return (long) count;
+            }else if (isArray) {
                 return param;
             } else {
                 return entities;
@@ -91,6 +105,8 @@ public enum AnnotationOperation {
                 return result;
             } else if (returnType.isInt()) {
                 return 1;
+            } else if (returnType.isLong()) {
+                return 1L;
             } else {
                 return param;
             }
@@ -124,6 +140,8 @@ public enum AnnotationOperation {
                 return true;
             } else if (returnType.isInt()) {
                 return (int) StreamSupport.stream(entities.spliterator(), false).count();
+            } else if (returnType.isLong()) {
+                return StreamSupport.stream(entities.spliterator(), false).count();
             }
             return null;
         }
@@ -136,6 +154,8 @@ public enum AnnotationOperation {
                 return true;
             } else if (returnType.isInt()) {
                 return 1;
+            }else if (returnType.isLong()) {
+                return 1L;
             }
             return null;
         }
@@ -218,6 +238,11 @@ public enum AnnotationOperation {
         boolean isInt() {
             return method.getReturnType().equals(Integer.class)
                     || method.getReturnType().equals(Integer.TYPE);
+        }
+
+        public boolean isLong() {
+            return method.getReturnType().equals(Long.class)
+                    || method.getReturnType().equals(Long.TYPE);
         }
     }
 }
