@@ -26,6 +26,7 @@ import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.IntFunction;
@@ -53,18 +54,28 @@ public enum ColumnParameterBasedQuery {
      */
     public ColumnQuery toQuery(Map<String, Object> params, Pageable pageable, EntityMetadata entityMetadata) {
         var convert = CDI.current().select(Converters.class).get();
-        var conditions = new ArrayList<>();
+        List<ColumnCondition> conditions = new ArrayList<>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             conditions.add(getCondition(convert, entityMetadata, entry));
         }
 
-        var columnCondition = conditions.isEmpty()? null: ColumnCondition.and(conditions.toArray(TO_ARRAY));
+        var columnCondition = columnCondition(conditions);
         var optional = Optional.ofNullable(pageable);
         var sorts = optional.map(Pageable::sorts).orElse(Collections.emptyList());
         long limit = optional.map(Pageable::size).orElse(0);
         long skip = optional.map(p -> NoSQLPage.skip(pageable)).orElse(0L);
         var columnFamily = entityMetadata.name();
         return new MappingColumnQuery(sorts, limit, skip, columnCondition, columnFamily);
+    }
+
+    private ColumnCondition columnCondition(List<ColumnCondition> conditions) {
+        if(conditions.isEmpty()){
+            return null;
+        }
+        else if(conditions.size() == 1){
+            return conditions.get(0);
+        }
+        return ColumnCondition.and(conditions.toArray(TO_ARRAY));
     }
 
     private ColumnCondition getCondition(Converters convert, EntityMetadata entityMetadata, Map.Entry<String, Object> entry) {
