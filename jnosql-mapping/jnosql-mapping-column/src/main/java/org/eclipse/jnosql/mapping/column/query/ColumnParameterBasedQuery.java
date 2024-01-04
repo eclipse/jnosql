@@ -25,7 +25,9 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.IntFunction;
 
 import static org.eclipse.jnosql.mapping.core.util.ConverterUtil.getValue;
@@ -56,10 +58,11 @@ public enum ColumnParameterBasedQuery {
             conditions.add(getCondition(convert, entityMetadata, entry));
         }
 
-        var columnCondition = ColumnCondition.and(conditions.toArray(TO_ARRAY));
-        var sorts = pageable.sorts();
-        long limit = pageable.size();
-        long skip = NoSQLPage.skip(pageable);
+        var columnCondition = conditions.isEmpty()? null: ColumnCondition.and(conditions.toArray(TO_ARRAY));
+        var optional = Optional.ofNullable(pageable);
+        var sorts = optional.map(Pageable::sorts).orElse(Collections.emptyList());
+        long limit = optional.map(Pageable::size).orElse(0);
+        long skip = optional.map(p -> NoSQLPage.skip(pageable)).orElse(0L);
         var columnFamily = entityMetadata.name();
         return new MappingColumnQuery(sorts, limit, skip, columnCondition, columnFamily);
     }
