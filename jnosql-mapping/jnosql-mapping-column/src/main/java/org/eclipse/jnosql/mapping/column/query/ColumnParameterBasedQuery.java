@@ -51,7 +51,7 @@ public final class ColumnParameterBasedQuery {
      * @param entityMetadata  Metadata describing the structure of the entity.
      * @return                 A ColumnQuery instance tailored for the specified entity.
      */
-    public ColumnQuery toQuery(Map<String, Object> params, Pageable pageable, EntityMetadata entityMetadata) {
+    public static ColumnQuery toQuery(Map<String, Object> params, Pageable pageable, EntityMetadata entityMetadata) {
         var convert = CDI.current().select(Converters.class).get();
         var conditions = new ArrayList<>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
@@ -66,7 +66,7 @@ public final class ColumnParameterBasedQuery {
         return new MappingColumnQuery(sorts, limit, skip, columnCondition, columnFamily);
     }
 
-    private ColumnCondition getCondition(Converters convert, EntityMetadata entityMetadata, Map.Entry<String, Object> entry) {
+    private static ColumnCondition getCondition(Converters convert, EntityMetadata entityMetadata, Map.Entry<String, Object> entry) {
         var name = entityMetadata.fieldMapping(entry.getKey())
                 .map(FieldMetadata::name)
                 .orElse(entry.getKey());
