@@ -216,7 +216,7 @@ class AnnotationOperationTest {
 
     @Test
     void shouldUpdateArrayParameterLong() throws Throwable {
-        Method method = PersonRepository.class.getDeclaredMethod("arrayInt", Person[].class);
+        Method method = PersonRepository.class.getDeclaredMethod("arrayLong", Person[].class);
         Person person = Person.builder().build();
         Mockito.when(repository.updateAll(List.of(person))).thenReturn(1);
         Object invoked = UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
