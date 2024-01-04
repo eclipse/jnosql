@@ -35,13 +35,11 @@ import static org.eclipse.jnosql.mapping.core.util.ConverterUtil.getValue;
  * It leverages the provided parameters, pageable information, and entity metadata to construct a ColumnQuery object
  * tailored for querying a specific entity's columns.
  */
-public final class ColumnParameterBasedQuery {
+public enum ColumnParameterBasedQuery {
 
 
+    INSTANCE;
     private static final IntFunction<ColumnCondition[]> TO_ARRAY = ColumnCondition[]::new;
-
-    private ColumnParameterBasedQuery() {
-    }
 
     /**
      * Constructs a ColumnQuery based on the provided parameters, pageable information, and entity metadata.
@@ -51,7 +49,7 @@ public final class ColumnParameterBasedQuery {
      * @param entityMetadata  Metadata describing the structure of the entity.
      * @return                 A ColumnQuery instance tailored for the specified entity.
      */
-    public static ColumnQuery toQuery(Map<String, Object> params, Pageable pageable, EntityMetadata entityMetadata) {
+    public ColumnQuery toQuery(Map<String, Object> params, Pageable pageable, EntityMetadata entityMetadata) {
         var convert = CDI.current().select(Converters.class).get();
         var conditions = new ArrayList<>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
@@ -66,7 +64,7 @@ public final class ColumnParameterBasedQuery {
         return new MappingColumnQuery(sorts, limit, skip, columnCondition, columnFamily);
     }
 
-    private static ColumnCondition getCondition(Converters convert, EntityMetadata entityMetadata, Map.Entry<String, Object> entry) {
+    private ColumnCondition getCondition(Converters convert, EntityMetadata entityMetadata, Map.Entry<String, Object> entry) {
         var name = entityMetadata.fieldMapping(entry.getKey())
                 .map(FieldMetadata::name)
                 .orElse(entry.getKey());
