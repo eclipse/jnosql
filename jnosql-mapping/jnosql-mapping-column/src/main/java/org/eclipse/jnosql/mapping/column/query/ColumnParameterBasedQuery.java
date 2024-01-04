@@ -48,11 +48,10 @@ public enum ColumnParameterBasedQuery {
      * Constructs a ColumnQuery based on the provided parameters, pageable information, and entity metadata.
      *
      * @param params          The map of parameters used for filtering columns.
-     * @param pageable        The Pageable object containing sorting and pagination information.
      * @param entityMetadata  Metadata describing the structure of the entity.
      * @return                 A ColumnQuery instance tailored for the specified entity.
      */
-    public ColumnQuery toQuery(Map<String, Object> params, Pageable pageable, EntityMetadata entityMetadata) {
+    public ColumnQuery toQuery(Map<String, Object> params, EntityMetadata entityMetadata) {
         var convert = CDI.current().select(Converters.class).get();
         List<ColumnCondition> conditions = new ArrayList<>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
@@ -60,12 +59,8 @@ public enum ColumnParameterBasedQuery {
         }
 
         var columnCondition = columnCondition(conditions);
-        var optional = Optional.ofNullable(pageable);
-        var sorts = optional.map(Pageable::sorts).orElse(Collections.emptyList());
-        long limit = optional.map(Pageable::size).orElse(0);
-        long skip = optional.map(p -> NoSQLPage.skip(pageable)).orElse(0L);
         var columnFamily = entityMetadata.name();
-        return new MappingColumnQuery(sorts, limit, skip, columnCondition, columnFamily);
+        return new MappingColumnQuery(Collections.emptyList(), 0L, 0L, columnCondition, columnFamily);
     }
 
     private ColumnCondition columnCondition(List<ColumnCondition> conditions) {
