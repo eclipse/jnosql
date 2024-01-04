@@ -64,7 +64,7 @@ class DocumentParameterBasedQueryTest {
     @Test
     void shouldCreateQuerySingleParameter(){
         Map<String, Object> params = Map.of("name", "Ada");
-        var query = DocumentParameterBasedQuery.INSTANCE.toQuery(params, null, metadata);
+        var query = DocumentParameterBasedQuery.INSTANCE.toQuery(params, metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);
@@ -79,7 +79,7 @@ class DocumentParameterBasedQueryTest {
     @Test
     void shouldCreateQueryMultipleParams(){
         Map<String, Object> params = Map.of("name", "Ada", "age", 10);
-        var query = DocumentParameterBasedQuery.INSTANCE.toQuery(params, null, metadata);
+        var query = DocumentParameterBasedQuery.INSTANCE.toQuery(params, metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);
@@ -99,7 +99,7 @@ class DocumentParameterBasedQueryTest {
     @Test
     void shouldCreateQueryEmptyParams(){
         Map<String, Object> params = Collections.emptyMap();
-        var query = DocumentParameterBasedQuery.INSTANCE.toQuery(params, null, metadata);
+        var query = DocumentParameterBasedQuery.INSTANCE.toQuery(params, metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);
@@ -110,19 +110,4 @@ class DocumentParameterBasedQueryTest {
         });
     }
 
-    @Test
-    void shouldCreateQueryPageable(){
-        Map<String, Object> params = Map.of("name", "Ada");
-        var pageable = Pageable.ofPage(2).size(10).sortBy(Sort.asc("name"));
-        var query = DocumentParameterBasedQuery.INSTANCE.toQuery(params, pageable, metadata);
-
-        SoftAssertions.assertSoftly(soft ->{
-            soft.assertThat(query.name()).isEqualTo("Person");
-            soft.assertThat(query.condition()).isNotEmpty();
-            soft.assertThat(query.condition()).get().isEqualTo(DocumentCondition.eq(Document.of("name", "Ada")));
-            soft.assertThat(query.limit()).isEqualTo(10L);
-            soft.assertThat(query.skip()).isEqualTo(10L);
-            soft.assertThat(query.sorts()).hasSize(1).contains(Sort.asc("name"));
-        });
-    }
 }

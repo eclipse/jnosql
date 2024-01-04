@@ -14,11 +14,19 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
+import jakarta.data.page.Pageable;
+import jakarta.data.repository.By;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
+import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.core.repository.SpecialParameters;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
 
@@ -53,8 +61,8 @@ public abstract class AbstractDocumentRepositoryProxy<T, K> extends BaseDocument
     @Override
     protected Object executeFindAll(Object instance, Method method, Object[] params) {
         Class<?> typeClass = entityMetadata().type();
-        DocumentQuery queryFindAll = select().from(entityMetadata().name()).build();
-        return executeFindByQuery(method, params, typeClass, updateQueryDynamically(params, queryFindAll));
+        var query = select().from(entityMetadata().name()).build();
+        return executeFindByQuery(method, params, typeClass, updateQueryDynamically(params, query));
     }
 
     @Override
@@ -71,6 +79,22 @@ public abstract class AbstractDocumentRepositoryProxy<T, K> extends BaseDocument
     protected Object executeFindByQuery(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
         return executeFindByQuery(method, params, type, query(method, params));
+    }
+
+    @Override
+    protected Object executeParameterBased(Object instance, Method method, Object[] params) {
+        Class<?> typeClass = entityMetadata().type();
+        var parameters = method.getParameters();
+        Map<String, Object> paramsValue = new HashMap<>();
+        for (int index = 0; index < parameters.length; index++) {
+            Parameter parameter = parameters[index];
+            By annotation = parameter.getAnnotation(By.class);
+            if(annotation != null) {
+                paramsValue.put(parameter.getName(), params[index]);
+            }
+        }
+        var query = DocumentParameterBasedQuery.INSTANCE.toQuery(paramsValue, entityMetadata());
+        return executeFindByQuery(method, params, typeClass, updateQueryDynamically(params, query));
     }
 
 
