@@ -67,4 +67,9 @@ public abstract class AbstractKeyValueRepositoryProxy<T, K> extends AbstractRepo
     protected Object executeFindByQuery(Object instance, Method method, Object[] params) {
         throw new DynamicQueryException("Key Value repository does not support query method");
     }
+
+    @Override
+    protected Object executeParameterBased(Object instance, Method method, Object[] params) {
+        throw new DynamicQueryException("Key Value repository does not support query method");
+    }
 }
