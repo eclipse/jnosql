@@ -400,6 +400,8 @@ class AnnotationOperationTest {
 
         int sameInt(Person person);
 
+        long sameLong(Person person);
+
         Person[] array(Person[] people);
 
         boolean arrayBoolean(Person[] people);
@@ -408,6 +410,8 @@ class AnnotationOperationTest {
 
         int arrayInt(Person[] people);
 
+        long arrayLong(Person[] people);
+
         List<Person> iterable(List<Person> people);
 
         void iterableVoid(List<Person> people);
@@ -415,5 +419,7 @@ class AnnotationOperationTest {
         boolean iterableBoolean(List<Person> people);
 
         int iterableInt(List<Person> people);
+
+        long iterableLong(List<Person> people);
     }
 }
