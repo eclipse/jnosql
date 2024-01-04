@@ -118,6 +118,15 @@ public abstract class AbstractRepositoryProxy<T, K> implements InvocationHandler
      */
     protected abstract Object executeFindByQuery(Object instance, Method method, Object[] params);
 
+    /**
+     * Executes a custom operation based on the method and parameters, allowing for parameter-based queries.
+     * This method is meant to handle repository methods that involve custom parameter-based logic.
+     *
+     * @param instance The instance on which the method was invoked.
+     * @param method   The method being invoked, representing the custom parameter-based operation.
+     * @param params   The parameters of the method, providing input for the parameter-based operation.
+     * @return The result of the custom parameter-based operation.
+     */
     protected abstract Object executeParameterBased(Object instance, Method method, Object[] params);
 
     @Override
