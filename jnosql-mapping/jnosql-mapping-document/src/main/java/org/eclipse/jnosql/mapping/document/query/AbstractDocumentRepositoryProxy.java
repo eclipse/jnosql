@@ -90,7 +90,7 @@ public abstract class AbstractDocumentRepositoryProxy<T, K> extends BaseDocument
             Parameter parameter = parameters[index];
             By annotation = parameter.getAnnotation(By.class);
             if(annotation != null) {
-                paramsValue.put(parameter.getName(), params[index]);
+                paramsValue.put(annotation.value(), params[index]);
             }
         }
         var query = DocumentParameterBasedQuery.INSTANCE.toQuery(paramsValue, entityMetadata());

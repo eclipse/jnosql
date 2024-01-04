@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
+import jakarta.data.repository.By;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
@@ -711,6 +712,20 @@ class DocumentRepositoryProxyTest {
         });
     }
 
+    @Test
+    void shouldExecuteMatchParameter(){
+        personRepository.find("Ada");
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(query.name()).isEqualTo("Person");
+            var condition = query.condition().orElseThrow();
+            softly.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            softly.assertThat(condition.document()).isEqualTo(Document.of("name", "Ada"));
+        });
+    }
+
     interface PersonRepository extends PageableRepository<Person, Long>, PersonStatisticRepository {
 
 
@@ -759,6 +774,8 @@ class DocumentRepositoryProxyTest {
         List<Person> findByActiveFalse();
 
         List<Person> findByActiveTrue();
+
+        List<Person> find(@By("name") String name);
     }
 
     public interface VendorRepository extends PageableRepository<Vendor, String> {
