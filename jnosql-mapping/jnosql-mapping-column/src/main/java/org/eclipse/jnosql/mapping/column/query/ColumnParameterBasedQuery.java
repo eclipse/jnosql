@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-import jakarta.data.Sort;
 import jakarta.data.page.Pageable;
 import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.communication.column.ColumnCondition;
@@ -26,18 +25,32 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.function.IntFunction;
 
 import static org.eclipse.jnosql.mapping.core.util.ConverterUtil.getValue;
 
 /**
- * The implementation of Parameter-based Conditions determine the implementation of the method to Column query
+ * The ColumnParameterBasedQuery class is responsible for generating Column queries based on a set of parameters.
+ * It leverages the provided parameters, pageable information, and entity metadata to construct a ColumnQuery object
+ * tailored for querying a specific entity's columns.
  */
-public class ColumnParameterBasedQuery {
+public final class ColumnParameterBasedQuery {
 
-    private static final ColumnCondition[] CONDITIONS = new ColumnCondition[0];
 
+    private static final IntFunction<ColumnCondition[]> TO_ARRAY = ColumnCondition[]::new;
+
+    private ColumnParameterBasedQuery() {
+    }
+
+    /**
+     * Constructs a ColumnQuery based on the provided parameters, pageable information, and entity metadata.
+     *
+     * @param params          The map of parameters used for filtering columns.
+     * @param pageable        The Pageable object containing sorting and pagination information.
+     * @param entityMetadata  Metadata describing the structure of the entity.
+     * @return                 A ColumnQuery instance tailored for the specified entity.
+     */
     public ColumnQuery toQuery(Map<String, Object> params, Pageable pageable, EntityMetadata entityMetadata) {
         var convert = CDI.current().select(Converters.class).get();
         var conditions = new ArrayList<>();
@@ -45,7 +58,7 @@ public class ColumnParameterBasedQuery {
             conditions.add(getCondition(convert, entityMetadata, entry));
         }
 
-        var columnCondition = ColumnCondition.and(conditions.toArray(CONDITIONS));
+        var columnCondition = ColumnCondition.and(conditions.toArray(TO_ARRAY));
         var sorts = pageable.sorts();
         long limit = pageable.size();
         long skip = NoSQLPage.skip(pageable);
