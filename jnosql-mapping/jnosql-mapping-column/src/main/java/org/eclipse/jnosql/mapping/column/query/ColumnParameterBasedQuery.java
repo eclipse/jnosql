@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.IntFunction;
 
 import static org.eclipse.jnosql.mapping.core.util.ConverterUtil.getValue;
