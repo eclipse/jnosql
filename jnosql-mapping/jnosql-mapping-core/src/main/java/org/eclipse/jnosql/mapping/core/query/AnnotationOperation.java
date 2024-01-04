@@ -43,8 +43,8 @@ public enum AnnotationOperation {
                 Iterable<?> result = operation.repository.insertAll(Arrays.asList((Object[]) param));
                 return returnType.isVoid() ? Void.TYPE : result;
             } else {
-                Object result = operation.repository.insert(param);
-                return returnType.isVoid() ? Void.TYPE : param;
+                var result = operation.repository.insert(param);
+                return returnType.isVoid() ? Void.TYPE : result;
             }
         }
     },
