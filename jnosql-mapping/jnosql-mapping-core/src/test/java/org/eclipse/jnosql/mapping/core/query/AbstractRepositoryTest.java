@@ -26,6 +26,7 @@ import org.eclipse.jnosql.mapping.reflection.ReflectionClassConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -143,6 +144,12 @@ class AbstractRepositoryTest {
                 .thenReturn(Optional.of(person));
         this.repository.save(person);
         Mockito.verify(template).update(person);
+    }
+
+    @Test
+    void shouldReturnException(){
+        Assertions.assertThrows(NullPointerException.class, () -> this.repository.findAll());
+        Assertions.assertThrows(NullPointerException.class, () -> this.repository.findAll(null));
     }
 
     class PeopleRepository extends AbstractRepository<Person, Long> {
