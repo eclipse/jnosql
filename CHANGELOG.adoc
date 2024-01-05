@@ -15,6 +15,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 === Added
 
 - Add support to operations annotations (Insert, Update, Delete and Save) from Jakarta Data
+- Add support to match parameters
 
 == [1.0.4] - 2023-12-19
 
