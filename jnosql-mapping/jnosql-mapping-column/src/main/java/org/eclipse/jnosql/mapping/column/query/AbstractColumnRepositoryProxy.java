@@ -14,14 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-import jakarta.data.repository.By;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
+import org.eclipse.jnosql.mapping.core.repository.RepositoryReflectionUtils;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -77,16 +75,8 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepo
     @Override
     protected Object executeParameterBased(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
-        var parameters = method.getParameters();
-        Map<String, Object> paramsValue = new HashMap<>();
-        for (int index = 0; index < parameters.length; index++) {
-            Parameter parameter = parameters[index];
-            By annotation = parameter.getAnnotation(By.class);
-            if(annotation != null) {
-                paramsValue.put(annotation.value(), params[index]);
-            }
-        }
-        var query = ColumnParameterBasedQuery.INSTANCE.toQuery(paramsValue, entityMetadata());
+        Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
+        var query = ColumnParameterBasedQuery.INSTANCE.toQuery(parameters, entityMetadata());
         return executeFindByQuery(method, params, type, updateQueryDynamically(params, query));
     }
 
