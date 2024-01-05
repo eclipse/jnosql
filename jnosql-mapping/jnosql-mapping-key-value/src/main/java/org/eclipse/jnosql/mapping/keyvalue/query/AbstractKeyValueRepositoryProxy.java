@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
 import jakarta.nosql.keyvalue.KeyValueTemplate;
-import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepositoryProxy;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 
@@ -45,26 +44,31 @@ public abstract class AbstractKeyValueRepositoryProxy<T, K> extends AbstractRepo
 
     @Override
     protected Object executeDeleteByAll(Object instance, Method method, Object[] params) {
-        throw new DynamicQueryException("Key Value repository does not support query method");
+        throw new UnsupportedOperationException("Key Value repository does not support query method");
     }
 
     @Override
     protected Object executeFindAll(Object instance, Method method, Object[] params) {
-        throw new DynamicQueryException("Key Value repository does not support query method");
+        throw new UnsupportedOperationException("Key Value repository does not support query method");
     }
 
     @Override
     protected Object executeExistByQuery(Object instance, Method method, Object[] params) {
-        throw new DynamicQueryException("Key Value repository does not support query method");
+        throw new UnsupportedOperationException("Key Value repository does not support query method");
     }
 
     @Override
     protected Object executeCountByQuery(Object instance, Method method, Object[] params) {
-        throw new DynamicQueryException("Key Value repository does not support query method");
+        throw new UnsupportedOperationException("Key Value repository does not support query method");
     }
 
     @Override
     protected Object executeFindByQuery(Object instance, Method method, Object[] params) {
-        throw new DynamicQueryException("Key Value repository does not support query method");
+        throw new UnsupportedOperationException("Key Value repository does not support query method");
+    }
+
+    @Override
+    protected Object executeParameterBased(Object instance, Method method, Object[] params) {
+        throw new UnsupportedOperationException("Key Value repository does not support query method");
     }
 }

@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.core.repository;
 
+import jakarta.data.repository.By;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
@@ -47,9 +48,18 @@ class RepositoryReflectionUtilsTest {
         assertEquals("select * from Person where name = @name", query);
     }
 
+    @Test
+    void shouldBy(){
+        Method method = PersonRepository.class.getDeclaredMethods()[0];
+        Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getBy(method, new Object[]{"Ada"});
+        assertThat(params)
+                .hasSize(1)
+                .containsEntry("name", "Ada");
+    }
+
     interface PersonRepository extends PageableRepository<Person, String> {
 
         @Query("select * from Person where name = @name")
-        List<Person> query(@Param("name") String name);
+        List<Person> query(@Param("name") @By("name")  String name);
     }
 }

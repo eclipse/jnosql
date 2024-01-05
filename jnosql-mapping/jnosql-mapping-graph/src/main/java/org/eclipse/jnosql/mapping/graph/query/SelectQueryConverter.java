@@ -19,6 +19,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.communication.query.method.SelectMethodQueryProvider;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
@@ -42,15 +43,22 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
     @Override
     public Stream<Vertex> apply(GraphQueryMethod graphQuery, Object[] params) {
 
-        SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
-        SelectQuery query = selectMethodFactory.apply(graphQuery.getMethod(), graphQuery.getEntityName());
-        EntityMetadata mapping = graphQuery.getMapping();
+        SelectQuery query = selectQuery(graphQuery);
+        EntityMetadata mapping = graphQuery.mapping();
         RepositoryObserverParser parser = RepositoryObserverParser.of(mapping);
         GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, query::where, mapping);
         traversal.hasLabel(mapping.name());
         query.orderBy().forEach(getSort(traversal, parser));
         updateDynamicParameter(params, traversal, query, parser);
         return traversal.toStream();
+    }
+
+    private SelectQuery selectQuery(GraphQueryMethod graphQuery) {
+        if(graphQuery.method() != null) {
+            return SelectMethodProvider.INSTANCE.apply(graphQuery.method(), graphQuery.entityName());
+        }
+        SelectMethodQueryProvider supplier = new SelectMethodQueryProvider();
+        return supplier.apply(graphQuery.methodName(), graphQuery.entityName());
     }
 
 

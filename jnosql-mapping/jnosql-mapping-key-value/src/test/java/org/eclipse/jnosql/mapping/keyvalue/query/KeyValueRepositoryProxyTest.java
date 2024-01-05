@@ -276,7 +276,7 @@ class KeyValueRepositoryProxyTest {
 
     @Test
     void shouldReturnErrorWhenExecuteMethodQuery() {
-        Assertions.assertThrows(DynamicQueryException.class, () -> userRepository.findByName("name"));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findByName("name"));
     }
 
     @Test
@@ -295,6 +295,9 @@ class KeyValueRepositoryProxyTest {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.count());
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll(null));
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.deleteAll());
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.countByName("name"));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.find("name"));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.deleteByAge(10));
     }
 
 
@@ -341,6 +344,14 @@ class KeyValueRepositoryProxyTest {
         Mockito.verify(template).insert(user);
     }
 
+    @Test
+    void shouldReturnNotSupported(){
+      Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.existByName("Ada"));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findByAge(10));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.find("Ada"));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.deleteByAge(10));
+    }
+
     public interface BaseQuery<T> {
 
         @Query("get @key")
@@ -378,6 +389,16 @@ class KeyValueRepositoryProxyTest {
 
         @Delete
         void deleteUser(User user);
+
+        void existByName(String name);
+
+        User findByAge(Integer age);
+
+        User find(String name);
+
+        void deleteByAge(Integer age);
+
+        int countByName(String name);
     }
 
 }

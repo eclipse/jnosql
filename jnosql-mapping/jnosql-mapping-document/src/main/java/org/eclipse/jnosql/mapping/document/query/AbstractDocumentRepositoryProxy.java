@@ -15,10 +15,11 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
-import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
+import org.eclipse.jnosql.mapping.core.repository.RepositoryReflectionUtils;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
 
@@ -53,8 +54,8 @@ public abstract class AbstractDocumentRepositoryProxy<T, K> extends BaseDocument
     @Override
     protected Object executeFindAll(Object instance, Method method, Object[] params) {
         Class<?> typeClass = entityMetadata().type();
-        DocumentQuery queryFindAll = select().from(entityMetadata().name()).build();
-        return executeFindByQuery(method, params, typeClass, updateQueryDynamically(params, queryFindAll));
+        var query = select().from(entityMetadata().name()).build();
+        return executeFindByQuery(method, params, typeClass, updateQueryDynamically(params, query));
     }
 
     @Override
@@ -71,6 +72,14 @@ public abstract class AbstractDocumentRepositoryProxy<T, K> extends BaseDocument
     protected Object executeFindByQuery(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
         return executeFindByQuery(method, params, type, query(method, params));
+    }
+
+    @Override
+    protected Object executeParameterBased(Object instance, Method method, Object[] params) {
+        Class<?> typeClass = entityMetadata().type();
+        Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
+        var query = DocumentParameterBasedQuery.INSTANCE.toQuery(parameters, entityMetadata());
+        return executeFindByQuery(method, params, typeClass, updateQueryDynamically(params, query));
     }
 
 

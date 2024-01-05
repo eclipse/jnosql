@@ -115,8 +115,8 @@ class RepositoryTypeTest {
     }
 
     @Test
-    void shouldReturnUnknown() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.UNKNOWN, RepositoryType.of(getMethod(DevRepository.class, "nope"), CrudRepository.class));
+    void shouldReturnParameterBased() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.PARAMETER_BASED, RepositoryType.of(getMethod(DevRepository.class, "nope"), CrudRepository.class));
     }
 
     @Test

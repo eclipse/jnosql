@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.data.exceptions.MappingException;
+import jakarta.data.repository.By;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
@@ -848,6 +849,20 @@ class ColumnRepositoryProxyTest {
         Mockito.verify(template).insert(person);
     }
 
+    @Test
+    void shouldExecuteMatchParameter(){
+        personRepository.find("Ada");
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(query.name()).isEqualTo("Person");
+            var condition = query.condition().orElseThrow();
+            softly.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            softly.assertThat(condition.column()).isEqualTo(Column.of("name", "Ada"));
+        });
+    }
+
     public interface BaseQuery<T> {
 
         List<T> findByNameLessThan(String name);
@@ -941,6 +956,8 @@ class ColumnRepositoryProxyTest {
         @OrderBy("name")
         @OrderBy("age")
         List<Person> findByException();
+
+        List<Person> find(@By("name") String name);
     }
 
     public interface VendorRepository extends PageableRepository<Vendor, String> {

@@ -17,8 +17,10 @@ package org.eclipse.jnosql.mapping.column.query;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
+import org.eclipse.jnosql.mapping.core.repository.RepositoryReflectionUtils;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * Template method to Repository proxy on column
@@ -50,8 +52,8 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepo
     @Override
     protected Object executeFindAll(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
-        ColumnQuery queryFindAll = ColumnQuery.select().from(entityMetadata().name()).build();
-        return executeFindByQuery(method, params, type, updateQueryDynamically(params, queryFindAll));
+        var query = ColumnQuery.select().from(entityMetadata().name()).build();
+        return executeFindByQuery(method, params, type, updateQueryDynamically(params, query));
     }
 
     @Override
@@ -68,6 +70,14 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepo
     protected Object executeFindByQuery(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
         return executeFindByQuery(method, params, type, query(method, params));
+    }
+
+    @Override
+    protected Object executeParameterBased(Object instance, Method method, Object[] params) {
+        Class<?> type = entityMetadata().type();
+        Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
+        var query = ColumnParameterBasedQuery.INSTANCE.toQuery(parameters, entityMetadata());
+        return executeFindByQuery(method, params, type, updateQueryDynamically(params, query));
     }
 
 }

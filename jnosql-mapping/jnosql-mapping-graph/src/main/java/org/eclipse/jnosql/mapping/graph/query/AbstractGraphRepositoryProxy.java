@@ -25,14 +25,17 @@ import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepositoryProxy;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.core.repository.RepositoryReflectionUtils;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -42,8 +45,6 @@ import java.util.stream.Stream;
  * @param <K> the K entity
  */
 abstract class AbstractGraphRepositoryProxy<T, K> extends AbstractRepositoryProxy<T, K> {
-
-
 
     protected abstract Graph graph();
 
@@ -90,6 +91,26 @@ abstract class AbstractGraphRepositoryProxy<T, K> extends AbstractRepositoryProx
     protected Object executeFindByQuery(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
         return findBy(method, params, type);
+    }
+
+
+    @Override
+    protected Object executeParameterBased(Object instance, Method method, Object[] params) {
+        Class<?> type = entityMetadata().type();
+        Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
+        var methodName = "findBy" + parameters.keySet().stream()
+                .map(s -> s.substring(0, 1).toUpperCase() + s.substring(1))
+                .collect(Collectors.joining("And"));
+        Supplier<Stream<?>> querySupplier = () -> {
+            GraphQueryMethod queryMethod = new GraphQueryMethod(entityMetadata(),
+                    graph().traversal().V(),
+                    converters(), null, methodName, params);
+
+            return SelectQueryConverter.INSTANCE.apply(queryMethod, params)
+                    .map(converter()::toEntity);
+        };
+
+        return converter(method, type, querySupplier, params);
     }
 
 

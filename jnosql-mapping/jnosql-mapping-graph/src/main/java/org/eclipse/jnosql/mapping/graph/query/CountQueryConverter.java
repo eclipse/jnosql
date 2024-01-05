@@ -32,8 +32,8 @@ final class CountQueryConverter extends AbstractQueryConvert implements BiFuncti
     @Override
     public Long apply(GraphQueryMethod graphQuery, Object[] params) {
 
-        SelectQuery query = SelectMethodProvider.INSTANCE.apply(graphQuery.getMethod(), graphQuery.getEntityName());
-        EntityMetadata mapping = graphQuery.getMapping();
+        SelectQuery query = SelectMethodProvider.INSTANCE.apply(graphQuery.method(), graphQuery.entityName());
+        EntityMetadata mapping = graphQuery.mapping();
         GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, query::where, mapping);
         traversal.hasLabel(mapping.name());
         return traversal.count().next();

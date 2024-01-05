@@ -30,7 +30,6 @@ import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.DELETE;
 import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.INSERT;
 import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.SAVE;
 import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.UPDATE;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class AnnotationOperationTest {
@@ -121,6 +120,16 @@ class AnnotationOperationTest {
     }
 
     @Test
+    void shouldUpdateSingleParameterLong() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("sameLong", Person.class);
+        Person person = Person.builder().build();
+        Mockito.when(repository.update(person)).thenReturn(true);
+        Object invoked = UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{person}, repository));
+        Mockito.verify(repository).update(person);
+        Assertions.assertThat(invoked).isEqualTo(1L);
+    }
+
+    @Test
     void shouldUpdateIterableParameter() throws Throwable {
         Method method = PersonRepository.class.getDeclaredMethod("iterable", List.class);
         Person person = Person.builder().build();
@@ -148,6 +157,17 @@ class AnnotationOperationTest {
         Object invoked = UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{List.of(person)}, repository));
         Mockito.verify(repository).updateAll(List.of(person));
         Assertions.assertThat(invoked).isEqualTo(1);
+    }
+
+
+    @Test
+    void shouldUpdateIterableParameterLong() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("iterableLong", List.class);
+        Person person = Person.builder().build();
+        Mockito.when(repository.updateAll(List.of(person))).thenReturn(1);
+        Object invoked = UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{List.of(person)}, repository));
+        Mockito.verify(repository).updateAll(List.of(person));
+        Assertions.assertThat(invoked).isEqualTo(1L);
     }
 
     @Test
@@ -192,6 +212,19 @@ class AnnotationOperationTest {
         Mockito.verify(repository).updateAll(List.of(person));
         Assertions.assertThat(invoked).isEqualTo(1);
     }
+
+
+    @Test
+    void shouldUpdateArrayParameterLong() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("arrayLong", Person[].class);
+        Person person = Person.builder().build();
+        Mockito.when(repository.updateAll(List.of(person))).thenReturn(1);
+        Object invoked = UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
+                repository));
+        Mockito.verify(repository).updateAll(List.of(person));
+        Assertions.assertThat(invoked).isEqualTo(1L);
+    }
+
 
     @Test
     void shouldUpdateArrayParameterVoid() throws Throwable {
@@ -241,6 +274,16 @@ class AnnotationOperationTest {
     }
 
     @Test
+    void shouldDeleteSingleParameterLong() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("sameLong", Person.class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{person}, repository));
+        Mockito.verify(repository).delete(person);
+        Assertions.assertThat(invoked).isEqualTo(1L);
+    }
+
+
+    @Test
     void shouldDeleteIterableParameter() throws Throwable {
         Method method = PersonRepository.class.getDeclaredMethod("iterable", List.class);
         Person person = Person.builder().build();
@@ -265,6 +308,15 @@ class AnnotationOperationTest {
         Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{List.of(person)}, repository));
         Mockito.verify(repository).deleteAll(List.of(person));
         Assertions.assertThat(invoked).isEqualTo(1);
+    }
+
+    @Test
+    void shouldDeleteIterableParameterLong() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("iterableLong", List.class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{List.of(person)}, repository));
+        Mockito.verify(repository).deleteAll(List.of(person));
+        Assertions.assertThat(invoked).isEqualTo(1L);
     }
 
     @Test
@@ -304,6 +356,16 @@ class AnnotationOperationTest {
                 repository));
         Mockito.verify(repository).deleteAll(List.of(person));
         Assertions.assertThat(invoked).isEqualTo(1);
+    }
+
+    @Test
+    void shouldDeleteArrayParameterLong() throws Throwable {
+        Method method = PersonRepository.class.getDeclaredMethod("arrayLong", Person[].class);
+        Person person = Person.builder().build();
+        Object invoked = DELETE.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
+                repository));
+        Mockito.verify(repository).deleteAll(List.of(person));
+        Assertions.assertThat(invoked).isEqualTo(1L);
     }
 
     @Test
@@ -400,6 +462,8 @@ class AnnotationOperationTest {
 
         int sameInt(Person person);
 
+        long sameLong(Person person);
+
         Person[] array(Person[] people);
 
         boolean arrayBoolean(Person[] people);
@@ -408,6 +472,8 @@ class AnnotationOperationTest {
 
         int arrayInt(Person[] people);
 
+        long arrayLong(Person[] people);
+
         List<Person> iterable(List<Person> people);
 
         void iterableVoid(List<Person> people);
@@ -415,5 +481,7 @@ class AnnotationOperationTest {
         boolean iterableBoolean(List<Person> people);
 
         int iterableInt(List<Person> people);
+
+        long iterableLong(List<Person> people);
     }
 }
