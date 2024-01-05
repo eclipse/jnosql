@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.data.exceptions.MappingException;
+import jakarta.data.repository.By;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
@@ -585,6 +586,34 @@ class GraphRepositoryProxyTest {
         Mockito.verify(template).insert(person);
     }
 
+    @Test
+    void shouldFind() {
+
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false, "score", 2);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false, "score", 12);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 4, "active", false, "score", 5);
+        graph.addVertex(T.label, "Person", "name", "Elias", "age", 20, "active", false, "score", 15);
+        List<Person> people =  personRepository.find("Otavio");
+        assertThat(people).isNotEmpty().hasSize(1)
+                .map(Person::getName)
+                .contains("Otavio");
+
+    }
+
+    @Test
+    void shouldFind2() {
+
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false, "score", 2);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false, "score", 12);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 4, "active", false, "score", 5);
+        graph.addVertex(T.label, "Person", "name", "Elias", "age", 20, "active", false, "score", 15);
+        List<Person> people =  personRepository.find("Otavio", 30);
+        assertThat(people).isNotEmpty().hasSize(1)
+                .map(Person::getName)
+                .contains("Otavio");
+
+    }
+
     public interface BaseQuery<T> {
 
         List<T> findByScoreLessThan(int value);
@@ -645,6 +674,9 @@ class GraphRepositoryProxyTest {
         @OrderBy("name")
         @OrderBy("age")
         List<Person> findByException();
+
+        List<Person> find(@By("name") String name);
+        List<Person> find(@By("name") String name, @By("age") Integer age);
 
         default Map<Boolean, List<Person>> partcionate(String name) {
             Objects.requireNonNull(name, "name is required");
