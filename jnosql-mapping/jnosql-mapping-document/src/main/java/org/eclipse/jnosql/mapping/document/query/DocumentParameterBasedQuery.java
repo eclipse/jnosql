@@ -61,7 +61,7 @@ public enum  DocumentParameterBasedQuery {
     }
 
     private DocumentCondition columnCondition(List<DocumentCondition> conditions) {
-        if(conditions.isEmpty()){
+        if (conditions.isEmpty()) {
             return null;
         }
         else if(conditions.size() == 1){
