@@ -33,8 +33,8 @@ final class DeleteQueryConverter extends AbstractQueryConvert implements Functio
     @Override
     public List<Vertex> apply(GraphQueryMethod graphQuery) {
         DeleteMethodProvider provider = DeleteMethodProvider.INSTANCE;
-        DeleteQuery deleteQuery = provider.apply(graphQuery.getMethod(), graphQuery.getEntityName());
-        EntityMetadata mapping = graphQuery.getMapping();
+        DeleteQuery deleteQuery = provider.apply(graphQuery.method(), graphQuery.entityName());
+        EntityMetadata mapping = graphQuery.mapping();
         GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, deleteQuery::where, mapping);
         traversal.hasLabel(mapping.name());
         return traversal.toList();

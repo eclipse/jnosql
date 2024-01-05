@@ -84,7 +84,7 @@ abstract class AbstractQueryConvert {
                                                                Supplier<Optional<Where>> whereSupplier,
                                                                EntityMetadata mapping) {
 
-        GraphTraversal<Vertex, Vertex> traversal = graphQuery.getTraversal();
+        GraphTraversal<Vertex, Vertex> traversal = graphQuery.traversal();
         Optional<Where> whereOptional = whereSupplier.get();
         whereOptional.ifPresent(w -> {
             QueryCondition condition = w.condition();

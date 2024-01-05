@@ -91,6 +91,22 @@ abstract class AbstractGraphRepositoryProxy<T, K> extends AbstractRepositoryProx
     }
 
 
+    @Override
+    protected Object executeParameterBased(Object instance, Method method, Object[] params) {
+        Class<?> type = entityMetadata().type();
+        Supplier<Stream<?>> querySupplier = () -> {
+            GraphQueryMethod queryMethod = new GraphQueryMethod(entityMetadata(),
+                    graph().traversal().V(),
+                    converters(), method, params);
+
+            return SelectQueryConverter.INSTANCE.apply(queryMethod, params)
+                    .map(converter()::toEntity);
+        };
+
+        return converter(method, type, querySupplier, params);
+    }
+
+
     private Object findAll(Method method, Class<?> typeClass, Object[] args) {
 
         Supplier<Stream<?>> querySupplier = () -> {

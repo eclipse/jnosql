@@ -49,19 +49,19 @@ final class GraphQueryMethod {
         this.method = method;
     }
 
-    public Method getMethod() {
+    public Method method() {
         return method;
     }
 
-    public String getEntityName() {
+    public String entityName() {
         return mapping.name();
     }
 
-    public EntityMetadata getMapping() {
+    public EntityMetadata mapping() {
         return mapping;
     }
 
-    public GraphTraversal<Vertex, Vertex> getTraversal() {
+    public GraphTraversal<Vertex, Vertex> traversal() {
         return traversal;
     }
 
