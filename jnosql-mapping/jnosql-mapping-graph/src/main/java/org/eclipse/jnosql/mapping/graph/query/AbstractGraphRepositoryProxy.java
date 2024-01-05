@@ -43,8 +43,6 @@ import java.util.stream.Stream;
  */
 abstract class AbstractGraphRepositoryProxy<T, K> extends AbstractRepositoryProxy<T, K> {
 
-
-
     protected abstract Graph graph();
 
     protected abstract GraphConverter converter();
