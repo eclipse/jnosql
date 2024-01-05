@@ -37,6 +37,8 @@ final class GraphQueryMethod {
     private final Object[] args;
     private final Converters converters;
     private final Method method;
+
+    private final String methodName;
     private int counter = 0;
 
     GraphQueryMethod(EntityMetadata mapping,
@@ -47,6 +49,21 @@ final class GraphQueryMethod {
         this.args = args;
         this.converters = converters;
         this.method = method;
+        this.methodName = method.getName();
+    }
+
+    GraphQueryMethod(EntityMetadata mapping,
+                     GraphTraversal<Vertex, Vertex> traversal,
+                     Converters converters,
+                     Method method,
+                     String methodName,
+                     Object[] args) {
+        this.mapping = mapping;
+        this.traversal = traversal;
+        this.args = args;
+        this.converters = converters;
+        this.method = method;
+        this.methodName = methodName;
     }
 
     public Method method() {
@@ -59,6 +76,10 @@ final class GraphQueryMethod {
 
     public EntityMetadata mapping() {
         return mapping;
+    }
+
+    public String methodName() {
+        return methodName;
     }
 
     public GraphTraversal<Vertex, Vertex> traversal() {
