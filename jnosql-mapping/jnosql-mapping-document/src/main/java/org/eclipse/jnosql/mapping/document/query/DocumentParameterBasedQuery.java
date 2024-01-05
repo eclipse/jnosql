@@ -14,12 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
-import jakarta.data.page.Pageable;
 import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.document.MappingDocumentQuery;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
@@ -28,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.IntFunction;
 
 import static org.eclipse.jnosql.mapping.core.util.ConverterUtil.getValue;
