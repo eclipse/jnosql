@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.core.repository;
 
 
 
+import jakarta.data.repository.By;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 
@@ -48,6 +49,27 @@ public enum RepositoryReflectionUtils {
             Param param = parameter.getAnnotation(Param.class);
             if (Objects.nonNull(param)) {
                 params.put(param.value(), args[index]);
+            }
+        }
+        return params;
+    }
+
+    /**
+     * Converts values at arg at a {@link Map}
+     *
+     * @param method the method that has the {@link By} info
+     * @param args   the arguments from the method
+     * @return the {@link Map} from method and its arguments
+     */
+    public Map<String, Object> getBy(Method method, Object[] args) {
+        Map<String, Object> params = new HashMap<>();
+
+        Parameter[] parameters = method.getParameters();
+        for (int index = 0; index < parameters.length; index++) {
+            Parameter parameter = parameters[index];
+            By by = parameter.getAnnotation(By.class);
+            if (Objects.nonNull(by)) {
+                params.put(by.value(), args[index]);
             }
         }
         return params;
