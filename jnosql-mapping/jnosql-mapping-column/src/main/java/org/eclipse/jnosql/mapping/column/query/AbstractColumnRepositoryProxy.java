@@ -14,11 +14,15 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
+import jakarta.data.repository.By;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Template method to Repository proxy on column
@@ -50,8 +54,8 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepo
     @Override
     protected Object executeFindAll(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
-        ColumnQuery queryFindAll = ColumnQuery.select().from(entityMetadata().name()).build();
-        return executeFindByQuery(method, params, type, updateQueryDynamically(params, queryFindAll));
+        var query = ColumnQuery.select().from(entityMetadata().name()).build();
+        return executeFindByQuery(method, params, type, updateQueryDynamically(params, query));
     }
 
     @Override
@@ -68,6 +72,22 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepo
     protected Object executeFindByQuery(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
         return executeFindByQuery(method, params, type, query(method, params));
+    }
+
+    @Override
+    protected Object executeParameterBased(Object instance, Method method, Object[] params) {
+        Class<?> type = entityMetadata().type();
+        var parameters = method.getParameters();
+        Map<String, Object> paramsValue = new HashMap<>();
+        for (int index = 0; index < parameters.length; index++) {
+            Parameter parameter = parameters[index];
+            By annotation = parameter.getAnnotation(By.class);
+            if(annotation != null) {
+                paramsValue.put(annotation.value(), params[index]);
+            }
+        }
+        var query = ColumnParameterBasedQuery.INSTANCE.toQuery(paramsValue, entityMetadata());
+        return executeFindByQuery(method, params, type, updateQueryDynamically(params, query));
     }
 
 }
