@@ -61,10 +61,9 @@ public enum ColumnParameterBasedQuery {
     }
 
     private ColumnCondition columnCondition(List<ColumnCondition> conditions) {
-        if(conditions.isEmpty()){
+        if (conditions.isEmpty()) {
             return null;
-        }
-        else if(conditions.size() == 1){
+        } else if (conditions.size() == 1) {
             return conditions.get(0);
         }
         return ColumnCondition.and(conditions.toArray(TO_ARRAY));
