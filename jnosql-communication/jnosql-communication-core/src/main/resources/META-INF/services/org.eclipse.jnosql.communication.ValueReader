@@ -17,6 +17,7 @@ org.eclipse.jnosql.communication.reader.NumberReader
 org.eclipse.jnosql.communication.reader.OptionalReader
 org.eclipse.jnosql.communication.reader.ShortReader
 org.eclipse.jnosql.communication.reader.StringReader
+org.eclipse.jnosql.communication.reader.DateReader
 org.eclipse.jnosql.communication.reader.YearMonthReader
 org.eclipse.jnosql.communication.reader.YearReader
 org.eclipse.jnosql.communication.reader.ZonedDateTimeReader
