@@ -164,4 +164,70 @@ class GraphTemplateInheritanceTest {
         var count = graphTemplate.count(Notification.class);
         Assertions.assertThat(count).isEqualTo(2);
     }
+
+    @Test
+    void shouldSelectFilter(){
+        var emailNotification = new EmailNotification();
+        emailNotification.setName("email");
+
+        var smsNotification = new SmsNotification();
+        smsNotification.setName("notification");
+
+        this.graphTemplate.insert(List.of(emailNotification, smsNotification));
+        var notifications = graphTemplate.select(EmailNotification.class).stream().toList();
+        assertSoftly(soft -> soft.assertThat(notifications)
+                .hasSize(1)
+                .containsExactly(emailNotification));
+
+    }
+
+    @Test
+    void shouldSelectNoFilter(){
+        var emailNotification = new EmailNotification();
+        emailNotification.setName("email");
+
+        var smsNotification = new SmsNotification();
+        smsNotification.setName("notification");
+
+        this.graphTemplate.insert(List.of(emailNotification, smsNotification));
+        var notifications = graphTemplate.select(Notification.class).stream().toList();
+        assertSoftly(soft -> soft.assertThat(notifications)
+                .hasSize(2)
+                .containsExactly(emailNotification, smsNotification));
+
+    }
+
+    @Test
+    void shouldDeleteFilter(){
+        var emailNotification = new EmailNotification();
+        emailNotification.setName("email");
+
+        var smsNotification = new SmsNotification();
+        smsNotification.setName("notification");
+
+        this.graphTemplate.insert(List.of(emailNotification, smsNotification));
+
+        graphTemplate.delete(EmailNotification.class).execute();
+
+        var notifications = graphTemplate.findAll(Notification.class).toList();
+        assertSoftly(soft -> soft.assertThat(notifications)
+                .hasSize(1)
+                .containsExactly(smsNotification));
+    }
+
+    @Test
+    void shouldDeleteNoFilter(){
+        var emailNotification = new EmailNotification();
+        emailNotification.setName("email");
+
+        var smsNotification = new SmsNotification();
+        smsNotification.setName("notification");
+
+        this.graphTemplate.insert(List.of(emailNotification, smsNotification));
+
+        graphTemplate.delete(Notification.class).execute();
+
+        var notifications = graphTemplate.findAll(Notification.class).toList();
+        assertSoftly(soft -> soft.assertThat(notifications).isEmpty());
+    }
 }
