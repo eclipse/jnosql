@@ -21,6 +21,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
 import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
@@ -83,15 +84,29 @@ class DocumentTemplateInheritanceTest {
         var captor = ArgumentCaptor.forClass(DocumentQuery.class);
         template.select(EmailNotification.class).<EmailNotification>stream().toList();
         Mockito.verify(this.managerMock).select(captor.capture());
-        DocumentQuery query = captor.getValue();
+        var query = captor.getValue();
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
             soft.assertThat(query.condition()).isPresent();
             DocumentCondition condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.document()).isEqualTo(Document.of("type", "Email"));
+            soft.assertThat(condition.document()).isEqualTo(Document.of("dtype", "Email"));
         });
+    }
 
+    @Test
+    void shouldDeleteFilter(){
+        var captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+        template.delete(EmailNotification.class).execute();
+        Mockito.verify(this.managerMock).delete(captor.capture());
+        var query = captor.getValue();
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Notification");
+            soft.assertThat(query.condition()).isPresent();
+            DocumentCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.document()).isEqualTo(Document.of("dtype", "Email"));
+        });
     }
 
 }
