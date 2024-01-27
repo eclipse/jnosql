@@ -17,19 +17,17 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
-import org.eclipse.jnosql.communication.TypeSupplier;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
-import org.eclipse.jnosql.communication.document.DocumentEntity;
 import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.document.entities.inheritance.EmailNotification;
+import org.eclipse.jnosql.mapping.document.entities.inheritance.Notification;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
@@ -41,7 +39,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -99,6 +96,18 @@ class DocumentTemplateInheritanceTest {
     }
 
     @Test
+    void shouldSelectNoFilter(){
+        var captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        template.select(Notification.class).<Notification>stream().toList();
+        Mockito.verify(this.managerMock).select(captor.capture());
+        var query = captor.getValue();
+        assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Notification");
+            soft.assertThat(query.condition()).isEmpty();
+        });
+    }
+
+    @Test
     void shouldDeleteFilter(){
         var captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
         template.delete(EmailNotification.class).execute();
@@ -110,6 +119,18 @@ class DocumentTemplateInheritanceTest {
             DocumentCondition condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
             soft.assertThat(condition.document()).isEqualTo(Document.of("dtype", "Email"));
+        });
+    }
+
+    @Test
+    void shouldDeleteNoFilter(){
+        var captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+        template.delete(Notification.class).execute();
+        Mockito.verify(this.managerMock).delete(captor.capture());
+        var query = captor.getValue();
+        assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Notification");
+            soft.assertThat(query.condition()).isEmpty();
         });
     }
 
