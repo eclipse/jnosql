@@ -18,6 +18,7 @@ import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnCondition;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
@@ -420,7 +421,12 @@ class DefaultColumnTemplateTest {
     @Test
     void shouldCountFromEntityClass() {
         template.count(Person.class);
-        verify(managerMock).count("Person");
+        var captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(managerMock).count(captor.capture());
+        var query = captor.getValue();
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(query.condition()).isEmpty();
+        });
     }
 
 

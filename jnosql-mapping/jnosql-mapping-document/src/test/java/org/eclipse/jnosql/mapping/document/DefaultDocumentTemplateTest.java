@@ -18,6 +18,7 @@ import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
@@ -425,7 +426,12 @@ class DefaultDocumentTemplateTest {
     @Test
     void shouldCountFromEntityClass() {
         template.count(Person.class);
-        verify(managerMock).count("Person");
+        var captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(managerMock).count(captor.capture());
+        DocumentQuery query = captor.getValue();
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(query.condition()).isEmpty();
+        });
     }
 
     @Test

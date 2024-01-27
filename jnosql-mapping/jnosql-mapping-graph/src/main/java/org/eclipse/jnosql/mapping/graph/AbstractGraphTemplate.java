@@ -32,6 +32,7 @@ import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.core.util.ConverterUtil;
+import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -334,6 +335,15 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public <T> long count(Class<T> type) {
         Objects.requireNonNull(type, "entity class is required");
+        var metadata = getEntities().get(type);
+        if(metadata.inheritance().isPresent()){
+            InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();
+            if(!inheritanceMetadata.parent().equals(metadata.type())){
+                return traversal().V().hasLabel(metadata.name())
+                        .has(inheritanceMetadata.discriminatorColumn(), inheritanceMetadata.discriminatorValue())
+                        .count().tryNext().orElse(0L);
+            }
+        }
         return count(getEntities().get(type).name());
     }
 
@@ -357,6 +367,14 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> Stream<T> findAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
+        if(metadata.inheritance().isPresent()){
+            InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();
+            if(!inheritanceMetadata.parent().equals(metadata.type())){
+                return traversal().V().hasLabel(metadata.name())
+                        .has(inheritanceMetadata.discriminatorColumn(), inheritanceMetadata.discriminatorValue())
+                        .toStream().map(getConverter()::toEntity);
+            }
+        }
         return traversal().V().hasLabel(metadata.name())
                 .toStream().map(getConverter()::toEntity);
     }
@@ -365,6 +383,16 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> void deleteAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
+        if(metadata.inheritance().isPresent()){
+            InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();
+            if(!inheritanceMetadata.parent().equals(metadata.type())){
+                traversal().V().hasLabel(metadata.name())
+                        .has(inheritanceMetadata.discriminatorColumn(), inheritanceMetadata.discriminatorValue())
+                        .toStream().forEach(Vertex::remove);
+                return;
+
+            }
+        }
         traversal().V().hasLabel(metadata.name()).toStream().forEach(Vertex::remove);
     }
 

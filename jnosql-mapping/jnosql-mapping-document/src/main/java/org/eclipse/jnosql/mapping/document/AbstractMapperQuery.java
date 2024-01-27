@@ -57,6 +57,12 @@ abstract class AbstractMapperQuery {
         this.converters = converters;
         this.documentCollection = mapping.name();
         this.template = template;
+        mapping.inheritance().ifPresent(i -> {
+            if(!i.parent().equals(mapping.type())){
+                this.condition = DocumentCondition.eq(Document.of(i.discriminatorColumn(), i.discriminatorValue()));
+                this.and = true;
+            }
+        });
     }
 
     protected void appendCondition(DocumentCondition incomingCondition) {

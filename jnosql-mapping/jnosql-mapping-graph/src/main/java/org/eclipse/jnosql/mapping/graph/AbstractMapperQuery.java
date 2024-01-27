@@ -56,6 +56,12 @@ class AbstractMapperQuery {
         this.converters = converters;
         this.traversal = traversal;
         this.converter = converter;
+        mapping.inheritance().ifPresent(i -> {
+            if(!i.parent().equals(mapping.type())){
+                this.condition = __.has(mapping.columnField(i.discriminatorColumn()), P.eq(i.discriminatorValue()));
+                this.and = true;
+            }
+        });
     }
 
     protected <T> void eqImpl(T value) {
