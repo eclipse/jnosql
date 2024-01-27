@@ -19,6 +19,8 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.TypeSupplier;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
@@ -39,8 +41,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.Mockito.when;
 
 @EnableAutoWeld
@@ -85,7 +89,7 @@ class DocumentTemplateInheritanceTest {
         template.select(EmailNotification.class).<EmailNotification>stream().toList();
         Mockito.verify(this.managerMock).select(captor.capture());
         var query = captor.getValue();
-        SoftAssertions.assertSoftly(soft ->{
+        assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
             soft.assertThat(query.condition()).isPresent();
             DocumentCondition condition = query.condition().orElseThrow();
@@ -100,12 +104,48 @@ class DocumentTemplateInheritanceTest {
         template.delete(EmailNotification.class).execute();
         Mockito.verify(this.managerMock).delete(captor.capture());
         var query = captor.getValue();
-        SoftAssertions.assertSoftly(soft ->{
+        assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
             soft.assertThat(query.condition()).isPresent();
             DocumentCondition condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
             soft.assertThat(condition.document()).isEqualTo(Document.of("dtype", "Email"));
+        });
+    }
+
+    @Test
+    void shouldSelectFilterCondition(){
+        var captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        template.select(EmailNotification.class).where("name")
+                .eq("notification").<EmailNotification>stream().toList();
+        Mockito.verify(this.managerMock).select(captor.capture());
+        var query = captor.getValue();
+        assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Notification");
+            soft.assertThat(query.condition()).isPresent();
+            DocumentCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
+            var documents = condition.document().get(new TypeReference<List<DocumentCondition>>() {});
+            soft.assertThat(documents).contains(DocumentCondition.eq(Document.of("dtype", "Email")),
+                    DocumentCondition.eq(Document.of("name", "notification")));
+        });
+    }
+
+    @Test
+    void shouldDeleteFilterCondition(){
+        var captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+        template.delete(EmailNotification.class).where("name")
+                .eq("notification").execute();
+        Mockito.verify(this.managerMock).delete(captor.capture());
+        var query = captor.getValue();
+        assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Notification");
+            soft.assertThat(query.condition()).isPresent();
+            DocumentCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
+            var documents = condition.document().get(new TypeReference<List<DocumentCondition>>() {});
+            soft.assertThat(documents).contains(DocumentCondition.eq(Document.of("dtype", "Email")),
+                    DocumentCondition.eq(Document.of("name", "notification")));
         });
     }
 
