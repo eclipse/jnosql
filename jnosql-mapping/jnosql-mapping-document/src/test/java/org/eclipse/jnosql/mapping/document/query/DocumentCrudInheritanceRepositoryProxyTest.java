@@ -134,7 +134,7 @@ class DocumentCrudInheritanceRepositoryProxyTest {
     void shouldPutFilterAtExistByName() {
         emailRepository.existsByName("name");
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        Mockito.verify(template).select(captor.capture());
+        Mockito.verify(template).exists(captor.capture());
         DocumentQuery query = captor.getValue();
         assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
