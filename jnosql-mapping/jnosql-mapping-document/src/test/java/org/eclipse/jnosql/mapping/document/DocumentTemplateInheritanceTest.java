@@ -220,8 +220,41 @@ class DocumentTemplateInheritanceTest {
     }
 
 
-    void shouldCountAllNoFilter(){}
+    @Test
+    void shouldCountAllNoFilter(){
+        var captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        template.count(Notification.class);
+        Mockito.verify(this.managerMock).count(captor.capture());
+        var query = captor.getValue();
 
-    void shouldFindAllNoFilter(){}
-    void shouldDeleteAllNoFilter(){}
+        assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Notification");
+            soft.assertThat(query.condition()).isEmpty();
+        });
+    }
+
+    @Test
+    void shouldFindAllNoFilter(){
+        var captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        template.findAll(Notification.class);
+        Mockito.verify(this.managerMock).select(captor.capture());
+        var query = captor.getValue();
+
+        assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Notification");
+            soft.assertThat(query.condition()).isEmpty();
+        });
+    }
+    @Test
+    void shouldDeleteAllNoFilter(){
+        var captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+        template.deleteAll(Notification.class);
+        Mockito.verify(this.managerMock).delete(captor.capture());
+        var query = captor.getValue();
+
+        assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Notification");
+            soft.assertThat(query.condition()).isEmpty();
+        });
+    }
 }
