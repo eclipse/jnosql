@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.document.Document;
@@ -170,4 +171,57 @@ class DocumentTemplateInheritanceTest {
         });
     }
 
+    @Test
+    void shouldCountAllFilter(){
+        var captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        template.count(EmailNotification.class);
+        Mockito.verify(this.managerMock).count(captor.capture());
+        var query = captor.getValue();
+
+        assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Notification");
+            soft.assertThat(query.condition()).isPresent();
+            DocumentCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.document()).isEqualTo(Document.of("dtype", "Email"));
+        });
+    }
+
+    @Test
+    void shouldFindAllFilter(){
+        var captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        template.findAll(EmailNotification.class);
+        Mockito.verify(this.managerMock).select(captor.capture());
+        var query = captor.getValue();
+
+        assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Notification");
+            soft.assertThat(query.condition()).isPresent();
+            DocumentCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.document()).isEqualTo(Document.of("dtype", "Email"));
+        });
+    }
+
+    @Test
+    void shouldDeleteAllFilter(){
+        var captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+        template.deleteAll(EmailNotification.class);
+        Mockito.verify(this.managerMock).delete(captor.capture());
+        var query = captor.getValue();
+
+        assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Notification");
+            soft.assertThat(query.condition()).isPresent();
+            DocumentCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.document()).isEqualTo(Document.of("dtype", "Email"));
+        });
+    }
+
+
+    void shouldCountAllNoFilter(){}
+
+    void shouldFindAllNoFilter(){}
+    void shouldDeleteAllNoFilter(){}
 }
