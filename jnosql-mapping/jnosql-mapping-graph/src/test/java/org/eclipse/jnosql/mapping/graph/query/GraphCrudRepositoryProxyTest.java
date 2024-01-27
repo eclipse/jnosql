@@ -112,7 +112,7 @@ class GraphCrudRepositoryProxyTest {
     }
 
     @AfterEach
-    public void after() {
+    void after() {
         graph.traversal().V().toList().forEach(Vertex::remove);
         graph.traversal().E().toList().forEach(Edge::remove);
 
