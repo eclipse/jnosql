@@ -18,6 +18,8 @@ package org.eclipse.jnosql.mapping.document;
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.nosql.PreparedStatement;
 import jakarta.nosql.QueryMapper;
+import org.eclipse.jnosql.communication.document.Document;
+import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
 import org.eclipse.jnosql.communication.document.DocumentManager;
@@ -30,6 +32,7 @@ import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.core.util.ConverterUtil;
+import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 
 import java.time.Duration;
 import java.util.Iterator;
@@ -249,8 +252,17 @@ public abstract class AbstractDocumentTemplate implements JNoSQLDocumentTemplate
     public <T> Stream<T> findAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        DocumentQuery query = DocumentQuery.select().from(metadata.name()).build();
-        return select(query);
+
+        if(metadata.inheritance().isPresent()){
+            InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();
+            if(!inheritanceMetadata.parent().equals(metadata.type())){
+                 var query = DocumentQuery.select().from(metadata.name())
+                        .where(inheritanceMetadata.discriminatorColumn()).eq(inheritanceMetadata.discriminatorValue()).build();
+                return select(query);
+            }
+        }
+
+        return select(DocumentQuery.select().from(metadata.name()).build());
     }
 
     @Override

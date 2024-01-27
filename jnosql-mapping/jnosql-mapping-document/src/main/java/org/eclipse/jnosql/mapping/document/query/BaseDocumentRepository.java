@@ -20,6 +20,8 @@ import jakarta.data.page.Pageable;
 import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.document.DeleteQueryParser;
+import org.eclipse.jnosql.communication.document.Document;
+import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQueryParams;
 import org.eclipse.jnosql.communication.document.DocumentObserverParser;
@@ -39,6 +41,7 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.core.repository.SpecialParameters;
 import org.eclipse.jnosql.mapping.core.util.ParamsBinder;
+import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -94,46 +97,65 @@ public abstract class BaseDocumentRepository<T, K> extends AbstractRepositoryPro
 
 
     protected DocumentQuery updateQueryDynamically(Object[] args, DocumentQuery query) {
+        DocumentQuery documentQuery = includeInheritance(query);
         SpecialParameters special = DynamicReturn.findSpecialParameters(args);
 
         if (special.isEmpty()) {
-            return query;
+            return documentQuery;
         }
         Optional<Limit> limit = special.limit();
 
         if (special.hasOnlySort()) {
             List<Sort> sorts = new ArrayList<>();
-            sorts.addAll(query.sorts());
+            sorts.addAll(documentQuery.sorts());
             sorts.addAll(special.sorts());
-            long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
-            long max = limit.map(Limit::maxResults).orElse((int) query.limit());
+            long skip = limit.map(l -> l.startAt() - 1).orElse(documentQuery.skip());
+            long max = limit.map(Limit::maxResults).orElse((int) documentQuery.limit());
             return new MappingDocumentQuery(sorts, max,
                     skip,
-                    query.condition().orElse(null),
-                    query.name());
+                    documentQuery.condition().orElse(null),
+                    documentQuery.name());
         }
 
         if (limit.isPresent()) {
-            long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
-            long max = limit.map(Limit::maxResults).orElse((int) query.limit());
-            return new MappingDocumentQuery(query.sorts(), max,
+            long skip = limit.map(l -> l.startAt() - 1).orElse(documentQuery.skip());
+            long max = limit.map(Limit::maxResults).orElse((int) documentQuery.limit());
+            return new MappingDocumentQuery(documentQuery.sorts(), max,
                     skip,
-                    query.condition().orElse(null),
-                    query.name());
+                    documentQuery.condition().orElse(null),
+                    documentQuery.name());
         }
 
         return special.pageable().<DocumentQuery>map(p -> {
             long size = p.size();
             long skip = NoSQLPage.skip(p);
-            List<Sort> sorts = query.sorts();
+            List<Sort> sorts = documentQuery.sorts();
             if (!special.sorts().isEmpty()) {
-                sorts = new ArrayList<>(query.sorts());
+                sorts = new ArrayList<>(documentQuery.sorts());
                 sorts.addAll(special.sorts());
             }
             return new MappingDocumentQuery(sorts, size, skip,
-                    query.condition().orElse(null), query.name());
-        }).orElse(query);
+                    documentQuery.condition().orElse(null), documentQuery.name());
+        }).orElse(documentQuery);
 
+    }
+
+    private DocumentQuery includeInheritance(DocumentQuery query){
+        EntityMetadata metadata = this.entityMetadata();
+       if(metadata.inheritance().isPresent()){
+           InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();
+           if(!inheritanceMetadata.parent().equals(metadata.type())){
+               DocumentCondition condition = DocumentCondition.eq(Document.of(inheritanceMetadata.discriminatorColumn(),
+                       inheritanceMetadata.discriminatorValue()));
+               if(query.condition().isPresent()){
+                   DocumentCondition documentCondition = query.condition().orElseThrow();
+                   condition = condition.and(documentCondition);
+               }
+               return new MappingDocumentQuery(query.sorts(), query.limit(), query.skip(),
+                       condition, query.name());
+           }
+       }
+       return query;
     }
 
     protected DocumentObserverParser parser() {
