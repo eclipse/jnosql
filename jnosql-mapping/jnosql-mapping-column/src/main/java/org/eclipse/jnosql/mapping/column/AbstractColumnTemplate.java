@@ -31,6 +31,7 @@ import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.core.util.ConverterUtil;
+import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 
 import java.time.Duration;
 import java.util.Iterator;
@@ -228,8 +229,7 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
     @Override
     public <T> long count(Class<T> type) {
         requireNonNull(type, "entity class is required");
-        EntityMetadata entityMetadata = getEntities().get(type);
-        return getManager().count(entityMetadata.name());
+        return getManager().count(findAllQuery(type));
     }
 
     private <T> Stream<T> executeQuery(ColumnQuery query) {
@@ -256,17 +256,23 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
     @Override
     public <T> Stream<T> findAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
-        EntityMetadata metadata = getEntities().get(type);
-        ColumnQuery query = ColumnQuery.select().from(metadata.name()).build();
-        return select(query);
+        return select(findAllQuery(type));
     }
 
     @Override
     public <T> void deleteAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        ColumnDeleteQuery query = ColumnDeleteQuery.delete().from(metadata.name()).build();
-        delete(query);
+        if(metadata.inheritance().isPresent()){
+            InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();
+            if(!inheritanceMetadata.parent().equals(metadata.type())){
+                getManager().delete(ColumnDeleteQuery.delete().from(metadata.name())
+                        .where(inheritanceMetadata.discriminatorColumn())
+                        .eq(inheritanceMetadata.discriminatorValue()).build());
+                return;
+            }
+        }
+        getManager().delete(ColumnDeleteQuery.delete().from(metadata.name()).build());
     }
 
     protected <T> T persist(T entity, UnaryOperator<ColumnEntity> persistAction) {
@@ -285,5 +291,18 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
             consumer.accept(t);
             return t;
         };
+    }
+
+    private <T> ColumnQuery findAllQuery(Class<T> type){
+        EntityMetadata metadata = getEntities().get(type);
+
+        if(metadata.inheritance().isPresent()){
+            InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();
+            if(!inheritanceMetadata.parent().equals(metadata.type())){
+                return ColumnQuery.select().from(metadata.name())
+                        .where(inheritanceMetadata.discriminatorColumn()).eq(inheritanceMetadata.discriminatorValue()).build();
+            }
+        }
+        return ColumnQuery.select().from(metadata.name()).build();
     }
 }
