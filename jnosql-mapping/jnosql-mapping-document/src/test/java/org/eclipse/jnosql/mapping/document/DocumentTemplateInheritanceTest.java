@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.document.Document;
@@ -67,13 +66,10 @@ class DocumentTemplateInheritanceTest {
     private DefaultDocumentTemplate template;
 
 
-
-    private DocumentEventPersistManager documentEventPersistManager;
-
     @BeforeEach
     void setUp() {
         managerMock = Mockito.mock(DocumentManager.class);
-        documentEventPersistManager = Mockito.mock(DocumentEventPersistManager.class);
+        DocumentEventPersistManager documentEventPersistManager = Mockito.mock(DocumentEventPersistManager.class);
 
         Instance<DocumentManager> instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerMock);
