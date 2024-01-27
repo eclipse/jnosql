@@ -15,9 +15,13 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
+import jakarta.data.Limit;
+import jakarta.data.Sort;
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
 import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.communication.column.ColumnCondition;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQueryParams;
 import org.eclipse.jnosql.communication.column.ColumnObserverParser;
@@ -29,15 +33,20 @@ import org.eclipse.jnosql.communication.query.DeleteQuery;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.method.DeleteMethodProvider;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.mapping.column.MappingColumnQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepositoryProxy;
+import org.eclipse.jnosql.mapping.core.repository.SpecialParameters;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.core.util.ParamsBinder;
+import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -146,6 +155,24 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
         return dynamicReturn.execute();
     }
 
+    private ColumnQuery includeInheritance(ColumnQuery query){
+        EntityMetadata metadata = this.entityMetadata();
+        if(metadata.inheritance().isPresent()){
+            InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();
+            if(!inheritanceMetadata.parent().equals(metadata.type())){
+                ColumnCondition condition = ColumnCondition.eq(Column.of(inheritanceMetadata.discriminatorColumn(),
+                        inheritanceMetadata.discriminatorValue()));
+                if(query.condition().isPresent()){
+                    ColumnCondition columnCondition = query.condition().orElseThrow();
+                    condition = condition.and(columnCondition);
+                }
+                return new MappingColumnQuery(query.sorts(), query.limit(), query.skip(),
+                        condition, query.name());
+            }
+        }
+        return query;
+    }
+
     protected Long executeCountByQuery(ColumnQuery query) {
         return template().count(query);
     }
@@ -153,6 +180,7 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
     protected boolean executeExistsByQuery(ColumnQuery query) {
         return template().exists(query);
     }
+
 
 
     protected Function<Pageable, Page<T>> getPage(ColumnQuery query) {
@@ -172,8 +200,46 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
 
 
     protected ColumnQuery updateQueryDynamically(Object[] args, ColumnQuery query) {
-        DynamicQuery dynamicQuery = DynamicQuery.of(args, query);
-        return dynamicQuery.get();
+        ColumnQuery documentQuery = includeInheritance(query);
+        SpecialParameters special = DynamicReturn.findSpecialParameters(args);
+
+        if (special.isEmpty()) {
+            return documentQuery;
+        }
+        Optional<Limit> limit = special.limit();
+
+        if (special.hasOnlySort()) {
+            List<Sort> sorts = new ArrayList<>();
+            sorts.addAll(documentQuery.sorts());
+            sorts.addAll(special.sorts());
+            long skip = limit.map(l -> l.startAt() - 1).orElse(documentQuery.skip());
+            long max = limit.map(Limit::maxResults).orElse((int) documentQuery.limit());
+            return new MappingColumnQuery(sorts, max,
+                    skip,
+                    documentQuery.condition().orElse(null),
+                    documentQuery.name());
+        }
+
+        if (limit.isPresent()) {
+            long skip = limit.map(l -> l.startAt() - 1).orElse(documentQuery.skip());
+            long max = limit.map(Limit::maxResults).orElse((int) documentQuery.limit());
+            return new MappingColumnQuery(documentQuery.sorts(), max,
+                    skip,
+                    documentQuery.condition().orElse(null),
+                    documentQuery.name());
+        }
+
+        return special.pageable().<ColumnQuery>map(p -> {
+            long size = p.size();
+            long skip = NoSQLPage.skip(p);
+            List<Sort> sorts = documentQuery.sorts();
+            if (!special.sorts().isEmpty()) {
+                sorts = new ArrayList<>(documentQuery.sorts());
+                sorts.addAll(special.sorts());
+            }
+            return new MappingColumnQuery(sorts, size, skip,
+                    documentQuery.condition().orElse(null), documentQuery.name());
+        }).orElse(documentQuery);
     }
 
 
