@@ -224,13 +224,13 @@ public class Animal {
 }
 ----
 
-Notice that the `Animal` doest not have an @Entity annotation, as it won't be persisted in the database by itself.
+Notice that the `Animal` doesn't have an @Entity annotation, as it won't be persisted in the database by itself.
 
 On the example above, when saving a Dog instance, Animal class' fields are saved too: `name`, `race`, and `age` are saved in a single instance.
 
 ===== @Inheritance
 
-The strategy to work with inheritance with NoSQL, you can active it by adding the @Inheritance annotation to the superclass.
+The strategy to work with inheritance with NoSQL can be activated by adding the `@Inheritance` annotation to the superclass.
 
 [source,java]
 ----
@@ -380,7 +380,7 @@ System.out.println("The result " + optional);
 template.delete(Book.class, id);
 ----
 
-Furthermore, in the CRUD operation, Template has two queries, fluent-API for either select or delete entities; thus, Template offers the capability for search and remove beyond the ID attribute.
+Furthermore, in CRUD operations, Template has two queries in its fluent-API to either select or delete entities; thus, Template offers the capability for searching and removing beyond the ID attribute.
 
 [source,java]
 ----
