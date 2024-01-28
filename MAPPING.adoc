@@ -230,7 +230,7 @@ On the example above, when saving a Dog instance, Animal class' fields are saved
 
 ===== @Inheritance
 
-The strategy to work with inheritance with NoSQL. You can activate it by adding the @Inheritance annotation to the superclass.
+The strategy to work with inheritance with NoSQL can be activated by adding the `@Inheritance` annotation to the superclass.
 
 [source,java]
 ----
