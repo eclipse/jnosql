@@ -21,6 +21,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Enhance query at Template for Inheritance (Document, Column, and Graph)
 - Enhance query at Repository for Inheritance (Document and Column)
+- Fix MapReader when reads to an interaction of elements or a list of maps
 
 == [1.0.4] - 2023-12-19
 
