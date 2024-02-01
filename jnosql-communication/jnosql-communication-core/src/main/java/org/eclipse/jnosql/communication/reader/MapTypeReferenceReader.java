@@ -51,8 +51,8 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
         if (type instanceof ParameterizedType parameterizedType) {
 
             return Map.class.equals(parameterizedType.getRawType()) &&
-                                    parameterizedType.getActualTypeArguments()[0] instanceof Class &&
-                                    parameterizedType.getActualTypeArguments()[1] instanceof Class;
+                    parameterizedType.getActualTypeArguments()[0] instanceof Class &&
+                    parameterizedType.getActualTypeArguments()[1] instanceof Class;
         }
         return false;
     }
@@ -78,15 +78,13 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
             iterable.forEach(collection::add);
             if (collection.isEmpty()) {
                 return Collections.emptyMap();
-            }
-            else if(collection.stream().allMatch(Map.class::isInstance)){
-                Map<K , V> map = new HashMap<>();
-                collection.stream().map(m -> convertToMap(keyClass, valueClass, m)).map(Map::entrySet)
-                        .flatMap(Collection::stream).forEach(e -> map.put(e.getKey(), e.getValue()));
-                return map;
-            } else if(collection.stream().allMatch(Entry.class::isInstance)){
-                Map<K , V> map = new HashMap<>();
-                collection.forEach(e -> convertEntryToMap(e, map));
+            } else if (collection.stream().allMatch(Map.class::isInstance)) {
+                return collection.stream().map(m -> convertToMap(keyClass, valueClass, m)).map(Map::entrySet)
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            } else if (collection.stream().allMatch(Entry.class::isInstance)) {
+                Map<K, V> map = new HashMap<>();
+                collection.stream().forEach(e -> convertEntryToMap(e, map));
                 return map;
             }
         }
