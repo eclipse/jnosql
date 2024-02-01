@@ -26,6 +26,7 @@ import org.eclipse.jnosql.communication.ValueReaderDecorator;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -72,37 +73,36 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
         if (Map.class.isInstance(value)) {
             return convertToMap(keyClass, valueClass, value);
         }
-        if (value instanceof Iterable iterable) {
+        if (value instanceof Iterable<?> iterable) {
             List<Object> collection = new ArrayList<>();
             iterable.forEach(collection::add);
             if (collection.isEmpty()) {
                 return Collections.emptyMap();
             }
-            if (collection.size() == 1) {
-                Object object = collection.get(0);
-                if (object instanceof Map) {
-                    return convertToMap(keyClass, valueClass, object);
-                }
-                if (object instanceof Entry) {
-                    Map<String, Object> map = new HashMap<>();
-                    convertEntryToMap(object, map);
-                    return convertToMap(keyClass, valueClass, map);
-                }
+            else if(collection.stream().allMatch(Map.class::isInstance)){
+                Map<K , V> map = new HashMap<>();
+                collection.stream().map(m -> convertToMap(keyClass, valueClass, m)).map(Map::entrySet)
+                        .flatMap(Collection::stream).forEach(e -> map.put(e.getKey(), e.getValue()));
+                return map;
+            } else if(collection.stream().allMatch(Entry.class::isInstance)){
+                Map<K , V> map = new HashMap<>();
+                collection.forEach(e -> convertEntryToMap(e, map));
+                return map;
             }
         }
         throw new UnsupportedOperationException("There is not supported convert" + value + " a not Map type.");
     }
 
-    private void convertEntryToMap(Object value, Map<String, Object> map) {
+    private <K, V> void convertEntryToMap(Object value, Map<K, V> map) {
         Entry entry = Entry.class.cast(value);
         Object entryValue = entry.value().get();
         if (entryValue instanceof Entry) {
             Map<String, Object> subMap = new HashMap<>();
             Entry subEntry = Entry.class.cast(entryValue);
             convertEntryToMap(subEntry, subMap);
-            map.put(entry.name(), subMap);
+            map.put((K) entry.name(), (V) subMap);
         } else {
-            map.put(entry.name(), entryValue);
+            map.put((K) entry.name(), (V) entryValue);
         }
     }
 
