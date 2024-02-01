@@ -96,6 +96,22 @@ class MapTypeReferenceReaderTest {
     }
 
     @Test
+    @DisplayName("Should create list of Maps")
+    void shouldMergeListMap() {
+        List<Map<Integer, Long>> maps = new ArrayList<>();
+        maps.add(Map.of(1, 234L, 2, 2345L));
+        maps.add(Map.of(3, 234564L, 4, 3452L));
+
+        Map<String, String> map = referenceReader.convert(new TypeReference<>() {
+        }, maps);
+
+
+        assertThat(map).hasSize(4).containsOnly(entry("1", "234"),
+                entry("2", "2345"), entry("3", "234564"), entry("4", "3452"));
+    }
+
+
+    @Test
     @DisplayName("Should convert Entry to Map")
     void shouldConvertEntryToMap() {
         Entry entry = new EntryTest("key", Value.of("value"));
@@ -104,6 +120,17 @@ class MapTypeReferenceReaderTest {
         }, Collections.singletonList(entry));
 
         assertThat(map).hasSize(1).contains(entry("key", "value"));
+    }
+
+    @Test
+    @DisplayName("Should convert list of entry to Map")
+    void shouldConvertEntriesToMap() {
+        List<Entry> entries = List.of(new EntryTest("key", Value.of("value")),
+                new EntryTest("key2", Value.of("value")));
+        Map<String, String> map = referenceReader.convert(new TypeReference<>() {
+        }, entries);
+
+        assertThat(map).hasSize(2).contains(entry("key", "value"), entry("key2", "value"));
     }
 
     @Test
