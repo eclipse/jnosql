@@ -107,6 +107,17 @@ class MapTypeReferenceReaderTest {
     }
 
     @Test
+    @DisplayName("Should convert list of entry to Map")
+    void shouldConvertEntriesToMap() {
+        List<Entry> entries = List.of(new EntryTest("key", Value.of("value")),
+                new EntryTest("key2", Value.of("value")));
+        Map<String, String> map = referenceReader.convert(new TypeReference<>() {
+        }, entries);
+
+        assertThat(map).hasSize(2).contains(entry("key", "value"), entry("key2", "value"));
+    }
+
+    @Test
     @DisplayName("Should convert SubEntry to Map")
     void shouldConvertSubEntryToMap() {
         Entry subEntry = new EntryTest("key", Value.of("value"));
