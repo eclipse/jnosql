@@ -79,7 +79,7 @@
         <sonar.maven.version>3.10.0.2594</sonar.maven.version>
         <commons.io.version>2.15.1</commons.io.version>
         <checkstyle.excludes>**/jnosql/query/grammar/**</checkstyle.excludes>
-        <weld.se.core.version>5.1.1.SP2</weld.se.core.version>
+        <weld.se.core.version>5.1.2.Final</weld.se.core.version>
         <yasson.version>3.0.3</yasson.version>
         <microprofile.config.version>3.1</microprofile.config.version>
         <smallrye.config.version>3.4.4</smallrye.config.version>
