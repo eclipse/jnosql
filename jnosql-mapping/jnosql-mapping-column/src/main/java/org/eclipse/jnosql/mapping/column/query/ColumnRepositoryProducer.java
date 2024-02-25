@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.nosql.column.ColumnTemplate;
 import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.mapping.core.Converters;
@@ -54,7 +54,7 @@ public class ColumnRepositoryProducer {
      * @return a Repository interface
      * @throws NullPointerException when there is null parameter
      */
-    public <T, K, R extends PageableRepository<T, K>> R get(Class<R> repositoryClass, ColumnManager manager) {
+    public <T, K, R extends BasicRepository<T, K>> R get(Class<R> repositoryClass, ColumnManager manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
         JNoSQLColumnTemplate template = producer.apply(manager);
@@ -72,7 +72,7 @@ public class ColumnRepositoryProducer {
      * @return a Repository interface
      * @throws NullPointerException when there is null parameter
      */
-    public <T, K, R extends PageableRepository<T, K>> R get(Class<R> repositoryClass, JNoSQLColumnTemplate template) {
+    public <T, K, R extends BasicRepository<T, K>> R get(Class<R> repositoryClass, JNoSQLColumnTemplate template) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
 

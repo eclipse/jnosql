@@ -20,7 +20,7 @@ import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
@@ -59,8 +59,8 @@ class RepositoryTypeTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getPageableRepositoryMethods")
-    void shouldReturnDefaultAtPageableRepository(Method method)  {
+    @MethodSource("getBasicRepositoryMethods")
+    void shouldReturnDefaultAtBasicRepository(Method method)  {
         var type = RepositoryType.of(method, BasicRepository.class);
         assertThat(type).isEqualTo(RepositoryType.DEFAULT);
     }
@@ -247,8 +247,8 @@ class RepositoryTypeTest {
                 .map(Arguments::of);
     }
 
-    private static Stream<Arguments> getPageableRepositoryMethods() {
-        return Arrays.stream(PageableRepository.class.getDeclaredMethods())
+    private static Stream<Arguments> getBasicRepositoryMethods() {
+        return Arrays.stream(BasicRepository.class.getDeclaredMethods())
                 .map(Arguments::of);
     }
 

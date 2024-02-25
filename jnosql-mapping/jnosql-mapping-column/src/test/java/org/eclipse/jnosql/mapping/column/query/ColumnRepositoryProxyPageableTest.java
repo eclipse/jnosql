@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column.query;
 import jakarta.data.Limit;
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.page.Slice;
 import jakarta.data.Sort;
 import jakarta.inject.Inject;
@@ -612,7 +612,7 @@ public class ColumnRepositoryProxyPageableTest {
         return Pageable.ofPage(2).size(6);
     }
 
-    interface PersonRepository extends PageableRepository<Person, Long> {
+    interface PersonRepository extends BasicRepository<Person, Long> {
 
         Person findByName(String name, Pageable pagination);
 
@@ -648,7 +648,7 @@ public class ColumnRepositoryProxyPageableTest {
 
     }
 
-    public interface VendorRepository extends PageableRepository<Vendor, String> {
+    public interface VendorRepository extends BasicRepository<Vendor, String> {
 
         Vendor findByPrefixes(String prefix, Pageable pagination);
 

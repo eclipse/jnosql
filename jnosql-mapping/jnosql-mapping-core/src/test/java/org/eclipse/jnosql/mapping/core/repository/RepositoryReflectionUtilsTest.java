@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.core.repository;
 
 import jakarta.data.repository.By;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import org.assertj.core.api.Assertions;
@@ -57,7 +57,7 @@ class RepositoryReflectionUtilsTest {
                 .containsEntry("name", "Ada");
     }
 
-    interface PersonRepository extends PageableRepository<Person, String> {
+    interface PersonRepository extends BasicRepository<Person, String> {
 
         @Query("select * from Person where name = @name")
         List<Person> query(@Param("name") @By("name")  String name);

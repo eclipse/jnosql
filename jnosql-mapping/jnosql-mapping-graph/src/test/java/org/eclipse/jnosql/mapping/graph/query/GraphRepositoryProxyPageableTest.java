@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.graph.query;
 import jakarta.data.Limit;
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.page.Slice;
 import jakarta.data.Sort;
 import jakarta.inject.Inject;
@@ -235,7 +235,7 @@ class GraphRepositoryProxyPageableTest {
                 .contains("Otavio", "Poliana");
     }
 
-    interface PersonRepository extends PageableRepository<Person, Long> {
+    interface PersonRepository extends BasicRepository<Person, Long> {
 
         List<Person> findByName(String name, Pageable Pageable);
 

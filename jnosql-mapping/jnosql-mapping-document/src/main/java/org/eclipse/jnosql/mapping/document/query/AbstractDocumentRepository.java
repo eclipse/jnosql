@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 
 
 /**
- * The {@link PageableRepository} template method
+ * The {@link BasicRepository} template method
  */
 public abstract class AbstractDocumentRepository<T, K> extends AbstractRepository<T, K> {
 

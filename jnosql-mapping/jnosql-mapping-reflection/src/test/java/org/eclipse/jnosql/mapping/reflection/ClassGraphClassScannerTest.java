@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import org.eclipse.jnosql.mapping.reflection.entities.AnimalRepository;
 import org.eclipse.jnosql.mapping.reflection.entities.Contact;
 import org.eclipse.jnosql.mapping.reflection.entities.Job;
@@ -82,7 +82,7 @@ class ClassGraphClassScannerTest {
 
     @Test
     void shouldFieldByPageable() {
-        Set<Class<?>> repositories = classScanner.repositories(PageableRepository.class);
+        Set<Class<?>> repositories = classScanner.repositories(BasicRepository.class);
         Assertions.assertNotNull(repositories);
 
         assertThat(repositories).hasSize(1)

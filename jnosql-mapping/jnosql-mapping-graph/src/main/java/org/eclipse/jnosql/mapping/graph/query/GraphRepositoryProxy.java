@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
@@ -26,7 +26,7 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import java.lang.reflect.ParameterizedType;
 
 /**
- * Proxy handle to generate {@link jakarta.data.repository.PageableRepository}
+ * Proxy handle to generate {@link jakarta.data.repository.BasicRepository}
  *
  * @param <T>  the type
  * @param <K> the K type
@@ -103,7 +103,7 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
     }
 
 
-    static class GraphRepository extends AbstractGraphRepository implements PageableRepository {
+    static class GraphRepository extends AbstractGraphRepository implements BasicRepository {
 
         private final GraphTemplate template;
 

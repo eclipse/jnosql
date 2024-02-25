@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.keyvalue.query;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Save;
@@ -362,7 +362,7 @@ class KeyValueRepositoryProxyTest {
         }
     }
 
-    public interface UserRepository extends PageableRepository<User, String>, CrudRepository<User, String>, BaseQuery<User>, PersonStatisticRepository {
+    public interface UserRepository extends BasicRepository<User, String>, CrudRepository<User, String>, BaseQuery<User>, PersonStatisticRepository {
 
         Optional<User> findByName(String name);
 

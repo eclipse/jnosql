@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
@@ -29,7 +29,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * The {@link PageableRepository} template method
+ * The {@link BasicRepository} template method
  */
 public abstract class AbstractColumnRepository<T, K> extends AbstractRepository<T, K> {
 

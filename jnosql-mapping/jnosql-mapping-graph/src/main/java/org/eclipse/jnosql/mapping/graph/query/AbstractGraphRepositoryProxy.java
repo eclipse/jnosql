@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Template method to {@link PageableRepository} proxy on Graph
+ * Template method to {@link BasicRepository} proxy on Graph
  *
  * @param <T> the entity type
  * @param <K> the K entity

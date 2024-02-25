@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
@@ -42,7 +42,7 @@ class GraphRepositoryProducer {
     @Inject
     private Converters converters;
 
-    public <T, K, R extends PageableRepository<T, K>> R get(Class<R> repositoryClass, Graph manager) {
+    public <T, K, R extends BasicRepository<T, K>> R get(Class<R> repositoryClass, Graph manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
         GraphTemplate template = producer.get(manager);

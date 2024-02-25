@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
@@ -257,7 +257,7 @@ class DeleteQueryConverterTest {
     }
 
 
-    interface PersonRepository extends PageableRepository<Person, String> {
+    interface PersonRepository extends BasicRepository<Person, String> {
 
         List<Person> deleteByName(String name);
 

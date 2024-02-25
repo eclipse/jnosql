@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
@@ -27,7 +27,7 @@ import java.util.Objects;
 
 
 /**
- * Proxy handle to generate {@link PageableRepository} for document-based repositories.
+ * Proxy handle to generate {@link BasicRepository} for document-based repositories.
  *
  * @param <T> the type
  * @param <K> the key type

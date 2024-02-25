@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.nosql.Column;
 import jakarta.nosql.Id;
 import org.eclipse.jnosql.mapping.reflection.entities.NoSQLVendor;
@@ -69,15 +69,15 @@ class RepositoryFilterTest {
     }
 
 
-    private interface People extends PageableRepository<Person, Long> {
+    private interface People extends BasicRepository<Person, Long> {
 
     }
 
-    private interface Persons extends PageableRepository<Person, Long> {
+    private interface Persons extends BasicRepository<Person, Long> {
 
     }
 
-    private interface Server extends PageableRepository<Computer, String> {
+    private interface Server extends BasicRepository<Computer, String> {
 
     }
 
