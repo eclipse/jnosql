@@ -55,7 +55,7 @@ class DefaultDocumentQueryTest {
     @Test
     void shouldNotRemoveSort() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            List<Sort> sorts = query.sorts();
+            List<Sort<?>> sorts = query.sorts();
             assertTrue(sorts.isEmpty());
             sorts.clear();
         });

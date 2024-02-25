@@ -28,7 +28,7 @@ import static java.util.Collections.unmodifiableList;
 import static java.util.Optional.ofNullable;
 
 record DefaultDocumentQuery(long limit, long skip, String name,
-                            List<String> documents, List<Sort> sorts, DocumentCondition documentCondition) implements DocumentQuery {
+                            List<String> documents, List<Sort<?>> sorts, DocumentCondition documentCondition) implements DocumentQuery {
 
 
 
@@ -38,7 +38,7 @@ record DefaultDocumentQuery(long limit, long skip, String name,
     }
 
     @Override
-    public List<Sort> sorts() {
+    public List<Sort<?>> sorts() {
         return unmodifiableList(sorts);
     }
 

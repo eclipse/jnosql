@@ -77,7 +77,7 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, ColumnOb
         List<String> columns = selectQuery.fields().stream()
                 .map(f -> observer.fireField(columnFamily, f))
                 .collect(Collectors.toList());
-        List<Sort> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, columnFamily))
+        List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, columnFamily))
                 .collect(toList());
 
         Params params = Params.newParams();
@@ -99,7 +99,7 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, ColumnOb
                 .map(f -> observer.fireField(columnFamily, f))
                 .collect(Collectors.toList());
 
-        List<Sort> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, columnFamily)).collect(toList());
+        List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, columnFamily)).collect(toList());
         ColumnCondition condition = selectQuery.where()
                 .map(c -> Conditions.getCondition(c, params, observer, columnFamily))
                 .orElse(null);
@@ -107,7 +107,7 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, ColumnOb
         return new DefaultColumnQuery(limit, skip, columnFamily, columns, sorts, condition);
     }
 
-    private Sort toSort(Sort sort, ColumnObserverParser observer, String entity) {
+    private Sort<?> toSort(Sort<?> sort, ColumnObserverParser observer, String entity) {
         return Sort.of(observer.fireField(entity, sort.property()),
                 sort.isAscending()? Direction.ASC: Direction.DESC, false);
     }

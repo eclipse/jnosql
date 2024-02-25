@@ -71,7 +71,7 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, Document
         List<String> documents = selectQuery.fields().stream()
                 .map(f -> observer.fireField(collection, f))
                 .collect(Collectors.toList());
-        List<Sort> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, collection))
+        List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, collection))
                 .collect(toList());
         Params params = Params.newParams();
         DocumentCondition condition =  selectQuery.where()
@@ -93,14 +93,14 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, Document
                 .map(f -> observer.fireField(collection, f))
                 .collect(Collectors.toList());
 
-        List<Sort> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, collection)).collect(toList());
+        List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, collection)).collect(toList());
         DocumentCondition condition = selectQuery.where()
                 .map(c -> Conditions.getCondition(c, params, observer, collection)).orElse(null);
 
         return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }
 
-    private Sort toSort(Sort sort, DocumentObserverParser observer, String entity) {
+    private Sort<?> toSort(Sort<?> sort, DocumentObserverParser observer, String entity) {
         return Sort.of(observer.fireField(entity, sort.property()), sort.isAscending() ? Direction.ASC : Direction.DESC, false);
     }
 

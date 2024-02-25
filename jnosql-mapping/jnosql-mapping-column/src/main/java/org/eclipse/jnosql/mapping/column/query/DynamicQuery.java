@@ -48,7 +48,7 @@ public class DynamicQuery implements Supplier<ColumnQuery> {
         }
         Optional<Limit> limit = special.limit();
         if (special.hasOnlySort()) {
-            List<Sort> sorts = new ArrayList<>();
+            List<Sort<?>> sorts = new ArrayList<>();
             sorts.addAll(query.sorts());
             sorts.addAll(special.sorts());
             long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
@@ -62,7 +62,7 @@ public class DynamicQuery implements Supplier<ColumnQuery> {
         if (limit.isPresent()) {
             long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
             long max = limit.map(Limit::maxResults).orElse((int) query.limit());
-            List<Sort> sorts = query.sorts();
+            List<Sort<?>> sorts = query.sorts();
             if (!special.sorts().isEmpty()) {
                 sorts = new ArrayList<>(query.sorts());
                 sorts.addAll(special.sorts());
@@ -76,7 +76,7 @@ public class DynamicQuery implements Supplier<ColumnQuery> {
         return special.pageRequest().<ColumnQuery>map(p -> {
             long size = p.size();
             long skip = NoSQLPage.skip(p);
-            List<Sort> sorts = query.sorts();
+            List<Sort<?>> sorts = query.sorts();
             if (!special.sorts().isEmpty()) {
                 sorts = new ArrayList<>(query.sorts());
                 sorts.addAll(special.sorts());

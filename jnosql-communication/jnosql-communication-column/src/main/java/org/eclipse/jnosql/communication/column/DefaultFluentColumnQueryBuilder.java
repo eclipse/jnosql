@@ -50,7 +50,7 @@ class DefaultFluentColumnQueryBuilder extends BaseQueryBuilder implements
 
     private long limit;
 
-    private final List<Sort> sorts = new ArrayList<>();
+    private final List<Sort<?>> sorts = new ArrayList<>();
 
     private final List<String> columns;
 
