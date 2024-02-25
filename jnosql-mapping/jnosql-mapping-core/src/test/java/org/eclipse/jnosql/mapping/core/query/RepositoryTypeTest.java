@@ -58,15 +58,6 @@ class RepositoryTypeTest {
         assertThat(type).isEqualTo(RepositoryType.DEFAULT);
     }
 
-    @ParameterizedTest
-    @MethodSource("getBasicRepositoryMethods")
-    void shouldReturnDefaultAtBasicRepository(Method method)  {
-        var type = RepositoryType.of(method, BasicRepository.class);
-        assertThat(type).isEqualTo(RepositoryType.DEFAULT);
-    }
-
-
-
     @Test
     void shouldReturnObjectMethod() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.OBJECT_METHOD, RepositoryType.of(getMethod(Object.class, "equals"), CrudRepository.class));
@@ -246,10 +237,4 @@ class RepositoryTypeTest {
         return Arrays.stream(CrudRepository.class.getDeclaredMethods())
                 .map(Arguments::of);
     }
-
-    private static Stream<Arguments> getBasicRepositoryMethods() {
-        return Arrays.stream(BasicRepository.class.getDeclaredMethods())
-                .map(Arguments::of);
-    }
-
 }

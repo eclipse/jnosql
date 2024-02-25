@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.core.repository;
 
 
 import jakarta.data.Limit;
+import jakarta.data.Order;
 import jakarta.data.page.PageRequest;
 import jakarta.data.Sort;
 
@@ -141,6 +142,8 @@ public final class SpecialParameters {
                         sorts.add(sortValue);
                     }
                 }
+            } else if(parameter instanceof Order<?> order) {
+                order.iterator().forEachRemaining(sorts::add);
             }
         }
         return new SpecialParameters(pageRequest, limit, sorts);

@@ -81,17 +81,17 @@ class NoSQLPageTest {
     void shouldPageRequest() {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 PageRequest.ofPage(2));
-        PageRequest PageRequest = page.PageRequest();
-        Assertions.assertNotNull(PageRequest);
-        assertEquals(PageRequest.ofPage(2), PageRequest);
+        PageRequest<Person> pageRequest = page.pageRequest();
+        Assertions.assertNotNull(pageRequest);
+        assertEquals(PageRequest.ofPage(2), pageRequest);
     }
 
     @Test
     void shouldNextPageRequest() {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 PageRequest.ofPage(2));
-        PageRequest PageRequest = page.nextPageRequest();
-        assertEquals(PageRequest.ofPage(3), PageRequest);
+        PageRequest<Person> pageRequest = page.nextPageRequest();
+        assertEquals(PageRequest.ofPage(3), pageRequest);
     }
 
     @Test

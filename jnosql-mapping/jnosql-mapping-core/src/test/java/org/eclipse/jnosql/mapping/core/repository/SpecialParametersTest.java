@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.core.repository;
 
 import jakarta.data.Limit;
+import jakarta.data.Order;
 import jakarta.data.page.PageRequest;
 import jakarta.data.Sort;
 import org.junit.jupiter.api.Assertions;
@@ -27,10 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SpecialParametersTest {
-//should return PageRequest
-// should return PageRequest with sort
-//should return sorts
-//should keep the precedence
 
     @Test
     void shouldReturnEmpty() {
@@ -46,20 +43,20 @@ class SpecialParametersTest {
 
     @Test
     void shouldReturnPageRequest() {
-        PageRequest PageRequest = PageRequest.ofPage(10);
-        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", PageRequest});
+        PageRequest<?> pageRequest = PageRequest.ofPage(10);
+        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", pageRequest});
         assertFalse(parameters.isEmpty());
-        Assertions.assertEquals(PageRequest, parameters.PageRequest().orElseThrow());
+        Assertions.assertEquals(pageRequest, parameters.PageRequest().orElseThrow());
         assertTrue(parameters.isSortEmpty());
     }
 
     @Test
     void shouldReturnPageRequestWithSort() {
-        PageRequest PageRequest = PageRequest.ofPage(10).sortBy(Sort.asc("name"),
+        PageRequest<?> pageRequest = PageRequest.ofPage(10).sortBy(Sort.asc("name"),
                 Sort.desc("age"));
-        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", PageRequest});
+        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", pageRequest});
         assertFalse(parameters.isEmpty());
-        Assertions.assertEquals(PageRequest, parameters.PageRequest().orElseThrow());
+        Assertions.assertEquals(pageRequest, parameters.PageRequest().orElseThrow());
         assertFalse(parameters.isSortEmpty());
         assertThat(parameters.sorts()).hasSize(2)
                 .contains(Sort.asc("name"),
@@ -68,7 +65,7 @@ class SpecialParametersTest {
 
     @Test
     void shouldReturnSort() {
-        Sort sort = Sort.asc("name");
+        Sort<?> sort = Sort.asc("name");
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", sort});
         assertFalse(parameters.isEmpty());
         assertTrue(parameters.hasOnlySort());
@@ -80,14 +77,14 @@ class SpecialParametersTest {
 
     @Test
     void shouldKeepOrder() {
-        Sort sort = Sort.asc("name");
-        PageRequest PageRequest = PageRequest.ofPage(10).sortBy(Sort.asc("name"),
+        Sort<?> sort = Sort.asc("name");
+        PageRequest<?> pageRequest = PageRequest.ofPage(10).sortBy(Sort.asc("name"),
                 Sort.desc("age"));
 
-        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", sort, PageRequest});
+        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", sort, pageRequest});
         assertFalse(parameters.isEmpty());
         assertFalse(parameters.hasOnlySort());
-        Assertions.assertEquals(PageRequest, parameters.PageRequest().orElseThrow());
+        Assertions.assertEquals(pageRequest, parameters.PageRequest().orElseThrow());
         assertFalse(parameters.isSortEmpty());
         assertThat(parameters.sorts()).hasSize(3)
                 .containsExactly(sort, Sort.asc("name"),
@@ -112,6 +109,32 @@ class SpecialParametersTest {
         assertFalse(parameters.isEmpty());
         assertThat(parameters.sorts()).hasSize(2)
                 .containsExactly(Sort.asc("name"),
+                        Sort.desc("age"));
+    }
+
+    @Test
+    void shouldReturnOrder(){
+        Order<?> order = Order.by(Sort.asc("name"), Sort.desc("age"));
+        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", order});
+        assertFalse(parameters.isEmpty());
+        assertFalse(parameters.isSortEmpty());
+        assertThat(parameters.sorts()).hasSize(2)
+                .contains(Sort.asc("name"),
+                        Sort.desc("age"));
+    }
+
+    @Test
+    void shouldReturnIterableOrder(){
+        PageRequest<?> pageRequest = PageRequest.ofPage(10).sortBy(Sort.asc("name"),
+                Sort.desc("age"));
+        Order<?> order = Order.by(Sort.asc("name"));
+        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio",
+                List.of(Sort.asc("name"), Sort.desc("age")), pageRequest, order});
+        assertFalse(parameters.isEmpty());
+        Assertions.assertEquals(pageRequest, parameters.PageRequest().orElseThrow());
+        assertFalse(parameters.isSortEmpty());
+        assertThat(parameters.sorts()).hasSize(5)
+                .contains(Sort.asc("name"),
                         Sort.desc("age"));
     }
 }
