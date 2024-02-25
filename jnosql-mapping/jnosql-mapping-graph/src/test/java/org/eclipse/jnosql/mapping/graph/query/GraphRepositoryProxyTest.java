@@ -317,11 +317,6 @@ class GraphRepositoryProxyTest {
         verify(template).findAll(Person.class);
     }
 
-    @Test
-    void shouldDeleteAll() {
-        personRepository.deleteAll();
-        verify(template).deleteAll(Person.class);
-    }
 
     @Test
     void shouldReturnEmptyAtFindAll() {

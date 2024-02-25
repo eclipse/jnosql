@@ -397,16 +397,6 @@ class DocumentCrudRepositoryProxyTest {
     }
 
     @Test
-    void shouldDeleteAll() {
-        personRepository.deleteAll();
-        ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
-        verify(template).deleteAll(captor.capture());
-        assertEquals(captor.getValue(), Person.class);
-
-    }
-
-
-    @Test
     void shouldReturnToString() {
         assertNotNull(personRepository.toString());
     }

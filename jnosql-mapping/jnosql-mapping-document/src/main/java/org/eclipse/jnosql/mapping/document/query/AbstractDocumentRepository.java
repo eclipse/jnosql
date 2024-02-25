@@ -37,7 +37,7 @@ public abstract class AbstractDocumentRepository<T, K> extends AbstractRepositor
     protected abstract JNoSQLDocumentTemplate template();
 
     @Override
-    public long count() {
+    public long countBy() {
         return template().count(type());
     }
 
@@ -56,10 +56,5 @@ public abstract class AbstractDocumentRepository<T, K> extends AbstractRepositor
     @Override
     public Stream<T> findAll() {
         return template().findAll(type());
-    }
-
-    @Override
-    public void deleteAll() {
-        template().deleteAll(type());
     }
 }

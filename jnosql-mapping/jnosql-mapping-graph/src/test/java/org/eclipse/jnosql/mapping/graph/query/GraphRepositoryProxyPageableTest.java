@@ -148,14 +148,14 @@ class GraphRepositoryProxyPageRequestTest {
     void shouldFindAll() {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        List<Person> people = personRepository.findAll(PageRequest.ofPage(2).size(1)).content();
+        List<Person> people = personRepository.findAll(PageRequest.<Person>ofPage(2L).size(1)).content();
         assertFalse(people.isEmpty());
         assertEquals(1, people.size());
     }
 
     @Test
     void shouldReturnEmptyAtFindAll() {
-        List<Person> people = personRepository.findAll(PageRequest.ofPage(1).size(2)).content();
+        List<Person> people = personRepository.findAll(PageRequest.<Person>ofPage(1).size(2)).content();
         assertTrue(people.isEmpty());
     }
 

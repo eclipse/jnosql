@@ -31,7 +31,7 @@ abstract class AbstractGraphRepository<T, K> extends AbstractRepository<T, K> {
 
 
     @Override
-    public long count() {
+    public long countBy() {
         return template().count(entityMetadata().name());
     }
 
@@ -55,8 +55,4 @@ abstract class AbstractGraphRepository<T, K> extends AbstractRepository<T, K> {
         return template().findAll(type());
     }
 
-    @Override
-    public void deleteAll() {
-        template().deleteAll(entityMetadata().type());
-    }
 }

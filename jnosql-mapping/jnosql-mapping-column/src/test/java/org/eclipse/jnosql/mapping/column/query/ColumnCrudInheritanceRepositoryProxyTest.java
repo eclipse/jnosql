@@ -83,15 +83,10 @@ class ColumnCrudInheritanceRepositoryProxyTest {
         verify(template).findAll(EmailNotification.class);
     }
 
-    @Test
-    void shouldPutFilterAtDeleteAll() {
-        emailRepository.deleteAll();
-        verify(template).deleteAll(EmailNotification.class);
-    }
 
     @Test
     void shouldPutFilterAtCount() {
-        emailRepository.count();
+        emailRepository.countBy();
         verify(template).count(EmailNotification.class);
     }
 

@@ -36,7 +36,7 @@ public abstract class AbstractColumnRepository<T, K> extends AbstractRepository<
     protected abstract JNoSQLColumnTemplate template();
 
     @Override
-    public long count() {
+    public long countBy() {
         return template().count(type());
     }
 
@@ -56,12 +56,6 @@ public abstract class AbstractColumnRepository<T, K> extends AbstractRepository<
     @Override
     public Stream<T> findAll() {
         return template().findAll(type());
-    }
-
-
-    @Override
-    public void deleteAll() {
-        template().deleteAll(type());
     }
 
 }

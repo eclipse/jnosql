@@ -327,15 +327,6 @@ class DocumentRepositoryProxyTest {
     }
 
     @Test
-    void shouldDeleteAll() {
-        personRepository.deleteAll();
-        ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
-        verify(template).deleteAll(captor.capture());
-        assertEquals(captor.getValue(), Person.class);
-
-    }
-
-    @Test
     void shouldDeleteEntity(){
         Person person = Person.builder().withId(1L).withAge(20).withName("Ada").build();
         personRepository.delete(person);

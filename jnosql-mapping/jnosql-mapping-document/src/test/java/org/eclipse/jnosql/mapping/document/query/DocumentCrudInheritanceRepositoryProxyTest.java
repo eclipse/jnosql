@@ -83,15 +83,10 @@ class DocumentCrudInheritanceRepositoryProxyTest {
         verify(template).findAll(EmailNotification.class);
     }
 
-    @Test
-    void shouldPutFilterAtDeleteAll() {
-        emailRepository.deleteAll();
-        Mockito.verify(template).deleteAll(EmailNotification.class);
-    }
 
     @Test
     void shouldPutFilterAtCount() {
-        emailRepository.count();
+        emailRepository.countBy();
         Mockito.verify(template).count(EmailNotification.class);
     }
 
