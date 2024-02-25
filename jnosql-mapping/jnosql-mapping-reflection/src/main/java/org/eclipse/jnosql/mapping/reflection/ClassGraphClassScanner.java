@@ -20,7 +20,6 @@ import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
-import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Repository;
 import jakarta.nosql.Entity;
 import org.eclipse.jnosql.mapping.Embeddable;
@@ -101,7 +100,6 @@ enum ClassGraphClassScanner implements ClassScanner {
                 .filter(c -> {
                     List<Class<?>> interfaces = Arrays.asList(c.getInterfaces());
                     return interfaces.contains(CrudRepository.class)
-                            || interfaces.contains(PageableRepository.class)
                             || interfaces.contains(BasicRepository.class)
                             || interfaces.contains(DataRepository.class);
                 }).collect(Collectors.toUnmodifiableSet());
