@@ -43,7 +43,7 @@ public abstract class AbstractDocumentRepository<T, K> extends AbstractRepositor
 
     @Override
     public Page<T> findAll(PageRequest pageRequest) {
-        Objects.requireNonNull(pageRequest, "PageRequest is required");
+        Objects.requireNonNull(pageRequest, "pageRequest is required");
         EntityMetadata metadata = entityMetadata();
         DocumentQuery query = new MappingDocumentQuery(pageRequest.sorts(),
                 pageRequest.size(), NoSQLPage.skip(pageRequest)

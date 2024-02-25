@@ -39,7 +39,7 @@ final class DocumentMapperSelect extends AbstractMapperQuery implements MapperFr
         MapperSkip, MapperOrder, MapperNameCondition,
         MapperNotCondition, MapperNameOrder, MapperWhere {
 
-    private final List<Sort> sorts = new ArrayList<>();
+    private final List<Sort<?>> sorts = new ArrayList<>();
 
 
     DocumentMapperSelect(EntityMetadata mapping, Converters converters, JNoSQLDocumentTemplate template) {

@@ -106,7 +106,7 @@ public abstract class BaseDocumentRepository<T, K> extends AbstractRepositoryPro
         Optional<Limit> limit = special.limit();
 
         if (special.hasOnlySort()) {
-            List<Sort> sorts = new ArrayList<>();
+            List<Sort<?>> sorts = new ArrayList<>();
             sorts.addAll(documentQuery.sorts());
             sorts.addAll(special.sorts());
             long skip = limit.map(l -> l.startAt() - 1).orElse(documentQuery.skip());
@@ -129,7 +129,7 @@ public abstract class BaseDocumentRepository<T, K> extends AbstractRepositoryPro
         return special.pageRequest().<DocumentQuery>map(p -> {
             long size = p.size();
             long skip = NoSQLPage.skip(p);
-            List<Sort> sorts = documentQuery.sorts();
+            List<Sort<?>> sorts = documentQuery.sorts();
             if (!special.sorts().isEmpty()) {
                 sorts = new ArrayList<>(documentQuery.sorts());
                 sorts.addAll(special.sorts());

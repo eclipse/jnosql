@@ -43,7 +43,7 @@ public abstract class AbstractColumnRepository<T, K> extends AbstractRepository<
 
     @Override
     public Page<T> findAll(PageRequest pageRequest) {
-        Objects.requireNonNull(pageRequest, "PageRequest is required");
+        Objects.requireNonNull(pageRequest, "pageRequest is required");
         EntityMetadata metadata = entityMetadata();
         ColumnQuery query = new MappingColumnQuery(pageRequest.sorts(),
                 pageRequest.size(), NoSQLPage.skip(pageRequest)
