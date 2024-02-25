@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.core.repository;
 
 
 import jakarta.data.Limit;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.Sort;
 
 import java.util.ArrayList;
@@ -26,49 +26,49 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * The repository features has support for specific types like Pageable and Sort,
+ * The repository features has support for specific types like PageRequest and Sort,
  * to apply pagination and sorting to your queries dynamically.
  */
 public final class SpecialParameters {
     static final SpecialParameters EMPTY = new SpecialParameters(null, null, Collections.emptyList());
 
-    private final Pageable pageable;
+    private final PageRequest<?> pageRequest;
 
-    private final List<Sort> sorts;
+    private final List<Sort<?>> sorts;
     private final Limit limit;
 
-    private SpecialParameters(Pageable pageable, Limit limit, List<Sort> sorts) {
-        this.pageable = pageable;
+    private SpecialParameters(PageRequest<?> pageRequest, Limit limit, List<Sort<?>> sorts) {
+        this.pageRequest = pageRequest;
         this.sorts = sorts;
         this.limit = limit;
     }
 
     /**
-     * Returns the pageable as optional.
+     * Returns the PageRequest as optional.
      *
-     * @return a {@link Pageable} or {@link Optional#empty()} when there is not Pageable instance
+     * @return a {@link PageRequest} or {@link Optional#empty()} when there is not PageRequest instance
      */
-    public Optional<Pageable> pageable() {
-        return Optional.ofNullable(pageable);
+    public Optional<PageRequest<?>> PageRequest() {
+        return Optional.ofNullable(pageRequest);
     }
 
     /**
-     * Returns the sorts including {@link Pageable#sorts()} appended
+     * Returns the sorts including {@link PageRequest#sorts()} appended
      *
      * @return the sorts as list
      */
-    public List<Sort> sorts() {
+    public List<Sort<?>> sorts() {
         return sorts;
     }
 
     /**
-     * Returns true when {@link SpecialParameters#pageable()} is empty and
+     * Returns true when {@link SpecialParameters#PageRequest()} is empty and
      * {@link SpecialParameters#isSortEmpty()} is true
      *
-     * @return when there is no sort and Pageable
+     * @return when there is no sort and PageRequest
      */
     public boolean isEmpty() {
-        return this.sorts.isEmpty() && pageable == null && limit == null;
+        return this.sorts.isEmpty() && pageRequest == null && limit == null;
     }
 
     /**
@@ -81,12 +81,12 @@ public final class SpecialParameters {
     }
 
     /**
-     * Returns true if it only has sort and {@link Pageable} empty
+     * Returns true if it only has sort and {@link PageRequest} empty
      *
-     * @return true if only have {@link Pageable}
+     * @return true if only have {@link PageRequest}
      */
     public boolean hasOnlySort() {
-        return pageable == null && !sorts.isEmpty();
+        return pageRequest == null && !sorts.isEmpty();
     }
 
     /**
@@ -107,42 +107,42 @@ public final class SpecialParameters {
             return false;
         }
         SpecialParameters that = (SpecialParameters) o;
-        return Objects.equals(pageable, that.pageable) && Objects.equals(sorts, that.sorts);
+        return Objects.equals(pageRequest, that.pageRequest) && Objects.equals(sorts, that.sorts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pageable, sorts);
+        return Objects.hash(pageRequest, sorts);
     }
 
     @Override
     public String toString() {
         return "SpecialParameters{" +
-                "pageable=" + pageable +
+                "PageRequest=" + pageRequest +
                 ", sorts=" + sorts +
                 '}';
     }
 
     static SpecialParameters of(Object[] parameters) {
-        List<Sort> sorts = new ArrayList<>();
-        Pageable pageable = null;
+        List<Sort<?>> sorts = new ArrayList<>();
+        PageRequest<?> pageRequest = null;
         Limit limit = null;
         for (Object parameter : parameters) {
-            if (parameter instanceof Pageable pageableInstance) {
-                pageable = pageableInstance;
-                sorts.addAll(pageableInstance.sorts());
-            } else if (parameter instanceof Sort sort) {
+            if (parameter instanceof PageRequest<?> pageRequestInstance) {
+                pageRequest = pageRequestInstance;
+                sorts.addAll(pageRequestInstance.sorts());
+            } else if (parameter instanceof Sort<?> sort) {
                 sorts.add(sort);
             } else if (parameter instanceof Limit limitInstance) {
                 limit = limitInstance;
             } else if(parameter instanceof Iterable<?> iterable) {
                 for (Object value : iterable) {
-                    if (value instanceof Sort sortValue) {
+                    if (value instanceof Sort<?> sortValue) {
                         sorts.add(sortValue);
                     }
                 }
             }
         }
-        return new SpecialParameters(pageable, limit, sorts);
+        return new SpecialParameters(pageRequest, limit, sorts);
     }
 }

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.data.Limit;
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.document.DeleteQueryParser;
@@ -126,7 +126,7 @@ public abstract class BaseDocumentRepository<T, K> extends AbstractRepositoryPro
                     documentQuery.name());
         }
 
-        return special.pageable().<DocumentQuery>map(p -> {
+        return special.PageRequest().<DocumentQuery>map(p -> {
             long size = p.size();
             long skip = NoSQLPage.skip(p);
             List<Sort> sorts = documentQuery.sorts();
@@ -186,7 +186,7 @@ public abstract class BaseDocumentRepository<T, K> extends AbstractRepositoryPro
                 .withMethodSource(method)
                 .withResult(() -> template().select(query))
                 .withSingleResult(() -> template().singleResult(query))
-                .withPagination(DynamicReturn.findPageable(args))
+                .withPagination(DynamicReturn.findPageRequest(args))
                 .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(singleResult(query))
                 .withPage(page(query))
@@ -194,18 +194,18 @@ public abstract class BaseDocumentRepository<T, K> extends AbstractRepositoryPro
         return dynamicReturn.execute();
     }
 
-    protected Function<Pageable, Page<T>> page(DocumentQuery query) {
+    protected Function<PageRequest, Page<T>> page(DocumentQuery query) {
         return p -> {
             Stream<T> entities = template().select(query);
             return NoSQLPage.of(entities.toList(), p);
         };
     }
 
-    protected Function<Pageable, Optional<T>> singleResult(DocumentQuery query) {
+    protected Function<PageRequest, Optional<T>> singleResult(DocumentQuery query) {
         return p -> template().singleResult(query);
     }
 
-    protected Function<Pageable, Stream<T>> streamPagination(DocumentQuery query) {
+    protected Function<PageRequest, Stream<T>> streamPagination(DocumentQuery query) {
         return p -> template().select(query);
     }
 

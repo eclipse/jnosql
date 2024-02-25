@@ -20,6 +20,6 @@ public interface RepositoryReturn {
 
     <T> Object convert(DynamicReturn<T> dynamicReturn);
 
-    <T> Object convertPageable(DynamicReturn<T> dynamicReturn);
+    <T> Object convertPageRequest(DynamicReturn<T> dynamicReturn);
 
 }

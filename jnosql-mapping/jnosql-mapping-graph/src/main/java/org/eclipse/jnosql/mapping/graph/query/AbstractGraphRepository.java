@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
@@ -36,18 +36,18 @@ abstract class AbstractGraphRepository<T, K> extends AbstractRepository<T, K> {
     }
 
     @Override
-    public Page<T> findAll(Pageable pageable) {
-        Objects.requireNonNull(pageable, "pageable is required");
+    public Page<T> findAll(PageRequest pageRequest) {
+        Objects.requireNonNull(pageRequest, "PageRequest is required");
         EntityMetadata metadata = entityMetadata();
 
         List<T> entities = template().traversalVertex()
                 .hasLabel(metadata.type())
-                .skip(NoSQLPage.skip(pageable))
-                .limit(pageable.size())
+                .skip(NoSQLPage.skip(pageRequest))
+                .limit(pageRequest.size())
                 .<T>result()
                 .toList();
 
-        return NoSQLPage.of(entities, pageable);
+        return NoSQLPage.of(entities, pageRequest);
     }
 
     @Override

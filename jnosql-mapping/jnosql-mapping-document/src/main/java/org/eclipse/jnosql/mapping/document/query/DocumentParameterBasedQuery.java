@@ -32,7 +32,7 @@ import static org.eclipse.jnosql.mapping.core.util.ConverterUtil.getValue;
 
 /**
  * The DocumentParameterBasedQuery enum provides a singleton instance for generating Document queries based on
- * a set of parameters. It utilizes the provided parameters, pageable information, and entity metadata to construct
+ * a set of parameters. It utilizes the provided parameters, PageRequest information, and entity metadata to construct
  * a DocumentQuery object tailored for querying a specific entity's documents.
  */
 public enum  DocumentParameterBasedQuery {
@@ -42,7 +42,7 @@ public enum  DocumentParameterBasedQuery {
     private static final IntFunction<DocumentCondition[]> TO_ARRAY = DocumentCondition[]::new;
 
     /**
-     * Constructs a DocumentQuery based on the provided parameters, pageable information, and entity metadata.
+     * Constructs a DocumentQuery based on the provided parameters, PageRequest information, and entity metadata.
      *
      * @param params          The map of parameters used for filtering documents.
      * @param entityMetadata  Metadata describing the structure of the entity.

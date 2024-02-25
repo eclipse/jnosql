@@ -32,7 +32,7 @@ import static org.eclipse.jnosql.mapping.core.util.ConverterUtil.getValue;
 
 /**
  * The ColumnParameterBasedQuery class is responsible for generating Column queries based on a set of parameters.
- * It leverages the provided parameters, pageable information, and entity metadata to construct a ColumnQuery object
+ * It leverages the provided parameters, PageRequest information, and entity metadata to construct a ColumnQuery object
  * tailored for querying a specific entity's columns.
  */
 public enum ColumnParameterBasedQuery {
@@ -42,7 +42,7 @@ public enum ColumnParameterBasedQuery {
     private static final IntFunction<ColumnCondition[]> TO_ARRAY = ColumnCondition[]::new;
 
     /**
-     * Constructs a ColumnQuery based on the provided parameters, pageable information, and entity metadata.
+     * Constructs a ColumnQuery based on the provided parameters, PageRequest information, and entity metadata.
      *
      * @param params          The map of parameters used for filtering columns.
      * @param entityMetadata  Metadata describing the structure of the entity.

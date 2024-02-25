@@ -73,7 +73,7 @@ public class DynamicQuery implements Supplier<ColumnQuery> {
                     query.name());
         }
 
-        return special.pageable().<ColumnQuery>map(p -> {
+        return special.PageRequest().<ColumnQuery>map(p -> {
             long size = p.size();
             long skip = NoSQLPage.skip(p);
             List<Sort> sorts = query.sorts();

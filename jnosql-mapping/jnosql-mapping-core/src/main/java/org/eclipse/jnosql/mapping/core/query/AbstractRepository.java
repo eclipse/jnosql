@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.core.query;
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.BasicRepository;
 import jakarta.nosql.Template;
@@ -192,17 +192,12 @@ public abstract class AbstractRepository<T, K> implements BasicRepository<T, K>,
     }
 
     @Override
-    public void deleteAll() {
-        throw new UnsupportedOperationException(String.format(getErrorMessage(), "deleteAll"));
-    }
-
-    @Override
-    public long count() {
+    public long countBy() {
         throw new UnsupportedOperationException(String.format(getErrorMessage(), "count"));
     }
 
     @Override
-    public Page<T> findAll(Pageable pageable) {
+    public Page<T> findAll(PageRequest pageRequest) {
         throw new UnsupportedOperationException(String.format(getErrorMessage(), "findAll"));
     }
 

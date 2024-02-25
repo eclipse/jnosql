@@ -18,7 +18,7 @@ package org.eclipse.jnosql.mapping.column.query;
 import jakarta.data.Limit;
 import jakarta.data.Sort;
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnCondition;
@@ -147,7 +147,7 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
                 .withMethodSource(method)
                 .withResult(() -> template().select(query))
                 .withSingleResult(() -> template().singleResult(query))
-                .withPagination(DynamicReturn.findPageable(args))
+                .withPagination(DynamicReturn.findPageRequest(args))
                 .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
@@ -183,18 +183,18 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
 
 
 
-    protected Function<Pageable, Page<T>> getPage(ColumnQuery query) {
+    protected Function<PageRequest, Page<T>> getPage(ColumnQuery query) {
         return p -> {
             Stream<T> entities = template().select(query);
             return NoSQLPage.of(entities.toList(), p);
         };
     }
 
-    protected Function<Pageable, Optional<T>> getSingleResult(ColumnQuery query) {
+    protected Function<PageRequest, Optional<T>> getSingleResult(ColumnQuery query) {
         return p -> template().singleResult(query);
     }
 
-    protected Function<Pageable, Stream<T>> streamPagination(ColumnQuery query) {
+    protected Function<PageRequest, Stream<T>> streamPagination(ColumnQuery query) {
         return p -> template().select(query);
     }
 
@@ -229,7 +229,7 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
                     documentQuery.name());
         }
 
-        return special.pageable().<ColumnQuery>map(p -> {
+        return special.PageRequest().<ColumnQuery>map(p -> {
             long size = p.size();
             long skip = NoSQLPage.skip(p);
             List<Sort> sorts = documentQuery.sorts();

@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.repository.BasicRepository;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
@@ -42,15 +42,15 @@ public abstract class AbstractColumnRepository<T, K> extends AbstractRepository<
 
 
     @Override
-    public Page<T> findAll(Pageable pageable) {
-        Objects.requireNonNull(pageable, "pageable is required");
+    public Page<T> findAll(PageRequest pageRequest) {
+        Objects.requireNonNull(pageRequest, "PageRequest is required");
         EntityMetadata metadata = entityMetadata();
-        ColumnQuery query = new MappingColumnQuery(pageable.sorts(),
-                pageable.size(), NoSQLPage.skip(pageable)
+        ColumnQuery query = new MappingColumnQuery(pageRequest.sorts(),
+                pageRequest.size(), NoSQLPage.skip(pageRequest)
                 , null ,metadata.name());
 
         List<T> entities = template().<T>select(query).toList();
-        return NoSQLPage.of(entities, pageable);
+        return NoSQLPage.of(entities, pageRequest);
     }
 
     @Override

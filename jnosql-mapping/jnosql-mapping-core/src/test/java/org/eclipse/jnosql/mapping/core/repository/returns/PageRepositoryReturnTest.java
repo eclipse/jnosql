@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.core.repository.returns;
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.page.Slice;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
@@ -66,11 +66,11 @@ class PageRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pageable.ofPage(2).size(2))
+                .withPagination(PageRequest.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
 
-        Page<Person> personPage = (Page<Person>) repositoryReturn.convertPageable(dynamic);
+        Page<Person> personPage = (Page<Person>) repositoryReturn.convertPageRequest(dynamic);
         List<Person> content = personPage.content();
 
         assertFalse(content.isEmpty());
@@ -91,11 +91,11 @@ class PageRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pageable.ofPage(2).size(2))
+                .withPagination(PageRequest.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
 
-        Slice<Person> personPage = (Slice<Person>) repositoryReturn.convertPageable(dynamic);
+        Slice<Person> personPage = (Slice<Person>) repositoryReturn.convertPageRequest(dynamic);
         List<Person> content = personPage.content();
 
         assertFalse(content.isEmpty());

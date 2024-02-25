@@ -81,7 +81,7 @@ class ClassGraphClassScannerTest {
     }
 
     @Test
-    void shouldFieldByPageable() {
+    void shouldFieldByPageRequest() {
         Set<Class<?>> repositories = classScanner.repositories(BasicRepository.class);
         Assertions.assertNotNull(repositories);
 

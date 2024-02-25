@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.core.repository.returns;
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.core.repository.RepositoryReturn;
 import org.junit.jupiter.api.Assertions;
@@ -76,10 +76,10 @@ class ListRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pageable.ofPage(2).size(2))
+                .withPagination(PageRequest.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
-        List<Person> person = (List<Person>) repositoryReturn.convertPageable(dynamic);
+        List<Person> person = (List<Person>) repositoryReturn.convertPageRequest(dynamic);
         Assertions.assertNotNull(person);
         assertFalse(person.isEmpty());
         assertEquals(ada, person.get(0));

@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.data.Sort;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.inject.Inject;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
