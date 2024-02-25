@@ -106,7 +106,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
             }
             traversal.limit(l.maxResults());
         });
-        special.PageRequest().ifPresent(p -> {
+        special.pageRequest().ifPresent(p -> {
             special.sorts().forEach(getSort(traversal, parser));
             traversal.skip(NoSQLPage.skip(p)).limit(p.size());
         });

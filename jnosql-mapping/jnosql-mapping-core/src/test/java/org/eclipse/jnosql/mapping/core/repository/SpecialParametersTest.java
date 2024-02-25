@@ -46,7 +46,7 @@ class SpecialParametersTest {
         PageRequest<?> pageRequest = PageRequest.ofPage(10);
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", pageRequest});
         assertFalse(parameters.isEmpty());
-        Assertions.assertEquals(pageRequest, parameters.PageRequest().orElseThrow());
+        Assertions.assertEquals(pageRequest, parameters.pageRequest().orElseThrow());
         assertTrue(parameters.isSortEmpty());
     }
 
@@ -56,7 +56,7 @@ class SpecialParametersTest {
                 Sort.desc("age"));
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", pageRequest});
         assertFalse(parameters.isEmpty());
-        Assertions.assertEquals(pageRequest, parameters.PageRequest().orElseThrow());
+        Assertions.assertEquals(pageRequest, parameters.pageRequest().orElseThrow());
         assertFalse(parameters.isSortEmpty());
         assertThat(parameters.sorts()).hasSize(2)
                 .contains(Sort.asc("name"),
@@ -69,7 +69,7 @@ class SpecialParametersTest {
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", sort});
         assertFalse(parameters.isEmpty());
         assertTrue(parameters.hasOnlySort());
-        assertTrue(parameters.PageRequest().isEmpty());
+        assertTrue(parameters.pageRequest().isEmpty());
         assertFalse(parameters.isSortEmpty());
         assertThat(parameters.sorts()).hasSize(1)
                 .contains(Sort.asc("name"));
@@ -84,7 +84,7 @@ class SpecialParametersTest {
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", sort, pageRequest});
         assertFalse(parameters.isEmpty());
         assertFalse(parameters.hasOnlySort());
-        Assertions.assertEquals(pageRequest, parameters.PageRequest().orElseThrow());
+        Assertions.assertEquals(pageRequest, parameters.pageRequest().orElseThrow());
         assertFalse(parameters.isSortEmpty());
         assertThat(parameters.sorts()).hasSize(3)
                 .containsExactly(sort, Sort.asc("name"),
@@ -131,7 +131,7 @@ class SpecialParametersTest {
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio",
                 List.of(Sort.asc("name"), Sort.desc("age")), pageRequest, order});
         assertFalse(parameters.isEmpty());
-        Assertions.assertEquals(pageRequest, parameters.PageRequest().orElseThrow());
+        Assertions.assertEquals(pageRequest, parameters.pageRequest().orElseThrow());
         assertFalse(parameters.isSortEmpty());
         assertThat(parameters.sorts()).hasSize(5)
                 .contains(Sort.asc("name"),

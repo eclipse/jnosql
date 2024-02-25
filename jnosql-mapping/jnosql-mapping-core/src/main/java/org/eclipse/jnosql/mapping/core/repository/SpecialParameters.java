@@ -49,7 +49,7 @@ public final class SpecialParameters {
      *
      * @return a {@link PageRequest} or {@link Optional#empty()} when there is not PageRequest instance
      */
-    public Optional<PageRequest<?>> PageRequest() {
+    public Optional<PageRequest<?>> pageRequest() {
         return Optional.ofNullable(pageRequest);
     }
 
@@ -63,7 +63,7 @@ public final class SpecialParameters {
     }
 
     /**
-     * Returns true when {@link SpecialParameters#PageRequest()} is empty and
+     * Returns true when {@link SpecialParameters#pageRequest()} is empty and
      * {@link SpecialParameters#isSortEmpty()} is true
      *
      * @return when there is no sort and PageRequest

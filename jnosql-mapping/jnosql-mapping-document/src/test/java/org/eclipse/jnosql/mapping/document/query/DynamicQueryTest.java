@@ -103,7 +103,7 @@ class DynamicQueryTest {
     @Test
     void shouldCreateDynamicQueryWithPageRequest() {
         when(special.isEmpty()).thenReturn(false);
-        when(special.PageRequest()).thenReturn(Optional.of(mock(PageRequest.class)));
+        when(special.pageRequest()).thenReturn(Optional.of(mock(PageRequest.class)));
         when(special.sorts()).thenReturn(List.of(mock(Sort.class)));
         when(query.condition()).thenReturn(Optional.empty());
         when(query.name()).thenReturn("sampleQuery");
@@ -122,7 +122,7 @@ class DynamicQueryTest {
     @Test
     void shouldReturnWhenThereIsLimitAndSort(){
         when(special.isEmpty()).thenReturn(false);
-        when(special.PageRequest()).thenReturn(Optional.of(mock(PageRequest.class)));
+        when(special.pageRequest()).thenReturn(Optional.of(mock(PageRequest.class)));
         when(query.condition()).thenReturn(Optional.empty());
         when(query.name()).thenReturn("sampleQuery");
         when(query.sorts()).thenReturn(Collections.emptyList());

@@ -229,7 +229,7 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
                     documentQuery.name());
         }
 
-        return special.PageRequest().<ColumnQuery>map(p -> {
+        return special.pageRequest().<ColumnQuery>map(p -> {
             long size = p.size();
             long skip = NoSQLPage.skip(p);
             List<Sort> sorts = documentQuery.sorts();
