@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.column.query;
 import jakarta.data.repository.BasicRepository;
 import jakarta.nosql.column.ColumnTemplate;
 import org.eclipse.jnosql.communication.column.ColumnManager;
-import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.column.ColumnTemplateProducer;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
