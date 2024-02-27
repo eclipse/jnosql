@@ -116,7 +116,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
     private final Supplier<Stream<T>> result;
 
-    private final PageRequest pagination;
+    private final PageRequest pageRequest;
 
     private final Function<PageRequest, Optional<T>> singleResultPagination;
 
@@ -126,7 +126,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
     private DynamicReturn(Class<T> classSource, Method methodSource,
                           Supplier<Optional<T>> singleResult,
-                          Supplier<Stream<T>> result, PageRequest pagination,
+                          Supplier<Stream<T>> result, PageRequest pageRequest,
                           Function<PageRequest, Optional<T>> singleResultPagination,
                           Function<PageRequest, Stream<T>> streamPagination,
                           Function<PageRequest, Page<T>> page) {
@@ -234,7 +234,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
         private Supplier<Stream<T>> result;
 
-        private PageRequest pagination;
+        private PageRequest pageRequest;
 
         private Function<PageRequest, Optional<T>> singleResultPagination;
 
@@ -285,7 +285,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param pagination the pagination
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withPagination(PageRequest pagination) {
+        public DefaultDynamicReturnBuilder withPagination(PageRequest pageRequest) {
             this.pagination = pagination;
             return this;
         }

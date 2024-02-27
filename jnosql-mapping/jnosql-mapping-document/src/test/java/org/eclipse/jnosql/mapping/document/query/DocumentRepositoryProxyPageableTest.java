@@ -115,7 +115,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
         personRepository.findByName("name", pagination);
 
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -146,7 +146,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
         List<Person> persons = personRepository.findByNameAndAge("name", 20, pagination);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
@@ -167,7 +167,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
         Set<Person> persons = personRepository.findByAgeAndName(20, "name", pagination);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
@@ -187,7 +187,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
 
         Stream<Person> persons = personRepository.findByNameAndAgeOrderByName("name", 20, pagination);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -208,7 +208,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
         Queue<Person> persons = personRepository.findByNameAndAgeOrderByAge("name", 20, pagination);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
@@ -230,7 +230,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
 
         List<Person> persons = personRepository.findAll(pagination).content();
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -251,7 +251,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
         personRepository.findByNameAndAgeGreaterThanEqual("Ada", 33, pagination);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
@@ -283,7 +283,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
         personRepository.findByAgeGreaterThan(33, pagination);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
@@ -305,7 +305,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
         personRepository.findByAgeLessThanEqual(33, pagination);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
@@ -327,7 +327,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
         personRepository.findByAgeLessThan(33, pagination);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
@@ -349,7 +349,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
         personRepository.findByAgeBetween(10,15, pagination);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
@@ -374,7 +374,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
         personRepository.findByNameLike("Ada", pagination);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
@@ -397,7 +397,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(vendor));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
         vendorRepository.findByPrefixes("prefix", pagination);
 
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -420,7 +420,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(vendor));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
         vendorRepository.findByPrefixesIn(Collections.singletonList("prefix"), pagination);
 
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -443,7 +443,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        PageRequest pagination = getPageRequest();
+        PageRequest pageRequest = getPageRequest();
         Slice<Person> slice = personRepository.findByAge("120", pagination);
         Assertions.assertNotNull(slice);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -464,7 +464,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
-        PageRequest pagination = getPageRequest().sortBy(Sort.asc("name"));
+        PageRequest pageRequest = getPageRequest().sortBy(Sort.asc("name"));
         personRepository.findByName("name", pagination);
 
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -492,7 +492,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
-        PageRequest pagination = getPageRequest().sortBy(Sort.asc("name"));
+        PageRequest pageRequest = getPageRequest().sortBy(Sort.asc("name"));
         Page<Person> page = personRepository.findByNameOrderByAge("name", pagination);
 
         Assertions.assertNotNull(page);
@@ -521,7 +521,7 @@ class DocumentRepositoryProxyPageRequestTest {
         when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
-        PageRequest pagination = getPageRequest().sortBy(Sort.desc("age"));
+        PageRequest pageRequest = getPageRequest().sortBy(Sort.desc("age"));
         personRepository.findByName("name", Sort.asc("name"), pagination);
 
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);

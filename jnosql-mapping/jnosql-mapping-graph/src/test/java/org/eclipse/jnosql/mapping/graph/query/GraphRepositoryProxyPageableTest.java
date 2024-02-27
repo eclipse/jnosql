@@ -249,11 +249,11 @@ class GraphRepositoryProxyPageRequestTest {
 
         Slice<Person> findByAgeOrderByName(Integer age, PageRequest pageRequest);
 
-        Optional<Person> findByAge(Integer age, PageRequest pagination);
+        Optional<Person> findByAge(Integer age, PageRequest pageRequest);
 
-        List<Person> findByNameAndAge(String name, Integer age, PageRequest pagination);
+        List<Person> findByNameAndAge(String name, Integer age, PageRequest pageRequest);
 
-        Set<Person> findByAgeAndName(Integer age, String name, PageRequest pagination);
+        Set<Person> findByAgeAndName(Integer age, String name, PageRequest pageRequest);
 
     }
 
