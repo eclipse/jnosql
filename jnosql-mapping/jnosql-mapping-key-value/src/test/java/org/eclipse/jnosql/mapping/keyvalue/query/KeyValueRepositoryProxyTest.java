@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.keyvalue.query;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Save;
@@ -26,6 +26,7 @@ import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.assertj.core.api.SoftAssertions;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;
@@ -292,7 +293,7 @@ class KeyValueRepositoryProxyTest {
     @Test
     void shouldReturnUnsupportedOperationException() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll());
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.count());
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.countBy());
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll(null));
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.deleteAll());
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.countByName("name"));
@@ -362,7 +363,7 @@ class KeyValueRepositoryProxyTest {
         }
     }
 
-    public interface UserRepository extends PageableRepository<User, String>, CrudRepository<User, String>, BaseQuery<User>, PersonStatisticRepository {
+    public interface UserRepository extends NoSQLRepository<User, String>, CrudRepository<User, String>, BaseQuery<User>, PersonStatisticRepository {
 
         Optional<User> findByName(String name);
 

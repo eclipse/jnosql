@@ -15,8 +15,7 @@
 package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.page.PageRequest;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -39,7 +38,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Template method to {@link PageableRepository} proxy on Graph
+ * Template method to {@link org.eclipse.jnosql.mapping.NoSQLRepository} proxy on Graph
  *
  * @param <T> the entity type
  * @param <K> the K entity
@@ -166,7 +165,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> extends AbstractRepositoryProx
         Supplier<Optional<?>> singleSupplier =
                 DynamicReturn.toSingleResult(method).apply(querySupplier);
 
-        Function<Pageable, Page<?>> pageFunction = p -> {
+        Function<PageRequest, Page<?>> pageFunction = p -> {
             List<?> entities = querySupplier.get().toList();
             return NoSQLPage.of(entities, p);
         };
@@ -176,7 +175,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> extends AbstractRepositoryProx
                 .withMethodSource(method)
                 .withResult(querySupplier)
                 .withSingleResult(singleSupplier)
-                .withPagination(DynamicReturn.findPageable(args))
+                .withPagination(DynamicReturn.findPageRequest(args))
                 .withStreamPagination(p -> querySupplier.get())
                 .withSingleResultPagination(p -> singleSupplier.get())
                 .withPage(pageFunction)

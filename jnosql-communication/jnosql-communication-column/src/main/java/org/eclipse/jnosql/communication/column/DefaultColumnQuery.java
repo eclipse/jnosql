@@ -32,7 +32,7 @@ import static java.util.Optional.ofNullable;
  * The default implementation of column query.
  */
 record DefaultColumnQuery(long limit, long skip, String name,
-                          List<String> columns, List<Sort> sorts, ColumnCondition columnCondition)
+                          List<String> columns, List<Sort<?>> sorts, ColumnCondition columnCondition)
         implements ColumnQuery {
 
 
@@ -47,7 +47,7 @@ record DefaultColumnQuery(long limit, long skip, String name,
     }
 
     @Override
-    public List<Sort> sorts() {
+    public List<Sort<?>> sorts() {
         return unmodifiableList(sorts);
     }
 

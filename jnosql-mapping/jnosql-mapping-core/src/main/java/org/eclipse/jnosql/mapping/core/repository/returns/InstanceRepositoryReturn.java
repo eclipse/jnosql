@@ -33,7 +33,7 @@ public class InstanceRepositoryReturn implements RepositoryReturn {
     }
 
     @Override
-    public <T> Object convertPageable(DynamicReturn<T> dynamic) {
+    public <T> Object convertPageRequest(DynamicReturn<T> dynamic) {
         Optional<T> optional = dynamic.singleResultPagination();
         return optional.orElse(null);
     }

@@ -61,7 +61,8 @@ public interface ClassScanner {
 
     /**
      * Returns a set of repository interfaces that directly extend both
-     * {@link jakarta.data.repository.PageableRepository} and {@link jakarta.data.repository.CrudRepository}.
+     * {@link jakarta.data.repository.BasicRepository}, {@link org.eclipse.jnosql.mapping.NoSQLRepository}
+     * and {@link jakarta.data.repository.CrudRepository}.
      *
      * @return A set of standard repository interfaces.
      */

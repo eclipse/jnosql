@@ -14,12 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
-import jakarta.data.repository.CrudRepository;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
@@ -91,7 +91,7 @@ class DocumentCrudInheritanceRepositoryProxyTest {
 
     @Test
     void shouldPutFilterAtCount() {
-        emailRepository.count();
+        emailRepository.countBy();
         Mockito.verify(template).count(EmailNotification.class);
     }
 
@@ -149,7 +149,7 @@ class DocumentCrudInheritanceRepositoryProxyTest {
 
 
 
-    public interface EmailRepository extends CrudRepository<EmailNotification, String> {
+    public interface EmailRepository extends NoSQLRepository<EmailNotification, String> {
 
         List<EmailNotification> findByName(String name);
 

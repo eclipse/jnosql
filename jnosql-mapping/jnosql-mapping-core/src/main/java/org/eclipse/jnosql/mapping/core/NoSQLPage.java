@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.core;
 
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -32,11 +32,11 @@ public class NoSQLPage<T> implements Page<T> {
 
     private final List<T> entities;
 
-    private final Pageable pageable;
+    private final PageRequest<T> pageRequest;
 
-    private NoSQLPage(List<T> entities, Pageable pageable) {
+    private NoSQLPage(List<T> entities, PageRequest<T> pageRequest) {
         this.entities = entities;
-        this.pageable = pageable;
+        this.pageRequest = pageRequest;
     }
 
     @Override
@@ -65,13 +65,27 @@ public class NoSQLPage<T> implements Page<T> {
     }
 
     @Override
-    public Pageable pageable() {
-        return this.pageable;
+    public PageRequest<T> pageRequest() {
+        return this.pageRequest;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <E> PageRequest<E> pageRequest(Class<E> type) {
+        Objects.requireNonNull(type, "type is required");
+        return (PageRequest<E>) this.pageRequest;
     }
 
     @Override
-    public Pageable nextPageable() {
-        return this.pageable.next();
+    public PageRequest<T> nextPageRequest() {
+        return this.pageRequest.next();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <E> PageRequest<E> nextPageRequest(Class<E> type) {
+        Objects.requireNonNull(type, "type is required");
+        return (PageRequest<E>) this.pageRequest;
     }
 
     @Override
@@ -88,43 +102,44 @@ public class NoSQLPage<T> implements Page<T> {
             return false;
         }
         NoSQLPage<?> noSQLPage = (NoSQLPage<?>) o;
-        return Objects.equals(entities, noSQLPage.entities) && Objects.equals(pageable, noSQLPage.pageable);
+        return Objects.equals(entities, noSQLPage.entities) && Objects.equals(pageRequest, noSQLPage.pageRequest);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(entities, pageable);
+        return Objects.hash(entities, pageRequest);
     }
 
     @Override
     public String toString() {
         return "NoSQLPage{" +
                 "entities=" + entities +
-                ", pageable=" + pageable +
+                ", pageRequest=" + pageRequest +
                 '}';
     }
 
     /**
-     * Creates a {@link  Page} implementation from entities and a pageable
+     * Creates a {@link  Page} implementation from entities and a PageRequest
      * @param entities the entities
-     * @param pageable the pageable
+     * @param pageRequest the PageRequest
      * @return a {@link Page} instance
      * @param <T> the entity type
      */
-    public static <T> Page<T> of(List<T> entities, Pageable pageable) {
+    public static <T> Page<T> of(List<T> entities, PageRequest<T> pageRequest) {
         Objects.requireNonNull(entities, "entities is required");
-        Objects.requireNonNull(pageable, "pageable is required");
-        return new NoSQLPage<>(entities, pageable);
+        Objects.requireNonNull(pageRequest, "pageRequest is required");
+        return new NoSQLPage<>(entities, pageRequest);
     }
 
     /**
-     * Create skip formula from pageable instance
-     * @param pageable the pageable
+     * Create skip formula from pageRequest instance
+     * @param pageRequest the pageRequest
+     * @param <T> the entity type
      * @return the skip
      * @throws NullPointerException when parameter is null
      */
-    public static long skip(Pageable pageable) {
-        Objects.requireNonNull(pageable, "pageable is required");
-        return pageable.size() * (pageable.page() - 1);
+    public static <T>  long skip(PageRequest<T> pageRequest) {
+        Objects.requireNonNull(pageRequest, "pageRequest is required");
+        return pageRequest.size() * (pageRequest.page() - 1);
     }
 }

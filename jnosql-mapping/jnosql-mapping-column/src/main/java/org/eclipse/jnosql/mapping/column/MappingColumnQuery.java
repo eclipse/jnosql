@@ -28,7 +28,7 @@ import static java.util.Collections.emptyList;
 /**
  * A mapping implementation of {@link ColumnQuery}
  */
-public record MappingColumnQuery(List<Sort> sorts, long limit, long skip, ColumnCondition columnCondition, String columnFamily)
+public record MappingColumnQuery(List<Sort<?>> sorts, long limit, long skip, ColumnCondition columnCondition, String columnFamily)
         implements ColumnQuery {
 
 
@@ -48,7 +48,7 @@ public record MappingColumnQuery(List<Sort> sorts, long limit, long skip, Column
     }
 
     @Override
-    public List<Sort> sorts() {
+    public List<Sort<?>> sorts() {
         return Collections.unmodifiableList(sorts);
     }
 

@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.core;
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.mapping.core.entities.Person;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,14 +35,14 @@ class NoSQLPageTest {
                 NoSQLPage.of(Collections.emptyList(), null));
 
         assertThrows(NullPointerException.class, ()->
-                NoSQLPage.of(null, Pageable.ofPage(2)));
+                NoSQLPage.of(null, PageRequest.ofPage(2)));
     }
 
 
     @Test
     void shouldReturnUnsupportedOperation() {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
-                Pageable.ofPage(2));
+                PageRequest.ofPage(2));
 
         assertThrows(UnsupportedOperationException.class, page::totalPages);
 
@@ -53,11 +53,11 @@ class NoSQLPageTest {
     void shouldReturnHasContent() {
 
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
-                Pageable.ofPage(2));
+                PageRequest.ofPage(2));
 
         Assertions.assertTrue(page.hasContent());
         page = NoSQLPage.of(Collections.emptyList(),
-                Pageable.ofPage(2));
+                PageRequest.ofPage(2));
         Assertions.assertFalse(page.hasContent());
     }
 
@@ -65,7 +65,7 @@ class NoSQLPageTest {
     void shouldNumberOfElements() {
 
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
-                Pageable.ofPage(2));
+                PageRequest.ofPage(2));
 
         assertEquals(1, page.numberOfElements());
     }
@@ -73,49 +73,49 @@ class NoSQLPageTest {
     @Test
     void shouldIterator() {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
-                Pageable.ofPage(2));
+                PageRequest.ofPage(2));
         Assertions.assertNotNull(page.iterator());
     }
 
     @Test
-    void shouldPageable() {
+    void shouldPageRequest() {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
-                Pageable.ofPage(2));
-        Pageable pageable = page.pageable();
-        Assertions.assertNotNull(pageable);
-        assertEquals(Pageable.ofPage(2), pageable);
+                PageRequest.ofPage(2));
+        PageRequest<Person> pageRequest = page.pageRequest();
+        Assertions.assertNotNull(pageRequest);
+        assertEquals(PageRequest.ofPage(2), pageRequest);
     }
 
     @Test
-    void shouldNextPageable() {
+    void shouldNextPageRequest() {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
-                Pageable.ofPage(2));
-        Pageable pageable = page.nextPageable();
-        assertEquals(Pageable.ofPage(3), pageable);
+                PageRequest.ofPage(2));
+        PageRequest<Person> pageRequest = page.nextPageRequest();
+        assertEquals(PageRequest.ofPage(3), pageRequest);
     }
 
     @Test
-    void shouldThrowNullPointerExceptionWhenPageableIsNull() {
+    void shouldThrowNullPointerExceptionWhenPageRequestIsNull() {
         assertThrows(NullPointerException.class, () -> NoSQLPage.skip(null));
     }
 
     @Test
     void shouldCalculateSkip() {
-        long skipValue = NoSQLPage.skip(Pageable.ofPage(2).size(10));
+        long skipValue = NoSQLPage.skip(PageRequest.ofPage(2).size(10));
         assertEquals(10, skipValue);
     }
 
     @Test
     void shouldCalculateSkipForFirstPage() {
-        // Create a pageable with page=1 and size=5
-        long skipValue = NoSQLPage.skip(Pageable.ofPage(1).size(5));
+        // Create a PageRequest with page=1 and size=5
+        long skipValue = NoSQLPage.skip(PageRequest.ofPage(1).size(5));
         assertEquals(0, skipValue);
     }
 
     @Test
     void shouldToString(){
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
-                Pageable.ofPage(2));
+                PageRequest.ofPage(2));
 
         assertThat(page.toString()).isNotBlank();
     }
@@ -123,9 +123,9 @@ class NoSQLPageTest {
     @Test
     void shouldEqualsHasCode(){
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
-                Pageable.ofPage(2));
+                PageRequest.ofPage(2));
         Page<Person> page2 = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
-                Pageable.ofPage(2));
+                PageRequest.ofPage(2));
 
         assertEquals(page, page2);
         assertEquals(page.hashCode(), page2.hashCode());

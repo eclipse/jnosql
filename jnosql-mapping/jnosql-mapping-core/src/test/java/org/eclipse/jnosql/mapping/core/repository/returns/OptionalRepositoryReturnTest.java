@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.core.repository.returns;
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.core.repository.RepositoryReturn;
 import org.junit.jupiter.api.Assertions;
@@ -89,10 +89,10 @@ class OptionalRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.of(ada))
                 .withStreamPagination(p -> Stream.empty())
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pageable.ofPage(2).size(2))
+                .withPagination(PageRequest.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
-        Optional<Person> person = (Optional<Person>) repositoryReturn.convertPageable(dynamic);
+        Optional<Person> person = (Optional<Person>) repositoryReturn.convertPageRequest(dynamic);
         Assertions.assertNotNull(person);
         Assertions.assertTrue(person.isPresent());
         assertEquals(ada, person.get());
@@ -109,10 +109,10 @@ class OptionalRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.empty())
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pageable.ofPage(2).size(2))
+                .withPagination(PageRequest.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
-        Optional<Person> person = (Optional<Person>) repositoryReturn.convertPageable(dynamic);
+        Optional<Person> person = (Optional<Person>) repositoryReturn.convertPageRequest(dynamic);
         Assertions.assertNotNull(person);
         Assertions.assertFalse(person.isPresent());
     }

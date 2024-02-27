@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.data.Limit;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.core.repository.SpecialParameters;
@@ -102,9 +102,9 @@ class DynamicQueryTest {
     }
 
     @Test
-    void shouldCreateDynamicQueryWithPageable() {
+    void shouldCreateDynamicQueryWithPageRequest() {
         when(special.isEmpty()).thenReturn(false);
-        when(special.pageable()).thenReturn(Optional.of(mock(Pageable.class)));
+        when(special.pageRequest()).thenReturn(Optional.of(mock(PageRequest.class)));
         when(special.sorts()).thenReturn(List.of(mock(Sort.class)));
         when(query.condition()).thenReturn(Optional.empty());
         when(query.name()).thenReturn("sampleQuery");
@@ -123,7 +123,7 @@ class DynamicQueryTest {
     @Test
     void shouldReturnWhenThereIsLimitAndSort(){
         when(special.isEmpty()).thenReturn(false);
-        when(special.pageable()).thenReturn(Optional.of(mock(Pageable.class)));
+        when(special.pageRequest()).thenReturn(Optional.of(mock(PageRequest.class)));
         when(query.condition()).thenReturn(Optional.empty());
         when(query.name()).thenReturn("sampleQuery");
         when(query.sorts()).thenReturn(Collections.emptyList());

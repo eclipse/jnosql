@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.data.repository.By;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.Sort;
@@ -29,6 +29,7 @@ import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
@@ -327,6 +328,13 @@ class DocumentRepositoryProxyTest {
     }
 
     @Test
+    void shouldDeleteEntity(){
+        Person person = Person.builder().withId(1L).withAge(20).withName("Ada").build();
+        personRepository.delete(person);
+        verify(template).delete(Person.class, 1L);
+    }
+
+    @Test
     void shouldDeleteAll() {
         personRepository.deleteAll();
         ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
@@ -335,12 +343,6 @@ class DocumentRepositoryProxyTest {
 
     }
 
-    @Test
-    void shouldDeleteEntity(){
-        Person person = Person.builder().withId(1L).withAge(20).withName("Ada").build();
-        personRepository.delete(person);
-        verify(template).delete(Person.class, 1L);
-    }
 
     @Test
     void shouldDeleteEntities(){
@@ -726,7 +728,7 @@ class DocumentRepositoryProxyTest {
         });
     }
 
-    interface PersonRepository extends PageableRepository<Person, Long>, PersonStatisticRepository {
+    interface PersonRepository extends NoSQLRepository<Person, Long>, PersonStatisticRepository {
 
 
         long countByName(String name);
@@ -778,7 +780,7 @@ class DocumentRepositoryProxyTest {
         List<Person> find(@By("name") String name);
     }
 
-    public interface VendorRepository extends PageableRepository<Vendor, String> {
+    public interface VendorRepository extends BasicRepository<Vendor, String> {
 
         Vendor findByPrefixes(String prefix);
 

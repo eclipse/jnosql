@@ -32,7 +32,7 @@ class DefaultDocumentQueryBuilder implements DocumentQuery.DocumentQueryBuilder 
 
     private final List<String> documents = new ArrayList<>();
 
-    private final List<Sort> sorts = new ArrayList<>();
+    private final List<Sort<?>> sorts = new ArrayList<>();
 
     private String documentCollection;
 

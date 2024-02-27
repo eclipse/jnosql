@@ -26,7 +26,7 @@ import java.util.Objects;
 
 
 /**
- * Proxy handler to generate {@link jakarta.data.repository.PageableRepository} for column-based repositories.
+ * Proxy handler to generate {@link org.eclipse.jnosql.mapping.NoSQLRepository} for column-based repositories.
  *
  * @param <T> The entity type managed by the repository.
  * @param <K> The key type used for column-based operations.

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.core.repository;
 
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
@@ -38,9 +38,9 @@ import static java.util.Objects.requireNonNull;
 public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
     /**
-     * A predicate to check it the object is instance of {@link Pageable}
+     * A predicate to check it the object is instance of {@link PageRequest}
      */
-    private static final Predicate<Object> IS_PAGINATION = Pageable.class::isInstance;
+    private static final Predicate<Object> IS_PAGINATION = PageRequest.class::isInstance;
 
     /**
      * A wrapper function that convert a result as a list to a result as optional
@@ -67,18 +67,18 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     }
 
     /**
-     * Finds {@link Pageable} from array object
+     * Finds {@link PageRequest} from array object
      *
      * @param params the params
-     * @return a {@link Pageable} or null
+     * @return a {@link PageRequest} or null
      */
-    public static Pageable findPageable(Object[] params) {
+    public static PageRequest findPageRequest(Object[] params) {
         if (params == null || params.length == 0) {
             return null;
         }
         return Stream.of(params)
                 .filter(IS_PAGINATION)
-                .map(Pageable.class::cast)
+                .map(PageRequest.class::cast)
                 .findFirst().orElse(null);
     }
 
@@ -116,25 +116,25 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
     private final Supplier<Stream<T>> result;
 
-    private final Pageable pagination;
+    private final PageRequest pageRequest;
 
-    private final Function<Pageable, Optional<T>> singleResultPagination;
+    private final Function<PageRequest, Optional<T>> singleResultPagination;
 
-    private final Function<Pageable, Stream<T>> streamPagination;
+    private final Function<PageRequest, Stream<T>> streamPagination;
 
-    private final Function<Pageable, Page<T>> page;
+    private final Function<PageRequest, Page<T>> page;
 
     private DynamicReturn(Class<T> classSource, Method methodSource,
                           Supplier<Optional<T>> singleResult,
-                          Supplier<Stream<T>> result, Pageable pagination,
-                          Function<Pageable, Optional<T>> singleResultPagination,
-                          Function<Pageable, Stream<T>> streamPagination,
-                          Function<Pageable, Page<T>> page) {
+                          Supplier<Stream<T>> result, PageRequest pageRequest,
+                          Function<PageRequest, Optional<T>> singleResultPagination,
+                          Function<PageRequest, Stream<T>> streamPagination,
+                          Function<PageRequest, Page<T>> page) {
         this.classSource = classSource;
         this.methodSource = methodSource;
         this.singleResult = singleResult;
         this.result = result;
-        this.pagination = pagination;
+        this.pageRequest = pageRequest;
         this.singleResultPagination = singleResultPagination;
         this.streamPagination = streamPagination;
         this.page = page;
@@ -179,36 +179,36 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     /**
      * @return the pagination
      */
-    Optional<Pageable> getPagination() {
-        return Optional.ofNullable(pagination);
+    Optional<PageRequest> getPagination() {
+        return Optional.ofNullable(pageRequest);
     }
 
     /**
      * @return returns a single result with pagination
      */
     public Optional<T> singleResultPagination() {
-        return singleResultPagination.apply(pagination);
+        return singleResultPagination.apply(pageRequest);
     }
 
     /**
      * @return a list result using pagination
      */
     public Stream<T> streamPagination() {
-        return streamPagination.apply(pagination);
+        return streamPagination.apply(pageRequest);
     }
 
     /**
      * @return the page
      */
     public Page<T> getPage() {
-        return page.apply(pagination);
+        return page.apply(pageRequest);
     }
 
     /**
      * @return check if there is pagination
      */
     boolean hasPagination() {
-        return pagination != null;
+        return pageRequest != null;
     }
 
     /**
@@ -234,13 +234,13 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
         private Supplier<Stream<T>> result;
 
-        private Pageable pagination;
+        private PageRequest pageRequest;
 
-        private Function<Pageable, Optional<T>> singleResultPagination;
+        private Function<PageRequest, Optional<T>> singleResultPagination;
 
-        private Function<Pageable, Stream<T>> streamPagination;
+        private Function<PageRequest, Stream<T>> streamPagination;
 
-        private Function<Pageable, Page<T>> page;
+        private Function<PageRequest, Page<T>> page;
 
         private DefaultDynamicReturnBuilder() {
         }
@@ -282,11 +282,11 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
 
         /**
-         * @param pagination the pagination
+         * @param pageRequest the pagination
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withPagination(Pageable pagination) {
-            this.pagination = pagination;
+        public DefaultDynamicReturnBuilder withPagination(PageRequest pageRequest) {
+            this.pageRequest = pageRequest;
             return this;
         }
 
@@ -294,7 +294,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param singleResultPagination the single result pagination
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withSingleResultPagination(Function<Pageable, Optional<T>> singleResultPagination) {
+        public DefaultDynamicReturnBuilder withSingleResultPagination(Function<PageRequest, Optional<T>> singleResultPagination) {
             this.singleResultPagination = singleResultPagination;
             return this;
         }
@@ -303,7 +303,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param listPagination the list pagination
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withStreamPagination(Function<Pageable, Stream<T>> listPagination) {
+        public DefaultDynamicReturnBuilder withStreamPagination(Function<PageRequest, Stream<T>> listPagination) {
             this.streamPagination = listPagination;
             return this;
         }
@@ -312,7 +312,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param page the page
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withPage(Function<Pageable, Page<T>> page) {
+        public DefaultDynamicReturnBuilder withPage(Function<PageRequest, Page<T>> page) {
             this.page = page;
             return this;
         }
@@ -329,14 +329,14 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
             requireNonNull(singleResult, "the single result supplier is required");
             requireNonNull(result, "the result supplier is required");
 
-            if (pagination != null) {
+            if (pageRequest != null) {
                 requireNonNull(singleResultPagination, "singleResultPagination is required when pagination is not null");
                 requireNonNull(streamPagination, "listPagination is required when pagination is not null");
                 requireNonNull(page, "page is required when pagination is not null");
             }
 
             return new DynamicReturn(classSource, methodSource, singleResult, result,
-                    pagination, singleResultPagination, streamPagination, page);
+                    pageRequest, singleResultPagination, streamPagination, page);
         }
     }
 

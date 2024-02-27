@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.core.entities;
 
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 
-public interface NoSQLVendor<T, K> extends PageableRepository<T, K> {
+public interface NoSQLVendor<T, K> extends BasicRepository<T, K> {
 }

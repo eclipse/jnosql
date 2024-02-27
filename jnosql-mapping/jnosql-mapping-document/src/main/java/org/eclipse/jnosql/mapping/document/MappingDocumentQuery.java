@@ -25,7 +25,7 @@ import java.util.Optional;
 /**
  * The mapping implementation of {@link DocumentQuery}
  */
-public record MappingDocumentQuery(List<Sort> sorts, long limit, long skip, DocumentCondition documentCondition,
+public record MappingDocumentQuery(List<Sort<?>> sorts, long limit, long skip, DocumentCondition documentCondition,
                                    String documentCollection) implements DocumentQuery {
 
 
@@ -40,7 +40,7 @@ public record MappingDocumentQuery(List<Sort> sorts, long limit, long skip, Docu
     }
 
     @Override
-    public List<Sort> sorts() {
+    public List<Sort<?>> sorts() {
         return Collections.unmodifiableList(sorts);
     }
 

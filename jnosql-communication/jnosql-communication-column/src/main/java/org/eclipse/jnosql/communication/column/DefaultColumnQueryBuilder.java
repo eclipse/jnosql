@@ -32,7 +32,7 @@ class DefaultColumnQueryBuilder implements ColumnQuery.ColumnQueryBuilder {
 
     private final List<String> columns = new ArrayList<>();
 
-    private final List<Sort> sorts = new ArrayList<>();
+    private final List<Sort<?>> sorts = new ArrayList<>();
 
     private String documentCollection;
 

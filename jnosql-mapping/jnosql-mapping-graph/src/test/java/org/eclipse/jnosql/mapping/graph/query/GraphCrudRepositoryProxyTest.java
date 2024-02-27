@@ -367,12 +367,6 @@ class GraphCrudRepositoryProxyTest {
     }
 
     @Test
-    void shouldDeleteAll() {
-        personRepository.deleteAll();
-        verify(template).deleteAll(Person.class);
-    }
-
-    @Test
     void shouldReturnEmptyAtFindAll() {
         List<Person> people = personRepository.findAll().toList();
         assertTrue(people.isEmpty());

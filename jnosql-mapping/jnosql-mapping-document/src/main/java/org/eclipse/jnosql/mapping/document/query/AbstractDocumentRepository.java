@@ -15,8 +15,7 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
@@ -30,27 +29,27 @@ import java.util.stream.Stream;
 
 
 /**
- * The {@link PageableRepository} template method
+ * The {@link org.eclipse.jnosql.mapping.NoSQLRepository} template method
  */
 public abstract class AbstractDocumentRepository<T, K> extends AbstractRepository<T, K> {
 
     protected abstract JNoSQLDocumentTemplate template();
 
     @Override
-    public long count() {
+    public long countBy() {
         return template().count(type());
     }
 
     @Override
-    public Page<T> findAll(Pageable pageable) {
-        Objects.requireNonNull(pageable, "pageable is required");
+    public Page<T> findAll(PageRequest pageRequest) {
+        Objects.requireNonNull(pageRequest, "pageRequest is required");
         EntityMetadata metadata = entityMetadata();
-        DocumentQuery query = new MappingDocumentQuery(pageable.sorts(),
-                pageable.size(), NoSQLPage.skip(pageable)
+        DocumentQuery query = new MappingDocumentQuery(pageRequest.sorts(),
+                pageRequest.size(), NoSQLPage.skip(pageRequest)
                 , null, metadata.name());
 
         List<T> entities = template().<T>select(query).toList();
-        return NoSQLPage.of(entities, pageable);
+        return NoSQLPage.of(entities, pageRequest);
     }
 
     @Override
@@ -62,4 +61,5 @@ public abstract class AbstractDocumentRepository<T, K> extends AbstractRepositor
     public void deleteAll() {
         template().deleteAll(type());
     }
+
 }

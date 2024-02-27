@@ -74,7 +74,7 @@ public interface DocumentQuery {
      *
      * @return the sorts
      */
-    List<Sort> sorts();
+    List<Sort<?>> sorts();
 
     /**
      * Returns the documents to returns in that query if empty will return all elements in the query.

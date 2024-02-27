@@ -15,10 +15,10 @@
 package org.eclipse.jnosql.mapping.core.query;
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.PageableRepository;
 import jakarta.nosql.Template;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
@@ -36,7 +36,7 @@ import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEP
 
 /**
  * An abstract template class providing a base implementation for repositories managing entities
- * through Jakarta Data's {@link PageableRepository} and {@link CrudRepository} interfaces.
+ * through Jakarta Data's {@link NoSQLRepository} and {@link CrudRepository} interfaces.
  * This class encapsulates common CRUD (Create, Read, Update, Delete) operations and supports pagination
  * for a specific entity type. Subclasses are required to implement certain abstract methods to customize
  * behavior for a particular database or data model.
@@ -44,7 +44,7 @@ import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEP
  * @param <T> The entity type managed by this repository.
  * @param <K> The type of the entity's primary key.
  */
-public abstract class AbstractRepository<T, K> implements PageableRepository<T, K>, CrudRepository<T, K> {
+public abstract class AbstractRepository<T, K> implements NoSQLRepository<T, K>, CrudRepository<T, K> {
 
     /**
      * Retrieves the template associated with this repository.
@@ -197,12 +197,12 @@ public abstract class AbstractRepository<T, K> implements PageableRepository<T, 
     }
 
     @Override
-    public long count() {
+    public long countBy() {
         throw new UnsupportedOperationException(String.format(getErrorMessage(), "count"));
     }
 
     @Override
-    public Page<T> findAll(Pageable pageable) {
+    public Page<T> findAll(PageRequest pageRequest) {
         throw new UnsupportedOperationException(String.format(getErrorMessage(), "findAll"));
     }
 

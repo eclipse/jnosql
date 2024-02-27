@@ -81,7 +81,7 @@ public interface ColumnQuery {
      *
      * @return the sorts
      */
-    List<Sort> sorts();
+    List<Sort<?>> sorts();
 
     /**
      * It starts the first step of {@link ColumnSelect} creation using a fluent-API way.

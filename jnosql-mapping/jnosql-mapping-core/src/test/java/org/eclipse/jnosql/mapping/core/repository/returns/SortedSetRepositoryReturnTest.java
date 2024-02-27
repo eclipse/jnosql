@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.core.repository.returns;
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.core.repository.RepositoryReturn;
@@ -63,10 +63,10 @@ class SortedSetRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pageable.ofPage(2).size(2))
+                .withPagination(PageRequest.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
-        TreeSet<Person> person = (TreeSet<Person>) repositoryReturn.convertPageable(dynamic);
+        TreeSet<Person> person = (TreeSet<Person>) repositoryReturn.convertPageRequest(dynamic);
         Assertions.assertNotNull(person);
         assertFalse(person.isEmpty());
         assertEquals(ada, person.stream().findFirst().get());
@@ -97,10 +97,10 @@ class SortedSetRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.of(animal))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pageable.ofPage(2).size(2))
+                .withPagination(PageRequest.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
-        Assertions.assertThrows(DynamicQueryException.class, () -> repositoryReturn.convertPageable(dynamic));
+        Assertions.assertThrows(DynamicQueryException.class, () -> repositoryReturn.convertPageRequest(dynamic));
     }
 
     @Test
@@ -113,7 +113,7 @@ class SortedSetRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.of(animal))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pageable.ofPage(2).size(2))
+                .withPagination(PageRequest.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
         Assertions.assertThrows(DynamicQueryException.class, () -> repositoryReturn.convert(dynamic));

@@ -39,7 +39,7 @@ final class ColumnMapperSelect extends AbstractMapperQuery implements MapperFrom
         MapperSkip, MapperOrder, MapperNameCondition,
         MapperNotCondition, MapperNameOrder, MapperWhere {
 
-    private final List<Sort> sorts = new ArrayList<>();
+    private final List<Sort<?>> sorts = new ArrayList<>();
 
     ColumnMapperSelect(EntityMetadata mapping, Converters converters, JNoSQLColumnTemplate template) {
         super(mapping, converters, template);

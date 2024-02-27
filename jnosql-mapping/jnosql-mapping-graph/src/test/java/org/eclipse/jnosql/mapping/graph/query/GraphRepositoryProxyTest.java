@@ -19,7 +19,7 @@ import jakarta.data.repository.By;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Save;
@@ -31,6 +31,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.assertj.core.api.SoftAssertions;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.graph.BookRepository;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
@@ -623,7 +624,7 @@ class GraphRepositoryProxyTest {
         }
     }
 
-    public interface PersonRepository extends PageableRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
+    public interface PersonRepository extends NoSQLRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
 
         List<Person> findByActiveTrue();
 
@@ -687,7 +688,7 @@ class GraphRepositoryProxyTest {
         }
     }
 
-    public interface VendorRepository extends PageableRepository<Vendor, String> {
+    public interface VendorRepository extends BasicRepository<Vendor, String> {
 
         Vendor findByPrefixes(String prefix);
 

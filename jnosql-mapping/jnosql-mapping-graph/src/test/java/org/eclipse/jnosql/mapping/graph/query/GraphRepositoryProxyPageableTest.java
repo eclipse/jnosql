@@ -16,8 +16,8 @@ package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.data.Limit;
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.page.PageRequest;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.page.Slice;
 import jakarta.data.Sort;
 import jakarta.inject.Inject;
@@ -58,7 +58,7 @@ import static org.mockito.Mockito.when;
 @AddPackages(BookRepository.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
-class GraphRepositoryProxyPageableTest {
+class GraphRepositoryProxyPageRequestTest {
 
     private GraphTemplate template;
 
@@ -117,7 +117,7 @@ class GraphRepositoryProxyPageableTest {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
-        List<Person> people = personRepository.findByNameAndAge("name", 20, Pageable.ofPage(1).size(2));
+        List<Person> people = personRepository.findByNameAndAge("name", 20, PageRequest.ofPage(1).size(2));
         assertEquals(2, people.size());
 
     }
@@ -130,7 +130,7 @@ class GraphRepositoryProxyPageableTest {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
-        Set<Person> people = personRepository.findByAgeAndName(20, "name", Pageable.ofPage(1).size(3));
+        Set<Person> people = personRepository.findByAgeAndName(20, "name", PageRequest.ofPage(1).size(3));
         assertEquals(3, people.size());
 
     }
@@ -139,7 +139,7 @@ class GraphRepositoryProxyPageableTest {
     void shouldFindByAge() {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        Optional<Person> person = personRepository.findByAge(20, Pageable.ofPage(1).size(2));
+        Optional<Person> person = personRepository.findByAge(20, PageRequest.ofPage(1).size(2));
         assertTrue(person.isPresent());
     }
 
@@ -148,14 +148,14 @@ class GraphRepositoryProxyPageableTest {
     void shouldFindAll() {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        List<Person> people = personRepository.findAll(Pageable.ofPage(2).size(1)).content();
+        List<Person> people = personRepository.findAll(PageRequest.<Person>ofPage(2L).size(1)).content();
         assertFalse(people.isEmpty());
         assertEquals(1, people.size());
     }
 
     @Test
     void shouldReturnEmptyAtFindAll() {
-        List<Person> people = personRepository.findAll(Pageable.ofPage(1).size(2)).content();
+        List<Person> people = personRepository.findAll(PageRequest.<Person>ofPage(1).size(2)).content();
         assertTrue(people.isEmpty());
     }
 
@@ -163,7 +163,7 @@ class GraphRepositoryProxyPageableTest {
     void shouldFindByName() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
-        List<Person> people = personRepository.findByName("Otavio", Pageable.ofPage(2).size(1)
+        List<Person> people = personRepository.findByName("Otavio", PageRequest.ofPage(2).size(1)
                 .sortBy(Sort.asc("age")));
         assertFalse(people.isEmpty());
         assertEquals(1, people.size());
@@ -175,11 +175,11 @@ class GraphRepositoryProxyPageableTest {
     void shouldFindByNameOrderByAge() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
-        Page<Person> page = personRepository.findByNameOrderByAge("Otavio", Pageable.ofPage(1).size(1));
+        Page<Person> page = personRepository.findByNameOrderByAge("Otavio", PageRequest.ofPage(1).size(1));
 
         assertThat(page.content()).hasSize(1).map(Person::getAge)
                 .contains(20);
-        Pageable next = page.nextPageable();
+        PageRequest next = page.nextPageRequest();
 
         page = personRepository.findByNameOrderByAge("Otavio", next);
         assertThat(page.content()).hasSize(1).map(Person::getAge)
@@ -190,7 +190,7 @@ class GraphRepositoryProxyPageableTest {
     void shouldFindByAgeOrderByName() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
-        Slice<Person> slice = personRepository.findByAgeOrderByName(20, Pageable.ofPage(1).size(1));
+        Slice<Person> slice = personRepository.findByAgeOrderByName(20, PageRequest.ofPage(1).size(1));
         assertNotNull(slice);
 
         assertThat(slice.content()).hasSize(1).map(Person::getAge)
@@ -207,14 +207,14 @@ class GraphRepositoryProxyPageableTest {
     }
 
     @Test
-    void shouldFindNameSortPageable() {
+    void shouldFindNameSortPageRequest() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 15);
 
         List<Person> people = personRepository.findByAgeGreaterThan(5, Sort.desc("age"),
-                Pageable.ofSize(10).sortBy(Sort.asc("name")));
+                PageRequest.ofSize(10).sortBy(Sort.asc("name")));
         assertThat(people).hasSize(4).map(Person::getName)
                 .containsExactly("Ada", "Otavio", "Otavio", "Poliana");
     }
@@ -235,25 +235,25 @@ class GraphRepositoryProxyPageableTest {
                 .contains("Otavio", "Poliana");
     }
 
-    interface PersonRepository extends PageableRepository<Person, Long> {
+    interface PersonRepository extends BasicRepository<Person, Long> {
 
-        List<Person> findByName(String name, Pageable Pageable);
+        List<Person> findByName(String name, PageRequest pageRequest);
 
         List<Person> findByAgeGreaterThanOrderByName(Integer age, Limit limit);
 
         List<Person> findByName(String name, Sort sort);
 
-        List<Person> findByAgeGreaterThan(Integer age, Sort sort, Pageable pageable);
+        List<Person> findByAgeGreaterThan(Integer age, Sort sort, PageRequest pageRequest);
 
-        Page<Person> findByNameOrderByAge(String name, Pageable Pageable);
+        Page<Person> findByNameOrderByAge(String name, PageRequest pageRequest);
 
-        Slice<Person> findByAgeOrderByName(Integer age, Pageable Pageable);
+        Slice<Person> findByAgeOrderByName(Integer age, PageRequest pageRequest);
 
-        Optional<Person> findByAge(Integer age, Pageable pagination);
+        Optional<Person> findByAge(Integer age, PageRequest pageRequest);
 
-        List<Person> findByNameAndAge(String name, Integer age, Pageable pagination);
+        List<Person> findByNameAndAge(String name, Integer age, PageRequest pageRequest);
 
-        Set<Person> findByAgeAndName(Integer age, String name, Pageable pagination);
+        Set<Person> findByAgeAndName(Integer age, String name, PageRequest pageRequest);
 
     }
 

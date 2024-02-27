@@ -14,10 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentTemplateProducer;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
@@ -51,10 +52,10 @@ public class DocumentRepositoryProducer {
      * @param <T> the entity of repository
      * @param <K> the K of the entity
      * @param <R> the repository type
-     * @return a {@link PageableRepository} interface
+     * @return a {@link NoSQLRepository} interface
      * @throws NullPointerException when there is null parameter
      */
-    public <T, K, R extends PageableRepository<T, K>> R get(Class<R> repositoryClass, DocumentManager manager) {
+    public <T, K, R extends BasicRepository<T, K>> R get(Class<R> repositoryClass, DocumentManager manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
         JNoSQLDocumentTemplate template = producer.get(manager);
@@ -68,10 +69,10 @@ public class DocumentRepositoryProducer {
      * @param <T> the entity of repository
      * @param <K> the K of the entity
      * @param <R> the repository type
-     * @return a {@link PageableRepository} interface
+     * @return a {@link NoSQLRepository} interface
      * @throws NullPointerException when there is null parameter
      */
-    public <T, K, R extends PageableRepository<T, K>> R get(Class<R> repositoryClass, JNoSQLDocumentTemplate template) {
+    public <T, K, R extends BasicRepository<T, K>> R get(Class<R> repositoryClass, JNoSQLDocumentTemplate template) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
 

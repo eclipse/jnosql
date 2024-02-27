@@ -15,7 +15,8 @@
 package org.eclipse.jnosql.mapping.core.repository;
 
 import jakarta.data.Limit;
-import jakarta.data.page.Pageable;
+import jakarta.data.Order;
+import jakarta.data.page.PageRequest;
 import jakarta.data.Sort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,10 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SpecialParametersTest {
-//should return pageable
-// should return pageable with sort
-//should return sorts
-//should keep the precedence
 
     @Test
     void shouldReturnEmpty() {
@@ -45,21 +42,21 @@ class SpecialParametersTest {
     }
 
     @Test
-    void shouldReturnPageable() {
-        Pageable pageable = Pageable.ofPage(10);
-        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", pageable});
+    void shouldReturnPageRequest() {
+        PageRequest<?> pageRequest = PageRequest.ofPage(10);
+        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", pageRequest});
         assertFalse(parameters.isEmpty());
-        Assertions.assertEquals(pageable, parameters.pageable().orElseThrow());
+        Assertions.assertEquals(pageRequest, parameters.pageRequest().orElseThrow());
         assertTrue(parameters.isSortEmpty());
     }
 
     @Test
-    void shouldReturnPageableWithSort() {
-        Pageable pageable = Pageable.ofPage(10).sortBy(Sort.asc("name"),
+    void shouldReturnPageRequestWithSort() {
+        PageRequest<?> pageRequest = PageRequest.ofPage(10).sortBy(Sort.asc("name"),
                 Sort.desc("age"));
-        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", pageable});
+        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", pageRequest});
         assertFalse(parameters.isEmpty());
-        Assertions.assertEquals(pageable, parameters.pageable().orElseThrow());
+        Assertions.assertEquals(pageRequest, parameters.pageRequest().orElseThrow());
         assertFalse(parameters.isSortEmpty());
         assertThat(parameters.sorts()).hasSize(2)
                 .contains(Sort.asc("name"),
@@ -68,11 +65,11 @@ class SpecialParametersTest {
 
     @Test
     void shouldReturnSort() {
-        Sort sort = Sort.asc("name");
+        Sort<?> sort = Sort.asc("name");
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", sort});
         assertFalse(parameters.isEmpty());
         assertTrue(parameters.hasOnlySort());
-        assertTrue(parameters.pageable().isEmpty());
+        assertTrue(parameters.pageRequest().isEmpty());
         assertFalse(parameters.isSortEmpty());
         assertThat(parameters.sorts()).hasSize(1)
                 .contains(Sort.asc("name"));
@@ -80,14 +77,14 @@ class SpecialParametersTest {
 
     @Test
     void shouldKeepOrder() {
-        Sort sort = Sort.asc("name");
-        Pageable pageable = Pageable.ofPage(10).sortBy(Sort.asc("name"),
+        Sort<?> sort = Sort.asc("name");
+        PageRequest<?> pageRequest = PageRequest.ofPage(10).sortBy(Sort.asc("name"),
                 Sort.desc("age"));
 
-        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", sort, pageable});
+        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", sort, pageRequest});
         assertFalse(parameters.isEmpty());
         assertFalse(parameters.hasOnlySort());
-        Assertions.assertEquals(pageable, parameters.pageable().orElseThrow());
+        Assertions.assertEquals(pageRequest, parameters.pageRequest().orElseThrow());
         assertFalse(parameters.isSortEmpty());
         assertThat(parameters.sorts()).hasSize(3)
                 .containsExactly(sort, Sort.asc("name"),
@@ -112,6 +109,32 @@ class SpecialParametersTest {
         assertFalse(parameters.isEmpty());
         assertThat(parameters.sorts()).hasSize(2)
                 .containsExactly(Sort.asc("name"),
+                        Sort.desc("age"));
+    }
+
+    @Test
+    void shouldReturnOrder(){
+        Order<?> order = Order.by(Sort.asc("name"), Sort.desc("age"));
+        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", order});
+        assertFalse(parameters.isEmpty());
+        assertFalse(parameters.isSortEmpty());
+        assertThat(parameters.sorts()).hasSize(2)
+                .contains(Sort.asc("name"),
+                        Sort.desc("age"));
+    }
+
+    @Test
+    void shouldReturnIterableOrder(){
+        PageRequest<?> pageRequest = PageRequest.ofPage(10).sortBy(Sort.asc("name"),
+                Sort.desc("age"));
+        Order<?> order = Order.by(Sort.asc("name"));
+        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio",
+                List.of(Sort.asc("name"), Sort.desc("age")), pageRequest, order});
+        assertFalse(parameters.isEmpty());
+        Assertions.assertEquals(pageRequest, parameters.pageRequest().orElseThrow());
+        assertFalse(parameters.isSortEmpty());
+        assertThat(parameters.sorts()).hasSize(5)
+                .contains(Sort.asc("name"),
                         Sort.desc("age"));
     }
 }

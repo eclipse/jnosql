@@ -19,7 +19,7 @@ import jakarta.data.repository.By;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.Sort;
@@ -35,6 +35,7 @@ import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnCondition;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
@@ -872,7 +873,7 @@ class ColumnRepositoryProxyTest {
         }
     }
 
-    public interface PersonRepository extends PageableRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
+    public interface PersonRepository extends NoSQLRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
 
         List<Person> findByActiveTrue();
 
@@ -960,7 +961,7 @@ class ColumnRepositoryProxyTest {
         List<Person> find(@By("name") String name);
     }
 
-    public interface VendorRepository extends PageableRepository<Vendor, String> {
+    public interface VendorRepository extends BasicRepository<Vendor, String> {
 
         Vendor findByPrefixes(String prefix);
 
