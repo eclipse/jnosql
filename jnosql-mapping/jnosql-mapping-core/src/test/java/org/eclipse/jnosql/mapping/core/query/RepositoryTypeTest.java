@@ -20,12 +20,12 @@ import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
-import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.spi.CDI;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -57,6 +57,14 @@ class RepositoryTypeTest {
         var type = RepositoryType.of(method, BasicRepository.class);
         assertThat(type).isEqualTo(RepositoryType.DEFAULT);
     }
+
+    @ParameterizedTest
+    @MethodSource("getNoSQLRepositoryMethods")
+    void shouldReturnDefaultAtPageableRepository(Method method)  {
+        var type = RepositoryType.of(method, BasicRepository.class);
+        assertThat(type).isEqualTo(RepositoryType.DEFAULT);
+    }
+
 
     @Test
     void shouldReturnObjectMethod() throws NoSuchMethodException {
@@ -235,6 +243,11 @@ class RepositoryTypeTest {
 
     private static Stream<Arguments> getCrudRepositoryMethods() {
         return Arrays.stream(CrudRepository.class.getDeclaredMethods())
+                .map(Arguments::of);
+    }
+
+    private static Stream<Arguments> getNoSQLRepositoryMethods() {
+        return Arrays.stream(NoSQLRepository.class.getDeclaredMethods())
                 .map(Arguments::of);
     }
 }

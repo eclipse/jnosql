@@ -26,6 +26,7 @@ import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.assertj.core.api.SoftAssertions;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;
@@ -294,6 +295,7 @@ class KeyValueRepositoryProxyTest {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll());
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.countBy());
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll(null));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.deleteAll());
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.countByName("name"));
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.find("name"));
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.deleteByAge(10));
@@ -361,7 +363,7 @@ class KeyValueRepositoryProxyTest {
         }
     }
 
-    public interface UserRepository extends BasicRepository<User, String>, CrudRepository<User, String>, BaseQuery<User>, PersonStatisticRepository {
+    public interface UserRepository extends NoSQLRepository<User, String>, CrudRepository<User, String>, BaseQuery<User>, PersonStatisticRepository {
 
         Optional<User> findByName(String name);
 

@@ -15,11 +15,11 @@
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
 
-import jakarta.data.repository.BasicRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplateProducer;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
@@ -35,14 +35,14 @@ public class KeyValueRepositoryProducer {
     @Inject
     private EntitiesMetadata entities;
 
-    public <T, K, R extends BasicRepository<T, K>> R get(Class<R> repositoryClass, BucketManager manager) {
+    public <T, K, R extends NoSQLRepository<T, K>> R get(Class<R> repositoryClass, BucketManager manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
         KeyValueTemplate template = producer.apply(manager);
         return get(repositoryClass, template);
     }
 
-    public <T, K, R extends BasicRepository<T, K>> R get(Class<R> repositoryClass, KeyValueTemplate template) {
+    public <T, K, R extends NoSQLRepository<T, K>> R get(Class<R> repositoryClass, KeyValueTemplate template) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
         KeyValueRepositoryProxy<T, K> handler = new KeyValueRepositoryProxy<>(repositoryClass, entities, template);

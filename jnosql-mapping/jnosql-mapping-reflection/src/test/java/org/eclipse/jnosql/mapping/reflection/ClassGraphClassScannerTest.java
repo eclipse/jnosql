@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.BasicRepository;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.reflection.entities.AnimalRepository;
 import org.eclipse.jnosql.mapping.reflection.entities.Contact;
 import org.eclipse.jnosql.mapping.reflection.entities.Job;
@@ -81,8 +82,8 @@ class ClassGraphClassScannerTest {
     }
 
     @Test
-    void shouldFieldByPageRequest() {
-        Set<Class<?>> repositories = classScanner.repositories(BasicRepository.class);
+    void shouldFieldByNoSQL() {
+        Set<Class<?>> repositories = classScanner.repositories(NoSQLRepository.class);
         Assertions.assertNotNull(repositories);
 
         assertThat(repositories).hasSize(1)

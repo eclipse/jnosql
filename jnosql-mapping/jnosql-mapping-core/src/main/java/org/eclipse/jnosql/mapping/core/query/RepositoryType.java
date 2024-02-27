@@ -23,6 +23,7 @@ import jakarta.data.repository.Query;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
 import jakarta.enterprise.inject.spi.CDI;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -37,7 +38,7 @@ import java.util.function.Predicate;
 public enum RepositoryType {
 
     /**
-     * Methods from either {@link CrudRepository}, {@link  BasicRepository} and {@link  BasicRepository}
+     * Methods from either {@link CrudRepository}, {@link  BasicRepository} and {@link  org.eclipse.jnosql.mapping.NoSQLRepository}
      */
     DEFAULT(""),
     /**
@@ -104,7 +105,7 @@ public enum RepositoryType {
 
     private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(CrudRepository.class)
             .or(Predicate.isEqual(BasicRepository.class))
-            .or(Predicate.isEqual(BasicRepository.class));
+            .or(Predicate.isEqual(NoSQLRepository.class));
 
     private static final Set<RepositoryType> KEY_WORLD_METHODS = EnumSet.of(FIND_BY, DELETE_BY, COUNT_BY, EXISTS_BY);
 

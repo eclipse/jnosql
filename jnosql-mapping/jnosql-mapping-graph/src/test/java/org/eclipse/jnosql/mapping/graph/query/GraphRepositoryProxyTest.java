@@ -31,6 +31,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.assertj.core.api.SoftAssertions;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.graph.BookRepository;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
@@ -317,6 +318,11 @@ class GraphRepositoryProxyTest {
         verify(template).findAll(Person.class);
     }
 
+    @Test
+    void shouldDeleteAll() {
+        personRepository.deleteAll();
+        verify(template).deleteAll(Person.class);
+    }
 
     @Test
     void shouldReturnEmptyAtFindAll() {
@@ -618,7 +624,7 @@ class GraphRepositoryProxyTest {
         }
     }
 
-    public interface PersonRepository extends BasicRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
+    public interface PersonRepository extends NoSQLRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
 
         List<Person> findByActiveTrue();
 

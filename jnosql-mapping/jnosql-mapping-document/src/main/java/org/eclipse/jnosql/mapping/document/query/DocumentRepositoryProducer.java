@@ -18,6 +18,7 @@ import jakarta.data.repository.BasicRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentTemplateProducer;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
@@ -51,7 +52,7 @@ public class DocumentRepositoryProducer {
      * @param <T> the entity of repository
      * @param <K> the K of the entity
      * @param <R> the repository type
-     * @return a {@link BasicRepository} interface
+     * @return a {@link NoSQLRepository} interface
      * @throws NullPointerException when there is null parameter
      */
     public <T, K, R extends BasicRepository<T, K>> R get(Class<R> repositoryClass, DocumentManager manager) {
@@ -68,7 +69,7 @@ public class DocumentRepositoryProducer {
      * @param <T> the entity of repository
      * @param <K> the K of the entity
      * @param <R> the repository type
-     * @return a {@link BasicRepository} interface
+     * @return a {@link NoSQLRepository} interface
      * @throws NullPointerException when there is null parameter
      */
     public <T, K, R extends BasicRepository<T, K>> R get(Class<R> repositoryClass, JNoSQLDocumentTemplate template) {

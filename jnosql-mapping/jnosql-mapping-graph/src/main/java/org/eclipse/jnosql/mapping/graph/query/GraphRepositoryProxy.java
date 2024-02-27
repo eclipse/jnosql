@@ -26,7 +26,7 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import java.lang.reflect.ParameterizedType;
 
 /**
- * Proxy handle to generate {@link jakarta.data.repository.BasicRepository}
+ * Proxy handle to generate {@link org.eclipse.jnosql.mapping.NoSQLRepository}
  *
  * @param <T>  the type
  * @param <K> the K type

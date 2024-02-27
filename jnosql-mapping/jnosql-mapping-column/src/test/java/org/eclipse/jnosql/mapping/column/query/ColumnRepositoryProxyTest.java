@@ -35,6 +35,7 @@ import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnCondition;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
@@ -328,6 +329,14 @@ class ColumnRepositoryProxyTest {
 
     }
 
+    @Test
+    void shouldDeleteAll() {
+        personRepository.deleteAll();
+        ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
+        verify(template).deleteAll(captor.capture());
+        assertEquals(captor.getValue(), Person.class);
+
+    }
 
     @Test
     void shouldDeleteEntity(){
@@ -864,7 +873,7 @@ class ColumnRepositoryProxyTest {
         }
     }
 
-    public interface PersonRepository extends BasicRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
+    public interface PersonRepository extends NoSQLRepository<Person, Long>, BaseQuery<Person>, PersonStatisticRepository {
 
         List<Person> findByActiveTrue();
 

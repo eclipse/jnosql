@@ -396,6 +396,7 @@ class DocumentCrudRepositoryProxyTest {
 
     }
 
+
     @Test
     void shouldReturnToString() {
         assertNotNull(personRepository.toString());

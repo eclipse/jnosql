@@ -29,6 +29,7 @@ import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
@@ -332,6 +333,16 @@ class DocumentRepositoryProxyTest {
         personRepository.delete(person);
         verify(template).delete(Person.class, 1L);
     }
+
+    @Test
+    void shouldDeleteAll() {
+        personRepository.deleteAll();
+        ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
+        verify(template).deleteAll(captor.capture());
+        assertEquals(captor.getValue(), Person.class);
+
+    }
+
 
     @Test
     void shouldDeleteEntities(){
@@ -717,7 +728,7 @@ class DocumentRepositoryProxyTest {
         });
     }
 
-    interface PersonRepository extends BasicRepository<Person, Long>, PersonStatisticRepository {
+    interface PersonRepository extends NoSQLRepository<Person, Long>, PersonStatisticRepository {
 
 
         long countByName(String name);

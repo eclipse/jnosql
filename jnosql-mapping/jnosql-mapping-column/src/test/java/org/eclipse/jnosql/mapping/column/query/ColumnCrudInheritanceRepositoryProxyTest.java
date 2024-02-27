@@ -21,6 +21,7 @@ import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnCondition;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.column.MockProducer;
@@ -83,7 +84,6 @@ class ColumnCrudInheritanceRepositoryProxyTest {
         verify(template).findAll(EmailNotification.class);
     }
 
-
     @Test
     void shouldPutFilterAtCount() {
         emailRepository.countBy();
@@ -142,9 +142,14 @@ class ColumnCrudInheritanceRepositoryProxyTest {
         });
     }
 
+    @Test
+    void shouldPutFilterAtDeleteAll() {
+        emailRepository.deleteAll();
+        verify(template).deleteAll(EmailNotification.class);
+    }
 
 
-    public interface EmailRepository extends CrudRepository<EmailNotification, String> {
+    public interface EmailRepository extends NoSQLRepository<EmailNotification, String> {
 
         List<EmailNotification> findByName(String name);
 

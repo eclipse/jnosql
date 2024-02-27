@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import jakarta.data.repository.BasicRepository;
+;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
@@ -29,7 +29,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * The {@link BasicRepository} template method
+ * The {@link org.eclipse.jnosql.mapping.NoSQLRepository} template method
  */
 public abstract class AbstractColumnRepository<T, K> extends AbstractRepository<T, K> {
 
@@ -56,6 +56,11 @@ public abstract class AbstractColumnRepository<T, K> extends AbstractRepository<
     @Override
     public Stream<T> findAll() {
         return template().findAll(type());
+    }
+
+    @Override
+    public void deleteAll() {
+        template().deleteAll(type());
     }
 
 }

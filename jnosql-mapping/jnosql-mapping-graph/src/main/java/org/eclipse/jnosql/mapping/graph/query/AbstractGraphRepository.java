@@ -55,4 +55,9 @@ abstract class AbstractGraphRepository<T, K> extends AbstractRepository<T, K> {
         return template().findAll(type());
     }
 
+    @Override
+    public void deleteAll() {
+        template().deleteAll(entityMetadata().type());
+    }
+
 }

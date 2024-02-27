@@ -15,19 +15,18 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 
-import jakarta.data.repository.BasicRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
-import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 
 
 /**
- * Proxy handle to generate {@link BasicRepository} for document-based repositories.
+ * Proxy handle to generate {@link org.eclipse.jnosql.mapping.NoSQLRepository} for document-based repositories.
  *
  * @param <T> the type
  * @param <K> the key type
