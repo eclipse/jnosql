@@ -237,17 +237,17 @@ class GraphRepositoryProxyPageRequestTest {
 
     interface PersonRepository extends BasicRepository<Person, Long> {
 
-        List<Person> findByName(String name, PageRequest PageRequest);
+        List<Person> findByName(String name, PageRequest pageRequest);
 
         List<Person> findByAgeGreaterThanOrderByName(Integer age, Limit limit);
 
         List<Person> findByName(String name, Sort sort);
 
-        List<Person> findByAgeGreaterThan(Integer age, Sort sort, PageRequest PageRequest);
+        List<Person> findByAgeGreaterThan(Integer age, Sort sort, PageRequest pageRequest);
 
-        Page<Person> findByNameOrderByAge(String name, PageRequest PageRequest);
+        Page<Person> findByNameOrderByAge(String name, PageRequest pageRequest);
 
-        Slice<Person> findByAgeOrderByName(Integer age, PageRequest PageRequest);
+        Slice<Person> findByAgeOrderByName(Integer age, PageRequest pageRequest);
 
         Optional<Person> findByAge(Integer age, PageRequest pagination);
 

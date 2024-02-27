@@ -618,45 +618,45 @@ class DocumentRepositoryProxyPageRequestTest {
     interface PersonRepository extends BasicRepository<Person, Long> {
 
 
-        Person findByName(String name, PageRequest PageRequest);
+        Person findByName(String name, PageRequest pageRequest);
 
         List<Person> findByName(String name, Sort sort);
 
-        List<Person> findByName(String name, Sort sort, PageRequest PageRequest);
+        List<Person> findByName(String name, Sort sort, PageRequest pageRequest);
 
         List<Person> findByName(String name, Limit limit, Sort sort);
 
-        Page<Person> findByNameOrderByAge(String name, PageRequest PageRequest);
+        Page<Person> findByNameOrderByAge(String name, PageRequest pageRequest);
 
-        Slice<Person> findByAge(String age, PageRequest PageRequest);
+        Slice<Person> findByAge(String age, PageRequest pageRequest);
 
-        List<Person> findByNameAndAge(String name, Integer age, PageRequest PageRequest);
+        List<Person> findByNameAndAge(String name, Integer age, PageRequest pageRequest);
 
-        Set<Person> findByAgeAndName(Integer age, String name, PageRequest PageRequest);
+        Set<Person> findByAgeAndName(Integer age, String name, PageRequest pageRequest);
 
-        Stream<Person> findByNameAndAgeOrderByName(String name, Integer age, PageRequest PageRequest);
+        Stream<Person> findByNameAndAgeOrderByName(String name, Integer age, PageRequest pageRequest);
 
-        Queue<Person> findByNameAndAgeOrderByAge(String name, Integer age, PageRequest PageRequest);
+        Queue<Person> findByNameAndAgeOrderByAge(String name, Integer age, PageRequest pageRequest);
 
-        Set<Person> findByNameAndAgeGreaterThanEqual(String name, Integer age, PageRequest PageRequest);
+        Set<Person> findByNameAndAgeGreaterThanEqual(String name, Integer age, PageRequest pageRequest);
 
-        Set<Person> findByAgeGreaterThan(Integer age, PageRequest PageRequest);
+        Set<Person> findByAgeGreaterThan(Integer age, PageRequest pageRequest);
 
-        Set<Person> findByAgeLessThanEqual(Integer age, PageRequest PageRequest);
+        Set<Person> findByAgeLessThanEqual(Integer age, PageRequest pageRequest);
 
-        Set<Person> findByAgeLessThan(Integer age, PageRequest PageRequest);
+        Set<Person> findByAgeLessThan(Integer age, PageRequest pageRequest);
 
-        Set<Person> findByAgeBetween(Integer ageA, Integer ageB, PageRequest PageRequest);
+        Set<Person> findByAgeBetween(Integer ageA, Integer ageB, PageRequest pageRequest);
 
-        Set<Person> findByNameLike(String name, PageRequest PageRequest);
+        Set<Person> findByNameLike(String name, PageRequest pageRequest);
 
     }
 
     public interface VendorRepository extends BasicRepository<Vendor, String> {
 
-        Vendor findByPrefixes(String prefix, PageRequest PageRequest);
+        Vendor findByPrefixes(String prefix, PageRequest pageRequest);
 
-        Vendor findByPrefixesIn(List<String> prefix, PageRequest PageRequest);
+        Vendor findByPrefixesIn(List<String> prefix, PageRequest pageRequest);
 
     }
 }

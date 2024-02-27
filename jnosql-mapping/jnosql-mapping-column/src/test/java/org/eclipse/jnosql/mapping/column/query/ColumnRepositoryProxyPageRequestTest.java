@@ -620,9 +620,9 @@ public class ColumnRepositoryProxyPageRequestTest {
 
         List<Person> findByName(String name, Limit limit, Sort sort);
 
-        List<Person> findByName(String name, Sort sort, PageRequest PageRequest);
+        List<Person> findByName(String name, Sort sort, PageRequest pageRequest);
 
-        Page<Person> findByNameOrderByAge(String name, PageRequest PageRequest);
+        Page<Person> findByNameOrderByAge(String name, PageRequest pageRequest);
 
         Slice<Person> findByAge(String age, PageRequest pagination);
 
