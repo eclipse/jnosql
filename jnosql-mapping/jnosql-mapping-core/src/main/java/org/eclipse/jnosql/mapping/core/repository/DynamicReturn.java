@@ -134,7 +134,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         this.methodSource = methodSource;
         this.singleResult = singleResult;
         this.result = result;
-        this.pagination = pagination;
+        this.pageRequest = pageRequest;
         this.singleResultPagination = singleResultPagination;
         this.streamPagination = streamPagination;
         this.page = page;
@@ -180,35 +180,35 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      * @return the pagination
      */
     Optional<PageRequest> getPagination() {
-        return Optional.ofNullable(pagination);
+        return Optional.ofNullable(pageRequest);
     }
 
     /**
      * @return returns a single result with pagination
      */
     public Optional<T> singleResultPagination() {
-        return singleResultPagination.apply(pagination);
+        return singleResultPagination.apply(pageRequest);
     }
 
     /**
      * @return a list result using pagination
      */
     public Stream<T> streamPagination() {
-        return streamPagination.apply(pagination);
+        return streamPagination.apply(pageRequest);
     }
 
     /**
      * @return the page
      */
     public Page<T> getPage() {
-        return page.apply(pagination);
+        return page.apply(pageRequest);
     }
 
     /**
      * @return check if there is pagination
      */
     boolean hasPagination() {
-        return pagination != null;
+        return pageRequest != null;
     }
 
     /**
@@ -282,11 +282,11 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
 
         /**
-         * @param pagination the pagination
+         * @param pageRequest the pagination
          * @return the builder instance
          */
         public DefaultDynamicReturnBuilder withPagination(PageRequest pageRequest) {
-            this.pagination = pagination;
+            this.pageRequest = pageRequest;
             return this;
         }
 
@@ -329,14 +329,14 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
             requireNonNull(singleResult, "the single result supplier is required");
             requireNonNull(result, "the result supplier is required");
 
-            if (pagination != null) {
+            if (pageRequest != null) {
                 requireNonNull(singleResultPagination, "singleResultPagination is required when pagination is not null");
                 requireNonNull(streamPagination, "listPagination is required when pagination is not null");
                 requireNonNull(page, "page is required when pagination is not null");
             }
 
             return new DynamicReturn(classSource, methodSource, singleResult, result,
-                    pagination, singleResultPagination, streamPagination, page);
+                    pageRequest, singleResultPagination, streamPagination, page);
         }
     }
 
