@@ -20,10 +20,56 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Conditions type to run a query
+ * Represents conditions that can be used in a query.
+ * These conditions are used to filter query results based on specific criteria.
+ * The conditions include equality, comparison operators, set membership, pattern matching, logical conjunctions,
+ * logical disjunctions, negation, and range checks.
  */
 public enum Condition {
-    EQUALS, GREATER_THAN, GREATER_EQUALS_THAN, LESSER_THAN, LESSER_EQUALS_THAN, IN, LIKE, AND, OR, NOT, BETWEEN;
+    /**
+     * Represents an equality comparison condition.
+     */
+    EQUALS,
+    /**
+     * Represents a greater than comparison condition.
+     */
+    GREATER_THAN,
+    /**
+     * Represents a greater than or equals to comparison condition.
+     */
+    GREATER_EQUALS_THAN,
+    /**
+     * Represents a lesser than comparison condition.
+     */
+    LESSER_THAN,
+    /**
+     * Represents a lesser than or equals to comparison condition.
+     */
+    LESSER_EQUALS_THAN,
+    /**
+     * Represents a set membership comparison condition.
+     */
+    IN,
+    /**
+     * Represents a pattern matching comparison condition.
+     */
+    LIKE,
+    /**
+     * Represents a logical conjunction condition.
+     */
+    AND,
+    /**
+     * Represents a logical disjunction condition.
+     */
+    OR,
+    /**
+     * Represents a negation condition.
+     */
+    NOT,
+    /**
+     * Represents a range check condition.
+     */
+    BETWEEN;
 
     /**
      * Return tne field as name to both document and column.
