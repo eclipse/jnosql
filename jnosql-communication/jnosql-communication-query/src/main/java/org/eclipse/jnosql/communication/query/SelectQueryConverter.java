@@ -34,7 +34,7 @@ public final class SelectQueryConverter extends AbstractWhereSupplier implements
 
     private List<String> fields = emptyList();
 
-    private List<Sort> sorts = emptyList();
+    private List<Sort<?>> sorts = emptyList();
 
     private long skip;
 

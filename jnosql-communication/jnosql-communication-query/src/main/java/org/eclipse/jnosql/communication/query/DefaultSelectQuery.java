@@ -23,7 +23,7 @@ import java.util.Optional;
 /**
  * The default implementation of {@link SelectQuery}
  */
-record DefaultSelectQuery(String entity, List<String> fields, List<Sort> orderBy, long skip,
+record DefaultSelectQuery(String entity, List<String> fields, List<Sort<?>> orderBy, long skip,
                                long limit, Where condition) implements SelectQuery {
 
 

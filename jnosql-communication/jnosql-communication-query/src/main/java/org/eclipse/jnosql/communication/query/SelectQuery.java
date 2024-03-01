@@ -18,50 +18,50 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The select statement reads one or more fields for one or more entities.
+ * Represents a select statement, which reads one or more fields for one or more entities.
  * It returns a result-set of the entities matching the request, where each entity contains the fields
- * for corresponding to the query.
+ * corresponding to the query.
  */
 public interface SelectQuery extends Query {
     /**
-     * The fields that will retrieve in this query, if this fields is empty, this query will retrieve the whole entity.
+     * Retrieves the fields to be retrieved in this query. If this list is empty, the query will retrieve the entire entity.
      *
-     * @return the fields list
+     * @return the list of fields
      */
     List<String> fields();
 
     /**
-     * The entity name
+     * Retrieves the name of the entity.
      *
      * @return the entity name
      */
     String entity();
 
     /**
-     * The condition at this {@link DefaultSelectQuery}, if the Where is empty that means may retrieve the whole entities.
+     * Retrieves the condition associated with this select query. If the condition is empty, the query may retrieve the entire entities.
      *
-     * @return the {@link Where} entity otherwise {@link Optional#empty()}
+     * @return the {@link Where} entity, otherwise {@link Optional#empty()}
      */
     Optional<Where> where();
 
     /**
-     * Statement defines where the query should start
+     * Retrieves the statement defining where the query should start.
      *
-     * @return the number to skip, otherwise either negative value or zero
+     * @return the number of entities to skip, otherwise a negative value or zero
      */
     long skip();
 
     /**
-     * Statement limits the number of rows returned by a query,
+     * Retrieves the statement limiting the number of rows returned by a query.
      *
-     * @return the maximum of result, otherwise either negative value or zero
+     * @return the maximum number of results, otherwise a negative value or zero
      */
     long limit();
 
     /**
-     * The list of orders, it is used to sort the result-set in ascending or descending order.
+     * Retrieves the list of orders used to sort the result-set in ascending or descending order.
      *
-     * @return the order list
+     * @return the list of orders
      */
     List<Sort<?>> orderBy();
 }
