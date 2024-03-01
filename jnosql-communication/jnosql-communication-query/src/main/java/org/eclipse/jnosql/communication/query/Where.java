@@ -16,9 +16,12 @@ import org.eclipse.jnosql.communication.Condition;
 
 import java.util.Objects;
 
+
 /**
- * The WHERE clause specifies a filter to the result. These filters are booleans operations that are composed of one or
- * more conditions appended with the and ({@link Condition#AND}) and or ({@link Condition#OR}) operators.
+ * The WHERE clause specifies a filter to the result set of a database query. It allows you to narrow down the
+ * selection based on specified conditions. These conditions are boolean operations composed of one or more
+ * criteria, joined together using the logical AND ({@link Condition#AND}) and OR ({@link Condition#OR}) operators.
+ * For instance, you can use the WHERE clause to retrieve rows from a table where certain conditions are met.
  */
 public final class Where {
 
@@ -29,8 +32,9 @@ public final class Where {
     }
 
     /**
-     * The condition
-     * @return the condition
+     * Retrieves the condition associated with this WHERE clause.
+     *
+     * @return the condition associated with this WHERE clause.
      */
     public QueryCondition condition() {
         return condition;
@@ -57,6 +61,12 @@ public final class Where {
         return "where " + condition;
     }
 
+    /**
+     * Creates a new WHERE clause with the specified condition.
+     *
+     * @param condition the condition to be applied in the WHERE clause.
+     * @return a new WHERE clause with the specified condition.
+     */
     public static Where of(QueryCondition condition) {
         return new Where(condition);
     }

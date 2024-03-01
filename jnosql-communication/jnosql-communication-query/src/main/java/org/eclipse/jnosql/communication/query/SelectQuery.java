@@ -63,5 +63,5 @@ public interface SelectQuery extends Query {
      *
      * @return the order list
      */
-    List<Sort> orderBy();
+    List<Sort<?>> orderBy();
 }
