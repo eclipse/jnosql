@@ -11,6 +11,7 @@
  *  Otavio Santana
  */
 module org.eclipse.jnosql.communication.column {
+    uses org.eclipse.jnosql.communication.semistructured.DatabaseConfiguration;
     requires org.eclipse.jnosql.communication.core;
     requires org.eclipse.jnosql.communication.query;
     requires jakarta.json.bind;
