@@ -151,8 +151,8 @@ public final class CriteriaCondition {
 
     @Override
     public String toString() {
-        return "ColumnCondition{" +
-                "column=" + element +
+        return "CriteriaCondition{" +
+                "element=" + element +
                 ", condition=" + condition +
                 '}';
     }
@@ -283,13 +283,12 @@ public final class CriteriaCondition {
     }
 
     /**
-     * Creates a {@link CriteriaCondition} with a {@link Condition#LESSER_EQUALS_THAN},
-     * indicating that a select will scan a column family with the same name and the value
-     * lesser or equal to the one provided in this column.
+     * Creates a new {@link CriteriaCondition} with a {@link Condition#LESSER_EQUALS_THAN} condition.
+     * This indicates that a select operation will scan data with the same element name and a value lesser than or equal to the provided value.
      *
-     * @param element a column instance
+     * @param element the element representing the data to match
      * @return a {@link CriteriaCondition} with {@link Condition#LESSER_EQUALS_THAN}
-     * @throws NullPointerException when the column is null
+     * @throws NullPointerException when the element is null
      */
     public static CriteriaCondition lte(Element element) {
         return new CriteriaCondition(element, Condition.LESSER_EQUALS_THAN);
@@ -299,8 +298,8 @@ public final class CriteriaCondition {
      * An alias method to {@link CriteriaCondition#lte(Element)}, which first creates an {@link Element}
      * instance and then applies the condition.
      *
-     * @param name  the name of the column
-     * @param value the column information
+     * @param name  the name of the element
+     * @param value the value of the element
      * @return a {@link CriteriaCondition} with {@link Condition#LESSER_EQUALS_THAN}
      * @throws NullPointerException when either the name or the value is null
      */
@@ -311,16 +310,16 @@ public final class CriteriaCondition {
     }
 
     /**
-     * Creates a {@link CriteriaCondition} with a {@link Condition#IN}, indicating that a select will scan a
-     * column family with the same name and the value within the provided collection.
+     * Creates a {@link CriteriaCondition} with a {@link Condition#IN}, indicating that a select will scan a semistructured NoSQL
+     * database with the same name and the value within the provided collection.
      *
-     * @param element a column instance
+     * @param element an element instance
      * @return a {@link CriteriaCondition} with {@link Condition#IN}
-     * @throws NullPointerException     when the column is null
+     * @throws NullPointerException     when the element is null
      * @throws IllegalArgumentException when the {@link Element#get()} is not an iterable implementation
      */
     public static CriteriaCondition in(Element element) {
-        Objects.requireNonNull(element, "Column is required");
+        Objects.requireNonNull(element, "element is required");
         checkInClause(element.value());
         return new CriteriaCondition(element, Condition.IN);
     }
@@ -329,8 +328,8 @@ public final class CriteriaCondition {
      * An alias method to {@link CriteriaCondition#in(Element)}, which first creates an {@link Element}
      * instance and then applies the condition.
      *
-     * @param name  the name of the column
-     * @param value the column information
+     * @param name  the name of the element
+     * @param value the element information
      * @return a {@link CriteriaCondition} with {@link Condition#IN}
      * @throws NullPointerException when either the name or the value is null
      */
@@ -342,11 +341,11 @@ public final class CriteriaCondition {
 
     /**
      * Creates a {@link CriteriaCondition} with a {@link Condition#LIKE}, indicating that a select will scan a
-     * column family with the same name and the value is like the one provided in this column.
+     * semistructured NoSQL database with the same name and the value is like the one provided in this element.
      *
-     * @param element a column instance
+     * @param element an element instance
      * @return a {@link CriteriaCondition} with {@link Condition#LIKE}
-     * @throws NullPointerException when the column is null
+     * @throws NullPointerException when the element is null
      */
     public static CriteriaCondition like(Element element) {
         return new CriteriaCondition(element, Condition.LIKE);
@@ -356,8 +355,8 @@ public final class CriteriaCondition {
      * An alias method to {@link CriteriaCondition#like(Element)}, which first creates an {@link Element}
      * instance and then applies the condition.
      *
-     * @param name  the name of the column
-     * @param value the column information
+     * @param name  the name of the element
+     * @param value the element information
      * @return a {@link CriteriaCondition} with {@link Condition#LIKE}
      * @throws NullPointerException when either the name or the value is null
      */
@@ -378,7 +377,7 @@ public final class CriteriaCondition {
      * @throws IllegalArgumentException when the element is not an iterable with two elements
      */
     public static CriteriaCondition between(Element element) {
-        Objects.requireNonNull(element, "Column is required");
+        Objects.requireNonNull(element, "element is required");
         checkBetweenClause(element.get());
         return new CriteriaCondition(element, Condition.BETWEEN);
     }

@@ -520,7 +520,7 @@ public interface SelectQuery {
         QueryBuilder sort(Sort<?>... sorts);
 
         /**
-         * Define the column family in the query, this element is mandatory to build the {@link SelectQuery}.
+         * Define the entity in the query, this element is mandatory to build the {@link SelectQuery}.
          *
          * @param entity the entity to query
          * @return the {@link QueryBuilder}

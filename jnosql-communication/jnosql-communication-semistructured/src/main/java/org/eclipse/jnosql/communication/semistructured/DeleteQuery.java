@@ -330,14 +330,14 @@ public interface DeleteQuery {
         DeleteQueryBuilder delete(String... columns);
 
         /**
-         * Define the column family in the query, this element is mandatory to build
+         * Define the entity in the query, this element is mandatory to build
          * the {@link DeleteQueryBuilder}.
          *
-         * @param columnFamily the column family to query
+         * @param entity the entity name to query
          * @return the {@link DeleteQueryBuilder}
-         * @throws NullPointerException when columnFamily is null
+         * @throws NullPointerException when entity is null
          */
-        DeleteQueryBuilder from(String columnFamily);
+        DeleteQueryBuilder from(String entity);
 
         /**
          * Either add or replace the condition in the query. It has a different behavior than the previous method
