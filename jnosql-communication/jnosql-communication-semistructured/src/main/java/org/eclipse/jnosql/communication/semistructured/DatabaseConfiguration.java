@@ -33,11 +33,10 @@ import java.util.function.Function;
  * <p>Implementations of this interface should be aware of the underlying provider implementation they represent,
  * and ensure that the correct configuration is returned based on the provided type.</p>
  *
- * @param <R> the {@link DatabaseManagerFactory} type
  * @see DatabaseManagerFactory
  * @see DatabaseManager
  */
-public interface DatabaseConfiguration<R extends DatabaseManagerFactory> extends Function<Settings, R> {
+public interface DatabaseConfiguration extends Function<Settings, DatabaseManagerFactory> {
 
 
     /**
@@ -52,7 +51,7 @@ public interface DatabaseConfiguration<R extends DatabaseManagerFactory> extends
      * @throws CommunicationException if no implementation of {@link DatabaseConfiguration} is found
      */
     @SuppressWarnings("unchecked")
-    static <R extends DatabaseManagerFactory, T extends DatabaseConfiguration<R>> T getConfiguration() {
+    static <R extends DatabaseManagerFactory, T extends DatabaseConfiguration> T getConfiguration() {
         return (T) ServiceLoader.load(DatabaseConfiguration.class)
                 .stream()
                 .map(ServiceLoader.Provider::get)
@@ -74,7 +73,7 @@ public interface DatabaseConfiguration<R extends DatabaseManagerFactory> extends
      * @throws CommunicationException if no implementation of {@link DatabaseConfiguration} is found for the specified type
      */
     @SuppressWarnings("unchecked")
-    static <R extends DatabaseManagerFactory, T extends DatabaseConfiguration<R>> T getConfiguration(Class<T> type) {
+    static <R extends DatabaseManagerFactory, T extends DatabaseConfiguration> T getConfiguration(Class<T> type) {
         return (T) ServiceLoader.load(DatabaseConfiguration.class)
                 .stream()
                 .map(ServiceLoader.Provider::get)
