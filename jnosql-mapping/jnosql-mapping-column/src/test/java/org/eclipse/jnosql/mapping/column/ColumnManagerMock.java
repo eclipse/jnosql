@@ -15,30 +15,15 @@
 package org.eclipse.jnosql.mapping.column;
 
 import org.eclipse.jnosql.communication.Settings;
-import org.eclipse.jnosql.communication.column.ColumnConfiguration;
-import org.eclipse.jnosql.communication.column.ColumnManager;
-import org.eclipse.jnosql.communication.column.ColumnManagerFactory;
+import org.eclipse.jnosql.communication.semistructured.DatabaseConfiguration;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManagerFactory;
 import org.mockito.Mockito;
 
-public class ColumnManagerMock implements ColumnConfiguration {
-
+public class ColumnManagerMock implements DatabaseConfiguration {
 
 
     @Override
-    public MockFamilyManager apply(Settings settings) {
-        return new MockFamilyManager(settings);
+    public DatabaseManagerFactory apply(Settings settings) {
+        return Mockito.mock(DatabaseManagerFactory.class);
     }
-
-    public record MockFamilyManager(Settings settings) implements ColumnManagerFactory {
-
-        @Override
-            public ColumnManager apply(String database) {
-                return Mockito.mock(ColumnManager.class);
-            }
-
-            @Override
-            public void close() {
-
-            }
-        }
 }
