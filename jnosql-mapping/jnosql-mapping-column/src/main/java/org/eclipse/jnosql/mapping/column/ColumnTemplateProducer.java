@@ -28,7 +28,24 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * The producer of {@link ColumnTemplate}
+ * This class is responsible for producing instances of {@link ColumnTemplate}.
+ * It implements the {@link Function} interface, which allows it to accept a {@link DatabaseManager}
+ * and produce a corresponding {@link ColumnTemplate} instance.
+ * <p>
+ * The produced {@link ColumnTemplate} instance is configured with the necessary dependencies such as
+ * {@link EntityConverter}, {@link EventPersistManager}, {@link EntitiesMetadata}, and {@link Converters}.
+ * </p>
+ * <p>
+ * Usage of this class enables the creation of ready-to-use {@link ColumnTemplate} instances for interacting
+ * with column-based data structures in a semistructured database.
+ * </p>
+ *
+ * @see ColumnTemplate
+ * @see DatabaseManager
+ * @see EntityConverter
+ * @see EventPersistManager
+ * @see EntitiesMetadata
+ * @see Converters
  */
 @ApplicationScoped
 public class ColumnTemplateProducer implements Function<DatabaseManager, ColumnTemplate> {
@@ -54,6 +71,10 @@ public class ColumnTemplateProducer implements Function<DatabaseManager, ColumnT
     }
 
 
+    /**
+     * Inner class that serves as the actual implementation of {@link ColumnTemplate}.
+     * It extends {@link AbstractSemistructuredTemplate} and implements {@link ColumnTemplate}.
+     */
     @Vetoed
     static class ProducerColumnTemplate extends AbstractSemistructuredTemplate implements ColumnTemplate {
 
