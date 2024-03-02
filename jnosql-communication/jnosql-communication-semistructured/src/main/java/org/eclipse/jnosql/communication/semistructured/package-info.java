@@ -16,13 +16,15 @@
  */
 
 /**
- * This package contains all objects to use a Column Family API. This API gonna focus in domain, in other words,
- * ubiquitous language. A column family is a NoSQL object that contains columns of related data. It is a tuple (pair)
- * that consists of a key-value pair, where the key is mapped to a value that is a set of columns.
- * In analogy with relational databases, a column family is as a "table", each key-value pair being a "row".
- * Each column is a tuple (triplet) consisting of a column name, a value, and a timestamp. In a relational
- * database table, this data would be grouped together within a table with other non-related data.
- * Ref: https://en.wikipedia.org/wiki/Column_family
- *
+ * This package contains all objects to use a Semi-Structured API. This API focuses on handling semi-structured data,
+ * providing functionality to work with data that does not adhere strictly to a predefined schema.
+ * Semi-structured data is characterized by its flexibility, allowing for variations in data structure
+ * within the same dataset.
+ * In the context of NoSQL databases, semi-structured data often includes documents, JSON, XML, or other formats
+ * where the data may have nested or variable fields.
+ * This package provides utilities and interfaces to interact with semi-structured data sources, allowing for
+ * storage, retrieval, and manipulation of such data in a flexible and efficient manner.
+ * Ref: https://en.wikipedia.org/wiki/Semi-structured_data
+ * Ref: https://en.wikipedia.org/wiki/NoSQL
  */
 package org.eclipse.jnosql.communication.semistructured;
