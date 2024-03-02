@@ -43,7 +43,7 @@ public final class ColumnQueryParser {
      * @throws IllegalArgumentException when the query has value parameters
      * @throws QueryException           when there is error in the syntax
      */
-    public Stream<CommunicationEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    public Stream<CommunicationEntity> query(String query, DatabaseManager manager, CommunicationObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
         return switch (command) {
@@ -68,7 +68,7 @@ public final class ColumnQueryParser {
      * @throws IllegalArgumentException when the query has value parameters
      * @throws QueryException           when there is error in the syntax
      */
-    public CommunicationPreparedStatement prepare(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    public CommunicationPreparedStatement prepare(String query, DatabaseManager manager, CommunicationObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
 
@@ -83,7 +83,7 @@ public final class ColumnQueryParser {
     }
 
 
-    private void validation(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    private void validation(String query, DatabaseManager manager, CommunicationObserverParser observer) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(manager, "manager is required");
         Objects.requireNonNull(observer, "manager is observer");

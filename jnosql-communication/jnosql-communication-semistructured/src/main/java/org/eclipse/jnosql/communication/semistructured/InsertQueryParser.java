@@ -33,7 +33,7 @@ final class InsertQueryParser extends ConditionQueryParser {
 
 
 
-    Stream<CommunicationEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    Stream<CommunicationEntity> query(String query, DatabaseManager manager, CommunicationObserverParser observer) {
 
         InsertQueryConverter converter = new InsertQueryConverter();
         InsertQuery insertQuery = converter.apply(query);
@@ -53,7 +53,7 @@ final class InsertQueryParser extends ConditionQueryParser {
 
 
     CommunicationPreparedStatement prepare(String query, DatabaseManager manager,
-                                           ColumnObserverParser observer) {
+                                           CommunicationObserverParser observer) {
 
         InsertQueryConverter converter = new InsertQueryConverter();
         InsertQuery insertQuery = converter.apply(query);
@@ -69,7 +69,7 @@ final class InsertQueryParser extends ConditionQueryParser {
     }
 
     private CommunicationEntity getEntity(InsertQuery insertQuery, String columnFamily, Params params,
-                                          ColumnObserverParser observer) {
+                                          CommunicationObserverParser observer) {
         return getEntity(new InsertQueryConditionSupplier(insertQuery), columnFamily, params, observer);
     }
 

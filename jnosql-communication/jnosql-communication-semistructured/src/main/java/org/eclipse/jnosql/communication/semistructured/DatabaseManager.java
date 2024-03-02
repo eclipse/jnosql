@@ -41,7 +41,16 @@ public interface DatabaseManager extends AutoCloseable {
     String name();
 
     /**
-     * Saves an entity into the database.
+     * <p>Inserts an entity into the database. If an entity of this type with the same
+     * unique identifier already exists in the database and the database supports ACID transactions,
+     * then this method raises an exception. In databases that follow the BASE model
+     * or use an append model to write data, this exception is not thrown.</p>
+     *
+     * <p>The entity instance returned as a result of this method must include all values that were
+     * written to the database, including all automatically generated values and incremented values
+     * that changed due to the insert. After invoking this method, do not continue to use the instance
+     * that is supplied as a parameter. This method makes no guarantees about the state of the
+     * instance that is supplied as a parameter.</p>
      *
      * @param entity the entity to be saved
      * @return the saved entity
@@ -49,60 +58,124 @@ public interface DatabaseManager extends AutoCloseable {
      */
     CommunicationEntity insert(CommunicationEntity entity);
 
-    /**
-     * Updates an entity in the database.
-     *
-     * @param entity the entity to be updated
-     * @return the updated entity
-     * @throws NullPointerException when the provided entity is null
-     */
-    CommunicationEntity update(CommunicationEntity entity);
 
     /**
-     * Updates multiple entities in the database. By default, each entity is updated
-     * individually using {@link DatabaseManager#update(CommunicationEntity)}. Each NoSQL vendor may
-     * provide a more appropriate implementation.
+     * Inserts an entity into the database with an expiration to the entity. If an entity of this type with the same
+     * unique identifier already exists in the database and the database supports ACID transactions,
+     * then this method raises an error. In databases that follow the BASE model
+     * or use an append model to write data, this exception is not thrown.
      *
-     * @param entities the entities to be updated
-     * @return the updated entities
-     * @throws NullPointerException when the provided collection of entities is null
-     */
-    Iterable<CommunicationEntity> update(Iterable<CommunicationEntity> entities);
-
-    /**
-     * Saves an entity into the database with a specified time to live (TTL).
+     * <p>The entity instance returned as a result of this method must include all values that were
+     * written to the database, including all automatically generated values and incremented values
+     * that changed due to the insert. After invoking this method, do not continue to use the instance
+     * that is supplied as a parameter. This method makes no guarantees about the state of the
+     * instance that is supplied as a parameter.</p>
      *
-     * @param entity the entity to be saved
-     * @param ttl    the time to live for the entity
-     * @return the saved entity
-     * @throws NullPointerException          when either the entity or the TTL is null
-     * @throws UnsupportedOperationException when the database does not support this feature
+     * <p>Time-To-Live (TTL) is a feature provided by some NoSQL databases where data is automatically removed from the
+     * database after a specified duration. When inserting an entity with a TTL, the entity will be automatically deleted
+     * from the database after the specified duration has passed since its insertion. If the database does not support TTL
+     * or if the TTL feature is not enabled, this operation will not have any effect on the entity's expiration.</p>
+     *
+     * @param entity the entity to insert. Must not be {@code null}.
+     * @param ttl    time to live
+     * @return the inserted entity, which may or may not be a different instance depending on whether the insert caused
+     * values to be generated or automatically incremented.
+     * @throws NullPointerException          if the entity is null.
+     * @throws UnsupportedOperationException when the database does not provide TTL
      */
     CommunicationEntity insert(CommunicationEntity entity, Duration ttl);
 
     /**
-     * Saves multiple entities into the database. By default, each entity is saved
-     * individually using {@link DatabaseManager#insert(CommunicationEntity)}. Each NoSQL vendor may
-     * provide a more appropriate implementation.
+     * Inserts multiple entities into the database. If any entity of this type with the same
+     * unique identifier as any of the given entities already exists in the database and the database
+     * supports ACID transactions, then this method raises an error.
+     * In databases that follow the BASE model or use an append model to write data, this exception
+     * is not thrown.
      *
-     * @param entities the entities to be saved
-     * @return the saved entities
-     * @throws NullPointerException when the provided collection of entities is null
+     * <p>The entities within the returned {@link Iterable} must include all values that were
+     * written to the database, including all automatically generated values and incremented values
+     * that changed due to the insert. After invoking this method, do not continue to use
+     * the entity instances that are supplied in the parameter. This method makes no guarantees
+     * about the state of the entity instances that are supplied in the parameter.
+     * The position of entities within the {@code Iterable} return value must correspond to the
+     * position of entities in the parameter based on the unique identifier of the entity.</p>
+     *
+     * @param entities entities to insert.
+     * @return an iterable containing the inserted entities, which may or may not be different instances depending
+     * on whether the insert caused values to be generated or automatically incremented.
+     * @throws NullPointerException if the iterable is null or any element is null.
      */
     Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities);
 
     /**
-     * Saves multiple entities into the database with a specified time to live (TTL).
-     * By default, each entity is saved individually using {@link DatabaseManager#insert(CommunicationEntity, Duration)}.
-     * Each NoSQL vendor may provide a more appropriate implementation.
+     * Inserts multiple entities into the database with the expiration date. If any entity of this type with the same
+     * unique identifier as any of the given entities already exists in the database and the database
+     * supports ACID transactions, then this method raises an error.
+     * In databases that follow the BASE model or use an append model to write data, this exception
+     * is not thrown.
      *
-     * @param entities the entities to be saved
-     * @param ttl      the time to live for the entities
-     * @return the saved entities
-     * @throws NullPointerException          when either the collection of entities or the TTL is null
-     * @throws UnsupportedOperationException when the database does not support this feature
+     * <p>The entities within the returned {@link Iterable} must include all values that were
+     * written to the database, including all automatically generated values and incremented values
+     * that changed due to the insert. After invoking this method, do not continue to use
+     * the entity instances that are supplied in the parameter. This method makes no guarantees
+     * about the state of the entity instances that are supplied in the parameter.
+     * The position of entities within the {@code Iterable} return value must correspond to the
+     * position of entities in the parameter based on the unique identifier of the entity.</p>
+     *
+     * <p>Time-To-Live (TTL) is a feature provided by some NoSQL databases where data is automatically removed from the
+     * database after a specified duration. When inserting entities with a TTL, the entities will be automatically deleted
+     * from the database after the specified duration has passed since their insertion. If the database does not support TTL
+     * or if the TTL feature is not enabled, this operation will not have any effect on the expiration of the entities.</p>
+     *
+     * @param entities entities to insert.
+     * @param ttl      time to live
+     * @return an iterable containing the inserted entities, which may or may not be different instances depending
+     * on whether the insert caused values to be generated or automatically incremented.
+     * @throws NullPointerException if the iterable is null or any element is null.
+     * @throws UnsupportedOperationException if the database does not provide time-to-live for insert operations.
      */
     Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities, Duration ttl);
+
+    /**
+     * Modifies an entity that already exists in the database.
+     *
+     * <p>For an update to be made, a matching entity with the same unique identifier
+     * must be present in the database. In databases that use an append model to write data or
+     * follow the BASE model, this method behaves the same as the {@link #insert} method.</p>
+     *
+     * <p>If the entity is versioned (for example, with an annotation or by
+     * another convention from the entity model such as having an attribute named {@code version}),
+     * then the version must also match. The version is automatically incremented when making
+     * the update.</p>
+     *
+     * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
+     *
+     * @param entity the entity to update. Must not be {@code null}.
+     * @return the updated entity, which may or may not be a different instance depending on whether the update caused
+     * values to be generated or automatically incremented.
+     * @throws NullPointerException if the entity is null.
+     */
+    CommunicationEntity update(CommunicationEntity entity);
+
+    /**
+     * Modifies entities that already exist in the database.
+     *
+     * <p>For an update to be made to an entity, a matching entity with the same unique identifier
+     * must be present in the database. In databases that use an append model to write data or
+     * follow the BASE model, this method behaves the same as the {@link #insert(Iterable)} method.</p>
+     *
+     * <p>If the entity is versioned (for example, with an annotation or by
+     * another convention from the entity model such as having an attribute named {@code version}),
+     * then the version must also match. The version is automatically incremented when making
+     * the update.</p>
+     *
+     * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
+     *
+     * @param entities entities to update.
+     * @return the number of matching entities that were found in the database to update.
+     * @throws NullPointerException if either the iterable is null or any element is null.
+     */
+    Iterable<CommunicationEntity> update(Iterable<CommunicationEntity> entities);
 
     /**
      * Deletes entities from the database based on the specified query.
@@ -160,7 +233,7 @@ public interface DatabaseManager extends AutoCloseable {
     default Stream<CommunicationEntity> query(String query) {
         Objects.requireNonNull(query, "query is required");
         ColumnQueryParser parser = new ColumnQueryParser();
-        return parser.query(query, this, ColumnObserverParser.EMPTY);
+        return parser.query(query, this, CommunicationObserverParser.EMPTY);
     }
 
     /**
@@ -174,7 +247,7 @@ public interface DatabaseManager extends AutoCloseable {
     default CommunicationPreparedStatement prepare(String query) {
         Objects.requireNonNull(query, "query is required");
         ColumnQueryParser parser = new ColumnQueryParser();
-        return parser.prepare(query, this, ColumnObserverParser.EMPTY);
+        return parser.prepare(query, this, CommunicationObserverParser.EMPTY);
     }
 
     /**

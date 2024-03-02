@@ -37,7 +37,7 @@ class UpdateQueryParserTest {
 
     private final DatabaseManager manager = Mockito.mock(DatabaseManager.class);
 
-    private final ColumnObserverParser observer = new ColumnObserverParser() {
+    private final CommunicationObserverParser observer = new CommunicationObserverParser() {
     };
 
     @ParameterizedTest(name = "Should parser the query {0}")

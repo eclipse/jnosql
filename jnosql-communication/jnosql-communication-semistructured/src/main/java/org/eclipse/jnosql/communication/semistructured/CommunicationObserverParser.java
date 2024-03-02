@@ -20,9 +20,9 @@ package org.eclipse.jnosql.communication.semistructured;
  * An observer to a parser; this observer allows checking both the name of an entity and the fields.
  * This observer might be used to the mapper process.
  */
-public interface ColumnObserverParser {
+public interface CommunicationObserverParser {
 
-    ColumnObserverParser EMPTY = new ColumnObserverParser() {
+    CommunicationObserverParser EMPTY = new CommunicationObserverParser() {
     };
 
     /**

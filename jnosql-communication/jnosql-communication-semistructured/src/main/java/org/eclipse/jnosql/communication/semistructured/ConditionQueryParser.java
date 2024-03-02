@@ -30,7 +30,7 @@ abstract class ConditionQueryParser {
 
 
     protected CommunicationEntity getEntity(ConditionQuerySupplier query, String columnFamily, Params params,
-                                            ColumnObserverParser observer) {
+                                            CommunicationObserverParser observer) {
         CommunicationEntity entity = CommunicationEntity.of(columnFamily);
 
         if (query.useJSONCondition()) {

@@ -28,12 +28,12 @@ final class Conditions {
     private Conditions() {
     }
 
-    static CriteriaCondition getCondition(Where where, Params params, ColumnObserverParser observer, String entity) {
+    static CriteriaCondition getCondition(Where where, Params params, CommunicationObserverParser observer, String entity) {
         QueryCondition condition = where.condition();
         return getCondition(condition, params, observer, entity);
     }
 
-    static CriteriaCondition getCondition(QueryCondition condition, Params parameters, ColumnObserverParser observer, String entity) {
+    static CriteriaCondition getCondition(QueryCondition condition, Params parameters, CommunicationObserverParser observer, String entity) {
         return switch (condition.condition()) {
             case EQUALS -> CriteriaCondition.eq(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(), parameters)));
@@ -68,7 +68,7 @@ final class Conditions {
         };
     }
 
-    private static String getName(QueryCondition condition, ColumnObserverParser observer, String entity) {
+    private static String getName(QueryCondition condition, CommunicationObserverParser observer, String entity) {
         return observer.fireField(entity, condition.name());
     }
 

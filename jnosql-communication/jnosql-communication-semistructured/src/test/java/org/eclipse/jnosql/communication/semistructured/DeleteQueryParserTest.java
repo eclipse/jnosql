@@ -42,7 +42,7 @@ class DeleteQueryParserTest {
 
     private final DatabaseManager manager = Mockito.mock(DatabaseManager.class);
 
-    private final ColumnObserverParser observer = new ColumnObserverParser() {
+    private final CommunicationObserverParser observer = new CommunicationObserverParser() {
     };
 
 

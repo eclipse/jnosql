@@ -32,7 +32,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
 
 
-    Stream<CommunicationEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    Stream<CommunicationEntity> query(String query, DatabaseManager manager, CommunicationObserverParser observer) {
 
         UpdateQueryConverter converter = new UpdateQueryConverter();
         UpdateQuery updateQuery = converter.apply(query);
@@ -48,7 +48,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
     }
 
 
-    CommunicationPreparedStatement prepare(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    CommunicationPreparedStatement prepare(String query, DatabaseManager manager, CommunicationObserverParser observer) {
 
         Params params = Params.newParams();
 
@@ -61,7 +61,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
     }
 
 
-    private CommunicationEntity getEntity(Params params, UpdateQuery updateQuery, ColumnObserverParser observer) {
+    private CommunicationEntity getEntity(Params params, UpdateQuery updateQuery, CommunicationObserverParser observer) {
         String columnFamily = observer.fireEntity(updateQuery.entity());
 
         return getEntity(new UpdateQueryConditionSupplier(updateQuery), columnFamily, params, observer);

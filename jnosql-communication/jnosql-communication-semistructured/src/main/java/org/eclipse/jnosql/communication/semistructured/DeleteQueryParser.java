@@ -28,11 +28,11 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-public final class DeleteQueryParser implements BiFunction<org.eclipse.jnosql.communication.query.DeleteQuery, ColumnObserverParser, ColumnDeleteQueryParams> {
+public final class DeleteQueryParser implements BiFunction<org.eclipse.jnosql.communication.query.DeleteQuery, CommunicationObserverParser, ColumnDeleteQueryParams> {
 
 
 
-    Stream<CommunicationEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    Stream<CommunicationEntity> query(String query, DatabaseManager manager, CommunicationObserverParser observer) {
 
         DeleteQuery deleteQuery = getQuery(query, observer);
         manager.delete(deleteQuery);
@@ -41,7 +41,7 @@ public final class DeleteQueryParser implements BiFunction<org.eclipse.jnosql.co
 
 
     CommunicationPreparedStatement prepare(String query, DatabaseManager manager,
-                                           ColumnObserverParser observer) {
+                                           CommunicationObserverParser observer) {
         Params params = Params.newParams();
         DeleteQuery deleteQuery = getQuery(query, params, observer);
         return CommunicationPreparedStatement.delete(deleteQuery, params, query, manager);
@@ -51,23 +51,23 @@ public final class DeleteQueryParser implements BiFunction<org.eclipse.jnosql.co
 
     @Override
     public ColumnDeleteQueryParams apply(org.eclipse.jnosql.communication.query.DeleteQuery deleteQuery,
-                                         ColumnObserverParser columnObserverParser) {
+                                         CommunicationObserverParser communicationObserverParser) {
 
         requireNonNull(deleteQuery, "deleteQuery is required");
-        requireNonNull(columnObserverParser, "columnObserverParser is required");
+        requireNonNull(communicationObserverParser, "columnObserverParser is required");
         Params params = Params.newParams();
-        DeleteQuery query = getQuery(params, columnObserverParser, deleteQuery);
+        DeleteQuery query = getQuery(params, communicationObserverParser, deleteQuery);
         return new ColumnDeleteQueryParams(query, params);
     }
 
-    private DeleteQuery getQuery(String query, Params params, ColumnObserverParser observer) {
+    private DeleteQuery getQuery(String query, Params params, CommunicationObserverParser observer) {
         DeleteQueryConverter converter = new DeleteQueryConverter();
         org.eclipse.jnosql.communication.query.DeleteQuery deleteQuery = converter.apply(query);
 
         return getQuery(params, observer, deleteQuery);
     }
 
-    private DeleteQuery getQuery(Params params, ColumnObserverParser observer, org.eclipse.jnosql.communication.query.DeleteQuery deleteQuery) {
+    private DeleteQuery getQuery(Params params, CommunicationObserverParser observer, org.eclipse.jnosql.communication.query.DeleteQuery deleteQuery) {
         String columnFamily = observer.fireEntity(deleteQuery.entity());
         List<String> columns = deleteQuery.fields().stream()
                 .map(f -> observer.fireField(columnFamily, f))
@@ -78,7 +78,7 @@ public final class DeleteQueryParser implements BiFunction<org.eclipse.jnosql.co
         return new DefaultDeleteQuery(columnFamily, condition, columns);
     }
 
-    private DeleteQuery getQuery(String query, ColumnObserverParser observer) {
+    private DeleteQuery getQuery(String query, CommunicationObserverParser observer) {
 
         DeleteQueryConverter converter = new DeleteQueryConverter();
         org.eclipse.jnosql.communication.query.DeleteQuery deleteQuery = converter.apply(query);

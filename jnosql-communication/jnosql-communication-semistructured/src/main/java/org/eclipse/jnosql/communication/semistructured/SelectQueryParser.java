@@ -31,20 +31,20 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
-public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.communication.query.SelectQuery, ColumnObserverParser, ColumnQueryParams> {
+public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.communication.query.SelectQuery, CommunicationObserverParser, ColumnQueryParams> {
 
 
     public SelectQueryParser() {
     }
 
-    Stream<CommunicationEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    Stream<CommunicationEntity> query(String query, DatabaseManager manager, CommunicationObserverParser observer) {
 
         SelectQuery selectQuery = getColumnQuery(query, observer);
         return manager.select(selectQuery);
     }
 
 
-    CommunicationPreparedStatement prepare(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    CommunicationPreparedStatement prepare(String query, DatabaseManager manager, CommunicationObserverParser observer) {
 
         Params params = Params.newParams();
         SelectQueryConverter converter = new SelectQueryConverter();
@@ -56,7 +56,7 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
 
 
     @Override
-    public ColumnQueryParams apply(org.eclipse.jnosql.communication.query.SelectQuery selectQuery, ColumnObserverParser observer) {
+    public ColumnQueryParams apply(org.eclipse.jnosql.communication.query.SelectQuery selectQuery, CommunicationObserverParser observer) {
         Objects.requireNonNull(selectQuery, "selectQuery is required");
         Objects.requireNonNull(observer, "observer is required");
 
@@ -66,7 +66,7 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
     }
 
 
-    private SelectQuery getColumnQuery(String query, ColumnObserverParser observer) {
+    private SelectQuery getColumnQuery(String query, CommunicationObserverParser observer) {
 
         SelectQueryConverter converter = new SelectQueryConverter();
         org.eclipse.jnosql.communication.query.SelectQuery selectQuery = converter.apply(query);
@@ -89,7 +89,7 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
         return new DefaultSelectQuery(limit, skip, columnFamily, columns, sorts, condition);
     }
 
-    private SelectQuery getColumnQuery(Params params, org.eclipse.jnosql.communication.query.SelectQuery selectQuery, ColumnObserverParser observer) {
+    private SelectQuery getColumnQuery(Params params, org.eclipse.jnosql.communication.query.SelectQuery selectQuery, CommunicationObserverParser observer) {
 
         String columnFamily = observer.fireEntity(selectQuery.entity());
         long limit = selectQuery.limit();
@@ -106,7 +106,7 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
         return new DefaultSelectQuery(limit, skip, columnFamily, columns, sorts, condition);
     }
 
-    private Sort<?> toSort(Sort<?> sort, ColumnObserverParser observer, String entity) {
+    private Sort<?> toSort(Sort<?> sort, CommunicationObserverParser observer, String entity) {
         return Sort.of(observer.fireField(entity, sort.property()),
                 sort.isAscending()? Direction.ASC: Direction.DESC, false);
     }
