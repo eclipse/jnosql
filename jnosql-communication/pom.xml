@@ -34,6 +34,7 @@
         <module>jnosql-communication-core</module>
         <module>jnosql-communication-query</module>
         <module>jnosql-communication-key-value</module>
+        <module>jnosql-communication-semistructured</module>
         <module>jnosql-communication-column</module>
         <module>jnosql-communication-document</module>
     </modules>
