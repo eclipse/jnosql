@@ -17,6 +17,6 @@ module org.eclipse.jnosql.communication.column {
     requires jakarta.json;
     requires jakarta.data;
 
-    opens org.eclipse.jnosql.communication.column;
+    opens org.eclipse.jnosql.communication.semistructured;
 
 }
