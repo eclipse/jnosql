@@ -364,7 +364,7 @@ class CommunicationEntityTest {
                 Element.of("name5", 14), Element.of("name5", 16));
 
         CommunicationEntity columnFamily = CommunicationEntity.of("columnFamily", elements);
-        assertThat(columnFamily.columnNames())
+        assertThat(columnFamily.elementNames())
                 .hasSize(5)
                 .contains("name", "name2", "name3", "name4", "name5");
 
