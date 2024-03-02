@@ -40,41 +40,41 @@ import static java.util.stream.Collectors.toList;
 /**
  * The communication level entity. It is the API entity between the database and the Jakarta NoSQL communication level.
  * It represents a column family.
- * Each ColumnEntity has a name and one or more {@link Column}.
+ * Each ColumnEntity has a name and one or more {@link Element}.
  *
- * @see Column
- * @see ColumnEntity#columns()
- * @see ColumnEntity#name()
+ * @see Element
+ * @see CommunicationEntity#columns()
+ * @see CommunicationEntity#name()
  */
-public class ColumnEntity {
+public class CommunicationEntity {
 
-    private final Map<String, Column> columns = new HashMap<>();
+    private final Map<String, Element> columns = new HashMap<>();
 
     private final String name;
 
-    ColumnEntity(String name) {
+    CommunicationEntity(String name) {
         this.name = name;
     }
 
 
-    public void addAll(List<Column> columns) {
-        Objects.requireNonNull(columns, "The object column is required");
-        columns.forEach(this::add);
+    public void addAll(List<Element> elements) {
+        Objects.requireNonNull(elements, "The object column is required");
+        elements.forEach(this::add);
     }
 
     /**
      * Appends the specified column to the end of this list
      *
-     * @param column - column to be added
+     * @param element - column to be added
      * @throws NullPointerException when column is null
      */
-    public void add(Column column) {
-        Objects.requireNonNull(column, "Column is required");
-        this.columns.put(column.name(), column);
+    public void add(Element element) {
+        Objects.requireNonNull(element, "Column is required");
+        this.columns.put(element.name(), element);
     }
 
     /**
-     * add a column within {@link ColumnEntity}
+     * add a column within {@link CommunicationEntity}
      *
      * @param name  a name of the column
      * @param value the information of the column
@@ -83,11 +83,11 @@ public class ColumnEntity {
      */
     public void add(String name, Object value) {
         requireNonNull(name, "name is required");
-        this.columns.put(name, Column.of(name, Value.of(value)));
+        this.columns.put(name, Element.of(name, Value.of(value)));
     }
 
     /**
-     * add a column within {@link ColumnEntity}
+     * add a column within {@link CommunicationEntity}
      *
      * @param name  a name of the column
      * @param value the information of the column
@@ -96,7 +96,7 @@ public class ColumnEntity {
      */
     public void add(String name, Value value) {
         requireNonNull(name, "name is required");
-        this.columns.put(name, Column.of(name, value));
+        this.columns.put(name, Element.of(name, value));
     }
 
     /**
@@ -107,7 +107,7 @@ public class ColumnEntity {
      */
     public void addNull(String name){
         requireNonNull(name, "name is required");
-        this.columns.put(name, Column.of(name, Value.ofNull()));
+        this.columns.put(name, Element.of(name, Value.ofNull()));
     }
 
     /**
@@ -119,17 +119,17 @@ public class ColumnEntity {
      */
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
-        for (Map.Entry<String, Column> entry : columns.entrySet()) {
-            Column column = entry.getValue();
-            map.put(entry.getKey(), convert(column.get()));
+        for (Map.Entry<String, Element> entry : columns.entrySet()) {
+            Element element = entry.getValue();
+            map.put(entry.getKey(), convert(element.get()));
         }
         return Collections.unmodifiableMap(map);
     }
 
     private Object convert(Object value) {
-        if (value instanceof Column) {
-            Column column = Column.class.cast(value);
-            return Collections.singletonMap(column.name(), convert(column.get()));
+        if (value instanceof Element) {
+            Element element = Element.class.cast(value);
+            return Collections.singletonMap(element.name(), convert(element.get()));
         } else if (value instanceof Iterable) {
             List<Object> list = new ArrayList<>();
             Iterable.class.cast(value).forEach(e -> list.add(convert(e)));
@@ -143,7 +143,7 @@ public class ColumnEntity {
      *
      * @return an immutable list of columns
      */
-    public List<Column> columns() {
+    public List<Element> columns() {
         return columns.values()
                 .stream()
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
@@ -177,10 +177,10 @@ public class ColumnEntity {
      * @return an {@link Optional} instance with the result
      * @throws NullPointerException when columnName is null
      */
-    public Optional<Column> find(String columnName) {
+    public Optional<Element> find(String columnName) {
         requireNonNull(columnName, "columnName is required");
-        Column column = columns.get(columnName);
-        return ofNullable(column);
+        Element element = columns.get(columnName);
+        return ofNullable(element);
     }
 
     /**
@@ -229,7 +229,7 @@ public class ColumnEntity {
     /**
      * Returns true if the number of columns is zero otherwise false.
      *
-     * @return true if there isn't elements to {@link ColumnEntity#columns()}
+     * @return true if there isn't elements to {@link CommunicationEntity#columns()}
      */
     public boolean isEmpty() {
         return columns.isEmpty();
@@ -240,8 +240,8 @@ public class ColumnEntity {
      *
      * @return an instance copy
      */
-    public ColumnEntity copy() {
-        ColumnEntity entity = new ColumnEntity(this.name);
+    public CommunicationEntity copy() {
+        CommunicationEntity entity = new CommunicationEntity(this.name);
         entity.columns.putAll(new HashMap<>(this.columns));
         return entity;
     }
@@ -264,7 +264,7 @@ public class ColumnEntity {
         return columns
                 .values()
                 .stream()
-                .map(Column::value)
+                .map(Element::value)
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
@@ -294,7 +294,7 @@ public class ColumnEntity {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ColumnEntity that = (ColumnEntity) o;
+        CommunicationEntity that = (CommunicationEntity) o;
         return Objects.equals(columns, that.columns) &&
                 Objects.equals(name, that.name);
     }
@@ -318,13 +318,13 @@ public class ColumnEntity {
      * @param name a name to column family
      * @return a ColumnEntity instance
      */
-    public static ColumnEntity of(String name) {
-        return new ColumnEntity(requireNonNull(name, "name is required"));
+    public static CommunicationEntity of(String name) {
+        return new CommunicationEntity(requireNonNull(name, "name is required"));
     }
 
-    public static ColumnEntity of(String name, List<Column> columns) {
-        ColumnEntity columnEntity = new ColumnEntity(name);
-        columnEntity.addAll(columns);
-        return columnEntity;
+    public static CommunicationEntity of(String name, List<Element> elements) {
+        CommunicationEntity communicationEntity = new CommunicationEntity(name);
+        communicationEntity.addAll(elements);
+        return communicationEntity;
     }
 }

@@ -34,17 +34,17 @@ class ColumnsTest {
 
     @Test
     void shouldCreateColumn() {
-        Column column = Columns.of("name", "Ada");
-        assertEquals("name", column.name());
-        assertEquals("Ada", column.get());
+        Element element = Columns.of("name", "Ada");
+        assertEquals("name", element.name());
+        assertEquals("Ada", element.get());
     }
 
     @Test
     void shouldCreateColumnsFromMap() {
         Map<String, String> map = singletonMap("name", "Ada");
-        List<Column> columns = Columns.of(map);
-        assertFalse(columns.isEmpty());
-        assertThat(columns).contains(Column.of("name", "Ada"));
+        List<Element> elements = Columns.of(map);
+        assertFalse(elements.isEmpty());
+        assertThat(elements).contains(Element.of("name", "Ada"));
     }
 
 
@@ -54,12 +54,12 @@ class ColumnsTest {
         Map<String, String> map = singletonMap("mobile", "55 1234-4567");
         list.add(singletonList(map));
 
-        List<Column> columns = Columns.of(singletonMap("contact", list));
-        assertEquals(1, columns.size());
-        Column column = columns.get(0);
-        assertEquals("contact", column.name());
-        List<List<Column>> result = (List<List<Column>>) column.get();
-        assertEquals(Column.of("mobile", "55 1234-4567"), result.get(0).get(0));
+        List<Element> elements = Columns.of(singletonMap("contact", list));
+        assertEquals(1, elements.size());
+        Element element = elements.get(0);
+        assertEquals("contact", element.name());
+        List<List<Element>> result = (List<List<Element>>) element.get();
+        assertEquals(Element.of("mobile", "55 1234-4567"), result.get(0).get(0));
 
     }
 }

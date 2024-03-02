@@ -22,9 +22,9 @@ import org.eclipse.jnosql.communication.Value;
 import java.util.Objects;
 
 /**
- * Default implementation of {@link Column}
+ * Default implementation of {@link Element}
  */
-record DefaultColumn(String name, Value value) implements Column {
+record DefaultElement(String name, Value value) implements Element {
 
 
     @Override

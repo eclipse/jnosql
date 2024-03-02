@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Class that contains information to do a select to {@link ColumnEntity}
+ * Class that contains information to do a select to {@link CommunicationEntity}
  *
  * @see DatabaseManager#select(ColumnQuery)
  * @see ColumnCondition
@@ -283,7 +283,7 @@ public interface ColumnQuery {
          * @return the result of {@link DatabaseManager#select(ColumnQuery)}
          * @throws NullPointerException when manager is null
          */
-        Stream<ColumnEntity> getResult(DatabaseManager manager);
+        Stream<CommunicationEntity> getResult(DatabaseManager manager);
 
         /**
          * Executes {@link DatabaseManager#singleResult(ColumnQuery)}
@@ -292,7 +292,7 @@ public interface ColumnQuery {
          * @return the result of {@link DatabaseManager#singleResult(ColumnQuery)}
          * @throws NullPointerException when manager is null
          */
-        Optional<ColumnEntity> getSingleResult(DatabaseManager manager);
+        Optional<CommunicationEntity> getSingleResult(DatabaseManager manager);
 
     }
 
@@ -607,7 +607,7 @@ public interface ColumnQuery {
          * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
          *                               such as the {@link ColumnQueryBuilder#from(String)} method was not called.
          */
-        Stream<ColumnEntity> getResult(DatabaseManager manager);
+        Stream<CommunicationEntity> getResult(DatabaseManager manager);
 
         /**
          * Executes {@link DatabaseManager#singleResult(ColumnQuery)}
@@ -618,6 +618,6 @@ public interface ColumnQuery {
          * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
          *                               such as the {@link ColumnQueryBuilder#from(String)} method was not called.
          */
-        Optional<ColumnEntity> getSingleResult(DatabaseManager manager);
+        Optional<CommunicationEntity> getSingleResult(DatabaseManager manager);
     }
 }

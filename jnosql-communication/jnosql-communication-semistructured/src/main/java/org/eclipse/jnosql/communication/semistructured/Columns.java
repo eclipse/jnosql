@@ -29,7 +29,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 
 /**
- * Utilitarian class to {@link Column}
+ * Utilitarian class to {@link Element}
  */
 public final class Columns {
 
@@ -46,8 +46,8 @@ public final class Columns {
      * @return a column's instance
      * @throws NullPointerException when name is null
      */
-    public static Column of(String name, Object value) {
-        return Column.of(name, Value.of(value));
+    public static Element of(String name, Object value) {
+        return Element.of(name, Value.of(value));
     }
 
     /**
@@ -58,11 +58,11 @@ public final class Columns {
      * @return a list of columns
      * @throws NullPointerException when values is null
      */
-    public static List<Column> of(Map<String, ?> values) {
+    public static List<Element> of(Map<String, ?> values) {
         Objects.requireNonNull(values, "values is required");
         return values.entrySet().stream()
                 .filter(IS_VALUE_NULL)
-                .map(e -> Column.of(e.getKey(), getValue(e.getValue())))
+                .map(e -> Element.of(e.getKey(), getValue(e.getValue())))
                 .collect(toList());
     }
 

@@ -183,7 +183,7 @@ class SelectQueryParserTest {
         ColumnCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.EQUALS, condition.condition());
-        assertEquals(Column.of("age", 10L), condition.column());
+        assertEquals(Element.of("age", 10L), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -199,7 +199,7 @@ class SelectQueryParserTest {
         ColumnCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.GREATER_THAN, condition.condition());
-        assertEquals(Column.of("stamina", 10.23), condition.column());
+        assertEquals(Element.of("stamina", 10.23), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -216,7 +216,7 @@ class SelectQueryParserTest {
         ColumnCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
-        assertEquals(Column.of("stamina", -10.23), condition.column());
+        assertEquals(Element.of("stamina", -10.23), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -232,7 +232,7 @@ class SelectQueryParserTest {
         ColumnCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
-        assertEquals(Column.of("stamina", -10.23), condition.column());
+        assertEquals(Element.of("stamina", -10.23), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -248,7 +248,7 @@ class SelectQueryParserTest {
         ColumnCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.LESSER_THAN, condition.condition());
-        assertEquals(Column.of("stamina", -10.23), condition.column());
+        assertEquals(Element.of("stamina", -10.23), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -264,7 +264,7 @@ class SelectQueryParserTest {
         ColumnCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.BETWEEN, condition.condition());
-        assertEquals(Column.of("age", Arrays.asList(10L, 30L)), condition.column());
+        assertEquals(Element.of("age", Arrays.asList(10L, 30L)), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -280,7 +280,7 @@ class SelectQueryParserTest {
         ColumnCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.EQUALS, condition.condition());
-        assertEquals(Column.of("name", "diana"), condition.column());
+        assertEquals(Element.of("name", "diana"), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -296,12 +296,12 @@ class SelectQueryParserTest {
         ColumnCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.EQUALS, condition.condition());
-        Column column = condition.column();
-        List<Column> columns = column.get(new TypeReference<>() {
+        Element element = condition.column();
+        List<Element> elements = element.get(new TypeReference<>() {
         });
-        Assertions.assertThat(columns).contains(Column.of("apollo", "Brother"),
-                Column.of("Zeus", "Father"));
-        assertEquals("siblings", column.name());
+        Assertions.assertThat(elements).contains(Element.of("apollo", "Brother"),
+                Element.of("Zeus", "Father"));
+        assertEquals("siblings", element.name());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -315,10 +315,10 @@ class SelectQueryParserTest {
         checkBaseQuery(columnQuery, 0L, 0L);
         assertTrue(columnQuery.condition().isPresent());
         ColumnCondition condition = columnQuery.condition().get();
-        Column column = condition.column();
+        Element element = condition.column();
         assertEquals(Condition.EQUALS, condition.condition());
-        assertEquals("age", column.name());
-        assertEquals(Value.of(12), column.value());
+        assertEquals("age", element.name());
+        assertEquals(Value.of(12), element.value());
 
 
     }
@@ -334,10 +334,10 @@ class SelectQueryParserTest {
         checkBaseQuery(columnQuery, 0L, 0L);
         assertTrue(columnQuery.condition().isPresent());
         ColumnCondition condition = columnQuery.condition().get();
-        Column column = condition.column();
+        Element element = condition.column();
         assertEquals(Condition.IN, condition.condition());
-        assertEquals("name", column.name());
-        List<String> values = column.get(new TypeReference<>() {
+        assertEquals("name", element.name());
+        List<String> values = element.get(new TypeReference<>() {
         });
         assertThat(values).contains("Ada", "Apollo");
     }
@@ -353,10 +353,10 @@ class SelectQueryParserTest {
         checkBaseQuery(columnQuery, 0L, 0L);
         assertTrue(columnQuery.condition().isPresent());
         ColumnCondition condition = columnQuery.condition().get();
-        Column column = condition.column();
+        Element element = condition.column();
         assertEquals(Condition.LIKE, condition.condition());
-        assertEquals("name", column.name());
-        assertEquals("Ada", column.get());
+        assertEquals("name", element.name());
+        assertEquals("Ada", element.get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -370,13 +370,13 @@ class SelectQueryParserTest {
         checkBaseQuery(columnQuery, 0L, 0L);
         assertTrue(columnQuery.condition().isPresent());
         ColumnCondition condition = columnQuery.condition().get();
-        Column column = condition.column();
+        Element element = condition.column();
         assertEquals(Condition.NOT, condition.condition());
-        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
+        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
         });
         ColumnCondition columnCondition = conditions.get(0);
         assertEquals(Condition.LIKE, columnCondition.condition());
-        assertEquals(Column.of("name", "Ada"), columnCondition.column());
+        assertEquals(Element.of("name", "Ada"), columnCondition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -390,12 +390,12 @@ class SelectQueryParserTest {
         checkBaseQuery(columnQuery, 0L, 0L);
         assertTrue(columnQuery.condition().isPresent());
         ColumnCondition condition = columnQuery.condition().get();
-        Column column = condition.column();
+        Element element = condition.column();
         assertEquals(Condition.AND, condition.condition());
-        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
+        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
         });
-        Assertions.assertThat(conditions).contains(eq(Column.of("name", "Ada")),
-                eq(Column.of("age", 20L)));
+        Assertions.assertThat(conditions).contains(eq(Element.of("name", "Ada")),
+                eq(Element.of("age", 20L)));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -409,12 +409,12 @@ class SelectQueryParserTest {
         checkBaseQuery(columnQuery, 0L, 0L);
         assertTrue(columnQuery.condition().isPresent());
         ColumnCondition condition = columnQuery.condition().get();
-        Column column = condition.column();
+        Element element = condition.column();
         assertEquals(Condition.OR, condition.condition());
-        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
+        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
         });
-        Assertions.assertThat(conditions).contains(eq(Column.of("name", "Ada")),
-                eq(Column.of("age", 20L)));
+        Assertions.assertThat(conditions).contains(eq(Element.of("name", "Ada")),
+                eq(Element.of("age", 20L)));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -430,9 +430,9 @@ class SelectQueryParserTest {
         checkBaseQuery(columnQuery, 0L, 0L);
         assertTrue(columnQuery.condition().isPresent());
         ColumnCondition condition = columnQuery.condition().get();
-        Column column = condition.column();
+        Element element = condition.column();
         assertEquals(Condition.AND, condition.condition());
-        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
+        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
         });
         assertEquals(Condition.EQUALS, conditions.get(0).condition());
         assertEquals(Condition.EQUALS, conditions.get(1).condition());
@@ -453,9 +453,9 @@ class SelectQueryParserTest {
         checkBaseQuery(columnQuery, 0L, 0L);
         assertTrue(columnQuery.condition().isPresent());
         ColumnCondition condition = columnQuery.condition().get();
-        Column column = condition.column();
+        Element element = condition.column();
         assertEquals(Condition.AND, condition.condition());
-        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
+        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
         });
         assertEquals(Condition.EQUALS, conditions.get(0).condition());
         assertEquals(Condition.EQUALS, conditions.get(1).condition());
@@ -492,10 +492,10 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
         ColumnCondition columnCondition = columnQuery.condition().get();
-        Column column = columnCondition.column();
+        Element element = columnCondition.column();
         assertEquals(Condition.EQUALS, columnCondition.condition());
-        assertEquals("age", column.name());
-        assertEquals(12, column.get());
+        assertEquals("age", element.name());
+        assertEquals(12, element.get());
     }
 
     private void checkBaseQuery(ColumnQuery columnQuery, long limit, long skip) {

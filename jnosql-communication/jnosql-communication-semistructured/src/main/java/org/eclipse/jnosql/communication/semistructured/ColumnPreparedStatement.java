@@ -34,7 +34,7 @@ import java.util.stream.Stream;
  */
 public final class ColumnPreparedStatement {
 
-    private final ColumnEntity entity;
+    private final CommunicationEntity entity;
 
     private final ColumnQuery columnQuery;
 
@@ -52,7 +52,7 @@ public final class ColumnPreparedStatement {
 
     private final DatabaseManager manager;
 
-    private ColumnPreparedStatement(ColumnEntity entity,
+    private ColumnPreparedStatement(CommunicationEntity entity,
                                     ColumnQuery columnQuery,
                                     ColumnDeleteQuery columnDeleteQuery,
                                     PreparedStatementType type,
@@ -94,7 +94,7 @@ public final class ColumnPreparedStatement {
      *
      * @return the single result
      */
-    public Stream<ColumnEntity> result() {
+    public Stream<CommunicationEntity> result() {
         if (!paramsLeft.isEmpty()) {
             throw new QueryException("Check all the parameters before execute the query, params left: " + paramsLeft);
         }
@@ -120,14 +120,14 @@ public final class ColumnPreparedStatement {
         }
     }
 
-    public Optional<ColumnEntity> singleResult() {
-        Stream<ColumnEntity> entities = result();
-        final Iterator<ColumnEntity> iterator = entities.iterator();
+    public Optional<CommunicationEntity> singleResult() {
+        Stream<CommunicationEntity> entities = result();
+        final Iterator<CommunicationEntity> iterator = entities.iterator();
 
         if (!iterator.hasNext()) {
             return Optional.empty();
         }
-        final ColumnEntity next = iterator.next();
+        final CommunicationEntity next = iterator.next();
         if (!iterator.hasNext()) {
             return Optional.of(next);
         }
@@ -167,7 +167,7 @@ public final class ColumnPreparedStatement {
 
     }
 
-    static ColumnPreparedStatement insert(ColumnEntity entity,
+    static ColumnPreparedStatement insert(CommunicationEntity entity,
                                           Params params,
                                           String query,
                                           Duration duration,
@@ -178,7 +178,7 @@ public final class ColumnPreparedStatement {
 
     }
 
-    static ColumnPreparedStatement update(ColumnEntity entity,
+    static ColumnPreparedStatement update(CommunicationEntity entity,
                                           Params params,
                                           String query,
                                           DatabaseManager manager) {

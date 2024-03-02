@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 /**
  * The manager instance bridges the Jakarta NoSQL and the NoSQL vendor.
  *
- * @see ColumnEntity
+ * @see CommunicationEntity
  */
 public interface DatabaseManager extends AutoCloseable {
 
@@ -46,7 +46,7 @@ public interface DatabaseManager extends AutoCloseable {
      * @return the entity saved
      * @throws NullPointerException when entity is null
      */
-    ColumnEntity insert(ColumnEntity entity);
+    CommunicationEntity insert(CommunicationEntity entity);
 
     /**
      * Updates a Column family entity
@@ -55,18 +55,18 @@ public interface DatabaseManager extends AutoCloseable {
      * @return the entity saved
      * @throws NullPointerException when entity is null
      */
-    ColumnEntity update(ColumnEntity entity);
+    CommunicationEntity update(CommunicationEntity entity);
 
     /**
      * Updates a Column family entities, by default it's just run for each saving using
-     * {@link DatabaseManager#update(ColumnEntity)}, each NoSQL vendor might
+     * {@link DatabaseManager#update(CommunicationEntity)}, each NoSQL vendor might
      * replace to a more appropriate one.
      *
      * @param entities column family to be saved
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    Iterable<ColumnEntity> update(Iterable<ColumnEntity> entities);
+    Iterable<CommunicationEntity> update(Iterable<CommunicationEntity> entities);
 
     /**
      * Saves a Column family entity with time to live
@@ -77,22 +77,22 @@ public interface DatabaseManager extends AutoCloseable {
      * @throws NullPointerException          when either entity or ttl are null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
-    ColumnEntity insert(ColumnEntity entity, Duration ttl);
+    CommunicationEntity insert(CommunicationEntity entity, Duration ttl);
 
     /**
      * Saves a Column family entities, by default it's just run for each saving using
-     * {@link DatabaseManager#insert(ColumnEntity)}, each NoSQL vendor might
+     * {@link DatabaseManager#insert(CommunicationEntity)}, each NoSQL vendor might
      * replace to a more appropriate one.
      *
      * @param entities column family to be saved
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    Iterable<ColumnEntity> insert(Iterable<ColumnEntity> entities);
+    Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities);
 
     /**
      * Saves a Column family entity with time to live, by default it's just run for each saving using
-     * {@link DatabaseManager#insert(ColumnEntity, Duration)},
+     * {@link DatabaseManager#insert(CommunicationEntity, Duration)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities column family to be saved
@@ -101,7 +101,7 @@ public interface DatabaseManager extends AutoCloseable {
      * @throws NullPointerException          when either entity or ttl are null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
-    Iterable<ColumnEntity> insert(Iterable<ColumnEntity> entities, Duration ttl);
+    Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities, Duration ttl);
 
     /**
      * Deletes an entity
@@ -113,14 +113,14 @@ public interface DatabaseManager extends AutoCloseable {
     void delete(ColumnDeleteQuery query);
 
     /**
-     * Finds {@link ColumnEntity} from select
+     * Finds {@link CommunicationEntity} from select
      *
      * @param query - select to figure out entities
      * @return entities found by select
      * @throws NullPointerException          when select is null
      * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
-    Stream<ColumnEntity> select(ColumnQuery query);
+    Stream<CommunicationEntity> select(ColumnQuery query);
 
     /**
      * Returns the number of items in the column family that match a specified query.
@@ -154,7 +154,7 @@ public interface DatabaseManager extends AutoCloseable {
      * @throws IllegalArgumentException when the query has value parameters
      * @throws IllegalStateException    when there is not {@link ColumnQueryParser}
      */
-    default Stream<ColumnEntity> query(String query) {
+    default Stream<CommunicationEntity> query(String query) {
         Objects.requireNonNull(query, "query is required");
         ColumnQueryParser parser = new ColumnQueryParser();
         return parser.query(query, this, ColumnObserverParser.EMPTY);
@@ -184,14 +184,14 @@ public interface DatabaseManager extends AutoCloseable {
      * @throws NullPointerException          when select is null
      * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
-    default Optional<ColumnEntity> singleResult(ColumnQuery query) {
+    default Optional<CommunicationEntity> singleResult(ColumnQuery query) {
         Objects.requireNonNull(query, "query is required");
-        Stream<ColumnEntity> entities = select(query);
-        final Iterator<ColumnEntity> iterator = entities.iterator();
+        Stream<CommunicationEntity> entities = select(query);
+        final Iterator<CommunicationEntity> iterator = entities.iterator();
         if (!iterator.hasNext()) {
             return Optional.empty();
         }
-        final ColumnEntity entity = iterator.next();
+        final CommunicationEntity entity = iterator.next();
         if (!iterator.hasNext()) {
             return Optional.of(entity);
         }

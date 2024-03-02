@@ -33,7 +33,7 @@ final class InsertQueryParser extends ConditionQueryParser {
 
 
 
-    Stream<ColumnEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    Stream<CommunicationEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
 
         InsertQueryConverter converter = new InsertQueryConverter();
         InsertQuery insertQuery = converter.apply(query);
@@ -41,7 +41,7 @@ final class InsertQueryParser extends ConditionQueryParser {
         String columnFamily = insertQuery.entity();
         Params params = Params.newParams();
 
-        ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
+        CommunicationEntity entity = getEntity(insertQuery, columnFamily, params, observer);
 
         Optional<Duration> ttl = insertQuery.ttl();
         if (params.isNotEmpty()) {
@@ -62,14 +62,14 @@ final class InsertQueryParser extends ConditionQueryParser {
         Params params = Params.newParams();
 
         Optional<Duration> ttl = insertQuery.ttl();
-        ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
+        CommunicationEntity entity = getEntity(insertQuery, columnFamily, params, observer);
 
         return ColumnPreparedStatement.insert(entity, params, query, ttl.orElse(null), manager);
 
     }
 
-    private ColumnEntity getEntity(InsertQuery insertQuery, String columnFamily, Params params,
-                                   ColumnObserverParser observer) {
+    private CommunicationEntity getEntity(InsertQuery insertQuery, String columnFamily, Params params,
+                                          ColumnObserverParser observer) {
         return getEntity(new InsertQueryConditionSupplier(insertQuery), columnFamily, params, observer);
     }
 

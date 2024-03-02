@@ -24,9 +24,9 @@ import java.util.Objects;
 
 /**
  * A Column is a tuple (pair) that consists of the name and its respective value.
- * A {@link ColumnEntity} has one or more Columns.
+ * A {@link CommunicationEntity} has one or more Columns.
  */
-public interface Column extends Entry {
+public interface Element extends Entry {
     /**
      * Alias to {@link Value#get(Class)}
      *
@@ -67,9 +67,9 @@ public interface Column extends Entry {
      * @throws NullPointerException when name is null
      * @see Columns
      */
-    static <V> Column of(String name, V value) {
+    static <V> Element of(String name, V value) {
         Objects.requireNonNull(name, "name is required");
-        return new DefaultColumn(name, getValue(value));
+        return new DefaultElement(name, getValue(value));
     }
 
     private static Value getValue(Object value) {

@@ -34,7 +34,7 @@ import static org.eclipse.jnosql.communication.semistructured.ColumnCondition.eq
 import static org.eclipse.jnosql.communication.semistructured.ColumnQuery.builder;
 import static org.junit.jupiter.api.Assertions.*;
 
-class DefaultColumnQueryBuilderTest {
+class DefaultElementQueryBuilderTest {
 
     @Test
     void shouldReturnErrorWhenHasNullElementInSelect() {
@@ -136,13 +136,13 @@ class DefaultColumnQueryBuilderTest {
                 .build();
         ColumnCondition condition = query.condition().get();
 
-        Column column = condition.column();
+        Element element = condition.column();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.EQUALS, condition.condition());
-        assertEquals("name", column.name());
-        assertEquals(name, column.get());
+        assertEquals("name", element.name());
+        assertEquals(name, element.get());
 
     }
 
@@ -155,13 +155,13 @@ class DefaultColumnQueryBuilderTest {
                 .build();
         ColumnCondition condition = query.condition().get();
 
-        Column column = condition.column();
+        Element element = condition.column();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.LIKE, condition.condition());
-        assertEquals("name", column.name());
-        assertEquals(name, column.get());
+        assertEquals("name", element.name());
+        assertEquals(name, element.get());
     }
 
     @Test
@@ -174,13 +174,13 @@ class DefaultColumnQueryBuilderTest {
 
         ColumnCondition condition = query.condition().get();
 
-        Column column = condition.column();
+        Element element = condition.column();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.GREATER_THAN, condition.condition());
-        assertEquals("name", column.name());
-        assertEquals(value, column.get());
+        assertEquals("name", element.name());
+        assertEquals(value, element.get());
     }
 
     @Test
@@ -191,13 +191,13 @@ class DefaultColumnQueryBuilderTest {
         ColumnQuery query = builder().from(documentCollection).where(gteName).build();
         ColumnCondition condition = query.condition().get();
 
-        Column column = condition.column();
+        Element element = condition.column();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
-        assertEquals("name", column.name());
-        assertEquals(value, column.get());
+        assertEquals("name", element.name());
+        assertEquals(value, element.get());
     }
 
     @Test
@@ -209,13 +209,13 @@ class DefaultColumnQueryBuilderTest {
                 .build();
         ColumnCondition condition = query.condition().get();
 
-        Column column = condition.column();
+        Element element = condition.column();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.LESSER_THAN, condition.condition());
-        assertEquals("name", column.name());
-        assertEquals(value, column.get());
+        assertEquals("name", element.name());
+        assertEquals(value, element.get());
     }
 
     @Test
@@ -226,13 +226,13 @@ class DefaultColumnQueryBuilderTest {
                 .build();
         ColumnCondition condition = query.condition().get();
 
-        Column column = condition.column();
+        Element element = condition.column();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
-        assertEquals("name", column.name());
-        assertEquals(value, column.get());
+        assertEquals("name", element.name());
+        assertEquals(value, element.get());
     }
 
     @Test
@@ -246,13 +246,13 @@ class DefaultColumnQueryBuilderTest {
                 .build();
         ColumnCondition condition = query.condition().get();
 
-        Column column = condition.column();
+        Element element = condition.column();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.BETWEEN, condition.condition());
-        assertEquals("name", column.name());
-        assertThat(column.get(new TypeReference<List<Number>>() {
+        assertEquals("name", element.name());
+        assertThat(element.get(new TypeReference<List<Number>>() {
         })).contains(10, 20);
     }
 
@@ -265,8 +265,8 @@ class DefaultColumnQueryBuilderTest {
                 .build();
         ColumnCondition condition = query.condition().get();
 
-        Column column = condition.column();
-        ColumnCondition negate = column.get(ColumnCondition.class);
+        Element element = condition.column();
+        ColumnCondition negate = element.get(ColumnCondition.class);
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.NOT, condition.condition());
@@ -287,12 +287,12 @@ class DefaultColumnQueryBuilderTest {
                 .build();
         ColumnCondition condition = query.condition().get();
 
-        Column column = condition.column();
-        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
+        Element element = condition.column();
+        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
         });
         assertEquals(Condition.AND, condition.condition());
-        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10)));
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Element.of("name", name)),
+                ColumnCondition.gt(Element.of("age", 10)));
     }
 
     @Test
@@ -305,12 +305,12 @@ class DefaultColumnQueryBuilderTest {
                 .build();
         ColumnCondition condition = query.condition().get();
 
-        Column column = condition.column();
-        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
+        Element element = condition.column();
+        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
         });
         assertEquals(Condition.OR, condition.condition());
-        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10)));
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Element.of("name", name)),
+                ColumnCondition.gt(Element.of("age", 10)));
     }
 
 
@@ -323,12 +323,12 @@ class DefaultColumnQueryBuilderTest {
 
         ColumnCondition condition = query.condition().orElseThrow(RuntimeException::new);
         assertEquals(columnFamily, query.name());
-        Column column = condition.column();
-        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
+        Element element = condition.column();
+        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
         });
 
         assertEquals(Condition.NOT, condition.condition());
-        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Column.of("name", "Lucas")));
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Element.of("name", "Lucas")));
 
     }
 
@@ -338,7 +338,7 @@ class DefaultColumnQueryBuilderTest {
         DatabaseManager manager = Mockito.mock(DatabaseManager.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String collection = "collection";
-        Stream<ColumnEntity> entities = builder().from(collection).getResult(manager);
+        Stream<CommunicationEntity> entities = builder().from(collection).getResult(manager);
         Mockito.verify(manager).select(queryCaptor.capture());
         checkQuery(queryCaptor, collection);
     }
@@ -348,7 +348,7 @@ class DefaultColumnQueryBuilderTest {
         DatabaseManager manager = Mockito.mock(DatabaseManager.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String collection = "collection";
-        Optional<ColumnEntity> entities = builder().from(collection).getSingleResult(manager);
+        Optional<CommunicationEntity> entities = builder().from(collection).getSingleResult(manager);
         Mockito.verify(manager).singleResult(queryCaptor.capture());
         checkQuery(queryCaptor, collection);
     }

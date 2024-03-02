@@ -29,16 +29,16 @@ import java.util.List;
 abstract class ConditionQueryParser {
 
 
-    protected ColumnEntity getEntity(ConditionQuerySupplier query, String columnFamily, Params params,
-                                     ColumnObserverParser observer) {
-        ColumnEntity entity = ColumnEntity.of(columnFamily);
+    protected CommunicationEntity getEntity(ConditionQuerySupplier query, String columnFamily, Params params,
+                                            ColumnObserverParser observer) {
+        CommunicationEntity entity = CommunicationEntity.of(columnFamily);
 
         if (query.useJSONCondition()) {
             JSONQueryValue jsonValue = query.value()
                     .orElseThrow(() -> new QueryException("It is an invalid state of" +
                     " either Update or Insert."));
-            List<Column> columns = JsonObjects.getColumns(jsonValue.get());
-            entity.addAll(columns);
+            List<Element> elements = JsonObjects.getColumns(jsonValue.get());
+            entity.addAll(elements);
             return entity;
         }
 

@@ -43,7 +43,7 @@ public final class ColumnQueryParser {
      * @throws IllegalArgumentException when the query has value parameters
      * @throws QueryException           when there is error in the syntax
      */
-    public Stream<ColumnEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    public Stream<CommunicationEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
         return switch (command) {

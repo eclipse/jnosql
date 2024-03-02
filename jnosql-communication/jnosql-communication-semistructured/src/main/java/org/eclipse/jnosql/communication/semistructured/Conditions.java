@@ -35,22 +35,22 @@ final class Conditions {
 
     static ColumnCondition getCondition(QueryCondition condition, Params parameters, ColumnObserverParser observer, String entity) {
         return switch (condition.condition()) {
-            case EQUALS -> ColumnCondition.eq(Column.of(getName(condition, observer, entity),
+            case EQUALS -> ColumnCondition.eq(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(), parameters)));
-            case GREATER_THAN -> ColumnCondition.gt(Column.of(getName(condition, observer, entity),
+            case GREATER_THAN -> ColumnCondition.gt(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(), parameters)));
-            case GREATER_EQUALS_THAN -> ColumnCondition.gte(Column.of(getName(condition, observer, entity),
+            case GREATER_EQUALS_THAN -> ColumnCondition.gte(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(), parameters)));
-            case LESSER_THAN -> ColumnCondition.lt(Column.of(getName(condition, observer, entity),
+            case LESSER_THAN -> ColumnCondition.lt(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(), parameters)));
-            case LESSER_EQUALS_THAN -> ColumnCondition.lte(Column.of(getName(condition, observer, entity),
+            case LESSER_EQUALS_THAN -> ColumnCondition.lte(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(), parameters)));
-            case IN -> ColumnCondition.in(Column.of(getName(condition, observer, entity),
+            case IN -> ColumnCondition.in(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(), parameters)));
-            case LIKE -> ColumnCondition.like(Column.of(getName(condition, observer, entity),
+            case LIKE -> ColumnCondition.like(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(),
                             parameters)));
-            case BETWEEN -> ColumnCondition.between(Column.of(getName(condition, observer, entity),
+            case BETWEEN -> ColumnCondition.between(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(),
                             parameters)));
             case NOT -> getCondition(ConditionQueryValue.class.cast(condition.value()).get().get(0),

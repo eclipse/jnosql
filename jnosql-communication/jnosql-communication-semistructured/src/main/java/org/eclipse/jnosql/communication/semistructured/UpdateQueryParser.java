@@ -32,14 +32,14 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
 
 
-    Stream<ColumnEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    Stream<CommunicationEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
 
         UpdateQueryConverter converter = new UpdateQueryConverter();
         UpdateQuery updateQuery = converter.apply(query);
 
         Params params = Params.newParams();
 
-        ColumnEntity entity = getEntity(params, updateQuery, observer);
+        CommunicationEntity entity = getEntity(params, updateQuery, observer);
 
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
@@ -55,13 +55,13 @@ final class UpdateQueryParser extends ConditionQueryParser {
         UpdateQueryConverter converter = new UpdateQueryConverter();
         UpdateQuery updateQuery = converter.apply(query);
 
-        ColumnEntity entity = getEntity(params, updateQuery, observer);
+        CommunicationEntity entity = getEntity(params, updateQuery, observer);
 
         return ColumnPreparedStatement.update(entity, params, query, manager);
     }
 
 
-    private ColumnEntity getEntity(Params params, UpdateQuery updateQuery, ColumnObserverParser observer) {
+    private CommunicationEntity getEntity(Params params, UpdateQuery updateQuery, ColumnObserverParser observer) {
         String columnFamily = observer.fireEntity(updateQuery.entity());
 
         return getEntity(new UpdateQueryConditionSupplier(updateQuery), columnFamily, params, observer);

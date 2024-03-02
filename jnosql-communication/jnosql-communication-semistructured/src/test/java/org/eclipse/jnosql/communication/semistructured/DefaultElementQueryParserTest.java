@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class DefaultColumnQueryParserTest {
+class DefaultElementQueryParserTest {
     
     private final ColumnQueryParser parser = new ColumnQueryParser();
 
@@ -86,28 +86,28 @@ class DefaultColumnQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = \"Diana\")"})
     void shouldReturnParserQuery2(String query) {
-        ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
+        ArgumentCaptor<CommunicationEntity> captor = ArgumentCaptor.forClass(CommunicationEntity.class);
         parser.query(query, manager, ColumnObserverParser.EMPTY);
         Mockito.verify(manager).insert(captor.capture());
-        ColumnEntity entity = captor.getValue();
+        CommunicationEntity entity = captor.getValue();
 
 
         assertEquals("God", entity.name());
-        assertEquals(Column.of("name", "Diana"), entity.find("name").get());
+        assertEquals(Element.of("name", "Diana"), entity.find("name").get());
     }
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = \"Diana\")"})
     void shouldReturnParserQuery3(String query) {
-        ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
+        ArgumentCaptor<CommunicationEntity> captor = ArgumentCaptor.forClass(CommunicationEntity.class);
         parser.query(query, manager, ColumnObserverParser.EMPTY);
         Mockito.verify(manager).update(captor.capture());
-        ColumnEntity entity = captor.getValue();
+        CommunicationEntity entity = captor.getValue();
 
 
         assertEquals("God", entity.name());
-        assertEquals(Column.of("name", "Diana"), entity.find("name").get());
+        assertEquals(Element.of("name", "Diana"), entity.find("name").get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -121,23 +121,23 @@ class DefaultColumnQueryParserTest {
         Mockito.verify(manager).delete(captor.capture());
         ColumnDeleteQuery columnDeleteQuery = captor.getValue();
         ColumnCondition columnCondition = columnDeleteQuery.condition().get();
-        Column column = columnCondition.column();
+        Element element = columnCondition.column();
         assertEquals(Condition.EQUALS, columnCondition.condition());
-        assertEquals("age", column.name());
-        assertEquals(12, column.get());
+        assertEquals("age", element.name());
+        assertEquals(12, element.get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = @name)"})
     void shouldExecutePrepareStatement1(String query) {
-        ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
+        ArgumentCaptor<CommunicationEntity> captor = ArgumentCaptor.forClass(CommunicationEntity.class);
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("name", "Diana");
         prepare.result();
         Mockito.verify(manager).insert(captor.capture());
-        ColumnEntity entity = captor.getValue();
+        CommunicationEntity entity = captor.getValue();
         assertEquals("God", entity.name());
-        assertEquals(Column.of("name", "Diana"), entity.find("name").get());
+        assertEquals(Element.of("name", "Diana"), entity.find("name").get());
 
     }
 
@@ -152,24 +152,24 @@ class DefaultColumnQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
         ColumnCondition columnCondition = columnQuery.condition().get();
-        Column column = columnCondition.column();
+        Element element = columnCondition.column();
         assertEquals(Condition.EQUALS, columnCondition.condition());
-        assertEquals("age", column.name());
-        assertEquals(12, column.get());
+        assertEquals("age", element.name());
+        assertEquals(12, element.get());
     }
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
     void shouldExecutePrepareStatement3(String query) {
-        ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
+        ArgumentCaptor<CommunicationEntity> captor = ArgumentCaptor.forClass(CommunicationEntity.class);
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("name", "Diana");
         prepare.result();
         Mockito.verify(manager).update(captor.capture());
-        ColumnEntity entity = captor.getValue();
+        CommunicationEntity entity = captor.getValue();
         assertEquals("God", entity.name());
-        assertEquals(Column.of("name", "Diana"), entity.find("name").get());
+        assertEquals(Element.of("name", "Diana"), entity.find("name").get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -178,18 +178,18 @@ class DefaultColumnQueryParserTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
 
         Mockito.when(manager.select(Mockito.any(ColumnQuery.class)))
-                .thenReturn(Stream.of(Mockito.mock(ColumnEntity.class)));
+                .thenReturn(Stream.of(Mockito.mock(CommunicationEntity.class)));
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("age", 12);
-        final Optional<ColumnEntity> result = prepare.singleResult();
+        final Optional<CommunicationEntity> result = prepare.singleResult();
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
         ColumnCondition columnCondition = columnQuery.condition().get();
-        Column column = columnCondition.column();
+        Element element = columnCondition.column();
         assertEquals(Condition.EQUALS, columnCondition.condition());
-        assertEquals("age", column.name());
-        assertEquals(12, column.get());
+        assertEquals("age", element.name());
+        assertEquals(12, element.get());
         assertTrue(result.isPresent());
     }
 
@@ -203,14 +203,14 @@ class DefaultColumnQueryParserTest {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("age", 12);
-        final Optional<ColumnEntity> result = prepare.singleResult();
+        final Optional<CommunicationEntity> result = prepare.singleResult();
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
         ColumnCondition columnCondition = columnQuery.condition().get();
-        Column column = columnCondition.column();
+        Element element = columnCondition.column();
         assertEquals(Condition.EQUALS, columnCondition.condition());
-        assertEquals("age", column.name());
-        assertEquals(12, column.get());
+        assertEquals("age", element.name());
+        assertEquals(12, element.get());
         assertFalse(result.isPresent());
     }
 
@@ -220,7 +220,7 @@ class DefaultColumnQueryParserTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
 
         Mockito.when(manager.select(Mockito.any(ColumnQuery.class)))
-                .thenReturn(Stream.of(Mockito.mock(ColumnEntity.class), Mockito.mock(ColumnEntity.class)));
+                .thenReturn(Stream.of(Mockito.mock(CommunicationEntity.class), Mockito.mock(CommunicationEntity.class)));
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("age", 12);

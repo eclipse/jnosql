@@ -23,19 +23,19 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ColumnParamsTest {
+class ElementParamsTest {
 
     @Test
     void shouldSetParameter() {
         Params params = Params.newParams();
         Value name = params.add("name");
-        Column column = Column.of("name", name);
+        Element element = Element.of("name", name);
         params.bind("name", "Ada Lovelace");
 
-        assertEquals("Ada Lovelace", column.get());
+        assertEquals("Ada Lovelace", element.get());
 
         params.bind("name", "Diana");
-        assertEquals("Diana", column.get());
+        assertEquals("Diana", element.get());
     }
 
 }

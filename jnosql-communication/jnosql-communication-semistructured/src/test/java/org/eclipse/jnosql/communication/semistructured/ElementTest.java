@@ -28,59 +28,59 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class ColumnTest {
+class ElementTest {
 
     private static final Value DEFAULT_VALUE = Value.of(12);
 
     @Test
     void shouldReturnNameWhenNameIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> Column.of(null, DEFAULT_VALUE));
+        Assertions.assertThrows(NullPointerException.class, () -> Element.of(null, DEFAULT_VALUE));
     }
 
     @Test
     void shouldReturnNameWhenValueIsNull() {
-        Column column = Column.of("Name", null);
+        Element element = Element.of("Name", null);
         SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(column.name()).isEqualTo("Name");
-            softly.assertThat(column.value().isNull()).isTrue();
+            softly.assertThat(element.name()).isEqualTo("Name");
+            softly.assertThat(element.value().isNull()).isTrue();
         });
     }
 
     @Test
     void shouldCreateAnColumnInstance() {
         String name = "name";
-        Column column = Column.of(name, DEFAULT_VALUE);
-        assertNotNull(column);
-        assertEquals(name, column.name());
-        assertEquals(DEFAULT_VALUE, column.value());
+        Element element = Element.of(name, DEFAULT_VALUE);
+        assertNotNull(element);
+        assertEquals(name, element.name());
+        assertEquals(DEFAULT_VALUE, element.value());
     }
 
     @Test
     void shouldBeEquals() {
-        assertEquals(Column.of("name", DEFAULT_VALUE), Column.of("name", DEFAULT_VALUE));
+        assertEquals(Element.of("name", DEFAULT_VALUE), Element.of("name", DEFAULT_VALUE));
     }
 
     @Test
     void shouldReturnGetObject() {
         Value value = Value.of("text");
-        Column column = Column.of("name", value);
-        assertEquals(value.get(), column.get());
+        Element element = Element.of("name", value);
+        assertEquals(value.get(), element.get());
     }
 
     @Test
     void shouldReturnGetClass() {
         Value value = Value.of("text");
-        Column column = Column.of("name", value);
-        assertEquals(value.get(String.class), column.get(String.class));
+        Element element = Element.of("name", value);
+        assertEquals(value.get(String.class), element.get(String.class));
     }
 
 
     @Test
     void shouldReturnGetType() {
         Value value = Value.of("text");
-        Column column = Column.of("name", value);
+        Element element = Element.of("name", value);
         TypeReference<List<String>> typeReference = new TypeReference<>() {
         };
-        assertEquals(value.get(typeReference), column.get(typeReference));
+        assertEquals(value.get(typeReference), element.get(typeReference));
     }
 }
