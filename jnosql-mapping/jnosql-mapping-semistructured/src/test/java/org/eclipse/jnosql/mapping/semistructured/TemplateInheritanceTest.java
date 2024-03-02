@@ -47,7 +47,7 @@ import static org.mockito.Mockito.when;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
-class ColumnTemplateInheritanceTest {
+class TemplateInheritanceTest {
 
     @Inject
     private EntityConverter converter;
