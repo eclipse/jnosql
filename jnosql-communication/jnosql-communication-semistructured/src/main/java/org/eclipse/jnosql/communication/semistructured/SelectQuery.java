@@ -23,6 +23,7 @@ import jakarta.data.Sort;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -31,7 +32,7 @@ import java.util.stream.Stream;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Class that contains information to do a select to {@link CommunicationEntity}
+ * Class that contains information to perform a select operation on {@link CommunicationEntity}.
  *
  * @see DatabaseManager#select(SelectQuery)
  * @see CriteriaCondition
@@ -39,36 +40,39 @@ import static java.util.Objects.requireNonNull;
  */
 public interface SelectQuery {
 
-
     /**
-     * @return The maximum number of results the select object was set to retrieve.
+     * Retrieves the maximum number of results the select object was set to retrieve.
      * The implementation might ignore this option.
+     *
+     * @return the maximum number of results
      */
     long limit();
 
     /**
-     * @return The position of the first result the select object was set to retrieve.
+     * Retrieves the position of the first result the select object was set to retrieve.
      * The implementation might ignore this option.
+     *
+     * @return the position of the first result
      */
     long skip();
 
     /**
-     * The entity name
+     * Retrieves the entity name.
      *
      * @return the entity name
      */
     String name();
 
     /**
-     * The conditions that contains in this {@link SelectQuery}
-     * If empty, {@link Optional#empty()} is true, the implementation might either return an unsupported exception or returns same elements in the database.
+     * Retrieves the conditions contained in this {@link SelectQuery}.
+     * If empty, {@link Optional#empty()} indicates that the implementation might either return an unsupported exception or return the same elements in the database.
      *
      * @return the conditions
      */
     Optional<CriteriaCondition> condition();
 
     /**
-     * Returns the columns to returns in that query if empty will return all elements in the query.
+     * Returns the columns to be returned in the query. If empty, all elements in the query will be returned.
      * The implementation might ignore this option.
      *
      * @return the columns
@@ -76,7 +80,7 @@ public interface SelectQuery {
     List<String> names();
 
     /**
-     * The sorts that contains in this {@link SelectQuery}
+     * Retrieves the sorts contained in this {@link SelectQuery}.
      * The implementation might ignore this option.
      *
      * @return the sorts
@@ -84,290 +88,266 @@ public interface SelectQuery {
     List<Sort<?>> sorts();
 
     /**
-     * It starts the first step of {@link ColumnSelect} creation using a fluent-API way.
-     * This first step will inform the fields to return to the query, such as a "select field, fieldB from database"
-     * in a database query.
+     * Starts the first step of {@link SelectElements} creation using a fluent API.
+     * This step informs the fields to return to the query, similar to "select field, fieldB from database" in a database query.
      *
-     * @param columns - The document fields to query, optional.
-     * @return a new {@link ColumnSelect} instance
-     * @throws NullPointerException                    when there is a null element
+     * @param names - The document fields to query, optional.
+     * @return a new {@link SelectElements} instance
+     * @throws NullPointerException when any element is null
      */
-    static ColumnSelect select(String... columns) {
-        Stream.of(columns).forEach(d -> requireNonNull(d, "there is null document in the query"));
-        return new DefaultFluentColumnQueryBuilder(Arrays.asList(columns));
+    static SelectElements select(String... names) {
+        Stream.of(names).forEach(d -> Objects.requireNonNull(d, "A document in the query is null"));
+        return new DefaultFluentSelectQueryBuilderElements(Arrays.asList(names));
     }
 
     /**
-     * It starts the first step of {@link SelectQuery} creation using a fluent-API way.
-     * This first step will inform the fields to return to the query, such as a "select field, fieldB from database" in a database query.
-     * Once empty, it will return all elements in the query, similar to "select * from database" in a database query.
+     * Starts the first step of {@link SelectQuery} creation using a fluent API.
+     * This step informs the fields to return to the query, similar to "select field, fieldB from database" in a database query.
+     * If empty, all elements in the query will be returned, similar to "select * from database".
      *
-     * @return a new {@link ColumnSelect} instance
+     * @return a new {@link SelectElements} instance
      */
-    static ColumnSelect select() {
-        return new DefaultFluentColumnQueryBuilder(Collections.emptyList());
+    static SelectElements select() {
+        return new DefaultFluentSelectQueryBuilderElements(Collections.emptyList());
     }
 
     /**
-     * It starts the first step of {@link SelectQuery} creation using a builder pattern.
-     * This first step will inform the fields to return to the query, such as a "select field, fieldB from database" in a database query.
+     * Starts the first step of {@link SelectQuery} creation using a builder pattern.
+     * This step informs the fields to return to the query, similar to "select field, fieldB from database" in a database query.
      *
-     * @return {@link ColumnQueryBuilder} instance
+     * @return a {@link QueryBuilder} instance
      */
-    static ColumnQueryBuilder builder() {
-        return new DefaultColumnQueryBuilder();
+    static QueryBuilder builder() {
+        return new DefaultQueryBuilder();
     }
 
     /**
-     * It starts the first step of {@link SelectQuery} creation using a builder pattern.
-     * This first step will inform the fields to return to the query, such as a "select field, fieldB from database" in a database query.
-     * Once empty, it will return all elements in the query, similar to "select * from database" in a database query.
+     * Starts the first step of {@link SelectQuery} creation using a builder pattern.
+     * This step informs the fields to return to the query, similar to "select field, fieldB from database" in a database query.
+     * If empty, all elements in the query will be returned, similar to "select * from database".
      *
-     * @param columns The document fields to query, optional.
-     * @return {@link ColumnQueryBuilder} instance
+     * @param names The document fields to query, optional.
+     * @return a {@link QueryBuilder} instance
      */
-    static ColumnQueryBuilder builder(String... columns) {
-        Stream.of(columns).forEach(d -> requireNonNull(d, "there is null column in the query"));
-        ColumnQueryBuilder builder = new DefaultColumnQueryBuilder();
-        Stream.of(columns).forEach(builder::select);
+    static QueryBuilder builder(String... names) {
+        Stream.of(names).forEach(d -> Objects.requireNonNull(d, "A column in the query is null"));
+        QueryBuilder builder = new DefaultQueryBuilder();
+        Stream.of(names).forEach(builder::select);
         return builder;
     }
 
 
     /**
-     * The ColumnFrom Query
+     * Represents a query builder interface for selecting columns from a NoSQL database.
      */
-    interface ColumnFrom extends ColumnQueryBuild {
-
+    interface SelectFrom extends SelectQueryBuild {
 
         /**
-         * Starts a new condition defining the  column name
+         * Starts a new condition by defining the column name.
          *
          * @param name the column name
-         * @return a new {@link ColumnNameCondition}
+         * @return a new {@link SelectNameCondition} representing the condition
          * @throws NullPointerException when name is null
          */
-        ColumnNameCondition where(String name);
+        SelectNameCondition where(String name);
 
         /**
          * Defines the position of the first result to retrieve.
-         * It will depend on the NoSQL vendor implementation, but it will discard or skip the search result.
-         * The default value is zero, and it will replace the current property.
          *
-         * @param skip the first result to retrieve
-         * @return a query with first result defined
-         * @throws IllegalArgumentException if limit is negative
+         * @param skip the position of the first result to retrieve
+         * @return a query with the specified first result position
+         * @throws IllegalArgumentException if skip is negative
          */
-        ColumnSkip skip(long skip);
+        SelectSkip skip(long skip);
 
 
         /**
          * Defines the maximum number of results to retrieve.
-         * It will truncate to be no longer than limit.
-         * The default value is zero, and it will replace the current property.
          *
-         * @param limit the limit
-         * @return the {@link ColumnQueryBuilder}
+         * @param limit the maximum number of results to retrieve
+         * @return the {@link QueryBuilder} with the specified limit
          * @throws IllegalArgumentException if limit is negative
          */
-        ColumnLimit limit(long limit);
+        SelectLimit limit(long limit);
 
         /**
-         * Add the order how the result will return
+         * Specifies the order in which the results should be returned.
          *
-         * @param name the name to be ordered
-         * @return a query with the sort defined
+         * @param name the name of the column to be ordered
+         * @return a query with the specified sort order
          * @throws NullPointerException when name is null
          */
-        ColumnOrder orderBy(String name);
-
-
+        SelectOrder orderBy(String name);
     }
 
     /**
-     * The Column Order whose define the maximum number of results to retrieve.
+     * Represents an interface for defining the maximum number of results to retrieve.
      */
-    interface ColumnLimit extends ColumnQueryBuild {
+    interface SelectLimit extends SelectQueryBuild {
 
         /**
          * Defines the position of the first result to retrieve.
-         * It will depend on the NoSQL vendor implementation, but it will discard or skip the search result.
-         * The default value is zero, and it will replace the current property.
          *
-         * @param skip the first result to retrieve
-         * @return a query with first result defined
-         * @throws IllegalArgumentException if limit is negative
+         * @param skip the position of the first result to retrieve
+         * @return a query with the specified first result position
+         * @throws IllegalArgumentException if skip is negative
          */
-        ColumnSkip skip(long skip);
-
+        SelectSkip skip(long skip);
     }
 
     /**
-     * The Column name order a query
+     * Represents an interface for defining the order of columns in a query.
      */
-    interface ColumnNameOrder extends ColumnQueryBuild {
-
+    interface SelectNameOrder extends SelectQueryBuild {
 
         /**
-         * Add the order how the result will return
+         * Specifies the order in which the results should be returned.
          *
-         * @param name the name to be ordered
-         * @return a query with the sort defined
+         * @param name the name of the column to be ordered
+         * @return a query with the specified sort order
          * @throws NullPointerException when name is null
          */
-        ColumnOrder orderBy(String name);
+        SelectOrder orderBy(String name);
 
         /**
          * Defines the position of the first result to retrieve.
-         * It will depend on the NoSQL vendor implementation, but it will discard or skip the search result.
-         * The default value is zero, and it will replace the current property.
          *
-         * @param skip the first result to retrieve
-         * @return a query with first result defined
-         * @throws IllegalArgumentException if limit is negative
+         * @param skip the position of the first result to retrieve
+         * @return a query with the specified first result position
+         * @throws IllegalArgumentException if skip is negative
          */
-        ColumnSkip skip(long skip);
-
+        SelectSkip skip(long skip);
 
         /**
          * Defines the maximum number of results to retrieve.
-         * It will truncate to be no longer than limit.
-         * The default value is zero, and it will replace the current property.
          *
-         * @param limit the limit
-         * @return the {@link ColumnQueryBuilder}
+         * @param limit the maximum number of results to retrieve
+         * @return the {@link QueryBuilder} with the specified limit
          * @throws IllegalArgumentException if limit is negative
          */
-        ColumnLimit limit(long limit);
-
-
+        SelectLimit limit(long limit);
     }
 
     /**
-     * The definition to either {@link jakarta.data.Direction}
+     * Defines the order direction for a query result.
      */
-    interface ColumnOrder {
-
-
-        /**
-         * Defines the order as {@link jakarta.data.Direction#ASC}
-         * @return the {@link ColumnNameOrder} instance
-         */
-        ColumnNameOrder asc();
+    interface SelectOrder {
 
         /**
-         * Defines the order as {@link jakarta.data.Direction#DESC}
-         * @return the {@link ColumnNameOrder} instance
+         * Defines the order as ascending.
+         *
+         * @return the {@link SelectNameOrder} instance
          */
-        ColumnNameOrder desc();
+        SelectNameOrder asc();
+
+        /**
+         * Defines the order as descending.
+         *
+         * @return the {@link SelectNameOrder} instance
+         */
+        SelectNameOrder desc();
     }
 
     /**
-     * The last step to the build of {@link SelectQuery}.
-     * It either can return a new {@link SelectQuery} instance or execute a query with
-     * {@link DatabaseManager}
+     * Represents the final step in building a {@link SelectQuery}.
+     * It can either return a new {@link SelectQuery} instance or execute a query with a {@link DatabaseManager}.
      */
-    interface ColumnQueryBuild {
+    interface SelectQueryBuild {
 
         /**
-         * Creates a new instance of {@link SelectQuery}
+         * Creates a new instance of {@link SelectQuery}.
          *
          * @return a new {@link SelectQuery} instance
          */
         SelectQuery build();
 
         /**
-         * Executes {@link DatabaseManager#select(SelectQuery)}
+         * Executes the query and returns the result as a stream of {@link CommunicationEntity}.
          *
          * @param manager the entity manager
-         * @return the result of {@link DatabaseManager#select(SelectQuery)}
+         * @return the result of the query as a stream of {@link CommunicationEntity}
          * @throws NullPointerException when manager is null
          */
         Stream<CommunicationEntity> getResult(DatabaseManager manager);
 
         /**
-         * Executes {@link DatabaseManager#singleResult(SelectQuery)}
+         * Executes the query and returns a single result wrapped in an optional {@link CommunicationEntity}.
          *
          * @param manager the entity manager
-         * @return the result of {@link DatabaseManager#singleResult(SelectQuery)}
+         * @return the single result of the query wrapped in an optional {@link CommunicationEntity}
          * @throws NullPointerException when manager is null
          */
         Optional<CommunicationEntity> getSingleResult(DatabaseManager manager);
-
     }
 
     /**
-     * The initial element in the Column query
+     * Represents the initial element in a column-based query.
      */
-    interface ColumnSelect {
+    interface SelectElements {
 
         /**
-         * Defines the column family in the query
+         * Defines the entity to query.
          *
-         * @param columnFamily the column family to query
-         * @return a {@link ColumnFrom query}
-         * @throws NullPointerException when columnFamily is null
+         * @param entity the entity to query
+         * @return a {@link SelectFrom} query
+         * @throws NullPointerException when entity is null
          */
-        ColumnFrom from(String columnFamily);
+        SelectFrom from(String entity);
     }
 
     /**
-     * A provider class of {@link ColumnSelect}
+     * A provider class for {@link SelectElements}.
      */
-    interface ColumnSelectProvider extends Function<String[], ColumnSelect>, Supplier<ColumnSelect> {
+    interface SelectProvider extends Function<String[], SelectElements>, Supplier<SelectElements> {
     }
 
     /**
-     * A provider class of {@link ColumnQueryBuilder}
+     * A provider class for {@link QueryBuilder}.
      */
-    interface ColumnQueryBuilderProvider extends Function<String[], ColumnQueryBuilder>, Supplier<ColumnQueryBuilder> {
+    interface QueryBuilderProvider extends Function<String[], QueryBuilder>, Supplier<QueryBuilder> {
     }
 
 
     /**
-     * The Column Order whose define the position of the first result to retrieve.
+     * Represents the Column Order which defines the position of the first result to retrieve.
      */
-    interface ColumnSkip extends ColumnQueryBuild {
-
+    interface SelectSkip extends SelectQueryBuild {
 
         /**
          * Defines the maximum number of results to retrieve.
-         * It will truncate to be no longer than limit.
+         * It will truncate to be no longer than the specified limit.
          * The default value is zero, and it will replace the current property.
          *
-         * @param limit the limit
-         * @return the {@link ColumnQueryBuilder}
-         * @throws IllegalArgumentException if limit is negative
+         * @param limit the maximum number of results to retrieve
+         * @return the {@link QueryBuilder} instance
+         * @throws IllegalArgumentException if the limit is negative
          */
-        ColumnLimit limit(long limit);
+        SelectLimit limit(long limit);
 
     }
 
     /**
-     * The Column Where whose define the condition in the query.
+     * Represents the Column Where which defines the conditions in the query.
      */
-    interface ColumnWhere extends ColumnQueryBuild {
-
-
-        /**
-         * Starts a new condition in the select using
-         * {@link CriteriaCondition#and(CriteriaCondition)}
-         *
-         * @param name a condition to be added
-         * @return the same {@link ColumnNameCondition} with the condition appended
-         * @throws NullPointerException when condition is null
-         */
-        ColumnNameCondition and(String name);
+    interface SelectWhere extends SelectQueryBuild {
 
         /**
-         * Appends a new condition in the select using
-         * {@link CriteriaCondition#or(CriteriaCondition)}
+         * Starts a new condition in the select using {@link CriteriaCondition#and(CriteriaCondition)}.
          *
          * @param name a condition to be added
-         * @return the same {@link ColumnNameCondition} with the condition appended
-         * @throws NullPointerException when condition is null
+         * @return the same {@link SelectNameCondition} with the condition appended
+         * @throws NullPointerException when the condition is null
          */
-        ColumnNameCondition or(String name);
+        SelectNameCondition and(String name);
+
+        /**
+         * Appends a new condition in the select using {@link CriteriaCondition#or(CriteriaCondition)}.
+         *
+         * @param name a condition to be added
+         * @return the same {@link SelectNameCondition} with the condition appended
+         * @throws NullPointerException when the condition is null
+         */
+        SelectNameCondition or(String name);
 
         /**
          * Defines the position of the first result to retrieve.
@@ -375,197 +355,197 @@ public interface SelectQuery {
          * The default value is zero, and it will replace the current property.
          *
          * @param skip the first result to retrieve
-         * @return a query with first result defined
-         * @throws IllegalArgumentException if limit is negative
+         * @return a query with the first result defined
+         * @throws IllegalArgumentException if the limit is negative
          */
-        ColumnSkip skip(long skip);
+        SelectSkip skip(long skip);
 
         /**
          * Defines the maximum number of results to retrieve.
-         * It will truncate to be no longer than limit.
+         * It will truncate to be no longer than the specified limit.
          * The default value is zero, and it will replace the current property.
          *
-         * @param limit the limit
-         * @return the {@link ColumnQueryBuilder}
-         * @throws IllegalArgumentException if limit is negative
+         * @param limit the maximum number of results to retrieve
+         * @return the {@link QueryBuilder} instance
+         * @throws IllegalArgumentException if the limit is negative
          */
-        ColumnLimit limit(long limit);
+        SelectLimit limit(long limit);
 
         /**
-         * Add the order how the result will return
+         * Adds the order of how the result will be returned.
          *
          * @param name the name to order
          * @return a query with the sort defined
-         * @throws NullPointerException when name is null
+         * @throws NullPointerException when the name is null
          */
-        ColumnOrder orderBy(String name);
+        SelectOrder orderBy(String name);
 
     }
 
     /**
-     * The base to name condition
+     * Represents the base for named conditions.
      */
-    interface ColumnNameCondition {
-
-
-        /**
-         * Creates the equals condition
-         *
-         * @param value the value to the condition
-         * @param <T>   the type
-         * @return the {@link ColumnWhere}
-         * @throws NullPointerException when value is null
-         */
-        <T> ColumnWhere eq(T value);
+    interface SelectNameCondition {
 
         /**
-         * Creates the like condition
+         * Creates an equals condition.
          *
-         * @param value the value to the condition
-         * @return the {@link ColumnWhere}
-         * @throws NullPointerException when value is null
+         * @param value the value for the condition
+         * @param <T>   the type of the value
+         * @return the {@link SelectWhere} instance
+         * @throws NullPointerException if the value is null
          */
-        ColumnWhere like(String value);
+        <T> SelectWhere eq(T value);
 
         /**
-         * Creates the greater than condition
+         * Creates a like condition.
          *
-         * @param <T>   the type
-         * @param value the value to the condition
-         * @return the {@link ColumnWhere}
-         * @throws NullPointerException when value is null
+         * @param value the value for the condition
+         * @return the {@link SelectWhere} instance
+         * @throws NullPointerException if the value is null
          */
-        <T> ColumnWhere gt(T value);
+        SelectWhere like(String value);
 
         /**
-         * Creates the greater equals than condition
+         * Creates a greater than condition.
          *
-         * @param <T>   the type
-         * @param value the value to the condition
-         * @return the {@link ColumnWhere}
-         * @throws NullPointerException when value is null
+         * @param <T>   the type of the value
+         * @param value the value for the condition
+         * @return the {@link SelectWhere} instance
+         * @throws NullPointerException if the value is null
          */
-        <T> ColumnWhere gte(T value);
+        <T> SelectWhere gt(T value);
 
         /**
-         * Creates the lesser than condition
+         * Creates a greater than or equals condition.
          *
-         * @param <T>   the type
-         * @param value the value to the condition
-         * @return the {@link ColumnWhere}
-         * @throws NullPointerException when value is null
+         * @param <T>   the type of the value
+         * @param value the value for the condition
+         * @return the {@link SelectWhere} instance
+         * @throws NullPointerException if the value is null
          */
-        <T> ColumnWhere lt(T value);
+        <T> SelectWhere gte(T value);
 
         /**
-         * Creates the lesser equals than condition
+         * Creates a lesser than condition.
          *
-         * @param <T>   the type
-         * @param value the value to the condition
-         * @return the {@link ColumnWhere}
-         * @throws NullPointerException when value is null
+         * @param <T>   the type of the value
+         * @param value the value for the condition
+         * @return the {@link SelectWhere} instance
+         * @throws NullPointerException if the value is null
          */
-        <T> ColumnWhere lte(T value);
+        <T> SelectWhere lt(T value);
 
         /**
-         * Creates the between condition
+         * Creates a lesser than or equals condition.
          *
-         * @param <T>    the type
-         * @param valueA the values within a given range
-         * @param valueB the values within a given range
-         * @return the {@link ColumnWhere}
-         * @throws NullPointerException when either valueA or valueB are null
+         * @param <T>   the type of the value
+         * @param value the value for the condition
+         * @return the {@link SelectWhere} instance
+         * @throws NullPointerException if the value is null
          */
-        <T> ColumnWhere between(T valueA, T valueB);
+        <T> SelectWhere lte(T value);
 
         /**
-         * Creates in condition
+         * Creates a between condition.
          *
-         * @param values the values
-         * @param <T>    the type
-         * @return the {@link ColumnWhere}
-         * @throws NullPointerException when value is null
+         * @param <T>    the type of the value
+         * @param valueA the start value of the range
+         * @param valueB the end value of the range
+         * @return the {@link SelectWhere} instance
+         * @throws NullPointerException if either valueA or valueB is null
          */
-        <T> ColumnWhere in(Iterable<T> values);
+        <T> SelectWhere between(T valueA, T valueB);
 
         /**
-         * Creates the equals condition
+         * Creates an in condition.
          *
-         * @return {@link ColumnNotCondition}
+         * @param values the values for the condition
+         * @param <T>    the type of the values
+         * @return the {@link SelectWhere} instance
+         * @throws NullPointerException if the values are null
          */
-        ColumnNotCondition not();
+        <T> SelectWhere in(Iterable<T> values);
+
+        /**
+         * Creates an equals condition.
+         *
+         * @return {@link SelectNotCondition}
+         */
+        SelectNotCondition not();
 
     }
 
     /**
-     * The column not condition
+     * Represents the negation of a condition.
      */
-    interface ColumnNotCondition extends ColumnNameCondition {
+    interface SelectNotCondition extends SelectNameCondition {
     }
 
     /**
-     * Besides, the fluent-API with the select method, the API also has support for creating a {@link SelectQuery} instance using a builder pattern.
-     * The goal is the same; however, it provides more possibilities, such as more complex queries.
-     * The ColumnQueryBuilder is not brighter than a fluent-API; it has the same validation in the creation method.
+     * A builder interface for constructing queries using a fluent API.
+     * This builder supports the creation of {@link SelectQuery} instances using a builder pattern, providing more possibilities for complex queries.
+     * The ColumnQueryBuilder is not brighter than a fluent API; it has the same validation in the creation method.
      * It is a mutable and non-thread-safe class.
      */
-    interface ColumnQueryBuilder {
-        /**
-         * Append a new column in the search result. The query will return the result by elements declared such as "select column from database"
-         * If it remains empty, it will return all the possible fields, similar to "select * from database"
-         *
-         * @param column a field to return to the search
-         * @return the {@link ColumnQueryBuilder}
-         * @throws NullPointerException when the document is null
-         */
-        ColumnQueryBuilder select(String column);
+    interface QueryBuilder {
 
         /**
-         * Append new columns in the search result. The query will return the result by elements declared such as "select column from database"
-         * If it remains empty, it will return all the possible fields, similar to "select * from database"
+         * Append a new column in the search result. The query will return the result by elements declared such as "select column from database".
+         * If it remains empty, it will return all the possible fields, similar to "select * from database".
          *
-         * @param columns a field to return to the search
-         * @return the {@link ColumnQueryBuilder}
-         * @throws NullPointerException when there is a null element
+         * @param column a field to return to the search
+         * @return the {@link QueryBuilder}
+         * @throws NullPointerException when the column is null
          */
-        ColumnQueryBuilder select(String... columns);
+        QueryBuilder select(String column);
+
+        /**
+         * Append new columns in the search result. The query will return the result by elements declared such as "select column from database".
+         * If it remains empty, it will return all the possible fields, similar to "select * from database".
+         *
+         * @param columns fields to return in the search
+         * @return the {@link QueryBuilder}
+         * @throws NullPointerException when there is a null element in columns
+         */
+        QueryBuilder select(String... columns);
 
         /**
          * Append a new sort in the query. The first one has more precedence than the next one.
          *
          * @param sort the {@link Sort}
-         * @return the {@link ColumnQueryBuilder}
+         * @return the {@link QueryBuilder}
          * @throws NullPointerException when the sort is null
          */
-        ColumnQueryBuilder sort(Sort sort);
+        QueryBuilder sort(Sort<?> sort);
 
         /**
          * Append sorts in the query. The first one has more precedence than the next one.
          *
-         * @param sorts the array of {@link Sort}
-         * @return the {@link ColumnQueryBuilder}
-         * @throws NullPointerException when there is a null sort
+         * @param sorts an array of {@link Sort}
+         * @return the {@link QueryBuilder}
+         * @throws NullPointerException when there is a null element in sorts
          */
-        ColumnQueryBuilder sort(Sort... sorts);
+        QueryBuilder sort(Sort<?>... sorts);
 
         /**
-         * Define the column family in the query, this element is mandatory to build the {@link SelectQuery}
+         * Define the column family in the query, this element is mandatory to build the {@link SelectQuery}.
          *
-         * @param columnFamily the column family to query
-         * @return the {@link ColumnQueryBuilder}
-         * @throws NullPointerException when documentCollection is null
+         * @param entity the entity to query
+         * @return the {@link QueryBuilder}
+         * @throws NullPointerException when the entity is null
          */
-        ColumnQueryBuilder from(String columnFamily);
+        QueryBuilder from(String entity);
 
         /**
-         * Either add or replace the condition in the query. It has a different behavior than the previous method
-         * because it won't append it. Therefore, it will create when it is the first time or replace when it was executed once.
+         * Either add or replace the condition in the query. It has a different behavior than the previous method because it won't append it.
+         * Therefore, it will create when it is the first time or replace when it was executed once.
          *
          * @param condition the {@link CriteriaCondition} in the query
-         * @return the {@link ColumnQueryBuilder}
-         * @throws NullPointerException when condition is null
+         * @return the {@link QueryBuilder}
+         * @throws NullPointerException when the condition is null
          */
-        ColumnQueryBuilder where(CriteriaCondition condition);
+        QueryBuilder where(CriteriaCondition condition);
 
         /**
          * Defines the position of the first result to retrieve.
@@ -573,10 +553,10 @@ public interface SelectQuery {
          * The default value is zero, and it will replace the current property.
          *
          * @param skip the first result to retrieve
-         * @return a query with first result defined
-         * @throws IllegalArgumentException if limit is negative
+         * @return a query with the first result defined
+         * @throws IllegalArgumentException if skip is negative
          */
-        ColumnQueryBuilder skip(long skip);
+        QueryBuilder skip(long skip);
 
         /**
          * Defines the maximum number of results to retrieve.
@@ -584,39 +564,36 @@ public interface SelectQuery {
          * The default value is zero, and it will replace the current property.
          *
          * @param limit the limit
-         * @return the {@link ColumnQueryBuilder}
+         * @return the {@link QueryBuilder}
          * @throws IllegalArgumentException if limit is negative
          */
-        ColumnQueryBuilder limit(long limit);
+        QueryBuilder limit(long limit);
 
         /**
-         * It will validate and then create a {@link SelectQuery} instance.
+         * Validate and create a {@link SelectQuery} instance.
          *
          * @return {@link SelectQuery}
-         * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
-         *                               such as the {@link ColumnQueryBuilder#from(String)} method was not called.
+         * @throws IllegalStateException when an element is not valid or not filled up, such as the {@link QueryBuilder#from(String)} method not being called
          */
         SelectQuery build();
 
         /**
-         * Executes {@link DatabaseManager#select(SelectQuery)}
+         * Execute {@link DatabaseManager#select(SelectQuery)}.
          *
          * @param manager the entity manager
          * @return the result of {@link DatabaseManager#select(SelectQuery)}
          * @throws NullPointerException  when manager is null
-         * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
-         *                               such as the {@link ColumnQueryBuilder#from(String)} method was not called.
+         * @throws IllegalStateException when an element is not valid or not filled up, such as the {@link QueryBuilder#from(String)} method not being called
          */
         Stream<CommunicationEntity> getResult(DatabaseManager manager);
 
         /**
-         * Executes {@link DatabaseManager#singleResult(SelectQuery)}
+         * Execute {@link DatabaseManager#singleResult(SelectQuery)}.
          *
          * @param manager the entity manager
          * @return the result of {@link DatabaseManager#singleResult(SelectQuery)}
          * @throws NullPointerException  when manager is null
-         * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
-         *                               such as the {@link ColumnQueryBuilder#from(String)} method was not called.
+         * @throws IllegalStateException when an element is not valid or not filled up, such as the {@link QueryBuilder#from(String)} method not being called
          */
         Optional<CommunicationEntity> getSingleResult(DatabaseManager manager);
     }

@@ -18,16 +18,16 @@ package org.eclipse.jnosql.communication.semistructured;
 
 
 import jakarta.data.Sort;
-import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnFrom;
-import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnLimit;
-import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnNameCondition;
-import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnNameOrder;
-import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnNotCondition;
-import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnOrder;
-import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnQueryBuild;
-import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnSelect;
-import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnSkip;
-import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnWhere;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.SelectFrom;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.SelectLimit;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.SelectNameCondition;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.SelectNameOrder;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.SelectNotCondition;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.SelectOrder;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.SelectQueryBuild;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.SelectElements;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.SelectSkip;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.SelectWhere;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +39,9 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of the Select in the column
  */
-class DefaultFluentColumnQueryBuilder extends BaseQueryBuilder implements
-        ColumnSelect, ColumnFrom, ColumnLimit, ColumnSkip,
-        ColumnOrder, ColumnNameCondition, ColumnNotCondition, ColumnNameOrder, ColumnWhere, ColumnQueryBuild {
+class DefaultFluentSelectQueryBuilderElements extends BaseQueryBuilder implements
+        SelectElements, SelectFrom, SelectLimit, SelectSkip,
+        SelectOrder, SelectNameCondition, SelectNotCondition, SelectNameOrder, SelectWhere, SelectQueryBuild {
 
 
     private String columnFamily;
@@ -55,28 +55,28 @@ class DefaultFluentColumnQueryBuilder extends BaseQueryBuilder implements
     private final List<String> columns;
 
 
-    DefaultFluentColumnQueryBuilder(List<String> columns) {
+    DefaultFluentSelectQueryBuilderElements(List<String> columns) {
         this.columns = columns;
     }
 
 
     @Override
-    public ColumnFrom from(String columnFamily) {
-        requireNonNull(columnFamily, "columnFamily is required");
-        this.columnFamily = columnFamily;
+    public SelectFrom from(String entity) {
+        requireNonNull(entity, "columnFamily is required");
+        this.columnFamily = entity;
         return this;
     }
 
 
     @Override
-    public ColumnNameCondition where(String name) {
+    public SelectNameCondition where(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
     }
 
     @Override
-    public ColumnNameCondition and(String name) {
+    public SelectNameCondition and(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = true;
@@ -84,7 +84,7 @@ class DefaultFluentColumnQueryBuilder extends BaseQueryBuilder implements
     }
 
     @Override
-    public ColumnNameCondition or(String name) {
+    public SelectNameCondition or(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = false;
@@ -92,7 +92,7 @@ class DefaultFluentColumnQueryBuilder extends BaseQueryBuilder implements
     }
 
     @Override
-    public ColumnSkip skip(long skip) {
+    public SelectSkip skip(long skip) {
         if (skip < 0) {
             throw new IllegalArgumentException("The skip should not be negative, skip: " + skip);
         }
@@ -101,7 +101,7 @@ class DefaultFluentColumnQueryBuilder extends BaseQueryBuilder implements
     }
 
     @Override
-    public ColumnLimit limit(long limit) {
+    public SelectLimit limit(long limit) {
         if (limit < 0) {
             throw new IllegalArgumentException("The limit should not be negative, limit: " + limit);
         }
@@ -110,7 +110,7 @@ class DefaultFluentColumnQueryBuilder extends BaseQueryBuilder implements
     }
 
     @Override
-    public ColumnOrder orderBy(String name) {
+    public SelectOrder orderBy(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
@@ -118,70 +118,70 @@ class DefaultFluentColumnQueryBuilder extends BaseQueryBuilder implements
 
 
     @Override
-    public ColumnNotCondition not() {
+    public SelectNotCondition not() {
         this.negate = true;
         return this;
     }
 
     @Override
-    public <T> ColumnWhere eq(T value) {
+    public <T> SelectWhere eq(T value) {
         eqImpl(value);
         return this;
     }
 
     @Override
-    public ColumnWhere like(String value) {
+    public SelectWhere like(String value) {
         likeImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnWhere gt(T value) {
+    public <T> SelectWhere gt(T value) {
         gtImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnWhere gte(T value) {
+    public <T> SelectWhere gte(T value) {
         gteImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnWhere lt(T value) {
+    public <T> SelectWhere lt(T value) {
         ltImpl(value);
         return this;
     }
 
 
     @Override
-    public <T> ColumnWhere lte(T value) {
+    public <T> SelectWhere lte(T value) {
         lteImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnWhere between(T valueA, T valueB) {
+    public <T> SelectWhere between(T valueA, T valueB) {
         betweenImpl(valueA, valueB);
         return this;
     }
 
 
     @Override
-    public <T> ColumnWhere in(Iterable<T> values) {
+    public <T> SelectWhere in(Iterable<T> values) {
         inImpl(values);
         return this;
     }
 
 
     @Override
-    public ColumnNameOrder asc() {
+    public SelectNameOrder asc() {
         this.sorts.add(Sort.asc(name));
         return this;
     }
 
     @Override
-    public ColumnNameOrder desc() {
+    public SelectNameOrder desc() {
         this.sorts.add(Sort.desc(name));
         return this;
     }

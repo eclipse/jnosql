@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultColumnQueryBuilder implements SelectQuery.ColumnQueryBuilder {
+class DefaultQueryBuilder implements SelectQuery.QueryBuilder {
 
     private final List<String> columns = new ArrayList<>();
 
@@ -44,14 +44,14 @@ class DefaultColumnQueryBuilder implements SelectQuery.ColumnQueryBuilder {
 
 
     @Override
-    public SelectQuery.ColumnQueryBuilder select(String column) {
+    public SelectQuery.QueryBuilder select(String column) {
         Objects.requireNonNull(column, "column is required");
         this.columns.add(column);
         return this;
     }
 
     @Override
-    public SelectQuery.ColumnQueryBuilder select(String... columns) {
+    public SelectQuery.QueryBuilder select(String... columns) {
         Consumer<String> validNull = d -> requireNonNull(d, "there is null column in the query");
         Consumer<String> consume = this.columns::add;
         Stream.of(columns).forEach(validNull.andThen(consume));
@@ -59,14 +59,14 @@ class DefaultColumnQueryBuilder implements SelectQuery.ColumnQueryBuilder {
     }
 
     @Override
-    public SelectQuery.ColumnQueryBuilder sort(Sort sort) {
+    public SelectQuery.QueryBuilder sort(Sort sort) {
         Objects.requireNonNull(sort, "sort is required");
         this.sorts.add(sort);
         return this;
     }
 
     @Override
-    public SelectQuery.ColumnQueryBuilder sort(Sort... sorts) {
+    public SelectQuery.QueryBuilder sort(Sort... sorts) {
         Consumer<Sort> validNull = d -> requireNonNull(d, "there is null document in the query");
         Consumer<Sort> consume = this.sorts::add;
         Stream.of(sorts).forEach(validNull.andThen(consume));
@@ -74,21 +74,21 @@ class DefaultColumnQueryBuilder implements SelectQuery.ColumnQueryBuilder {
     }
 
     @Override
-    public SelectQuery.ColumnQueryBuilder from(String documentCollection) {
-        Objects.requireNonNull(documentCollection, "documentCollection is required");
-        this.documentCollection = documentCollection;
+    public SelectQuery.QueryBuilder from(String entity) {
+        Objects.requireNonNull(entity, "documentCollection is required");
+        this.documentCollection = entity;
         return this;
     }
 
     @Override
-    public SelectQuery.ColumnQueryBuilder where(CriteriaCondition condition) {
+    public SelectQuery.QueryBuilder where(CriteriaCondition condition) {
         Objects.requireNonNull(condition, "condition is required");
         this.condition = condition;
         return this;
     }
 
     @Override
-    public SelectQuery.ColumnQueryBuilder skip(long skip) {
+    public SelectQuery.QueryBuilder skip(long skip) {
         if (skip < 0) {
             throw new IllegalArgumentException("The skip should not be negative, skip: " + skip);
         }
@@ -97,7 +97,7 @@ class DefaultColumnQueryBuilder implements SelectQuery.ColumnQueryBuilder {
     }
 
     @Override
-    public SelectQuery.ColumnQueryBuilder limit(long limit) {
+    public SelectQuery.QueryBuilder limit(long limit) {
         if (limit < 0) {
             throw new IllegalArgumentException("The limit should not be negative, limit: " + limit);
         }
@@ -134,7 +134,7 @@ class DefaultColumnQueryBuilder implements SelectQuery.ColumnQueryBuilder {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultColumnQueryBuilder that = (DefaultColumnQueryBuilder) o;
+        DefaultQueryBuilder that = (DefaultQueryBuilder) o;
         return skip == that.skip
                 && limit == that.limit
                 && Objects.equals(columns, that.columns)
