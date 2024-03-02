@@ -75,11 +75,11 @@ public class RepositoryColumnBean<T extends DataRepository<?, ?>> extends Abstra
     @Override
     public T create(CreationalContext<T> creationalContext) {
         EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
-        ColumnTemplate template = provider.isEmpty() ? getInstance(ColumnTemplate.class) :
+        var template = provider.isEmpty() ? getInstance(ColumnTemplate.class) :
                 getInstance(ColumnTemplate.class, DatabaseQualifier.ofColumn(provider));
-        Converters converters = getInstance(Converters.class);
+        var converters = getInstance(Converters.class);
 
-        SemistructuredRepositoryProxy<?,?> handler = new SemistructuredRepositoryProxy<>(template,
+        var handler = new SemistructuredRepositoryProxy<>(template,
                 entities, type, converters);
         return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
