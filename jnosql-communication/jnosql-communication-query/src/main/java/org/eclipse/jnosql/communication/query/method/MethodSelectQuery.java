@@ -27,9 +27,9 @@ final class MethodSelectQuery  implements SelectQuery {
 
     private final Where where;
 
-    private final List<Sort> sorts;
+    private final List<Sort<?>> sorts;
 
-    MethodSelectQuery(String entity, List<Sort> sorts, Where where) {
+    MethodSelectQuery(String entity, List<Sort<?>> sorts, Where where) {
         this.entity = entity;
         this.sorts = sorts;
         this.where = where;
@@ -61,7 +61,7 @@ final class MethodSelectQuery  implements SelectQuery {
     }
 
     @Override
-    public List<Sort> orderBy() {
+    public List<Sort<?>> orderBy() {
         return Collections.unmodifiableList(sorts);
     }
 

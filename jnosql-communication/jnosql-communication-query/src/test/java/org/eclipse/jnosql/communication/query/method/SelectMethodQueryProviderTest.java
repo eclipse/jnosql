@@ -461,14 +461,14 @@ class SelectMethodQueryProviderTest {
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
         assertEquals(entity, selectQuery.entity());
-        List<Sort> sorts = selectQuery.orderBy();
+        List<Sort<?>> sorts = selectQuery.orderBy();
 
         assertEquals(2, sorts.size());
-        Sort sort = sorts.get(0);
+        Sort<?> sort = sorts.get(0);
         assertEquals("name", sort.property());
-        assertEquals(direction, sort.isAscending() == true ? Direction.ASC : Direction.DESC);
+        assertEquals(direction, sort.isAscending() ? Direction.ASC : Direction.DESC);
 
-        Sort sort2 = sorts.get(1);
+        Sort<?> sort2 = sorts.get(1);
         assertEquals("age", sort2.property());
 
         assertEquals(direction2, sort2.isAscending() ? Direction.ASC : Direction.DESC);
@@ -479,12 +479,12 @@ class SelectMethodQueryProviderTest {
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
         assertEquals(entity, selectQuery.entity());
-        List<Sort> sorts = selectQuery.orderBy();
+        List<Sort<?>> sorts = selectQuery.orderBy();
 
         assertEquals(1, sorts.size());
-        Sort sort = sorts.get(0);
+        Sort<?> sort = sorts.get(0);
         assertEquals("name", sort.property());
-        assertEquals(type, sort.isAscending() == true ? Direction.ASC : Direction.DESC);
+        assertEquals(type, sort.isAscending() ? Direction.ASC : Direction.DESC);
     }
 
 

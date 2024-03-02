@@ -25,7 +25,7 @@ import java.util.function.Function;
 
 public final class SelectMethodQueryProvider extends AbstractMethodQueryProvider implements BiFunction<String, String, SelectQuery> {
 
-    private final List<Sort> sorts = new ArrayList<>();
+    private final List<Sort<?>> sorts = new ArrayList<>();
 
     @Override
     public SelectQuery apply(String query, String entity) {

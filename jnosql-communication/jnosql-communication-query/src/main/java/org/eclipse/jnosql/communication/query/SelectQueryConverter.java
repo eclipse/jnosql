@@ -78,7 +78,7 @@ public final class SelectQueryConverter extends AbstractWhereSupplier implements
         return QueryParser::select;
     }
 
-    private Sort sort(QueryParser.OrderNameContext context) {
+    private Sort<?> sort(QueryParser.OrderNameContext context) {
         String text = context.name().getText();
         Direction type = context.desc() == null? Direction.ASC: Direction.DESC;
         return Sort.of(text, type, false);
