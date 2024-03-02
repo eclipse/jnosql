@@ -43,13 +43,13 @@ public class ColumnTemplateProducer implements Function<DatabaseManager, Semistr
     @Override
     public SemistructuredTemplate apply(DatabaseManager manager) {
         Objects.requireNonNull(manager, "manager is required");
-        return new ProducerColumnTemplate(converter, manager,
+        return new ProducerSemistructuredTemplate(converter, manager,
                 eventManager, entities, converters);
     }
 
 
     @Vetoed
-    static class ProducerColumnTemplate extends AbstractColumnTemplate {
+    static class ProducerSemistructuredTemplate extends AbstractSemistructuredTemplate {
 
         private ColumnEntityConverter converter;
 
@@ -61,11 +61,11 @@ public class ColumnTemplateProducer implements Function<DatabaseManager, Semistr
 
         private Converters converters;
 
-        ProducerColumnTemplate(ColumnEntityConverter converter,
-                               DatabaseManager manager,
-                               ColumnEventPersistManager eventManager,
-                               EntitiesMetadata entities,
-                               Converters converters) {
+        ProducerSemistructuredTemplate(ColumnEntityConverter converter,
+                                       DatabaseManager manager,
+                                       ColumnEventPersistManager eventManager,
+                                       EntitiesMetadata entities,
+                                       Converters converters) {
             this.converter = converter;
             this.manager = manager;
             this.eventManager = eventManager;
@@ -73,31 +73,31 @@ public class ColumnTemplateProducer implements Function<DatabaseManager, Semistr
             this.converters = converters;
         }
 
-        ProducerColumnTemplate() {
+        ProducerSemistructuredTemplate() {
         }
 
         @Override
-        protected ColumnEntityConverter getConverter() {
+        protected ColumnEntityConverter converter() {
             return converter;
         }
 
         @Override
-        protected DatabaseManager getManager() {
+        protected DatabaseManager manager() {
             return manager;
         }
 
         @Override
-        protected ColumnEventPersistManager getEventManager() {
+        protected ColumnEventPersistManager eventManager() {
             return eventManager;
         }
 
         @Override
-        protected EntitiesMetadata getEntities() {
+        protected EntitiesMetadata entities() {
             return entities;
         }
 
         @Override
-        protected Converters getConverters() {
+        protected Converters converters() {
             return converters;
         }
     }

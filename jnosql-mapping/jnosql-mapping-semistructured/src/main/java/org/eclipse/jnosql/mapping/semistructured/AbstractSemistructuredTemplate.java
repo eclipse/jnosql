@@ -47,32 +47,57 @@ import java.util.stream.StreamSupport;
 import static java.util.Objects.requireNonNull;
 
 /**
- * The template method to {@link SemistructuredTemplate}
+ * An abstract implementation of the {@link SemistructuredTemplate} interface providing
+ * a template method for working with semi-structured NoSQL databases.
+ * Concrete subclasses must implement methods to provide necessary dependencies and configuration.
+ *
+ * @see SemistructuredTemplate
  */
-public abstract class AbstractColumnTemplate implements SemistructuredTemplate {
+public abstract class AbstractSemistructuredTemplate implements SemistructuredTemplate {
 
     private static final QueryParser PARSER = new QueryParser();
 
-    protected abstract ColumnEntityConverter getConverter();
+    /**
+     * Retrieves the converter used to convert between entity objects and communication entities.
+     *
+     * @return the entity converter
+     */
+    protected abstract ColumnEntityConverter converter();
 
-    protected abstract DatabaseManager getManager();
+    /**
+     * Retrieves the manager responsible for database operations.
+     *
+     * @return the database manager
+     */
+    protected abstract DatabaseManager manager();
 
-    protected abstract ColumnEventPersistManager getEventManager();
+    /**
+     * Retrieves the manager responsible for persisting column events.
+     *
+     * @return the event manager
+     */
+    protected abstract ColumnEventPersistManager eventManager();
 
-    protected abstract EntitiesMetadata getEntities();
 
-    protected abstract Converters getConverters();
+    protected abstract EntitiesMetadata entities();
 
-    private final UnaryOperator<CommunicationEntity> insert = e -> getManager().insert(e);
+    /**
+     * Retrieves the converters for handling entity conversions.
+     *
+     * @return the converters
+     */
+    protected abstract Converters converters();
 
-    private final UnaryOperator<CommunicationEntity> update = e -> getManager().update(e);
+    private final UnaryOperator<CommunicationEntity> insert = e -> manager().insert(e);
+
+    private final UnaryOperator<CommunicationEntity> update = e -> manager().update(e);
 
     private CommunicationObserverParser observer;
 
 
     private CommunicationObserverParser getObserver() {
         if (Objects.isNull(observer)) {
-            observer = new MapperObserver(getEntities());
+            observer = new MapperObserver(entities());
         }
         return observer;
     }
@@ -88,7 +113,7 @@ public abstract class AbstractColumnTemplate implements SemistructuredTemplate {
     public <T> T insert(T entity, Duration ttl) {
         requireNonNull(entity, "entity is required");
         requireNonNull(ttl, "ttl is required");
-        return persist(entity, e -> getManager().insert(e, ttl));
+        return persist(entity, e -> manager().insert(e, ttl));
     }
 
 
@@ -124,7 +149,7 @@ public abstract class AbstractColumnTemplate implements SemistructuredTemplate {
     @Override
     public void delete(DeleteQuery query) {
         requireNonNull(query, "query is required");
-        getManager().delete(query);
+        manager().delete(query);
     }
 
 
@@ -136,12 +161,12 @@ public abstract class AbstractColumnTemplate implements SemistructuredTemplate {
 
     @Override
     public long count(SelectQuery query) {
-        return getManager().count(query);
+        return manager().count(query);
     }
 
     @Override
     public boolean exists(SelectQuery query) {
-        return getManager().exists(query);
+        return manager().exists(query);
     }
 
     @Override
@@ -166,11 +191,11 @@ public abstract class AbstractColumnTemplate implements SemistructuredTemplate {
     public <T, K> Optional<T> find(Class<T> type, K id) {
         requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
-        EntityMetadata entityMetadata = getEntities().get(type);
+        EntityMetadata entityMetadata = entities().get(type);
         FieldMetadata idField = entityMetadata.id()
                 .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
-        Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
+        Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), converters());
         SelectQuery query = SelectQuery.select().from(entityMetadata.name())
                 .where(idField.name()).eq(value).build();
 
@@ -182,21 +207,21 @@ public abstract class AbstractColumnTemplate implements SemistructuredTemplate {
         requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
 
-        EntityMetadata entityMetadata = getEntities().get(type);
+        EntityMetadata entityMetadata = entities().get(type);
         FieldMetadata idField = entityMetadata.id()
                 .orElseThrow(() -> IdNotFoundException.newInstance(type));
-        Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
+        Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), converters());
 
         DeleteQuery query = DeleteQuery.delete().from(entityMetadata.name())
                 .where(idField.name()).eq(value).build();
-        getManager().delete(query);
+        manager().delete(query);
     }
 
 
     @Override
     public <T> Stream<T> query(String query) {
         requireNonNull(query, "query is required");
-        return PARSER.query(query, getManager(), getObserver()).map(c -> getConverter().toEntity(c));
+        return PARSER.query(query, manager(), getObserver()).map(c -> converter().toEntity(c));
     }
 
     @Override
@@ -216,41 +241,41 @@ public abstract class AbstractColumnTemplate implements SemistructuredTemplate {
 
     @Override
     public PreparedStatement prepare(String query) {
-        return new ColumnPreparedStatement(PARSER.prepare(query, getManager(), getObserver()), getConverter());
+        return new ColumnPreparedStatement(PARSER.prepare(query, manager(), getObserver()), converter());
     }
 
 
     @Override
     public long count(String columnFamily) {
-        return getManager().count(columnFamily);
+        return manager().count(columnFamily);
     }
 
 
     @Override
     public <T> long count(Class<T> type) {
         requireNonNull(type, "entity class is required");
-        return getManager().count(findAllQuery(type));
+        return manager().count(findAllQuery(type));
     }
 
     private <T> Stream<T> executeQuery(SelectQuery query) {
         requireNonNull(query, "query is required");
-        Stream<CommunicationEntity> entities = getManager().select(query);
-        Function<CommunicationEntity, T> function = e -> getConverter().toEntity(e);
-        return entities.map(function).peek(getEventManager()::firePostEntity);
+        Stream<CommunicationEntity> entities = manager().select(query);
+        Function<CommunicationEntity, T> function = e -> converter().toEntity(e);
+        return entities.map(function).peek(eventManager()::firePostEntity);
     }
 
     @Override
     public <T> QueryMapper.MapperFrom select(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
-        EntityMetadata metadata = getEntities().get(type);
-        return new ColumnMapperSelect(metadata, getConverters(), this);
+        EntityMetadata metadata = entities().get(type);
+        return new ColumnMapperSelect(metadata, converters(), this);
     }
 
     @Override
     public <T> QueryMapper.MapperDeleteFrom delete(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
-        EntityMetadata metadata = getEntities().get(type);
-        return new ColumnMapperDelete(metadata, getConverters(), this);
+        EntityMetadata metadata = entities().get(type);
+        return new ColumnMapperDelete(metadata, converters(), this);
     }
 
     @Override
@@ -262,26 +287,26 @@ public abstract class AbstractColumnTemplate implements SemistructuredTemplate {
     @Override
     public <T> void deleteAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
-        EntityMetadata metadata = getEntities().get(type);
+        EntityMetadata metadata = entities().get(type);
         if(metadata.inheritance().isPresent()){
             InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();
             if(!inheritanceMetadata.parent().equals(metadata.type())){
-                getManager().delete(DeleteQuery.delete().from(metadata.name())
+                manager().delete(DeleteQuery.delete().from(metadata.name())
                         .where(inheritanceMetadata.discriminatorColumn())
                         .eq(inheritanceMetadata.discriminatorValue()).build());
                 return;
             }
         }
-        getManager().delete(DeleteQuery.delete().from(metadata.name()).build());
+        manager().delete(DeleteQuery.delete().from(metadata.name()).build());
     }
 
     protected <T> T persist(T entity, UnaryOperator<CommunicationEntity> persistAction) {
         return Stream.of(entity)
-                .map(toUnary(getEventManager()::firePreEntity))
-                .map(getConverter()::toColumn)
+                .map(toUnary(eventManager()::firePreEntity))
+                .map(converter()::toColumn)
                 .map(persistAction)
-                .map(t -> getConverter().toEntity(entity, t))
-                .map(toUnary(getEventManager()::firePostEntity))
+                .map(t -> converter().toEntity(entity, t))
+                .map(toUnary(eventManager()::firePostEntity))
                 .findFirst()
                 .orElseThrow();
     }
@@ -294,7 +319,7 @@ public abstract class AbstractColumnTemplate implements SemistructuredTemplate {
     }
 
     private <T> SelectQuery findAllQuery(Class<T> type){
-        EntityMetadata metadata = getEntities().get(type);
+        EntityMetadata metadata = entities().get(type);
 
         if(metadata.inheritance().isPresent()){
             InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();

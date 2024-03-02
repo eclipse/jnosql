@@ -86,7 +86,7 @@ class DefaultColumnTemplateTest {
 
     private DatabaseManager managerMock;
 
-    private DefaultColumnTemplate template;
+    private DefaultSemistructuredTemplate template;
 
     private ArgumentCaptor<CommunicationEntity> captor;
 
@@ -100,7 +100,7 @@ class DefaultColumnTemplateTest {
         captor = ArgumentCaptor.forClass(CommunicationEntity.class);
         Instance<DatabaseManager> instance = Mockito.mock(Instance.class);
         Mockito.when(instance.get()).thenReturn(managerMock);
-        this.template = new DefaultColumnTemplate(converter, instance,
+        this.template = new DefaultSemistructuredTemplate(converter, instance,
                 columnEventPersistManager, entities, converters);
     }
 

@@ -27,7 +27,7 @@ import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 @Default
 @Database(DatabaseType.COLUMN)
 @ApplicationScoped
-class DefaultColumnTemplate extends AbstractColumnTemplate {
+class DefaultSemistructuredTemplate extends AbstractSemistructuredTemplate {
 
     private ColumnEntityConverter converter;
 
@@ -40,9 +40,9 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
     private Converters converters;
 
     @Inject
-    DefaultColumnTemplate(ColumnEntityConverter converter, Instance<DatabaseManager> manager,
-                          ColumnEventPersistManager eventManager,
-                          EntitiesMetadata entities, Converters converters) {
+    DefaultSemistructuredTemplate(ColumnEntityConverter converter, Instance<DatabaseManager> manager,
+                                  ColumnEventPersistManager eventManager,
+                                  EntitiesMetadata entities, Converters converters) {
         this.converter = converter;
         this.manager = manager;
         this.eventManager = eventManager;
@@ -50,31 +50,31 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
         this.converters = converters;
     }
 
-    DefaultColumnTemplate(){
+    DefaultSemistructuredTemplate(){
     }
 
     @Override
-    protected ColumnEntityConverter getConverter() {
+    protected ColumnEntityConverter converter() {
         return converter;
     }
 
     @Override
-    protected DatabaseManager getManager() {
+    protected DatabaseManager manager() {
         return manager.get();
     }
 
     @Override
-    protected ColumnEventPersistManager getEventManager() {
+    protected ColumnEventPersistManager eventManager() {
         return eventManager;
     }
 
     @Override
-    protected EntitiesMetadata getEntities() {
+    protected EntitiesMetadata entities() {
         return entities;
     }
 
     @Override
-    protected Converters getConverters() {
+    protected Converters converters() {
         return converters;
     }
 }

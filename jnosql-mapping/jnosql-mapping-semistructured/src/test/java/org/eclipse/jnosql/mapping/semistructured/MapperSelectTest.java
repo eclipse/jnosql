@@ -64,7 +64,7 @@ class MapperSelectTest {
 
     private DatabaseManager managerMock;
 
-    private DefaultColumnTemplate template;
+    private DefaultSemistructuredTemplate template;
 
     private ArgumentCaptor<SelectQuery> captor;
 
@@ -75,7 +75,7 @@ class MapperSelectTest {
         Instance<DatabaseManager> instance = Mockito.mock(Instance.class);
         this.captor = ArgumentCaptor.forClass(SelectQuery.class);
         when(instance.get()).thenReturn(managerMock);
-        this.template = new DefaultColumnTemplate(converter, instance,
+        this.template = new DefaultSemistructuredTemplate(converter, instance,
                 persistManager, entities, converters);
     }
 
