@@ -28,6 +28,9 @@ import static java.util.stream.Collectors.toList;
 public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.communication.query.SelectQuery, CommunicationObserverParser, QueryParams> {
 
 
+    /**
+     * The default constructor
+     */
     public SelectQueryParser() {
     }
 

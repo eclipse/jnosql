@@ -16,6 +16,8 @@ import org.eclipse.jnosql.communication.Params;
 
 /**
  * The result of {@link DeleteQueryParams} that has {@link DeleteQuery} and {@link Params}.
+ * @param query  the {@link DeleteQuery}
+ * @param params the {@link Params}
  */
 public record DeleteQueryParams(DeleteQuery query, Params params) {
 

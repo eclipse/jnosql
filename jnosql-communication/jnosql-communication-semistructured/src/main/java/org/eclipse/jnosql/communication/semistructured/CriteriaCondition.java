@@ -156,6 +156,13 @@ public final class CriteriaCondition {
                 '}';
     }
 
+    /**
+     * Creates a new {@link CriteriaCondition} with the same element and condition, but with the read-only flag set to true.
+     *
+     * @param condition the condition to be marked as read-only
+     * @return a new read-only condition
+     * @throws NullPointerException when the condition is null
+     */
     public static CriteriaCondition readOnly(CriteriaCondition condition) {
         Objects.requireNonNull(condition, "Condition is required");
         return new CriteriaCondition(condition.element(), condition.condition(), true);

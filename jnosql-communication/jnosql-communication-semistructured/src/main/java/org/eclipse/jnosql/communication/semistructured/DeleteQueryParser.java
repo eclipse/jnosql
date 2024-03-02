@@ -22,6 +22,10 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * The {@link DeleteQueryParser} has the logic to convert from {@link org.eclipse.jnosql.communication.query.DeleteQuery}
+ * to {@link DeleteQueryParams}.
+ */
 public final class DeleteQueryParser implements BiFunction<org.eclipse.jnosql.communication.query.DeleteQuery, CommunicationObserverParser, DeleteQueryParams> {
 
 

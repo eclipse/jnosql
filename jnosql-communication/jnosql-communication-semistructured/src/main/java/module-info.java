@@ -10,14 +10,15 @@
  *  Contributors:
  *  Otavio Santana
  */
-module org.eclipse.jnosql.communication.column {
+/**
+ * This module contains the communication layer to work with semi-structured databases.
+ */
+module org.eclipse.jnosql.communication.semistructured {
     uses org.eclipse.jnosql.communication.semistructured.DatabaseConfiguration;
     requires org.eclipse.jnosql.communication.core;
     requires org.eclipse.jnosql.communication.query;
     requires jakarta.json.bind;
     requires jakarta.json;
     requires jakarta.data;
-
     opens org.eclipse.jnosql.communication.semistructured;
-
 }

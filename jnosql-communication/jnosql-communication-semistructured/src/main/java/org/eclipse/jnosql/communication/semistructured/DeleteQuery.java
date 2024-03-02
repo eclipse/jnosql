@@ -125,6 +125,9 @@ public interface DeleteQuery {
     interface DeleteProvider extends Function<String[], EntityDelete>, Supplier<EntityDelete> {
     }
 
+    /**
+     * The initial element in the Column delete query.
+     */
     interface DeleteQueryBuilderProvider extends Function<String[], DeleteQueryBuilder>,
             Supplier<DeleteQueryBuilder> {
 

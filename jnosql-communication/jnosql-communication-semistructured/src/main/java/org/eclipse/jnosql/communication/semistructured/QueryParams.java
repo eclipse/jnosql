@@ -16,6 +16,8 @@ import org.eclipse.jnosql.communication.Params;
 
 /**
  * The result of {@link org.eclipse.jnosql.communication.query.SelectQueryConverter} that has {@link SelectQuery} and {@link Params}.
+ * @param query  the {@link SelectQuery}
+ * @param params the {@link Params}
  */
 public record QueryParams(SelectQuery query, Params params) {
 
