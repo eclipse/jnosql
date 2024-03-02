@@ -33,7 +33,7 @@ import static org.eclipse.jnosql.mapping.DatabaseType.COLUMN;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
-class ColumnTemplateTest {
+class TemplateTest {
 
     @Inject
     private Template template;

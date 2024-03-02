@@ -71,7 +71,7 @@ import static org.mockito.Mockito.*;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
-class ElementCrudRepositoryProxyTest {
+class CrudRepositoryProxyTest {
 
     private SemistructuredTemplate template;
 

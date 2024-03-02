@@ -49,7 +49,7 @@ import static org.mockito.Mockito.verify;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
-class ColumnCrudInheritanceRepositoryProxyTest {
+class CrudInheritanceRepositoryProxyTest {
 
     private SemistructuredTemplate template;
 

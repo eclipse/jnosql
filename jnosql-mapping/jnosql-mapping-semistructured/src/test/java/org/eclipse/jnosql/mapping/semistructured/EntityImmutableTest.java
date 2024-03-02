@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
-class ColumnEntityImmutableTest {
+class EntityImmutableTest {
 
     @Inject
     private DefaultEntityConverter converter;
