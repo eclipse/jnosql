@@ -16,9 +16,10 @@ package org.eclipse.jnosql.mapping.document.configuration;
 
 import jakarta.data.exceptions.MappingException;
 import org.eclipse.jnosql.communication.Settings;
-import org.eclipse.jnosql.communication.document.DocumentConfiguration;
-import org.eclipse.jnosql.communication.document.DocumentManager;
-import org.eclipse.jnosql.communication.document.DocumentManagerFactory;
+import org.eclipse.jnosql.communication.semistructured.DatabaseConfiguration;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
+import org.eclipse.jnosql.mapping.Database;
+import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.core.config.MicroProfileSettings;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 
@@ -35,36 +36,37 @@ import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.DOCUM
 import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.DOCUMENT_PROVIDER;
 
 @ApplicationScoped
-class DocumentManagerSupplier implements Supplier<DocumentManager> {
+class DocumentManagerSupplier implements Supplier<DatabaseManager> {
 
     private static final Logger LOGGER = Logger.getLogger(DocumentManagerSupplier.class.getName());
 
     @Override
     @Produces
     @ApplicationScoped
-    public DocumentManager get() {
+    @Database(DatabaseType.DOCUMENT)
+    public DatabaseManager get() {
         Settings settings = MicroProfileSettings.INSTANCE;
 
-        DocumentConfiguration configuration = settings.get(DOCUMENT_PROVIDER, Class.class)
-                .filter(DocumentConfiguration.class::isAssignableFrom)
+        DatabaseConfiguration configuration = settings.get(DOCUMENT_PROVIDER, Class.class)
+                .filter(DatabaseConfiguration.class::isAssignableFrom)
                 .map(c -> {
                     final Reflections reflections = CDI.current().select(Reflections.class).get();
-                    return (DocumentConfiguration) reflections.newInstance(c);
-                }).orElseGet(DocumentConfiguration::getConfiguration);
+                    return (DatabaseConfiguration) reflections.newInstance(c);
+                }).orElseGet(DatabaseConfiguration::getConfiguration);
 
-        DocumentManagerFactory managerFactory = configuration.apply(settings);
+        var managerFactory = configuration.apply(settings);
 
         Optional<String> database = settings.get(DOCUMENT_DATABASE, String.class);
         String db = database.orElseThrow(() -> new MappingException("Please, inform the database filling up the property "
                 + DOCUMENT_DATABASE.get()));
-        DocumentManager manager = managerFactory.apply(db);
+        DatabaseManager manager = managerFactory.apply(db);
 
         LOGGER.log(Level.FINEST, "Starting  a DocumentManager instance using Eclipse MicroProfile Config," +
                 " database name: " + db);
         return manager;
     }
 
-    public void close(@Disposes DocumentManager manager) {
+    public void close(@Disposes @Database(DatabaseType.DOCUMENT) DatabaseManager manager) {
         LOGGER.log(Level.FINEST, "Closing DocumentManager resource, database name: " + manager.name());
         manager.close();
     }

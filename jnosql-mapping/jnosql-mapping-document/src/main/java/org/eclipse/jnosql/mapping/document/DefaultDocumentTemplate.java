@@ -12,15 +12,15 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.column;
+package org.eclipse.jnosql.mapping.document;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
-import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate;
 import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
@@ -29,7 +29,7 @@ import org.eclipse.jnosql.mapping.semistructured.EventPersistManager;
 
 @Default
 @ApplicationScoped
-class DefaultColumnTemplate extends AbstractSemistructuredTemplate implements ColumnTemplate {
+class DefaultDocumentTemplate extends AbstractSemistructuredTemplate implements DocumentTemplate {
 
 
     private final EntityConverter converter;
@@ -45,10 +45,10 @@ class DefaultColumnTemplate extends AbstractSemistructuredTemplate implements Co
 
 
     @Inject
-    DefaultColumnTemplate(EntityConverter converter,
-                          @Database(DatabaseType.COLUMN) DatabaseManager manager,
-                          EventPersistManager eventManager,
-                          EntitiesMetadata entities, Converters converters){
+    DefaultDocumentTemplate(EntityConverter converter,
+                            @Database(DatabaseType.COLUMN) DatabaseManager manager,
+                            EventPersistManager eventManager,
+                            EntitiesMetadata entities, Converters converters){
         this.converter = converter;
         this.manager = manager;
         this.eventManager = eventManager;
@@ -56,7 +56,7 @@ class DefaultColumnTemplate extends AbstractSemistructuredTemplate implements Co
         this.converters = converters;
     }
 
-    DefaultColumnTemplate() {
+    DefaultDocumentTemplate() {
         this(null, null, null, null, null);
     }
 

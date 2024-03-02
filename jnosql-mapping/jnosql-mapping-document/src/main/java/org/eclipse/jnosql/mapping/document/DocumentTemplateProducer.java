@@ -14,28 +14,31 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
-import jakarta.nosql.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Vetoed;
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
+import org.eclipse.jnosql.mapping.semistructured.EventPersistManager;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * The producer of {@link DocumentTemplate}
  */
 @ApplicationScoped
-public class DocumentTemplateProducer {
+public class DocumentTemplateProducer implements Function<DatabaseManager, DocumentTemplate> {
 
     @Inject
-    private DocumentEntityConverter converter;
+    private EntityConverter converter;
 
     @Inject
-    private DocumentEventPersistManager persistManager;
+    private EventPersistManager eventManager;
 
     @Inject
     private EntitiesMetadata entities;
@@ -43,67 +46,65 @@ public class DocumentTemplateProducer {
     @Inject
     private Converters converters;
 
-    /**
-     * creates a {@link DocumentManager}
-     *
-     * @param manager the manager
-     * @return a new instance
-     * @throws NullPointerException when manager is null
-     */
-    public JNoSQLDocumentTemplate get(DocumentManager manager) {
+
+    @Override
+    public DocumentTemplate apply(DatabaseManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         return new ProducerDocumentTemplate(converter, manager,
-                persistManager, entities, converters);
+                eventManager, entities, converters);
     }
 
     @Vetoed
-    static class ProducerDocumentTemplate extends AbstractDocumentTemplate {
+    static class ProducerDocumentTemplate  extends AbstractSemistructuredTemplate implements DocumentTemplate {
 
-        private DocumentEntityConverter converter;
+        private final EntityConverter converter;
 
-        private DocumentManager manager;
+        private final  DatabaseManager manager;
 
-        private DocumentEventPersistManager persistManager;
+        private final EventPersistManager eventManager;
 
-        private Converters converters;
+        private final EntitiesMetadata entities;
 
-        private EntitiesMetadata entities;
+        private final  Converters converters;
 
-        ProducerDocumentTemplate(DocumentEntityConverter converter, DocumentManager manager,
-                                 DocumentEventPersistManager persistManager,
-                                 EntitiesMetadata entities, Converters converters) {
+        ProducerDocumentTemplate(EntityConverter converter,
+                               DatabaseManager manager,
+                               EventPersistManager eventManager,
+                               EntitiesMetadata entities,
+                               Converters converters) {
             this.converter = converter;
             this.manager = manager;
-            this.persistManager = persistManager;
+            this.eventManager = eventManager;
             this.entities = entities;
             this.converters = converters;
         }
 
         ProducerDocumentTemplate() {
+            this(null, null, null, null, null);
         }
 
         @Override
-        protected DocumentEntityConverter getConverter() {
+        protected EntityConverter converter() {
             return converter;
         }
 
         @Override
-        protected DocumentManager getManager() {
+        protected DatabaseManager manager() {
             return manager;
         }
 
         @Override
-        protected DocumentEventPersistManager getEventManager() {
-            return persistManager;
+        protected EventPersistManager eventManager() {
+            return eventManager;
         }
 
         @Override
-        protected EntitiesMetadata getEntities() {
+        protected EntitiesMetadata entities() {
             return entities;
         }
 
         @Override
-        protected Converters getConverters() {
+        protected Converters converters() {
             return converters;
         }
     }

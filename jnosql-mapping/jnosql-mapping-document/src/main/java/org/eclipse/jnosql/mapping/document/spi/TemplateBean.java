@@ -16,12 +16,12 @@ package org.eclipse.jnosql.mapping.document.spi;
 
 
 import jakarta.enterprise.context.spi.CreationalContext;
-import jakarta.nosql.document.DocumentTemplate;
-import org.eclipse.jnosql.communication.document.DocumentManager;
+import jakarta.nosql.Template;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.document.DocumentTemplateProducer;
-import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.core.spi.AbstractBean;
 
 import java.lang.annotation.Annotation;
@@ -29,9 +29,9 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class TemplateBean extends AbstractBean<JNoSQLDocumentTemplate> {
+class TemplateBean extends AbstractBean<DocumentTemplate> {
 
-    private static final Set<Type> TYPES = Set.of(DocumentTemplate.class, JNoSQLDocumentTemplate.class);
+    private static final Set<Type> TYPES = Set.of(DocumentTemplate.class, Template.class);
 
     private final String provider;
 
@@ -54,15 +54,15 @@ class TemplateBean extends AbstractBean<JNoSQLDocumentTemplate> {
 
 
     @Override
-    public JNoSQLDocumentTemplate create(CreationalContext<JNoSQLDocumentTemplate> context) {
+    public DocumentTemplate create(CreationalContext<DocumentTemplate> context) {
 
-        DocumentTemplateProducer producer = getInstance(DocumentTemplateProducer.class);
-        DocumentManager manager = getManager();
-        return producer.get(manager);
+        var producer = getInstance(DocumentTemplateProducer.class);
+        var manager = getManager();
+        return producer.apply(manager);
     }
 
-    private DocumentManager getManager() {
-        return getInstance(DocumentManager.class, DatabaseQualifier.ofDocument(provider));
+    private DatabaseManager getManager() {
+        return getInstance(DatabaseManager.class, DatabaseQualifier.ofDocument(provider));
     }
 
     @Override

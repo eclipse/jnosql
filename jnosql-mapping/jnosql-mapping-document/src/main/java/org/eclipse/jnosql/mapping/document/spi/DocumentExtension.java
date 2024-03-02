@@ -19,7 +19,7 @@ import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
 import jakarta.enterprise.inject.spi.ProcessProducer;
-import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.Databases;
@@ -41,7 +41,7 @@ public class DocumentExtension implements Extension {
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
 
-    <T, X extends DocumentManager> void observes(@Observes final ProcessProducer<T, X> pp) {
+    <T, X extends DatabaseManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, DatabaseType.DOCUMENT, databases);
     }
 
