@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class DefaultColumnRepositoryProducerTest {
 
     @Inject
-    private ColumnRepositoryProducer producer;
+    private SemistructuredRepositoryProducer producer;
 
 
     @Test

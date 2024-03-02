@@ -31,7 +31,7 @@ import java.util.Objects;
  * The producer of Repository
  */
 @ApplicationScoped
-public class ColumnRepositoryProducer {
+public class SemistructuredRepositoryProducer {
 
     @Inject
     private EntitiesMetadata entities;
