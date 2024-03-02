@@ -77,7 +77,7 @@ public interface SelectQuery {
      *
      * @return the columns
      */
-    List<String> names();
+    List<String> columns();
 
     /**
      * Retrieves the sorts contained in this {@link SelectQuery}.

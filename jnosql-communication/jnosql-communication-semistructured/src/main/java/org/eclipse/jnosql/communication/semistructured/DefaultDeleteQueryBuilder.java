@@ -17,7 +17,7 @@
 package org.eclipse.jnosql.communication.semistructured;
 
 import jakarta.data.Sort;
-import org.eclipse.jnosql.communication.semistructured.DeleteQuery.ColumnDeleteQueryBuilder;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery.DeleteQueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultDeleteQueryBuilder implements ColumnDeleteQueryBuilder {
+class DefaultDeleteQueryBuilder implements DeleteQueryBuilder {
 
     private final List<String> documents = new ArrayList<>();
 
@@ -39,14 +39,14 @@ class DefaultDeleteQueryBuilder implements ColumnDeleteQueryBuilder {
 
 
     @Override
-    public ColumnDeleteQueryBuilder delete(String column) {
+    public DeleteQueryBuilder delete(String column) {
         Objects.requireNonNull(column, "column is required");
         this.documents.add(column);
         return this;
     }
 
     @Override
-    public ColumnDeleteQueryBuilder delete(String... columns) {
+    public DeleteQueryBuilder delete(String... columns) {
         Consumer<String> validNull = c -> requireNonNull(c, "there is null column in the query");
         Consumer<String> consume = this.documents::add;
         Stream.of(columns).forEach(validNull.andThen(consume));
@@ -54,14 +54,14 @@ class DefaultDeleteQueryBuilder implements ColumnDeleteQueryBuilder {
     }
 
     @Override
-    public ColumnDeleteQueryBuilder from(String documentCollection) {
+    public DeleteQueryBuilder from(String documentCollection) {
         Objects.requireNonNull(documentCollection, "documentCollection is required");
         this.documentCollection = documentCollection;
         return this;
     }
 
     @Override
-    public ColumnDeleteQueryBuilder where(CriteriaCondition condition) {
+    public DeleteQueryBuilder where(CriteriaCondition condition) {
         Objects.requireNonNull(condition, "condition is required");
         this.condition = condition;
         return this;

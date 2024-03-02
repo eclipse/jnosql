@@ -18,9 +18,9 @@ package org.eclipse.jnosql.communication.semistructured;
 
 
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery.ColumnDelete;
-import org.eclipse.jnosql.communication.semistructured.DeleteQuery.ColumnDeleteFrom;
-import org.eclipse.jnosql.communication.semistructured.DeleteQuery.ColumnDeleteNotCondition;
-import org.eclipse.jnosql.communication.semistructured.DeleteQuery.ColumnDeleteWhere;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery.DeleteFrom;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery.DeleteNotCondition;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery.DeleteWhere;
 
 import java.util.List;
 
@@ -29,8 +29,8 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation to Delete query
  */
-class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete, ColumnDeleteFrom,
-        ColumnDeleteWhere, ColumnDeleteNotCondition {
+class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete, DeleteFrom,
+        DeleteWhere, DeleteNotCondition {
 
     private String columnFamily;
 
@@ -43,7 +43,7 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Column
     }
 
     @Override
-    public ColumnDeleteFrom from(String columnFamily) {
+    public DeleteFrom from(String columnFamily) {
         requireNonNull(columnFamily, "columnFamily is required");
         this.columnFamily = columnFamily;
         return this;
@@ -51,7 +51,7 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Column
 
 
     @Override
-    public DeleteQuery.ColumnDeleteNameCondition where(String name) {
+    public DeleteQuery.DeleteNameCondition where(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
@@ -59,7 +59,7 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Column
 
 
     @Override
-    public DeleteQuery.ColumnDeleteNameCondition and(String name) {
+    public DeleteQuery.DeleteNameCondition and(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = true;
@@ -67,7 +67,7 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Column
     }
 
     @Override
-    public DeleteQuery.ColumnDeleteNameCondition or(String name) {
+    public DeleteQuery.DeleteNameCondition or(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = false;
@@ -76,55 +76,55 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Column
 
 
     @Override
-    public ColumnDeleteNotCondition not() {
+    public DeleteNotCondition not() {
         this.negate = true;
         return this;
     }
 
     @Override
-    public <T> ColumnDeleteWhere eq(T value) {
+    public <T> DeleteWhere eq(T value) {
         eqImpl(value);
         return this;
     }
 
     @Override
-    public ColumnDeleteWhere like(String value) {
+    public DeleteWhere like(String value) {
         likeImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnDeleteWhere gt(T value) {
+    public <T> DeleteWhere gt(T value) {
         gtImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnDeleteWhere gte(T value) {
+    public <T> DeleteWhere gte(T value) {
         gteImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnDeleteWhere lt(T value) {
+    public <T> DeleteWhere lt(T value) {
         ltImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnDeleteWhere lte(T value) {
+    public <T> DeleteWhere lte(T value) {
         lteImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnDeleteWhere between(T valueA, T valueB) {
+    public <T> DeleteWhere between(T valueA, T valueB) {
         betweenImpl(valueA, valueB);
         return this;
     }
 
     @Override
-    public <T> ColumnDeleteWhere in(Iterable<T> values) {
+    public <T> DeleteWhere in(Iterable<T> values) {
         inImpl(values);
         return this;
     }

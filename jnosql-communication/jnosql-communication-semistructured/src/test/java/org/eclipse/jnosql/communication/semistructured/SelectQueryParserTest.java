@@ -56,7 +56,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        assertThat(selectQuery.names()).contains("name", "address");
+        assertThat(selectQuery.columns()).contains("name", "address");
         assertTrue(selectQuery.sorts().isEmpty());
         assertEquals(0L, selectQuery.limit());
         assertEquals(0L, selectQuery.skip());
@@ -72,7 +72,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        assertTrue(selectQuery.names().isEmpty());
+        assertTrue(selectQuery.columns().isEmpty());
         assertThat(selectQuery.sorts()).contains(Sort.of("name", Direction.ASC, false));
         assertEquals(0L, selectQuery.limit());
         assertEquals(0L, selectQuery.skip());
@@ -88,7 +88,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        assertTrue(selectQuery.names().isEmpty());
+        assertTrue(selectQuery.columns().isEmpty());
         assertThat(selectQuery.sorts()).contains(Sort.of("name", Direction.ASC, false));
         assertEquals(0L, selectQuery.limit());
         assertEquals(0L, selectQuery.skip());
@@ -104,7 +104,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        assertTrue(selectQuery.names().isEmpty());
+        assertTrue(selectQuery.columns().isEmpty());
         assertThat(selectQuery.sorts()).contains(Sort.of("name", Direction.DESC, false));
         assertEquals(0L, selectQuery.limit());
         assertEquals(0L, selectQuery.skip());
@@ -121,7 +121,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        assertTrue(selectQuery.names().isEmpty());
+        assertTrue(selectQuery.columns().isEmpty());
         assertThat(selectQuery.sorts()).contains(Sort.of("name", Direction.DESC, false), Sort.of("age",
                 Direction.ASC, false));
         assertEquals(0L, selectQuery.limit());
@@ -162,7 +162,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        assertTrue(selectQuery.names().isEmpty());
+        assertTrue(selectQuery.columns().isEmpty());
         assertTrue(selectQuery.sorts().isEmpty());
         assertEquals(12L, selectQuery.limit());
         assertEquals(10L, selectQuery.skip());
@@ -499,7 +499,7 @@ class SelectQueryParserTest {
     }
 
     private void checkBaseQuery(SelectQuery selectQuery, long limit, long skip) {
-        assertTrue(selectQuery.names().isEmpty());
+        assertTrue(selectQuery.columns().isEmpty());
         assertTrue(selectQuery.sorts().isEmpty());
         assertEquals(limit, selectQuery.limit());
         assertEquals(skip, selectQuery.skip());

@@ -91,23 +91,23 @@ public interface DeleteQuery {
      * it might be ignored for some implementations.
      *
      * @param documents the column fields to delete query
-     * @return a {@link ColumnDeleteQueryBuilder} instance
+     * @return a {@link DeleteQueryBuilder} instance
      * @throws NullPointerException when there is a null element
      */
-    static ColumnDeleteQueryBuilder builder(String... documents) {
+    static DeleteQueryBuilder builder(String... documents) {
         Stream.of(documents).forEach(d -> requireNonNull(d, "there is null document in the query"));
-        ColumnDeleteQueryBuilder builder = new DefaultDeleteQueryBuilder();
+        DeleteQueryBuilder builder = new DefaultDeleteQueryBuilder();
         Stream.of(documents).forEach(builder::delete);
         return builder;
     }
 
     /**
-     * It starts the first step of {@link ColumnDeleteQueryBuilder} creation using a builder pattern.
+     * It starts the first step of {@link DeleteQueryBuilder} creation using a builder pattern.
      * Once there is no field, it will remove the whole record instead of some fields on the database.
      *
-     * @return a {@link ColumnDeleteQueryBuilder} instance
+     * @return a {@link DeleteQueryBuilder} instance
      */
-    static ColumnDeleteQueryBuilder builder() {
+    static DeleteQueryBuilder builder() {
         return new DefaultDeleteQueryBuilder();
     }
 
@@ -121,44 +121,44 @@ public interface DeleteQuery {
          * Defines the column family in the delete query
          *
          * @param columnFamily the column family to query
-         * @return a {@link ColumnDeleteFrom query}
+         * @return a {@link DeleteFrom query}
          * @throws NullPointerException when columnFamily is null
          */
-        ColumnDeleteFrom from(String columnFamily);
+        DeleteFrom from(String columnFamily);
     }
 
     /**
      * A supplier class of {@link ColumnDelete}
      */
-    interface ColumnDeleteProvider extends Function<String[], ColumnDelete>, Supplier<ColumnDelete> {
+    interface DeleteProvider extends Function<String[], ColumnDelete>, Supplier<ColumnDelete> {
     }
 
-    interface ColumnDeleteQueryBuilderProvider extends Function<String[], ColumnDeleteQueryBuilder>,
-            Supplier<ColumnDeleteQueryBuilder> {
+    interface DeleteQueryBuilderProvider extends Function<String[], DeleteQueryBuilder>,
+            Supplier<DeleteQueryBuilder> {
 
     }
 
     /**
      * The Column Delete Query
      */
-    interface ColumnDeleteFrom extends ColumnDeleteQueryBuild {
+    interface DeleteFrom extends DeleteQueryBuild {
 
 
         /**
          * Starts a new condition defining the  column name
          *
          * @param name the column name
-         * @return a new {@link ColumnDeleteNameCondition}
+         * @return a new {@link DeleteNameCondition}
          * @throws NullPointerException when name is null
          */
-        ColumnDeleteNameCondition where(String name);
+        DeleteNameCondition where(String name);
 
     }
 
     /**
      * The base to delete name condition
      */
-    interface ColumnDeleteNameCondition {
+    interface DeleteNameCondition {
 
 
         /**
@@ -166,59 +166,59 @@ public interface DeleteQuery {
          *
          * @param value the value to the condition
          * @param <T>   the type
-         * @return the {@link ColumnDeleteWhere}
+         * @return the {@link DeleteWhere}
          * @throws NullPointerException when value is null
          */
-        <T> ColumnDeleteWhere eq(T value);
+        <T> DeleteWhere eq(T value);
 
         /**
          * Creates the like condition
          *
          * @param value the value to the condition
-         * @return the {@link ColumnDeleteWhere}
+         * @return the {@link DeleteWhere}
          * @throws NullPointerException when value is null
          */
-        ColumnDeleteWhere like(String value);
+        DeleteWhere like(String value);
 
         /**
          * Creates the greater than condition
          *
          * @param value the value to the condition
          * @param <T>   the type
-         * @return the {@link ColumnDeleteWhere}
+         * @return the {@link DeleteWhere}
          * @throws NullPointerException when value is null
          */
-        <T> ColumnDeleteWhere gt(T value);
+        <T> DeleteWhere gt(T value);
 
         /**
          * Creates the greater equals than condition
          *
          * @param <T>   the type
          * @param value the value to the condition
-         * @return the {@link ColumnDeleteWhere}
+         * @return the {@link DeleteWhere}
          * @throws NullPointerException when value is null
          */
-        <T> ColumnDeleteWhere gte(T value);
+        <T> DeleteWhere gte(T value);
 
         /**
          * Creates the lesser than condition
          *
          * @param <T>   the type
          * @param value the value to the condition
-         * @return the {@link ColumnDeleteWhere}
+         * @return the {@link DeleteWhere}
          * @throws NullPointerException when value is null
          */
-        <T> ColumnDeleteWhere lt(T value);
+        <T> DeleteWhere lt(T value);
 
         /**
          * Creates the lesser equals than condition
          *
          * @param <T>   the type
          * @param value the value to the condition
-         * @return the {@link ColumnDeleteWhere}
+         * @return the {@link DeleteWhere}
          * @throws NullPointerException when value is null
          */
-        <T> ColumnDeleteWhere lte(T value);
+        <T> DeleteWhere lte(T value);
 
         /**
          * Creates the between condition
@@ -226,27 +226,27 @@ public interface DeleteQuery {
          * @param <T>    the type
          * @param valueA the values within a given range
          * @param valueB the values within a given range
-         * @return the {@link ColumnDeleteWhere}
+         * @return the {@link DeleteWhere}
          * @throws NullPointerException when either valueA or valueB are null
          */
-        <T> ColumnDeleteWhere between(T valueA, T valueB);
+        <T> DeleteWhere between(T valueA, T valueB);
 
         /**
          * Creates in condition
          *
          * @param values the values
          * @param <T>    the type
-         * @return the {@link ColumnDeleteWhere}
+         * @return the {@link DeleteWhere}
          * @throws NullPointerException when value is null
          */
-        <T> ColumnDeleteWhere in(Iterable<T> values);
+        <T> DeleteWhere in(Iterable<T> values);
 
         /**
          * Creates the equals condition
          *
-         * @return {@link ColumnDeleteNotCondition}
+         * @return {@link DeleteNotCondition}
          */
-        ColumnDeleteNotCondition not();
+        DeleteNotCondition not();
 
 
     }
@@ -254,7 +254,7 @@ public interface DeleteQuery {
     /**
      * The column not condition
      */
-    interface ColumnDeleteNotCondition extends ColumnDeleteNameCondition {
+    interface DeleteNotCondition extends DeleteNameCondition {
     }
 
     /**
@@ -262,7 +262,7 @@ public interface DeleteQuery {
      * It either can return a new {@link DeleteQuery} instance or execute a query with
      * {@link DatabaseManager}
      */
-    interface ColumnDeleteQueryBuild {
+    interface DeleteQueryBuild {
 
         /**
          * Creates a new instance of {@link DeleteQuery}
@@ -284,26 +284,26 @@ public interface DeleteQuery {
     /**
      * The Column Where whose define the condition in the delete query.
      */
-    interface ColumnDeleteWhere extends ColumnDeleteQueryBuild {
+    interface DeleteWhere extends DeleteQueryBuild {
 
 
         /**
          * Starts a new condition in the select using {@link CriteriaCondition#and(CriteriaCondition)}
          *
          * @param name a condition to be added
-         * @return the same {@link ColumnDeleteNameCondition} with the condition appended
+         * @return the same {@link DeleteNameCondition} with the condition appended
          * @throws NullPointerException when condition is null
          */
-        ColumnDeleteNameCondition and(String name);
+        DeleteNameCondition and(String name);
 
         /**
          * Starts a new condition in the select using {@link CriteriaCondition#or(CriteriaCondition)}
          *
          * @param name a condition to be added
-         * @return the same {@link ColumnDeleteNameCondition} with the condition appended
+         * @return the same {@link DeleteNameCondition} with the condition appended
          * @throws NullPointerException when condition is null
          */
-        ColumnDeleteNameCondition or(String name);
+        DeleteNameCondition or(String name);
 
     }
 
@@ -316,17 +316,17 @@ public interface DeleteQuery {
      * The ColumnQueryBuilder is not brighter than a fluent-API; it has the same validation in the creation method.
      * It is a mutable and non-thread-safe class.
      */
-    interface ColumnDeleteQueryBuilder {
+    interface DeleteQueryBuilder {
         /**
          * Append a new column in to delete query.
          * It informs the fields to delete in the query instead of the whole record.
          * This behavior might be different for each NoSQL database provider; therefore, it might be ignored for some implementations.
          *
          * @param column a column field to delete query
-         * @return the {@link ColumnDeleteQueryBuilder}
+         * @return the {@link DeleteQueryBuilder}
          * @throws NullPointerException when the document is null
          */
-        ColumnDeleteQueryBuilder delete(String column);
+        DeleteQueryBuilder delete(String column);
 
         /**
          * Append a new column in to delete query.
@@ -334,37 +334,37 @@ public interface DeleteQuery {
          * This behavior might be different for each NoSQL database provider; therefore, it might be ignored for some implementations.
          *
          * @param columns The columns fields to delete query
-         * @return the {@link ColumnDeleteQueryBuilder}
+         * @return the {@link DeleteQueryBuilder}
          * @throws NullPointerException when there is a null element
          */
-        ColumnDeleteQueryBuilder delete(String... columns);
+        DeleteQueryBuilder delete(String... columns);
 
         /**
          * Define the column family in the query, this element is mandatory to build
-         * the {@link ColumnDeleteQueryBuilder}
+         * the {@link DeleteQueryBuilder}
          *
          * @param columnFamily the column family to query
-         * @return the {@link ColumnDeleteQueryBuilder}
+         * @return the {@link DeleteQueryBuilder}
          * @throws NullPointerException when columnFamily is null
          */
-        ColumnDeleteQueryBuilder from(String columnFamily);
+        DeleteQueryBuilder from(String columnFamily);
 
         /**
          * Either add or replace the condition in the query. It has a different behavior than the previous method
          * because it won't append it. Therefore, it will create when it is the first time or replace when it was executed once.
          *
          * @param condition the {@link CriteriaCondition} in the query
-         * @return the {@link ColumnDeleteQueryBuilder}
+         * @return the {@link DeleteQueryBuilder}
          * @throws NullPointerException when condition is null
          */
-        ColumnDeleteQueryBuilder where(CriteriaCondition condition);
+        DeleteQueryBuilder where(CriteriaCondition condition);
 
         /**
          * It will validate and then create a {@link DeleteQuery} instance.
          *
          * @return {@link DeleteQuery}
          * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
-         *                               such as the {@link ColumnDeleteQueryBuilder#from(String)} method was not called.
+         *                               such as the {@link DeleteQueryBuilder#from(String)} method was not called.
          */
         DeleteQuery build();
 
@@ -374,7 +374,7 @@ public interface DeleteQuery {
          * @param manager the entity manager
          * @throws NullPointerException  when manager is null
          * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
-         *                               such as the {@link ColumnDeleteQueryBuilder#from(String)} method was not called.
+         *                               such as the {@link DeleteQueryBuilder#from(String)} method was not called.
          */
         void delete(DatabaseManager manager);
     }

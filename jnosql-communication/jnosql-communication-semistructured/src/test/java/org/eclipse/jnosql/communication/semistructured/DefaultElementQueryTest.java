@@ -41,7 +41,7 @@ class DefaultElementQueryTest {
     @Test
     void shouldNotRemoveColumns() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            List<String> columns = query.names();
+            List<String> columns = query.columns();
             assertTrue(columns.isEmpty());
             columns.clear();
         });

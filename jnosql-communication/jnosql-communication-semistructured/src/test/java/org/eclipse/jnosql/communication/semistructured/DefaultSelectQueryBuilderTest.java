@@ -50,7 +50,7 @@ class DefaultSelectQueryBuilderTest {
     void shouldSelect() {
         String columnFamily = "columnFamily";
         SelectQuery query = select().from(columnFamily).build();
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(columnFamily, query.name());
     }
@@ -59,7 +59,7 @@ class DefaultSelectQueryBuilderTest {
     void shouldSelectColumns() {
         String columnFamily = "columnFamily";
         SelectQuery query = select("column", "column2").from(columnFamily).build();
-        assertThat(query.names()).contains("column", "column2");
+        assertThat(query.columns()).contains("column", "column2");
         assertFalse(query.condition().isPresent());
         assertEquals(columnFamily, query.name());
     }
@@ -74,7 +74,7 @@ class DefaultSelectQueryBuilderTest {
     void shouldSelectOrderAsc() {
         String columnFamily = "columnFamily";
         SelectQuery query = select().from(columnFamily).orderBy("name").asc().build();
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(columnFamily, query.name());
         assertThat(query.sorts()).contains(Sort.of("name", Direction.ASC, false));
@@ -84,7 +84,7 @@ class DefaultSelectQueryBuilderTest {
     void shouldSelectOrderDesc() {
         String columnFamily = "columnFamily";
         SelectQuery query = select().from(columnFamily).orderBy("name").desc().build();
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(columnFamily, query.name());
         assertThat(query.sorts()).contains(Sort.of("name", Direction.DESC, false));
@@ -102,7 +102,7 @@ class DefaultSelectQueryBuilderTest {
     void shouldSelectLimit() {
         String columnFamily = "columnFamily";
         SelectQuery query = select().from(columnFamily).limit(10).build();
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(columnFamily, query.name());
         assertEquals(10L, query.limit());
@@ -118,7 +118,7 @@ class DefaultSelectQueryBuilderTest {
     void shouldSelectSkip() {
         String columnFamily = "columnFamily";
         SelectQuery query = select().from(columnFamily).skip(10).build();
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(columnFamily, query.name());
         assertEquals(10L, query.skip());
@@ -139,7 +139,7 @@ class DefaultSelectQueryBuilderTest {
 
         Element element = condition.column();
 
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
         assertEquals(Condition.EQUALS, condition.condition());
         assertEquals("name", element.name());
@@ -156,7 +156,7 @@ class DefaultSelectQueryBuilderTest {
 
         Element element = condition.column();
 
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
         assertEquals(Condition.LIKE, condition.condition());
         assertEquals("name", element.name());
@@ -172,7 +172,7 @@ class DefaultSelectQueryBuilderTest {
 
         Element element = condition.column();
 
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
         assertEquals(Condition.GREATER_THAN, condition.condition());
         assertEquals("name", element.name());
@@ -188,7 +188,7 @@ class DefaultSelectQueryBuilderTest {
 
         Element element = condition.column();
 
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
         assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
         assertEquals("name", element.name());
@@ -204,7 +204,7 @@ class DefaultSelectQueryBuilderTest {
 
         Element element = condition.column();
 
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
         assertEquals(Condition.LESSER_THAN, condition.condition());
         assertEquals("name", element.name());
@@ -220,7 +220,7 @@ class DefaultSelectQueryBuilderTest {
 
         Element element = condition.column();
 
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
         assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
         assertEquals("name", element.name());
@@ -237,7 +237,7 @@ class DefaultSelectQueryBuilderTest {
 
         Element element = condition.column();
 
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
         assertEquals(Condition.BETWEEN, condition.condition());
         assertEquals("name", element.name());
@@ -254,7 +254,7 @@ class DefaultSelectQueryBuilderTest {
 
         Element element = condition.column();
         CriteriaCondition negate = element.get(CriteriaCondition.class);
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
         assertEquals(Condition.NOT, condition.condition());
         assertEquals(Condition.EQUALS, negate.condition());
@@ -335,7 +335,7 @@ class DefaultSelectQueryBuilderTest {
 
     private void checkQuery(ArgumentCaptor<SelectQuery> queryCaptor, String columnFamily) {
         SelectQuery query = queryCaptor.getValue();
-        assertTrue(query.names().isEmpty());
+        assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(columnFamily, query.name());
     }

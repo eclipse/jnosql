@@ -60,7 +60,7 @@ class DefaultElementQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        assertTrue(selectQuery.names().isEmpty());
+        assertTrue(selectQuery.columns().isEmpty());
         assertTrue(selectQuery.sorts().isEmpty());
         assertEquals(0L, selectQuery.limit());
         assertEquals(0L, selectQuery.skip());

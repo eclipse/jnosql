@@ -42,7 +42,7 @@ record DefaultSelectQuery(long limit, long skip, String name,
     }
 
     @Override
-    public List<String> names() {
+    public List<String> columns() {
         return unmodifiableList(columns);
     }
 
@@ -62,7 +62,7 @@ record DefaultSelectQuery(long limit, long skip, String name,
         return limit == that.limit() &&
                 skip == that.skip() &&
                 Objects.equals(name, that.name()) &&
-                Objects.equals(columns, that.names()) &&
+                Objects.equals(columns, that.columns()) &&
                 Objects.equals(sorts, that.sorts()) &&
                 Objects.equals(criteriaCondition, that.condition().orElse(null));
     }
@@ -74,12 +74,12 @@ record DefaultSelectQuery(long limit, long skip, String name,
 
 
     static SelectQuery countBy(SelectQuery query) {
-        return new DefaultSelectQuery(0, 0, query.name(), query.names(),
+        return new DefaultSelectQuery(0, 0, query.name(), query.columns(),
                 Collections.emptyList(), query.condition().orElse(null));
     }
 
     static SelectQuery existsBy(SelectQuery query) {
-        return new DefaultSelectQuery(1, 0, query.name(), query.names(),
+        return new DefaultSelectQuery(1, 0, query.name(), query.columns(),
                 Collections.emptyList(), query.condition().orElse(null));
     }
 }
