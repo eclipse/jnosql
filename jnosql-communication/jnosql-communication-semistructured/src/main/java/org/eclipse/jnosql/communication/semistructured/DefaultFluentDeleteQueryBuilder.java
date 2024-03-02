@@ -17,7 +17,7 @@
 package org.eclipse.jnosql.communication.semistructured;
 
 
-import org.eclipse.jnosql.communication.semistructured.DeleteQuery.ColumnDelete;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery.EntityDelete;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery.DeleteFrom;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery.DeleteNotCondition;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery.DeleteWhere;
@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation to Delete query
  */
-class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete, DeleteFrom,
+class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements EntityDelete, DeleteFrom,
         DeleteWhere, DeleteNotCondition {
 
     private String columnFamily;
@@ -43,9 +43,9 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Column
     }
 
     @Override
-    public DeleteFrom from(String columnFamily) {
-        requireNonNull(columnFamily, "columnFamily is required");
-        this.columnFamily = columnFamily;
+    public DeleteFrom from(String entity) {
+        requireNonNull(entity, "columnFamily is required");
+        this.columnFamily = entity;
         return this;
     }
 
