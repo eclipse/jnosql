@@ -22,7 +22,7 @@
         <version>1.1.1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>jnosql-mapping-column</artifactId>
+    <artifactId>jnosql-mapping-semistructured</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
