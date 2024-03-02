@@ -1,17 +1,11 @@
 /*
- *
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2024 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
- *   are made available under the terms of the Eclipse Public License v1.0
- *   and Apache License v2.0 which accompanies this distribution.
- *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
- *
- *   You may elect to redistribute this code under either of these licenses.
- *
- *   Contributors:
- *
- *   Otavio Santana
+ *  are made available under the terms of the Eclipse Public License v1.0
+ * and Apache License v2.0 which accompanies this distribution.
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+ * You may elect to redistribute this code under either of these licenses.
  *
  */
 package org.eclipse.jnosql.communication.semistructured;
@@ -34,7 +28,7 @@ class DefaultQueryBuilder implements SelectQuery.QueryBuilder {
 
     private final List<Sort<?>> sorts = new ArrayList<>();
 
-    private String documentCollection;
+    private String entity;
 
     private CriteriaCondition condition;
 
@@ -59,24 +53,24 @@ class DefaultQueryBuilder implements SelectQuery.QueryBuilder {
     }
 
     @Override
-    public SelectQuery.QueryBuilder sort(Sort sort) {
+    public SelectQuery.QueryBuilder sort(Sort<?> sort) {
         Objects.requireNonNull(sort, "sort is required");
         this.sorts.add(sort);
         return this;
     }
 
     @Override
-    public SelectQuery.QueryBuilder sort(Sort... sorts) {
-        Consumer<Sort> validNull = d -> requireNonNull(d, "there is null document in the query");
-        Consumer<Sort> consume = this.sorts::add;
+    public SelectQuery.QueryBuilder sort(Sort<?>... sorts) {
+        Consumer<Sort<?>> validNull = d -> requireNonNull(d, "there is null document in the query");
+        Consumer<Sort<?>> consume = this.sorts::add;
         Stream.of(sorts).forEach(validNull.andThen(consume));
         return this;
     }
 
     @Override
     public SelectQuery.QueryBuilder from(String entity) {
-        Objects.requireNonNull(entity, "documentCollection is required");
-        this.documentCollection = entity;
+        Objects.requireNonNull(entity, "entity is required");
+        this.entity = entity;
         return this;
     }
 
@@ -107,10 +101,10 @@ class DefaultQueryBuilder implements SelectQuery.QueryBuilder {
 
     @Override
     public SelectQuery build() {
-        if (Objects.isNull(documentCollection)) {
+        if (Objects.isNull(entity)) {
             throw new IllegalArgumentException("The document collection is mandatory to build");
         }
-        return new DefaultSelectQuery(limit, skip, documentCollection,
+        return new DefaultSelectQuery(limit, skip, entity,
                 columns, sorts, condition);
     }
 
@@ -139,13 +133,13 @@ class DefaultQueryBuilder implements SelectQuery.QueryBuilder {
                 && limit == that.limit
                 && Objects.equals(columns, that.columns)
                 && Objects.equals(sorts, that.sorts)
-                && Objects.equals(documentCollection, that.documentCollection)
+                && Objects.equals(entity, that.entity)
                 && Objects.equals(condition, that.condition);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(columns, sorts, documentCollection, condition, skip, limit);
+        return Objects.hash(columns, sorts, entity, condition, skip, limit);
     }
 
     @Override
@@ -153,7 +147,7 @@ class DefaultQueryBuilder implements SelectQuery.QueryBuilder {
         return "DefaultColumnQueryBuilder{" +
                 "columns=" + columns +
                 ", sorts=" + sorts +
-                ", documentCollection='" + documentCollection + '\'' +
+                ", entity='" + entity + '\'' +
                 ", condition=" + condition +
                 ", skip=" + skip +
                 ", limit=" + limit +

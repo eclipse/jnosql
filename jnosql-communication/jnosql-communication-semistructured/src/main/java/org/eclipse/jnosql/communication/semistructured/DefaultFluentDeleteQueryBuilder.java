@@ -1,17 +1,11 @@
 /*
- *
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2024 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
- *   are made available under the terms of the Eclipse Public License v1.0
- *   and Apache License v2.0 which accompanies this distribution.
- *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
- *
- *   You may elect to redistribute this code under either of these licenses.
- *
- *   Contributors:
- *
- *   Otavio Santana
+ *  are made available under the terms of the Eclipse Public License v1.0
+ * and Apache License v2.0 which accompanies this distribution.
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+ * You may elect to redistribute this code under either of these licenses.
  *
  */
 package org.eclipse.jnosql.communication.semistructured;
@@ -32,7 +26,7 @@ import static java.util.Objects.requireNonNull;
 class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements EntityDelete, DeleteFrom,
         DeleteWhere, DeleteNotCondition {
 
-    private String columnFamily;
+    private String entity;
 
 
     private final List<String> columns;
@@ -44,8 +38,8 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Entity
 
     @Override
     public DeleteFrom from(String entity) {
-        requireNonNull(entity, "columnFamily is required");
-        this.columnFamily = entity;
+        requireNonNull(entity, "entity is required");
+        this.entity = entity;
         return this;
     }
 
@@ -131,7 +125,7 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Entity
 
     @Override
     public DeleteQuery build() {
-        return new DefaultDeleteQuery(columnFamily, condition, columns);
+        return new DefaultDeleteQuery(entity, condition, columns);
     }
 
     @Override
