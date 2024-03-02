@@ -45,7 +45,7 @@ abstract class ConditionQueryParser {
         query.conditions()
                 .stream()
                 .map(c -> Conditions.getCondition(c, params, observer, columnFamily))
-                .map(CriteriaCondition::column)
+                .map(CriteriaCondition::element)
                 .forEach(entity::add);
         return entity;
     }

@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 
 
 /**
- * An object that represents a precompiled Query statement.
+ * Represents a precompiled query statement.
  */
 public final class CommunicationPreparedStatement {
 
@@ -78,7 +78,7 @@ public final class CommunicationPreparedStatement {
      * @param name  the parameter name
      * @param value the parameter value
      * @return the same query instance
-     * @throws NullPointerException     when there is null parameter
+     * @throws NullPointerException when either name or value is null
      */
     public CommunicationPreparedStatement bind(String name, Object value) {
         Objects.requireNonNull(name, "name is required");
@@ -90,9 +90,10 @@ public final class CommunicationPreparedStatement {
     }
 
     /**
-     * Returns the result as a single element otherwise it will return an {@link Optional#empty()}
+     * Returns the result as a stream of entities.
      *
-     * @return the single result
+     * @return the stream of entities
+     * @throws QueryException if there are parameters left to bind
      */
     public Stream<CommunicationEntity> result() {
         if (!paramsLeft.isEmpty()) {
@@ -120,6 +121,12 @@ public final class CommunicationPreparedStatement {
         }
     }
 
+    /**
+     * Returns the single result as an optional entity.
+     *
+     * @return the optional entity
+     * @throws NonUniqueResultException if the result contains more than one entity
+     */
     public Optional<CommunicationEntity> singleResult() {
         Stream<CommunicationEntity> entities = result();
         final Iterator<CommunicationEntity> iterator = entities.iterator();

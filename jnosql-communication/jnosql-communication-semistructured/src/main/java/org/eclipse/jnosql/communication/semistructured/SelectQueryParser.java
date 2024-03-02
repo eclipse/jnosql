@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
-public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.communication.query.SelectQuery, CommunicationObserverParser, ColumnQueryParams> {
+public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.communication.query.SelectQuery, CommunicationObserverParser, QueryParams> {
 
 
     public SelectQueryParser() {
@@ -56,13 +56,13 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
 
 
     @Override
-    public ColumnQueryParams apply(org.eclipse.jnosql.communication.query.SelectQuery selectQuery, CommunicationObserverParser observer) {
+    public QueryParams apply(org.eclipse.jnosql.communication.query.SelectQuery selectQuery, CommunicationObserverParser observer) {
         Objects.requireNonNull(selectQuery, "selectQuery is required");
         Objects.requireNonNull(observer, "observer is required");
 
         Params params = Params.newParams();
         SelectQuery columnQuery = getColumnQuery(params, selectQuery, observer);
-        return new ColumnQueryParams(columnQuery, params);
+        return new QueryParams(columnQuery, params);
     }
 
 

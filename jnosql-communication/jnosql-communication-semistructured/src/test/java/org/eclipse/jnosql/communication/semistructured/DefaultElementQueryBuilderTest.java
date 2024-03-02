@@ -136,7 +136,7 @@ class DefaultElementQueryBuilderTest {
                 .build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
@@ -155,7 +155,7 @@ class DefaultElementQueryBuilderTest {
                 .build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
@@ -174,7 +174,7 @@ class DefaultElementQueryBuilderTest {
 
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
@@ -191,7 +191,7 @@ class DefaultElementQueryBuilderTest {
         SelectQuery query = builder().from(documentCollection).where(gteName).build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
@@ -209,7 +209,7 @@ class DefaultElementQueryBuilderTest {
                 .build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
@@ -226,7 +226,7 @@ class DefaultElementQueryBuilderTest {
                 .build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
@@ -246,7 +246,7 @@ class DefaultElementQueryBuilderTest {
                 .build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
@@ -265,14 +265,14 @@ class DefaultElementQueryBuilderTest {
                 .build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
         CriteriaCondition negate = element.get(CriteriaCondition.class);
         assertTrue(query.columns().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.NOT, condition.condition());
         assertEquals(Condition.EQUALS, negate.condition());
-        assertEquals("name", negate.column().name());
-        assertEquals(name, negate.column().get());
+        assertEquals("name", negate.element().name());
+        assertEquals(name, negate.element().get());
     }
 
 
@@ -287,7 +287,7 @@ class DefaultElementQueryBuilderTest {
                 .build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
         List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
         assertEquals(Condition.AND, condition.condition());
@@ -305,7 +305,7 @@ class DefaultElementQueryBuilderTest {
                 .build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
         List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
         assertEquals(Condition.OR, condition.condition());
@@ -323,7 +323,7 @@ class DefaultElementQueryBuilderTest {
 
         CriteriaCondition condition = query.condition().orElseThrow(RuntimeException::new);
         assertEquals(columnFamily, query.name());
-        Element element = condition.column();
+        Element element = condition.element();
         List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
 

@@ -85,7 +85,7 @@ class DeleteQueryParserTest {
         CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.GREATER_THAN, condition.condition());
-        assertEquals(Element.of("stamina", 10.23), condition.column());
+        assertEquals(Element.of("stamina", 10.23), condition.element());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -101,7 +101,7 @@ class DeleteQueryParserTest {
         CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
-        assertEquals(Element.of("stamina", -10.23), condition.column());
+        assertEquals(Element.of("stamina", -10.23), condition.element());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -117,7 +117,7 @@ class DeleteQueryParserTest {
         CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
-        assertEquals(Element.of("stamina", -10.23), condition.column());
+        assertEquals(Element.of("stamina", -10.23), condition.element());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -133,7 +133,7 @@ class DeleteQueryParserTest {
         CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.LESSER_THAN, condition.condition());
-        assertEquals(Element.of("stamina", -10.23), condition.column());
+        assertEquals(Element.of("stamina", -10.23), condition.element());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -149,7 +149,7 @@ class DeleteQueryParserTest {
         CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.BETWEEN, condition.condition());
-        assertEquals(Element.of("age", Arrays.asList(10L, 30L)), condition.column());
+        assertEquals(Element.of("age", Arrays.asList(10L, 30L)), condition.element());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -165,7 +165,7 @@ class DeleteQueryParserTest {
         CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.EQUALS, condition.condition());
-        assertEquals(Element.of("name", "diana"), condition.column());
+        assertEquals(Element.of("name", "diana"), condition.element());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -181,7 +181,7 @@ class DeleteQueryParserTest {
         CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.EQUALS, condition.condition());
-        Element element = condition.column();
+        Element element = condition.element();
         List<Element> elements = element.get(new TypeReference<>() {
         });
         Assertions.assertThat(elements).contains(Element.of("apollo", "Brother"),
@@ -200,7 +200,7 @@ class DeleteQueryParserTest {
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
         CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.column();
+        Element element = condition.element();
         assertEquals(Condition.EQUALS, condition.condition());
         assertEquals("age", element.name());
         assertEquals(Value.of(12), element.value());
@@ -219,7 +219,7 @@ class DeleteQueryParserTest {
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
         CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.column();
+        Element element = condition.element();
         assertEquals(Condition.IN, condition.condition());
         assertEquals("name", element.name());
         List<String> values = element.get(new TypeReference<>() {
@@ -238,7 +238,7 @@ class DeleteQueryParserTest {
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
         CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.column();
+        Element element = condition.element();
         assertEquals(Condition.LIKE, condition.condition());
         assertEquals("name", element.name());
         assertEquals("Ada", element.get());
@@ -255,13 +255,13 @@ class DeleteQueryParserTest {
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
         CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.column();
+        Element element = condition.element();
         assertEquals(Condition.NOT, condition.condition());
         List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
         CriteriaCondition criteriaCondition = conditions.get(0);
         assertEquals(Condition.LIKE, criteriaCondition.condition());
-        assertEquals(Element.of("name", "Ada"), criteriaCondition.column());
+        assertEquals(Element.of("name", "Ada"), criteriaCondition.element());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -275,7 +275,7 @@ class DeleteQueryParserTest {
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
         CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.column();
+        Element element = condition.element();
         assertEquals(Condition.AND, condition.condition());
         List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
@@ -294,7 +294,7 @@ class DeleteQueryParserTest {
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
         CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.column();
+        Element element = condition.element();
         assertEquals(Condition.OR, condition.condition());
         List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
@@ -315,7 +315,7 @@ class DeleteQueryParserTest {
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
         CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.column();
+        Element element = condition.element();
         assertEquals(Condition.AND, condition.condition());
         List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
@@ -338,7 +338,7 @@ class DeleteQueryParserTest {
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
         CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.column();
+        Element element = condition.element();
         assertEquals(Condition.AND, condition.condition());
         List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
@@ -384,7 +384,7 @@ class DeleteQueryParserTest {
         Mockito.verify(manager).delete(captor.capture());
         DeleteQuery columnQuery = captor.getValue();
         CriteriaCondition criteriaCondition = columnQuery.condition().get();
-        Element element = criteriaCondition.column();
+        Element element = criteriaCondition.element();
         assertEquals(Condition.EQUALS, criteriaCondition.condition());
         assertEquals("age", element.name());
         assertEquals(12, element.get());

@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 /**
  * A query parser to column database type, this class will convert a String to an operation in {@link DatabaseManager}.
  */
-public final class ColumnQueryParser {
+public final class QueryParser {
 
     private final SelectQueryParser select = new SelectQueryParser();
     private final DeleteQueryParser delete = new DeleteQueryParser();

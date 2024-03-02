@@ -21,17 +21,17 @@ import org.eclipse.jnosql.communication.Params;
 
 
 /**
- * The result of {@link ColumnDeleteQueryParams} that has {@link DeleteQuery} and {@link Params}.
+ * The result of {@link org.eclipse.jnosql.communication.query.SelectQueryConverter} that has {@link SelectQuery} and {@link Params}.
  */
-public record ColumnDeleteQueryParams(DeleteQuery query, Params params) {
+public record QueryParams(SelectQuery query, Params params) {
 
     /**
-     * The {@link DeleteQuery}
+     * The {@link SelectQuery}
      *
-     * @return a {@link DeleteQuery} instance
+     * @return a {@link SelectQuery} instance
      */
     @Override
-    public DeleteQuery query() {
+    public SelectQuery query() {
         return query;
     }
 
@@ -44,6 +44,4 @@ public record ColumnDeleteQueryParams(DeleteQuery query, Params params) {
     public Params params() {
         return params;
     }
-
-
 }

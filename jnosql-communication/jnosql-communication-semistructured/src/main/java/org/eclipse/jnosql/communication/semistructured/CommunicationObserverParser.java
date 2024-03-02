@@ -17,19 +17,22 @@
 package org.eclipse.jnosql.communication.semistructured;
 
 /**
- * An observer to a parser; this observer allows checking both the name of an entity and the fields.
- * This observer might be used to the mapper process.
+ * An observer for a parser; this observer allows checking both the name of an entity and the fields.
+ * This observer might be used for the mapping process.
  */
 public interface CommunicationObserverParser {
 
+    /**
+     * An empty instance of {@link CommunicationObserverParser}.
+     */
     CommunicationObserverParser EMPTY = new CommunicationObserverParser() {
     };
 
     /**
-     * Fire an event to entity name
+     * Fires an event for the entity name.
      *
-     * @param entity the entity
-     * @return the field result
+     * @param entity the entity name
+     * @return the result of processing the entity name
      * @throws NullPointerException when the entity is null
      */
     default String fireEntity(String entity) {
@@ -37,12 +40,12 @@ public interface CommunicationObserverParser {
     }
 
     /**
-     * Fire an event to each field in case of mapper process
+     * Fires an event for each field in the mapper process.
      *
-     * @param field  the field
-     * @param entity the entity
-     * @return the field result
-     * @throws NullPointerException when there is null parameter
+     * @param entity the entity name
+     * @param field  the field name
+     * @return the result of processing the field name
+     * @throws NullPointerException when either entity or field is null
      */
     default String fireField(String entity, String field) {
         return field;

@@ -45,7 +45,7 @@ class DefaultElementConditionTest {
         Element name = Element.of("name", "Otavio");
         CriteriaCondition condition = CriteriaCondition.of(name, Condition.EQUALS);
         assertNotNull(condition);
-        assertEquals(name, condition.column());
+        assertEquals(name, condition.element());
         assertEquals(Condition.EQUALS, condition.condition());
     }
 
@@ -54,7 +54,7 @@ class DefaultElementConditionTest {
         Element age = Element.of("age", 26);
         CriteriaCondition condition = CriteriaCondition.of(age, Condition.GREATER_THAN);
         CriteriaCondition negate = condition.negate();
-        Element negateElement = negate.column();
+        Element negateElement = negate.element();
         assertEquals(Condition.NOT, negate.condition());
         assertEquals(Condition.NOT.getNameField(), negateElement.name());
         assertEquals(CriteriaCondition.of(age, Condition.GREATER_THAN), negateElement.value().get());
@@ -76,7 +76,7 @@ class DefaultElementConditionTest {
         CriteriaCondition condition2 = CriteriaCondition.of(age, Condition.GREATER_THAN);
 
         CriteriaCondition and = condition1.and(condition2);
-        Element andElement = and.column();
+        Element andElement = and.element();
         assertEquals(Condition.AND, and.condition());
         assertEquals(Condition.AND.getNameField(), andElement.name());
         assertThat(andElement.value().get(new TypeReference<List<CriteriaCondition>>() {
@@ -92,7 +92,7 @@ class DefaultElementConditionTest {
         CriteriaCondition condition2 = CriteriaCondition.of(age, Condition.GREATER_THAN);
 
         CriteriaCondition and = condition1.or(condition2);
-        Element andElement = and.column();
+        Element andElement = and.element();
         assertEquals(Condition.OR, and.condition());
         assertEquals(Condition.OR.getNameField(), andElement.name());
         assertThat(andElement.value().get(new TypeReference<List<CriteriaCondition>>() {
@@ -118,7 +118,7 @@ class DefaultElementConditionTest {
         CriteriaCondition gt = CriteriaCondition.gt(Element.of("age", 10));
         CriteriaCondition and = CriteriaCondition.and(eq, gt);
         assertEquals(Condition.AND, and.condition());
-        List<CriteriaCondition> conditions = and.column().get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = and.element().get(new TypeReference<>() {
         });
         assertThat(conditions).contains(eq, gt);
     }
@@ -129,7 +129,7 @@ class DefaultElementConditionTest {
         CriteriaCondition gt = CriteriaCondition.gt(Element.of("age", 10));
         CriteriaCondition and = CriteriaCondition.or(eq, gt);
         assertEquals(Condition.OR, and.condition());
-        List<CriteriaCondition> conditions = and.column().get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = and.element().get(new TypeReference<>() {
         });
         assertThat(conditions).contains(eq, gt);
     }
@@ -141,14 +141,14 @@ class DefaultElementConditionTest {
         CriteriaCondition lte = CriteriaCondition.lte(Element.of("salary", 10_000.00));
 
         CriteriaCondition and = eq.and(gt);
-        List<CriteriaCondition> conditions = and.column().get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = and.element().get(new TypeReference<>() {
         });
         assertEquals(Condition.AND, and.condition());
         assertThat(conditions).contains(eq, gt);
         CriteriaCondition result = and.and(lte);
 
         assertEquals(Condition.AND, result.condition());
-        assertThat(result.column().get(new TypeReference<List<CriteriaCondition>>() {
+        assertThat(result.element().get(new TypeReference<List<CriteriaCondition>>() {
         })).contains(eq, gt, lte);
 
     }
@@ -160,14 +160,14 @@ class DefaultElementConditionTest {
         CriteriaCondition lte = CriteriaCondition.lte(Element.of("salary", 10_000.00));
 
         CriteriaCondition or = eq.or(gt);
-        List<CriteriaCondition> conditions = or.column().get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = or.element().get(new TypeReference<>() {
         });
         assertEquals(Condition.OR, or.condition());
         assertThat(conditions).contains(eq, gt);
         CriteriaCondition result = or.or(lte);
 
         assertEquals(Condition.OR, result.condition());
-        assertThat(result.column().get(new TypeReference<List<CriteriaCondition>>() {
+        assertThat(result.element().get(new TypeReference<List<CriteriaCondition>>() {
         })).contains(eq, gt, lte);
 
     }
@@ -177,7 +177,7 @@ class DefaultElementConditionTest {
         CriteriaCondition eq = CriteriaCondition.eq(Element.of("name", "otavio"));
         CriteriaCondition negate = eq.negate();
         assertEquals(Condition.NOT, negate.condition());
-        CriteriaCondition condition = negate.column().get(CriteriaCondition.class);
+        CriteriaCondition condition = negate.element().get(CriteriaCondition.class);
         assertEquals(eq, condition);
     }
 
@@ -223,7 +223,7 @@ class DefaultElementConditionTest {
         Element element = Element.of("age", Arrays.asList(12, 13));
         CriteriaCondition between = CriteriaCondition.between(element);
         assertEquals(Condition.BETWEEN, between.condition());
-        Iterable<Integer> integers = between.column().get(new TypeReference<>() {
+        Iterable<Integer> integers = between.element().get(new TypeReference<>() {
         });
         assertThat(integers).contains(12, 13);
     }
@@ -239,7 +239,7 @@ class DefaultElementConditionTest {
         Element element = Element.of("age", Arrays.asList(12, 13));
         CriteriaCondition in = CriteriaCondition.in(element);
         assertEquals(Condition.IN, in.condition());
-        Iterable<Integer> integers = in.column().get(new TypeReference<>() {
+        Iterable<Integer> integers = in.element().get(new TypeReference<>() {
         });
         assertThat(integers).contains(12, 13);
     }

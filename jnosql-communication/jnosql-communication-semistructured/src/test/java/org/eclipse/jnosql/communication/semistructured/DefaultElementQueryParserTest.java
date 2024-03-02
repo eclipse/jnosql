@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultElementQueryParserTest {
     
-    private final ColumnQueryParser parser = new ColumnQueryParser();
+    private final QueryParser parser = new QueryParser();
 
 
     private final DatabaseManager manager = Mockito.mock(DatabaseManager.class);
@@ -121,7 +121,7 @@ class DefaultElementQueryParserTest {
         Mockito.verify(manager).delete(captor.capture());
         DeleteQuery deleteQuery = captor.getValue();
         CriteriaCondition criteriaCondition = deleteQuery.condition().get();
-        Element element = criteriaCondition.column();
+        Element element = criteriaCondition.element();
         assertEquals(Condition.EQUALS, criteriaCondition.condition());
         assertEquals("age", element.name());
         assertEquals(12, element.get());
@@ -152,7 +152,7 @@ class DefaultElementQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
         CriteriaCondition criteriaCondition = selectQuery.condition().get();
-        Element element = criteriaCondition.column();
+        Element element = criteriaCondition.element();
         assertEquals(Condition.EQUALS, criteriaCondition.condition());
         assertEquals("age", element.name());
         assertEquals(12, element.get());
@@ -186,7 +186,7 @@ class DefaultElementQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
         CriteriaCondition criteriaCondition = selectQuery.condition().get();
-        Element element = criteriaCondition.column();
+        Element element = criteriaCondition.element();
         assertEquals(Condition.EQUALS, criteriaCondition.condition());
         assertEquals("age", element.name());
         assertEquals(12, element.get());
@@ -207,7 +207,7 @@ class DefaultElementQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
         CriteriaCondition criteriaCondition = selectQuery.condition().get();
-        Element element = criteriaCondition.column();
+        Element element = criteriaCondition.element();
         assertEquals(Condition.EQUALS, criteriaCondition.condition());
         assertEquals("age", element.name());
         assertEquals(12, element.get());

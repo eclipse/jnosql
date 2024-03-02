@@ -32,7 +32,7 @@ class ElementDeleteQueryParamsTest {
     @ParameterizedTest
     @MethodSource("scenarios")
     void shouldInstantiateSuccessfully(DeleteQuery query, Params params) {
-        ColumnDeleteQueryParams target = newInstance(query, params);
+        DeleteQueryParams target = newInstance(query, params);
         assertThat(target).isNotNull();
     }
 
@@ -122,8 +122,8 @@ class ElementDeleteQueryParamsTest {
         );
     }
 
-    private ColumnDeleteQueryParams newInstance(DeleteQuery query, Params params) {
-        return new ColumnDeleteQueryParams(query,params);
+    private DeleteQueryParams newInstance(DeleteQuery query, Params params) {
+        return new DeleteQueryParams(query,params);
     }
 
     private static Params newDummyParams() {

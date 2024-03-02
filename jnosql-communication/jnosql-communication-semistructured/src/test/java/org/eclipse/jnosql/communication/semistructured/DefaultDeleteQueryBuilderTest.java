@@ -73,7 +73,7 @@ class DefaultDeleteQueryBuilderTest {
         DeleteQuery query = delete().from(columnFamily).where("name").eq(name).build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
@@ -90,7 +90,7 @@ class DefaultDeleteQueryBuilderTest {
         DeleteQuery query = delete().from(columnFamily).where("name").like(name).build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
@@ -106,7 +106,7 @@ class DefaultDeleteQueryBuilderTest {
         DeleteQuery query = delete().from(columnFamily).where("name").gt(value).build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
@@ -122,7 +122,7 @@ class DefaultDeleteQueryBuilderTest {
         DeleteQuery query = delete().from(columnFamily).where("name").gte(value).build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
@@ -138,7 +138,7 @@ class DefaultDeleteQueryBuilderTest {
         DeleteQuery query = delete().from(columnFamily).where("name").lt(value).build();
         CriteriaCondition criteriaCondition = query.condition().get();
 
-        Element element = criteriaCondition.column();
+        Element element = criteriaCondition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
@@ -154,7 +154,7 @@ class DefaultDeleteQueryBuilderTest {
         DeleteQuery query = delete().from(columnFamily).where("name").lte(value).build();
         CriteriaCondition criteriaCondition = query.condition().get();
 
-        Element element = criteriaCondition.column();
+        Element element = criteriaCondition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
@@ -171,7 +171,7 @@ class DefaultDeleteQueryBuilderTest {
         DeleteQuery query = delete().from(columnFamily).where("name").between(valueA, valueB).build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
 
         assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
@@ -188,14 +188,14 @@ class DefaultDeleteQueryBuilderTest {
         DeleteQuery query = delete().from(columnFamily).where("name").not().eq(name).build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
         CriteriaCondition negate = element.get(CriteriaCondition.class);
         assertTrue(query.columns().isEmpty());
         assertEquals(columnFamily, query.name());
         assertEquals(Condition.NOT, condition.condition());
         assertEquals(Condition.EQUALS, negate.condition());
-        assertEquals("name", negate.column().name());
-        assertEquals(name, negate.column().get());
+        assertEquals("name", negate.element().name());
+        assertEquals(name, negate.element().get());
     }
 
 
@@ -206,7 +206,7 @@ class DefaultDeleteQueryBuilderTest {
         DeleteQuery query = delete().from(columnFamily).where("name").eq(name).and("age").gt(10).build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
         List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
         assertEquals(Condition.AND, condition.condition());
@@ -221,7 +221,7 @@ class DefaultDeleteQueryBuilderTest {
         DeleteQuery query = delete().from(columnFamily).where("name").eq(name).or("age").gt(10).build();
         CriteriaCondition condition = query.condition().get();
 
-        Element element = condition.column();
+        Element element = condition.element();
         List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
         assertEquals(Condition.OR, condition.condition());
@@ -237,7 +237,7 @@ class DefaultDeleteQueryBuilderTest {
 
         CriteriaCondition condition = query.condition().orElseThrow(RuntimeException::new);
         assertEquals(columnFamily, query.name());
-        Element element = condition.column();
+        Element element = condition.element();
         List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
 

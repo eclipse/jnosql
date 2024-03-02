@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-public final class DeleteQueryParser implements BiFunction<org.eclipse.jnosql.communication.query.DeleteQuery, CommunicationObserverParser, ColumnDeleteQueryParams> {
+public final class DeleteQueryParser implements BiFunction<org.eclipse.jnosql.communication.query.DeleteQuery, CommunicationObserverParser, DeleteQueryParams> {
 
 
 
@@ -50,14 +50,14 @@ public final class DeleteQueryParser implements BiFunction<org.eclipse.jnosql.co
 
 
     @Override
-    public ColumnDeleteQueryParams apply(org.eclipse.jnosql.communication.query.DeleteQuery deleteQuery,
-                                         CommunicationObserverParser communicationObserverParser) {
+    public DeleteQueryParams apply(org.eclipse.jnosql.communication.query.DeleteQuery deleteQuery,
+                                   CommunicationObserverParser communicationObserverParser) {
 
         requireNonNull(deleteQuery, "deleteQuery is required");
         requireNonNull(communicationObserverParser, "columnObserverParser is required");
         Params params = Params.newParams();
         DeleteQuery query = getQuery(params, communicationObserverParser, deleteQuery);
-        return new ColumnDeleteQueryParams(query, params);
+        return new DeleteQueryParams(query, params);
     }
 
     private DeleteQuery getQuery(String query, Params params, CommunicationObserverParser observer) {

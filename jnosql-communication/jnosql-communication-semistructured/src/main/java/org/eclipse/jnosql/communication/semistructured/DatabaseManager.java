@@ -207,11 +207,11 @@ public interface DatabaseManager extends AutoCloseable {
      * @return the result of the operation; for delete operations, an empty list is returned
      * @throws NullPointerException     when the query is null
      * @throws IllegalArgumentException when the query contains value parameters
-     * @throws IllegalStateException    when there is no {@link ColumnQueryParser} available
+     * @throws IllegalStateException    when there is no {@link QueryParser} available
      */
     default Stream<CommunicationEntity> query(String query) {
         Objects.requireNonNull(query, "query is required");
-        ColumnQueryParser parser = new ColumnQueryParser();
+        QueryParser parser = new QueryParser();
         return parser.query(query, this, CommunicationObserverParser.EMPTY);
     }
 
@@ -221,11 +221,11 @@ public interface DatabaseManager extends AutoCloseable {
      * @param query the query as a string
      * @return a {@link CommunicationPreparedStatement} instance
      * @throws NullPointerException  when the query is null
-     * @throws IllegalStateException when there is no {@link ColumnQueryParser} available
+     * @throws IllegalStateException when there is no {@link QueryParser} available
      */
     default CommunicationPreparedStatement prepare(String query) {
         Objects.requireNonNull(query, "query is required");
-        ColumnQueryParser parser = new ColumnQueryParser();
+        QueryParser parser = new QueryParser();
         return parser.prepare(query, this, CommunicationObserverParser.EMPTY);
     }
 
