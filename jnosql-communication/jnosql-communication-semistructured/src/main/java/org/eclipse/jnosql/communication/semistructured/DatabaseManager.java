@@ -34,23 +34,22 @@ import java.util.stream.Stream;
 public interface DatabaseManager extends AutoCloseable {
 
     /**
-     * Returns the name of the database managed by this {@link DatabaseManager}.
+     * Returns the name of the managed database.
      *
      * @return the name of the database
      */
     String name();
 
     /**
-     * <p>Inserts an entity into the database. If an entity of this type with the same
-     * unique identifier already exists in the database and the database supports ACID transactions,
-     * then this method raises an exception. In databases that follow the BASE model
-     * or use an append model to write data, this exception is not thrown.</p>
+     * Inserts an entity into the database.
      *
-     * <p>The entity instance returned as a result of this method must include all values that were
-     * written to the database, including all automatically generated values and incremented values
-     * that changed due to the insert. After invoking this method, do not continue to use the instance
-     * that is supplied as a parameter. This method makes no guarantees about the state of the
-     * instance that is supplied as a parameter.</p>
+     * <p>If an entity with the same unique identifier already exists in the database and the database
+     * supports ACID transactions, this method throws an exception. In databases following the BASE model
+     * or using an append model to write data, no exception is thrown.</p>
+     *
+     * <p>The returned entity includes all values written to the database, including automatically generated
+     * or incremented values. After calling this method, avoid using the supplied entity instance, as this
+     * method makes no guarantees about its state.</p>
      *
      * @param entity the entity to be saved
      * @return the saved entity
@@ -58,122 +57,102 @@ public interface DatabaseManager extends AutoCloseable {
      */
     CommunicationEntity insert(CommunicationEntity entity);
 
-
     /**
-     * Inserts an entity into the database with an expiration to the entity. If an entity of this type with the same
-     * unique identifier already exists in the database and the database supports ACID transactions,
-     * then this method raises an error. In databases that follow the BASE model
-     * or use an append model to write data, this exception is not thrown.
+     * Inserts an entity into the database with a specified time-to-live (TTL).
      *
-     * <p>The entity instance returned as a result of this method must include all values that were
-     * written to the database, including all automatically generated values and incremented values
-     * that changed due to the insert. After invoking this method, do not continue to use the instance
-     * that is supplied as a parameter. This method makes no guarantees about the state of the
-     * instance that is supplied as a parameter.</p>
+     * <p>If an entity with the same unique identifier already exists in the database and the database
+     * supports ACID transactions, this method raises an error. In databases following the BASE model
+     * or using an append model to write data, no exception is thrown.</p>
      *
-     * <p>Time-To-Live (TTL) is a feature provided by some NoSQL databases where data is automatically removed from the
-     * database after a specified duration. When inserting an entity with a TTL, the entity will be automatically deleted
-     * from the database after the specified duration has passed since its insertion. If the database does not support TTL
-     * or if the TTL feature is not enabled, this operation will not have any effect on the entity's expiration.</p>
+     * <p>The returned entity includes all values written to the database, including automatically generated
+     * or incremented values. After calling this method, avoid using the supplied entity instance, as this
+     * method makes no guarantees about its state.</p>
      *
-     * @param entity the entity to insert. Must not be {@code null}.
+     * <p>Time-to-live (TTL) is a feature provided by some NoSQL databases where data is automatically removed
+     * from the database after a specified duration. If the database does not support TTL or if the TTL feature
+     * is not enabled, this operation will not have any effect on the entity's expiration.</p>
+     *
+     * @param entity the entity to insert
      * @param ttl    time to live
-     * @return the inserted entity, which may or may not be a different instance depending on whether the insert caused
-     * values to be generated or automatically incremented.
-     * @throws NullPointerException          if the entity is null.
-     * @throws UnsupportedOperationException when the database does not provide TTL
+     * @return the inserted entity
+     * @throws NullPointerException          if the entity is null
+     * @throws UnsupportedOperationException when the database does not support TTL
      */
     CommunicationEntity insert(CommunicationEntity entity, Duration ttl);
 
     /**
-     * Inserts multiple entities into the database. If any entity of this type with the same
-     * unique identifier as any of the given entities already exists in the database and the database
-     * supports ACID transactions, then this method raises an error.
-     * In databases that follow the BASE model or use an append model to write data, this exception
-     * is not thrown.
+     * Inserts multiple entities into the database.
      *
-     * <p>The entities within the returned {@link Iterable} must include all values that were
-     * written to the database, including all automatically generated values and incremented values
-     * that changed due to the insert. After invoking this method, do not continue to use
-     * the entity instances that are supplied in the parameter. This method makes no guarantees
-     * about the state of the entity instances that are supplied in the parameter.
-     * The position of entities within the {@code Iterable} return value must correspond to the
-     * position of entities in the parameter based on the unique identifier of the entity.</p>
+     * <p>If any entity with the same unique identifier as any of the given entities already exists in the database
+     * and the database supports ACID transactions, this method raises an error. In databases following the BASE model
+     * or using an append model to write data, no exception is thrown.</p>
      *
-     * @param entities entities to insert.
-     * @return an iterable containing the inserted entities, which may or may not be different instances depending
-     * on whether the insert caused values to be generated or automatically incremented.
-     * @throws NullPointerException if the iterable is null or any element is null.
+     * <p>The returned iterable contains all inserted entities, including all automatically generated or incremented
+     * values. After calling this method, avoid using the supplied entity instances, as this method makes no guarantees
+     * about their state.</p>
+     *
+     * @param entities entities to insert
+     * @return an iterable containing the inserted entities
+     * @throws NullPointerException if the iterable is null or any element is null
      */
     Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities);
 
     /**
-     * Inserts multiple entities into the database with the expiration date. If any entity of this type with the same
-     * unique identifier as any of the given entities already exists in the database and the database
-     * supports ACID transactions, then this method raises an error.
-     * In databases that follow the BASE model or use an append model to write data, this exception
-     * is not thrown.
+     * Inserts multiple entities into the database with a specified time-to-live (TTL).
      *
-     * <p>The entities within the returned {@link Iterable} must include all values that were
-     * written to the database, including all automatically generated values and incremented values
-     * that changed due to the insert. After invoking this method, do not continue to use
-     * the entity instances that are supplied in the parameter. This method makes no guarantees
-     * about the state of the entity instances that are supplied in the parameter.
-     * The position of entities within the {@code Iterable} return value must correspond to the
-     * position of entities in the parameter based on the unique identifier of the entity.</p>
+     * <p>If any entity with the same unique identifier as any of the given entities already exists in the database
+     * and the database supports ACID transactions, this method raises an error. In databases following the BASE model
+     * or using an append model to write data, no exception is thrown.</p>
      *
-     * <p>Time-To-Live (TTL) is a feature provided by some NoSQL databases where data is automatically removed from the
-     * database after a specified duration. When inserting entities with a TTL, the entities will be automatically deleted
-     * from the database after the specified duration has passed since their insertion. If the database does not support TTL
-     * or if the TTL feature is not enabled, this operation will not have any effect on the expiration of the entities.</p>
+     * <p>The returned iterable contains all inserted entities, including all automatically generated or incremented
+     * values. After calling this method, avoid using the supplied entity instances, as this method makes no guarantees
+     * about their state.</p>
      *
-     * @param entities entities to insert.
+     * <p>Time-to-live (TTL) is a feature provided by some NoSQL databases where data is automatically removed
+     * from the database after a specified duration. If the database does not support TTL or if the TTL feature
+     * is not enabled, this operation will not have any effect on the expiration of the entities.</p>
+     *
+     * @param entities entities to insert
      * @param ttl      time to live
-     * @return an iterable containing the inserted entities, which may or may not be different instances depending
-     * on whether the insert caused values to be generated or automatically incremented.
-     * @throws NullPointerException if the iterable is null or any element is null.
-     * @throws UnsupportedOperationException if the database does not provide time-to-live for insert operations.
+     * @return an iterable containing the inserted entities
+     * @throws NullPointerException          if the iterable is null or any element is null
+     * @throws UnsupportedOperationException when the database does not support TTL
      */
     Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities, Duration ttl);
 
     /**
-     * Modifies an entity that already exists in the database.
+     * Modifies an existing entity in the database.
      *
-     * <p>For an update to be made, a matching entity with the same unique identifier
-     * must be present in the database. In databases that use an append model to write data or
-     * follow the BASE model, this method behaves the same as the {@link #insert} method.</p>
+     * <p>To perform an update, a matching entity with the same unique identifier must exist in the database.
+     * In databases using an append model to write data or following the BASE model, this method behaves
+     * the same as the {@link #insert} method.</p>
      *
-     * <p>If the entity is versioned (for example, with an annotation or by
-     * another convention from the entity model such as having an attribute named {@code version}),
-     * then the version must also match. The version is automatically incremented when making
-     * the update.</p>
+     * <p>If the entity is versioned (e.g., with an annotation or by convention from the entity model),
+     * the version must also match. The version is automatically incremented during the update.</p>
      *
-     * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
+     * <p>Non-matching entities are ignored and do not cause an error.</p>
      *
-     * @param entity the entity to update. Must not be {@code null}.
-     * @return the updated entity, which may or may not be a different instance depending on whether the update caused
-     * values to be generated or automatically incremented.
-     * @throws NullPointerException if the entity is null.
+     * @param entity the entity to update
+     * @return the updated entity
+     * @throws NullPointerException if the entity is null
      */
     CommunicationEntity update(CommunicationEntity entity);
 
     /**
-     * Modifies entities that already exist in the database.
+     * Modifies multiple entities that already exist in the database.
      *
-     * <p>For an update to be made to an entity, a matching entity with the same unique identifier
-     * must be present in the database. In databases that use an append model to write data or
-     * follow the BASE model, this method behaves the same as the {@link #insert(Iterable)} method.</p>
+     * <p>To perform an update to an entity, a matching entity with the same unique identifier must exist
+     * in the database. In databases using an append model to write data or following the BASE model,
+     * this method behaves the same as the {@link #insert(Iterable)} method.</p>
      *
-     * <p>If the entity is versioned (for example, with an annotation or by
-     * another convention from the entity model such as having an attribute named {@code version}),
-     * then the version must also match. The version is automatically incremented when making
-     * the update.</p>
+     * <p>If the entity is versioned (e.g., with an annotation or by convention from the entity model),
+     * the version must also match. The version is automatically incremented during the update.</p>
      *
-     * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
+     * <p>Non-matching entities are ignored and do not cause an error.</p>
      *
-     * @param entities entities to update.
-     * @return the number of matching entities that were found in the database to update.
-     * @throws NullPointerException if either the iterable is null or any element is null.
+     * @param entities entities to update
+     * @return the number of matching entities that were found in the database and updated
+     * @throws NullPointerException if the iterable is null or any element is null
      */
     Iterable<CommunicationEntity> update(Iterable<CommunicationEntity> entities);
 
