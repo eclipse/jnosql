@@ -22,10 +22,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 /**
- * The default implementation to {@link ColumnEntityConverter}
+ * The default implementation to {@link EntityConverter}
  */
 @ApplicationScoped
-class DefaultColumnEntityConverter extends ColumnEntityConverter {
+class DefaultEntityConverter extends EntityConverter {
 
     @Inject
     private EntitiesMetadata entities;
@@ -34,12 +34,12 @@ class DefaultColumnEntityConverter extends ColumnEntityConverter {
     private Converters converters;
 
     @Override
-    protected EntitiesMetadata getEntities() {
+    protected EntitiesMetadata entities() {
         return entities;
     }
 
     @Override
-    protected Converters getConverters() {
+    protected Converters converters() {
         return converters;
     }
 }

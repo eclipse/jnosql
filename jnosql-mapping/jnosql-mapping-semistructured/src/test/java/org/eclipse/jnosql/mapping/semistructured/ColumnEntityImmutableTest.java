@@ -36,14 +36,14 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
 class ColumnEntityImmutableTest {
 
     @Inject
-    private DefaultColumnEntityConverter converter;
+    private DefaultEntityConverter converter;
 
     private Element[] columns;
 
@@ -64,7 +64,7 @@ class ColumnEntityImmutableTest {
     @Test
     void shouldConvertCommunicationEntity() {
 
-        CommunicationEntity entity = converter.toColumn(car);
+        CommunicationEntity entity = converter.toCommunication(car);
         assertEquals("Car", entity.name());
         assertEquals(4, entity.size());
         assertThat(entity.elements()).contains(Element.of("_id", "123456789"),
@@ -76,7 +76,7 @@ class ColumnEntityImmutableTest {
     @Test
     void shouldConvertCommunicationEntity2() {
 
-        CommunicationEntity entity = converter.toColumn(car);
+        CommunicationEntity entity = converter.toCommunication(car);
         assertEquals("Car", entity.name());
         assertEquals(4, entity.size());
 

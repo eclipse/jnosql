@@ -35,9 +35,9 @@ enum FieldConverter {
     EMBEDDED {
         @Override
         public <X, Y, T> void convert(T instance, List<Element> elements, Element element,
-                                      FieldMetadata field, ColumnEntityConverter converter) {
+                                      FieldMetadata field, EntityConverter converter) {
             Object subEntity = converter.toEntity(field.type(), elements);
-            EntityMetadata mapping = converter.getEntities().get(subEntity.getClass());
+            EntityMetadata mapping = converter.entities().get(subEntity.getClass());
             boolean areAllFieldsNull = mapping.fields()
                     .stream()
                     .map(f -> f.read(subEntity))
@@ -49,7 +49,7 @@ enum FieldConverter {
     }, ENTITY {
         @Override
         public <X, Y, T> void convert(T instance, List<Element> elements, Element subElement, FieldMetadata field,
-                                      ColumnEntityConverter converter) {
+                                      EntityConverter converter) {
 
             if (Objects.nonNull(subElement)) {
                 converterSubDocument(instance, subElement, field, converter);
@@ -60,7 +60,7 @@ enum FieldConverter {
 
         @SuppressWarnings({"rawtypes", "unchecked"})
         private <T> void converterSubDocument(T instance, Element subElement, FieldMetadata field,
-                                              ColumnEntityConverter converter) {
+                                              EntityConverter converter) {
             Object value = subElement.get();
             if (value instanceof Map map) {
                 List<Element> embeddedColumns = new ArrayList<>();
@@ -80,7 +80,7 @@ enum FieldConverter {
         @SuppressWarnings("unchecked")
         @Override
         public <X, Y, T> void convert(T instance, List<Element> columns, Element element, FieldMetadata field,
-                                      ColumnEntityConverter converter) {
+                                      EntityConverter converter) {
 
             if (Objects.nonNull(element)) {
                 GenericFieldMetadata genericField = (GenericFieldMetadata) field;
@@ -100,12 +100,12 @@ enum FieldConverter {
         @SuppressWarnings("unchecked")
         @Override
         public <X, Y, T> void convert(T instance, List<Element> elements, Element element,
-                                      FieldMetadata field, ColumnEntityConverter converter) {
+                                      FieldMetadata field, EntityConverter converter) {
             if (Objects.nonNull(element)) {
                 Value value = element.value();
                 Optional<Class<AttributeConverter<Object, Object>>> optionalConverter = field.converter();
                 if (optionalConverter.isPresent()) {
-                    AttributeConverter<X, Y> attributeConverter = converter.getConverters().get(field);
+                    AttributeConverter<X, Y> attributeConverter = converter.converters().get(field);
                     Y attr = (Y)(value.isInstanceOf(List.class) ? element : value.get());
                     Object attributeConverted = attributeConverter.convertToEntityAttribute(attr);
                     field.write(instance, field.value(Value.of(attributeConverted)));
@@ -133,10 +133,10 @@ enum FieldConverter {
     }
 
     abstract <X, Y, T> void convert(T instance, List<Element> elements, Element element, FieldMetadata field,
-                                    ColumnEntityConverter converter);
+                                    EntityConverter converter);
 
     <X, Y, T> void convert(T instance, Element element, FieldMetadata field,
-                           ColumnEntityConverter converter) {
+                           EntityConverter converter) {
         convert(instance, null, element, field, converter);
     }
 }

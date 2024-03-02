@@ -66,14 +66,14 @@ import static org.eclipse.jnosql.mapping.semistructured.entities.StepTransitionR
 import static org.junit.jupiter.api.Assertions.*;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions(EntityMetadataExtension.class)
-class ColumnEntityConverterTest {
+class EntityConverterTest {
 
     @Inject
-    private DefaultColumnEntityConverter converter;
+    private DefaultEntityConverter converter;
 
     private Element[] columns;
 
@@ -103,7 +103,7 @@ class ColumnEntityConverterTest {
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).build();
 
-        CommunicationEntity entity = converter.toColumn(person);
+        CommunicationEntity entity = converter.toCommunication(person);
         assertEquals("Person", entity.name());
         assertEquals(4, entity.size());
         assertThat(entity.elements()).contains(Element.of("_id", 12L),
@@ -115,7 +115,7 @@ class ColumnEntityConverterTest {
     @Test
     void shouldConvertColumnEntityFromEntity() {
 
-        CommunicationEntity entity = converter.toColumn(actor);
+        CommunicationEntity entity = converter.toCommunication(actor);
         assertEquals("Actor", entity.name());
         assertEquals(6, entity.size());
 
@@ -186,7 +186,7 @@ class ColumnEntityConverterTest {
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
 
-        CommunicationEntity entity = converter.toColumn(director);
+        CommunicationEntity entity = converter.toCommunication(director);
         assertEquals(5, entity.size());
 
         assertEquals(getValue(entity.find("name")), director.getName());
@@ -216,7 +216,7 @@ class ColumnEntityConverterTest {
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
 
-        CommunicationEntity entity = converter.toColumn(director);
+        CommunicationEntity entity = converter.toCommunication(director);
         Director director1 = converter.toEntity(entity);
 
         assertEquals(movie, director1.getMovie());
@@ -233,7 +233,7 @@ class ColumnEntityConverterTest {
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
 
-        CommunicationEntity entity = converter.toColumn(director);
+        CommunicationEntity entity = converter.toCommunication(director);
         entity.remove("movie");
         entity.add(Element.of("movie", Arrays.asList(Element.of("title", "Matrix"),
                 Element.of("year", 2012), Element.of("actors", singleton("Actor")))));
@@ -253,7 +253,7 @@ class ColumnEntityConverterTest {
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
 
-        CommunicationEntity entity = converter.toColumn(director);
+        CommunicationEntity entity = converter.toCommunication(director);
         entity.remove("movie");
         Map<String, Object> map = new HashMap<>();
         map.put("title", "Matrix");
@@ -278,7 +278,7 @@ class ColumnEntityConverterTest {
         worker.setName("Bob");
         worker.setSalary(new Money("BRL", BigDecimal.TEN));
         worker.setJob(job);
-        CommunicationEntity entity = converter.toColumn(worker);
+        CommunicationEntity entity = converter.toCommunication(worker);
         assertEquals("Worker", entity.name());
         assertEquals("Bob", entity.find("name").get().get());
         assertEquals("Sao Paulo", entity.find("city").get().get());
@@ -295,7 +295,7 @@ class ColumnEntityConverterTest {
         worker.setName("Bob");
         worker.setSalary(new Money("BRL", BigDecimal.TEN));
         worker.setJob(job);
-        CommunicationEntity entity = converter.toColumn(worker);
+        CommunicationEntity entity = converter.toCommunication(worker);
         Worker worker1 = converter.toEntity(entity);
         assertEquals(worker.getSalary(), worker1.getSalary());
         assertEquals(job.getCity(), worker1.getJob().getCity());
@@ -326,7 +326,7 @@ class ColumnEntityConverterTest {
         appointmentBook.add(Contact.builder().withType(ContactType.PHONE)
                 .withName("Ada").withInformation("12 123 1231 123123").build());
 
-        CommunicationEntity entity = converter.toColumn(appointmentBook);
+        CommunicationEntity entity = converter.toCommunication(appointmentBook);
         Element contacts = entity.find("contacts").get();
         assertEquals("ids", appointmentBook.getId());
         List<List<Element>> columns = (List<List<Element>>) contacts.get();
@@ -374,7 +374,7 @@ class ColumnEntityConverterTest {
         address.setStreet("Rua Engenheiro Jose Anasoh");
         address.setZipCode(zipcode);
 
-        CommunicationEntity columnEntity = converter.toColumn(address);
+        CommunicationEntity columnEntity = converter.toCommunication(address);
         List<Element> columns = columnEntity.elements();
         assertEquals("Address", columnEntity.name());
         assertEquals(4, columns.size());
@@ -461,7 +461,7 @@ class ColumnEntityConverterTest {
         download.setId(1L);
         download.setContents(contents);
 
-        CommunicationEntity entity = converter.toColumn(download);
+        CommunicationEntity entity = converter.toCommunication(download);
 
         Assertions.assertEquals(1L, entity.find("_id").get().get());
         final byte[] bytes = entity.find("contents").map(v -> v.get(byte[].class)).orElse(new byte[0]);
@@ -514,7 +514,7 @@ class ColumnEntityConverterTest {
     void shouldReturnNullValuePresent() {
         Person person = Person.builder().build();
 
-        CommunicationEntity entity = converter.toColumn(person);
+        CommunicationEntity entity = converter.toCommunication(person);
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(entity.find("name")).isPresent();
             soft.assertThat(entity.find("age")).isPresent();
@@ -541,7 +541,7 @@ class ColumnEntityConverterTest {
                         null, List.of("ADMIN"))))
                 .build();
 
-        var document = this.converter.toColumn(workflowStep);
+        var document = this.converter.toCommunication(workflowStep);
         WorkflowStep result = this.converter.toEntity(document);
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(result).isNotNull();
@@ -576,7 +576,7 @@ class ColumnEntityConverterTest {
                 .relationTypeKey("relationTypeKey")
                 .availableTransitions(null)
                 .build();
-        var document = this.converter.toColumn(workflowStep);
+        var document = this.converter.toCommunication(workflowStep);
         WorkflowStep result = this.converter.toEntity(document);
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(result).isNotNull();

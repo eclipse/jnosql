@@ -29,19 +29,19 @@ import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 @ApplicationScoped
 class DefaultSemistructuredTemplate extends AbstractSemistructuredTemplate {
 
-    private ColumnEntityConverter converter;
+    private EntityConverter converter;
 
     private Instance<DatabaseManager> manager;
 
-    private ColumnEventPersistManager eventManager;
+    private EventPersistManager eventManager;
 
     private EntitiesMetadata entities;
 
     private Converters converters;
 
     @Inject
-    DefaultSemistructuredTemplate(ColumnEntityConverter converter, Instance<DatabaseManager> manager,
-                                  ColumnEventPersistManager eventManager,
+    DefaultSemistructuredTemplate(EntityConverter converter, Instance<DatabaseManager> manager,
+                                  EventPersistManager eventManager,
                                   EntitiesMetadata entities, Converters converters) {
         this.converter = converter;
         this.manager = manager;
@@ -54,7 +54,7 @@ class DefaultSemistructuredTemplate extends AbstractSemistructuredTemplate {
     }
 
     @Override
-    protected ColumnEntityConverter converter() {
+    protected EntityConverter converter() {
         return converter;
     }
 
@@ -64,7 +64,7 @@ class DefaultSemistructuredTemplate extends AbstractSemistructuredTemplate {
     }
 
     @Override
-    protected ColumnEventPersistManager eventManager() {
+    protected EventPersistManager eventManager() {
         return eventManager;
     }
 

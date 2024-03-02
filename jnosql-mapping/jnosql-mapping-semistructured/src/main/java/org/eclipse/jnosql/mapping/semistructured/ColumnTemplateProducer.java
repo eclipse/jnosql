@@ -29,10 +29,10 @@ public class ColumnTemplateProducer implements Function<DatabaseManager, Semistr
 
 
     @Inject
-    private ColumnEntityConverter converter;
+    private EntityConverter converter;
 
     @Inject
-    private ColumnEventPersistManager eventManager;
+    private EventPersistManager eventManager;
 
     @Inject
     private EntitiesMetadata entities;
@@ -51,19 +51,19 @@ public class ColumnTemplateProducer implements Function<DatabaseManager, Semistr
     @Vetoed
     static class ProducerSemistructuredTemplate extends AbstractSemistructuredTemplate {
 
-        private ColumnEntityConverter converter;
+        private EntityConverter converter;
 
         private DatabaseManager manager;
 
-        private ColumnEventPersistManager eventManager;
+        private EventPersistManager eventManager;
 
         private EntitiesMetadata entities;
 
         private Converters converters;
 
-        ProducerSemistructuredTemplate(ColumnEntityConverter converter,
+        ProducerSemistructuredTemplate(EntityConverter converter,
                                        DatabaseManager manager,
-                                       ColumnEventPersistManager eventManager,
+                                       EventPersistManager eventManager,
                                        EntitiesMetadata entities,
                                        Converters converters) {
             this.converter = converter;
@@ -77,7 +77,7 @@ public class ColumnTemplateProducer implements Function<DatabaseManager, Semistr
         }
 
         @Override
-        protected ColumnEntityConverter converter() {
+        protected EntityConverter converter() {
             return converter;
         }
 
@@ -87,7 +87,7 @@ public class ColumnTemplateProducer implements Function<DatabaseManager, Semistr
         }
 
         @Override
-        protected ColumnEventPersistManager eventManager() {
+        protected EventPersistManager eventManager() {
             return eventManager;
         }
 

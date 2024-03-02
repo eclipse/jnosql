@@ -14,26 +14,25 @@
  */
 package org.eclipse.jnosql.mapping.semistructured;
 
-import jakarta.nosql.PreparedStatement;
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
-final class ColumnPreparedStatement implements PreparedStatement {
+final class PreparedStatement implements jakarta.nosql.PreparedStatement {
 
     private final org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement preparedStatement;
 
-    private final ColumnEntityConverter converter;
+    private final EntityConverter converter;
 
-    ColumnPreparedStatement(org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement preparedStatement,
-                            ColumnEntityConverter converter) {
+    PreparedStatement(org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement preparedStatement,
+                      EntityConverter converter) {
         this.preparedStatement = preparedStatement;
         this.converter = converter;
     }
 
     @Override
-    public PreparedStatement bind(String name, Object value) {
+    public jakarta.nosql.PreparedStatement bind(String name, Object value) {
         preparedStatement.bind(name, value);
         return this;
     }

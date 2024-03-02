@@ -31,7 +31,7 @@ import org.eclipse.jnosql.communication.semistructured.DeleteQueryParser;
 import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.communication.semistructured.QueryParams;
 import org.eclipse.jnosql.communication.semistructured.SelectQueryParser;
-import org.eclipse.jnosql.mapping.semistructured.MappingColumnQuery;
+import org.eclipse.jnosql.mapping.semistructured.MappingQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
@@ -165,7 +165,7 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
                     CriteriaCondition columnCondition = query.condition().orElseThrow();
                     condition = condition.and(columnCondition);
                 }
-                return new MappingColumnQuery(query.sorts(), query.limit(), query.skip(),
+                return new MappingQuery(query.sorts(), query.limit(), query.skip(),
                         condition, query.name());
             }
         }
@@ -214,7 +214,7 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
             sorts.addAll(special.sorts());
             long skip = limit.map(l -> l.startAt() - 1).orElse(documentQuery.skip());
             long max = limit.map(Limit::maxResults).orElse((int) documentQuery.limit());
-            return new MappingColumnQuery(sorts, max,
+            return new MappingQuery(sorts, max,
                     skip,
                     documentQuery.condition().orElse(null),
                     documentQuery.name());
@@ -223,7 +223,7 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
         if (limit.isPresent()) {
             long skip = limit.map(l -> l.startAt() - 1).orElse(documentQuery.skip());
             long max = limit.map(Limit::maxResults).orElse((int) documentQuery.limit());
-            return new MappingColumnQuery(documentQuery.sorts(), max,
+            return new MappingQuery(documentQuery.sorts(), max,
                     skip,
                     documentQuery.condition().orElse(null),
                     documentQuery.name());
@@ -237,7 +237,7 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
                 sorts = new ArrayList<>(documentQuery.sorts());
                 sorts.addAll(special.sorts());
             }
-            return new MappingColumnQuery(sorts, size, skip,
+            return new MappingQuery(sorts, size, skip,
                     documentQuery.condition().orElse(null), documentQuery.name());
         }).orElse(documentQuery);
     }

@@ -28,11 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class ColumnEventPersistManagerTest {
+class EventPersistManagerTest {
 
 
     @InjectMocks
-    private ColumnEventPersistManager subject;
+    private EventPersistManager subject;
 
 
     @Mock

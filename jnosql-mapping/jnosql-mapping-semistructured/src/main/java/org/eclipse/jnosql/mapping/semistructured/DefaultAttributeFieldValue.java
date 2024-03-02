@@ -33,11 +33,11 @@ import static org.eclipse.jnosql.mapping.metadata.MappingType.EMBEDDED;
 import static org.eclipse.jnosql.mapping.metadata.MappingType.ENTITY;
 import static java.util.Collections.singletonList;
 
-final class DefaultColumnFieldValue implements ColumnFieldValue {
+final class DefaultAttributeFieldValue implements AttributeFieldValue {
 
     private final FieldValue fieldValue;
 
-    private DefaultColumnFieldValue(FieldValue fieldValue) {
+    private DefaultAttributeFieldValue(FieldValue fieldValue) {
         this.fieldValue = fieldValue;
     }
 
@@ -58,13 +58,13 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <X, Y> List<Element> toElements(ColumnEntityConverter converter, Converters converters) {
+    public <X, Y> List<Element> toElements(EntityConverter converter, Converters converters) {
         if (value() == null) {
             return singletonList(Element.of(getName(), null));
         } else if (EMBEDDED.equals(getType())) {
-            return converter.toColumn(value()).elements();
+            return converter.toCommunication(value()).elements();
         } else if (ENTITY.equals(getType())) {
-            return singletonList(Element.of(getName(), converter.toColumn(value()).elements()));
+            return singletonList(Element.of(getName(), converter.toCommunication(value()).elements()));
         } else if (isEmbeddableCollection()) {
             return singletonList(Element.of(getName(), getColumns(converter)));
         }
@@ -76,10 +76,10 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
         return singletonList(Element.of(getName(), value()));
     }
 
-    private List<List<Element>> getColumns(ColumnEntityConverter converter) {
+    private List<List<Element>> getColumns(EntityConverter converter) {
         List<List<Element>> columns = new ArrayList<>();
         for (Object element : (Iterable<?>) value()) {
-            columns.add(converter.toColumn(element).elements());
+            columns.add(converter.toCommunication(element).elements());
         }
         return columns;
     }
@@ -106,7 +106,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
                 '}';
     }
 
-    static ColumnFieldValue of(Object value, FieldMetadata field) {
-        return new DefaultColumnFieldValue(new DefaultFieldValue(value, field));
+    static AttributeFieldValue of(Object value, FieldMetadata field) {
+        return new DefaultAttributeFieldValue(new DefaultFieldValue(value, field));
     }
 }

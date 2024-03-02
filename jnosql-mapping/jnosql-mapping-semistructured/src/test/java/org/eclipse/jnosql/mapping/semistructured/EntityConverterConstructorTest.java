@@ -45,14 +45,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
-class ColumnEntityConverterConstructorTest {
+class EntityConverterConstructorTest {
 
     @Inject
-    private ColumnEntityConverter converter;
+    private EntityConverter converter;
 
     @Test
     void shouldConverterEntityComputer() {
@@ -75,7 +75,7 @@ class ColumnEntityConverterConstructorTest {
     void shouldConvertComputerToCommunication() {
         Computer computer = new Computer(10L, "Dell", 2020, "Dell 2020",
                 Money.parse("USD 20"));
-        CommunicationEntity communication = this.converter.toColumn(computer);
+        CommunicationEntity communication = this.converter.toCommunication(computer);
         assertNotNull(communication);
 
         assertEquals(computer.getId(), communication.find("_id", Long.class).get());
@@ -106,7 +106,7 @@ class ColumnEntityConverterConstructorTest {
     void shouldConvertPetOwnerCommunication() {
         Animal ada = new Animal("Ada");
         PetOwner petOwner = new PetOwner(10L, "Poliana", ada);
-        CommunicationEntity communication = this.converter.toColumn(petOwner);
+        CommunicationEntity communication = this.converter.toCommunication(petOwner);
         assertNotNull(communication);
         assertEquals(10L, communication.find("_id", Long.class).get());
         assertEquals("Poliana", communication.find("name", String.class).get());

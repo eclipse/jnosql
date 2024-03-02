@@ -22,19 +22,21 @@ import org.eclipse.jnosql.mapping.metadata.FieldValue;
 import java.util.List;
 
 /**
- * The specialist {@link FieldValue} to column
+ * This interface represents a specialized {@link FieldValue} designed for mapping to database columns.
+ * Implementations of this interface are expected to provide methods for converting an entity to a list of elements.
  */
-public interface ColumnFieldValue extends FieldValue {
+public interface AttributeFieldValue extends FieldValue {
 
 
     /**
-     * Converts an entity to a {@link List} of elements
-     * @param converter the converter
-     * @param converters the converters
-     * @param <X> the type of the entity attribute
-     * @param <Y> the type of the database column
-     * @return a {@link List} of columns from the field
+     * Converts an entity attribute to a list of elements.
+     *
+     * @param converter  the entity converter used for conversion
+     * @param converters the converters used for conversion
+     * @param <X>        the type of the entity attribute
+     * @param <Y>        the type of the database column
+     * @return a list of elements representing the entity attribute
      */
-    <X, Y> List<Element> toElements(ColumnEntityConverter converter, Converters converters);
+    <X, Y> List<Element> toElements(EntityConverter converter, Converters converters);
 
 }

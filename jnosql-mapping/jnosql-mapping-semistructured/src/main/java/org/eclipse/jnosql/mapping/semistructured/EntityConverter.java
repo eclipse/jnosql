@@ -40,28 +40,39 @@ import static org.eclipse.jnosql.mapping.metadata.MappingType.ENTITY;
 
 
 /**
- * This interface represents the converter between an entity and the {@link CommunicationEntity}
+ * This abstract class represents the converter between an entity and the {@link CommunicationEntity}.
+ * Subclasses must implement methods to provide access to metadata about entities and converters.
  */
-public abstract class ColumnEntityConverter {
-
-    protected abstract EntitiesMetadata getEntities();
-
-    protected abstract Converters getConverters();
+public abstract class EntityConverter {
 
     /**
-     * Converts the instance entity to {@link CommunicationEntity}
+     * Retrieves the metadata about entities.
      *
-     * @param entity the instance
-     * @return a {@link CommunicationEntity} instance
-     * @throws NullPointerException when entity is null
+     * @return the metadata about entities
      */
-    public CommunicationEntity toColumn(Object entity) {
+    protected abstract EntitiesMetadata entities();
+
+    /**
+     * Retrieves the converters used for conversion.
+     *
+     * @return the converters used for conversion
+     */
+    protected abstract Converters converters();
+
+    /**
+     * Converts the provided entity instance to a {@link CommunicationEntity}.
+     *
+     * @param entity the entity instance to be converted
+     * @return a {@link CommunicationEntity} instance representing the entity
+     * @throws NullPointerException when the entity is null
+     */
+    public CommunicationEntity toCommunication(Object entity) {
         requireNonNull(entity, "entity is required");
-        EntityMetadata mapping = getEntities().get(entity.getClass());
+        EntityMetadata mapping = entities().get(entity.getClass());
         CommunicationEntity communication = CommunicationEntity.of(mapping.name());
         mapping.fields().stream()
                 .map(f -> to(f, entity))
-                .map(f -> f.toElements(this, getConverters()))
+                .map(f -> f.toElements(this, converters()))
                 .flatMap(List::stream)
                 .forEach(communication::add);
 
@@ -71,13 +82,13 @@ public abstract class ColumnEntityConverter {
     }
 
     /**
-     * Converts a {@link CommunicationEntity} to entity
+     * Converts a {@link CommunicationEntity} to an entity of the specified type.
      *
-     * @param type   the entity class
+     * @param type   the class of the entity to be converted to
      * @param entity the {@link CommunicationEntity} to be converted
-     * @param <T>    the entity type
-     * @return the instance from {@link CommunicationEntity}
-     * @throws NullPointerException when either type or entity are null
+     * @param <T>    the type of the entity
+     * @return the entity instance
+     * @throws NullPointerException when either the type or the entity are null
      */
     public <T> T toEntity(Class<T> type, CommunicationEntity entity) {
         requireNonNull(entity, "entity is required");
@@ -86,14 +97,14 @@ public abstract class ColumnEntityConverter {
     }
 
     /**
-     * Converts a {@link CommunicationEntity} to entity
-     * Instead of creating a new object is uses the instance used in this parameters
+     * Converts a {@link CommunicationEntity} to an entity, using the provided instance.
+     * This method modifies the existing instance rather than creating a new one.
      *
-     * @param type   the instance
+     * @param type   the instance to be used for conversion
      * @param entity the {@link CommunicationEntity} to be converted
-     * @param <T>    the entity type
-     * @return the same instance with values set from {@link CommunicationEntity}
-     * @throws NullPointerException when either type or entity are null
+     * @param <T>    the type of the entity
+     * @return the modified entity instance
+     * @throws NullPointerException when either the type or the entity are null
      */
     public <T> T toEntity(T type, CommunicationEntity entity) {
         requireNonNull(entity, "entity is required");
@@ -102,22 +113,21 @@ public abstract class ColumnEntityConverter {
         if (type.getClass().isRecord()) {
             return (T) toEntity(type.getClass(), entity.elements());
         }
-        EntityMetadata mapping = getEntities().get(type.getClass());
+        EntityMetadata mapping = entities().get(type.getClass());
         return convertEntity(entity.elements(), mapping, type);
     }
 
     /**
-     * Similar to {@link ColumnEntityConverter#toEntity(Class, CommunicationEntity)}, but
-     * search the instance type from {@link CommunicationEntity#name()}
+     * Converts a {@link CommunicationEntity} to an entity, inferring the type from the entity's name.
      *
      * @param entity the {@link CommunicationEntity} to be converted
-     * @param <T>    the entity type
-     * @return the instance from {@link CommunicationEntity}
-     * @throws NullPointerException when entity is null
+     * @param <T>    the type of the entity
+     * @return the entity instance
+     * @throws NullPointerException when the entity is null
      */
     public <T> T toEntity(CommunicationEntity entity) {
         requireNonNull(entity, "entity is required");
-        EntityMetadata mapping = getEntities().findByName(entity.name());
+        EntityMetadata mapping = entities().findByName(entity.name());
         if (mapping.isInheritance()) {
             return mapInheritanceEntity(entity, mapping.type());
         }
@@ -130,9 +140,9 @@ public abstract class ColumnEntityConverter {
         }
     }
 
-    protected ColumnFieldValue to(FieldMetadata field, Object entity) {
+    protected AttributeFieldValue to(FieldMetadata field, Object entity) {
         Object value = field.read(entity);
-        return DefaultColumnFieldValue.of(value, field);
+        return DefaultAttributeFieldValue.of(value, field);
     }
 
     protected <T> Consumer<String> feedObject(T entity, List<Element> elements, Map<String, FieldMetadata> fieldsGroupByName) {
@@ -150,7 +160,7 @@ public abstract class ColumnEntityConverter {
 
 
     protected <T> T toEntity(Class<T> type, List<Element> elements) {
-        EntityMetadata mapping = getEntities().get(type);
+        EntityMetadata mapping = entities().get(type);
         if (mapping.isInheritance()) {
             return inheritanceToEntity(elements, mapping);
         }
@@ -170,7 +180,7 @@ public abstract class ColumnEntityConverter {
                     .filter(c -> c.name().equals(parameter.name()))
                     .findFirst();
             element.ifPresentOrElse(c -> {
-                ParameterConverter converter = ParameterConverter.of(parameter, getEntities());
+                ParameterConverter converter = ParameterConverter.of(parameter, entities());
                 converter.convert(this, c, parameter, builder);
             }, builder::addEmptyParameter);
         }
@@ -193,7 +203,7 @@ public abstract class ColumnEntityConverter {
     }
 
     private <T> T mapInheritanceEntity(CommunicationEntity entity, Class<?> type) {
-        Map<String, InheritanceMetadata> group = getEntities()
+        Map<String, InheritanceMetadata> group = entities()
                 .findByParentGroupByDiscriminatorValue(type);
 
         if (group.isEmpty()) {
@@ -215,7 +225,7 @@ public abstract class ColumnEntityConverter {
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        EntityMetadata mapping = getEntities().get(inheritance.entity());
+        EntityMetadata mapping = entities().get(inheritance.entity());
         ConstructorMetadata constructor = mapping.constructor();
         if (constructor.isDefault()) {
             T instance = mapping.newInstance();
@@ -226,7 +236,7 @@ public abstract class ColumnEntityConverter {
     }
 
     private <T> T inheritanceToEntity(List<Element> elements, EntityMetadata mapping) {
-        Map<String, InheritanceMetadata> group = getEntities()
+        Map<String, InheritanceMetadata> group = entities()
                 .findByParentGroupByDiscriminatorValue(mapping.type());
 
         if (group.isEmpty()) {
@@ -252,7 +262,7 @@ public abstract class ColumnEntityConverter {
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        EntityMetadata inheritanceMetadata = getEntities().get(inheritance.entity());
+        EntityMetadata inheritanceMetadata = entities().get(inheritance.entity());
         T instance = inheritanceMetadata.newInstance();
         return convertEntity(elements, inheritanceMetadata, instance);
     }

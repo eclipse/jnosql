@@ -24,11 +24,11 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import static java.util.Objects.requireNonNull;
 
-final class ColumnMapperDelete extends AbstractMapperQuery implements MapperDeleteFrom,
+final class MapperDelete extends AbstractMapperQuery implements MapperDeleteFrom,
         MapperDeleteWhere, MapperDeleteNameCondition, MapperDeleteNotCondition  {
 
 
-    ColumnMapperDelete(EntityMetadata mapping, Converters converters, SemistructuredTemplate template) {
+    MapperDelete(EntityMetadata mapping, Converters converters, SemistructuredTemplate template) {
         super(mapping, converters, template);
     }
 
@@ -113,7 +113,7 @@ final class ColumnMapperDelete extends AbstractMapperQuery implements MapperDele
 
 
     private DeleteQuery build() {
-        return new MappingColumnDeleteQuery(entity, condition);
+        return new MappingDeleteQuery(entity, condition);
     }
 
     @Override

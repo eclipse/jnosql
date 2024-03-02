@@ -20,7 +20,7 @@ import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
-import org.eclipse.jnosql.mapping.semistructured.MappingColumnQuery;
+import org.eclipse.jnosql.mapping.semistructured.MappingQuery;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
@@ -45,7 +45,7 @@ public abstract class AbstractColumnRepository<T, K> extends AbstractRepository<
     public Page<T> findAll(PageRequest pageRequest) {
         Objects.requireNonNull(pageRequest, "pageRequest is required");
         EntityMetadata metadata = entityMetadata();
-        SelectQuery query = new MappingColumnQuery(pageRequest.sorts(),
+        SelectQuery query = new MappingQuery(pageRequest.sorts(),
                 pageRequest.size(), NoSQLPage.skip(pageRequest)
                 , null ,metadata.name());
 

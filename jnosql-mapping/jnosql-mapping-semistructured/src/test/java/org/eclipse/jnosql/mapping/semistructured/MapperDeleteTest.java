@@ -41,14 +41,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
 class MapperDeleteTest {
 
     @Inject
-    private ColumnEntityConverter converter;
+    private EntityConverter converter;
 
     @Inject
     private EntitiesMetadata entities;
@@ -66,7 +66,7 @@ class MapperDeleteTest {
     @BeforeEach
     void setUp() {
         managerMock = Mockito.mock(DatabaseManager.class);
-        ColumnEventPersistManager persistManager = Mockito.mock(ColumnEventPersistManager.class);
+        EventPersistManager persistManager = Mockito.mock(EventPersistManager.class);
         Instance<DatabaseManager> instance = Mockito.mock(Instance.class);
         this.captor = ArgumentCaptor.forClass(DeleteQuery.class);
         when(instance.get()).thenReturn(managerMock);

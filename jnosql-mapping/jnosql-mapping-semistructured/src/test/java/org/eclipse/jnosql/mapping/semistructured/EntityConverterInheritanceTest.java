@@ -48,14 +48,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
-class ColumnEntityConverterInheritanceTest {
+class EntityConverterInheritanceTest {
 
     @Inject
-    private ColumnEntityConverter converter;
+    private EntityConverter converter;
 
     @Test
     void shouldConvertProjectToSmallProject() {
@@ -88,7 +88,7 @@ class ColumnEntityConverterInheritanceTest {
         LargeProject project = new LargeProject();
         project.setName("Large Project");
         project.setBudget(BigDecimal.TEN);
-        CommunicationEntity entity = this.converter.toColumn(project);
+        CommunicationEntity entity = this.converter.toCommunication(project);
         assertNotNull(entity);
         assertEquals("Project", entity.name());
         assertEquals(project.getName(), entity.find("_id", String.class).get());
@@ -101,7 +101,7 @@ class ColumnEntityConverterInheritanceTest {
         SmallProject project = new SmallProject();
         project.setName("Small Project");
         project.setInvestor("Otavio Santana");
-        CommunicationEntity entity = this.converter.toColumn(project);
+        CommunicationEntity entity = this.converter.toCommunication(project);
         assertNotNull(entity);
         assertEquals("Project", entity.name());
         assertEquals(project.getName(), entity.find("_id", String.class).get());
@@ -122,7 +122,7 @@ class ColumnEntityConverterInheritanceTest {
     void shouldConvertProjectToCommunicationEntity() {
         Project project = new Project();
         project.setName("Large Project");
-        CommunicationEntity entity = this.converter.toColumn(project);
+        CommunicationEntity entity = this.converter.toCommunication(project);
         assertNotNull(entity);
         assertEquals("Project", entity.name());
         assertEquals(project.getName(), entity.find("_id", String.class).get());
@@ -184,7 +184,7 @@ class ColumnEntityConverterInheritanceTest {
         notification.setName("Social Media");
         notification.setCreatedOn(LocalDate.now());
         notification.setNickname("otaviojava");
-        CommunicationEntity entity = this.converter.toColumn(notification);
+        CommunicationEntity entity = this.converter.toCommunication(notification);
         assertNotNull(entity);
         assertEquals("Notification", entity.name());
         assertEquals(notification.getId(), entity.find("_id", Long.class).get());
@@ -200,7 +200,7 @@ class ColumnEntityConverterInheritanceTest {
         notification.setName("SMS");
         notification.setCreatedOn(LocalDate.now());
         notification.setPhone("+351123456987");
-        CommunicationEntity entity = this.converter.toColumn(notification);
+        CommunicationEntity entity = this.converter.toCommunication(notification);
         assertNotNull(entity);
         assertEquals("Notification", entity.name());
         assertEquals(notification.getId(), entity.find("_id", Long.class).get());
@@ -216,7 +216,7 @@ class ColumnEntityConverterInheritanceTest {
         notification.setName("Email Media");
         notification.setCreatedOn(LocalDate.now());
         notification.setEmail("otavio@otavio.test.com");
-        CommunicationEntity entity = this.converter.toColumn(notification);
+        CommunicationEntity entity = this.converter.toCommunication(notification);
         assertNotNull(entity);
         assertEquals("Notification", entity.name());
         assertEquals(notification.getId(), entity.find("_id", Long.class).get());
@@ -336,7 +336,7 @@ class ColumnEntityConverterInheritanceTest {
         notification.setNickname("ada.lovelace");
         NotificationReader reader = new NotificationReader("otavio", "Otavio", notification);
 
-        CommunicationEntity entity = this.converter.toColumn(reader);
+        CommunicationEntity entity = this.converter.toCommunication(reader);
         assertNotNull(entity);
 
         assertEquals("NotificationReader", entity.name());
@@ -366,7 +366,7 @@ class ColumnEntityConverterInheritanceTest {
         projects.add(small);
 
         ProjectManager manager = ProjectManager.of(10L, "manager", projects);
-        CommunicationEntity entity = this.converter.toColumn(manager);
+        CommunicationEntity entity = this.converter.toCommunication(manager);
         assertNotNull(entity);
 
         assertEquals("ProjectManager", entity.name());

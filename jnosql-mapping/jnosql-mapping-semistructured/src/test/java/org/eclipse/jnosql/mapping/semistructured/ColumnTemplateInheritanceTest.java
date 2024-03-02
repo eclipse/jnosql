@@ -43,14 +43,14 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.Mockito.when;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
 class ColumnTemplateInheritanceTest {
 
     @Inject
-    private ColumnEntityConverter converter;
+    private EntityConverter converter;
 
     @Inject
     private EntitiesMetadata entities;
@@ -66,7 +66,7 @@ class ColumnTemplateInheritanceTest {
     @BeforeEach
     void setUp() {
         managerMock = Mockito.mock(DatabaseManager.class);
-        var documentEventPersistManager = Mockito.mock(ColumnEventPersistManager.class);
+        var documentEventPersistManager = Mockito.mock(EventPersistManager.class);
 
         Instance<DatabaseManager> instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerMock);

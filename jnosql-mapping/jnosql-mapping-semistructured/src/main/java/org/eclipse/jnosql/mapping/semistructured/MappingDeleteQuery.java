@@ -14,22 +14,14 @@
  */
 package org.eclipse.jnosql.mapping.semistructured;
 
-
-import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
-import org.eclipse.jnosql.communication.semistructured.SelectQuery;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Collections.emptyList;
-
-/**
- * A mapping implementation of {@link SelectQuery}
- */
-public record MappingColumnQuery(List<Sort<?>> sorts, long limit, long skip, CriteriaCondition criteriaCondition, String entity)
-        implements SelectQuery {
+record MappingDeleteQuery(String entity, CriteriaCondition criteriaCondition) implements DeleteQuery {
 
 
     @Override
@@ -44,12 +36,6 @@ public record MappingColumnQuery(List<Sort<?>> sorts, long limit, long skip, Cri
 
     @Override
     public List<String> columns() {
-        return emptyList();
+        return Collections.emptyList();
     }
-
-    @Override
-    public List<Sort<?>> sorts() {
-        return Collections.unmodifiableList(sorts);
-    }
-
 }

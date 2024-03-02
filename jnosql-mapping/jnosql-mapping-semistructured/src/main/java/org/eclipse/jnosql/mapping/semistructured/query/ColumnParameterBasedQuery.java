@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
-import org.eclipse.jnosql.mapping.semistructured.MappingColumnQuery;
+import org.eclipse.jnosql.mapping.semistructured.MappingQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
@@ -56,7 +56,7 @@ public enum ColumnParameterBasedQuery {
 
         var columnCondition = columnCondition(conditions);
         var columnFamily = entityMetadata.name();
-        return new MappingColumnQuery(Collections.emptyList(), 0L, 0L, columnCondition, columnFamily);
+        return new MappingQuery(Collections.emptyList(), 0L, 0L, columnCondition, columnFamily);
     }
 
     private CriteriaCondition columnCondition(List<CriteriaCondition> conditions) {

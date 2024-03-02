@@ -55,7 +55,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
@@ -76,7 +76,7 @@ class DefaultColumnTemplateTest {
     };
 
     @Inject
-    private ColumnEntityConverter converter;
+    private EntityConverter converter;
 
     @Inject
     private EntitiesMetadata entities;
@@ -90,18 +90,18 @@ class DefaultColumnTemplateTest {
 
     private ArgumentCaptor<CommunicationEntity> captor;
 
-    private ColumnEventPersistManager columnEventPersistManager;
+    private EventPersistManager eventPersistManager;
 
     @SuppressWarnings("unchecked")
     @BeforeEach
     void setUp() {
         managerMock = Mockito.mock(DatabaseManager.class);
-        columnEventPersistManager = Mockito.mock(ColumnEventPersistManager.class);
+        eventPersistManager = Mockito.mock(EventPersistManager.class);
         captor = ArgumentCaptor.forClass(CommunicationEntity.class);
         Instance<DatabaseManager> instance = Mockito.mock(Instance.class);
         Mockito.when(instance.get()).thenReturn(managerMock);
         this.template = new DefaultSemistructuredTemplate(converter, instance,
-                columnEventPersistManager, entities, converters);
+                eventPersistManager, entities, converters);
     }
 
     @Test
@@ -115,8 +115,8 @@ class DefaultColumnTemplateTest {
 
         template.insert(this.person);
         verify(managerMock).insert(captor.capture());
-        verify(columnEventPersistManager).firePostEntity(any(Person.class));
-        verify(columnEventPersistManager).firePreEntity(any(Person.class));
+        verify(eventPersistManager).firePostEntity(any(Person.class));
+        verify(eventPersistManager).firePreEntity(any(Person.class));
         CommunicationEntity value = captor.getValue();
         assertEquals("Person", value.name());
         assertEquals(4, value.elements().size());
@@ -135,8 +135,8 @@ class DefaultColumnTemplateTest {
         Person person = Person.builder().build();
         Person result = template.insert(person);
         verify(managerMock).insert(captor.capture());
-        verify(columnEventPersistManager).firePostEntity(any(Person.class));
-        verify(columnEventPersistManager).firePreEntity(any(Person.class));
+        verify(eventPersistManager).firePostEntity(any(Person.class));
+        verify(eventPersistManager).firePreEntity(any(Person.class));
         assertSame(person, result);
        assertEquals(10, person.getAge());
 
@@ -157,8 +157,8 @@ class DefaultColumnTemplateTest {
 
         template.insert(this.person, Duration.ofHours(2));
         verify(managerMock).insert(captor.capture(), Mockito.eq(Duration.ofHours(2)));
-        verify(columnEventPersistManager).firePostEntity(any(Person.class));
-        verify(columnEventPersistManager).firePreEntity(any(Person.class));
+        verify(eventPersistManager).firePostEntity(any(Person.class));
+        verify(eventPersistManager).firePreEntity(any(Person.class));
         CommunicationEntity value = captor.getValue();
         assertEquals("Person", value.name());
         assertEquals(4, value.elements().size());
@@ -175,8 +175,8 @@ class DefaultColumnTemplateTest {
 
         template.update(this.person);
         verify(managerMock).update(captor.capture());
-        verify(columnEventPersistManager).firePostEntity(any(Person.class));
-        verify(columnEventPersistManager).firePreEntity(any(Person.class));
+        verify(eventPersistManager).firePostEntity(any(Person.class));
+        verify(eventPersistManager).firePreEntity(any(Person.class));
         CommunicationEntity value = captor.getValue();
         assertEquals("Person", value.name());
         assertEquals(4, value.elements().size());
@@ -194,8 +194,8 @@ class DefaultColumnTemplateTest {
         Person person = Person.builder().build();
         Person result = template.update(person);
         verify(managerMock).update(captor.capture());
-        verify(columnEventPersistManager).firePostEntity(any(Person.class));
-        verify(columnEventPersistManager).firePreEntity(any(Person.class));
+        verify(eventPersistManager).firePostEntity(any(Person.class));
+        verify(eventPersistManager).firePreEntity(any(Person.class));
         assertSame(person, result);
         assertEquals(10, person.getAge());
 

@@ -29,20 +29,20 @@ import java.util.Map;
 enum ParameterConverter {
     DEFAULT {
         @Override
-        void convert(ColumnEntityConverter converter,
+        void convert(EntityConverter converter,
                      Element element,
                      ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
             metaData.converter().ifPresentOrElse(c -> {
-                Object value = converter.getConverters().get(metaData).convertToEntityAttribute(element.get());
+                Object value = converter.converters().get(metaData).convertToEntityAttribute(element.get());
                 builder.add(value);
             }, () -> builder.add(element.get(metaData.type())));
 
         }
     }, ENTITY {
         @Override
-        void convert(ColumnEntityConverter converter, Element element, ParameterMetaData metaData,
+        void convert(EntityConverter converter, Element element, ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
             Object value = element.get();
@@ -65,7 +65,7 @@ enum ParameterConverter {
     }, COLLECTION {
         @SuppressWarnings("unchecked")
         @Override
-        void convert(ColumnEntityConverter converter, Element element, ParameterMetaData metaData,
+        void convert(EntityConverter converter, Element element, ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
             GenericParameterMetaData genericParameter = (GenericParameterMetaData) metaData;
@@ -81,7 +81,7 @@ enum ParameterConverter {
 
     };
 
-    abstract void convert(ColumnEntityConverter converter,
+    abstract void convert(EntityConverter converter,
                           Element element, ParameterMetaData metaData,
                           ConstructorBuilder builder);
 

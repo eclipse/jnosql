@@ -16,7 +16,6 @@ package org.eclipse.jnosql.mapping.semistructured;
 
 
 import jakarta.data.exceptions.NonUniqueResultException;
-import jakarta.nosql.PreparedStatement;
 import jakarta.nosql.QueryMapper;
 
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
@@ -62,7 +61,7 @@ public abstract class AbstractSemistructuredTemplate implements SemistructuredTe
      *
      * @return the entity converter
      */
-    protected abstract ColumnEntityConverter converter();
+    protected abstract EntityConverter converter();
 
     /**
      * Retrieves the manager responsible for database operations.
@@ -76,7 +75,7 @@ public abstract class AbstractSemistructuredTemplate implements SemistructuredTe
      *
      * @return the event manager
      */
-    protected abstract ColumnEventPersistManager eventManager();
+    protected abstract EventPersistManager eventManager();
 
 
     protected abstract EntitiesMetadata entities();
@@ -240,8 +239,8 @@ public abstract class AbstractSemistructuredTemplate implements SemistructuredTe
     }
 
     @Override
-    public PreparedStatement prepare(String query) {
-        return new ColumnPreparedStatement(PARSER.prepare(query, manager(), getObserver()), converter());
+    public jakarta.nosql.PreparedStatement prepare(String query) {
+        return new PreparedStatement(PARSER.prepare(query, manager(), getObserver()), converter());
     }
 
 
@@ -268,14 +267,14 @@ public abstract class AbstractSemistructuredTemplate implements SemistructuredTe
     public <T> QueryMapper.MapperFrom select(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = entities().get(type);
-        return new ColumnMapperSelect(metadata, converters(), this);
+        return new MapperSelect(metadata, converters(), this);
     }
 
     @Override
     public <T> QueryMapper.MapperDeleteFrom delete(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = entities().get(type);
-        return new ColumnMapperDelete(metadata, converters(), this);
+        return new MapperDelete(metadata, converters(), this);
     }
 
     @Override
@@ -303,7 +302,7 @@ public abstract class AbstractSemistructuredTemplate implements SemistructuredTe
     protected <T> T persist(T entity, UnaryOperator<CommunicationEntity> persistAction) {
         return Stream.of(entity)
                 .map(toUnary(eventManager()::firePreEntity))
-                .map(converter()::toColumn)
+                .map(converter()::toCommunication)
                 .map(persistAction)
                 .map(t -> converter().toEntity(entity, t))
                 .map(toUnary(eventManager()::firePostEntity))

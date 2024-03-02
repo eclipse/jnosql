@@ -18,7 +18,7 @@ import jakarta.data.Limit;
 import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
-import org.eclipse.jnosql.mapping.semistructured.MappingColumnQuery;
+import org.eclipse.jnosql.mapping.semistructured.MappingQuery;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.core.repository.SpecialParameters;
 
@@ -53,7 +53,7 @@ public class DynamicQuery implements Supplier<SelectQuery> {
             sorts.addAll(special.sorts());
             long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
             long max = limit.map(Limit::maxResults).orElse((int) query.limit());
-            return new MappingColumnQuery(sorts, max,
+            return new MappingQuery(sorts, max,
                     skip,
                     query.condition().orElse(null),
                     query.name());
@@ -67,7 +67,7 @@ public class DynamicQuery implements Supplier<SelectQuery> {
                 sorts = new ArrayList<>(query.sorts());
                 sorts.addAll(special.sorts());
             }
-            return new MappingColumnQuery(sorts, max,
+            return new MappingQuery(sorts, max,
                     skip,
                     query.condition().orElse(null),
                     query.name());
@@ -81,7 +81,7 @@ public class DynamicQuery implements Supplier<SelectQuery> {
                 sorts = new ArrayList<>(query.sorts());
                 sorts.addAll(special.sorts());
             }
-            return new MappingColumnQuery(sorts, size, skip,
+            return new MappingQuery(sorts, size, skip,
                     query.condition().orElse(null), query.name());
         }).orElse(query);
     }

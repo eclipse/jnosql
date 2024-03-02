@@ -22,15 +22,15 @@ import org.eclipse.jnosql.mapping.EntityPostPersist;
 import org.eclipse.jnosql.mapping.EntityPrePersist;
 
 /**
- * This interface represents the manager of events. When an entity be either saved or updated an event will be fired.
- * This order going to be:
- * 1) firePreColumn
- * 2) firePostColumn
+ * This class represents the manager of events for entity persistence operations.
+ * When an entity is either saved or updated, events will be fired in the following order:
+ * 1) {@link EntityPrePersist} event fired before the entity is persisted.
+ * 2) {@link EntityPostPersist} event fired after the entity is persisted.
  *
  * @see AbstractSemistructuredTemplate
  */
 @ApplicationScoped
-public class ColumnEventPersistManager {
+public class EventPersistManager {
 
 
     @Inject
@@ -40,20 +40,20 @@ public class ColumnEventPersistManager {
     private Event<EntityPostPersist> entityPostPersistEvent;
 
     /**
-     * Fire an event once the method is called
+     * Fires an event before an entity is persisted.
      *
-     * @param entity the entity
-     * @param <T>    the entity type
+     * @param entity the entity to be persisted
+     * @param <T>    the type of the entity
      */
     public <T> void firePreEntity(T entity) {
         entityPrePersistEvent.fire(EntityPrePersist.of(entity));
     }
 
     /**
-     * Fire an event after firePostEntity
+     * Fires an event before an entity is persisted.
      *
-     * @param entity the entity
-     * @param <T>    the entity kind
+     * @param entity the entity to be persisted
+     * @param <T>    the type of the entity
      */
     public <T> void firePostEntity(T entity) {
         entityPostPersistEvent.fire(EntityPostPersist.of(entity));

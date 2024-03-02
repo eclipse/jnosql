@@ -35,13 +35,13 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-final class ColumnMapperSelect extends AbstractMapperQuery implements MapperFrom, MapperLimit,
+final class MapperSelect extends AbstractMapperQuery implements MapperFrom, MapperLimit,
         MapperSkip, MapperOrder, MapperNameCondition,
         MapperNotCondition, MapperNameOrder, MapperWhere {
 
     private final List<Sort<?>> sorts = new ArrayList<>();
 
-    ColumnMapperSelect(EntityMetadata mapping, Converters converters, SemistructuredTemplate template) {
+    MapperSelect(EntityMetadata mapping, Converters converters, SemistructuredTemplate template) {
         super(mapping, converters, template);
     }
 
@@ -155,7 +155,7 @@ final class ColumnMapperSelect extends AbstractMapperQuery implements MapperFrom
         return this;
     }
     private SelectQuery build() {
-        return new MappingColumnQuery(sorts, limit, start, condition, entity);
+        return new MappingQuery(sorts, limit, start, condition, entity);
     }
 
     @Override
