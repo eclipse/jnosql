@@ -50,7 +50,7 @@ public final class ColumnPreparedStatement {
 
     private final Duration duration;
 
-    private final ColumnManager manager;
+    private final DatabaseManager manager;
 
     private ColumnPreparedStatement(ColumnEntity entity,
                                     ColumnQuery columnQuery,
@@ -60,7 +60,7 @@ public final class ColumnPreparedStatement {
                                     String query,
                                     List<String> paramsLeft,
                                     Duration duration,
-                                    ColumnManager manager) {
+                                    DatabaseManager manager) {
         this.entity = entity;
         this.columnQuery = columnQuery;
         this.columnDeleteQuery = columnDeleteQuery;
@@ -149,7 +149,7 @@ public final class ColumnPreparedStatement {
             ColumnQuery columnQuery,
             Params params,
             String query,
-            ColumnManager manager) {
+            DatabaseManager manager) {
         return new ColumnPreparedStatement(null, columnQuery,
                 null, PreparedStatementType.SELECT, params, query,
                 params.getParametersNames(), null, manager);
@@ -159,7 +159,7 @@ public final class ColumnPreparedStatement {
     static ColumnPreparedStatement delete(ColumnDeleteQuery columnDeleteQuery,
                                           Params params,
                                           String query,
-                                          ColumnManager manager) {
+                                          DatabaseManager manager) {
 
         return new ColumnPreparedStatement(null, null,
                 columnDeleteQuery, PreparedStatementType.DELETE, params, query,
@@ -171,7 +171,7 @@ public final class ColumnPreparedStatement {
                                           Params params,
                                           String query,
                                           Duration duration,
-                                          ColumnManager manager) {
+                                          DatabaseManager manager) {
         return new ColumnPreparedStatement(entity, null,
                 null, PreparedStatementType.INSERT, params, query,
                 params.getParametersNames(), duration, manager);
@@ -181,7 +181,7 @@ public final class ColumnPreparedStatement {
     static ColumnPreparedStatement update(ColumnEntity entity,
                                           Params params,
                                           String query,
-                                          ColumnManager manager) {
+                                          DatabaseManager manager) {
         return new ColumnPreparedStatement(entity, null,
                 null, PreparedStatementType.UPDATE, params, query,
                 params.getParametersNames(), null, manager);

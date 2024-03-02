@@ -33,7 +33,7 @@ public final class DeleteQueryParser implements BiFunction<DeleteQuery, ColumnOb
 
 
 
-    Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
+    Stream<ColumnEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
 
         ColumnDeleteQuery deleteQuery = getQuery(query, observer);
         manager.delete(deleteQuery);
@@ -41,7 +41,7 @@ public final class DeleteQueryParser implements BiFunction<DeleteQuery, ColumnOb
     }
 
 
-    ColumnPreparedStatement prepare(String query, ColumnManager manager,
+    ColumnPreparedStatement prepare(String query, DatabaseManager manager,
                                     ColumnObserverParser observer) {
         Params params = Params.newParams();
         ColumnDeleteQuery columnDeleteQuery = getQuery(query, params, observer);

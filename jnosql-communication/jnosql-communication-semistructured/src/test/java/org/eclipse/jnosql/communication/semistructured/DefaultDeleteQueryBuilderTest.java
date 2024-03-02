@@ -251,7 +251,7 @@ class DefaultDeleteQueryBuilderTest {
     @Test
     void shouldExecuteDelete() {
         String columnFamily = "columnFamily";
-        ColumnManager manager = Mockito.mock(ColumnManager.class);
+        DatabaseManager manager = Mockito.mock(DatabaseManager.class);
         ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         delete().from(columnFamily).delete(manager);
         verify(manager).delete(queryCaptor.capture());

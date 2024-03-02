@@ -33,7 +33,7 @@ final class InsertQueryParser extends ConditionQueryParser {
 
 
 
-    Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
+    Stream<ColumnEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
 
         InsertQueryConverter converter = new InsertQueryConverter();
         InsertQuery insertQuery = converter.apply(query);
@@ -52,7 +52,7 @@ final class InsertQueryParser extends ConditionQueryParser {
     }
 
 
-    ColumnPreparedStatement prepare(String query, ColumnManager manager,
+    ColumnPreparedStatement prepare(String query, DatabaseManager manager,
                                     ColumnObserverParser observer) {
 
         InsertQueryConverter converter = new InsertQueryConverter();

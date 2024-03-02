@@ -115,13 +115,13 @@ class DefaultColumnQueryBuilder implements ColumnQuery.ColumnQueryBuilder {
     }
 
     @Override
-    public Stream<ColumnEntity> getResult(ColumnManager manager) {
+    public Stream<ColumnEntity> getResult(DatabaseManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         return manager.select(build());
     }
 
     @Override
-    public Optional<ColumnEntity> getSingleResult(ColumnManager manager) {
+    public Optional<ColumnEntity> getSingleResult(DatabaseManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         return manager.singleResult(build());
     }

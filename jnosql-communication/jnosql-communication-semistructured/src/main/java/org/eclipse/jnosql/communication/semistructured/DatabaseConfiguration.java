@@ -28,35 +28,35 @@ import java.util.function.Function;
  * It is a function that reads from {@link Settings} and then creates a manager factory instance.
  * It should return a {@link NullPointerException} when the {@link Settings} parameter is null.
  *
- * @see ColumnManagerFactory
- * @see ColumnManager
+ * @see DatabaseManagerFactory
+ * @see DatabaseManager
  */
-public interface ColumnConfiguration extends Function<Settings, ColumnManagerFactory> {
+public interface DatabaseConfiguration extends Function<Settings, DatabaseManagerFactory> {
 
 
     /**
-     * creates and returns a  {@link ColumnConfiguration}  instance from {@link ServiceLoader}
+     * creates and returns a  {@link DatabaseConfiguration}  instance from {@link ServiceLoader}
      *
      * @param <T> the configuration type
-     * @return {@link ColumnConfiguration} instance
+     * @return {@link DatabaseConfiguration} instance
      */
-    static <T extends ColumnConfiguration> T getConfiguration() {
-        return (T) ServiceLoader.load(ColumnConfiguration.class)
+    static <T extends DatabaseConfiguration> T getConfiguration() {
+        return (T) ServiceLoader.load(DatabaseConfiguration.class)
                 .stream()
                 .map(ServiceLoader.Provider::get)
                 .findFirst().orElseThrow(() -> new CommunicationException("No ColumnConfiguration implementation found!"));
     }
 
     /**
-     * creates and returns a  {@link ColumnConfiguration} instance from {@link ServiceLoader}
+     * creates and returns a  {@link DatabaseConfiguration} instance from {@link ServiceLoader}
      * for a particular provider implementation.
      *
      * @param <T>      the configuration type
      * @param type the particular provider
-     * @return {@link ColumnConfiguration} instance
+     * @return {@link DatabaseConfiguration} instance
      */
-    static <T extends ColumnConfiguration> T getConfiguration(Class<T> type) {
-        return (T) ServiceLoader.load(ColumnConfiguration.class)
+    static <T extends DatabaseConfiguration> T getConfiguration(Class<T> type) {
+        return (T) ServiceLoader.load(DatabaseConfiguration.class)
                 .stream()
                 .map(ServiceLoader.Provider::get)
                 .filter(type::isInstance)

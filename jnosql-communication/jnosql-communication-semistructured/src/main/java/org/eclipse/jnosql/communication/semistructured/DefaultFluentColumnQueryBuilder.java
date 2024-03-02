@@ -193,13 +193,13 @@ class DefaultFluentColumnQueryBuilder extends BaseQueryBuilder implements
     }
 
     @Override
-    public Stream<ColumnEntity> getResult(ColumnManager manager) {
+    public Stream<ColumnEntity> getResult(DatabaseManager manager) {
         requireNonNull(manager, "manager is required");
         return manager.select(this.build());
     }
 
     @Override
-    public Optional<ColumnEntity> getSingleResult(ColumnManager manager) {
+    public Optional<ColumnEntity> getSingleResult(DatabaseManager manager) {
         requireNonNull(manager, "manager is required");
         return manager.singleResult(this.build());
     }

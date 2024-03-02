@@ -33,7 +33,7 @@ import static java.util.Objects.requireNonNull;
  * It is the state of column queries, with a condition and a value, as a {@link Column},
  * where both combined define a predicate.
  *
- * @see ColumnManager#select(ColumnQuery)
+ * @see DatabaseManager#select(ColumnQuery)
  * @see Condition
  */
 public final class ColumnCondition {

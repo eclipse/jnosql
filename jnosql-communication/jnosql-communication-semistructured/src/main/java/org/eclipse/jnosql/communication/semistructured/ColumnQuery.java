@@ -33,7 +33,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * Class that contains information to do a select to {@link ColumnEntity}
  *
- * @see ColumnManager#select(ColumnQuery)
+ * @see DatabaseManager#select(ColumnQuery)
  * @see ColumnCondition
  * @see Sort
  */
@@ -265,7 +265,7 @@ public interface ColumnQuery {
     /**
      * The last step to the build of {@link ColumnQuery}.
      * It either can return a new {@link ColumnQuery} instance or execute a query with
-     * {@link ColumnManager}
+     * {@link DatabaseManager}
      */
     interface ColumnQueryBuild {
 
@@ -277,22 +277,22 @@ public interface ColumnQuery {
         ColumnQuery build();
 
         /**
-         * Executes {@link ColumnManager#select(ColumnQuery)}
+         * Executes {@link DatabaseManager#select(ColumnQuery)}
          *
          * @param manager the entity manager
-         * @return the result of {@link ColumnManager#select(ColumnQuery)}
+         * @return the result of {@link DatabaseManager#select(ColumnQuery)}
          * @throws NullPointerException when manager is null
          */
-        Stream<ColumnEntity> getResult(ColumnManager manager);
+        Stream<ColumnEntity> getResult(DatabaseManager manager);
 
         /**
-         * Executes {@link ColumnManager#singleResult(ColumnQuery)}
+         * Executes {@link DatabaseManager#singleResult(ColumnQuery)}
          *
          * @param manager the entity manager
-         * @return the result of {@link ColumnManager#singleResult(ColumnQuery)}
+         * @return the result of {@link DatabaseManager#singleResult(ColumnQuery)}
          * @throws NullPointerException when manager is null
          */
-        Optional<ColumnEntity> getSingleResult(ColumnManager manager);
+        Optional<ColumnEntity> getSingleResult(DatabaseManager manager);
 
     }
 
@@ -599,25 +599,25 @@ public interface ColumnQuery {
         ColumnQuery build();
 
         /**
-         * Executes {@link ColumnManager#select(ColumnQuery)}
+         * Executes {@link DatabaseManager#select(ColumnQuery)}
          *
          * @param manager the entity manager
-         * @return the result of {@link ColumnManager#select(ColumnQuery)}
+         * @return the result of {@link DatabaseManager#select(ColumnQuery)}
          * @throws NullPointerException  when manager is null
          * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
          *                               such as the {@link ColumnQueryBuilder#from(String)} method was not called.
          */
-        Stream<ColumnEntity> getResult(ColumnManager manager);
+        Stream<ColumnEntity> getResult(DatabaseManager manager);
 
         /**
-         * Executes {@link ColumnManager#singleResult(ColumnQuery)}
+         * Executes {@link DatabaseManager#singleResult(ColumnQuery)}
          *
          * @param manager the entity manager
-         * @return the result of {@link ColumnManager#singleResult(ColumnQuery)}
+         * @return the result of {@link DatabaseManager#singleResult(ColumnQuery)}
          * @throws NullPointerException  when manager is null
          * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
          *                               such as the {@link ColumnQueryBuilder#from(String)} method was not called.
          */
-        Optional<ColumnEntity> getSingleResult(ColumnManager manager);
+        Optional<ColumnEntity> getSingleResult(DatabaseManager manager);
     }
 }

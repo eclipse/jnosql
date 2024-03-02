@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * A query parser to column database type, this class will convert a String to an operation in {@link ColumnManager}.
+ * A query parser to column database type, this class will convert a String to an operation in {@link DatabaseManager}.
  */
 public final class ColumnQueryParser {
 
@@ -43,7 +43,7 @@ public final class ColumnQueryParser {
      * @throws IllegalArgumentException when the query has value parameters
      * @throws QueryException           when there is error in the syntax
      */
-    public Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
+    public Stream<ColumnEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
         return switch (command) {
@@ -68,7 +68,7 @@ public final class ColumnQueryParser {
      * @throws IllegalArgumentException when the query has value parameters
      * @throws QueryException           when there is error in the syntax
      */
-    public ColumnPreparedStatement prepare(String query, ColumnManager manager, ColumnObserverParser observer) {
+    public ColumnPreparedStatement prepare(String query, DatabaseManager manager, ColumnObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
 
@@ -83,7 +83,7 @@ public final class ColumnQueryParser {
     }
 
 
-    private void validation(String query, ColumnManager manager, ColumnObserverParser observer) {
+    private void validation(String query, DatabaseManager manager, ColumnObserverParser observer) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(manager, "manager is required");
         Objects.requireNonNull(observer, "manager is observer");

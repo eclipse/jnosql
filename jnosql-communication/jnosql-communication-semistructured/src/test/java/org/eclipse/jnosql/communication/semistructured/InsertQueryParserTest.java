@@ -36,7 +36,7 @@ class InsertQueryParserTest {
     
     private final InsertQueryParser parser = new InsertQueryParser();
 
-    private final ColumnManager manager = Mockito.mock(ColumnManager.class);
+    private final DatabaseManager manager = Mockito.mock(DatabaseManager.class);
 
     private final ColumnObserverParser observer = new ColumnObserverParser() {
     };

@@ -38,7 +38,7 @@ class DefaultColumnQueryParserTest {
     private final ColumnQueryParser parser = new ColumnQueryParser();
 
 
-    private final ColumnManager manager = Mockito.mock(ColumnManager.class);
+    private final DatabaseManager manager = Mockito.mock(DatabaseManager.class);
 
     @Test
     void shouldReturnNPEWhenThereIsNullParameter() {

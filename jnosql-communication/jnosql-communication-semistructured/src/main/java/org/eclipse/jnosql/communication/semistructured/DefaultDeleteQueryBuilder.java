@@ -76,7 +76,7 @@ class DefaultDeleteQueryBuilder implements ColumnDeleteQueryBuilder {
     }
 
     @Override
-    public void delete(ColumnManager manager) {
+    public void delete(DatabaseManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         manager.delete(build());
     }

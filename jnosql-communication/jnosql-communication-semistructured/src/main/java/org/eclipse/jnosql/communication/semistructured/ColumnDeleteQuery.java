@@ -30,7 +30,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * A unit that has the columnFamily and condition to delete from conditions.
  * This instance will be used on:
- * <p>{@link ColumnManager#delete(ColumnDeleteQuery)}</p>
+ * <p>{@link DatabaseManager#delete(ColumnDeleteQuery)}</p>
  */
 public interface ColumnDeleteQuery {
 
@@ -260,7 +260,7 @@ public interface ColumnDeleteQuery {
     /**
      * The last step to the build of {@link ColumnDeleteQuery}.
      * It either can return a new {@link ColumnDeleteQuery} instance or execute a query with
-     * {@link ColumnManager}
+     * {@link DatabaseManager}
      */
     interface ColumnDeleteQueryBuild {
 
@@ -272,12 +272,12 @@ public interface ColumnDeleteQuery {
         ColumnDeleteQuery build();
 
         /**
-         * executes the {@link ColumnManager#delete(ColumnDeleteQuery)}
+         * executes the {@link DatabaseManager#delete(ColumnDeleteQuery)}
          *
          * @param manager the entity manager
          * @throws NullPointerException when manager is null
          */
-        void delete(ColumnManager manager);
+        void delete(DatabaseManager manager);
 
     }
 
@@ -369,13 +369,13 @@ public interface ColumnDeleteQuery {
         ColumnDeleteQuery build();
 
         /**
-         * executes the {@link ColumnManager#delete(ColumnDeleteQuery)}
+         * executes the {@link DatabaseManager#delete(ColumnDeleteQuery)}
          *
          * @param manager the entity manager
          * @throws NullPointerException  when manager is null
          * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
          *                               such as the {@link ColumnDeleteQueryBuilder#from(String)} method was not called.
          */
-        void delete(ColumnManager manager);
+        void delete(DatabaseManager manager);
     }
 }

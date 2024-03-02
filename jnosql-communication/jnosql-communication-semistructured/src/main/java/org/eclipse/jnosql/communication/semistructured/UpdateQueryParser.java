@@ -32,7 +32,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
 
 
-    Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
+    Stream<ColumnEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
 
         UpdateQueryConverter converter = new UpdateQueryConverter();
         UpdateQuery updateQuery = converter.apply(query);
@@ -48,7 +48,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
     }
 
 
-    ColumnPreparedStatement prepare(String query, ColumnManager manager, ColumnObserverParser observer) {
+    ColumnPreparedStatement prepare(String query, DatabaseManager manager, ColumnObserverParser observer) {
 
         Params params = Params.newParams();
 

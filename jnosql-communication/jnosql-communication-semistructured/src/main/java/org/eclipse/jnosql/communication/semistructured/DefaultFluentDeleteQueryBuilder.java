@@ -135,7 +135,7 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Column
     }
 
     @Override
-    public void delete(ColumnManager manager) {
+    public void delete(DatabaseManager manager) {
         requireNonNull(manager, "manager is required");
         manager.delete(this.build());
     }

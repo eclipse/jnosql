@@ -38,14 +38,14 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, ColumnOb
     public SelectQueryParser() {
     }
 
-    Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
+    Stream<ColumnEntity> query(String query, DatabaseManager manager, ColumnObserverParser observer) {
 
         ColumnQuery columnQuery = getColumnQuery(query, observer);
         return manager.select(columnQuery);
     }
 
 
-    ColumnPreparedStatement prepare(String query, ColumnManager manager, ColumnObserverParser observer) {
+    ColumnPreparedStatement prepare(String query, DatabaseManager manager, ColumnObserverParser observer) {
 
         Params params = Params.newParams();
         SelectQueryConverter converter = new SelectQueryConverter();

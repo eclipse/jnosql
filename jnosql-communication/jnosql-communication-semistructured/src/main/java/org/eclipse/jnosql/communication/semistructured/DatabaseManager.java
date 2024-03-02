@@ -30,10 +30,10 @@ import java.util.stream.Stream;
  *
  * @see ColumnEntity
  */
-public interface ColumnManager extends AutoCloseable {
+public interface DatabaseManager extends AutoCloseable {
 
     /**
-     * Returns the database's name of this {@link ColumnManager}
+     * Returns the database's name of this {@link DatabaseManager}
      *
      * @return the database's name
      */
@@ -59,7 +59,7 @@ public interface ColumnManager extends AutoCloseable {
 
     /**
      * Updates a Column family entities, by default it's just run for each saving using
-     * {@link ColumnManager#update(ColumnEntity)}, each NoSQL vendor might
+     * {@link DatabaseManager#update(ColumnEntity)}, each NoSQL vendor might
      * replace to a more appropriate one.
      *
      * @param entities column family to be saved
@@ -81,7 +81,7 @@ public interface ColumnManager extends AutoCloseable {
 
     /**
      * Saves a Column family entities, by default it's just run for each saving using
-     * {@link ColumnManager#insert(ColumnEntity)}, each NoSQL vendor might
+     * {@link DatabaseManager#insert(ColumnEntity)}, each NoSQL vendor might
      * replace to a more appropriate one.
      *
      * @param entities column family to be saved
@@ -92,7 +92,7 @@ public interface ColumnManager extends AutoCloseable {
 
     /**
      * Saves a Column family entity with time to live, by default it's just run for each saving using
-     * {@link ColumnManager#insert(ColumnEntity, Duration)},
+     * {@link DatabaseManager#insert(ColumnEntity, Duration)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities column family to be saved

@@ -335,7 +335,7 @@ class DefaultColumnQueryBuilderTest {
 
     @Test
     void shouldExecuteManager() {
-        ColumnManager manager = Mockito.mock(ColumnManager.class);
+        DatabaseManager manager = Mockito.mock(DatabaseManager.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String collection = "collection";
         Stream<ColumnEntity> entities = builder().from(collection).getResult(manager);
@@ -345,7 +345,7 @@ class DefaultColumnQueryBuilderTest {
 
     @Test
     void shouldExecuteSingleResultManager() {
-        ColumnManager manager = Mockito.mock(ColumnManager.class);
+        DatabaseManager manager = Mockito.mock(DatabaseManager.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String collection = "collection";
         Optional<ColumnEntity> entities = builder().from(collection).getSingleResult(manager);
