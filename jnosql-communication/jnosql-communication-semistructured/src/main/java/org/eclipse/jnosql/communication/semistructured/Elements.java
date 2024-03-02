@@ -29,34 +29,34 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 
 /**
- * Utilitarian class to {@link Element}
+ * Utility class for creating and manipulating {@link Element} instances.
  */
-public final class Columns {
+public final class Elements {
 
     private static final Predicate<Map.Entry<String, ?>> IS_VALUE_NULL = e -> Objects.nonNull(e.getValue());
 
-    private Columns() {
+    private Elements() {
     }
 
     /**
-     * Creates a column instance
+     * Creates a new element with the specified name and value.
      *
-     * @param name  column's name
-     * @param value column's value
-     * @return a column's instance
-     * @throws NullPointerException when name is null
+     * @param name  the name of the element
+     * @param value the value of the element
+     * @return a new element instance
+     * @throws NullPointerException if the specified name is {@code null}
      */
     public static Element of(String name, Object value) {
         return Element.of(name, Value.of(value));
     }
 
     /**
-     * Converts a Map to columns where: the key gonna be a column's name the value a column's value and null values
-     * elements will be ignored.
+     * Converts a map to a list of elements, where each entry in the map represents an element.
+     * Only entries with non-null values will be included.
      *
-     * @param values map to be converted
-     * @return a list of columns
-     * @throws NullPointerException when values is null
+     * @param values the map to be converted
+     * @return a list of elements representing the columns in the map
+     * @throws NullPointerException if the specified map is {@code null}
      */
     public static List<Element> of(Map<String, ?> values) {
         Objects.requireNonNull(values, "values is required");
@@ -66,10 +66,11 @@ public final class Columns {
                 .collect(toList());
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private static Object getValue(Object value) {
 
         if (value instanceof Map) {
-            List list = Columns.of((Map.class.cast(value)));
+            List list = Elements.of((Map.class.cast(value)));
             if(list.size() == 1) {
                 return list.get(0);
             }
@@ -77,7 +78,7 @@ public final class Columns {
         }
         if (value instanceof Iterable) {
             return stream(Iterable.class.cast(value).spliterator(), false)
-                    .map(Columns::getValue).collect(toList());
+                    .map(Elements::getValue).collect(toList());
         }
         return value;
     }

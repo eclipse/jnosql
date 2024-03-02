@@ -32,7 +32,7 @@ final class JsonObjects {
 
     static List<Element> getColumns(JsonObject jsonObject) {
         Map<String, Object> map = JSON.fromJson(jsonObject.toString(), Map.class);
-        return Columns.of(map);
+        return Elements.of(map);
     }
 
 }

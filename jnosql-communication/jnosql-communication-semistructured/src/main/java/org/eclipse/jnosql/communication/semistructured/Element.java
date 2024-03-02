@@ -22,50 +22,51 @@ import org.eclipse.jnosql.communication.Value;
 
 import java.util.Objects;
 
+
 /**
- * A Column is a tuple (pair) that consists of the name and its respective value.
- * A {@link CommunicationEntity} has one or more Columns.
+ * Represents a single column in a {@link CommunicationEntity}, consisting of a name and its corresponding value.
  */
 public interface Element extends Entry {
+
     /**
-     * Alias to {@link Value#get(Class)}
+     * Retrieves the value of this element as the specified type.
      *
-     * @param type the type class
-     * @param <T>  the instance type
-     * @return {@link Value#get(Class)}
-     * @throws NullPointerException          see {@link Value#get(Class)}
-     * @throws UnsupportedOperationException see {@link Value#get(Class)}
+     * @param type the class object representing the type to which the value should be converted
+     * @param <T>  the type of the returned value
+     * @return the value of this element as the specified type
+     * @throws NullPointerException          if the specified type is {@code null}
+     * @throws UnsupportedOperationException if the value cannot be converted to the specified type
      */
     <T> T get(Class<T> type) ;
 
     /**
-     * Alias to {@link Value#get(TypeSupplier)}
+     * Retrieves the value of this element as the specified type using a {@link TypeSupplier}.
      *
-     * @param supplier {@link Value#get(Class)}
-     * @param <T>      {@link Value#get(Class)}
-     * @return {@link Value#get(TypeSupplier)}
-     * @throws NullPointerException          see {@link Value#get(Class)}
-     * @throws UnsupportedOperationException see {@link Value#get(Class)}
+     * @param supplier the type supplier providing the target type to which the value should be converted
+     * @param <T>      the type of the returned value
+     * @return the value of this element as the specified type
+     * @throws NullPointerException          if the specified type supplier is {@code null}
+     * @throws UnsupportedOperationException if the value cannot be converted to the specified type
      */
     <T> T get(TypeSupplier<T> supplier);
 
     /**
-     * Alias to {@link Value#get()}
+     * Retrieves the value of this element as an {@code Object}.
      *
-     * @return {@link Value#get()}
+     * @return the value of this element
      */
     Object get();
 
 
     /**
-     * Creates a column instance
+     * Creates a new element with the specified name and value.
      *
-     * @param name  - column's name
-     * @param value - column's value
-     * @param <V>   the value type
-     * @return a column instance
-     * @throws NullPointerException when name is null
-     * @see Columns
+     * @param name  the name of the element
+     * @param value the value of the element
+     * @param <V>   the type of the value
+     * @return a new element instance
+     * @throws NullPointerException if the specified name is {@code null}
+     * @see Elements
      */
     static <V> Element of(String name, V value) {
         Objects.requireNonNull(name, "name is required");

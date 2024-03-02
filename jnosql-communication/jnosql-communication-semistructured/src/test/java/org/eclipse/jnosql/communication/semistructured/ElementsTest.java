@@ -30,11 +30,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
-class ColumnsTest {
+class ElementsTest {
 
     @Test
     void shouldCreateColumn() {
-        Element element = Columns.of("name", "Ada");
+        Element element = Elements.of("name", "Ada");
         assertEquals("name", element.name());
         assertEquals("Ada", element.get());
     }
@@ -42,7 +42,7 @@ class ColumnsTest {
     @Test
     void shouldCreateColumnsFromMap() {
         Map<String, String> map = singletonMap("name", "Ada");
-        List<Element> elements = Columns.of(map);
+        List<Element> elements = Elements.of(map);
         assertFalse(elements.isEmpty());
         assertThat(elements).contains(Element.of("name", "Ada"));
     }
@@ -54,7 +54,7 @@ class ColumnsTest {
         Map<String, String> map = singletonMap("mobile", "55 1234-4567");
         list.add(singletonList(map));
 
-        List<Element> elements = Columns.of(singletonMap("contact", list));
+        List<Element> elements = Elements.of(singletonMap("contact", list));
         assertEquals(1, elements.size());
         Element element = elements.get(0);
         assertEquals("contact", element.name());
