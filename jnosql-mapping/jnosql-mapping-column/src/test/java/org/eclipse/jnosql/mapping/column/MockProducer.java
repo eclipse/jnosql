@@ -40,6 +40,7 @@ public class MockProducer implements Supplier<DatabaseManager> {
 
     @Produces
     @Override
+    @Database(DatabaseType.COLUMN)
     public DatabaseManager get() {
         CommunicationEntity entity = CommunicationEntity.of("Person");
         entity.add(Element.of("name", "Default"));

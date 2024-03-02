@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, EntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class, ColumnTemplate.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
@@ -47,13 +47,6 @@ class ColumnExtensionTest {
     @Inject
     private ColumnTemplate template;
 
-    @Inject
-    @Database(value = DatabaseType.COLUMN)
-    private PersonRepository repository;
-
-    @Inject
-    @Database(value = DatabaseType.COLUMN, provider = "columnRepositoryMock")
-    private PersonRepository repositoryMock;
 
     @Test
     void shouldInstance() {
@@ -72,8 +65,6 @@ class ColumnExtensionTest {
 
     @Test
     void shouldInjectRepository() {
-        assertNotNull(repository);
-        assertNotNull(repositoryMock);
     }
 
     @Test

@@ -47,7 +47,7 @@ class ColumnManagerSupplier implements Supplier<DatabaseManager> {
     public DatabaseManager get() {
         Settings settings = MicroProfileSettings.INSTANCE;
 
-        DatabaseConfiguration<?> configuration = settings.get(COLUMN_PROVIDER, Class.class)
+        DatabaseConfiguration configuration = settings.get(COLUMN_PROVIDER, Class.class)
                 .filter(DatabaseConfiguration.class::isAssignableFrom)
                 .map(c -> {
                     final Reflections reflections = CDI.current().select(Reflections.class).get();
@@ -66,7 +66,7 @@ class ColumnManagerSupplier implements Supplier<DatabaseManager> {
         return manager;
     }
 
-    public void close(@Disposes DatabaseManager manager) {
+    public void close(@Disposes @Database(DatabaseType.COLUMN) DatabaseManager manager) {
         LOGGER.log(Level.FINEST, "Closing ColumnManager resource, database name: " + manager.name());
         manager.close();
     }

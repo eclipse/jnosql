@@ -25,7 +25,7 @@ import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import java.time.Duration;
 import java.util.stream.Stream;
 
-class ColumnConfigurationMock2 implements DatabaseConfiguration {
+public class ColumnConfigurationMock2 implements DatabaseConfiguration {
 
 
     @Override
