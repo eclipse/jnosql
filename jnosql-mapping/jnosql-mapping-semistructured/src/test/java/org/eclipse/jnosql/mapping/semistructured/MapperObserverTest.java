@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.semistructured;
 
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.communication.column.ColumnObserverParser;
+import org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.semistructured.entities.Car;
 import org.eclipse.jnosql.mapping.semistructured.entities.Vendor;
@@ -37,16 +37,16 @@ import org.junit.jupiter.api.Test;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
-class ColumnMapperObserverTest {
+class MapperObserverTest {
 
     @Inject
     private EntitiesMetadata mappings;
 
-    private ColumnObserverParser parser;
+    private CommunicationObserverParser parser;
 
     @BeforeEach
     void setUp() {
-        this.parser = new ColumnMapperObserver(mappings);
+        this.parser = new MapperObserver(mappings);
     }
 
     @Test

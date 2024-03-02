@@ -14,19 +14,19 @@
  */
 package org.eclipse.jnosql.mapping.semistructured;
 
-import org.eclipse.jnosql.communication.column.ColumnObserverParser;
+import org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser;
 import org.eclipse.jnosql.mapping.metadata.ClassInformationNotFoundException;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 import java.util.Optional;
 
-final class ColumnMapperObserver implements ColumnObserverParser {
+final class MapperObserver implements CommunicationObserverParser {
 
 
     private final EntitiesMetadata mappings;
 
-    ColumnMapperObserver(EntitiesMetadata mappings) {
+    MapperObserver(EntitiesMetadata mappings) {
         this.mappings = mappings;
     }
 

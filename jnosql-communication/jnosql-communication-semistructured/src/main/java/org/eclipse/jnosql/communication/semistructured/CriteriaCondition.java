@@ -23,11 +23,12 @@ import java.util.stream.StreamSupport;
 
 
 /**
- * Represents the state of column queries, including a condition and a value, as an {@link Element},
- * where both together define a predicate.
+ * Represents a condition in a query, including an element and a condition type, forming a predicate.
+ * This class is used in conjunction with {@link DatabaseManager#select(SelectQuery)}.
+ * It encapsulates a condition for filtering data in a semi-structured NoSQL database.
  *
- * @see DatabaseManager#select(SelectQuery)
  * @see Condition
+ * @see DatabaseManager#select(SelectQuery)
  */
 public final class CriteriaCondition {
 
@@ -48,18 +49,18 @@ public final class CriteriaCondition {
     }
 
     /**
-     * Retrieves the column to be used in the select.
+     * Retrieves the element used in the condition.
      *
-     * @return a column instance
+     * @return the element
      */
     public Element element() {
         return element;
     }
 
     /**
-     * Retrieves the condition to be used in the select.
+     * Retrieves the condition type used in the condition.
      *
-     * @return a Condition instance
+     * @return the condition
      * @see Condition
      */
     public Condition condition() {
@@ -67,10 +68,10 @@ public final class CriteriaCondition {
     }
 
     /**
-     * Creates a new {@link CriteriaCondition} using the {@link Condition#AND}.
+     * Creates a new {@link CriteriaCondition} with the {@link Condition#AND} conjunction.
      *
-     * @param condition the condition to be aggregated
-     * @return the conditions joined as AND
+     * @param condition the condition to be combined with
+     * @return the combined condition
      * @throws NullPointerException when the condition is null
      */
     public CriteriaCondition and(CriteriaCondition condition) {
@@ -84,7 +85,7 @@ public final class CriteriaCondition {
     }
 
     /**
-     * Creates a new {@link CriteriaCondition} negating the current one.
+     * Creates a new {@link CriteriaCondition} by negating the current one.
      *
      * @return the negated condition
      * @see Condition#NOT
@@ -101,10 +102,10 @@ public final class CriteriaCondition {
     }
 
     /**
-     * Creates a new {@link CriteriaCondition} using the {@link Condition#OR}.
+     * Creates a new {@link CriteriaCondition} with the {@link Condition#OR} conjunction.
      *
-     * @param condition the condition to be aggregated
-     * @return the conditions joined as AND
+     * @param condition the condition to be combined with
+     * @return the combined condition
      * @throws NullPointerException when the condition is null
      */
     public CriteriaCondition or(CriteriaCondition condition) {
@@ -157,7 +158,7 @@ public final class CriteriaCondition {
     }
 
     /**
-     * Creates a new {@link CriteriaCondition} with the same element and condition, but with the read-only flag set to true.
+     * Creates a new read-only {@link CriteriaCondition} based on the provided condition.
      *
      * @param condition the condition to be marked as read-only
      * @return a new read-only condition
@@ -174,12 +175,12 @@ public final class CriteriaCondition {
 
 
     /**
-     * Creates a {@link CriteriaCondition} with a {@link Condition#EQUALS}, indicating that a select will scan a
-     * column family with the same name and equal value as the one provided in this column.
+     * Creates a new {@link CriteriaCondition} with a {@link Condition#EQUALS} condition.
+     * This indicates that a select operation will scan data with the same element name and an equal value to the provided value.
      *
-     * @param element a column instance
+     * @param element the element representing the data to match
      * @return a {@link CriteriaCondition} with {@link Condition#EQUALS}
-     * @throws NullPointerException when the column is null
+     * @throws NullPointerException when the element is null
      */
     public static CriteriaCondition eq(Element element) {
         return new CriteriaCondition(element, Condition.EQUALS);
@@ -189,8 +190,8 @@ public final class CriteriaCondition {
      * An alias method to {@link CriteriaCondition#eq(Element)}, which first creates an {@link Element}
      * instance and then applies the condition.
      *
-     * @param name  the name of the column
-     * @param value the column information
+     * @param name  the name of the element
+     * @param value the value of the element
      * @return a {@link CriteriaCondition} with {@link Condition#EQUALS}
      * @throws NullPointerException when either the name or the value is null
      */
@@ -201,12 +202,12 @@ public final class CriteriaCondition {
     }
 
     /**
-     * Creates a {@link CriteriaCondition} with a {@link Condition#GREATER_THAN}, indicating that a select will scan a
-     * column family with the same name and the value greater than the one provided in this column.
+     * Creates a new {@link CriteriaCondition} with a {@link Condition#GREATER_THAN} condition.
+     * This indicates that a select operation will scan data with the same element name and a value greater than the provided value.
      *
-     * @param element a column instance
+     * @param element the element representing the data to match
      * @return a {@link CriteriaCondition} with {@link Condition#GREATER_THAN}
-     * @throws NullPointerException when the column is null
+     * @throws NullPointerException when the element is null
      */
     public static CriteriaCondition gt(Element element) {
         return new CriteriaCondition(element, Condition.GREATER_THAN);
@@ -216,8 +217,8 @@ public final class CriteriaCondition {
      * An alias method to {@link CriteriaCondition#gt(Element)}, which first creates an {@link Element}
      * instance and then applies the condition.
      *
-     * @param name  the name of the column
-     * @param value the column information
+     * @param name  the name of the element
+     * @param value the value of the element
      * @return a {@link CriteriaCondition} with {@link Condition#GREATER_THAN}
      * @throws NullPointerException when either the name or the value is null
      */
@@ -228,13 +229,12 @@ public final class CriteriaCondition {
     }
 
     /**
-     * Creates a {@link CriteriaCondition} with a {@link Condition#GREATER_EQUALS_THAN},
-     * indicating that a select will scan a column family with the same name and the value
-     * greater or equal to the one provided in this column.
+     * Creates a new {@link CriteriaCondition} with a {@link Condition#GREATER_EQUALS_THAN} condition.
+     * This indicates that a select operation will scan data with the same element name and a value greater than or equal to the provided value.
      *
-     * @param element a column instance
+     * @param element the element representing the data to match
      * @return a {@link CriteriaCondition} with {@link Condition#GREATER_EQUALS_THAN}
-     * @throws NullPointerException when the column is null
+     * @throws NullPointerException when the element is null
      */
     public static CriteriaCondition gte(Element element) {
         return new CriteriaCondition(element, Condition.GREATER_EQUALS_THAN);
@@ -244,8 +244,8 @@ public final class CriteriaCondition {
      * An alias method to {@link CriteriaCondition#gte(Element)}, which first creates an {@link Element}
      * instance and then applies the condition.
      *
-     * @param name  the name of the column
-     * @param value the column information
+     * @param name  the name of the element
+     * @param value the value of the element
      * @return a {@link CriteriaCondition} with {@link Condition#GREATER_EQUALS_THAN}
      * @throws NullPointerException when either the name or the value is null
      */
@@ -256,12 +256,12 @@ public final class CriteriaCondition {
     }
 
     /**
-     * Creates a {@link CriteriaCondition} with a {@link Condition#LESSER_THAN}, indicating that a select will scan a
-     * column family with the same name and the value lesser than the one provided in this column.
+     * Creates a new {@link CriteriaCondition} with a {@link Condition#LESSER_THAN} condition.
+     * This indicates that a select operation will scan data with the same element name and a value lesser than the provided value.
      *
-     * @param element a column instance
+     * @param element the element representing the data to match
      * @return a {@link CriteriaCondition} with {@link Condition#LESSER_THAN}
-     * @throws NullPointerException when the column is null
+     * @throws NullPointerException when the element is null
      */
     public static CriteriaCondition lt(Element element) {
         return new CriteriaCondition(element, Condition.LESSER_THAN);
@@ -271,8 +271,8 @@ public final class CriteriaCondition {
      * An alias method to {@link CriteriaCondition#lt(Element)}, which first creates an {@link Element}
      * instance and then applies the condition.
      *
-     * @param name  the name of the column
-     * @param value the column information
+     * @param name  the name of the element
+     * @param value the value of the element
      * @return a {@link CriteriaCondition} with {@link Condition#LESSER_THAN}
      * @throws NullPointerException when either the name or the value is null
      */
@@ -368,16 +368,14 @@ public final class CriteriaCondition {
     }
 
     /**
-     * Creates a {@link CriteriaCondition} with a {@link Condition#BETWEEN}, indicating that a select will scan a
-     * column family with the same name and the value is between the two provided values.
-     * The column must have an {@link Element#get()} an {@link Iterable} implementation
-     * with exactly two elements.
+     * Creates a new {@link CriteriaCondition} with a {@link Condition#BETWEEN} condition.
+     * This indicates that a select operation will scan data with the same element name and a value between the two provided values.
+     * The element must contain an iterable with exactly two elements.
      *
-     * @param element a column instance
-     * @return The between condition
-     * @throws NullPointerException     when the column is null
-     * @throws IllegalArgumentException When the column neither has an Iterable instance nor two elements on
-     *                                  an Iterable.
+     * @param element the element representing the data to match
+     * @return a {@link CriteriaCondition} with {@link Condition#BETWEEN}
+     * @throws NullPointerException when the element is null
+     * @throws IllegalArgumentException when the element is not an iterable with two elements
      */
     public static CriteriaCondition between(Element element) {
         Objects.requireNonNull(element, "Column is required");
@@ -389,8 +387,8 @@ public final class CriteriaCondition {
      * An alias method to {@link CriteriaCondition#between(Element)}, which first creates an {@link Element}
      * instance and then applies the condition.
      *
-     * @param name  the name of the column
-     * @param value the column information
+     * @param name  the name of the element
+     * @param value the value of the element
      * @return a {@link CriteriaCondition} with {@link Condition#BETWEEN}
      * @throws NullPointerException when either the name or the value is null
      */
