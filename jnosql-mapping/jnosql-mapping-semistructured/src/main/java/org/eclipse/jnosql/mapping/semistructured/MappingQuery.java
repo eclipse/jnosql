@@ -26,7 +26,8 @@ import java.util.Optional;
 import static java.util.Collections.emptyList;
 
 /**
- * A mapping implementation of {@link SelectQuery}
+ * This record represents a mapping implementation of the {@link SelectQuery} interface.
+ * It encapsulates information about sorting, limit, skip, criteria condition, and the entity name.
  */
 public record MappingQuery(List<Sort<?>> sorts, long limit, long skip, CriteriaCondition criteriaCondition, String entity)
         implements SelectQuery {
