@@ -61,13 +61,13 @@ class ColumnManagerSupplier implements Supplier<DatabaseManager> {
                 + COLUMN_DATABASE.get()));
         DatabaseManager manager = managerFactory.apply(db);
 
-        LOGGER.log(Level.FINEST, "Starting  a ColumnManager instance using Eclipse MicroProfile Config," +
+        LOGGER.log(Level.FINEST, "Starting  a DatabaseManager instance using Eclipse MicroProfile Config," +
                 " database name: " + db);
         return manager;
     }
 
     public void close(@Disposes @Database(DatabaseType.COLUMN) DatabaseManager manager) {
-        LOGGER.log(Level.FINEST, "Closing ColumnManager resource, database name: " + manager.name());
+        LOGGER.log(Level.FINEST, "Closing DatabaseManager resource, database name: " + manager.name());
         manager.close();
     }
 }

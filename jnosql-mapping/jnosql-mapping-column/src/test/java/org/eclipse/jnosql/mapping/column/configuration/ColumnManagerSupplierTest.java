@@ -78,6 +78,10 @@ class ColumnManagerSupplierTest {
         assertThat(manager).isInstanceOf(ColumnConfigurationMock2.ColumnManagerMock.class);
     }
 
+    @Test
+    void shouldReturnErrorWhenThereIsNotDatabase() {
+        Assertions.assertThrows(MappingException.class, () -> supplier.get());
+    }
 
     @Test
     void shouldClose(){
