@@ -11,7 +11,6 @@
 package org.eclipse.jnosql.communication.semistructured;
 
 
-
 import jakarta.data.Sort;
 
 import java.util.Arrays;
@@ -22,8 +21,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Class that contains information to perform a select operation on {@link CommunicationEntity}.

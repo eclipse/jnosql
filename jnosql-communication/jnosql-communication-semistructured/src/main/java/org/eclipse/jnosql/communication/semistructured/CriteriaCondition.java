@@ -21,9 +21,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
 
-import static java.util.Arrays.asList;
-import static java.util.Objects.requireNonNull;
-
 
 /**
  * Represents the state of column queries, including a condition and a value, as an {@link Element},
@@ -135,10 +132,15 @@ public final class CriteriaCondition {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         CriteriaCondition that = (CriteriaCondition) o;
-        return readOnly == that.readOnly && Objects.equals(element, that.element) && condition == that.condition;
+        return Objects.equals(element, that.element)
+                && condition == that.condition;
     }
 
     @Override

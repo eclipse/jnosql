@@ -29,7 +29,7 @@ class DefaultElementQueryTest {
 
     @BeforeEach
     public void setUp() {
-        query = select().from("columnFamily").build();
+        query = select().from("entity").build();
     }
 
     @Test
