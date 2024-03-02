@@ -31,18 +31,18 @@ import static java.util.Optional.ofNullable;
 /**
  * The default implementation of column query.
  */
-record DefaultColumnQuery(long limit, long skip, String name,
-                          List<String> columns, List<Sort<?>> sorts, ColumnCondition columnCondition)
-        implements ColumnQuery {
+record DefaultSelectQuery(long limit, long skip, String name,
+                          List<String> columns, List<Sort<?>> sorts, CriteriaCondition criteriaCondition)
+        implements SelectQuery {
 
 
     @Override
-    public Optional<ColumnCondition> condition() {
-        return ofNullable(columnCondition).map(ColumnCondition::readOnly);
+    public Optional<CriteriaCondition> condition() {
+        return ofNullable(criteriaCondition).map(CriteriaCondition::readOnly);
     }
 
     @Override
-    public List<String> columns() {
+    public List<String> names() {
         return unmodifiableList(columns);
     }
 
@@ -56,30 +56,30 @@ record DefaultColumnQuery(long limit, long skip, String name,
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ColumnQuery that)) {
+        if (!(o instanceof SelectQuery that)) {
             return false;
         }
         return limit == that.limit() &&
                 skip == that.skip() &&
                 Objects.equals(name, that.name()) &&
-                Objects.equals(columns, that.columns()) &&
+                Objects.equals(columns, that.names()) &&
                 Objects.equals(sorts, that.sorts()) &&
-                Objects.equals(columnCondition, that.condition().orElse(null));
+                Objects.equals(criteriaCondition, that.condition().orElse(null));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(limit, skip, name, columns, sorts, columnCondition);
+        return Objects.hash(limit, skip, name, columns, sorts, criteriaCondition);
     }
 
 
-    static ColumnQuery countBy(ColumnQuery query) {
-        return new DefaultColumnQuery(0, 0, query.name(), query.columns(),
+    static SelectQuery countBy(SelectQuery query) {
+        return new DefaultSelectQuery(0, 0, query.name(), query.names(),
                 Collections.emptyList(), query.condition().orElse(null));
     }
 
-    static ColumnQuery existsBy(ColumnQuery query) {
-        return new DefaultColumnQuery(1, 0, query.name(), query.columns(),
+    static SelectQuery existsBy(SelectQuery query) {
+        return new DefaultSelectQuery(1, 0, query.name(), query.names(),
                 Collections.emptyList(), query.condition().orElse(null));
     }
 }

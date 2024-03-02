@@ -32,25 +32,25 @@ class ElementDeleteQueryTest {
 
     @Test
     void shouldBuilderThrownException() {
-        assertThrows(NullPointerException.class, () -> ColumnDeleteQuery.builder(new String[]{null}));
+        assertThrows(NullPointerException.class, () -> DeleteQuery.builder(new String[]{null}));
     }
 
     @ParameterizedTest(name = "{0} passed to build method then a valid builder should be returned")
     @MethodSource("testScenarios")
     void shouldBuildReturnsAValidBuilder(String scenario, String[] documents) {
-        var builder = Objects.isNull(documents) ? ColumnDeleteQuery.builder() : ColumnDeleteQuery.builder(documents);
+        var builder = Objects.isNull(documents) ? DeleteQuery.builder() : DeleteQuery.builder(documents);
         assertNotNull(builder);
     }
 
     @Test
     void shouldDeleteThrownException() {
-        assertThrows(NullPointerException.class, () -> ColumnDeleteQuery.delete(new String[]{null}));
+        assertThrows(NullPointerException.class, () -> DeleteQuery.delete(new String[]{null}));
     }
 
     @ParameterizedTest(name = "{0} passed to delete method then a valid builder should be returned")
     @MethodSource("testScenarios")
     void shouldDeleteReturnsAValidBuilder(String scenario, String[] documents) {
-        var builder = Objects.isNull(documents) ? ColumnDeleteQuery.delete() : ColumnDeleteQuery.delete(documents);
+        var builder = Objects.isNull(documents) ? DeleteQuery.delete() : DeleteQuery.delete(documents);
         assertNotNull(builder);
     }
 

@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultColumnQueryBuilder implements ColumnQuery.ColumnQueryBuilder {
+class DefaultColumnQueryBuilder implements SelectQuery.ColumnQueryBuilder {
 
     private final List<String> columns = new ArrayList<>();
 
@@ -36,7 +36,7 @@ class DefaultColumnQueryBuilder implements ColumnQuery.ColumnQueryBuilder {
 
     private String documentCollection;
 
-    private ColumnCondition condition;
+    private CriteriaCondition condition;
 
     private long skip;
 
@@ -44,14 +44,14 @@ class DefaultColumnQueryBuilder implements ColumnQuery.ColumnQueryBuilder {
 
 
     @Override
-    public ColumnQuery.ColumnQueryBuilder select(String column) {
+    public SelectQuery.ColumnQueryBuilder select(String column) {
         Objects.requireNonNull(column, "column is required");
         this.columns.add(column);
         return this;
     }
 
     @Override
-    public ColumnQuery.ColumnQueryBuilder select(String... columns) {
+    public SelectQuery.ColumnQueryBuilder select(String... columns) {
         Consumer<String> validNull = d -> requireNonNull(d, "there is null column in the query");
         Consumer<String> consume = this.columns::add;
         Stream.of(columns).forEach(validNull.andThen(consume));
@@ -59,14 +59,14 @@ class DefaultColumnQueryBuilder implements ColumnQuery.ColumnQueryBuilder {
     }
 
     @Override
-    public ColumnQuery.ColumnQueryBuilder sort(Sort sort) {
+    public SelectQuery.ColumnQueryBuilder sort(Sort sort) {
         Objects.requireNonNull(sort, "sort is required");
         this.sorts.add(sort);
         return this;
     }
 
     @Override
-    public ColumnQuery.ColumnQueryBuilder sort(Sort... sorts) {
+    public SelectQuery.ColumnQueryBuilder sort(Sort... sorts) {
         Consumer<Sort> validNull = d -> requireNonNull(d, "there is null document in the query");
         Consumer<Sort> consume = this.sorts::add;
         Stream.of(sorts).forEach(validNull.andThen(consume));
@@ -74,21 +74,21 @@ class DefaultColumnQueryBuilder implements ColumnQuery.ColumnQueryBuilder {
     }
 
     @Override
-    public ColumnQuery.ColumnQueryBuilder from(String documentCollection) {
+    public SelectQuery.ColumnQueryBuilder from(String documentCollection) {
         Objects.requireNonNull(documentCollection, "documentCollection is required");
         this.documentCollection = documentCollection;
         return this;
     }
 
     @Override
-    public ColumnQuery.ColumnQueryBuilder where(ColumnCondition condition) {
+    public SelectQuery.ColumnQueryBuilder where(CriteriaCondition condition) {
         Objects.requireNonNull(condition, "condition is required");
         this.condition = condition;
         return this;
     }
 
     @Override
-    public ColumnQuery.ColumnQueryBuilder skip(long skip) {
+    public SelectQuery.ColumnQueryBuilder skip(long skip) {
         if (skip < 0) {
             throw new IllegalArgumentException("The skip should not be negative, skip: " + skip);
         }
@@ -97,7 +97,7 @@ class DefaultColumnQueryBuilder implements ColumnQuery.ColumnQueryBuilder {
     }
 
     @Override
-    public ColumnQuery.ColumnQueryBuilder limit(long limit) {
+    public SelectQuery.ColumnQueryBuilder limit(long limit) {
         if (limit < 0) {
             throw new IllegalArgumentException("The limit should not be negative, limit: " + limit);
         }
@@ -106,11 +106,11 @@ class DefaultColumnQueryBuilder implements ColumnQuery.ColumnQueryBuilder {
     }
 
     @Override
-    public ColumnQuery build() {
+    public SelectQuery build() {
         if (Objects.isNull(documentCollection)) {
             throw new IllegalArgumentException("The document collection is mandatory to build");
         }
-        return new DefaultColumnQuery(limit, skip, documentCollection,
+        return new DefaultSelectQuery(limit, skip, documentCollection,
                 columns, sorts, condition);
     }
 

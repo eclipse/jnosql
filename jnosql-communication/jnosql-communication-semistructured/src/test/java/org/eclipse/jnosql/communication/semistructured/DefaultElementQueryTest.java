@@ -24,14 +24,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.eclipse.jnosql.communication.semistructured.ColumnQuery.select;
+import static org.eclipse.jnosql.communication.semistructured.SelectQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class DefaultElementQueryTest {
 
-    private ColumnQuery query;
+    private SelectQuery query;
 
     @BeforeEach
     public void setUp() {
@@ -41,7 +41,7 @@ class DefaultElementQueryTest {
     @Test
     void shouldNotRemoveColumns() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            List<String> columns = query.columns();
+            List<String> columns = query.names();
             assertTrue(columns.isEmpty());
             columns.clear();
         });
@@ -58,42 +58,42 @@ class DefaultElementQueryTest {
 
     @Test
     void shouldConvertCountyBy() {
-        ColumnQuery query = ColumnQuery.select().from("entity")
+        SelectQuery query = SelectQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
 
-        ColumnQuery countQuery = DefaultColumnQuery.countBy(query);
+        SelectQuery countQuery = DefaultSelectQuery.countBy(query);
         Assertions.assertNotNull(countQuery);
         assertEquals("entity", countQuery.name());
         assertEquals(0, countQuery.limit());
         assertEquals(0, countQuery.skip());
         assertTrue(countQuery.sorts().isEmpty());
-       ColumnCondition condition = countQuery.condition().orElseThrow();
+       CriteriaCondition condition = countQuery.condition().orElseThrow();
        Assertions.assertEquals(Condition.EQUALS, condition.condition());
     }
 
     @Test
     void shouldConvertExistsBy() {
-        ColumnQuery query = ColumnQuery.select().from("entity")
+        SelectQuery query = SelectQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
 
-        ColumnQuery countQuery = DefaultColumnQuery.existsBy(query);
+        SelectQuery countQuery = DefaultSelectQuery.existsBy(query);
         Assertions.assertNotNull(countQuery);
         assertEquals("entity", countQuery.name());
         assertEquals(1, countQuery.limit());
         assertEquals(0, countQuery.skip());
         assertTrue(countQuery.sorts().isEmpty());
-        ColumnCondition condition = countQuery.condition().orElseThrow();
+        CriteriaCondition condition = countQuery.condition().orElseThrow();
         Assertions.assertEquals(Condition.EQUALS, condition.condition());
     }
 
     @Test
     void shouldHasCode(){
-        ColumnQuery query = ColumnQuery.select().from("entity")
+        SelectQuery query = SelectQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
-        ColumnQuery query2 = ColumnQuery.select().from("entity")
+        SelectQuery query2 = SelectQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
 
@@ -102,10 +102,10 @@ class DefaultElementQueryTest {
 
     @Test
     void shouldEquals(){
-        ColumnQuery query = ColumnQuery.select().from("entity")
+        SelectQuery query = SelectQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
-        ColumnQuery query2 = ColumnQuery.select().from("entity")
+        SelectQuery query2 = SelectQuery.select().from("entity")
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
 

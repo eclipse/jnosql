@@ -18,16 +18,16 @@ package org.eclipse.jnosql.communication.semistructured;
 
 
 import jakarta.data.Sort;
-import org.eclipse.jnosql.communication.semistructured.ColumnQuery.ColumnFrom;
-import org.eclipse.jnosql.communication.semistructured.ColumnQuery.ColumnLimit;
-import org.eclipse.jnosql.communication.semistructured.ColumnQuery.ColumnNameCondition;
-import org.eclipse.jnosql.communication.semistructured.ColumnQuery.ColumnNameOrder;
-import org.eclipse.jnosql.communication.semistructured.ColumnQuery.ColumnNotCondition;
-import org.eclipse.jnosql.communication.semistructured.ColumnQuery.ColumnOrder;
-import org.eclipse.jnosql.communication.semistructured.ColumnQuery.ColumnQueryBuild;
-import org.eclipse.jnosql.communication.semistructured.ColumnQuery.ColumnSelect;
-import org.eclipse.jnosql.communication.semistructured.ColumnQuery.ColumnSkip;
-import org.eclipse.jnosql.communication.semistructured.ColumnQuery.ColumnWhere;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnFrom;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnLimit;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnNameCondition;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnNameOrder;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnNotCondition;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnOrder;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnQueryBuild;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnSelect;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnSkip;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery.ColumnWhere;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,8 +188,8 @@ class DefaultFluentColumnQueryBuilder extends BaseQueryBuilder implements
 
 
     @Override
-    public ColumnQuery build() {
-        return new DefaultColumnQuery(limit, skip, columnFamily, columns, sorts, condition);
+    public SelectQuery build() {
+        return new DefaultSelectQuery(limit, skip, columnFamily, columns, sorts, condition);
     }
 
     @Override

@@ -31,28 +31,28 @@ class ElementDeleteQueryParamsTest {
 
     @ParameterizedTest
     @MethodSource("scenarios")
-    void shouldInstantiateSuccessfully(ColumnDeleteQuery query, Params params) {
+    void shouldInstantiateSuccessfully(DeleteQuery query, Params params) {
         ColumnDeleteQueryParams target = newInstance(query, params);
         assertThat(target).isNotNull();
     }
 
     @ParameterizedTest
     @MethodSource("scenarios")
-    void shouldReturnTheSameQueryInstance(ColumnDeleteQuery expectedQuery, Params params) {
+    void shouldReturnTheSameQueryInstance(DeleteQuery expectedQuery, Params params) {
         var target = newInstance(expectedQuery, params);
         assertThat(expectedQuery).isSameAs(target.query());
     }
 
     @ParameterizedTest
     @MethodSource("scenarios")
-    void shouldReturnTheSameParamsInstance(ColumnDeleteQuery query, Params expectedParams) {
+    void shouldReturnTheSameParamsInstance(DeleteQuery query, Params expectedParams) {
         var target = newInstance(query, expectedParams);
         assertThat(expectedParams).isSameAs(target.params());
     }
 
     @ParameterizedTest
     @MethodSource("scenarios")
-    void shouldBeNotEqualsToNull(ColumnDeleteQuery query, Params params) {
+    void shouldBeNotEqualsToNull(DeleteQuery query, Params params) {
         var instance = newInstance(query, params);
         assertThat(instance).isNotEqualTo(null);
     }
@@ -60,14 +60,14 @@ class ElementDeleteQueryParamsTest {
 
     @ParameterizedTest
     @MethodSource("scenarios")
-    void shouldBeNotEqualsToAnyOtherInstanceOfDifferentType(ColumnDeleteQuery query, Params params) {
+    void shouldBeNotEqualsToAnyOtherInstanceOfDifferentType(DeleteQuery query, Params params) {
         var instance = newInstance(query, params);
         assertThat(instance).isNotEqualTo(new Object());
     }
 
     @ParameterizedTest
     @MethodSource("scenarios")
-    void shouldBeEqualsToItself(ColumnDeleteQuery query, Params params) {
+    void shouldBeEqualsToItself(DeleteQuery query, Params params) {
         var instance = newInstance(query, params);
         assertThat(instance).isEqualTo(instance);
     }
@@ -85,7 +85,7 @@ class ElementDeleteQueryParamsTest {
 
     @ParameterizedTest
     @MethodSource("scenarios")
-    void shouldBeNotEqualsWhenDifferentQueryAndParamsAreUsedByTwoDifferentInstances(ColumnDeleteQuery query, Params params) {
+    void shouldBeNotEqualsWhenDifferentQueryAndParamsAreUsedByTwoDifferentInstances(DeleteQuery query, Params params) {
 
         var leftInstance = newInstance(query, params);
         var rightInstance = newInstance(newDummyColumnDeleteQuery(), newDummyParams());
@@ -96,7 +96,7 @@ class ElementDeleteQueryParamsTest {
     @Test
     void shouldHashCodeBeConditionedToQueryAndParamsAttributes() {
 
-        ColumnDeleteQuery firstQuery = newDummyColumnDeleteQuery();
+        DeleteQuery firstQuery = newDummyColumnDeleteQuery();
         Params firstParams = newDummyParams();
 
         var fistInstance = newInstance(firstQuery, firstParams);
@@ -104,7 +104,7 @@ class ElementDeleteQueryParamsTest {
 
         assertThat(fistInstance).hasSameHashCodeAs(secondInstance);
 
-        ColumnDeleteQuery secondQuery = newDummyColumnDeleteQuery();
+        DeleteQuery secondQuery = newDummyColumnDeleteQuery();
         Params secondParams = newDummyParams();
 
         var thirdInstance = newInstance(secondQuery, secondParams);
@@ -122,7 +122,7 @@ class ElementDeleteQueryParamsTest {
         );
     }
 
-    private ColumnDeleteQueryParams newInstance(ColumnDeleteQuery query, Params params) {
+    private ColumnDeleteQueryParams newInstance(DeleteQuery query, Params params) {
         return new ColumnDeleteQueryParams(query,params);
     }
 
@@ -132,8 +132,8 @@ class ElementDeleteQueryParamsTest {
         return params;
     }
 
-    private static ColumnDeleteQuery newDummyColumnDeleteQuery() {
-        return ColumnDeleteQuery.builder().from(UUID.randomUUID().toString()).build();
+    private static DeleteQuery newDummyColumnDeleteQuery() {
+        return DeleteQuery.builder().from(UUID.randomUUID().toString()).build();
     }
 
     private static Arguments givenValidArguments() {

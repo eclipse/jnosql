@@ -17,10 +17,10 @@
 package org.eclipse.jnosql.communication.semistructured;
 
 
-import org.eclipse.jnosql.communication.semistructured.ColumnDeleteQuery.ColumnDelete;
-import org.eclipse.jnosql.communication.semistructured.ColumnDeleteQuery.ColumnDeleteFrom;
-import org.eclipse.jnosql.communication.semistructured.ColumnDeleteQuery.ColumnDeleteNotCondition;
-import org.eclipse.jnosql.communication.semistructured.ColumnDeleteQuery.ColumnDeleteWhere;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery.ColumnDelete;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery.ColumnDeleteFrom;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery.ColumnDeleteNotCondition;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery.ColumnDeleteWhere;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Column
 
 
     @Override
-    public ColumnDeleteQuery.ColumnDeleteNameCondition where(String name) {
+    public DeleteQuery.ColumnDeleteNameCondition where(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
@@ -59,7 +59,7 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Column
 
 
     @Override
-    public ColumnDeleteQuery.ColumnDeleteNameCondition and(String name) {
+    public DeleteQuery.ColumnDeleteNameCondition and(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = true;
@@ -67,7 +67,7 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Column
     }
 
     @Override
-    public ColumnDeleteQuery.ColumnDeleteNameCondition or(String name) {
+    public DeleteQuery.ColumnDeleteNameCondition or(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = false;
@@ -130,8 +130,8 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Column
     }
 
     @Override
-    public ColumnDeleteQuery build() {
-        return new DefaultColumnDeleteQuery(columnFamily, condition, columns);
+    public DeleteQuery build() {
+        return new DefaultDeleteQuery(columnFamily, condition, columns);
     }
 
     @Override

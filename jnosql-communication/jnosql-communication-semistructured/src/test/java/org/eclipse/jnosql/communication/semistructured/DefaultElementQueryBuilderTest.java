@@ -30,8 +30,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.jnosql.communication.semistructured.ColumnCondition.eq;
-import static org.eclipse.jnosql.communication.semistructured.ColumnQuery.builder;
+import static org.eclipse.jnosql.communication.semistructured.CriteriaCondition.eq;
+import static org.eclipse.jnosql.communication.semistructured.SelectQuery.builder;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DefaultElementQueryBuilderTest {
@@ -44,8 +44,8 @@ class DefaultElementQueryBuilderTest {
     @Test
     void shouldBuilder() {
         String documentCollection = "documentCollection";
-        ColumnQuery query = builder().from(documentCollection).build();
-        assertTrue(query.columns().isEmpty());
+        SelectQuery query = builder().from(documentCollection).build();
+        assertTrue(query.names().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.name());
     }
@@ -53,8 +53,8 @@ class DefaultElementQueryBuilderTest {
     @Test
     void shouldSelectDocument() {
         String documentCollection = "documentCollection";
-        ColumnQuery query = builder("document", "document2").from(documentCollection).build();
-        assertThat(query.columns()).contains("document", "document2");
+        SelectQuery query = builder("document", "document2").from(documentCollection).build();
+        assertThat(query.names()).contains("document", "document2");
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.name());
     }
@@ -68,8 +68,8 @@ class DefaultElementQueryBuilderTest {
     @Test
     void shouldSelectOrderAsc() {
         String documentCollection = "documentCollection";
-        ColumnQuery query = builder().from(documentCollection).sort(Sort.asc("name")).build();
-        assertTrue(query.columns().isEmpty());
+        SelectQuery query = builder().from(documentCollection).sort(Sort.asc("name")).build();
+        assertTrue(query.names().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.name());
         assertThat(query.sorts()).contains(Sort.asc("name"));
@@ -78,8 +78,8 @@ class DefaultElementQueryBuilderTest {
     @Test
     void shouldSelectOrderDesc() {
         String documentCollection = "documentCollection";
-        ColumnQuery query = builder().from(documentCollection).sort(Sort.desc("name")).build();
-        assertTrue(query.columns().isEmpty());
+        SelectQuery query = builder().from(documentCollection).sort(Sort.desc("name")).build();
+        assertTrue(query.names().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.name());
         assertThat(query.sorts()).contains(Sort.desc("name"));
@@ -97,8 +97,8 @@ class DefaultElementQueryBuilderTest {
     @Test
     void shouldSelectLimit() {
         String documentCollection = "documentCollection";
-        ColumnQuery query = builder().from(documentCollection).limit(10).build();
-        assertTrue(query.columns().isEmpty());
+        SelectQuery query = builder().from(documentCollection).limit(10).build();
+        assertTrue(query.names().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.name());
         assertEquals(10L, query.limit());
@@ -113,8 +113,8 @@ class DefaultElementQueryBuilderTest {
     @Test
     void shouldSelectSkip() {
         String documentCollection = "documentCollection";
-        ColumnQuery query = builder().from(documentCollection).skip(10).build();
-        assertTrue(query.columns().isEmpty());
+        SelectQuery query = builder().from(documentCollection).skip(10).build();
+        assertTrue(query.names().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.name());
         assertEquals(10L, query.skip());
@@ -131,14 +131,14 @@ class DefaultElementQueryBuilderTest {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
 
-        ColumnQuery query = builder().from(documentCollection)
+        SelectQuery query = builder().from(documentCollection)
                 .where(eq("name", name))
                 .build();
-        ColumnCondition condition = query.condition().get();
+        CriteriaCondition condition = query.condition().get();
 
         Element element = condition.column();
 
-        assertTrue(query.columns().isEmpty());
+        assertTrue(query.names().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.EQUALS, condition.condition());
         assertEquals("name", element.name());
@@ -150,14 +150,14 @@ class DefaultElementQueryBuilderTest {
     void shouldSelectWhereNameLike() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
-        ColumnQuery query = builder().from(documentCollection)
-                .where(ColumnCondition.like("name", name))
+        SelectQuery query = builder().from(documentCollection)
+                .where(CriteriaCondition.like("name", name))
                 .build();
-        ColumnCondition condition = query.condition().get();
+        CriteriaCondition condition = query.condition().get();
 
         Element element = condition.column();
 
-        assertTrue(query.columns().isEmpty());
+        assertTrue(query.names().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.LIKE, condition.condition());
         assertEquals("name", element.name());
@@ -169,14 +169,14 @@ class DefaultElementQueryBuilderTest {
         String documentCollection = "documentCollection";
         Number value = 10;
 
-        ColumnQuery query = builder().from(documentCollection).where(ColumnCondition.gt("name", 10))
+        SelectQuery query = builder().from(documentCollection).where(CriteriaCondition.gt("name", 10))
                 .build();
 
-        ColumnCondition condition = query.condition().get();
+        CriteriaCondition condition = query.condition().get();
 
         Element element = condition.column();
 
-        assertTrue(query.columns().isEmpty());
+        assertTrue(query.names().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.GREATER_THAN, condition.condition());
         assertEquals("name", element.name());
@@ -187,13 +187,13 @@ class DefaultElementQueryBuilderTest {
     void shouldSelectWhereNameGte() {
         String documentCollection = "documentCollection";
         Number value = 10;
-        ColumnCondition gteName = ColumnCondition.gte("name", value);
-        ColumnQuery query = builder().from(documentCollection).where(gteName).build();
-        ColumnCondition condition = query.condition().get();
+        CriteriaCondition gteName = CriteriaCondition.gte("name", value);
+        SelectQuery query = builder().from(documentCollection).where(gteName).build();
+        CriteriaCondition condition = query.condition().get();
 
         Element element = condition.column();
 
-        assertTrue(query.columns().isEmpty());
+        assertTrue(query.names().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
         assertEquals("name", element.name());
@@ -205,13 +205,13 @@ class DefaultElementQueryBuilderTest {
         String documentCollection = "documentCollection";
         Number value = 10;
 
-        ColumnQuery query = builder().from(documentCollection).where(ColumnCondition.lt("name", value))
+        SelectQuery query = builder().from(documentCollection).where(CriteriaCondition.lt("name", value))
                 .build();
-        ColumnCondition condition = query.condition().get();
+        CriteriaCondition condition = query.condition().get();
 
         Element element = condition.column();
 
-        assertTrue(query.columns().isEmpty());
+        assertTrue(query.names().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.LESSER_THAN, condition.condition());
         assertEquals("name", element.name());
@@ -222,13 +222,13 @@ class DefaultElementQueryBuilderTest {
     void shouldSelectWhereNameLte() {
         String documentCollection = "documentCollection";
         Number value = 10;
-        ColumnQuery query = builder().from(documentCollection).where(ColumnCondition.lte("name", value))
+        SelectQuery query = builder().from(documentCollection).where(CriteriaCondition.lte("name", value))
                 .build();
-        ColumnCondition condition = query.condition().get();
+        CriteriaCondition condition = query.condition().get();
 
         Element element = condition.column();
 
-        assertTrue(query.columns().isEmpty());
+        assertTrue(query.names().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
         assertEquals("name", element.name());
@@ -241,14 +241,14 @@ class DefaultElementQueryBuilderTest {
         Number valueA = 10;
         Number valueB = 20;
 
-        ColumnQuery query = builder().from(documentCollection)
-                .where(ColumnCondition.between("name", Arrays.asList(valueA, valueB)))
+        SelectQuery query = builder().from(documentCollection)
+                .where(CriteriaCondition.between("name", Arrays.asList(valueA, valueB)))
                 .build();
-        ColumnCondition condition = query.condition().get();
+        CriteriaCondition condition = query.condition().get();
 
         Element element = condition.column();
 
-        assertTrue(query.columns().isEmpty());
+        assertTrue(query.names().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.BETWEEN, condition.condition());
         assertEquals("name", element.name());
@@ -261,13 +261,13 @@ class DefaultElementQueryBuilderTest {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
 
-        ColumnQuery query = builder().from(documentCollection).where(eq("name", name).negate())
+        SelectQuery query = builder().from(documentCollection).where(eq("name", name).negate())
                 .build();
-        ColumnCondition condition = query.condition().get();
+        CriteriaCondition condition = query.condition().get();
 
         Element element = condition.column();
-        ColumnCondition negate = element.get(ColumnCondition.class);
-        assertTrue(query.columns().isEmpty());
+        CriteriaCondition negate = element.get(CriteriaCondition.class);
+        assertTrue(query.names().isEmpty());
         assertEquals(documentCollection, query.name());
         assertEquals(Condition.NOT, condition.condition());
         assertEquals(Condition.EQUALS, negate.condition());
@@ -280,51 +280,51 @@ class DefaultElementQueryBuilderTest {
     void shouldSelectWhereNameAnd() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
-        ColumnCondition nameEqualsAda = eq("name", name);
-        ColumnCondition ageOlderTen = ColumnCondition.gt("age", 10);
-        ColumnQuery query = builder().from(documentCollection)
-                .where(ColumnCondition.and(nameEqualsAda, ageOlderTen))
+        CriteriaCondition nameEqualsAda = eq("name", name);
+        CriteriaCondition ageOlderTen = CriteriaCondition.gt("age", 10);
+        SelectQuery query = builder().from(documentCollection)
+                .where(CriteriaCondition.and(nameEqualsAda, ageOlderTen))
                 .build();
-        ColumnCondition condition = query.condition().get();
+        CriteriaCondition condition = query.condition().get();
 
         Element element = condition.column();
-        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
         assertEquals(Condition.AND, condition.condition());
         org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Element.of("name", name)),
-                ColumnCondition.gt(Element.of("age", 10)));
+                CriteriaCondition.gt(Element.of("age", 10)));
     }
 
     @Test
     void shouldSelectWhereNameOr() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
-        ColumnCondition nameEqualsAda = eq("name", name);
-        ColumnCondition ageOlderTen = ColumnCondition.gt("age", 10);
-        ColumnQuery query = builder().from(documentCollection).where(ColumnCondition.or(nameEqualsAda, ageOlderTen))
+        CriteriaCondition nameEqualsAda = eq("name", name);
+        CriteriaCondition ageOlderTen = CriteriaCondition.gt("age", 10);
+        SelectQuery query = builder().from(documentCollection).where(CriteriaCondition.or(nameEqualsAda, ageOlderTen))
                 .build();
-        ColumnCondition condition = query.condition().get();
+        CriteriaCondition condition = query.condition().get();
 
         Element element = condition.column();
-        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
         assertEquals(Condition.OR, condition.condition());
         org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Element.of("name", name)),
-                ColumnCondition.gt(Element.of("age", 10)));
+                CriteriaCondition.gt(Element.of("age", 10)));
     }
 
 
     @Test
     void shouldSelectNegate() {
         String columnFamily = "columnFamily";
-        ColumnCondition nameNotEqualsLucas = eq("name", "Lucas").negate();
-        ColumnQuery query = builder().from(columnFamily)
+        CriteriaCondition nameNotEqualsLucas = eq("name", "Lucas").negate();
+        SelectQuery query = builder().from(columnFamily)
                 .where(nameNotEqualsLucas).build();
 
-        ColumnCondition condition = query.condition().orElseThrow(RuntimeException::new);
+        CriteriaCondition condition = query.condition().orElseThrow(RuntimeException::new);
         assertEquals(columnFamily, query.name());
         Element element = condition.column();
-        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
 
         assertEquals(Condition.NOT, condition.condition());
@@ -336,7 +336,7 @@ class DefaultElementQueryBuilderTest {
     @Test
     void shouldExecuteManager() {
         DatabaseManager manager = Mockito.mock(DatabaseManager.class);
-        ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);
         String collection = "collection";
         Stream<CommunicationEntity> entities = builder().from(collection).getResult(manager);
         Mockito.verify(manager).select(queryCaptor.capture());
@@ -346,16 +346,16 @@ class DefaultElementQueryBuilderTest {
     @Test
     void shouldExecuteSingleResultManager() {
         DatabaseManager manager = Mockito.mock(DatabaseManager.class);
-        ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);
         String collection = "collection";
         Optional<CommunicationEntity> entities = builder().from(collection).getSingleResult(manager);
         Mockito.verify(manager).singleResult(queryCaptor.capture());
         checkQuery(queryCaptor, collection);
     }
 
-    private void checkQuery(ArgumentCaptor<ColumnQuery> queryCaptor, String collection) {
-        ColumnQuery query = queryCaptor.getValue();
-        assertTrue(query.columns().isEmpty());
+    private void checkQuery(ArgumentCaptor<SelectQuery> queryCaptor, String collection) {
+        SelectQuery query = queryCaptor.getValue();
+        assertTrue(query.names().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(collection, query.name());
     }

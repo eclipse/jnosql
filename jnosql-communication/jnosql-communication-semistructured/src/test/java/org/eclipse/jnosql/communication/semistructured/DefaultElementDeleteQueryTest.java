@@ -28,12 +28,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultElementDeleteQueryTest {
 
-    private ColumnDeleteQuery query;
+    private DeleteQuery query;
 
 
     @BeforeEach
     void setUp() {
-        query = ColumnDeleteQuery.delete().from("columnFamily").build();
+        query = DeleteQuery.delete().from("columnFamily").build();
     }
 
     @Test
@@ -47,15 +47,15 @@ class DefaultElementDeleteQueryTest {
 
     @Test
     void shouldHasCode(){
-        var query = ColumnDeleteQuery.delete().from("columnFamily").build();
-        var query1 =ColumnDeleteQuery.delete().from("columnFamily").build();
+        var query = DeleteQuery.delete().from("columnFamily").build();
+        var query1 = DeleteQuery.delete().from("columnFamily").build();
         assertThat(query.hashCode()).isEqualTo(query1.hashCode());
     }
 
     @Test
     void shouldEquals(){
-        var query =ColumnDeleteQuery.delete().from("columnFamily").build();
-        var query1 =ColumnDeleteQuery.delete().from("columnFamily").build();
+        var query = DeleteQuery.delete().from("columnFamily").build();
+        var query1 = DeleteQuery.delete().from("columnFamily").build();
         assertThat(query).isEqualTo(query1);
         assertThat(query).isEqualTo(query);
         assertThat(query).isNotEqualTo("query");

@@ -28,42 +28,42 @@ final class Conditions {
     private Conditions() {
     }
 
-    static ColumnCondition getCondition(Where where, Params params, ColumnObserverParser observer, String entity) {
+    static CriteriaCondition getCondition(Where where, Params params, ColumnObserverParser observer, String entity) {
         QueryCondition condition = where.condition();
         return getCondition(condition, params, observer, entity);
     }
 
-    static ColumnCondition getCondition(QueryCondition condition, Params parameters, ColumnObserverParser observer, String entity) {
+    static CriteriaCondition getCondition(QueryCondition condition, Params parameters, ColumnObserverParser observer, String entity) {
         return switch (condition.condition()) {
-            case EQUALS -> ColumnCondition.eq(Element.of(getName(condition, observer, entity),
+            case EQUALS -> CriteriaCondition.eq(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(), parameters)));
-            case GREATER_THAN -> ColumnCondition.gt(Element.of(getName(condition, observer, entity),
+            case GREATER_THAN -> CriteriaCondition.gt(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(), parameters)));
-            case GREATER_EQUALS_THAN -> ColumnCondition.gte(Element.of(getName(condition, observer, entity),
+            case GREATER_EQUALS_THAN -> CriteriaCondition.gte(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(), parameters)));
-            case LESSER_THAN -> ColumnCondition.lt(Element.of(getName(condition, observer, entity),
+            case LESSER_THAN -> CriteriaCondition.lt(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(), parameters)));
-            case LESSER_EQUALS_THAN -> ColumnCondition.lte(Element.of(getName(condition, observer, entity),
+            case LESSER_EQUALS_THAN -> CriteriaCondition.lte(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(), parameters)));
-            case IN -> ColumnCondition.in(Element.of(getName(condition, observer, entity),
+            case IN -> CriteriaCondition.in(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(), parameters)));
-            case LIKE -> ColumnCondition.like(Element.of(getName(condition, observer, entity),
+            case LIKE -> CriteriaCondition.like(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(),
                             parameters)));
-            case BETWEEN -> ColumnCondition.between(Element.of(getName(condition, observer, entity),
+            case BETWEEN -> CriteriaCondition.between(Element.of(getName(condition, observer, entity),
                     Values.get(condition.value(),
                             parameters)));
             case NOT -> getCondition(ConditionQueryValue.class.cast(condition.value()).get().get(0),
                     parameters, observer,
                     entity).negate();
-            case OR -> ColumnCondition.or(ConditionQueryValue.class.cast(condition.value())
+            case OR -> CriteriaCondition.or(ConditionQueryValue.class.cast(condition.value())
                     .get()
                     .stream().map(v -> getCondition(v, parameters, observer, entity))
-                    .toArray(ColumnCondition[]::new));
-            case AND -> ColumnCondition.and(ConditionQueryValue.class.cast(condition.value())
+                    .toArray(CriteriaCondition[]::new));
+            case AND -> CriteriaCondition.and(ConditionQueryValue.class.cast(condition.value())
                     .get()
                     .stream().map(v -> getCondition(v, parameters, observer, entity))
-                    .toArray(ColumnCondition[]::new));
+                    .toArray(CriteriaCondition[]::new));
             default -> throw new QueryException("There is not support the type: " + condition.condition());
         };
     }

@@ -237,7 +237,7 @@ class InsertQueryParserTest {
     @ValueSource(strings = {"insert God (name = @name)"})
     void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
 
-        ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
+        CommunicationPreparedStatement prepare = parser.prepare(query, manager, observer);
         assertThrows(QueryException.class, prepare::result);
     }
 
@@ -246,7 +246,7 @@ class InsertQueryParserTest {
     @ValueSource(strings = {"insert God (name = @name)"})
     void shouldExecutePrepareStatement(String query) {
         ArgumentCaptor<CommunicationEntity> captor = ArgumentCaptor.forClass(CommunicationEntity.class);
-        ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
+        CommunicationPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("name", "Diana");
         prepare.result();
         Mockito.verify(manager).insert(captor.capture());

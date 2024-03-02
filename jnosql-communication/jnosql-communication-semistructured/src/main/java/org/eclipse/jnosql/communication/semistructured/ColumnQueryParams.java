@@ -21,17 +21,17 @@ import org.eclipse.jnosql.communication.Params;
 
 
 /**
- * The result of {@link org.eclipse.jnosql.communication.query.SelectQueryConverter} that has {@link ColumnQuery} and {@link Params}.
+ * The result of {@link org.eclipse.jnosql.communication.query.SelectQueryConverter} that has {@link SelectQuery} and {@link Params}.
  */
-public record ColumnQueryParams(ColumnQuery query, Params params) {
+public record ColumnQueryParams(SelectQuery query, Params params) {
 
     /**
-     * The {@link ColumnQuery}
+     * The {@link SelectQuery}
      *
-     * @return a {@link ColumnQuery} instance
+     * @return a {@link SelectQuery} instance
      */
     @Override
-    public ColumnQuery query() {
+    public SelectQuery query() {
         return query;
     }
 

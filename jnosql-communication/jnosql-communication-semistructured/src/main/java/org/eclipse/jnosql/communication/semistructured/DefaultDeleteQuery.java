@@ -26,15 +26,15 @@ import static java.util.Collections.unmodifiableList;
 import static java.util.Optional.ofNullable;
 
 /**
- * The default implementation of {@link ColumnDeleteQuery}
+ * The default implementation of {@link DeleteQuery}
  */
-record DefaultColumnDeleteQuery(String name, ColumnCondition columnCondition, List<String> columns)
-        implements ColumnDeleteQuery {
+record DefaultDeleteQuery(String name, CriteriaCondition criteriaCondition, List<String> columns)
+        implements DeleteQuery {
 
 
     @Override
-    public Optional<ColumnCondition> condition() {
-        return ofNullable(columnCondition);
+    public Optional<CriteriaCondition> condition() {
+        return ofNullable(criteriaCondition);
     }
 
     @Override
@@ -47,17 +47,17 @@ record DefaultColumnDeleteQuery(String name, ColumnCondition columnCondition, Li
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ColumnDeleteQuery that)) {
+        if (!(o instanceof DeleteQuery that)) {
             return false;
         }
         return Objects.equals(name, that.name()) &&
-                Objects.equals(columnCondition, that.condition().orElse(null)) &&
+                Objects.equals(criteriaCondition, that.condition().orElse(null)) &&
                 Objects.equals(columns, that.columns());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, columnCondition, columns);
+        return Objects.hash(name, criteriaCondition, columns);
     }
 
 

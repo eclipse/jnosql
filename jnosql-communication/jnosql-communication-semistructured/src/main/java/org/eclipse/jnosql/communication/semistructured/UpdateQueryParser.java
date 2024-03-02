@@ -48,7 +48,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
     }
 
 
-    ColumnPreparedStatement prepare(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    CommunicationPreparedStatement prepare(String query, DatabaseManager manager, ColumnObserverParser observer) {
 
         Params params = Params.newParams();
 
@@ -57,7 +57,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
         CommunicationEntity entity = getEntity(params, updateQuery, observer);
 
-        return ColumnPreparedStatement.update(entity, params, query, manager);
+        return CommunicationPreparedStatement.update(entity, params, query, manager);
     }
 
 

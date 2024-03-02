@@ -32,13 +32,13 @@ import java.util.stream.Stream;
 /**
  * An object that represents a precompiled Query statement.
  */
-public final class ColumnPreparedStatement {
+public final class CommunicationPreparedStatement {
 
     private final CommunicationEntity entity;
 
-    private final ColumnQuery columnQuery;
+    private final SelectQuery selectQuery;
 
-    private final ColumnDeleteQuery columnDeleteQuery;
+    private final DeleteQuery deleteQuery;
 
     private final PreparedStatementType type;
 
@@ -52,18 +52,18 @@ public final class ColumnPreparedStatement {
 
     private final DatabaseManager manager;
 
-    private ColumnPreparedStatement(CommunicationEntity entity,
-                                    ColumnQuery columnQuery,
-                                    ColumnDeleteQuery columnDeleteQuery,
-                                    PreparedStatementType type,
-                                    Params params,
-                                    String query,
-                                    List<String> paramsLeft,
-                                    Duration duration,
-                                    DatabaseManager manager) {
+    private CommunicationPreparedStatement(CommunicationEntity entity,
+                                           SelectQuery selectQuery,
+                                           DeleteQuery deleteQuery,
+                                           PreparedStatementType type,
+                                           Params params,
+                                           String query,
+                                           List<String> paramsLeft,
+                                           Duration duration,
+                                           DatabaseManager manager) {
         this.entity = entity;
-        this.columnQuery = columnQuery;
-        this.columnDeleteQuery = columnDeleteQuery;
+        this.selectQuery = selectQuery;
+        this.deleteQuery = deleteQuery;
         this.type = type;
         this.params = params;
         this.query = query;
@@ -80,7 +80,7 @@ public final class ColumnPreparedStatement {
      * @return the same query instance
      * @throws NullPointerException     when there is null parameter
      */
-    public ColumnPreparedStatement bind(String name, Object value) {
+    public CommunicationPreparedStatement bind(String name, Object value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
 
@@ -100,10 +100,10 @@ public final class ColumnPreparedStatement {
         }
         switch (type) {
             case SELECT -> {
-                return manager.select(columnQuery);
+                return manager.select(selectQuery);
             }
             case DELETE -> {
-                manager.delete(columnDeleteQuery);
+                manager.delete(deleteQuery);
                 return Stream.empty();
             }
             case UPDATE -> {
@@ -145,44 +145,44 @@ public final class ColumnPreparedStatement {
         return query;
     }
 
-    static ColumnPreparedStatement select(
-            ColumnQuery columnQuery,
+    static CommunicationPreparedStatement select(
+            SelectQuery selectQuery,
             Params params,
             String query,
             DatabaseManager manager) {
-        return new ColumnPreparedStatement(null, columnQuery,
+        return new CommunicationPreparedStatement(null, selectQuery,
                 null, PreparedStatementType.SELECT, params, query,
                 params.getParametersNames(), null, manager);
 
     }
 
-    static ColumnPreparedStatement delete(ColumnDeleteQuery columnDeleteQuery,
-                                          Params params,
-                                          String query,
-                                          DatabaseManager manager) {
+    static CommunicationPreparedStatement delete(DeleteQuery deleteQuery,
+                                                 Params params,
+                                                 String query,
+                                                 DatabaseManager manager) {
 
-        return new ColumnPreparedStatement(null, null,
-                columnDeleteQuery, PreparedStatementType.DELETE, params, query,
+        return new CommunicationPreparedStatement(null, null,
+                deleteQuery, PreparedStatementType.DELETE, params, query,
                 params.getParametersNames(), null, manager);
 
     }
 
-    static ColumnPreparedStatement insert(CommunicationEntity entity,
-                                          Params params,
-                                          String query,
-                                          Duration duration,
-                                          DatabaseManager manager) {
-        return new ColumnPreparedStatement(entity, null,
+    static CommunicationPreparedStatement insert(CommunicationEntity entity,
+                                                 Params params,
+                                                 String query,
+                                                 Duration duration,
+                                                 DatabaseManager manager) {
+        return new CommunicationPreparedStatement(entity, null,
                 null, PreparedStatementType.INSERT, params, query,
                 params.getParametersNames(), duration, manager);
 
     }
 
-    static ColumnPreparedStatement update(CommunicationEntity entity,
-                                          Params params,
-                                          String query,
-                                          DatabaseManager manager) {
-        return new ColumnPreparedStatement(entity, null,
+    static CommunicationPreparedStatement update(CommunicationEntity entity,
+                                                 Params params,
+                                                 String query,
+                                                 DatabaseManager manager) {
+        return new CommunicationPreparedStatement(entity, null,
                 null, PreparedStatementType.UPDATE, params, query,
                 params.getParametersNames(), null, manager);
 

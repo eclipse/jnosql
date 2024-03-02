@@ -33,11 +33,11 @@ import static java.util.Objects.requireNonNull;
 /**
  * Class that contains information to do a select to {@link CommunicationEntity}
  *
- * @see DatabaseManager#select(ColumnQuery)
- * @see ColumnCondition
+ * @see DatabaseManager#select(SelectQuery)
+ * @see CriteriaCondition
  * @see Sort
  */
-public interface ColumnQuery {
+public interface SelectQuery {
 
 
     /**
@@ -53,19 +53,19 @@ public interface ColumnQuery {
     long skip();
 
     /**
-     * The column family name
+     * The entity name
      *
-     * @return the column family name
+     * @return the entity name
      */
     String name();
 
     /**
-     * The conditions that contains in this {@link ColumnQuery}
+     * The conditions that contains in this {@link SelectQuery}
      * If empty, {@link Optional#empty()} is true, the implementation might either return an unsupported exception or returns same elements in the database.
      *
      * @return the conditions
      */
-    Optional<ColumnCondition> condition();
+    Optional<CriteriaCondition> condition();
 
     /**
      * Returns the columns to returns in that query if empty will return all elements in the query.
@@ -73,10 +73,10 @@ public interface ColumnQuery {
      *
      * @return the columns
      */
-    List<String> columns();
+    List<String> names();
 
     /**
-     * The sorts that contains in this {@link ColumnQuery}
+     * The sorts that contains in this {@link SelectQuery}
      * The implementation might ignore this option.
      *
      * @return the sorts
@@ -98,7 +98,7 @@ public interface ColumnQuery {
     }
 
     /**
-     * It starts the first step of {@link ColumnQuery} creation using a fluent-API way.
+     * It starts the first step of {@link SelectQuery} creation using a fluent-API way.
      * This first step will inform the fields to return to the query, such as a "select field, fieldB from database" in a database query.
      * Once empty, it will return all elements in the query, similar to "select * from database" in a database query.
      *
@@ -109,7 +109,7 @@ public interface ColumnQuery {
     }
 
     /**
-     * It starts the first step of {@link ColumnQuery} creation using a builder pattern.
+     * It starts the first step of {@link SelectQuery} creation using a builder pattern.
      * This first step will inform the fields to return to the query, such as a "select field, fieldB from database" in a database query.
      *
      * @return {@link ColumnQueryBuilder} instance
@@ -119,7 +119,7 @@ public interface ColumnQuery {
     }
 
     /**
-     * It starts the first step of {@link ColumnQuery} creation using a builder pattern.
+     * It starts the first step of {@link SelectQuery} creation using a builder pattern.
      * This first step will inform the fields to return to the query, such as a "select field, fieldB from database" in a database query.
      * Once empty, it will return all elements in the query, similar to "select * from database" in a database query.
      *
@@ -263,33 +263,33 @@ public interface ColumnQuery {
     }
 
     /**
-     * The last step to the build of {@link ColumnQuery}.
-     * It either can return a new {@link ColumnQuery} instance or execute a query with
+     * The last step to the build of {@link SelectQuery}.
+     * It either can return a new {@link SelectQuery} instance or execute a query with
      * {@link DatabaseManager}
      */
     interface ColumnQueryBuild {
 
         /**
-         * Creates a new instance of {@link ColumnQuery}
+         * Creates a new instance of {@link SelectQuery}
          *
-         * @return a new {@link ColumnQuery} instance
+         * @return a new {@link SelectQuery} instance
          */
-        ColumnQuery build();
+        SelectQuery build();
 
         /**
-         * Executes {@link DatabaseManager#select(ColumnQuery)}
+         * Executes {@link DatabaseManager#select(SelectQuery)}
          *
          * @param manager the entity manager
-         * @return the result of {@link DatabaseManager#select(ColumnQuery)}
+         * @return the result of {@link DatabaseManager#select(SelectQuery)}
          * @throws NullPointerException when manager is null
          */
         Stream<CommunicationEntity> getResult(DatabaseManager manager);
 
         /**
-         * Executes {@link DatabaseManager#singleResult(ColumnQuery)}
+         * Executes {@link DatabaseManager#singleResult(SelectQuery)}
          *
          * @param manager the entity manager
-         * @return the result of {@link DatabaseManager#singleResult(ColumnQuery)}
+         * @return the result of {@link DatabaseManager#singleResult(SelectQuery)}
          * @throws NullPointerException when manager is null
          */
         Optional<CommunicationEntity> getSingleResult(DatabaseManager manager);
@@ -351,7 +351,7 @@ public interface ColumnQuery {
 
         /**
          * Starts a new condition in the select using
-         * {@link ColumnCondition#and(ColumnCondition)}
+         * {@link CriteriaCondition#and(CriteriaCondition)}
          *
          * @param name a condition to be added
          * @return the same {@link ColumnNameCondition} with the condition appended
@@ -361,7 +361,7 @@ public interface ColumnQuery {
 
         /**
          * Appends a new condition in the select using
-         * {@link ColumnCondition#or(ColumnCondition)}
+         * {@link CriteriaCondition#or(CriteriaCondition)}
          *
          * @param name a condition to be added
          * @return the same {@link ColumnNameCondition} with the condition appended
@@ -504,7 +504,7 @@ public interface ColumnQuery {
     }
 
     /**
-     * Besides, the fluent-API with the select method, the API also has support for creating a {@link ColumnQuery} instance using a builder pattern.
+     * Besides, the fluent-API with the select method, the API also has support for creating a {@link SelectQuery} instance using a builder pattern.
      * The goal is the same; however, it provides more possibilities, such as more complex queries.
      * The ColumnQueryBuilder is not brighter than a fluent-API; it has the same validation in the creation method.
      * It is a mutable and non-thread-safe class.
@@ -549,7 +549,7 @@ public interface ColumnQuery {
         ColumnQueryBuilder sort(Sort... sorts);
 
         /**
-         * Define the column family in the query, this element is mandatory to build the {@link ColumnQuery}
+         * Define the column family in the query, this element is mandatory to build the {@link SelectQuery}
          *
          * @param columnFamily the column family to query
          * @return the {@link ColumnQueryBuilder}
@@ -561,11 +561,11 @@ public interface ColumnQuery {
          * Either add or replace the condition in the query. It has a different behavior than the previous method
          * because it won't append it. Therefore, it will create when it is the first time or replace when it was executed once.
          *
-         * @param condition the {@link ColumnCondition} in the query
+         * @param condition the {@link CriteriaCondition} in the query
          * @return the {@link ColumnQueryBuilder}
          * @throws NullPointerException when condition is null
          */
-        ColumnQueryBuilder where(ColumnCondition condition);
+        ColumnQueryBuilder where(CriteriaCondition condition);
 
         /**
          * Defines the position of the first result to retrieve.
@@ -590,19 +590,19 @@ public interface ColumnQuery {
         ColumnQueryBuilder limit(long limit);
 
         /**
-         * It will validate and then create a {@link ColumnQuery} instance.
+         * It will validate and then create a {@link SelectQuery} instance.
          *
-         * @return {@link ColumnQuery}
+         * @return {@link SelectQuery}
          * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
          *                               such as the {@link ColumnQueryBuilder#from(String)} method was not called.
          */
-        ColumnQuery build();
+        SelectQuery build();
 
         /**
-         * Executes {@link DatabaseManager#select(ColumnQuery)}
+         * Executes {@link DatabaseManager#select(SelectQuery)}
          *
          * @param manager the entity manager
-         * @return the result of {@link DatabaseManager#select(ColumnQuery)}
+         * @return the result of {@link DatabaseManager#select(SelectQuery)}
          * @throws NullPointerException  when manager is null
          * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
          *                               such as the {@link ColumnQueryBuilder#from(String)} method was not called.
@@ -610,10 +610,10 @@ public interface ColumnQuery {
         Stream<CommunicationEntity> getResult(DatabaseManager manager);
 
         /**
-         * Executes {@link DatabaseManager#singleResult(ColumnQuery)}
+         * Executes {@link DatabaseManager#singleResult(SelectQuery)}
          *
          * @param manager the entity manager
-         * @return the result of {@link DatabaseManager#singleResult(ColumnQuery)}
+         * @return the result of {@link DatabaseManager#singleResult(SelectQuery)}
          * @throws NullPointerException  when manager is null
          * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
          *                               such as the {@link ColumnQueryBuilder#from(String)} method was not called.

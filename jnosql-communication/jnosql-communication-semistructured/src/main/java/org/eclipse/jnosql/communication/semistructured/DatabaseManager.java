@@ -26,133 +26,136 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * The manager instance bridges the Jakarta NoSQL and the NoSQL vendor.
+ * The manager instance bridges between Jakarta NoSQL and the NoSQL vendor, providing operations
+ * to interact with a database.
  *
  * @see CommunicationEntity
  */
 public interface DatabaseManager extends AutoCloseable {
 
     /**
-     * Returns the database's name of this {@link DatabaseManager}
+     * Returns the name of the database managed by this {@link DatabaseManager}.
      *
-     * @return the database's name
+     * @return the name of the database
      */
     String name();
 
     /**
-     * Saves a Column family entity
+     * Saves an entity into the database.
      *
-     * @param entity column family to be saved
-     * @return the entity saved
-     * @throws NullPointerException when entity is null
+     * @param entity the entity to be saved
+     * @return the saved entity
+     * @throws NullPointerException when the provided entity is null
      */
     CommunicationEntity insert(CommunicationEntity entity);
 
     /**
-     * Updates a Column family entity
+     * Updates an entity in the database.
      *
-     * @param entity column family to be saved
-     * @return the entity saved
-     * @throws NullPointerException when entity is null
+     * @param entity the entity to be updated
+     * @return the updated entity
+     * @throws NullPointerException when the provided entity is null
      */
     CommunicationEntity update(CommunicationEntity entity);
 
     /**
-     * Updates a Column family entities, by default it's just run for each saving using
-     * {@link DatabaseManager#update(CommunicationEntity)}, each NoSQL vendor might
-     * replace to a more appropriate one.
+     * Updates multiple entities in the database. By default, each entity is updated
+     * individually using {@link DatabaseManager#update(CommunicationEntity)}. Each NoSQL vendor may
+     * provide a more appropriate implementation.
      *
-     * @param entities column family to be saved
-     * @return the entity saved
-     * @throws NullPointerException when entities is null
+     * @param entities the entities to be updated
+     * @return the updated entities
+     * @throws NullPointerException when the provided collection of entities is null
      */
     Iterable<CommunicationEntity> update(Iterable<CommunicationEntity> entities);
 
     /**
-     * Saves a Column family entity with time to live
+     * Saves an entity into the database with a specified time to live (TTL).
      *
-     * @param entity column family to be saved
-     * @param ttl    time to live
-     * @return the entity saved
-     * @throws NullPointerException          when either entity or ttl are null
+     * @param entity the entity to be saved
+     * @param ttl    the time to live for the entity
+     * @return the saved entity
+     * @throws NullPointerException          when either the entity or the TTL is null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
     CommunicationEntity insert(CommunicationEntity entity, Duration ttl);
 
     /**
-     * Saves a Column family entities, by default it's just run for each saving using
-     * {@link DatabaseManager#insert(CommunicationEntity)}, each NoSQL vendor might
-     * replace to a more appropriate one.
+     * Saves multiple entities into the database. By default, each entity is saved
+     * individually using {@link DatabaseManager#insert(CommunicationEntity)}. Each NoSQL vendor may
+     * provide a more appropriate implementation.
      *
-     * @param entities column family to be saved
-     * @return the entity saved
-     * @throws NullPointerException when entities is null
+     * @param entities the entities to be saved
+     * @return the saved entities
+     * @throws NullPointerException when the provided collection of entities is null
      */
     Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities);
 
     /**
-     * Saves a Column family entity with time to live, by default it's just run for each saving using
-     * {@link DatabaseManager#insert(CommunicationEntity, Duration)},
-     * each NoSQL vendor might replace to a more appropriate one.
+     * Saves multiple entities into the database with a specified time to live (TTL).
+     * By default, each entity is saved individually using {@link DatabaseManager#insert(CommunicationEntity, Duration)}.
+     * Each NoSQL vendor may provide a more appropriate implementation.
      *
-     * @param entities column family to be saved
-     * @param ttl      time to live
-     * @return the entity saved
-     * @throws NullPointerException          when either entity or ttl are null
+     * @param entities the entities to be saved
+     * @param ttl      the time to live for the entities
+     * @return the saved entities
+     * @throws NullPointerException          when either the collection of entities or the TTL is null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
     Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities, Duration ttl);
 
     /**
-     * Deletes an entity
+     * Deletes entities from the database based on the specified query.
      *
-     * @param query the select to delete an entity
-     * @throws NullPointerException          when either select or collection are null
-     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
+     * @param query the query used to select entities to be deleted
+     * @throws NullPointerException          when either the query or the collection is null
+     * @throws UnsupportedOperationException if the database does not support any operation specified in the query
      */
-    void delete(ColumnDeleteQuery query);
+    void delete(DeleteQuery query);
 
     /**
-     * Finds {@link CommunicationEntity} from select
+     * Finds entities in the database based on the specified query.
      *
-     * @param query - select to figure out entities
-     * @return entities found by select
-     * @throws NullPointerException          when select is null
-     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
+     * @param query the query used to select entities
+     * @return a stream of entities found by the query
+     * @throws NullPointerException          when the query is null
+     * @throws UnsupportedOperationException if the database does not support any operation specified in the query
      */
-    Stream<CommunicationEntity> select(ColumnQuery query);
+    Stream<CommunicationEntity> select(SelectQuery query);
 
     /**
-     * Returns the number of items in the column family that match a specified query.
+     * Returns the number of entities in the database that match the specified query.
+     *
      * @param query the query
-     * @return the number of documents from query
-     * @throws NullPointerException when query is null
+     * @return the number of entities returned by the query
+     * @throws NullPointerException when the query is null
      */
-    default long count(ColumnQuery query) {
+    default long count(SelectQuery query) {
         Objects.requireNonNull(query, "query is required");
-        return this.select(DefaultColumnQuery.countBy(query)).count();
+        return this.select(DefaultSelectQuery.countBy(query)).count();
     }
 
     /**
-     * Returns whether an entity that match a specified query.
+     * Checks if an entity matching the specified query exists in the database.
+     *
      * @param query the query
-     * @return true if an entity with the given query exists, false otherwise.
-     * @throws NullPointerException when query it null
+     * @return true if an entity with the given query exists, false otherwise
+     * @throws NullPointerException when the query is null
      */
-    default boolean exists(ColumnQuery query) {
+    default boolean exists(SelectQuery query) {
         Objects.requireNonNull(query, "query is required");
-        return this.select(DefaultColumnQuery.existsBy(query)).findAny().isPresent();
+        return this.select(DefaultSelectQuery.existsBy(query)).findAny().isPresent();
     }
 
     /**
-     * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
-     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     * Executes a query and returns the result. If the query is an insert, update, or select command,
+     * it returns the result of the operation. If the query is a delete command, it returns an empty collection.
      *
-     * @param query the query as {@link String}
-     * @return the result of the operation if delete it will always return an empty list
-     * @throws NullPointerException     when there is parameter null
-     * @throws IllegalArgumentException when the query has value parameters
-     * @throws IllegalStateException    when there is not {@link ColumnQueryParser}
+     * @param query the query as a string
+     * @return the result of the operation; for delete operations, an empty list is returned
+     * @throws NullPointerException     when the query is null
+     * @throws IllegalArgumentException when the query contains value parameters
+     * @throws IllegalStateException    when there is no {@link ColumnQueryParser} available
      */
     default Stream<CommunicationEntity> query(String query) {
         Objects.requireNonNull(query, "query is required");
@@ -161,30 +164,28 @@ public interface DatabaseManager extends AutoCloseable {
     }
 
     /**
-     * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
-     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     * Prepares a query for execution.
      *
-     * @param query the query as {@link String}
-     * @return a {@link ColumnPreparedStatement} instance
-     * @throws NullPointerException  when there is parameter null
-     * @throws IllegalStateException when there is not {@link ColumnQueryParser}
+     * @param query the query as a string
+     * @return a {@link CommunicationPreparedStatement} instance
+     * @throws NullPointerException  when the query is null
+     * @throws IllegalStateException when there is no {@link ColumnQueryParser} available
      */
-    default ColumnPreparedStatement prepare(String query) {
+    default CommunicationPreparedStatement prepare(String query) {
         Objects.requireNonNull(query, "query is required");
         ColumnQueryParser parser = new ColumnQueryParser();
         return parser.prepare(query, this, ColumnObserverParser.EMPTY);
     }
 
     /**
-     * Returns a single entity from select
+     * Returns a single entity from the database based on the specified query.
      *
-     * @param query - select to figure out entities
-     * @return an entity on {@link Optional} or {@link Optional#empty()} when the result is not found.
-     * @throws NonUniqueResultException      when the result has more than one entity
-     * @throws NullPointerException          when select is null
-     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
+     * @param query the query used to select the entity
+     * @return an entity wrapped in an {@link Optional}, or {@link Optional#empty()} if no entity is found
+     * @throws NonUniqueResultException when more than one entity is returned by the query
+     * @throws NullPointerException     when the query is null
      */
-    default Optional<CommunicationEntity> singleResult(ColumnQuery query) {
+    default Optional<CommunicationEntity> singleResult(SelectQuery query) {
         Objects.requireNonNull(query, "query is required");
         Stream<CommunicationEntity> entities = select(query);
         final Iterator<CommunicationEntity> iterator = entities.iterator();
@@ -195,22 +196,21 @@ public interface DatabaseManager extends AutoCloseable {
         if (!iterator.hasNext()) {
             return Optional.of(entity);
         }
-        throw new NonUniqueResultException("The select returns more than one entity, select: " + query);
+        throw new NonUniqueResultException("More than one entity was returned by the query: " + query);
     }
 
     /**
-     * Returns the number of elements from column family
+     * Returns the number of entities in the database.
      *
-     * @param columnFamily the column family
-     * @return the number of elements
-     * @throws NullPointerException          when column family is null
-     * @throws UnsupportedOperationException when the database dot not have support
+     * @param entity the entity name
+     * @return the number of entities
+     * @throws NullPointerException when the entity name is null
+     * @throws UnsupportedOperationException if the database does not support this operation
      */
-    long count(String columnFamily);
+    long count(String entity);
 
     /**
-     * closes a resource
+     * Closes the database manager and releases any associated resources.
      */
     void close();
-
 }

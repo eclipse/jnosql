@@ -52,8 +52,8 @@ final class InsertQueryParser extends ConditionQueryParser {
     }
 
 
-    ColumnPreparedStatement prepare(String query, DatabaseManager manager,
-                                    ColumnObserverParser observer) {
+    CommunicationPreparedStatement prepare(String query, DatabaseManager manager,
+                                           ColumnObserverParser observer) {
 
         InsertQueryConverter converter = new InsertQueryConverter();
         InsertQuery insertQuery = converter.apply(query);
@@ -64,7 +64,7 @@ final class InsertQueryParser extends ConditionQueryParser {
         Optional<Duration> ttl = insertQuery.ttl();
         CommunicationEntity entity = getEntity(insertQuery, columnFamily, params, observer);
 
-        return ColumnPreparedStatement.insert(entity, params, query, ttl.orElse(null), manager);
+        return CommunicationPreparedStatement.insert(entity, params, query, ttl.orElse(null), manager);
 
     }
 

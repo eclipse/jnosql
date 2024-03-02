@@ -33,10 +33,10 @@ import static java.util.Objects.requireNonNull;
  * It is the state of column queries, with a condition and a value, as a {@link Element},
  * where both combined define a predicate.
  *
- * @see DatabaseManager#select(ColumnQuery)
+ * @see DatabaseManager#select(SelectQuery)
  * @see Condition
  */
-public final class ColumnCondition {
+public final class CriteriaCondition {
 
     private final Element element;
 
@@ -44,13 +44,13 @@ public final class ColumnCondition {
 
     private final boolean readOnly;
 
-    private ColumnCondition(Element element, Condition condition) {
+    private CriteriaCondition(Element element, Condition condition) {
         this.element = element;
         this.condition = condition;
         this.readOnly = false;
     }
 
-    private ColumnCondition(Element element, Condition condition, boolean readOnly) {
+    private CriteriaCondition(Element element, Condition condition, boolean readOnly) {
         this.element = element;
         this.condition = condition;
         this.readOnly = readOnly;
@@ -76,60 +76,60 @@ public final class ColumnCondition {
     }
 
     /**
-     * Creates a new {@link ColumnCondition} using the {@link Condition#AND}
+     * Creates a new {@link CriteriaCondition} using the {@link Condition#AND}
      *
      * @param condition the condition to be aggregated
      * @return the conditions joined as AND
      * @throws NullPointerException when the condition is null
      */
-    public ColumnCondition and(ColumnCondition condition) {
+    public CriteriaCondition and(CriteriaCondition condition) {
         validateReadOnly();
         requireNonNull(condition, "Conditions is required");
         if (Condition.AND.equals(this.condition)) {
             Element newElement = getConditions(condition, Condition.AND);
-            return new ColumnCondition(newElement, Condition.AND);
+            return new CriteriaCondition(newElement, Condition.AND);
         }
-        return ColumnCondition.and(this, condition);
+        return CriteriaCondition.and(this, condition);
     }
 
     /**
-     * Creates a new {@link ColumnCondition} negating the current one
+     * Creates a new {@link CriteriaCondition} negating the current one
      *
      * @return the negated condition
      * @see Condition#NOT
      */
-    public ColumnCondition negate() {
+    public CriteriaCondition negate() {
         validateReadOnly();
         if (Condition.NOT.equals(this.condition)) {
-            return this.element.get(ColumnCondition.class);
+            return this.element.get(CriteriaCondition.class);
         } else {
             Element newElement = Element.of(Condition.NOT.getNameField(), this);
-            return new ColumnCondition(newElement, Condition.NOT);
+            return new CriteriaCondition(newElement, Condition.NOT);
         }
 
     }
 
     /**
-     * Creates a new {@link ColumnCondition} using the {@link Condition#OR}
+     * Creates a new {@link CriteriaCondition} using the {@link Condition#OR}
      *
      * @param condition the condition to be aggregated
      * @return the conditions joined as AND
      * @throws NullPointerException when the condition is null
      */
-    public ColumnCondition or(ColumnCondition condition) {
+    public CriteriaCondition or(CriteriaCondition condition) {
         validateReadOnly();
         requireNonNull(condition, "Condition is required");
         if (Condition.OR.equals(this.condition)) {
             Element newElement = getConditions(condition, Condition.OR);
-            return new ColumnCondition(newElement, Condition.OR);
+            return new CriteriaCondition(newElement, Condition.OR);
         }
-        return ColumnCondition.or(this, condition);
+        return CriteriaCondition.or(this, condition);
     }
 
-    private Element getConditions(ColumnCondition columnCondition, Condition condition) {
-        List<ColumnCondition> conditions = new ArrayList<>(element.get(new TypeReference<List<ColumnCondition>>() {
+    private Element getConditions(CriteriaCondition criteriaCondition, Condition condition) {
+        List<CriteriaCondition> conditions = new ArrayList<>(element.get(new TypeReference<List<CriteriaCondition>>() {
         }));
-        conditions.add(columnCondition);
+        conditions.add(criteriaCondition);
         return Element.of(condition.getNameField(), conditions);
     }
 
@@ -147,7 +147,7 @@ public final class ColumnCondition {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ColumnCondition that = (ColumnCondition) o;
+        CriteriaCondition that = (CriteriaCondition) o;
         return Objects.equals(element, that.element)
                 && condition == that.condition;
     }
@@ -164,212 +164,212 @@ public final class ColumnCondition {
                 '}';
     }
 
-    public static ColumnCondition readOnly(ColumnCondition condition) {
+    public static CriteriaCondition readOnly(CriteriaCondition condition) {
         requireNonNull(condition, "condition is required");
-        return new ColumnCondition(condition.column(), condition.condition(), true);
+        return new CriteriaCondition(condition.column(), condition.condition(), true);
     }
 
-    static ColumnCondition of(Element element, Condition condition) {
-        return new ColumnCondition(requireNonNull(element, "Column is required"), condition);
+    static CriteriaCondition of(Element element, Condition condition) {
+        return new CriteriaCondition(requireNonNull(element, "Column is required"), condition);
     }
 
 
     /**
-     * Creates a {@link ColumnCondition} that has a {@link Condition#EQUALS}, it means a select will scanning to a
+     * Creates a {@link CriteriaCondition} that has a {@link Condition#EQUALS}, it means a select will scanning to a
      * column family that has the same name and equals value informed in this column.
      *
      * @param element a column instance
-     * @return a {@link ColumnCondition} with {@link Condition#EQUALS}
+     * @return a {@link CriteriaCondition} with {@link Condition#EQUALS}
      * @throws NullPointerException when column is null
      */
-    public static ColumnCondition eq(Element element) {
-         return new ColumnCondition(element, Condition.EQUALS);
+    public static CriteriaCondition eq(Element element) {
+         return new CriteriaCondition(element, Condition.EQUALS);
     }
 
     /**
-     * an alias method to {@link ColumnCondition#eq(Element)} where it will create a {@link Element}
+     * an alias method to {@link CriteriaCondition#eq(Element)} where it will create a {@link Element}
      * instance first and then apply te condition.
      *
      * @param name  the name of the column
      * @param value the column information
-     * @return a {@link ColumnCondition} with {@link Condition#EQUALS}
+     * @return a {@link CriteriaCondition} with {@link Condition#EQUALS}
      * @throws NullPointerException when either name or value is null
      */
-    public static ColumnCondition eq(String name, Object value) {
+    public static CriteriaCondition eq(String name, Object value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
         return eq(Element.of(name, value));
     }
 
     /**
-     * Creates a {@link ColumnCondition} that has a {@link Condition#GREATER_THAN}, it means a select will scanning to a
+     * Creates a {@link CriteriaCondition} that has a {@link Condition#GREATER_THAN}, it means a select will scanning to a
      * column family that has the same name and the value  greater than informed in this column.
      *
      * @param element a column instance
-     * @return a {@link ColumnCondition} with {@link Condition#GREATER_THAN}
+     * @return a {@link CriteriaCondition} with {@link Condition#GREATER_THAN}
      * @throws NullPointerException when column is null
      */
-    public static ColumnCondition gt(Element element) {
-         return new ColumnCondition(element, Condition.GREATER_THAN);
+    public static CriteriaCondition gt(Element element) {
+         return new CriteriaCondition(element, Condition.GREATER_THAN);
     }
 
     /**
-     * an alias method to {@link ColumnCondition#gt(Element)} where it will create a {@link Element}
+     * an alias method to {@link CriteriaCondition#gt(Element)} where it will create a {@link Element}
      * instance first and then apply te condition.
      *
      * @param name  the name of the column
      * @param value the column information
-     * @return a {@link ColumnCondition} with {@link Condition#GREATER_THAN}
+     * @return a {@link CriteriaCondition} with {@link Condition#GREATER_THAN}
      * @throws NullPointerException when either name or value is null
      */
-    public static ColumnCondition gt(String name, Object value) {
+    public static CriteriaCondition gt(String name, Object value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
         return gt(Element.of(name, value));
     }
 
     /**
-     * Creates a {@link ColumnCondition} that has a {@link Condition#GREATER_EQUALS_THAN},
+     * Creates a {@link CriteriaCondition} that has a {@link Condition#GREATER_EQUALS_THAN},
      * it means a select will scanning to a column family that has the same name and the value
      * greater or equals than informed in this column.
      *
      * @param element a column instance
-     * @return a {@link ColumnCondition} with {@link Condition#GREATER_EQUALS_THAN}
+     * @return a {@link CriteriaCondition} with {@link Condition#GREATER_EQUALS_THAN}
      * @throws NullPointerException when column is null
      */
-    public static ColumnCondition gte(Element element) {
-         return new ColumnCondition(element, Condition.GREATER_EQUALS_THAN);
+    public static CriteriaCondition gte(Element element) {
+         return new CriteriaCondition(element, Condition.GREATER_EQUALS_THAN);
     }
 
     /**
-     * an alias method to {@link ColumnCondition#gte(Element)} where it will create a {@link Element}
+     * an alias method to {@link CriteriaCondition#gte(Element)} where it will create a {@link Element}
      * instance first and then apply te condition.
      *
      * @param name  the name of the column
      * @param value the column information
-     * @return a {@link ColumnCondition} with {@link Condition#GREATER_EQUALS_THAN}
+     * @return a {@link CriteriaCondition} with {@link Condition#GREATER_EQUALS_THAN}
      * @throws NullPointerException when either name or value is null
      */
-    public static ColumnCondition gte(String name, Object value) {
+    public static CriteriaCondition gte(String name, Object value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
         return gte(Element.of(name, value));
     }
 
     /**
-     * Creates a {@link ColumnCondition} that has a {@link Condition#LESSER_THAN}, it means a select will scanning to a
+     * Creates a {@link CriteriaCondition} that has a {@link Condition#LESSER_THAN}, it means a select will scanning to a
      * column family that has the same name and the value  lesser than informed in this column.
      *
      * @param element a column instance
-     * @return a {@link ColumnCondition} with {@link Condition#LESSER_THAN}
+     * @return a {@link CriteriaCondition} with {@link Condition#LESSER_THAN}
      * @throws NullPointerException when column is null
      */
-    public static ColumnCondition lt(Element element) {
-        return new ColumnCondition(element, Condition.LESSER_THAN);
+    public static CriteriaCondition lt(Element element) {
+        return new CriteriaCondition(element, Condition.LESSER_THAN);
     }
 
     /**
-     * an alias method to {@link ColumnCondition#lt(Element)} where it will create a {@link Element}
+     * an alias method to {@link CriteriaCondition#lt(Element)} where it will create a {@link Element}
      * instance first and then apply te condition.
      *
      * @param name  the name of the column
      * @param value the column information
-     * @return a {@link ColumnCondition} with {@link Condition#LESSER_THAN}
+     * @return a {@link CriteriaCondition} with {@link Condition#LESSER_THAN}
      * @throws NullPointerException when either name or value is null
      */
-    public static ColumnCondition lt(String name, Object value) {
+    public static CriteriaCondition lt(String name, Object value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
         return lt(Element.of(name, value));
     }
 
     /**
-     * Creates a {@link ColumnCondition} that has a {@link Condition#LESSER_EQUALS_THAN},
+     * Creates a {@link CriteriaCondition} that has a {@link Condition#LESSER_EQUALS_THAN},
      * it means a select will scanning to a column family that has the same name and the value
      * lesser or equals than informed in this column.
      *
      * @param element a column instance
-     * @return a {@link ColumnCondition} with {@link Condition#LESSER_EQUALS_THAN}
+     * @return a {@link CriteriaCondition} with {@link Condition#LESSER_EQUALS_THAN}
      * @throws NullPointerException when column is null
      */
-    public static ColumnCondition lte(Element element) {
-        return new ColumnCondition(element, Condition.LESSER_EQUALS_THAN);
+    public static CriteriaCondition lte(Element element) {
+        return new CriteriaCondition(element, Condition.LESSER_EQUALS_THAN);
     }
 
     /**
-     * an alias method to {@link ColumnCondition#lte(Element)} where it will create a {@link Element}
+     * an alias method to {@link CriteriaCondition#lte(Element)} where it will create a {@link Element}
      * instance first and then apply te condition.
      *
      * @param name  the name of the column
      * @param value the column information
-     * @return a {@link ColumnCondition} with {@link Condition#LESSER_EQUALS_THAN}
+     * @return a {@link CriteriaCondition} with {@link Condition#LESSER_EQUALS_THAN}
      * @throws NullPointerException when either name or value is null
      */
-    public static ColumnCondition lte(String name, Object value) {
+    public static CriteriaCondition lte(String name, Object value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
         return lte(Element.of(name, value));
     }
 
     /**
-     * Creates a {@link ColumnCondition} that has a {@link Condition#IN}, it means a select will scanning to a
+     * Creates a {@link CriteriaCondition} that has a {@link Condition#IN}, it means a select will scanning to a
      * column family that has the same name and the value is within informed in this column.
      *
      * @param element a column instance
-     * @return a {@link ColumnCondition} with {@link Condition#IN}
+     * @return a {@link CriteriaCondition} with {@link Condition#IN}
      * @throws NullPointerException     when column is null
      * @throws IllegalArgumentException when the {@link Element#get()} in not an iterable implementation
      */
-    public static ColumnCondition in(Element element) {
+    public static CriteriaCondition in(Element element) {
         Objects.requireNonNull(element, "column is required");
         checkInClause(element.value());
-        return new ColumnCondition(element, Condition.IN);
+        return new CriteriaCondition(element, Condition.IN);
     }
 
     /**
-     * an alias method to {@link ColumnCondition#in(Element)} where it will create a {@link Element}
+     * an alias method to {@link CriteriaCondition#in(Element)} where it will create a {@link Element}
      * instance first and then apply te condition.
      *
      * @param name  the name of the column
      * @param value the column information
-     * @return a {@link ColumnCondition} with {@link Condition#IN}
+     * @return a {@link CriteriaCondition} with {@link Condition#IN}
      * @throws NullPointerException when either name or value is null
      */
-    public static ColumnCondition in(String name, Object value) {
+    public static CriteriaCondition in(String name, Object value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
         return in(Element.of(name, value));
     }
 
     /**
-     * Creates a {@link ColumnCondition} that has a {@link Condition#LIKE}, it means a select will scanning to a
+     * Creates a {@link CriteriaCondition} that has a {@link Condition#LIKE}, it means a select will scanning to a
      * column family that has the same name and the value  is like than informed in this column.
      *
      * @param element a column instance
-     * @return a {@link ColumnCondition} with {@link Condition#LIKE}
+     * @return a {@link CriteriaCondition} with {@link Condition#LIKE}
      * @throws NullPointerException when column is null
      */
-    public static ColumnCondition like(Element element) {
-        return new ColumnCondition(element, Condition.LIKE);
+    public static CriteriaCondition like(Element element) {
+        return new CriteriaCondition(element, Condition.LIKE);
     }
 
     /**
-     * an alias method to {@link ColumnCondition#like(Element)} where it will create a {@link Element}
+     * an alias method to {@link CriteriaCondition#like(Element)} where it will create a {@link Element}
      * instance first and then apply te condition.
      *
      * @param name  the name of the column
      * @param value the column information
-     * @return a {@link ColumnCondition} with {@link Condition#LIKE}
+     * @return a {@link CriteriaCondition} with {@link Condition#LIKE}
      * @throws NullPointerException when either name or value is null
      */
-    public static ColumnCondition like(String name, Object value) {
+    public static CriteriaCondition like(String name, Object value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
         return like(Element.of(name, value));
     }
 
     /**
-     * Creates a {@link ColumnCondition} that has a {@link Condition#BETWEEN},
+     * Creates a {@link CriteriaCondition} that has a {@link Condition#BETWEEN},
      * it means a select will scanning to a column family that is between two values informed
      * on a column name.
      * The column must have a {@link Element#get()} an {@link Iterable} implementation
@@ -381,22 +381,22 @@ public final class ColumnCondition {
      * @throws IllegalArgumentException When the column neither has an Iterable instance or two elements on
      *                                  an Iterable.
      */
-    public static ColumnCondition between(Element element) {
+    public static CriteriaCondition between(Element element) {
         Objects.requireNonNull(element, "column is required");
         checkBetweenClause(element.get());
-        return new ColumnCondition(element, Condition.BETWEEN);
+        return new CriteriaCondition(element, Condition.BETWEEN);
     }
 
     /**
-     * an alias method to {@link ColumnCondition#between(Element)} (Column) where it will create a {@link Element}
+     * an alias method to {@link CriteriaCondition#between(Element)} (Column) where it will create a {@link Element}
      * instance first and then apply te condition.
      *
      * @param name  the name of the column
      * @param value the column information
-     * @return a {@link ColumnCondition} with {@link Condition#BETWEEN}
+     * @return a {@link CriteriaCondition} with {@link Condition#BETWEEN}
      * @throws NullPointerException when either name or value is null
      */
-    public static ColumnCondition between(String name, Object value) {
+    public static CriteriaCondition between(String name, Object value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
         return between(Element.of(name, value));
@@ -410,13 +410,13 @@ public final class ColumnCondition {
      * @return a condition that negates the results of the supplied predicate
      * @throws NullPointerException when condition is null
      */
-    public static ColumnCondition not(ColumnCondition condition) {
+    public static CriteriaCondition not(CriteriaCondition condition) {
         Objects.requireNonNull(condition, "condition is required");
         return condition.negate();
     }
 
     /**
-     * Returns a new {@link ColumnCondition} aggregating ,as "AND", all the conditions as just one condition.
+     * Returns a new {@link CriteriaCondition} aggregating ,as "AND", all the conditions as just one condition.
      * The {@link Element} will storage the {@link Condition#getNameField()} as key and the value will be
      * the {@link java.util.List} of all conditions, in other words.
      * <p>Given:</p>
@@ -425,20 +425,20 @@ public final class ColumnCondition {
      * Column name = Column.of("name", "otavio");
      * ColumnCondition condition = ColumnCondition.eq(name).and(ColumnCondition.gte(age));
      * }
-     * The {@link ColumnCondition#column()} will have "_AND" as key and the list of condition as value.
+     * The {@link CriteriaCondition#column()} will have "_AND" as key and the list of condition as value.
      *
      * @param conditions the conditions to be aggregated
-     * @return the new {@link ColumnCondition} instance
+     * @return the new {@link CriteriaCondition} instance
      * @throws NullPointerException when the conditions are null
      */
-    public static ColumnCondition and(ColumnCondition... conditions) {
+    public static CriteriaCondition and(CriteriaCondition... conditions) {
         requireNonNull(conditions, "condition is required");
         Element element = Element.of(Condition.AND.getNameField(), asList(conditions));
-        return ColumnCondition.of(element, Condition.AND);
+        return CriteriaCondition.of(element, Condition.AND);
     }
 
     /**
-     * Returns a new {@link ColumnCondition} aggregating ,as "OR", all the conditions as just one condition.
+     * Returns a new {@link CriteriaCondition} aggregating ,as "OR", all the conditions as just one condition.
      * The {@link Element} will storage the {@link Condition#getNameField()} as key and the value gonna be
      * the {@link java.util.List} of all conditions, in other words.
      * <p>Given:</p>
@@ -447,16 +447,16 @@ public final class ColumnCondition {
      * Column name = Column.of("name", "otavio");
      * ColumnCondition condition = ColumnCondition.eq(name).or(ColumnCondition.gte(age));
      * }
-     * The {@link ColumnCondition#column()} will have "_OR" as key and the list of condition as value.
+     * The {@link CriteriaCondition#column()} will have "_OR" as key and the list of condition as value.
      *
      * @param conditions the conditions to be aggregated
-     * @return the new {@link ColumnCondition} instance
+     * @return the new {@link CriteriaCondition} instance
      * @throws NullPointerException when the condition is null
      */
-    public static ColumnCondition or(ColumnCondition... conditions) {
+    public static CriteriaCondition or(CriteriaCondition... conditions) {
         requireNonNull(conditions, "condition is required");
         Element element = Element.of(Condition.OR.getNameField(), asList(conditions));
-        return ColumnCondition.of(element, Condition.OR);
+        return CriteriaCondition.of(element, Condition.OR);
     }
 
 

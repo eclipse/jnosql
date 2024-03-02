@@ -17,7 +17,7 @@
 package org.eclipse.jnosql.communication.semistructured;
 
 import jakarta.data.Sort;
-import org.eclipse.jnosql.communication.semistructured.ColumnDeleteQuery.ColumnDeleteQueryBuilder;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery.ColumnDeleteQueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ class DefaultDeleteQueryBuilder implements ColumnDeleteQueryBuilder {
 
     private String documentCollection;
 
-    private ColumnCondition condition;
+    private CriteriaCondition condition;
 
 
     @Override
@@ -61,18 +61,18 @@ class DefaultDeleteQueryBuilder implements ColumnDeleteQueryBuilder {
     }
 
     @Override
-    public ColumnDeleteQueryBuilder where(ColumnCondition condition) {
+    public ColumnDeleteQueryBuilder where(CriteriaCondition condition) {
         Objects.requireNonNull(condition, "condition is required");
         this.condition = condition;
         return this;
     }
 
     @Override
-    public ColumnDeleteQuery build() {
+    public DeleteQuery build() {
         if (Objects.isNull(documentCollection)) {
             throw new IllegalArgumentException("The document collection is mandatory to build");
         }
-        return new DefaultColumnDeleteQuery(documentCollection, condition, documents);
+        return new DefaultDeleteQuery(documentCollection, condition, documents);
     }
 
     @Override

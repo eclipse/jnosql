@@ -30,9 +30,9 @@ import static java.util.Objects.requireNonNull;
 /**
  * A unit that has the columnFamily and condition to delete from conditions.
  * This instance will be used on:
- * <p>{@link DatabaseManager#delete(ColumnDeleteQuery)}</p>
+ * <p>{@link DatabaseManager#delete(DeleteQuery)}</p>
  */
-public interface ColumnDeleteQuery {
+public interface DeleteQuery {
 
 
     /**
@@ -49,11 +49,11 @@ public interface ColumnDeleteQuery {
      *
      * @return the condition
      */
-    Optional<ColumnCondition> condition();
+    Optional<CriteriaCondition> condition();
 
     /**
      * Defines which columns will be removed, the database provider might use this information
-     * to remove just these fields instead of all entity from {@link ColumnDeleteQuery}
+     * to remove just these fields instead of all entity from {@link DeleteQuery}
      *
      * @return the columns
      */
@@ -85,7 +85,7 @@ public interface ColumnDeleteQuery {
     }
 
     /**
-     * It starts the first step of {@link ColumnDeleteQuery} creation using a builder pattern.
+     * It starts the first step of {@link DeleteQuery} creation using a builder pattern.
      * This first step will inform the fields to delete in the query instead of the whole record.
      * This behavior might be different for each NoSQL database provider; therefore,
      * it might be ignored for some implementations.
@@ -258,21 +258,21 @@ public interface ColumnDeleteQuery {
     }
 
     /**
-     * The last step to the build of {@link ColumnDeleteQuery}.
-     * It either can return a new {@link ColumnDeleteQuery} instance or execute a query with
+     * The last step to the build of {@link DeleteQuery}.
+     * It either can return a new {@link DeleteQuery} instance or execute a query with
      * {@link DatabaseManager}
      */
     interface ColumnDeleteQueryBuild {
 
         /**
-         * Creates a new instance of {@link ColumnDeleteQuery}
+         * Creates a new instance of {@link DeleteQuery}
          *
-         * @return a new {@link ColumnDeleteQuery} instance
+         * @return a new {@link DeleteQuery} instance
          */
-        ColumnDeleteQuery build();
+        DeleteQuery build();
 
         /**
-         * executes the {@link DatabaseManager#delete(ColumnDeleteQuery)}
+         * executes the {@link DatabaseManager#delete(DeleteQuery)}
          *
          * @param manager the entity manager
          * @throws NullPointerException when manager is null
@@ -288,7 +288,7 @@ public interface ColumnDeleteQuery {
 
 
         /**
-         * Starts a new condition in the select using {@link ColumnCondition#and(ColumnCondition)}
+         * Starts a new condition in the select using {@link CriteriaCondition#and(CriteriaCondition)}
          *
          * @param name a condition to be added
          * @return the same {@link ColumnDeleteNameCondition} with the condition appended
@@ -297,7 +297,7 @@ public interface ColumnDeleteQuery {
         ColumnDeleteNameCondition and(String name);
 
         /**
-         * Starts a new condition in the select using {@link ColumnCondition#or(ColumnCondition)}
+         * Starts a new condition in the select using {@link CriteriaCondition#or(CriteriaCondition)}
          *
          * @param name a condition to be added
          * @return the same {@link ColumnDeleteNameCondition} with the condition appended
@@ -308,8 +308,8 @@ public interface ColumnDeleteQuery {
     }
 
     /**
-     * Besides the fluent-API with the select {@link ColumnDeleteQuery#delete()}, the API also has support for creating
-     * a {@link ColumnDeleteQuery} instance using a builder pattern.
+     * Besides the fluent-API with the select {@link DeleteQuery#delete()}, the API also has support for creating
+     * a {@link DeleteQuery} instance using a builder pattern.
      * The goal is the same; however, it provides more possibilities, such as more complex queries.
      * <p>
      * The goal is the same; however, it provides more possibilities, such as more complex queries.
@@ -353,23 +353,23 @@ public interface ColumnDeleteQuery {
          * Either add or replace the condition in the query. It has a different behavior than the previous method
          * because it won't append it. Therefore, it will create when it is the first time or replace when it was executed once.
          *
-         * @param condition the {@link ColumnCondition} in the query
+         * @param condition the {@link CriteriaCondition} in the query
          * @return the {@link ColumnDeleteQueryBuilder}
          * @throws NullPointerException when condition is null
          */
-        ColumnDeleteQueryBuilder where(ColumnCondition condition);
+        ColumnDeleteQueryBuilder where(CriteriaCondition condition);
 
         /**
-         * It will validate and then create a {@link ColumnDeleteQuery} instance.
+         * It will validate and then create a {@link DeleteQuery} instance.
          *
-         * @return {@link ColumnDeleteQuery}
+         * @return {@link DeleteQuery}
          * @throws IllegalStateException It returns a state exception when an element is not valid or not fill-up,
          *                               such as the {@link ColumnDeleteQueryBuilder#from(String)} method was not called.
          */
-        ColumnDeleteQuery build();
+        DeleteQuery build();
 
         /**
-         * executes the {@link DatabaseManager#delete(ColumnDeleteQuery)}
+         * executes the {@link DatabaseManager#delete(DeleteQuery)}
          *
          * @param manager the entity manager
          * @throws NullPointerException  when manager is null

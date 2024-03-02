@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.jnosql.communication.semistructured.ColumnCondition.eq;
+import static org.eclipse.jnosql.communication.semistructured.CriteriaCondition.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -49,10 +49,10 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God"})
     void shouldReturnParserQuery(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.columns().isEmpty());
         assertEquals("God", columnQuery.name());
@@ -62,10 +62,10 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete name, address from God"})
     void shouldReturnParserQuery1(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         assertThat(columnQuery.columns()).contains("name", "address");
         assertEquals("God", columnQuery.name());
@@ -75,14 +75,14 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where stamina > 10.23"})
     void shouldReturnParserQuery11(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.GREATER_THAN, condition.condition());
         assertEquals(Element.of("stamina", 10.23), condition.column());
@@ -91,14 +91,14 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where stamina >= -10.23"})
     void shouldReturnParserQuery12(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
         assertEquals(Element.of("stamina", -10.23), condition.column());
@@ -107,14 +107,14 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete  from God where stamina <= -10.23"})
     void shouldReturnParserQuery13(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
         assertEquals(Element.of("stamina", -10.23), condition.column());
@@ -123,14 +123,14 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete  from God where stamina < -10.23"})
     void shouldReturnParserQuery14(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.LESSER_THAN, condition.condition());
         assertEquals(Element.of("stamina", -10.23), condition.column());
@@ -139,14 +139,14 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete  from God where age between 10 and 30"})
     void shouldReturnParserQuery15(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.BETWEEN, condition.condition());
         assertEquals(Element.of("age", Arrays.asList(10L, 30L)), condition.column());
@@ -155,14 +155,14 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete  from God where name = \"diana\""})
     void shouldReturnParserQuery16(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.EQUALS, condition.condition());
         assertEquals(Element.of("name", "diana"), condition.column());
@@ -171,14 +171,14 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete  from God where siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     void shouldReturnParserQuery18(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.EQUALS, condition.condition());
         Element element = condition.column();
@@ -192,14 +192,14 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete  from God where age = convert(12, java.lang.Integer)"})
     void shouldReturnParserQuery19(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
         Element element = condition.column();
         assertEquals(Condition.EQUALS, condition.condition());
         assertEquals("age", element.name());
@@ -211,14 +211,14 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete  from God where name in (\"Ada\", \"Apollo\")"})
     void shouldReturnParserQuery20(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
         Element element = condition.column();
         assertEquals(Condition.IN, condition.condition());
         assertEquals("name", element.name());
@@ -230,14 +230,14 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name like \"Ada\""})
     void shouldReturnParserQuery21(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
         Element element = condition.column();
         assertEquals(Condition.LIKE, condition.condition());
         assertEquals("name", element.name());
@@ -247,37 +247,37 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name not like \"Ada\""})
     void shouldReturnParserQuery22(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
         Element element = condition.column();
         assertEquals(Condition.NOT, condition.condition());
-        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
-        ColumnCondition columnCondition = conditions.get(0);
-        assertEquals(Condition.LIKE, columnCondition.condition());
-        assertEquals(Element.of("name", "Ada"), columnCondition.column());
+        CriteriaCondition criteriaCondition = conditions.get(0);
+        assertEquals(Condition.LIKE, criteriaCondition.condition());
+        assertEquals(Element.of("name", "Ada"), criteriaCondition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete  from God where name = \"Ada\" and age = 20"})
     void shouldReturnParserQuery23(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
         Element element = condition.column();
         assertEquals(Condition.AND, condition.condition());
-        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
         Assertions.assertThat(conditions).contains(eq(Element.of("name", "Ada")),
                 eq(Element.of("age", 20L)));
@@ -286,17 +286,17 @@ class DeleteQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete  from God where name = \"Ada\" or age = 20"})
     void shouldReturnParserQuery24(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
         Element element = condition.column();
         assertEquals(Condition.OR, condition.condition());
-        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
         Assertions.assertThat(conditions).contains(eq(Element.of("name", "Ada")),
                 eq(Element.of("age", 20L)));
@@ -307,17 +307,17 @@ class DeleteQueryParserTest {
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     void shouldReturnParserQuery25(String query) {
 
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
         Element element = condition.column();
         assertEquals(Condition.AND, condition.condition());
-        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
         assertEquals(Condition.EQUALS, conditions.get(0).condition());
         assertEquals(Condition.EQUALS, conditions.get(1).condition());
@@ -330,17 +330,17 @@ class DeleteQueryParserTest {
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"} and birthday =" +
             " convert(\"2007-12-03\", java.time.LocalDate)"})
     void shouldReturnParserQuery26(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
+        DeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
         assertTrue(columnQuery.condition().isPresent());
-        ColumnCondition condition = columnQuery.condition().get();
+        CriteriaCondition condition = columnQuery.condition().get();
         Element element = condition.column();
         assertEquals(Condition.AND, condition.condition());
-        List<ColumnCondition> conditions = element.get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
         assertEquals(Condition.EQUALS, conditions.get(0).condition());
         assertEquals(Condition.EQUALS, conditions.get(1).condition());
@@ -369,28 +369,28 @@ class DeleteQueryParserTest {
     @ValueSource(strings = {"delete from God where age = @age"})
     void shouldReturnErrorWhenDontBindParameters(String query) {
 
-        ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
+        CommunicationPreparedStatement prepare = parser.prepare(query, manager, observer);
         assertThrows(QueryException.class, prepare::result);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age = @age"})
     void shouldExecutePrepareStatement(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
 
-        ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
+        CommunicationPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("age", 12);
         prepare.result();
         Mockito.verify(manager).delete(captor.capture());
-        ColumnDeleteQuery columnQuery = captor.getValue();
-        ColumnCondition columnCondition = columnQuery.condition().get();
-        Element element = columnCondition.column();
-        assertEquals(Condition.EQUALS, columnCondition.condition());
+        DeleteQuery columnQuery = captor.getValue();
+        CriteriaCondition criteriaCondition = columnQuery.condition().get();
+        Element element = criteriaCondition.column();
+        assertEquals(Condition.EQUALS, criteriaCondition.condition());
         assertEquals("age", element.name());
         assertEquals(12, element.get());
     }
 
-    private void checkBaseQuery(ColumnDeleteQuery columnQuery) {
+    private void checkBaseQuery(DeleteQuery columnQuery) {
         assertTrue(columnQuery.columns().isEmpty());
         assertEquals("God", columnQuery.name());
     }

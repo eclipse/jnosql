@@ -57,18 +57,18 @@ public final class ColumnQueryParser {
     }
 
     /**
-     * Executes a query and returns a {@link ColumnPreparedStatement}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * Executes a query and returns a {@link CommunicationPreparedStatement}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
      * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
      *
      * @param query    the query as {@link String}
      * @param manager  the manager
      * @param observer the observer
-     * @return a {@link ColumnPreparedStatement} instance
+     * @return a {@link CommunicationPreparedStatement} instance
      * @throws NullPointerException     when there is parameter null
      * @throws IllegalArgumentException when the query has value parameters
      * @throws QueryException           when there is error in the syntax
      */
-    public ColumnPreparedStatement prepare(String query, DatabaseManager manager, ColumnObserverParser observer) {
+    public CommunicationPreparedStatement prepare(String query, DatabaseManager manager, ColumnObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
 

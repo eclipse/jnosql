@@ -29,76 +29,76 @@ abstract class BaseQueryBuilder {
 
     protected boolean and;
 
-    protected ColumnCondition condition;
+    protected CriteriaCondition condition;
 
     protected <T> void eqImpl(T value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition.eq(Element.of(name, value));
+        CriteriaCondition newCondition = CriteriaCondition.eq(Element.of(name, value));
         appendCondition(newCondition);
     }
 
     protected <T> void gtImpl(T value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition.gt(Element.of(name, value));
+        CriteriaCondition newCondition = CriteriaCondition.gt(Element.of(name, value));
         appendCondition(newCondition);
     }
 
     protected void likeImpl(String value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition.like(Element.of(name, value));
+        CriteriaCondition newCondition = CriteriaCondition.like(Element.of(name, value));
         appendCondition(newCondition);
     }
 
     protected <T> void ltImpl(T value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition.lt(Element.of(name, value));
+        CriteriaCondition newCondition = CriteriaCondition.lt(Element.of(name, value));
         appendCondition(newCondition);
     }
 
     protected <T> void lteImpl(T value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition.lte(Element.of(name, value));
+        CriteriaCondition newCondition = CriteriaCondition.lte(Element.of(name, value));
         appendCondition(newCondition);
     }
 
     protected <T> void gteImpl(T value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition.gte(Element.of(name, value));
+        CriteriaCondition newCondition = CriteriaCondition.gte(Element.of(name, value));
         appendCondition(newCondition);
     }
 
     protected <T> void betweenImpl(T valueA, T valueB) {
         requireNonNull(valueA, "valueA is required");
         requireNonNull(valueB, "valueB is required");
-        ColumnCondition newCondition = ColumnCondition.between(Element.of(name, asList(valueA, valueB)));
+        CriteriaCondition newCondition = CriteriaCondition.between(Element.of(name, asList(valueA, valueB)));
         appendCondition(newCondition);
     }
 
     protected <T> void inImpl(Iterable<T> values) {
         requireNonNull(values, "values is required");
-        ColumnCondition newCondition = ColumnCondition.in(Element.of(name, values));
+        CriteriaCondition newCondition = CriteriaCondition.in(Element.of(name, values));
         appendCondition(newCondition);
     }
 
 
-    protected void appendCondition(ColumnCondition newCondition) {
+    protected void appendCondition(CriteriaCondition newCondition) {
 
-        ColumnCondition columnCondition = getColumnCondition(newCondition);
+        CriteriaCondition criteriaCondition = getColumnCondition(newCondition);
 
         if (nonNull(condition)) {
             if (and) {
-                this.condition = condition.and(columnCondition);
+                this.condition = condition.and(criteriaCondition);
             } else {
-                this.condition = condition.or(columnCondition);
+                this.condition = condition.or(criteriaCondition);
             }
         } else {
-            this.condition = columnCondition;
+            this.condition = criteriaCondition;
         }
         this.negate = false;
         this.name = null;
     }
 
-    private ColumnCondition getColumnCondition(ColumnCondition newCondition) {
+    private CriteriaCondition getColumnCondition(CriteriaCondition newCondition) {
         if (negate) {
             return newCondition.negate();
         } else {
