@@ -44,7 +44,18 @@ public class SemistructuredRepositoryProxy<T, K> extends AbstractSemistructuredR
     private final Class<?> repositoryType;
 
 
-    SemistructuredRepositoryProxy(SemistructuredTemplate template, EntitiesMetadata entities, Class<?> repositoryType,
+
+    /**
+     * Creates a new instance of ColumnRepositoryProxy.
+     *
+     * @param template   The SemistructuredTemplate used for column database operations. Must not be {@code null}.
+     * @param entities   The metadata of the entities. Must not be {@code null}.
+     * @param repositoryType The repository type. Must not be {@code null}.
+     * @param converters The converters
+     * @throws NullPointerException If either the template, metadata, or repository type is {@code null}.
+     */
+   public SemistructuredRepositoryProxy(SemistructuredTemplate template,
+                                        EntitiesMetadata entities, Class<?> repositoryType,
                                   Converters converters) {
         this.template = template;
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
