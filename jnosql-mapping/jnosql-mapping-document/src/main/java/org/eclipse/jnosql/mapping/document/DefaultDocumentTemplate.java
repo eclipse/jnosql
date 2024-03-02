@@ -46,7 +46,7 @@ class DefaultDocumentTemplate extends AbstractSemistructuredTemplate implements 
 
     @Inject
     DefaultDocumentTemplate(EntityConverter converter,
-                            @Database(DatabaseType.COLUMN) DatabaseManager manager,
+                            @Database(DatabaseType.DOCUMENT) DatabaseManager manager,
                             EventPersistManager eventManager,
                             EntitiesMetadata entities, Converters converters){
         this.converter = converter;

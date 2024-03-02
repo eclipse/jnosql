@@ -15,12 +15,12 @@
 package org.eclipse.jnosql.mapping.document;
 
 import jakarta.inject.Inject;
-import jakarta.nosql.document.DocumentTemplate;
-import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, DocumentEntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class, DocumentTemplate.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
@@ -44,13 +44,13 @@ class DefaultDocumentTemplateProducerTest {
 
     @Test
     void shouldReturnErrorWhenManagerNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> producer.get(null));
+        Assertions.assertThrows(NullPointerException.class, () -> producer.apply(null));
     }
 
     @Test
     void shouldReturn() {
-        DocumentManager manager = Mockito.mock(DocumentManager.class);
-        DocumentTemplate documentTemplate = producer.get(manager);
+        var manager = Mockito.mock(DatabaseManager.class);
+        DocumentTemplate documentTemplate = producer.apply(manager);
         assertNotNull(documentTemplate);
     }
 }

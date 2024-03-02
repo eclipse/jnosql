@@ -20,10 +20,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Alternative;
 import jakarta.enterprise.inject.Produces;
 import jakarta.interceptor.Interceptor;
-import org.eclipse.jnosql.communication.document.Document;
-import org.eclipse.jnosql.communication.document.DocumentEntity;
-import org.eclipse.jnosql.communication.document.DocumentManager;
-import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
+import org.eclipse.jnosql.communication.semistructured.Element;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.mockito.Mockito;
@@ -38,28 +38,29 @@ import static org.mockito.Mockito.when;
 @ApplicationScoped
 @Alternative
 @Priority(Interceptor.Priority.APPLICATION)
-public class MockProducer implements Supplier<DocumentManager> {
+public class MockProducer implements Supplier<DatabaseManager> {
 
     @Produces
     @Override
-    public DocumentManager get() {
-        DocumentEntity entity = DocumentEntity.of("Person");
-        entity.add(Document.of("name", "Default"));
-        entity.add(Document.of("age", 10));
-        DocumentManager manager = mock(DocumentManager.class);
-        when(manager.insert(Mockito.any(DocumentEntity.class))).thenReturn(entity);
+    @Database(DatabaseType.DOCUMENT)
+    public DatabaseManager get() {
+        CommunicationEntity entity = CommunicationEntity.of("Person");
+        entity.add(Element.of("name", "Default"));
+        entity.add(Element.of("age", 10));
+        DatabaseManager manager = mock(DatabaseManager.class);
+        when(manager.insert(Mockito.any(CommunicationEntity.class))).thenReturn(entity);
         return manager;
     }
 
     @Produces
     @Database(value = DatabaseType.DOCUMENT, provider = "documentRepositoryMock")
-    public DocumentManager getDocumentManagerMock() {
-        DocumentEntity entity = DocumentEntity.of("Person");
-        entity.add(Document.of("name", "documentRepositoryMock"));
-        entity.add(Document.of("age", 10));
-        DocumentManager manager = mock(DocumentManager.class);
-        when(manager.insert(Mockito.any(DocumentEntity.class))).thenReturn(entity);
-        when(manager.singleResult(Mockito.any(DocumentQuery.class))).thenReturn(Optional.empty());
+    public DatabaseManager getDocumentManagerMock() {
+        CommunicationEntity entity = CommunicationEntity.of("Person");
+        entity.add(Element.of("name", "documentRepositoryMock"));
+        entity.add(Element.of("age", 10));
+        DatabaseManager manager = mock(DatabaseManager.class);
+        when(manager.insert(Mockito.any(CommunicationEntity.class))).thenReturn(entity);
+        when(manager.singleResult(Mockito.any(SelectQuery.class))).thenReturn(Optional.empty());
         return manager;
 
     }
