@@ -15,11 +15,10 @@
 package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.data.repository.BasicRepository;
-import jakarta.nosql.column.ColumnTemplate;
-import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.semistructured.ColumnTemplateProducer;
-import org.eclipse.jnosql.mapping.semistructured.JNoSQLColumnTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -44,7 +43,7 @@ public class ColumnRepositoryProducer {
     private ColumnTemplateProducer producer;
 
     /**
-     * Produces a Repository class from repository class and {@link ColumnManager}
+     * Produces a Repository class from repository class and {@link DatabaseManager}
      *
      * @param repositoryClass the repository class
      * @param manager         the manager
@@ -54,15 +53,15 @@ public class ColumnRepositoryProducer {
      * @return a Repository interface
      * @throws NullPointerException when there is null parameter
      */
-    public <T, K, R extends BasicRepository<T, K>> R get(Class<R> repositoryClass, ColumnManager manager) {
+    public <T, K, R extends BasicRepository<T, K>> R get(Class<R> repositoryClass, DatabaseManager manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
-        JNoSQLColumnTemplate template = producer.apply(manager);
+        SemistructuredTemplate template = producer.apply(manager);
         return get(repositoryClass, template);
     }
 
     /**
-     * Produces a Repository class from repository class and {@link ColumnTemplate}
+     * Produces a Repository class from repository class and {@link DatabaseManager}
      *
      * @param repositoryClass the repository class
      * @param template        the template
@@ -72,7 +71,8 @@ public class ColumnRepositoryProducer {
      * @return a Repository interface
      * @throws NullPointerException when there is null parameter
      */
-    public <T, K, R extends BasicRepository<T, K>> R get(Class<R> repositoryClass, JNoSQLColumnTemplate template) {
+    @SuppressWarnings("unchecked")
+    public <T, K, R extends BasicRepository<T, K>> R get(Class<R> repositoryClass, SemistructuredTemplate template) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
 

@@ -12,8 +12,8 @@ package org.eclipse.jnosql.mapping.semistructured;
 
 import jakarta.nosql.PreparedStatement;
 import jakarta.nosql.Template;
-import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -100,7 +100,7 @@ public interface SemistructuredTemplate extends Template {
      * @param query query to delete an entity
      * @throws NullPointerException when query is null
      */
-    void delete(ColumnDeleteQuery query);
+    void delete(DeleteQuery query);
 
     /**
      * Finds entities from query
@@ -110,7 +110,7 @@ public interface SemistructuredTemplate extends Template {
      * @return entities found by query
      * @throws NullPointerException when query is null
      */
-    <T> Stream<T> select(ColumnQuery query);
+    <T> Stream<T> select(SelectQuery query);
 
     /**
      * Returns the number of items in the column family that match a specified query.
@@ -118,7 +118,7 @@ public interface SemistructuredTemplate extends Template {
      * @return the number of documents from query
      * @throws NullPointerException when query is null
      */
-    long count(ColumnQuery query);
+    long count(SelectQuery query);
 
     /**
      * Returns whether an entity that match a specified query.
@@ -126,7 +126,7 @@ public interface SemistructuredTemplate extends Template {
      * @return true if an entity with the given query exists, false otherwise.
      * @throws NullPointerException when query it null
      */
-    boolean exists(ColumnQuery query);
+    boolean exists(SelectQuery query);
 
     /**
      * Returns a single entity from query
@@ -136,7 +136,7 @@ public interface SemistructuredTemplate extends Template {
      * @return an entity on {@link Optional} or {@link Optional#empty()} when the result is not found.
      * @throws NullPointerException     when query is null
      */
-    <T> Optional<T> singleResult(ColumnQuery query);
+    <T> Optional<T> singleResult(SelectQuery query);
 
     /**
      * Returns all entities on the database

@@ -24,17 +24,16 @@ import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.communication.column.Column;
-import org.eclipse.jnosql.communication.column.ColumnCondition;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
+import org.eclipse.jnosql.communication.semistructured.Element;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.semistructured.ColumnEntityConverter;
-import org.eclipse.jnosql.mapping.semistructured.JNoSQLColumnTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
 import org.eclipse.jnosql.mapping.semistructured.MockProducer;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
 import org.eclipse.jnosql.mapping.semistructured.entities.Vendor;
-import org.eclipse.jnosql.mapping.semistructured.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
@@ -70,10 +69,10 @@ import static org.mockito.Mockito.when;
 @AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
-@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
+@AddExtensions({EntityMetadataExtension.class})
 public class ColumnRepositoryProxyPageRequestTest {
 
-    private JNoSQLColumnTemplate template;
+    private SemistructuredTemplate template;
 
     @Inject
     private EntitiesMetadata entities;
@@ -88,7 +87,7 @@ public class ColumnRepositoryProxyPageRequestTest {
 
     @BeforeEach
     public void setUp() {
-        this.template = Mockito.mock(JNoSQLColumnTemplate.class);
+        this.template = Mockito.mock(SemistructuredTemplate.class);
 
         ColumnRepositoryProxy personHandler = new ColumnRepositoryProxy(template,
                 entities, PersonRepository.class, converters);
@@ -111,25 +110,25 @@ public class ColumnRepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByNameInstance() {
 
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
         PageRequest pageRequest = getPageRequest();
         personRepository.findByName("name", pageRequest);
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).singleResult(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(Condition.EQUALS, condition.condition());
         assertEquals(pageRequest.size(), query.skip());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
 
-        assertEquals(Column.of("name", "name"), condition.column());
+        assertEquals(Element.of("name", "name"), condition.element());
 
         assertNotNull(personRepository.findByName("name", pageRequest));
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .empty());
 
         assertNull(personRepository.findByName("name", pageRequest));
@@ -142,16 +141,16 @@ public class ColumnRepositoryProxyPageRequestTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         PageRequest pageRequest = getPageRequest();
         List<Person> persons = personRepository.findByNameAndAge("name", 20, pageRequest);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
         assertThat(persons).contains(ada);
 
-        ColumnQuery query = captor.getValue();
+        SelectQuery query = captor.getValue();
         assertEquals("Person", query.name());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
@@ -163,15 +162,15 @@ public class ColumnRepositoryProxyPageRequestTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         PageRequest pageRequest = getPageRequest();
         Set<Person> persons = personRepository.findByAgeAndName(20, "name", pageRequest);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
         assertThat(persons).contains(ada);
-        ColumnQuery query = captor.getValue();
+        SelectQuery query = captor.getValue();
         assertEquals("Person", query.name());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
@@ -183,16 +182,16 @@ public class ColumnRepositoryProxyPageRequestTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         PageRequest pageRequest = getPageRequest();
 
         Stream<Person> persons = personRepository.findByNameAndAgeOrderByName("name", 20, pageRequest);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
         assertThat(persons.collect(Collectors.toList())).contains(ada);
-        ColumnQuery query = captor.getValue();
+        SelectQuery query = captor.getValue();
         assertEquals("Person", query.name());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
@@ -204,15 +203,15 @@ public class ColumnRepositoryProxyPageRequestTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         PageRequest pageRequest = getPageRequest();
         Queue<Person> persons = personRepository.findByNameAndAgeOrderByAge("name", 20, pageRequest);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
         assertThat(persons).contains(ada);
-        ColumnQuery query = captor.getValue();
+        SelectQuery query = captor.getValue();
         assertEquals("Person", query.name());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
@@ -232,9 +231,9 @@ public class ColumnRepositoryProxyPageRequestTest {
         PageRequest pageRequest = getPageRequest();
 
         List<Person> persons = personRepository.findAll(pageRequest).content();
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
+        SelectQuery query = captor.getValue();
         assertFalse(query.condition().isPresent());
         assertEquals("Person", query.name());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
@@ -247,29 +246,29 @@ public class ColumnRepositoryProxyPageRequestTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         PageRequest pageRequest = getPageRequest();
         personRepository.findByNameAndAgeGreaterThanEqual("Ada", 33, pageRequest);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(AND, condition.condition());
-        List<ColumnCondition> conditions = condition.column().get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = condition.element().get(new TypeReference<>() {
         });
-        ColumnCondition columnCondition = conditions.get(0);
-        ColumnCondition columnCondition2 = conditions.get(1);
+        CriteriaCondition columnCondition = conditions.get(0);
+        CriteriaCondition columnCondition2 = conditions.get(1);
 
         assertEquals(Condition.EQUALS, columnCondition.condition());
-        assertEquals("Ada", columnCondition.column().get());
-        assertEquals("name", columnCondition.column().name());
+        assertEquals("Ada", columnCondition.element().get());
+        assertEquals("name", columnCondition.element().name());
 
         assertEquals(Condition.GREATER_EQUALS_THAN, columnCondition2.condition());
-        assertEquals(33, columnCondition2.column().get());
-        assertEquals("age", columnCondition2.column().name());
+        assertEquals(33, columnCondition2.element().get());
+        assertEquals("age", columnCondition2.element().name());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
     }
@@ -279,18 +278,18 @@ public class ColumnRepositoryProxyPageRequestTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         PageRequest pageRequest = getPageRequest();
         personRepository.findByAgeGreaterThan(33, pageRequest);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(GREATER_THAN, condition.condition());
-        assertEquals(Column.of("age", 33), condition.column());
+        assertEquals(Element.of("age", 33), condition.element());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
 
@@ -301,18 +300,18 @@ public class ColumnRepositoryProxyPageRequestTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         PageRequest pageRequest = getPageRequest();
         personRepository.findByAgeLessThanEqual(33, pageRequest);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(LESSER_EQUALS_THAN, condition.condition());
-        assertEquals(Column.of("age", 33), condition.column());
+        assertEquals(Element.of("age", 33), condition.element());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
 
@@ -323,18 +322,18 @@ public class ColumnRepositoryProxyPageRequestTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         PageRequest pageRequest = getPageRequest();
         personRepository.findByAgeLessThan(33, pageRequest);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(LESSER_THAN, condition.condition());
-        assertEquals(Column.of("age", 33), condition.column());
+        assertEquals(Element.of("age", 33), condition.element());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
 
@@ -345,21 +344,21 @@ public class ColumnRepositoryProxyPageRequestTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         PageRequest pageRequest = getPageRequest();
         personRepository.findByAgeBetween(10, 15, pageRequest);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(BETWEEN, condition.condition());
-        List<Value> values = condition.column().get(new TypeReference<>() {
+        List<Value> values = condition.element().get(new TypeReference<>() {
         });
         assertEquals(Arrays.asList(10, 15), values.stream().map(Value::get).collect(Collectors.toList()));
-        assertTrue(condition.column().name().contains("age"));
+        assertTrue(condition.element().name().contains("age"));
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
     }
@@ -370,18 +369,18 @@ public class ColumnRepositoryProxyPageRequestTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         PageRequest pageRequest = getPageRequest();
         personRepository.findByNameLike("Ada", pageRequest);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(LIKE, condition.condition());
-        assertEquals(Column.of("name", "Ada"), condition.column());
+        assertEquals(Element.of("name", "Ada"), condition.element());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
 
@@ -393,19 +392,19 @@ public class ColumnRepositoryProxyPageRequestTest {
         Vendor vendor = new Vendor("vendor");
         vendor.setPrefixes(Collections.singleton("prefix"));
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(vendor));
 
         PageRequest pageRequest = getPageRequest();
         vendorRepository.findByPrefixes("prefix", pageRequest);
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).singleResult(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("vendors", query.name());
         assertEquals(EQUALS, condition.condition());
-        assertEquals(Column.of("prefixes", "prefix"), condition.column());
+        assertEquals(Element.of("prefixes", "prefix"), condition.element());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
 
@@ -416,16 +415,16 @@ public class ColumnRepositoryProxyPageRequestTest {
         Vendor vendor = new Vendor("vendor");
         vendor.setPrefixes(Collections.singleton("prefix"));
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(vendor));
 
         PageRequest pageRequest = getPageRequest();
         vendorRepository.findByPrefixesIn(singletonList("prefix"), pageRequest);
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).singleResult(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("vendors", query.name());
         assertEquals(IN, condition.condition());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
@@ -438,19 +437,19 @@ public class ColumnRepositoryProxyPageRequestTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         PageRequest pageRequest = getPageRequest();
         Slice<Person> slice = personRepository.findByAge("120", pageRequest);
         Assertions.assertNotNull(slice);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(EQUALS, condition.condition());
-        assertEquals(Column.of("age", 120), condition.column());
+        assertEquals(Element.of("age", 120), condition.element());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
     }
@@ -458,16 +457,16 @@ public class ColumnRepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByNameOrderName() {
 
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
         PageRequest pageRequest = getPageRequest().sortBy(Sort.asc("name"));
         personRepository.findByName("name", pageRequest);
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).singleResult(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(EQUALS, condition.condition());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
@@ -475,10 +474,10 @@ public class ColumnRepositoryProxyPageRequestTest {
         assertThat(query.sorts()).hasSize(1)
                 .contains(Sort.asc("name"));
 
-        assertEquals(Column.of("name", "name"), condition.column());
+        assertEquals(Element.of("name", "name"), condition.element());
 
         assertNotNull(personRepository.findByName("name", pageRequest));
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .empty());
         assertNull(personRepository.findByName("name", pageRequest));
     }
@@ -486,7 +485,7 @@ public class ColumnRepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByNameOrderName2() {
 
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
         PageRequest pageRequest = getPageRequest().sortBy(Sort.asc("name"));
@@ -494,10 +493,10 @@ public class ColumnRepositoryProxyPageRequestTest {
 
         Assertions.assertNotNull(page);
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(EQUALS, condition.condition());
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
@@ -505,106 +504,106 @@ public class ColumnRepositoryProxyPageRequestTest {
         assertThat(query.sorts()).hasSize(2)
                 .containsExactly(Sort.asc("age"), Sort.asc("name"));
 
-        assertEquals(Column.of("name", "name"), condition.column());
+        assertEquals(Element.of("name", "name"), condition.element());
 
         assertNotNull(personRepository.findByName("name", pageRequest));
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .empty());
         assertNull(personRepository.findByName("name", pageRequest));
     }
 
     @Test
     public void shouldFindByNameSort() {
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
         PageRequest pageRequest = getPageRequest().sortBy(Sort.desc("age"));
         personRepository.findByName("name", Sort.asc("name"), pageRequest);
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(EQUALS, condition.condition());
         assertThat(query.sorts()).hasSize(2)
                 .containsExactly(Sort.asc("name"), Sort.desc("age"));
-        assertEquals(Column.of("name", "name"), condition.column());
+        assertEquals(Element.of("name", "name"), condition.element());
     }
 
     @Test
     public void shouldFindByNameSortPagination() {
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
         personRepository.findByName("name", Sort.asc("name"));
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(EQUALS, condition.condition());
         assertThat(query.sorts()).hasSize(1)
                 .containsExactly(Sort.asc("name"));
-        assertEquals(Column.of("name", "name"), condition.column());
+        assertEquals(Element.of("name", "name"), condition.element());
     }
 
     @Test
     public void shouldFindByNameLimit() {
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
         personRepository.findByName("name", Limit.of(3), Sort.asc("name"));
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(0, query.skip());
         assertEquals(3, query.limit());
         assertEquals(EQUALS, condition.condition());
         assertThat(query.sorts()).hasSize(1)
                 .containsExactly(Sort.asc("name"));
-        assertEquals(Column.of("name", "name"), condition.column());
+        assertEquals(Element.of("name", "name"), condition.element());
     }
 
     @Test
     public void shouldFindByNameLimit2() {
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
         personRepository.findByName("name", Limit.range(1, 3), Sort.asc("name"));
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(0, query.skip());
         assertEquals(3, query.limit());
         assertEquals(EQUALS, condition.condition());
         assertThat(query.sorts()).hasSize(1)
                 .containsExactly(Sort.asc("name"));
-        assertEquals(Column.of("name", "name"), condition.column());
+        assertEquals(Element.of("name", "name"), condition.element());
     }
 
     @Test
     public void shouldFindByNameLimit3() {
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
         personRepository.findByName("name", Limit.range(2, 3), Sort.asc("name"));
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(1, query.skip());
         assertEquals(2, query.limit());
         assertEquals(EQUALS, condition.condition());
         assertThat(query.sorts()).hasSize(1)
                 .containsExactly(Sort.asc("name"));
-        assertEquals(Column.of("name", "name"), condition.column());
+        assertEquals(Element.of("name", "name"), condition.element());
     }
 
 

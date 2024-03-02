@@ -18,18 +18,16 @@ import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.communication.column.Column;
-import org.eclipse.jnosql.communication.column.ColumnCondition;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
-import org.eclipse.jnosql.communication.column.ColumnQueryParams;
-import org.eclipse.jnosql.communication.column.SelectQueryParser;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
+import org.eclipse.jnosql.communication.semistructured.Element;
+import org.eclipse.jnosql.communication.semistructured.QueryParams;
+import org.eclipse.jnosql.communication.semistructured.SelectQueryParser;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.semistructured.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.semistructured.MockProducer;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
-import org.eclipse.jnosql.mapping.semistructured.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
@@ -50,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
-@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
+@AddExtensions({EntityMetadataExtension.class})
 class ParamsBinderTest {
 
 
@@ -74,13 +72,13 @@ class ParamsBinderTest {
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
         SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.name());
         SelectQueryParser queryParser = new SelectQueryParser();
-        ColumnQueryParams columnQueryParams = queryParser.apply(selectQuery, parser);
+        QueryParams columnQueryParams = queryParser.apply(selectQuery, parser);
         Params params = columnQueryParams.params();
         Object[] args = {10};
         paramsBinder.bind(params, args, method);
-        ColumnQuery query = columnQueryParams.query();
-        ColumnCondition columnCondition = query.condition().get();
-        Value value = columnCondition.column().value();
+        var query = columnQueryParams.query();
+        CriteriaCondition columnCondition = query.condition().get();
+        Value value = columnCondition.element().value();
         assertEquals(10, value.get());
 
     }
@@ -97,15 +95,15 @@ class ParamsBinderTest {
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
         SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.name());
         SelectQueryParser queryParser = new SelectQueryParser();
-        ColumnQueryParams queryParams = queryParser.apply(selectQuery, parser);
+        var queryParams = queryParser.apply(selectQuery, parser);
         Params params = queryParams.params();
         paramsBinder.bind(params, new Object[]{10L, "Ada"}, method);
-        ColumnQuery query = queryParams.query();
-        ColumnCondition columnCondition = query.condition().get();
-        List<ColumnCondition> conditions = columnCondition.column().get(new TypeReference<>() {
+        var query = queryParams.query();
+        var columnCondition = query.condition().get();
+        List<CriteriaCondition> conditions = columnCondition.element().get(new TypeReference<>() {
         });
-        List<Object> values = conditions.stream().map(ColumnCondition::column)
-                .map(Column::value)
+        List<Object> values = conditions.stream().map(CriteriaCondition::element)
+                .map(Element::value)
                 .map(Value::get).toList();
         assertEquals(10, values.get(0));
         assertEquals("Ada", values.get(1));

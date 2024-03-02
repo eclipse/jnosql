@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.semistructured;
 
+import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.mapping.AttributeConverter;
-import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
@@ -58,28 +58,28 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <X, Y> List<Column> toColumn(ColumnEntityConverter converter, Converters converters) {
+    public <X, Y> List<Element> toElements(ColumnEntityConverter converter, Converters converters) {
         if (value() == null) {
-            return singletonList(Column.of(getName(), null));
+            return singletonList(Element.of(getName(), null));
         } else if (EMBEDDED.equals(getType())) {
-            return converter.toColumn(value()).columns();
+            return converter.toColumn(value()).elements();
         } else if (ENTITY.equals(getType())) {
-            return singletonList(Column.of(getName(), converter.toColumn(value()).columns()));
+            return singletonList(Element.of(getName(), converter.toColumn(value()).elements()));
         } else if (isEmbeddableCollection()) {
-            return singletonList(Column.of(getName(), getColumns(converter)));
+            return singletonList(Element.of(getName(), getColumns(converter)));
         }
         Optional<Class<AttributeConverter<Object, Object>>> optionalConverter = field().converter();
         if (optionalConverter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters.get(field());
-            return singletonList(Column.of(getName(), attributeConverter.convertToDatabaseColumn((X) value())));
+            return singletonList(Element.of(getName(), attributeConverter.convertToDatabaseColumn((X) value())));
         }
-        return singletonList(Column.of(getName(), value()));
+        return singletonList(Element.of(getName(), value()));
     }
 
-    private List<List<Column>> getColumns(ColumnEntityConverter converter) {
-        List<List<Column>> columns = new ArrayList<>();
-        for (Object element : (Iterable) value()) {
-            columns.add(converter.toColumn(element).columns());
+    private List<List<Element>> getColumns(ColumnEntityConverter converter) {
+        List<List<Element>> columns = new ArrayList<>();
+        for (Object element : (Iterable<?>) value()) {
+            columns.add(converter.toColumn(element).elements());
         }
         return columns;
     }

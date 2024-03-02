@@ -17,19 +17,15 @@ package org.eclipse.jnosql.mapping.semistructured;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Vetoed;
 import jakarta.inject.Inject;
-import jakarta.nosql.column.ColumnTemplate;
-import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 import java.util.Objects;
 import java.util.function.Function;
 
-/**
- * The producer of {@link ColumnTemplate}
- */
 @ApplicationScoped
-public class ColumnTemplateProducer implements Function<ColumnManager, JNoSQLColumnTemplate> {
+public class ColumnTemplateProducer implements Function<DatabaseManager, SemistructuredTemplate> {
 
 
     @Inject
@@ -45,7 +41,7 @@ public class ColumnTemplateProducer implements Function<ColumnManager, JNoSQLCol
     private Converters converters;
 
     @Override
-    public JNoSQLColumnTemplate apply(ColumnManager manager) {
+    public SemistructuredTemplate apply(DatabaseManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         return new ProducerColumnTemplate(converter, manager,
                 eventManager, entities, converters);
@@ -57,7 +53,7 @@ public class ColumnTemplateProducer implements Function<ColumnManager, JNoSQLCol
 
         private ColumnEntityConverter converter;
 
-        private ColumnManager manager;
+        private DatabaseManager manager;
 
         private ColumnEventPersistManager eventManager;
 
@@ -66,7 +62,7 @@ public class ColumnTemplateProducer implements Function<ColumnManager, JNoSQLCol
         private Converters converters;
 
         ProducerColumnTemplate(ColumnEntityConverter converter,
-                               ColumnManager manager,
+                               DatabaseManager manager,
                                ColumnEventPersistManager eventManager,
                                EntitiesMetadata entities,
                                Converters converters) {
@@ -86,7 +82,7 @@ public class ColumnTemplateProducer implements Function<ColumnManager, JNoSQLCol
         }
 
         @Override
-        protected ColumnManager getManager() {
+        protected DatabaseManager getManager() {
             return manager;
         }
 

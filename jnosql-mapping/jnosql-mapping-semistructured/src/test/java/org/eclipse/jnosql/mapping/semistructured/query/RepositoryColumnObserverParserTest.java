@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.semistructured.query;
 
-import org.eclipse.jnosql.communication.column.ColumnObserverParser;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -26,7 +25,7 @@ class RepositoryColumnObserverParserTest {
     @Test
     void shouldCreateFromRepository() {
         EntityMetadata entityMetadata = Mockito.mock(EntityMetadata.class);
-        ColumnObserverParser parser = RepositoryColumnObserverParser.of(entityMetadata);
+        var parser = RepositoryColumnObserverParser.of(entityMetadata);
         assertNotNull(parser);
     }
 }

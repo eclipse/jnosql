@@ -16,8 +16,8 @@ package org.eclipse.jnosql.mapping.semistructured;
 
 
 import jakarta.data.Sort;
-import org.eclipse.jnosql.communication.column.ColumnCondition;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,20 +26,20 @@ import java.util.Optional;
 import static java.util.Collections.emptyList;
 
 /**
- * A mapping implementation of {@link ColumnQuery}
+ * A mapping implementation of {@link SelectQuery}
  */
-public record MappingColumnQuery(List<Sort<?>> sorts, long limit, long skip, ColumnCondition columnCondition, String columnFamily)
-        implements ColumnQuery {
+public record MappingColumnQuery(List<Sort<?>> sorts, long limit, long skip, CriteriaCondition criteriaCondition, String entity)
+        implements SelectQuery {
 
 
     @Override
     public String name() {
-        return columnFamily;
+        return entity;
     }
 
     @Override
-    public Optional<ColumnCondition> condition() {
-        return Optional.ofNullable(columnCondition);
+    public Optional<CriteriaCondition> condition() {
+        return Optional.ofNullable(criteriaCondition);
     }
 
     @Override

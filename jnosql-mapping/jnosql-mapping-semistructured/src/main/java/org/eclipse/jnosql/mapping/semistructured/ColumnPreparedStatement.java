@@ -15,18 +15,18 @@
 package org.eclipse.jnosql.mapping.semistructured;
 
 import jakarta.nosql.PreparedStatement;
-import org.eclipse.jnosql.communication.column.ColumnEntity;
+import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
 final class ColumnPreparedStatement implements PreparedStatement {
 
-    private final org.eclipse.jnosql.communication.column.ColumnPreparedStatement preparedStatement;
+    private final org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement preparedStatement;
 
     private final ColumnEntityConverter converter;
 
-    ColumnPreparedStatement(org.eclipse.jnosql.communication.column.ColumnPreparedStatement preparedStatement,
+    ColumnPreparedStatement(org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement preparedStatement,
                             ColumnEntityConverter converter) {
         this.preparedStatement = preparedStatement;
         this.converter = converter;
@@ -45,7 +45,7 @@ final class ColumnPreparedStatement implements PreparedStatement {
 
     @Override
     public <T> Optional<T> singleResult() {
-        Optional<ColumnEntity> singleResult = preparedStatement.singleResult();
+        Optional<CommunicationEntity> singleResult = preparedStatement.singleResult();
         return singleResult.map(converter::toEntity);
     }
 }

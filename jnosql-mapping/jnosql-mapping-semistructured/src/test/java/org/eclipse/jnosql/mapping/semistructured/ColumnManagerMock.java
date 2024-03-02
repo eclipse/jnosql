@@ -14,31 +14,69 @@
  */
 package org.eclipse.jnosql.mapping.semistructured;
 
-import org.eclipse.jnosql.communication.Settings;
-import org.eclipse.jnosql.communication.column.ColumnConfiguration;
-import org.eclipse.jnosql.communication.column.ColumnManager;
-import org.eclipse.jnosql.communication.column.ColumnManagerFactory;
-import org.mockito.Mockito;
+import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 
-public class ColumnManagerMock implements ColumnConfiguration {
+import java.time.Duration;
+import java.util.stream.Stream;
 
+public class ColumnManagerMock implements DatabaseManager {
 
 
     @Override
-    public MockFamilyManager apply(Settings settings) {
-        return new MockFamilyManager(settings);
+    public String name() {
+        return null;
     }
 
-    public record MockFamilyManager(Settings settings) implements ColumnManagerFactory {
+    @Override
+    public CommunicationEntity insert(CommunicationEntity entity) {
+        return null;
+    }
 
-        @Override
-            public ColumnManager apply(String database) {
-                return Mockito.mock(ColumnManager.class);
-            }
+    @Override
+    public CommunicationEntity insert(CommunicationEntity entity, Duration ttl) {
+        return null;
+    }
 
-            @Override
-            public void close() {
+    @Override
+    public Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities) {
+        return null;
+    }
 
-            }
-        }
+    @Override
+    public Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities, Duration ttl) {
+        return null;
+    }
+
+    @Override
+    public CommunicationEntity update(CommunicationEntity entity) {
+        return null;
+    }
+
+    @Override
+    public Iterable<CommunicationEntity> update(Iterable<CommunicationEntity> entities) {
+        return null;
+    }
+
+    @Override
+    public void delete(DeleteQuery query) {
+
+    }
+
+    @Override
+    public Stream<CommunicationEntity> select(SelectQuery query) {
+        return null;
+    }
+
+    @Override
+    public long count(String entity) {
+        return 0;
+    }
+
+    @Override
+    public void close() {
+
+    }
 }

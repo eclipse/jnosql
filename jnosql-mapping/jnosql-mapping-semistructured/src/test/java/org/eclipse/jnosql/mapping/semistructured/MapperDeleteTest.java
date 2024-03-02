@@ -16,14 +16,13 @@ package org.eclipse.jnosql.mapping.semistructured;
 
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
-import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.semistructured.entities.Address;
 import org.eclipse.jnosql.mapping.semistructured.entities.Money;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
 import org.eclipse.jnosql.mapping.semistructured.entities.Worker;
-import org.eclipse.jnosql.mapping.semistructured.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
@@ -37,7 +36,7 @@ import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 
-import static org.eclipse.jnosql.communication.column.ColumnDeleteQuery.delete;
+import static org.eclipse.jnosql.communication.semistructured.DeleteQuery.delete;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -45,7 +44,7 @@ import static org.mockito.Mockito.when;
 @AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
-@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
+@AddExtensions({EntityMetadataExtension.class})
 class MapperDeleteTest {
 
     @Inject
@@ -57,19 +56,19 @@ class MapperDeleteTest {
     @Inject
     private Converters converters;
 
-    private ColumnManager managerMock;
+    private DatabaseManager managerMock;
 
     private DefaultColumnTemplate template;
 
 
-    private ArgumentCaptor<ColumnDeleteQuery> captor;
+    private ArgumentCaptor<DeleteQuery> captor;
 
     @BeforeEach
     void setUp() {
-        managerMock = Mockito.mock(ColumnManager.class);
+        managerMock = Mockito.mock(DatabaseManager.class);
         ColumnEventPersistManager persistManager = Mockito.mock(ColumnEventPersistManager.class);
-        Instance<ColumnManager> instance = Mockito.mock(Instance.class);
-        this.captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        Instance<DatabaseManager> instance = Mockito.mock(Instance.class);
+        this.captor = ArgumentCaptor.forClass(DeleteQuery.class);
         when(instance.get()).thenReturn(managerMock);
         this.template = new DefaultColumnTemplate(converter, instance,
                 persistManager, entities, converters);
@@ -79,8 +78,8 @@ class MapperDeleteTest {
     void shouldReturnDeleteFrom() {
         template.delete(Person.class).execute();
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Person").build();
+        DeleteQuery query = captor.getValue();
+        var queryExpected = delete().from("Person").build();
         assertEquals(queryExpected, query);
     }
 
@@ -89,9 +88,9 @@ class MapperDeleteTest {
     void shouldDeleteWhereEq() {
         template.delete(Person.class).where("name").eq("Ada").execute();
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
+        var query = captor.getValue();
 
-        ColumnDeleteQuery queryExpected =  delete().from("Person").where("name")
+        var queryExpected =  delete().from("Person").where("name")
                 .eq("Ada").build();
         assertEquals(queryExpected, query);
     }
@@ -100,8 +99,8 @@ class MapperDeleteTest {
     void shouldDeleteWhereLike() {
         template.delete(Person.class).where("name").like("Ada").execute();
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Person").where("name")
+        var query = captor.getValue();
+        var queryExpected = delete().from("Person").where("name")
                 .like("Ada").build();
         assertEquals(queryExpected, query);
     }
@@ -110,8 +109,8 @@ class MapperDeleteTest {
     void shouldDeleteWhereGt() {
         template.delete(Person.class).where("id").gt(10).execute();
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Person").where("_id").gt(10L).build();
+        var query = captor.getValue();
+        var queryExpected = delete().from("Person").where("_id").gt(10L).build();
         assertEquals(queryExpected, query);
     }
 
@@ -119,8 +118,8 @@ class MapperDeleteTest {
     void shouldDeleteWhereGte() {
         template.delete(Person.class).where("id").gte(10).execute();
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Person").where("_id")
+        var query = captor.getValue();
+        var queryExpected = delete().from("Person").where("_id")
                 .gte(10L).build();
         assertEquals(queryExpected, query);
     }
@@ -129,8 +128,8 @@ class MapperDeleteTest {
     void shouldDeleteWhereLt() {
         template.delete(Person.class).where("id").lt(10).execute();
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Person").where("_id").lt(10L).build();
+        var query = captor.getValue();
+        var queryExpected = delete().from("Person").where("_id").lt(10L).build();
         assertEquals(queryExpected, query);
     }
 
@@ -138,8 +137,8 @@ class MapperDeleteTest {
     void shouldDeleteWhereLte() {
         template.delete(Person.class).where("id").lte(10).execute();
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Person").where("_id").lte(10L).build();
+        var query = captor.getValue();
+        var queryExpected = delete().from("Person").where("_id").lte(10L).build();
         assertEquals(queryExpected, query);
     }
 
@@ -148,8 +147,8 @@ class MapperDeleteTest {
         template.delete(Person.class).where("id")
                 .between(10, 20).execute();
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Person").where("_id")
+        var query = captor.getValue();
+        var queryExpected = delete().from("Person").where("_id")
                 .between(10L, 20L).build();
         assertEquals(queryExpected, query);
     }
@@ -158,8 +157,8 @@ class MapperDeleteTest {
     void shouldDeleteWhereNot() {
         template.delete(Person.class).where("name").not().like("Ada").execute();
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Person").where("name").not().like("Ada").build();
+        var query = captor.getValue();
+        var queryExpected = delete().from("Person").where("name").not().like("Ada").build();
         assertEquals(queryExpected, query);
     }
 
@@ -169,8 +168,8 @@ class MapperDeleteTest {
         template.delete(Person.class).where("age").between(10, 20)
                 .and("name").eq("Ada").execute();
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Person").where("age")
+        var query = captor.getValue();
+        var queryExpected = delete().from("Person").where("age")
                 .between(10, 20)
                 .and("name").eq("Ada").build();
 
@@ -182,8 +181,8 @@ class MapperDeleteTest {
         template.delete(Person.class).where("id").between(10, 20)
                 .or("name").eq("Ada").execute();
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Person").where("_id")
+        var query = captor.getValue();
+        var queryExpected = delete().from("Person").where("_id")
                 .between(10L, 20L)
                 .or("name").eq("Ada").build();
 
@@ -195,8 +194,8 @@ class MapperDeleteTest {
         template.delete(Person.class).where("id").eq("20")
                 .execute();
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Person").where("_id").eq(20L)
+        var query = captor.getValue();
+        var queryExpected = delete().from("Person").where("_id").eq(20L)
                 .build();
 
         assertEquals(queryExpected, query);
@@ -207,8 +206,8 @@ class MapperDeleteTest {
         template.delete(Worker.class).where("salary")
                 .eq(new Money("USD", BigDecimal.TEN)).execute();
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Worker").where("money")
+        var query = captor.getValue();
+        var queryExpected = delete().from("Worker").where("money")
                 .eq("USD 10").build();
         assertEquals(queryExpected, query);
     }
@@ -219,8 +218,8 @@ class MapperDeleteTest {
                 .execute();
 
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Worker").where("city").eq("Salvador")
+        var query = captor.getValue();
+        var queryExpected = delete().from("Worker").where("city").eq("Salvador")
                 .build();
 
         assertEquals(queryExpected, query);
@@ -232,9 +231,9 @@ class MapperDeleteTest {
                 .execute();
 
         Mockito.verify(managerMock).delete(captor.capture());
-        ColumnDeleteQuery query = captor.getValue();
+        var query = captor.getValue();
 
-        ColumnDeleteQuery queryExpected = delete().from("Address").where("zipCode.zip").eq("01312321")
+        var queryExpected = delete().from("Address").where("zipCode.zip").eq("01312321")
                 .build();
 
         assertEquals(queryExpected, query);

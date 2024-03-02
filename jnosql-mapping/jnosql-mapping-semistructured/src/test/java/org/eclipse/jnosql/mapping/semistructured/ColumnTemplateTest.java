@@ -18,7 +18,6 @@ import jakarta.inject.Inject;
 import jakarta.nosql.Template;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.Database;
-import org.eclipse.jnosql.mapping.semistructured.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
@@ -33,7 +32,7 @@ import static org.eclipse.jnosql.mapping.DatabaseType.COLUMN;
 @AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
-@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
+@AddExtensions({EntityMetadataExtension.class})
 class ColumnTemplateTest {
 
     @Inject

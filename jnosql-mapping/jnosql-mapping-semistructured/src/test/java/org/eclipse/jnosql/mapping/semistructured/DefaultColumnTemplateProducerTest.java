@@ -15,10 +15,8 @@
 package org.eclipse.jnosql.mapping.semistructured;
 
 import jakarta.inject.Inject;
-import jakarta.nosql.column.ColumnTemplate;
-import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.semistructured.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
@@ -34,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
-@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
+@AddExtensions({EntityMetadataExtension.class})
 class DefaultColumnTemplateProducerTest {
 
     @Inject
@@ -47,8 +45,8 @@ class DefaultColumnTemplateProducerTest {
 
     @Test
     void shouldReturn() {
-        ColumnManager manager = Mockito.mock(ColumnManager.class);
-        ColumnTemplate columnTemplate = producer.apply(manager);
+        DatabaseManager manager = Mockito.mock(DatabaseManager.class);
+        var columnTemplate = producer.apply(manager);
         assertNotNull(columnTemplate);
     }
 }

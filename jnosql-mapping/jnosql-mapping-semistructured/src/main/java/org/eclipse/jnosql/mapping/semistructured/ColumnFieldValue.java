@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.semistructured;
 
 
-import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.FieldValue;
 
@@ -28,13 +28,13 @@ public interface ColumnFieldValue extends FieldValue {
 
 
     /**
-     * Converts an entity to a {@link List} of columns
+     * Converts an entity to a {@link List} of elements
      * @param converter the converter
      * @param converters the converters
      * @param <X> the type of the entity attribute
      * @param <Y> the type of the database column
      * @return a {@link List} of columns from the field
      */
-    <X, Y> List<Column> toColumn(ColumnEntityConverter converter, Converters converters);
+    <X, Y> List<Element> toElements(ColumnEntityConverter converter, Converters converters);
 
 }

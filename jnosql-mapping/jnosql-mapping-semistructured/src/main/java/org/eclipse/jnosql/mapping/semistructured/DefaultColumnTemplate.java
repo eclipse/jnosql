@@ -18,15 +18,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
-/**
- * The default implementation of {@link JNoSQLColumnTemplate}
- */
 @Default
 @Database(DatabaseType.COLUMN)
 @ApplicationScoped
@@ -34,7 +31,7 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
 
     private ColumnEntityConverter converter;
 
-    private Instance<ColumnManager> manager;
+    private Instance<DatabaseManager> manager;
 
     private ColumnEventPersistManager eventManager;
 
@@ -43,7 +40,7 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
     private Converters converters;
 
     @Inject
-    DefaultColumnTemplate(ColumnEntityConverter converter, Instance<ColumnManager> manager,
+    DefaultColumnTemplate(ColumnEntityConverter converter, Instance<DatabaseManager> manager,
                           ColumnEventPersistManager eventManager,
                           EntitiesMetadata entities, Converters converters) {
         this.converter = converter;
@@ -62,7 +59,7 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
     }
 
     @Override
-    protected ColumnManager getManager() {
+    protected DatabaseManager getManager() {
         return manager.get();
     }
 

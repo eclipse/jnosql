@@ -14,24 +14,24 @@
  */
 package org.eclipse.jnosql.mapping.semistructured;
 
-import org.eclipse.jnosql.communication.column.ColumnCondition;
-import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-record MappingColumnDeleteQuery(String columnFamily, ColumnCondition columnCondition) implements ColumnDeleteQuery {
+record MappingColumnDeleteQuery(String entity, CriteriaCondition criteriaCondition) implements DeleteQuery {
 
 
     @Override
     public String name() {
-        return columnFamily;
+        return entity;
     }
 
     @Override
-    public Optional<ColumnCondition> condition() {
-        return Optional.ofNullable(columnCondition);
+    public Optional<CriteriaCondition> condition() {
+        return Optional.ofNullable(criteriaCondition);
     }
 
     @Override

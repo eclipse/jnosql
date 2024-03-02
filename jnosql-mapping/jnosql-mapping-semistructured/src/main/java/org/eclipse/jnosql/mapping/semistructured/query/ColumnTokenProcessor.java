@@ -14,16 +14,16 @@
  */
 package org.eclipse.jnosql.mapping.semistructured.query;
 
-import org.eclipse.jnosql.communication.column.ColumnCondition;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 interface ColumnTokenProcessor {
 
-    ColumnCondition process(String token,
-                            int index,
-                            Object[] args,
-                            String methodName,
-                            EntityMetadata mapping,
-                            Converters converters);
+    CriteriaCondition process(String token,
+                              int index,
+                              Object[] args,
+                              String methodName,
+                              EntityMetadata mapping,
+                              Converters converters);
 }

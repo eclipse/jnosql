@@ -15,12 +15,11 @@
 package org.eclipse.jnosql.mapping.semistructured;
 
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.communication.column.Column;
-import org.eclipse.jnosql.communication.column.ColumnEntity;
+import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
+import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.semistructured.entities.Car;
 import org.eclipse.jnosql.mapping.semistructured.entities.Hero;
-import org.eclipse.jnosql.mapping.semistructured.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
@@ -40,13 +39,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
-@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
+@AddExtensions({EntityMetadataExtension.class})
 class ColumnEntityImmutableTest {
 
     @Inject
     private DefaultColumnEntityConverter converter;
 
-    private Column[] columns;
+    private Element[] columns;
 
     private Car car;
 
@@ -55,38 +54,38 @@ class ColumnEntityImmutableTest {
 
         this.car = new Car("123456789", "SF90", "Ferrari", Year.now());
 
-        columns = new Column[]{Column.of("_id", "123456789"),
-                Column.of("model", "SF90"),
-                Column.of("manufacturer", "Ferrari"),
-                Column.of("year", Year.now())
+        columns = new Element[]{Element.of("_id", "123456789"),
+                Element.of("model", "SF90"),
+                Element.of("manufacturer", "Ferrari"),
+                Element.of("year", Year.now())
         };
     }
 
     @Test
     void shouldConvertCommunicationEntity() {
 
-        ColumnEntity entity = converter.toColumn(car);
+        CommunicationEntity entity = converter.toColumn(car);
         assertEquals("Car", entity.name());
         assertEquals(4, entity.size());
-        assertThat(entity.columns()).contains(Column.of("_id", "123456789"),
-                Column.of("model", "SF90"),
-                Column.of("manufacturer", "Ferrari"));
+        assertThat(entity.elements()).contains(Element.of("_id", "123456789"),
+                Element.of("model", "SF90"),
+                Element.of("manufacturer", "Ferrari"));
 
     }
 
     @Test
     void shouldConvertCommunicationEntity2() {
 
-        ColumnEntity entity = converter.toColumn(car);
+        CommunicationEntity entity = converter.toColumn(car);
         assertEquals("Car", entity.name());
         assertEquals(4, entity.size());
 
-        assertThat(entity.columns()).contains(columns);
+        assertThat(entity.elements()).contains(columns);
     }
 
     @Test
     void shouldConvertEntity() {
-        ColumnEntity entity = ColumnEntity.of("Car");
+        CommunicationEntity entity = CommunicationEntity.of("Car");
         Stream.of(columns).forEach(entity::add);
 
         Car ferrari = converter.toEntity(Car.class, entity);
@@ -100,7 +99,7 @@ class ColumnEntityImmutableTest {
 
     @Test
     void shouldConvertExistRecord() {
-        ColumnEntity entity = ColumnEntity.of("Car");
+        CommunicationEntity entity = CommunicationEntity.of("Car");
         Stream.of(columns).forEach(entity::add);
         Car ferrari = new Car(null, null, null, null);
         Car result = converter.toEntity(ferrari, entity);
@@ -125,7 +124,7 @@ class ColumnEntityImmutableTest {
 
     @Test
     void shouldConvertExist() {
-        ColumnEntity entity = ColumnEntity.of("Hero");
+        CommunicationEntity entity = CommunicationEntity.of("Hero");
         entity.add("_id", "2342");
         entity.add("name", "Iron man");
         Hero hero = new Hero(null, null);

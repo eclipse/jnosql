@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.semistructured;
 
 import jakarta.data.Direction;
 import jakarta.data.Sort;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import jakarta.nosql.QueryMapper.MapperFrom;
 import jakarta.nosql.QueryMapper.MapperLimit;
@@ -41,7 +41,7 @@ final class ColumnMapperSelect extends AbstractMapperQuery implements MapperFrom
 
     private final List<Sort<?>> sorts = new ArrayList<>();
 
-    ColumnMapperSelect(EntityMetadata mapping, Converters converters, JNoSQLColumnTemplate template) {
+    ColumnMapperSelect(EntityMetadata mapping, Converters converters, SemistructuredTemplate template) {
         super(mapping, converters, template);
     }
 
@@ -154,26 +154,26 @@ final class ColumnMapperSelect extends AbstractMapperQuery implements MapperFrom
         this.sorts.add(Sort.of(mapping.columnField(name), Direction.DESC, false));
         return this;
     }
-    private ColumnQuery build() {
-        return new MappingColumnQuery(sorts, limit, start, condition, columnFamily);
+    private SelectQuery build() {
+        return new MappingColumnQuery(sorts, limit, start, condition, entity);
     }
 
     @Override
     public <T> List<T> result() {
-        ColumnQuery query = build();
+        SelectQuery query = build();
         return this.template.<T>select(query)
                 .toList();
     }
 
     @Override
     public <T> Stream<T> stream() {
-        ColumnQuery query = build();
+        SelectQuery query = build();
         return this.template.select(query);
     }
 
     @Override
     public <T> Optional<T> singleResult() {
-        ColumnQuery query = build();
+        SelectQuery query = build();
         return this.template.singleResult(query);
     }
 

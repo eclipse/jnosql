@@ -15,8 +15,7 @@
 package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.enterprise.inject.spi.CDI;
-import org.eclipse.jnosql.communication.column.ColumnCondition;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
 import org.eclipse.jnosql.mapping.semistructured.MappingColumnQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -39,7 +38,7 @@ public enum ColumnParameterBasedQuery {
 
 
     INSTANCE;
-    private static final IntFunction<ColumnCondition[]> TO_ARRAY = ColumnCondition[]::new;
+    private static final IntFunction<CriteriaCondition[]> TO_ARRAY = CriteriaCondition[]::new;
 
     /**
      * Constructs a ColumnQuery based on the provided parameters, PageRequest information, and entity metadata.
@@ -48,9 +47,9 @@ public enum ColumnParameterBasedQuery {
      * @param entityMetadata  Metadata describing the structure of the entity.
      * @return                 A ColumnQuery instance tailored for the specified entity.
      */
-    public ColumnQuery toQuery(Map<String, Object> params, EntityMetadata entityMetadata) {
+    public org.eclipse.jnosql.communication.semistructured.SelectQuery toQuery(Map<String, Object> params, EntityMetadata entityMetadata) {
         var convert = CDI.current().select(Converters.class).get();
-        List<ColumnCondition> conditions = new ArrayList<>();
+        List<CriteriaCondition> conditions = new ArrayList<>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             conditions.add(getCondition(convert, entityMetadata, entry));
         }
@@ -60,20 +59,20 @@ public enum ColumnParameterBasedQuery {
         return new MappingColumnQuery(Collections.emptyList(), 0L, 0L, columnCondition, columnFamily);
     }
 
-    private ColumnCondition columnCondition(List<ColumnCondition> conditions) {
+    private CriteriaCondition columnCondition(List<CriteriaCondition> conditions) {
         if (conditions.isEmpty()) {
             return null;
         } else if (conditions.size() == 1) {
             return conditions.get(0);
         }
-        return ColumnCondition.and(conditions.toArray(TO_ARRAY));
+        return CriteriaCondition.and(conditions.toArray(TO_ARRAY));
     }
 
-    private ColumnCondition getCondition(Converters convert, EntityMetadata entityMetadata, Map.Entry<String, Object> entry) {
+    private CriteriaCondition getCondition(Converters convert, EntityMetadata entityMetadata, Map.Entry<String, Object> entry) {
         var name = entityMetadata.fieldMapping(entry.getKey())
                 .map(FieldMetadata::name)
                 .orElse(entry.getKey());
         var value = getValue(entry.getValue(), entityMetadata, entry.getKey(), convert);
-        return ColumnCondition.eq(name, value);
+        return CriteriaCondition.eq(name, value);
     }
 }

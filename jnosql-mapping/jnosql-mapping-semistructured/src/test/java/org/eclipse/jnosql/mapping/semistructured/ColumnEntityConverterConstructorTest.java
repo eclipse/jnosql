@@ -17,8 +17,8 @@ package org.eclipse.jnosql.mapping.semistructured;
 import jakarta.inject.Inject;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.TypeReference;
-import org.eclipse.jnosql.communication.column.Column;
-import org.eclipse.jnosql.communication.column.ColumnEntity;
+import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
+import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.semistructured.entities.Animal;
 import org.eclipse.jnosql.mapping.semistructured.entities.Book;
@@ -28,7 +28,6 @@ import org.eclipse.jnosql.mapping.semistructured.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.Computer;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.PetOwner;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.SuperHero;
-import org.eclipse.jnosql.mapping.semistructured.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
@@ -49,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
-@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
+@AddExtensions({EntityMetadataExtension.class})
 class ColumnEntityConverterConstructorTest {
 
     @Inject
@@ -57,7 +56,7 @@ class ColumnEntityConverterConstructorTest {
 
     @Test
     void shouldConverterEntityComputer() {
-        ColumnEntity communication = ColumnEntity.of("Computer");
+        CommunicationEntity communication = CommunicationEntity.of("Computer");
         communication.add("_id", 10L);
         communication.add("name", "Dell");
         communication.add("age", 2020);
@@ -76,7 +75,7 @@ class ColumnEntityConverterConstructorTest {
     void shouldConvertComputerToCommunication() {
         Computer computer = new Computer(10L, "Dell", 2020, "Dell 2020",
                 Money.parse("USD 20"));
-        ColumnEntity communication = this.converter.toColumn(computer);
+        CommunicationEntity communication = this.converter.toColumn(computer);
         assertNotNull(communication);
 
         assertEquals(computer.getId(), communication.find("_id", Long.class).get());
@@ -88,11 +87,11 @@ class ColumnEntityConverterConstructorTest {
 
     @Test
     void shouldConvertPetOwner() {
-        ColumnEntity communication = ColumnEntity.of("PetOwner");
+        CommunicationEntity communication = CommunicationEntity.of("PetOwner");
         communication.add("_id", 10L);
         communication.add("name", "Otavio");
-        communication.add("animal", Arrays.asList(Column.of("_id", 23)
-                , Column.of("name", "Ada")));
+        communication.add("animal", Arrays.asList(Element.of("_id", 23)
+                , Element.of("name", "Ada")));
 
         PetOwner petOwner = this.converter.toEntity(communication);
         assertNotNull(petOwner);
@@ -107,23 +106,23 @@ class ColumnEntityConverterConstructorTest {
     void shouldConvertPetOwnerCommunication() {
         Animal ada = new Animal("Ada");
         PetOwner petOwner = new PetOwner(10L, "Poliana", ada);
-        ColumnEntity communication = this.converter.toColumn(petOwner);
+        CommunicationEntity communication = this.converter.toColumn(petOwner);
         assertNotNull(communication);
         assertEquals(10L, communication.find("_id", Long.class).get());
         assertEquals("Poliana", communication.find("name", String.class).get());
-        List<Column> columns = communication.find("animal", new TypeReference<List<Column>>() {})
+        List<Element> columns = communication.find("animal", new TypeReference<List<Element>>() {})
                 .get();
-        assertThat(columns).contains(Column.of("name", "Ada"));
+        assertThat(columns).contains(Element.of("name", "Ada"));
     }
 
     @Test
     void shouldConvertBookUser() {
-        ColumnEntity communication = ColumnEntity.of("BookUser");
+        CommunicationEntity communication = CommunicationEntity.of("BookUser");
         communication.add("_id", "otaviojava");
         communication.add("native_name", "Otavio Santana");
-        List<List<Column>> columns = new ArrayList<>();
-        columns.add(Arrays.asList(Column.of("_id", 10), Column.of("name", "Effective Java")));
-        columns.add(Arrays.asList(Column.of("_id", 12), Column.of("name", "Clean Code")));
+        List<List<Element>> columns = new ArrayList<>();
+        columns.add(Arrays.asList(Element.of("_id", 10), Element.of("name", "Effective Java")));
+        columns.add(Arrays.asList(Element.of("_id", 12), Element.of("name", "Clean Code")));
         communication.add("books", columns);
 
         BookUser bookUser = this.converter.toEntity(communication);
@@ -138,7 +137,7 @@ class ColumnEntityConverterConstructorTest {
 
     @Test
     void shouldConverterFieldsOnEntityComputer() {
-        ColumnEntity communication = ColumnEntity.of("Computer");
+        CommunicationEntity communication = CommunicationEntity.of("Computer");
         communication.add("_id", "10");
         communication.add("name", "Dell");
         communication.add("age", "2020");
@@ -155,7 +154,7 @@ class ColumnEntityConverterConstructorTest {
 
     @Test
     void shouldConverterEntityBookRelease() {
-        ColumnEntity communication = ColumnEntity.of("BookRelease");
+        CommunicationEntity communication = CommunicationEntity.of("BookRelease");
         communication.add("isbn", "9780132345286");
         communication.add("title", "Effective Java");
         communication.add("author", "Joshua Bloch");
@@ -170,7 +169,7 @@ class ColumnEntityConverterConstructorTest {
 
     @Test
     void shouldConverterEntityBookReleaseOnStringYear() {
-        ColumnEntity communication = ColumnEntity.of("BookRelease");
+        CommunicationEntity communication = CommunicationEntity.of("BookRelease");
         communication.add("isbn", "9780132345286");
         communication.add("title", "Effective Java");
         communication.add("author", "Joshua Bloch");
@@ -185,7 +184,7 @@ class ColumnEntityConverterConstructorTest {
 
     @Test
     void shouldConvertHero() {
-        ColumnEntity communication = ColumnEntity.of("SuperHero");
+        CommunicationEntity communication = CommunicationEntity.of("SuperHero");
         communication.add("_id", "10L");
         communication.add("name", "Otavio");
         communication.add("powers", List.of("speed", "strength"));

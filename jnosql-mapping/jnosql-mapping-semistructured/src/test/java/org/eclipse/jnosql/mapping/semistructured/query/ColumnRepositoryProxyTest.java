@@ -31,19 +31,18 @@ import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.communication.column.Column;
-import org.eclipse.jnosql.communication.column.ColumnCondition;
-import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
+import org.eclipse.jnosql.communication.semistructured.Element;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.semistructured.ColumnEntityConverter;
-import org.eclipse.jnosql.mapping.semistructured.JNoSQLColumnTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
 import org.eclipse.jnosql.mapping.semistructured.MockProducer;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
 import org.eclipse.jnosql.mapping.semistructured.entities.PersonStatisticRepository;
 import org.eclipse.jnosql.mapping.semistructured.entities.Vendor;
-import org.eclipse.jnosql.mapping.semistructured.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
@@ -83,10 +82,10 @@ import static org.mockito.Mockito.*;
 @AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
-@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
+@AddExtensions({EntityMetadataExtension.class})
 class ColumnRepositoryProxyTest {
 
-    private JNoSQLColumnTemplate template;
+    private SemistructuredTemplate template;
 
     @Inject
     private EntitiesMetadata entities;
@@ -101,7 +100,7 @@ class ColumnRepositoryProxyTest {
 
     @BeforeEach
     void setUp() {
-        this.template = Mockito.mock(JNoSQLColumnTemplate.class);
+        this.template = Mockito.mock(SemistructuredTemplate.class);
 
         ColumnRepositoryProxy personHandler = new ColumnRepositoryProxy(template,
                 entities, PersonRepository.class, converters);
@@ -174,21 +173,21 @@ class ColumnRepositoryProxyTest {
     @Test
     void shouldFindByNameInstance() {
 
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
         personRepository.findByName("name");
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).singleResult(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(Condition.EQUALS, condition.condition());
-        assertEquals(Column.of("name", "name"), condition.column());
+        assertEquals(Element.of("name", "name"), condition.element());
 
         assertNotNull(personRepository.findByName("name"));
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .empty());
 
         assertNull(personRepository.findByName("name"));
@@ -201,11 +200,11 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         List<Person> persons = personRepository.findByNameAndAge("name", 20);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
         assertThat(persons).contains(ada);
 
@@ -216,11 +215,11 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         Set<Person> persons = personRepository.findByAgeAndName(20, "name");
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
         assertThat(persons).contains(ada);
 
@@ -231,11 +230,11 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         Stream<Person> persons = personRepository.findByNameAndAgeOrderByName("name", 20);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
         assertThat(persons.collect(Collectors.toList())).contains(ada);
 
@@ -246,11 +245,11 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         Queue<Person> persons = personRepository.findByNameAndAgeOrderByAge("name", 20);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
         assertThat(persons).contains(ada);
 
@@ -258,14 +257,14 @@ class ColumnRepositoryProxyTest {
 
     @Test
     void shouldDeleteByName() {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         personRepository.deleteByName("Ada");
         verify(template).delete(captor.capture());
-        ColumnDeleteQuery deleteQuery = captor.getValue();
-        ColumnCondition condition = deleteQuery.condition().get();
+        DeleteQuery deleteQuery = captor.getValue();
+        CriteriaCondition condition = deleteQuery.condition().get();
         assertEquals("Person", deleteQuery.name());
         assertEquals(Condition.EQUALS, condition.condition());
-        assertEquals(Column.of("name", "Ada"), condition.column());
+        assertEquals(Element.of("name", "Ada"), condition.element());
 
     }
 
@@ -289,14 +288,14 @@ class ColumnRepositoryProxyTest {
 
     @Test
     void shouldDeleteById() {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         personRepository.deleteById(10L);
         verify(template).delete(Person.class, 10L);
     }
 
     @Test
     void shouldDeleteByIds() {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         personRepository.deleteByIdIn(singletonList(10L));
         verify(template).delete(Person.class, 10L);
     }
@@ -319,7 +318,7 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         personRepository.findAll().toList();
@@ -372,28 +371,28 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         personRepository.findByNameAndAgeGreaterThanEqual("Ada", 33);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(AND, condition.condition());
-        List<ColumnCondition> conditions = condition.column().get(new TypeReference<>() {
+        List<CriteriaCondition> conditions = condition.element().get(new TypeReference<>() {
         });
-        ColumnCondition columnCondition = conditions.get(0);
-        ColumnCondition columnCondition2 = conditions.get(1);
+        CriteriaCondition columnCondition = conditions.get(0);
+        CriteriaCondition columnCondition2 = conditions.get(1);
 
         assertEquals(Condition.EQUALS, columnCondition.condition());
-        assertEquals("Ada", columnCondition.column().get());
-        assertEquals("name", columnCondition.column().name());
+        assertEquals("Ada", columnCondition.element().get());
+        assertEquals("name", columnCondition.element().name());
 
         assertEquals(Condition.GREATER_EQUALS_THAN, columnCondition2.condition());
-        assertEquals(33, columnCondition2.column().get());
-        assertEquals("age", columnCondition2.column().name());
+        assertEquals(33, columnCondition2.element().get());
+        assertEquals("age", columnCondition2.element().name());
     }
 
     @Test
@@ -401,17 +400,17 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         personRepository.findByAgeGreaterThan(33);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(GREATER_THAN, condition.condition());
-        assertEquals(Column.of("age", 33), condition.column());
+        assertEquals(Element.of("age", 33), condition.element());
 
     }
 
@@ -420,17 +419,17 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         personRepository.findByAgeLessThanEqual(33);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(LESSER_EQUALS_THAN, condition.condition());
-        assertEquals(Column.of("age", 33), condition.column());
+        assertEquals(Element.of("age", 33), condition.element());
 
     }
 
@@ -439,17 +438,17 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         personRepository.findByAgeLessThan(33);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(LESSER_THAN, condition.condition());
-        assertEquals(Column.of("age", 33), condition.column());
+        assertEquals(Element.of("age", 33), condition.element());
 
     }
 
@@ -458,20 +457,20 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         personRepository.findByAgeBetween(10, 15);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(BETWEEN, condition.condition());
-        List<Value> values = condition.column().get(new TypeReference<>() {
+        List<Value> values = condition.element().get(new TypeReference<>() {
         });
         assertEquals(Arrays.asList(10, 15), values.stream().map(Value::get).collect(Collectors.toList()));
-        assertTrue(condition.column().name().contains("age"));
+        assertTrue(condition.element().name().contains("age"));
     }
 
 
@@ -480,17 +479,17 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         personRepository.findByNameLike("Ada");
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(LIKE, condition.condition());
-        assertEquals(Column.of("name", "Ada"), condition.column());
+        assertEquals(Element.of("name", "Ada"), condition.element());
 
     }
 
@@ -512,18 +511,18 @@ class ColumnRepositoryProxyTest {
         Vendor vendor = new Vendor("vendor");
         vendor.setPrefixes(Collections.singleton("prefix"));
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(vendor));
 
         vendorRepository.findByPrefixes("prefix");
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).singleResult(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("vendors", query.name());
         assertEquals(EQUALS, condition.condition());
-        assertEquals(Column.of("prefixes", "prefix"), condition.column());
+        assertEquals(Element.of("prefixes", "prefix"), condition.element());
 
     }
 
@@ -532,15 +531,15 @@ class ColumnRepositoryProxyTest {
         Vendor vendor = new Vendor("vendor");
         vendor.setPrefixes(Collections.singleton("prefix"));
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(vendor));
 
         vendorRepository.findByPrefixesIn(singletonList("prefix"));
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).singleResult(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("vendors", query.name());
         assertEquals(IN, condition.condition());
 
@@ -552,17 +551,17 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         personRepository.findByAge("120");
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(EQUALS, condition.condition());
-        assertEquals(Column.of("age", 120), condition.column());
+        assertEquals(Element.of("age", 120), condition.element());
     }
 
     @Test
@@ -570,17 +569,17 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         personRepository.findByActiveTrue();
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(EQUALS, condition.condition());
-        assertEquals(Column.of("active", true), condition.column());
+        assertEquals(Element.of("active", true), condition.element());
     }
 
     @Test
@@ -588,17 +587,17 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         personRepository.findByActiveFalse();
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(EQUALS, condition.condition());
-        assertEquals(Column.of("active", false), condition.column());
+        assertEquals(Element.of("active", false), condition.element());
     }
 
 
@@ -621,17 +620,17 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         personRepository.findBySalary_Currency("USD");
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
-        final Column column = condition.column();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
+        final Element element = condition.element();
         assertEquals("Person", query.name());
-        assertEquals("salary.currency", column.name());
+        assertEquals("salary.currency", element.name());
 
     }
 
@@ -639,18 +638,18 @@ class ColumnRepositoryProxyTest {
     void shouldFindBySalary_CurrencyAndSalary_Value() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
         personRepository.findBySalary_CurrencyAndSalary_Value("USD", BigDecimal.TEN);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
-        final Column column = condition.column();
-        final List<ColumnCondition> conditions = column.get(new TypeReference<>() {
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
+        final Element column = condition.element();
+        final List<CriteriaCondition> conditions = column.get(new TypeReference<>() {
         });
-        final List<String> names = conditions.stream().map(ColumnCondition::column)
-                .map(Column::name).collect(Collectors.toList());
+        final List<String> names = conditions.stream().map(CriteriaCondition::element)
+                .map(Element::name).collect(Collectors.toList());
         assertEquals("Person", query.name());
         assertThat(names).contains("salary.currency", "salary.value");
 
@@ -661,16 +660,16 @@ class ColumnRepositoryProxyTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
 
         personRepository.findBySalary_CurrencyOrderByCurrency_Name("USD");
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
-        final Sort sort = query.sorts().get(0);
-        final Column document = condition.column();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
+        final Sort<?> sort = query.sorts().get(0);
+        final Element document = condition.element();
         assertEquals("Person", query.name());
         assertEquals("salary.currency", document.name());
         assertEquals("currency.name", sort.property());
@@ -678,16 +677,16 @@ class ColumnRepositoryProxyTest {
 
     @Test
     void shouldCountByName() {
-        when(template.count(any(ColumnQuery.class)))
+        when(template.count(any(SelectQuery.class)))
                 .thenReturn(10L);
 
         var result = personRepository.countByName("Poliana");
         Assertions.assertEquals(10L, result);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).count(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
-        final Column column = condition.column();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
+        final Element column = condition.element();
         assertEquals("Person", query.name());
         assertEquals("name", column.name());
         assertEquals("Poliana", column.get());
@@ -695,16 +694,16 @@ class ColumnRepositoryProxyTest {
 
     @Test
     void shouldExistsByName() {
-        when(template.exists(any(ColumnQuery.class)))
+        when(template.exists(any(SelectQuery.class)))
                 .thenReturn(true);
 
         var result = personRepository.existsByName("Poliana");
         assertTrue(result);
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).exists(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
-        final Column column = condition.column();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
+        final Element column = condition.element();
         assertEquals("Person", query.name());
         assertEquals("name", column.name());
         assertEquals("Poliana", column.get());
@@ -713,23 +712,23 @@ class ColumnRepositoryProxyTest {
     @Test
     void shouldFindByNameNot() {
 
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
         personRepository.findByNameNot("name");
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).singleResult(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals(Condition.NOT, condition.condition());
         assertEquals("Person", query.name());
-        ColumnCondition columnCondition = condition.column().get(ColumnCondition.class);
+        CriteriaCondition columnCondition = condition.element().get(CriteriaCondition.class);
         assertEquals(Condition.EQUALS, columnCondition.condition());
-        assertEquals(Column.of("name", "name"), columnCondition.column());
+        assertEquals(Element.of("name", "name"), columnCondition.element());
 
         assertNotNull(personRepository.findByName("name"));
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .empty());
 
         assertNull(personRepository.findByName("name"));
@@ -738,23 +737,23 @@ class ColumnRepositoryProxyTest {
     @Test
     void shouldFindByNameNotEquals() {
 
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
         personRepository.findByNameNotEquals("name");
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).singleResult(captor.capture());
-        ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.condition().get();
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
         assertEquals(Condition.NOT, condition.condition());
         assertEquals("Person", query.name());
-        ColumnCondition columnCondition = condition.column().get(ColumnCondition.class);
+        CriteriaCondition columnCondition = condition.element().get(CriteriaCondition.class);
         assertEquals(Condition.EQUALS, columnCondition.condition());
-        assertEquals(Column.of("name", "name"), columnCondition.column());
+        assertEquals(Element.of("name", "name"), columnCondition.element());
 
         assertNotNull(personRepository.findByName("name"));
-        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .empty());
 
         assertNull(personRepository.findByName("name"));
@@ -764,9 +763,9 @@ class ColumnRepositoryProxyTest {
     void shouldExecuteDefaultMethod() {
         personRepository.partcionate("name");
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template, Mockito.times(2)).singleResult(captor.capture());
-        List<ColumnQuery> values = captor.getAllValues();
+        List<SelectQuery> values = captor.getAllValues();
         assertThat(values).isNotNull().hasSize(2);
     }
 
@@ -774,26 +773,26 @@ class ColumnRepositoryProxyTest {
     void shouldUseQueriesFromOtherInterface() {
         personRepository.findByNameLessThan("name");
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
+        SelectQuery query = captor.getValue();
         assertEquals("Person", query.name());
-        ColumnCondition condition = query.condition().get();
+        CriteriaCondition condition = query.condition().get();
         assertEquals(LESSER_THAN, condition.condition());
-        assertEquals(Column.of("name", "name"), condition.column());
+        assertEquals(Element.of("name", "name"), condition.element());
     }
 
     @Test
     void shouldUseDefaultMethodFromOtherInterface() {
         personRepository.ada();
 
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
+        SelectQuery query = captor.getValue();
         assertEquals("Person", query.name());
-        ColumnCondition condition = query.condition().get();
+        CriteriaCondition condition = query.condition().get();
         assertEquals(LESSER_THAN, condition.condition());
-        assertEquals(Column.of("name", "Ada"), condition.column());
+        assertEquals(Element.of("name", "Ada"), condition.element());
     }
 
     @Test
@@ -853,14 +852,14 @@ class ColumnRepositoryProxyTest {
     @Test
     void shouldExecuteMatchParameter(){
         personRepository.find("Ada");
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
+        SelectQuery query = captor.getValue();
         SoftAssertions.assertSoftly(softly -> {
             softly.assertThat(query.name()).isEqualTo("Person");
             var condition = query.condition().orElseThrow();
             softly.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            softly.assertThat(condition.column()).isEqualTo(Column.of("name", "Ada"));
+            softly.assertThat(condition.element()).isEqualTo(Element.of("name", "Ada"));
         });
     }
 

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.data.Limit;
 import jakarta.data.Sort;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.semistructured.MappingColumnQuery;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
@@ -29,20 +29,20 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * A query converter to update dynamic query to a {@link ColumnQuery}
+ * A query converter to update dynamic query to a {@link SelectQuery}
  */
-public class DynamicQuery implements Supplier<ColumnQuery> {
+public class DynamicQuery implements Supplier<SelectQuery> {
 
     private final SpecialParameters special;
-    private final ColumnQuery query;
+    private final SelectQuery query;
 
-    private DynamicQuery(SpecialParameters special, ColumnQuery query) {
+    private DynamicQuery(SpecialParameters special, SelectQuery query) {
         this.special = special;
         this.query = query;
     }
 
     @Override
-    public ColumnQuery get() {
+    public SelectQuery get() {
         if (special.isEmpty()) {
             return query;
         }
@@ -73,7 +73,7 @@ public class DynamicQuery implements Supplier<ColumnQuery> {
                     query.name());
         }
 
-        return special.pageRequest().<ColumnQuery>map(p -> {
+        return special.pageRequest().<SelectQuery>map(p -> {
             long size = p.size();
             long skip = NoSQLPage.skip(p);
             List<Sort<?>> sorts = query.sorts();
@@ -93,7 +93,7 @@ public class DynamicQuery implements Supplier<ColumnQuery> {
      * @return the {@link DynamicQuery} instance
      * @throws NullPointerException when either args or query are null
      */
-    public static DynamicQuery of(Object[] args, ColumnQuery query) {
+    public static DynamicQuery of(Object[] args, SelectQuery query) {
         Objects.requireNonNull(args, "args is required");
         Objects.requireNonNull(query, "query is required");
         return new DynamicQuery(DynamicReturn.findSpecialParameters(args), query);

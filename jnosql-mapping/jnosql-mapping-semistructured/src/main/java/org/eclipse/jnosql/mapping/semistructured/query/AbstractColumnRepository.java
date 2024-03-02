@@ -17,9 +17,9 @@ package org.eclipse.jnosql.mapping.semistructured.query;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 ;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
-import org.eclipse.jnosql.mapping.semistructured.JNoSQLColumnTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
 import org.eclipse.jnosql.mapping.semistructured.MappingColumnQuery;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -33,7 +33,7 @@ import java.util.stream.Stream;
  */
 public abstract class AbstractColumnRepository<T, K> extends AbstractRepository<T, K> {
 
-    protected abstract JNoSQLColumnTemplate template();
+    protected abstract SemistructuredTemplate template();
 
     @Override
     public long countBy() {
@@ -45,7 +45,7 @@ public abstract class AbstractColumnRepository<T, K> extends AbstractRepository<
     public Page<T> findAll(PageRequest pageRequest) {
         Objects.requireNonNull(pageRequest, "pageRequest is required");
         EntityMetadata metadata = entityMetadata();
-        ColumnQuery query = new MappingColumnQuery(pageRequest.sorts(),
+        SelectQuery query = new MappingColumnQuery(pageRequest.sorts(),
                 pageRequest.size(), NoSQLPage.skip(pageRequest)
                 , null ,metadata.name());
 

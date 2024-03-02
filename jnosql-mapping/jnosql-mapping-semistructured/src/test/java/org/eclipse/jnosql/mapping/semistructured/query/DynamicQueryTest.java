@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.semistructured.query;
 import jakarta.data.Limit;
 import jakarta.data.page.PageRequest;
 import jakarta.data.Sort;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.repository.SpecialParameters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ class DynamicQueryTest {
     private SpecialParameters special;
 
     @Mock
-    private ColumnQuery query;
+    private SelectQuery query;
 
     @Mock
     private Limit limit;
@@ -133,7 +133,7 @@ class DynamicQueryTest {
         DynamicQuery dynamicQuery = DynamicQuery.of(new Object[]{Sort.asc("name"), Limit.of(20)}
         , query);
 
-        ColumnQuery columnQuery = dynamicQuery.get();
+        SelectQuery columnQuery = dynamicQuery.get();
         assertEquals("sampleQuery", columnQuery.name());
         assertEquals(0, columnQuery.skip());
         assertEquals(20, columnQuery.limit());

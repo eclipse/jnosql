@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.semistructured;
 
-import org.eclipse.jnosql.communication.column.Column;
-import org.eclipse.jnosql.communication.column.ColumnCondition;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
+import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.core.util.ConverterUtil;
@@ -30,11 +30,11 @@ import static java.util.stream.Collectors.toList;
 
 abstract class AbstractMapperQuery {
 
-    protected final String columnFamily;
+    protected final String entity;
 
     protected boolean negate;
 
-    protected ColumnCondition condition;
+    protected CriteriaCondition condition;
 
     protected boolean and;
 
@@ -44,28 +44,28 @@ abstract class AbstractMapperQuery {
 
     protected transient final Converters converters;
 
-    protected transient final JNoSQLColumnTemplate template;
+    protected transient final SemistructuredTemplate template;
 
     protected long start;
 
     protected long limit;
 
 
-    AbstractMapperQuery(EntityMetadata mapping, Converters converters, JNoSQLColumnTemplate template) {
+    AbstractMapperQuery(EntityMetadata mapping, Converters converters, SemistructuredTemplate template) {
         this.mapping = mapping;
         this.converters = converters;
-        this.columnFamily = mapping.name();
+        this.entity = mapping.name();
         this.template = template;
         mapping.inheritance().ifPresent(i -> {
             if(!i.parent().equals(mapping.type())){
-                this.condition = ColumnCondition.eq(Column.of(i.discriminatorColumn(), i.discriminatorValue()));
+                this.condition = CriteriaCondition.eq(Element.of(i.discriminatorColumn(), i.discriminatorValue()));
                 this.and = true;
             }
         });
     }
 
-    protected void appendCondition(ColumnCondition incomingCondition) {
-        ColumnCondition columnCondition = getColumnCondition(incomingCondition);
+    protected void appendCondition(CriteriaCondition incomingCondition) {
+        CriteriaCondition columnCondition = getCondition(incomingCondition);
 
         if (nonNull(condition)) {
             this.condition = and ? this.condition.and(columnCondition) : this.condition.or(columnCondition);
@@ -80,8 +80,8 @@ abstract class AbstractMapperQuery {
     protected <T> void betweenImpl(T valueA, T valueB) {
         requireNonNull(valueA, "valueA is required");
         requireNonNull(valueB, "valueB is required");
-        ColumnCondition newCondition = ColumnCondition
-                .between(Column.of(mapping.columnField(name), asList(getValue(valueA), getValue(valueB))));
+        CriteriaCondition newCondition = CriteriaCondition
+                .between(Element.of(mapping.columnField(name), asList(getValue(valueA), getValue(valueB))));
         appendCondition(newCondition);
     }
 
@@ -91,51 +91,51 @@ abstract class AbstractMapperQuery {
         requireNonNull(values, "values is required");
         List<Object> convertedValues = StreamSupport.stream(values.spliterator(), false)
                 .map(this::getValue).collect(toList());
-        ColumnCondition newCondition = ColumnCondition
-                .in(Column.of(mapping.columnField(name), convertedValues));
+        CriteriaCondition newCondition = CriteriaCondition
+                .in(Element.of(mapping.columnField(name), convertedValues));
         appendCondition(newCondition);
     }
 
     protected <T> void eqImpl(T value) {
         requireNonNull(value, "value is required");
 
-        ColumnCondition newCondition = ColumnCondition
-                .eq(Column.of(mapping.columnField(name), getValue(value)));
+        CriteriaCondition newCondition = CriteriaCondition
+                .eq(Element.of(mapping.columnField(name), getValue(value)));
         appendCondition(newCondition);
     }
 
     protected void likeImpl(String value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition
-                .like(Column.of(mapping.columnField(name), getValue(value)));
+        CriteriaCondition newCondition = CriteriaCondition
+                .like(Element.of(mapping.columnField(name), getValue(value)));
         appendCondition(newCondition);
     }
 
     protected <T> void gteImpl(T value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition
-                .gte(Column.of(mapping.columnField(name), getValue(value)));
+        CriteriaCondition newCondition = CriteriaCondition
+                .gte(Element.of(mapping.columnField(name), getValue(value)));
         appendCondition(newCondition);
     }
 
     protected <T> void gtImpl(T value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition
-                .gt(Column.of(mapping.columnField(name), getValue(value)));
+        CriteriaCondition newCondition = CriteriaCondition
+                .gt(Element.of(mapping.columnField(name), getValue(value)));
         appendCondition(newCondition);
     }
 
     protected <T> void ltImpl(T value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition
-                .lt(Column.of(mapping.columnField(name), getValue(value)));
+        CriteriaCondition newCondition = CriteriaCondition
+                .lt(Element.of(mapping.columnField(name), getValue(value)));
         appendCondition(newCondition);
     }
 
     protected <T> void lteImpl(T value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition
-                .lte(Column.of(mapping.columnField(name), getValue(value)));
+        CriteriaCondition newCondition = CriteriaCondition
+                .lte(Element.of(mapping.columnField(name), getValue(value)));
         appendCondition(newCondition);
     }
 
@@ -143,7 +143,7 @@ abstract class AbstractMapperQuery {
         return ConverterUtil.getValue(value, mapping, name, converters);
     }
 
-    private ColumnCondition getColumnCondition(ColumnCondition newCondition) {
+    private CriteriaCondition getCondition(CriteriaCondition newCondition) {
         if (negate) {
             return newCondition.negate();
         } else {

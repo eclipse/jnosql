@@ -20,23 +20,21 @@ import jakarta.data.Sort;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.communication.Params;
-import org.eclipse.jnosql.communication.column.Column;
-import org.eclipse.jnosql.communication.column.ColumnCondition;
-import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
-import org.eclipse.jnosql.communication.column.ColumnDeleteQueryParams;
-import org.eclipse.jnosql.communication.column.ColumnObserverParser;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
-import org.eclipse.jnosql.communication.column.ColumnQueryParams;
-import org.eclipse.jnosql.communication.column.DeleteQueryParser;
-import org.eclipse.jnosql.communication.column.SelectQueryParser;
 import org.eclipse.jnosql.communication.query.DeleteQuery;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.method.DeleteMethodProvider;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
+import org.eclipse.jnosql.communication.semistructured.DeleteQueryParams;
+import org.eclipse.jnosql.communication.semistructured.DeleteQueryParser;
+import org.eclipse.jnosql.communication.semistructured.Element;
+import org.eclipse.jnosql.communication.semistructured.QueryParams;
+import org.eclipse.jnosql.communication.semistructured.SelectQueryParser;
 import org.eclipse.jnosql.mapping.semistructured.MappingColumnQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
-import org.eclipse.jnosql.mapping.semistructured.JNoSQLColumnTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepositoryProxy;
 import org.eclipse.jnosql.mapping.core.repository.SpecialParameters;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -81,22 +79,22 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
     protected abstract EntityMetadata entityMetadata();
 
     /**
-     * Retrieves the JNoSQLColumnTemplate instance for executing column queries.
+     * Retrieves the SemistructuredTemplate instance for executing column queries.
      *
-     * @return The JNoSQLColumnTemplate instance.
+     * @return The SemistructuredTemplate instance.
      */
-    protected abstract JNoSQLColumnTemplate template();
+    protected abstract SemistructuredTemplate template();
 
-    private ColumnObserverParser parser;
+    private CommunicationObserverParser parser;
 
     private ParamsBinder paramsBinder;
 
 
-    protected ColumnQuery query(Method method, Object[] args) {
+    protected org.eclipse.jnosql.communication.semistructured.SelectQuery query(Method method, Object[] args) {
         SelectMethodProvider provider = SelectMethodProvider.INSTANCE;
         SelectQuery selectQuery = provider.apply(method, entityMetadata().name());
-        ColumnQueryParams queryParams = SELECT_PARSER.apply(selectQuery, parser());
-        ColumnQuery query = queryParams.query();
+        QueryParams queryParams = SELECT_PARSER.apply(selectQuery, parser());
+        org.eclipse.jnosql.communication.semistructured.SelectQuery query = queryParams.query();
         Params params = queryParams.params();
         paramsBinder().bind(params, args(args), method);
         return updateQueryDynamically(args(args), query);
@@ -106,11 +104,11 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
         return args == null ? EMPTY_PARAM : args;
     }
 
-    protected ColumnDeleteQuery deleteQuery(Method method, Object[] args) {
+    protected org.eclipse.jnosql.communication.semistructured.DeleteQuery deleteQuery(Method method, Object[] args) {
         DeleteMethodProvider deleteMethodFactory = DeleteMethodProvider.INSTANCE;
         DeleteQuery deleteQuery = deleteMethodFactory.apply(method, entityMetadata().name());
-        ColumnDeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, parser());
-        ColumnDeleteQuery query = queryParams.query();
+        DeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, parser());
+        var query = queryParams.query();
         Params params = queryParams.params();
         paramsBinder().bind(params, args(args), method);
         return query;
@@ -122,7 +120,7 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
      * @return The ColumnObserverParser instance.
      */
 
-    protected ColumnObserverParser parser() {
+    protected CommunicationObserverParser parser() {
         if (parser == null) {
             this.parser = new RepositoryColumnObserverParser(entityMetadata());
         }
@@ -141,7 +139,8 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
         return paramsBinder;
     }
 
-    protected Object executeFindByQuery(Method method, Object[] args, Class<?> typeClass, ColumnQuery query) {
+    @SuppressWarnings("unchecked")
+    protected Object executeFindByQuery(Method method, Object[] args, Class<?> typeClass, org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
@@ -155,15 +154,15 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
         return dynamicReturn.execute();
     }
 
-    private ColumnQuery includeInheritance(ColumnQuery query){
+    private org.eclipse.jnosql.communication.semistructured.SelectQuery includeInheritance(org.eclipse.jnosql.communication.semistructured.SelectQuery query){
         EntityMetadata metadata = this.entityMetadata();
         if(metadata.inheritance().isPresent()){
             InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();
             if(!inheritanceMetadata.parent().equals(metadata.type())){
-                ColumnCondition condition = ColumnCondition.eq(Column.of(inheritanceMetadata.discriminatorColumn(),
+                CriteriaCondition condition = CriteriaCondition.eq(Element.of(inheritanceMetadata.discriminatorColumn(),
                         inheritanceMetadata.discriminatorValue()));
                 if(query.condition().isPresent()){
-                    ColumnCondition columnCondition = query.condition().orElseThrow();
+                    CriteriaCondition columnCondition = query.condition().orElseThrow();
                     condition = condition.and(columnCondition);
                 }
                 return new MappingColumnQuery(query.sorts(), query.limit(), query.skip(),
@@ -173,34 +172,35 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
         return query;
     }
 
-    protected Long executeCountByQuery(ColumnQuery query) {
+    protected Long executeCountByQuery(org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         return template().count(query);
     }
 
-    protected boolean executeExistsByQuery(ColumnQuery query) {
+    protected boolean executeExistsByQuery(org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         return template().exists(query);
     }
 
 
 
-    protected Function<PageRequest, Page<T>> getPage(ColumnQuery query) {
+    protected Function<PageRequest, Page<T>> getPage(org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         return p -> {
             Stream<T> entities = template().select(query);
             return NoSQLPage.of(entities.toList(), p);
         };
     }
 
-    protected Function<PageRequest, Optional<T>> getSingleResult(ColumnQuery query) {
+    protected Function<PageRequest, Optional<T>> getSingleResult(org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         return p -> template().singleResult(query);
     }
 
-    protected Function<PageRequest, Stream<T>> streamPagination(ColumnQuery query) {
+    protected Function<PageRequest, Stream<T>> streamPagination(org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         return p -> template().select(query);
     }
 
 
-    protected ColumnQuery updateQueryDynamically(Object[] args, ColumnQuery query) {
-        ColumnQuery documentQuery = includeInheritance(query);
+    protected org.eclipse.jnosql.communication.semistructured.SelectQuery updateQueryDynamically(Object[] args,
+                                                                                                 org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
+        var documentQuery = includeInheritance(query);
         SpecialParameters special = DynamicReturn.findSpecialParameters(args);
 
         if (special.isEmpty()) {
@@ -229,7 +229,7 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
                     documentQuery.name());
         }
 
-        return special.pageRequest().<ColumnQuery>map(p -> {
+        return special.pageRequest().<org.eclipse.jnosql.communication.semistructured.SelectQuery>map(p -> {
             long size = p.size();
             long skip = NoSQLPage.skip(p);
             List<Sort<?>> sorts = documentQuery.sorts();

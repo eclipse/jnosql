@@ -17,15 +17,14 @@ package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.TypeReference;
-import org.eclipse.jnosql.communication.column.Column;
-import org.eclipse.jnosql.communication.column.ColumnCondition;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
+import org.eclipse.jnosql.communication.semistructured.Element;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.semistructured.ColumnEntityConverter;
-import org.eclipse.jnosql.mapping.semistructured.JNoSQLColumnTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
 import org.eclipse.jnosql.mapping.semistructured.MockProducer;
 import org.eclipse.jnosql.mapping.semistructured.entities.inheritance.EmailNotification;
-import org.eclipse.jnosql.mapping.semistructured.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -49,10 +48,10 @@ import static org.mockito.Mockito.verify;
 @AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
-@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
+@AddExtensions({EntityMetadataExtension.class})
 class ColumnCrudInheritanceRepositoryProxyTest {
 
-    private JNoSQLColumnTemplate template;
+    private SemistructuredTemplate template;
 
     @Inject
     private EntitiesMetadata entities;
@@ -66,7 +65,7 @@ class ColumnCrudInheritanceRepositoryProxyTest {
 
     @BeforeEach
     public void setUp() {
-        this.template = Mockito.mock(JNoSQLColumnTemplate.class);
+        this.template = Mockito.mock(SemistructuredTemplate.class);
 
         ColumnRepositoryProxy<EmailNotification, Long> personHandler = new ColumnRepositoryProxy<>(template,
                 entities, EmailRepository.class, converters);
@@ -92,34 +91,34 @@ class ColumnCrudInheritanceRepositoryProxyTest {
     @Test
     void shouldPutFilterAtFindByName() {
         emailRepository.findByName("name");
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
+        SelectQuery query = captor.getValue();
         assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
             soft.assertThat(query.condition()).isPresent();
-            ColumnCondition condition = query.condition().orElseThrow();
+            CriteriaCondition condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(AND);
-            var conditions = condition.column().get(new TypeReference<List<ColumnCondition>>() {
+            var conditions = condition.element().get(new TypeReference<List<CriteriaCondition>>() {
             });
-            soft.assertThat(conditions).hasSize(2).contains(ColumnCondition.eq(Column.of("dtype", "Email")));
+            soft.assertThat(conditions).hasSize(2).contains(CriteriaCondition.eq(Element.of("dtype", "Email")));
         });
     }
 
     @Test
     void shouldPutFilterAtCountByName() {
         emailRepository.countByName("name");
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).count(captor.capture());
-        ColumnQuery query = captor.getValue();
+        SelectQuery query = captor.getValue();
         assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
             soft.assertThat(query.condition()).isPresent();
-            ColumnCondition condition = query.condition().orElseThrow();
+            CriteriaCondition condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(AND);
-            var conditions = condition.column().get(new TypeReference<List<ColumnCondition>>() {
+            var conditions = condition.element().get(new TypeReference<List<CriteriaCondition>>() {
             });
-            soft.assertThat(conditions).hasSize(2).contains(ColumnCondition.eq(Column.of("dtype", "Email")));
+            soft.assertThat(conditions).hasSize(2).contains(CriteriaCondition.eq(Element.of("dtype", "Email")));
         });
     }
 
@@ -127,17 +126,17 @@ class ColumnCrudInheritanceRepositoryProxyTest {
     @Test
     void shouldPutFilterAtExistByName() {
         emailRepository.existsByName("name");
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).exists(captor.capture());
-        ColumnQuery query = captor.getValue();
+        SelectQuery query = captor.getValue();
         assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
             soft.assertThat(query.condition()).isPresent();
-            ColumnCondition condition = query.condition().orElseThrow();
+            CriteriaCondition condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(AND);
-            var conditions = condition.column().get(new TypeReference<List<ColumnCondition>>() {
+            var conditions = condition.element().get(new TypeReference<List<CriteriaCondition>>() {
             });
-            soft.assertThat(conditions).hasSize(2).contains(ColumnCondition.eq(Column.of("dtype", "Email")));
+            soft.assertThat(conditions).hasSize(2).contains(CriteriaCondition.eq(Element.of("dtype", "Email")));
         });
     }
 

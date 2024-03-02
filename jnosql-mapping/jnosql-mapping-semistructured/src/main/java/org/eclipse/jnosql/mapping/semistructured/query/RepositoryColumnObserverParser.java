@@ -14,16 +14,16 @@
  */
 package org.eclipse.jnosql.mapping.semistructured.query;
 
-import org.eclipse.jnosql.communication.column.ColumnObserverParser;
+import org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.core.repository.RepositoryObserverParser;
 
 import java.util.Objects;
 
 /**
- * The {@link ColumnObserverParser} to {@link RepositoryObserverParser}
+ * The {@link CommunicationObserverParser} to {@link RepositoryObserverParser}
  */
-public final class RepositoryColumnObserverParser implements ColumnObserverParser {
+public final class RepositoryColumnObserverParser implements CommunicationObserverParser {
 
     private final RepositoryObserverParser parser;
 
@@ -45,7 +45,7 @@ public final class RepositoryColumnObserverParser implements ColumnObserverParse
      * @return RepositoryColumnObserverParser
      * throws NullPointerException if entityMetadata is null
      */
-    public static ColumnObserverParser of(EntityMetadata entityMetadata) {
+    public static CommunicationObserverParser of(EntityMetadata entityMetadata) {
         Objects.requireNonNull(entityMetadata, "entityMetadata is required");
         return new RepositoryColumnObserverParser(entityMetadata);
     }

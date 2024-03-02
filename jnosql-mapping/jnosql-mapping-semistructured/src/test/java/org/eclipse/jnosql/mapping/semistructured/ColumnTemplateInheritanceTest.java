@@ -18,14 +18,13 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
-import org.eclipse.jnosql.communication.column.Column;
-import org.eclipse.jnosql.communication.column.ColumnCondition;
-import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
-import org.eclipse.jnosql.communication.column.ColumnManager;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
+import org.eclipse.jnosql.communication.semistructured.Element;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.semistructured.entities.inheritance.EmailNotification;
 import org.eclipse.jnosql.mapping.semistructured.entities.inheritance.Notification;
-import org.eclipse.jnosql.mapping.semistructured.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -47,7 +46,7 @@ import static org.mockito.Mockito.when;
 @AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
-@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
+@AddExtensions({EntityMetadataExtension.class})
 class ColumnTemplateInheritanceTest {
 
     @Inject
@@ -59,17 +58,17 @@ class ColumnTemplateInheritanceTest {
     @Inject
     private Converters converters;
 
-    private ColumnManager managerMock;
+    private DatabaseManager managerMock;
 
     private DefaultColumnTemplate template;
 
 
     @BeforeEach
     void setUp() {
-        managerMock = Mockito.mock(ColumnManager.class);
+        managerMock = Mockito.mock(DatabaseManager.class);
         var documentEventPersistManager = Mockito.mock(ColumnEventPersistManager.class);
 
-        Instance<ColumnManager> instance = Mockito.mock(Instance.class);
+        Instance<DatabaseManager> instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerMock);
         this.template = new DefaultColumnTemplate(converter, instance,
                 documentEventPersistManager, entities, converters);
@@ -77,22 +76,22 @@ class ColumnTemplateInheritanceTest {
 
     @Test
     void shouldSelectFilter(){
-        var captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         template.select(EmailNotification.class).<EmailNotification>stream().toList();
         Mockito.verify(this.managerMock).select(captor.capture());
         var query = captor.getValue();
         assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
             soft.assertThat(query.condition()).isPresent();
-            ColumnCondition condition = query.condition().orElseThrow();
+            CriteriaCondition condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.column()).isEqualTo(Column.of("dtype", "Email"));
+            soft.assertThat(condition.element()).isEqualTo(Element.of("dtype", "Email"));
         });
     }
 
     @Test
     void shouldSelectNoFilter(){
-        var captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         template.select(Notification.class).<Notification>stream().toList();
         Mockito.verify(this.managerMock).select(captor.capture());
         var query = captor.getValue();
@@ -104,22 +103,22 @@ class ColumnTemplateInheritanceTest {
 
     @Test
     void shouldDeleteFilter(){
-        var captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(DeleteQuery.class);
         template.delete(EmailNotification.class).execute();
         Mockito.verify(this.managerMock).delete(captor.capture());
         var query = captor.getValue();
         assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
             soft.assertThat(query.condition()).isPresent();
-            ColumnCondition condition = query.condition().orElseThrow();
+            CriteriaCondition condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.column()).isEqualTo(Column.of("dtype", "Email"));
+            soft.assertThat(condition.element()).isEqualTo(Element.of("dtype", "Email"));
         });
     }
 
     @Test
     void shouldDeleteNoFilter(){
-        var captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(DeleteQuery.class);
         template.delete(Notification.class).execute();
         Mockito.verify(this.managerMock).delete(captor.capture());
         var query = captor.getValue();
@@ -131,7 +130,7 @@ class ColumnTemplateInheritanceTest {
 
     @Test
     void shouldSelectFilterCondition(){
-        var captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         template.select(EmailNotification.class).where("name")
                 .eq("notification").<EmailNotification>stream().toList();
         Mockito.verify(this.managerMock).select(captor.capture());
@@ -139,17 +138,17 @@ class ColumnTemplateInheritanceTest {
         assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
             soft.assertThat(query.condition()).isPresent();
-            ColumnCondition condition = query.condition().orElseThrow();
+            CriteriaCondition condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
-            var documents = condition.column().get(new TypeReference<List<ColumnCondition>>() {});
-            soft.assertThat(documents).contains(ColumnCondition.eq(Column.of("dtype", "Email")),
-                    ColumnCondition.eq(Column.of("name", "notification")));
+            var documents = condition.element().get(new TypeReference<List<CriteriaCondition>>() {});
+            soft.assertThat(documents).contains(CriteriaCondition.eq(Element.of("dtype", "Email")),
+                    CriteriaCondition.eq(Element.of("name", "notification")));
         });
     }
 
     @Test
     void shouldDeleteFilterCondition(){
-        var captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(DeleteQuery.class);
         template.delete(EmailNotification.class).where("name")
                 .eq("notification").execute();
         Mockito.verify(this.managerMock).delete(captor.capture());
@@ -157,17 +156,17 @@ class ColumnTemplateInheritanceTest {
         assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
             soft.assertThat(query.condition()).isPresent();
-            ColumnCondition condition = query.condition().orElseThrow();
+            CriteriaCondition condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
-            var documents = condition.column().get(new TypeReference<List<ColumnCondition>>() {});
-            soft.assertThat(documents).contains(ColumnCondition.eq(Column.of("dtype", "Email")),
-                    ColumnCondition.eq(Column.of("name", "notification")));
+            var documents = condition.element().get(new TypeReference<List<CriteriaCondition>>() {});
+            soft.assertThat(documents).contains(CriteriaCondition.eq(Element.of("dtype", "Email")),
+                    CriteriaCondition.eq(Element.of("name", "notification")));
         });
     }
 
     @Test
     void shouldCountAllFilter(){
-        var captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         template.count(EmailNotification.class);
         Mockito.verify(this.managerMock).count(captor.capture());
         var query = captor.getValue();
@@ -175,15 +174,15 @@ class ColumnTemplateInheritanceTest {
         assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
             soft.assertThat(query.condition()).isPresent();
-            ColumnCondition condition = query.condition().orElseThrow();
+            CriteriaCondition condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.column()).isEqualTo(Column.of("dtype", "Email"));
+            soft.assertThat(condition.element()).isEqualTo(Element.of("dtype", "Email"));
         });
     }
 
     @Test
     void shouldFindAllFilter(){
-        var captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         template.findAll(EmailNotification.class);
         Mockito.verify(this.managerMock).select(captor.capture());
         var query = captor.getValue();
@@ -191,15 +190,15 @@ class ColumnTemplateInheritanceTest {
         assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
             soft.assertThat(query.condition()).isPresent();
-            ColumnCondition condition = query.condition().orElseThrow();
+            CriteriaCondition condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.column()).isEqualTo(Column.of("dtype", "Email"));
+            soft.assertThat(condition.element()).isEqualTo(Element.of("dtype", "Email"));
         });
     }
 
     @Test
     void shouldDeleteAllFilter(){
-        var captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(DeleteQuery.class);
         template.deleteAll(EmailNotification.class);
         Mockito.verify(this.managerMock).delete(captor.capture());
         var query = captor.getValue();
@@ -207,16 +206,16 @@ class ColumnTemplateInheritanceTest {
         assertSoftly(soft ->{
             soft.assertThat(query.name()).isEqualTo("Notification");
             soft.assertThat(query.condition()).isPresent();
-            ColumnCondition condition = query.condition().orElseThrow();
+            CriteriaCondition condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.column()).isEqualTo(Column.of("dtype", "Email"));
+            soft.assertThat(condition.element()).isEqualTo(Element.of("dtype", "Email"));
         });
     }
 
 
     @Test
     void shouldCountAllNoFilter(){
-        var captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         template.count(Notification.class);
         Mockito.verify(this.managerMock).count(captor.capture());
         var query = captor.getValue();
@@ -229,7 +228,7 @@ class ColumnTemplateInheritanceTest {
 
     @Test
     void shouldFindAllNoFilter(){
-        var captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         template.findAll(Notification.class);
         Mockito.verify(this.managerMock).select(captor.capture());
         var query = captor.getValue();
@@ -241,7 +240,7 @@ class ColumnTemplateInheritanceTest {
     }
     @Test
     void shouldDeleteAllNoFilter(){
-        var captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(DeleteQuery.class);
         template.deleteAll(Notification.class);
         Mockito.verify(this.managerMock).delete(captor.capture());
         var query = captor.getValue();

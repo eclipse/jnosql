@@ -14,8 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.semistructured.query;
 
-import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.core.repository.RepositoryReflectionUtils;
 
@@ -44,7 +43,7 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepo
 
     @Override
     protected Object executeDeleteByAll(Object instance, Method method, Object[] params) {
-        ColumnDeleteQuery deleteQuery = deleteQuery(method, params);
+        DeleteQuery deleteQuery = deleteQuery(method, params);
         template().delete(deleteQuery);
         return Void.class;
     }
@@ -52,7 +51,7 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepo
     @Override
     protected Object executeFindAll(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
-        var query = ColumnQuery.select().from(entityMetadata().name()).build();
+        var query = org.eclipse.jnosql.communication.semistructured.SelectQuery.select().from(entityMetadata().name()).build();
         return executeFindByQuery(method, params, type, updateQueryDynamically(params, query));
     }
 

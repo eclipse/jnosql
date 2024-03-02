@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.semistructured.query;
 
 
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.semistructured.JNoSQLColumnTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -33,7 +33,7 @@ import java.util.Objects;
  */
 public class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T, K> {
 
-    private final JNoSQLColumnTemplate template;
+    private final SemistructuredTemplate template;
 
     private final ColumnRepository<T, K> repository;
 
@@ -44,7 +44,7 @@ public class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T
     private final Class<?> repositoryType;
 
 
-    ColumnRepositoryProxy(JNoSQLColumnTemplate template, EntitiesMetadata entities, Class<?> repositoryType,
+    ColumnRepositoryProxy(SemistructuredTemplate template, EntitiesMetadata entities, Class<?> repositoryType,
                           Converters converters) {
         this.template = template;
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
@@ -66,7 +66,7 @@ public class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T
     }
 
     @Override
-    protected JNoSQLColumnTemplate template() {
+    protected SemistructuredTemplate template() {
         return template;
     }
 
@@ -89,17 +89,17 @@ public class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T
      */
     public static class ColumnRepository<T, K> extends AbstractColumnRepository<T, K> {
 
-        private final JNoSQLColumnTemplate template;
+        private final SemistructuredTemplate template;
 
         private final EntityMetadata entityMetadata;
 
-        ColumnRepository(JNoSQLColumnTemplate template, EntityMetadata entityMetadata) {
+        ColumnRepository(SemistructuredTemplate template, EntityMetadata entityMetadata) {
             this.template = template;
             this.entityMetadata = entityMetadata;
         }
 
         @Override
-        protected JNoSQLColumnTemplate template() {
+        protected SemistructuredTemplate template() {
             return template;
         }
 
@@ -113,12 +113,12 @@ public class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T
          *
          * @param <T>      The entity type managed by the repository.
          * @param <K>      The key type used for column-based operations.
-         * @param template The JNoSQLColumnTemplate used for column database operations. Must not be {@code null}.
+         * @param template The SemistructuredTemplate used for column database operations. Must not be {@code null}.
          * @param metadata The metadata of the entity. Must not be {@code null}.
          * @return A new instance of ColumnRepository.
          * @throws NullPointerException If either the template or metadata is {@code null}.
          */
-        public static <T, K> ColumnRepository<T, K> of(JNoSQLColumnTemplate template, EntityMetadata metadata) {
+        public static <T, K> ColumnRepository<T, K> of(SemistructuredTemplate template, EntityMetadata metadata) {
             Objects.requireNonNull(template,"template is required");
             Objects.requireNonNull(metadata,"metadata is required");
             return new ColumnRepository<>(template, metadata);

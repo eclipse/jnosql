@@ -18,13 +18,11 @@ import jakarta.inject.Inject;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
-import org.eclipse.jnosql.communication.column.Column;
-import org.eclipse.jnosql.communication.column.ColumnCondition;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
+import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.mapping.semistructured.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.semistructured.MockProducer;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
-import org.eclipse.jnosql.mapping.semistructured.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -45,7 +43,7 @@ import java.util.Map;
 @AddPackages(value = {Converters.class, ColumnEntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
-@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
+@AddExtensions({EntityMetadataExtension.class})
 class ColumnParameterBasedQueryTest {
 
     @Inject
@@ -60,7 +58,7 @@ class ColumnParameterBasedQueryTest {
     @Test
     void shouldCreateQuerySingleParameter(){
         Map<String, Object> params = Map.of("name", "Ada");
-        ColumnQuery query = ColumnParameterBasedQuery.INSTANCE.toQuery(params, metadata);
+        var query = ColumnParameterBasedQuery.INSTANCE.toQuery(params, metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);
@@ -68,14 +66,14 @@ class ColumnParameterBasedQueryTest {
             soft.assertThat(query.name()).isEqualTo("Person");
             soft.assertThat(query.sorts()).isEmpty();
             soft.assertThat(query.condition()).isNotEmpty();
-            soft.assertThat(query.condition()).get().isEqualTo(ColumnCondition.eq(Column.of("name", "Ada")));
+            soft.assertThat(query.condition()).get().isEqualTo(CriteriaCondition.eq(Element.of("name", "Ada")));
         });
     }
 
     @Test
     void shouldCreateQueryMultipleParams(){
         Map<String, Object> params = Map.of("name", "Ada", "age", 10);
-        ColumnQuery query = ColumnParameterBasedQuery.INSTANCE.toQuery(params, metadata);
+        var query = ColumnParameterBasedQuery.INSTANCE.toQuery(params, metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);
@@ -85,9 +83,9 @@ class ColumnParameterBasedQueryTest {
             soft.assertThat(query.condition()).isNotEmpty();
             var condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
-            soft.assertThat(condition.column().get(new TypeReference<List<ColumnCondition>>() {
-            })).contains(ColumnCondition.eq(Column.of("name", "Ada")),
-                    ColumnCondition.eq(Column.of("age", 10)));
+            soft.assertThat(condition.element().get(new TypeReference<List<CriteriaCondition>>() {
+            })).contains(CriteriaCondition.eq(Element.of("name", "Ada")),
+                    CriteriaCondition.eq(Element.of("age", 10)));
         });
 
     }
@@ -95,7 +93,7 @@ class ColumnParameterBasedQueryTest {
     @Test
     void shouldCreateQueryEmptyParams(){
         Map<String, Object> params = Collections.emptyMap();
-        ColumnQuery query = ColumnParameterBasedQuery.INSTANCE.toQuery(params, metadata);
+        var query = ColumnParameterBasedQuery.INSTANCE.toQuery(params, metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);

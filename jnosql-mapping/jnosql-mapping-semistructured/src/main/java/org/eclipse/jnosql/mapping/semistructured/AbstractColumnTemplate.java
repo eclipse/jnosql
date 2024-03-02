@@ -18,13 +18,13 @@ package org.eclipse.jnosql.mapping.semistructured;
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.nosql.PreparedStatement;
 import jakarta.nosql.QueryMapper;
-import jakarta.nosql.column.ColumnTemplate;
-import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
-import org.eclipse.jnosql.communication.column.ColumnEntity;
-import org.eclipse.jnosql.communication.column.ColumnManager;
-import org.eclipse.jnosql.communication.column.ColumnObserverParser;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
-import org.eclipse.jnosql.communication.column.ColumnQueryParser;
+
+import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
+import org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
+import org.eclipse.jnosql.communication.semistructured.QueryParser;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -47,15 +47,15 @@ import java.util.stream.StreamSupport;
 import static java.util.Objects.requireNonNull;
 
 /**
- * The template method to {@link ColumnTemplate}
+ * The template method to {@link SemistructuredTemplate}
  */
-public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
+public abstract class AbstractColumnTemplate implements SemistructuredTemplate {
 
-    private static final ColumnQueryParser PARSER = new ColumnQueryParser();
+    private static final QueryParser PARSER = new QueryParser();
 
     protected abstract ColumnEntityConverter getConverter();
 
-    protected abstract ColumnManager getManager();
+    protected abstract DatabaseManager getManager();
 
     protected abstract ColumnEventPersistManager getEventManager();
 
@@ -63,16 +63,16 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
 
     protected abstract Converters getConverters();
 
-    private final UnaryOperator<ColumnEntity> insert = e -> getManager().insert(e);
+    private final UnaryOperator<CommunicationEntity> insert = e -> getManager().insert(e);
 
-    private final UnaryOperator<ColumnEntity> update = e -> getManager().update(e);
+    private final UnaryOperator<CommunicationEntity> update = e -> getManager().update(e);
 
-    private ColumnObserverParser observer;
+    private CommunicationObserverParser observer;
 
 
-    private ColumnObserverParser getObserver() {
+    private CommunicationObserverParser getObserver() {
         if (Objects.isNull(observer)) {
-            observer = new ColumnMapperObserver(getEntities());
+            observer = new MapperObserver(getEntities());
         }
         return observer;
     }
@@ -122,30 +122,30 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
     }
 
     @Override
-    public void delete(ColumnDeleteQuery query) {
+    public void delete(DeleteQuery query) {
         requireNonNull(query, "query is required");
         getManager().delete(query);
     }
 
 
     @Override
-    public <T> Stream<T> select(ColumnQuery query) {
+    public <T> Stream<T> select(SelectQuery query) {
         requireNonNull(query, "query is required");
         return executeQuery(query);
     }
 
     @Override
-    public long count(ColumnQuery query) {
+    public long count(SelectQuery query) {
         return getManager().count(query);
     }
 
     @Override
-    public boolean exists(ColumnQuery query) {
+    public boolean exists(SelectQuery query) {
         return getManager().exists(query);
     }
 
     @Override
-    public <T> Optional<T> singleResult(ColumnQuery query) {
+    public <T> Optional<T> singleResult(SelectQuery query) {
         requireNonNull(query, "query is required");
         final Stream<T> select = select(query);
 
@@ -171,7 +171,7 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
                 .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
-        ColumnQuery query = ColumnQuery.select().from(entityMetadata.name())
+        SelectQuery query = SelectQuery.select().from(entityMetadata.name())
                 .where(idField.name()).eq(value).build();
 
         return singleResult(query);
@@ -187,7 +187,7 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
                 .orElseThrow(() -> IdNotFoundException.newInstance(type));
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
 
-        ColumnDeleteQuery query = ColumnDeleteQuery.delete().from(entityMetadata.name())
+        DeleteQuery query = DeleteQuery.delete().from(entityMetadata.name())
                 .where(idField.name()).eq(value).build();
         getManager().delete(query);
     }
@@ -232,10 +232,10 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
         return getManager().count(findAllQuery(type));
     }
 
-    private <T> Stream<T> executeQuery(ColumnQuery query) {
+    private <T> Stream<T> executeQuery(SelectQuery query) {
         requireNonNull(query, "query is required");
-        Stream<ColumnEntity> entities = getManager().select(query);
-        Function<ColumnEntity, T> function = e -> getConverter().toEntity(e);
+        Stream<CommunicationEntity> entities = getManager().select(query);
+        Function<CommunicationEntity, T> function = e -> getConverter().toEntity(e);
         return entities.map(function).peek(getEventManager()::firePostEntity);
     }
 
@@ -266,16 +266,16 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
         if(metadata.inheritance().isPresent()){
             InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();
             if(!inheritanceMetadata.parent().equals(metadata.type())){
-                getManager().delete(ColumnDeleteQuery.delete().from(metadata.name())
+                getManager().delete(DeleteQuery.delete().from(metadata.name())
                         .where(inheritanceMetadata.discriminatorColumn())
                         .eq(inheritanceMetadata.discriminatorValue()).build());
                 return;
             }
         }
-        getManager().delete(ColumnDeleteQuery.delete().from(metadata.name()).build());
+        getManager().delete(DeleteQuery.delete().from(metadata.name()).build());
     }
 
-    protected <T> T persist(T entity, UnaryOperator<ColumnEntity> persistAction) {
+    protected <T> T persist(T entity, UnaryOperator<CommunicationEntity> persistAction) {
         return Stream.of(entity)
                 .map(toUnary(getEventManager()::firePreEntity))
                 .map(getConverter()::toColumn)
@@ -293,16 +293,16 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
         };
     }
 
-    private <T> ColumnQuery findAllQuery(Class<T> type){
+    private <T> SelectQuery findAllQuery(Class<T> type){
         EntityMetadata metadata = getEntities().get(type);
 
         if(metadata.inheritance().isPresent()){
             InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();
             if(!inheritanceMetadata.parent().equals(metadata.type())){
-                return ColumnQuery.select().from(metadata.name())
+                return SelectQuery.select().from(metadata.name())
                         .where(inheritanceMetadata.discriminatorColumn()).eq(inheritanceMetadata.discriminatorValue()).build();
             }
         }
-        return ColumnQuery.select().from(metadata.name()).build();
+        return SelectQuery.select().from(metadata.name()).build();
     }
 }
