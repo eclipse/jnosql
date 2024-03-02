@@ -16,36 +16,40 @@ package org.eclipse.jnosql.mapping.column;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
-import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
+import org.eclipse.jnosql.mapping.semistructured.EventPersistManager;
 
-/**
- * The default implementation of {@link JNoSQLColumnTemplate}
- */
+
 @Default
 @Database(DatabaseType.COLUMN)
 @ApplicationScoped
-class DefaultColumnTemplate extends AbstractColumnTemplate {
+class DefaultColumnTemplate extends AbstractSemistructuredTemplate implements ColumnTemplate {
 
-    private ColumnEntityConverter converter;
 
-    private Instance<ColumnManager> manager;
+    private final EntityConverter converter;
 
-    private ColumnEventPersistManager eventManager;
+    private final  DatabaseManager manager;
 
-    private EntitiesMetadata entities;
+    private final  EventPersistManager eventManager;
 
-    private Converters converters;
+    private final  EntitiesMetadata entities;
+
+    private final  Converters converters;
+
+
 
     @Inject
-    DefaultColumnTemplate(ColumnEntityConverter converter, Instance<ColumnManager> manager,
-                          ColumnEventPersistManager eventManager,
-                          EntitiesMetadata entities, Converters converters) {
+    DefaultColumnTemplate(EntityConverter converter,
+                          @Database(DatabaseType.COLUMN) DatabaseManager manager,
+                          EventPersistManager eventManager,
+                          EntitiesMetadata entities, Converters converters){
         this.converter = converter;
         this.manager = manager;
         this.eventManager = eventManager;
@@ -53,31 +57,34 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
         this.converters = converters;
     }
 
-    DefaultColumnTemplate(){
+    DefaultColumnTemplate() {
+        this(null, null, null, null, null);
     }
 
     @Override
-    protected ColumnEntityConverter getConverter() {
+    protected EntityConverter converter() {
         return converter;
     }
 
     @Override
-    protected ColumnManager getManager() {
-        return manager.get();
+    protected DatabaseManager manager() {
+        return manager;
     }
 
     @Override
-    protected ColumnEventPersistManager getEventManager() {
+    protected EventPersistManager eventManager() {
         return eventManager;
     }
 
     @Override
-    protected EntitiesMetadata getEntities() {
+    protected EntitiesMetadata entities() {
         return entities;
     }
 
     @Override
-    protected Converters getConverters() {
+    protected Converters converters() {
         return converters;
     }
+
+
 }

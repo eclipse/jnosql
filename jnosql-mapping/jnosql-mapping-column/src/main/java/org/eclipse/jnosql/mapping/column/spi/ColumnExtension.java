@@ -19,7 +19,7 @@ import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
 import jakarta.enterprise.inject.spi.ProcessProducer;
-import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.Databases;
 import org.eclipse.jnosql.mapping.column.query.RepositoryColumnBean;
@@ -43,7 +43,7 @@ public class ColumnExtension implements Extension {
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
 
-    <T, X extends ColumnManager> void observes(@Observes final ProcessProducer<T, X> pp) {
+    <T, X extends DatabaseManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, COLUMN, databases);
     }
 

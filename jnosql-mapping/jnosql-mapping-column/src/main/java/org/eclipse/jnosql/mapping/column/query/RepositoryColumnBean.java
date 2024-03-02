@@ -16,13 +16,14 @@ package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.data.repository.DataRepository;
 import jakarta.enterprise.context.spi.CreationalContext;
+import org.eclipse.jnosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.DatabaseType;
-import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.core.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.core.util.AnnotationLiteralUtil;
+import org.eclipse.jnosql.mapping.semistructured.query.SemistructuredRepositoryProxy;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
@@ -70,14 +71,15 @@ public class RepositoryColumnBean<T extends DataRepository<?, ?>> extends Abstra
         return type;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T create(CreationalContext<T> creationalContext) {
         EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
-        JNoSQLColumnTemplate template = provider.isEmpty() ? getInstance(JNoSQLColumnTemplate.class) :
-                getInstance(JNoSQLColumnTemplate.class, DatabaseQualifier.ofColumn(provider));
+        ColumnTemplate template = provider.isEmpty() ? getInstance(ColumnTemplate.class) :
+                getInstance(ColumnTemplate.class, DatabaseQualifier.ofColumn(provider));
         Converters converters = getInstance(Converters.class);
 
-        ColumnRepositoryProxy handler = new ColumnRepositoryProxy(template,
+        SemistructuredRepositoryProxy<?,?> handler = new SemistructuredRepositoryProxy<>(template,
                 entities, type, converters);
         return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},

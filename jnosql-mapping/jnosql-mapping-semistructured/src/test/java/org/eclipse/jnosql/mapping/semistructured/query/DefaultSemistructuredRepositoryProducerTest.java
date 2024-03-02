@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
-class DefaultColumnRepositoryProducerTest {
+class DefaultSemiStructuredRepositoryProducerTest {
 
     @Inject
     private SemistructuredRepositoryProducer producer;
