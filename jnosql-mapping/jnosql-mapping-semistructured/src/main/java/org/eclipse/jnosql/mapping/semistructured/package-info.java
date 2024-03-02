@@ -14,13 +14,33 @@
  */
 
 /**
- * This package contains all objects to use a Column Family API. This API has focus in domain, in other words,
- * ubiquitous language. A column family is a NoSQL object that contains columns of related data. It is a tuple (pair)
- * that consists of a key-value pair, where the key is mapped to a value that is a set of columns.
- * In analogy with relational databases, a column family is as a "table", each key-value pair being a "row".
- * Each column is a tuple (triplet) consisting of a column name, a value, and a timestamp. In a relational
- * database table, this data would be grouped together within a table with other non-related data.
- * Ref: https://en.wikipedia.org/wiki/Column_family
+ * This package contains classes and interfaces related to the mapper layer of the semistructured database model.
+ * The semistructured mapper layer is responsible for mapping between Java objects and the data model used in semistructured databases,
+ * providing a seamless integration between application code and database operations.
+ * <p>
+ * The main components of this package include:
+ * <ul>
+ *     <li>{@link org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate}:
+ *     An abstract template class that serves as the foundation for implementing semistructured database operations.</li>
+ *     <li>{@link org.eclipse.jnosql.mapping.semistructured.EventPersistManager}:
+ *     A manager class responsible for firing events before and after entity persistence operations.</li>
+ *     <li>{@link org.eclipse.jnosql.mapping.semistructured.EntityConverter}:
+ *     An interface representing the converter between entity objects and communication entities in the semistructured model.</li>
+ *     <li>{@link org.eclipse.jnosql.mapping.semistructured.AttributeFieldValue}:
+ *     An interface representing specialized field values for columns in the semistructured model.</li>
+ *     <li>{@link org.eclipse.jnosql.mapping.semistructured.MappingQuery}:
+ *     A mapping implementation of the {@link org.eclipse.jnosql.communication.semistructured.SelectQuery} interface,
+ *     specifically designed for the semistructured database model.</li>
+ * </ul>
+ * <p>
+ * Clients can utilize the classes and interfaces provided in this package to interact with semistructured databases
+ * in a consistent and efficient manner, abstracting away the complexities of the underlying database operations.
+ * </p>
  *
+ * @see org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate
+ * @see org.eclipse.jnosql.mapping.semistructured.EventPersistManager
+ * @see org.eclipse.jnosql.mapping.semistructured.EntityConverter
+ * @see org.eclipse.jnosql.mapping.semistructured.AttributeFieldValue
+ * @see org.eclipse.jnosql.mapping.semistructured.MappingQuery
  */
 package org.eclipse.jnosql.mapping.semistructured;
