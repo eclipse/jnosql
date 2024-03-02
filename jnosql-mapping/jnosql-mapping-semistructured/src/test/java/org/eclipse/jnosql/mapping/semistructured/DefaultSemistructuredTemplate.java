@@ -25,7 +25,6 @@ import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 @Default
-@Database(DatabaseType.COLUMN)
 @ApplicationScoped
 class DefaultSemistructuredTemplate extends AbstractSemistructuredTemplate {
 

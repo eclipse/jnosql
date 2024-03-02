@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 import static org.eclipse.jnosql.mapping.DatabaseType.COLUMN;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, EntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class, ColumnTemplate.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
