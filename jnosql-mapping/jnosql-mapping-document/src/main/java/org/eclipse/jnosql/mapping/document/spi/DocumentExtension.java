@@ -30,9 +30,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
+
 /**
- * Extension to start up the DocumentTemplate and Repository
- * from the {@link org.eclipse.jnosql.mapping.Database} qualifier
+ * This CDI extension, {@code DocumentExtension}, observes the CDI container lifecycle events to perform tasks related to
+ * document-based databases and repository beans.
+ * <p>
+ * Upon initialization, it maintains a set of {@link DatabaseMetadata} instances representing the document databases.
+ * </p>
  */
 public class DocumentExtension implements Extension {
 

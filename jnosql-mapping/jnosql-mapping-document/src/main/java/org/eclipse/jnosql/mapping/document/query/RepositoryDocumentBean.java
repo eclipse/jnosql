@@ -32,8 +32,17 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+
 /**
- * Artemis discoveryBean to CDI extension to register Repository
+ * This class serves as a JNoSQL discovery bean for CDI extension, responsible for registering Repository instances.
+ * It extends {@link AbstractBean} and is parameterized with type {@code T} representing the repository type.
+ * <p>
+ * Upon instantiation, it initializes with the provided repository type, provider name, and qualifiers.
+ * The provider name specifies the database provider for the repository.
+ * </p>
+ *
+ * @param <T> the type of the repository
+ * @see AbstractBean
  */
 public class RepositoryDocumentBean<T extends DataRepository<T, ?>> extends AbstractBean<T> {
 

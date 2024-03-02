@@ -29,7 +29,8 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * The producer of {@link DocumentTemplate}
+ * An {@code ApplicationScoped} producer class responsible for creating instances of {@link DocumentTemplate}.
+ * It implements the {@link Function} interface with {@link DatabaseManager} as input and {@link DocumentTemplate} as output.
  */
 @ApplicationScoped
 public class DocumentTemplateProducer implements Function<DatabaseManager, DocumentTemplate> {
