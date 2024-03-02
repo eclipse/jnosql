@@ -78,7 +78,7 @@ public class RepositoryColumnBean<T extends DataRepository<?, ?>> extends Abstra
                 getInstance(SemistructuredTemplate.class, DatabaseQualifier.ofColumn(provider));
         Converters converters = getInstance(Converters.class);
 
-        ColumnRepositoryProxy handler = new ColumnRepositoryProxy<>(template,
+        SemistructuredRepositoryProxy handler = new SemistructuredRepositoryProxy<>(template,
                 entities, type, converters);
         return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},

@@ -76,7 +76,7 @@ public class ColumnRepositoryProducer {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
 
-        ColumnRepositoryProxy<T, K> handler = new ColumnRepositoryProxy<>(template,
+        SemistructuredRepositoryProxy<T, K> handler = new SemistructuredRepositoryProxy<>(template,
                 entities, repositoryClass, converters);
         return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},

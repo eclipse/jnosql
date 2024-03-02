@@ -31,11 +31,11 @@ import java.util.Objects;
  * @param <T> The entity type managed by the repository.
  * @param <K> The key type used for column-based operations.
  */
-public class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T, K> {
+public class SemistructuredRepositoryProxy<T, K> extends AbstractSemistructuredRepositoryProxy<T, K> {
 
     private final SemistructuredTemplate template;
 
-    private final ColumnRepository<T, K> repository;
+    private final SemistructuredRepository<T, K> repository;
 
     private final EntityMetadata entityMetadata;
 
@@ -44,13 +44,13 @@ public class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T
     private final Class<?> repositoryType;
 
 
-    ColumnRepositoryProxy(SemistructuredTemplate template, EntitiesMetadata entities, Class<?> repositoryType,
-                          Converters converters) {
+    SemistructuredRepositoryProxy(SemistructuredTemplate template, EntitiesMetadata entities, Class<?> repositoryType,
+                                  Converters converters) {
         this.template = template;
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
         this.entityMetadata = entities.get(typeClass);
-        this.repository = new ColumnRepository<>(template, entityMetadata);
+        this.repository = new SemistructuredRepository<>(template, entityMetadata);
         this.converters = converters;
         this.repositoryType =  repositoryType;
     }
@@ -87,13 +87,13 @@ public class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T
      * @param <T> The entity type managed by the repository.
      * @param <K> The key type used for column-based operations.
      */
-    public static class ColumnRepository<T, K> extends AbstractColumnRepository<T, K> {
+    public static class SemistructuredRepository<T, K> extends AbstractSemistructuredRepository<T, K> {
 
         private final SemistructuredTemplate template;
 
         private final EntityMetadata entityMetadata;
 
-        ColumnRepository(SemistructuredTemplate template, EntityMetadata entityMetadata) {
+        SemistructuredRepository(SemistructuredTemplate template, EntityMetadata entityMetadata) {
             this.template = template;
             this.entityMetadata = entityMetadata;
         }
@@ -118,10 +118,10 @@ public class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy<T
          * @return A new instance of ColumnRepository.
          * @throws NullPointerException If either the template or metadata is {@code null}.
          */
-        public static <T, K> ColumnRepository<T, K> of(SemistructuredTemplate template, EntityMetadata metadata) {
+        public static <T, K> SemistructuredRepository<T, K> of(SemistructuredTemplate template, EntityMetadata metadata) {
             Objects.requireNonNull(template,"template is required");
             Objects.requireNonNull(metadata,"metadata is required");
-            return new ColumnRepository<>(template, metadata);
+            return new SemistructuredRepository<>(template, metadata);
         }
     }
 }

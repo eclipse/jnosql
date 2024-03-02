@@ -44,7 +44,7 @@ import java.util.Map;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
-class ColumnParameterBasedQueryTest {
+class SemistructuredParameterBasedQueryTest {
 
     @Inject
     private EntitiesMetadata entitiesMetadata;
@@ -58,7 +58,7 @@ class ColumnParameterBasedQueryTest {
     @Test
     void shouldCreateQuerySingleParameter(){
         Map<String, Object> params = Map.of("name", "Ada");
-        var query = ColumnParameterBasedQuery.INSTANCE.toQuery(params, metadata);
+        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);
@@ -73,7 +73,7 @@ class ColumnParameterBasedQueryTest {
     @Test
     void shouldCreateQueryMultipleParams(){
         Map<String, Object> params = Map.of("name", "Ada", "age", 10);
-        var query = ColumnParameterBasedQuery.INSTANCE.toQuery(params, metadata);
+        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);
@@ -93,7 +93,7 @@ class ColumnParameterBasedQueryTest {
     @Test
     void shouldCreateQueryEmptyParams(){
         Map<String, Object> params = Collections.emptyMap();
-        var query = ColumnParameterBasedQuery.INSTANCE.toQuery(params, metadata);
+        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);

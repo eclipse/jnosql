@@ -57,7 +57,7 @@ import java.util.stream.Stream;
  * @param <T> The type of entities managed by the repository.
  *
  */
-public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy<T, K> {
+public abstract class BaseSemistructuredRepository<T, K> extends AbstractRepositoryProxy<T, K> {
 
     private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();
 
@@ -122,7 +122,7 @@ public abstract class BaseColumnRepository<T, K> extends AbstractRepositoryProxy
 
     protected CommunicationObserverParser parser() {
         if (parser == null) {
-            this.parser = new RepositoryColumnObserverParser(entityMetadata());
+            this.parser = new RepositorySemistructuredObserverParser(entityMetadata());
         }
         return parser;
     }

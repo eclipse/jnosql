@@ -92,13 +92,13 @@ class CrudRepositoryProxyTest {
     public void setUp() {
         this.template = Mockito.mock(SemistructuredTemplate.class);
 
-        ColumnRepositoryProxy personHandler = new ColumnRepositoryProxy(template,
+        SemistructuredRepositoryProxy personHandler = new SemistructuredRepositoryProxy(template,
                 entities, PersonRepository.class, converters);
 
-        ColumnRepositoryProxy vendorHandler = new ColumnRepositoryProxy(template,
+        SemistructuredRepositoryProxy vendorHandler = new SemistructuredRepositoryProxy(template,
                 entities, VendorRepository.class, converters);
 
-        ColumnRepositoryProxy addressHandler = new ColumnRepositoryProxy(template,
+        SemistructuredRepositoryProxy addressHandler = new SemistructuredRepositoryProxy(template,
                 entities, AddressRepository.class, converters);
 
 

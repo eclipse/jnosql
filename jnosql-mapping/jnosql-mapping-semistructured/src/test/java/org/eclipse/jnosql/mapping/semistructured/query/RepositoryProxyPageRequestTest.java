@@ -89,10 +89,10 @@ public class RepositoryProxyPageRequestTest {
     public void setUp() {
         this.template = Mockito.mock(SemistructuredTemplate.class);
 
-        ColumnRepositoryProxy personHandler = new ColumnRepositoryProxy(template,
+        SemistructuredRepositoryProxy personHandler = new SemistructuredRepositoryProxy(template,
                 entities, PersonRepository.class, converters);
 
-        ColumnRepositoryProxy vendorHandler = new ColumnRepositoryProxy(template,
+        SemistructuredRepositoryProxy vendorHandler = new SemistructuredRepositoryProxy(template,
                 entities, VendorRepository.class, converters);
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());

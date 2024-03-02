@@ -27,7 +27,7 @@ import java.util.Map;
  * @param <T> the entity type
  * @param <K> the K entity
  */
-public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepository<T, K>  {
+public abstract class AbstractSemistructuredRepositoryProxy<T, K> extends BaseSemistructuredRepository<T, K> {
 
     @Override
     protected Object executeQuery(Object instance, Method method, Object[] params) {
@@ -75,7 +75,7 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends BaseColumnRepo
     protected Object executeParameterBased(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
         Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
-        var query = ColumnParameterBasedQuery.INSTANCE.toQuery(parameters, entityMetadata());
+        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(parameters, entityMetadata());
         return executeFindByQuery(method, params, type, updateQueryDynamically(params, query));
     }
 

@@ -67,7 +67,7 @@ class CrudInheritanceRepositoryProxyTest {
     public void setUp() {
         this.template = Mockito.mock(SemistructuredTemplate.class);
 
-        ColumnRepositoryProxy<EmailNotification, Long> personHandler = new ColumnRepositoryProxy<>(template,
+        SemistructuredRepositoryProxy<EmailNotification, Long> personHandler = new SemistructuredRepositoryProxy<>(template,
                 entities, EmailRepository.class, converters);
 
 

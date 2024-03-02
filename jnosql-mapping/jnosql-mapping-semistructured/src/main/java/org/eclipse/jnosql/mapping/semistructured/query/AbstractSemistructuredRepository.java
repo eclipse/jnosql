@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 /**
  * The {@link org.eclipse.jnosql.mapping.NoSQLRepository} template method
  */
-public abstract class AbstractColumnRepository<T, K> extends AbstractRepository<T, K> {
+public abstract class AbstractSemistructuredRepository<T, K> extends AbstractRepository<T, K> {
 
     protected abstract SemistructuredTemplate template();
 
