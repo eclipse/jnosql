@@ -16,6 +16,8 @@ package org.eclipse.jnosql.mapping.column.spi;
 
 
 import jakarta.enterprise.context.spi.CreationalContext;
+import jakarta.nosql.Template;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.column.ColumnTemplate;
@@ -29,7 +31,7 @@ import java.util.Set;
 
 class TemplateBean extends AbstractBean<ColumnTemplate> {
 
-    private static final Set<Type> TYPES = Set.of(ColumnTemplate.class, ColumnTemplate.class);
+    private static final Set<Type> TYPES = Set.of(ColumnTemplate.class, Template.class);
     private final String provider;
 
     private final Set<Annotation> qualifiers;
@@ -54,12 +56,12 @@ class TemplateBean extends AbstractBean<ColumnTemplate> {
     public ColumnTemplate create(CreationalContext<ColumnTemplate> context) {
 
         ColumnTemplateProducer producer = getInstance(ColumnTemplateProducer.class);
-        ColumnTemplate manager = getColumnManager();
+        DatabaseManager manager = getColumnManager();
         return producer.apply(manager);
     }
 
-    private ColumnTemplate getColumnManager() {
-        return getInstance(ColumnTemplate.class, DatabaseQualifier.ofColumn(provider));
+    private DatabaseManager getColumnManager() {
+        return getInstance(DatabaseManager.class, DatabaseQualifier.ofColumn(provider));
     }
 
     @Override
