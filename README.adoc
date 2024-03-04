@@ -324,15 +324,16 @@ These configuration settings are the default behavior. Nevertheless, there is an
 @Alternative
 @Priority(Interceptor.Priority.APPLICrATION)
 @ApplicationScoped
-public class ManagerSupplier implements Supplier<ColumnManager> {
+public class ManagerSupplier implements Supplier<DatabaseManager> {
 
     @Produces
-    public ColumnManager get() {
+    @Database(DatabaseType.COLUMN)
+    public DatabaseManager get() {
         Settings settings = Settings.builder()
                 .put("credential", "value")
                 .build();
-        ColumnConfiguration configuration = new NoSQLColumnProvider();
-        ColumnManagerFactory factory = configuration.apply(settings);
+        DatabaseConfiguration configuration = new NoSQLColumnProvider();
+        DatabaseManagerFactory factory = configuration.apply(settings);
         return factory.apply("database");
     }
 }
@@ -422,15 +423,16 @@ These configuration settings are the default behavior. Nevertheless, there is an
 @Alternative
 @Priority(Interceptor.Priority.APPLICATION)
 @ApplicationScoped
-public class ManagerSupplier implements Supplier<DocumentManager> {
+public class ManagerSupplier implements Supplier<DatabaseManager> {
 
     @Produces
-    public DocumentManager get() {
+    @Database(DatabaseType.DOCUMENT)
+    public DatabaseManager get() {
         Settings settings = Settings.builder()
                 .put("credential", "value")
                 .build();
-        DocumentConfiguration configuration = new NoSQLDocumentProvider();
-        DocumentManagerFactory factory = configuration.apply(settings);
+        DatabaseConfiguration configuration = new NoSQLDocumentProvider();
+        DatabaseManagerFactory factory = configuration.apply(settings);
         return factory.apply("database");
     }
 }
