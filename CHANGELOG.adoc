@@ -15,6 +15,12 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 === Added
 
 - Introduce NoSQLRepository
+- Include the semistructured layers (mapping and communication)
+- Include Column and Document Templates
+
+=== Removed
+
+- Remove column and document from communication API.
 
 == [1.1.0] - 2023-02-05
 
