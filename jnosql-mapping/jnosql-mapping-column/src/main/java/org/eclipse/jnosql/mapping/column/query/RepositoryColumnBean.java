@@ -16,13 +16,14 @@ package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.data.repository.DataRepository;
 import jakarta.enterprise.context.spi.CreationalContext;
+import org.eclipse.jnosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.DatabaseType;
-import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.core.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.core.util.AnnotationLiteralUtil;
+import org.eclipse.jnosql.mapping.semistructured.query.SemistructuredRepositoryProxy;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
@@ -32,7 +33,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * JNoSQL discoveryBean to CDI extension to register Repository
+ * This class serves as a JNoSQL discovery bean for CDI extension, responsible for registering Repository instances.
+ * It extends {@link AbstractBean} and is parameterized with type {@code T} representing the repository type.
+ * <p>
+ * Upon instantiation, it initializes with the provided repository type, provider name, and qualifiers.
+ * The provider name specifies the database provider for the repository.
+ * </p>
+ *
+ * @param <T> the type of the repository
+ * @see AbstractBean
  */
 public class RepositoryColumnBean<T extends DataRepository<?, ?>> extends AbstractBean<T> {
 
@@ -70,14 +79,15 @@ public class RepositoryColumnBean<T extends DataRepository<?, ?>> extends Abstra
         return type;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T create(CreationalContext<T> creationalContext) {
         EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
-        JNoSQLColumnTemplate template = provider.isEmpty() ? getInstance(JNoSQLColumnTemplate.class) :
-                getInstance(JNoSQLColumnTemplate.class, DatabaseQualifier.ofColumn(provider));
-        Converters converters = getInstance(Converters.class);
+        var template = provider.isEmpty() ? getInstance(ColumnTemplate.class) :
+                getInstance(ColumnTemplate.class, DatabaseQualifier.ofColumn(provider));
+        var converters = getInstance(Converters.class);
 
-        ColumnRepositoryProxy handler = new ColumnRepositoryProxy(template,
+        var handler = new SemistructuredRepositoryProxy<>(template,
                 entities, type, converters);
         return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},

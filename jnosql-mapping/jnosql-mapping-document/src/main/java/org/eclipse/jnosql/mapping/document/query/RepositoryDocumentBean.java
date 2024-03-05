@@ -19,10 +19,11 @@ import jakarta.enterprise.context.spi.CreationalContext;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.DatabaseType;
-import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
+import org.eclipse.jnosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.core.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.core.util.AnnotationLiteralUtil;
+import org.eclipse.jnosql.mapping.semistructured.query.SemistructuredRepositoryProxy;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
@@ -31,8 +32,17 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+
 /**
- * Artemis discoveryBean to CDI extension to register Repository
+ * This class serves as a JNoSQL discovery bean for CDI extension, responsible for registering Repository instances.
+ * It extends {@link AbstractBean} and is parameterized with type {@code T} representing the repository type.
+ * <p>
+ * Upon instantiation, it initializes with the provided repository type, provider name, and qualifiers.
+ * The provider name specifies the database provider for the repository.
+ * </p>
+ *
+ * @param <T> the type of the repository
+ * @see AbstractBean
  */
 public class RepositoryDocumentBean<T extends DataRepository<T, ?>> extends AbstractBean<T> {
 
@@ -50,6 +60,7 @@ public class RepositoryDocumentBean<T extends DataRepository<T, ?>> extends Abst
      * @param type        the tye
      * @param provider    the provider name, that must be a
      */
+    @SuppressWarnings("unchecked")
     public RepositoryDocumentBean(Class<?> type, String provider) {
         this.type = (Class<T>) type;
         this.types = Collections.singleton(type);
@@ -70,14 +81,15 @@ public class RepositoryDocumentBean<T extends DataRepository<T, ?>> extends Abst
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T create(CreationalContext<T> context) {
         EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
-        JNoSQLDocumentTemplate template = provider.isEmpty() ? getInstance(JNoSQLDocumentTemplate.class) :
-                getInstance(JNoSQLDocumentTemplate.class, DatabaseQualifier.ofDocument(provider));
+        var template = provider.isEmpty() ? getInstance(DocumentTemplate.class) :
+                getInstance(DocumentTemplate.class, DatabaseQualifier.ofDocument(provider));
 
         Converters converters = getInstance(Converters.class);
 
-        DocumentRepositoryProxy handler = new DocumentRepositoryProxy(template,
+        var handler = new SemistructuredRepositoryProxy<>(template,
                 entities, type, converters);
         return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},

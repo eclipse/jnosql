@@ -16,36 +16,39 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
-import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.communication.document.DocumentManager;
-import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
+import org.eclipse.jnosql.mapping.semistructured.EventPersistManager;
 
-/**
- * The default implementation of DocumentTemplate
- */
+
 @Default
-@Database(DatabaseType.DOCUMENT)
 @ApplicationScoped
-class DefaultDocumentTemplate extends AbstractDocumentTemplate {
+class DefaultDocumentTemplate extends AbstractSemistructuredTemplate implements DocumentTemplate {
 
-    private DocumentEntityConverter converter;
 
-    private Instance<DocumentManager> manager;
+    private final EntityConverter converter;
 
-    private DocumentEventPersistManager eventManager;
+    private final  DatabaseManager manager;
 
-    private EntitiesMetadata entities;
+    private final  EventPersistManager eventManager;
 
-    private Converters converters;
+    private final  EntitiesMetadata entities;
+
+    private final  Converters converters;
+
+
 
     @Inject
-    DefaultDocumentTemplate(DocumentEntityConverter converter, Instance<DocumentManager> manager,
-                            DocumentEventPersistManager eventManager, EntitiesMetadata entities,
-                            Converters converters) {
+    DefaultDocumentTemplate(EntityConverter converter,
+                            @Database(DatabaseType.DOCUMENT) DatabaseManager manager,
+                            EventPersistManager eventManager,
+                            EntitiesMetadata entities, Converters converters){
         this.converter = converter;
         this.manager = manager;
         this.eventManager = eventManager;
@@ -54,30 +57,31 @@ class DefaultDocumentTemplate extends AbstractDocumentTemplate {
     }
 
     DefaultDocumentTemplate() {
+        this(null, null, null, null, null);
     }
 
     @Override
-    protected DocumentEntityConverter getConverter() {
+    protected EntityConverter converter() {
         return converter;
     }
 
     @Override
-    protected DocumentManager getManager() {
-        return manager.get();
+    protected DatabaseManager manager() {
+        return manager;
     }
 
     @Override
-    protected DocumentEventPersistManager getEventManager() {
+    protected EventPersistManager eventManager() {
         return eventManager;
     }
 
     @Override
-    protected EntitiesMetadata getEntities() {
+    protected EntitiesMetadata entities() {
         return entities;
     }
 
     @Override
-    protected Converters getConverters() {
+    protected Converters converters() {
         return converters;
     }
 

@@ -15,17 +15,17 @@
 package org.eclipse.jnosql.mapping.document.configuration;
 
 import org.eclipse.jnosql.communication.Settings;
-import org.eclipse.jnosql.communication.document.DocumentConfiguration;
-import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
-import org.eclipse.jnosql.communication.document.DocumentEntity;
-import org.eclipse.jnosql.communication.document.DocumentManager;
-import org.eclipse.jnosql.communication.document.DocumentManagerFactory;
-import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
+import org.eclipse.jnosql.communication.semistructured.DatabaseConfiguration;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManagerFactory;
+import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 
 import java.time.Duration;
 import java.util.stream.Stream;
 
-class DocumentConfigurationMock implements DocumentConfiguration {
+class DocumentConfigurationMock implements DatabaseConfiguration {
 
 
     @Override
@@ -33,7 +33,7 @@ class DocumentConfigurationMock implements DocumentConfiguration {
         return new DocumentManagerFactoryMock(settings);
     }
 
-    public record DocumentManagerFactoryMock(Settings settings) implements DocumentManagerFactory {
+    public record DocumentManagerFactoryMock(Settings settings) implements DatabaseManagerFactory {
 
         @Override
             public DocumentManagerMock apply(String database) {
@@ -46,56 +46,56 @@ class DocumentConfigurationMock implements DocumentConfiguration {
             }
         }
 
-    public record DocumentManagerMock(String name) implements DocumentManager {
+    public record DocumentManagerMock(String name) implements DatabaseManager {
 
-            @Override
-            public DocumentEntity insert(DocumentEntity entity) {
-                return null;
-            }
-
-            @Override
-            public DocumentEntity insert(DocumentEntity entity, Duration ttl) {
-                return null;
-            }
-
-            @Override
-            public Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities) {
-                return null;
-            }
-
-            @Override
-            public Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities, Duration ttl) {
-                return null;
-            }
-
-            @Override
-            public DocumentEntity update(DocumentEntity entity) {
-                return null;
-            }
-
-            @Override
-            public Iterable<DocumentEntity> update(Iterable<DocumentEntity> entities) {
-                return null;
-            }
-
-            @Override
-            public void delete(DocumentDeleteQuery query) {
-
-            }
-
-            @Override
-            public Stream<DocumentEntity> select(DocumentQuery query) {
-                return null;
-            }
-
-            @Override
-            public long count(String documentCollection) {
-                return 0;
-            }
-
-            @Override
-            public void close() {
-
-            }
+        @Override
+        public CommunicationEntity insert(CommunicationEntity entity) {
+            return null;
         }
+
+        @Override
+        public CommunicationEntity insert(CommunicationEntity entity, Duration ttl) {
+            return null;
+        }
+
+        @Override
+        public Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities) {
+            return null;
+        }
+
+        @Override
+        public Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities, Duration ttl) {
+            return null;
+        }
+
+        @Override
+        public CommunicationEntity update(CommunicationEntity entity) {
+            return null;
+        }
+
+        @Override
+        public Iterable<CommunicationEntity> update(Iterable<CommunicationEntity> entities) {
+            return null;
+        }
+
+        @Override
+        public void delete(DeleteQuery query) {
+
+        }
+
+        @Override
+        public Stream<CommunicationEntity> select(SelectQuery query) {
+            return null;
+        }
+
+        @Override
+        public long count(String entity) {
+            return 0;
+        }
+
+        @Override
+        public void close() {
+
+        }
+    }
 }

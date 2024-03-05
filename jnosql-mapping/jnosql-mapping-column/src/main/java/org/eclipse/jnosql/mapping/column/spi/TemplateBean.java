@@ -16,12 +16,12 @@ package org.eclipse.jnosql.mapping.column.spi;
 
 
 import jakarta.enterprise.context.spi.CreationalContext;
-import jakarta.nosql.column.ColumnTemplate;
-import org.eclipse.jnosql.communication.column.ColumnManager;
+import jakarta.nosql.Template;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.column.ColumnTemplateProducer;
-import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.core.spi.AbstractBean;
 
 import java.lang.annotation.Annotation;
@@ -29,9 +29,9 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class TemplateBean extends AbstractBean<JNoSQLColumnTemplate> {
+class TemplateBean extends AbstractBean<ColumnTemplate> {
 
-    private static final Set<Type> TYPES = Set.of(ColumnTemplate.class, JNoSQLColumnTemplate.class);
+    private static final Set<Type> TYPES = Set.of(ColumnTemplate.class, Template.class);
     private final String provider;
 
     private final Set<Annotation> qualifiers;
@@ -53,15 +53,15 @@ class TemplateBean extends AbstractBean<JNoSQLColumnTemplate> {
 
 
     @Override
-    public JNoSQLColumnTemplate create(CreationalContext<JNoSQLColumnTemplate> context) {
+    public ColumnTemplate create(CreationalContext<ColumnTemplate> context) {
 
-        ColumnTemplateProducer producer = getInstance(ColumnTemplateProducer.class);
-        ColumnManager manager = getColumnManager();
+        var producer = getInstance(ColumnTemplateProducer.class);
+        var manager = getColumnManager();
         return producer.apply(manager);
     }
 
-    private ColumnManager getColumnManager() {
-        return getInstance(ColumnManager.class, DatabaseQualifier.ofColumn(provider));
+    private DatabaseManager getColumnManager() {
+        return getInstance(DatabaseManager.class, DatabaseQualifier.ofColumn(provider));
     }
 
     @Override

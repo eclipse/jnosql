@@ -20,9 +20,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Alternative;
 import jakarta.enterprise.inject.Produces;
 import jakarta.interceptor.Interceptor;
-import org.eclipse.jnosql.communication.column.Column;
-import org.eclipse.jnosql.communication.column.ColumnEntity;
-import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
+import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.mockito.Mockito;
@@ -35,29 +35,30 @@ import static org.mockito.Mockito.when;
 @ApplicationScoped
 @Alternative
 @Priority(Interceptor.Priority.APPLICATION)
-public class MockProducer implements Supplier<ColumnManager> {
+public class MockProducer implements Supplier<DatabaseManager> {
 
 
     @Produces
     @Override
-    public ColumnManager get() {
-        ColumnEntity entity = ColumnEntity.of("Person");
-        entity.add(Column.of("name", "Default"));
-        entity.add(Column.of("age", 10));
-        ColumnManager manager = mock(ColumnManager.class);
-        when(manager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
+    @Database(DatabaseType.COLUMN)
+    public DatabaseManager get() {
+        CommunicationEntity entity = CommunicationEntity.of("Person");
+        entity.add(Element.of("name", "Default"));
+        entity.add(Element.of("age", 10));
+        DatabaseManager manager = mock(DatabaseManager.class);
+        when(manager.insert(Mockito.any(CommunicationEntity.class))).thenReturn(entity);
         return manager;
 
     }
 
     @Produces
     @Database(value = DatabaseType.COLUMN, provider = "columnRepositoryMock")
-    public ColumnManager getColumnManagerMock() {
-        ColumnEntity entity = ColumnEntity.of("Person");
-        entity.add(Column.of("name", "columnRepositoryMock"));
-        entity.add(Column.of("age", 10));
-        ColumnManager manager = mock(ColumnManager.class);
-        when(manager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
+    public DatabaseManager getColumnManagerMock() {
+        CommunicationEntity entity = CommunicationEntity.of("Person");
+        entity.add(Element.of("name", "columnRepositoryMock"));
+        entity.add(Element.of("age", 10));
+        DatabaseManager manager = mock(DatabaseManager.class);
+        when(manager.insert(Mockito.any(CommunicationEntity.class))).thenReturn(entity);
         return manager;
 
     }

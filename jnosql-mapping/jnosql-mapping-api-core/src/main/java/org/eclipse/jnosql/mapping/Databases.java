@@ -49,11 +49,12 @@ public final class Databases {
         databaseOptional.ifPresent(database -> {
             if (!type.equals(database.value())) {
                 String simpleName = processProducer.getAnnotatedMember().getDeclaringType().getJavaClass().getSimpleName();
-                throw new IllegalStateException(String.format("The %s is producing a wrong manager for %s type", simpleName, type));
+                LOGGER.info(String.format("Ignoring because the %s is producing a wrong manager for %s type", simpleName, type));
+            } else {
+                final DatabaseMetadata metadata = DatabaseMetadata.of(database);
+                LOGGER.info(String.format("Found the type %s to metadata %s", type, metadata));
+                databases.add(metadata);
             }
-            final DatabaseMetadata metadata = DatabaseMetadata.of(database);
-            LOGGER.info(String.format("Found the type %s to metadata %s", type, metadata));
-            databases.add(metadata);
         });
     }
 }

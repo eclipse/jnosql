@@ -16,13 +16,13 @@ package org.eclipse.jnosql.mapping.column.configuration;
 
 import jakarta.data.exceptions.MappingException;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.MockProducer;
 import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -36,7 +36,7 @@ import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.COLUM
 import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.COLUMN_PROVIDER;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, ColumnEntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
@@ -55,7 +55,7 @@ class ColumnManagerSupplierTest {
     void shouldGetManager() {
         System.setProperty(COLUMN_PROVIDER.get(), ColumnConfigurationMock.class.getName());
         System.setProperty(COLUMN_DATABASE.get(), "database");
-        ColumnManager manager = supplier.get();
+        DatabaseManager manager = supplier.get();
         Assertions.assertNotNull(manager);
         assertThat(manager).isInstanceOf(ColumnConfigurationMock.ColumnManagerMock.class);
     }
@@ -65,7 +65,7 @@ class ColumnManagerSupplierTest {
     void shouldUseDefaultConfigurationWhenProviderIsWrong() {
         System.setProperty(COLUMN_PROVIDER.get(), Integer.class.getName());
         System.setProperty(COLUMN_DATABASE.get(), "database");
-        ColumnManager manager = supplier.get();
+        DatabaseManager manager = supplier.get();
         Assertions.assertNotNull(manager);
         assertThat(manager).isInstanceOf(ColumnConfigurationMock2.ColumnManagerMock.class);
     }
@@ -73,7 +73,7 @@ class ColumnManagerSupplierTest {
     @Test
     void shouldUseDefaultConfiguration() {
         System.setProperty(COLUMN_DATABASE.get(), "database");
-        ColumnManager manager = supplier.get();
+        DatabaseManager manager = supplier.get();
         Assertions.assertNotNull(manager);
         assertThat(manager).isInstanceOf(ColumnConfigurationMock2.ColumnManagerMock.class);
     }
@@ -85,7 +85,7 @@ class ColumnManagerSupplierTest {
 
     @Test
     void shouldClose(){
-        ColumnManager manager = Mockito.mock(ColumnManager.class);
+        DatabaseManager manager = Mockito.mock(DatabaseManager.class);
         supplier.close(manager);
         Mockito.verify(manager).close();
     }

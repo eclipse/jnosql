@@ -16,13 +16,14 @@ package org.eclipse.jnosql.mapping.document.configuration;
 
 import jakarta.data.exceptions.MappingException;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.document.DocumentEntityConverter;
+import org.eclipse.jnosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.document.MockProducer;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -36,7 +37,7 @@ import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.DOCUM
 import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.DOCUMENT_PROVIDER;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, DocumentEntityConverter.class})
+@AddPackages(value = {Converters.class, EntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
@@ -55,7 +56,7 @@ class DocumentManagerSupplierTest {
     void shouldGetManager() {
         System.setProperty(DOCUMENT_PROVIDER.get(), DocumentConfigurationMock.class.getName());
         System.setProperty(DOCUMENT_DATABASE.get(), "database");
-        DocumentManager manager = supplier.get();
+        DatabaseManager manager = supplier.get();
         Assertions.assertNotNull(manager);
         assertThat(manager).isInstanceOf(DocumentConfigurationMock.DocumentManagerMock.class);
     }
@@ -65,7 +66,7 @@ class DocumentManagerSupplierTest {
     void shouldUseDefaultConfigurationWhenProviderIsWrong() {
         System.setProperty(DOCUMENT_PROVIDER.get(), Integer.class.getName());
         System.setProperty(DOCUMENT_DATABASE.get(), "database");
-        DocumentManager manager = supplier.get();
+        DatabaseManager manager = supplier.get();
         Assertions.assertNotNull(manager);
         assertThat(manager).isInstanceOf(DocumentConfigurationMock2.DocumentManagerMock.class);
     }
@@ -73,7 +74,7 @@ class DocumentManagerSupplierTest {
     @Test
     void shouldUseDefaultConfiguration() {
         System.setProperty(DOCUMENT_DATABASE.get(), "database");
-        DocumentManager manager = supplier.get();
+        DatabaseManager manager = supplier.get();
         Assertions.assertNotNull(manager);
         assertThat(manager).isInstanceOf(DocumentConfigurationMock2.DocumentManagerMock.class);
     }
@@ -85,7 +86,7 @@ class DocumentManagerSupplierTest {
 
     @Test
     void shouldClose(){
-        DocumentManager manager = Mockito.mock(DocumentManager.class);
+        DatabaseManager manager = Mockito.mock(DatabaseManager.class);
         supplier.close(manager);
         Mockito.verify(manager).close();
     }

@@ -17,26 +17,45 @@ package org.eclipse.jnosql.mapping.column;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Vetoed;
 import jakarta.inject.Inject;
-import jakarta.nosql.column.ColumnTemplate;
-import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
+import org.eclipse.jnosql.mapping.semistructured.EventPersistManager;
 
 import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * The producer of {@link ColumnTemplate}
+ * This class is responsible for producing instances of {@link ColumnTemplate}.
+ * It implements the {@link Function} interface, which allows it to accept a {@link DatabaseManager}
+ * and produce a corresponding {@link ColumnTemplate} instance.
+ * <p>
+ * The produced {@link ColumnTemplate} instance is configured with the necessary dependencies such as
+ * {@link EntityConverter}, {@link EventPersistManager}, {@link EntitiesMetadata}, and {@link Converters}.
+ * </p>
+ * <p>
+ * Usage of this class enables the creation of ready-to-use {@link ColumnTemplate} instances for interacting
+ * with column-based data structures in a semistructured database.
+ * </p>
+ *
+ * @see ColumnTemplate
+ * @see DatabaseManager
+ * @see EntityConverter
+ * @see EventPersistManager
+ * @see EntitiesMetadata
+ * @see Converters
  */
 @ApplicationScoped
-public class ColumnTemplateProducer implements Function<ColumnManager, JNoSQLColumnTemplate> {
+public class ColumnTemplateProducer implements Function<DatabaseManager, ColumnTemplate> {
 
 
     @Inject
-    private ColumnEntityConverter converter;
+    private EntityConverter converter;
 
     @Inject
-    private ColumnEventPersistManager eventManager;
+    private EventPersistManager eventManager;
 
     @Inject
     private EntitiesMetadata entities;
@@ -45,29 +64,33 @@ public class ColumnTemplateProducer implements Function<ColumnManager, JNoSQLCol
     private Converters converters;
 
     @Override
-    public JNoSQLColumnTemplate apply(ColumnManager manager) {
+    public ColumnTemplate apply(DatabaseManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         return new ProducerColumnTemplate(converter, manager,
                 eventManager, entities, converters);
     }
 
 
+    /**
+     * Inner class that serves as the actual implementation of {@link ColumnTemplate}.
+     * It extends {@link AbstractSemistructuredTemplate} and implements {@link ColumnTemplate}.
+     */
     @Vetoed
-    static class ProducerColumnTemplate extends AbstractColumnTemplate {
+    static class ProducerColumnTemplate extends AbstractSemistructuredTemplate implements ColumnTemplate {
 
-        private ColumnEntityConverter converter;
+        private final EntityConverter converter;
 
-        private ColumnManager manager;
+        private final  DatabaseManager manager;
 
-        private ColumnEventPersistManager eventManager;
+        private final EventPersistManager eventManager;
 
-        private EntitiesMetadata entities;
+        private final EntitiesMetadata entities;
 
-        private Converters converters;
+        private final  Converters converters;
 
-        ProducerColumnTemplate(ColumnEntityConverter converter,
-                               ColumnManager manager,
-                               ColumnEventPersistManager eventManager,
+        ProducerColumnTemplate(EntityConverter converter,
+                               DatabaseManager manager,
+                               EventPersistManager eventManager,
                                EntitiesMetadata entities,
                                Converters converters) {
             this.converter = converter;
@@ -78,31 +101,33 @@ public class ColumnTemplateProducer implements Function<ColumnManager, JNoSQLCol
         }
 
         ProducerColumnTemplate() {
+            this(null, null, null, null, null);
         }
 
         @Override
-        protected ColumnEntityConverter getConverter() {
+        protected EntityConverter converter() {
             return converter;
         }
 
         @Override
-        protected ColumnManager getManager() {
+        protected DatabaseManager manager() {
             return manager;
         }
 
         @Override
-        protected ColumnEventPersistManager getEventManager() {
+        protected EventPersistManager eventManager() {
             return eventManager;
         }
 
         @Override
-        protected EntitiesMetadata getEntities() {
+        protected EntitiesMetadata entities() {
             return entities;
         }
 
         @Override
-        protected Converters getConverters() {
+        protected Converters converters() {
             return converters;
         }
+
     }
 }

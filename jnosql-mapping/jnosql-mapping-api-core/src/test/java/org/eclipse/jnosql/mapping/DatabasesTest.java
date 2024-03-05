@@ -30,6 +30,7 @@ import static org.mockito.Mockito.*;
 
 class DatabasesTest {
 
+    @SuppressWarnings("rawtypes")
     @Test
     void shouldAddDatabaseValidDatabaseTypeAddsMetadataToSet() {
         ProcessProducer processProducer = mock(ProcessProducer.class);
@@ -53,6 +54,7 @@ class DatabasesTest {
         assertTrue(databases.contains(DatabaseMetadata.of(databaseAnnotation)));
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     void shouldAddDatabase_NoDatabaseAnnotation_NoMetadataAdded() {
         ProcessProducer processProducer = mock(ProcessProducer.class);
