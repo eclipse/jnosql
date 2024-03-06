@@ -119,7 +119,6 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
         });
 
        traversal.drop().iterate();
-
     }
 
     @Override
@@ -144,8 +143,7 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
                        traversal.order().by(s.property(), desc);
                    }
                });
-
-        return null;
+        return traversal.toStream().map(EntityConverter.INSTANCE);
     }
 
     @Override
