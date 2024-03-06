@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.communication.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
@@ -37,6 +38,7 @@ import java.util.stream.Stream;
  */
 public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
 
+    static final String ID_PROPERTY = "_id";
     private final Graph graph;
 
     private DefaultGraphDatabaseManager(Graph graph) {
@@ -56,7 +58,10 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
     @Override
     public CommunicationEntity insert(CommunicationEntity entity) {
         Objects.requireNonNull(entity, "entity is required");
-        return null;
+        Vertex vertex = graph.addVertex(entity.name());
+        entity.toMap().forEach(vertex::property);
+        entity.add(ID_PROPERTY, vertex.id());
+        return entity;
     }
 
     @Override
