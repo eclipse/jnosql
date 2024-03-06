@@ -67,6 +67,7 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
     @Override
     public Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities) {
         Objects.requireNonNull(entities, "entities is required");
+        return null;
     }
 
     @Override
