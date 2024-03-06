@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.communication;
 
-import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
