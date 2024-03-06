@@ -34,12 +34,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.jnosql.mapping</groupId>
-            <artifactId>jnosql-mapping-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jnosql.communication</groupId>
-            <artifactId>jnosql-communication-query</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jnosql-mapping-semistructured</artifactId>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.antlr</groupId>
