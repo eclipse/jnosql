@@ -14,15 +14,22 @@
  */
 package org.eclipse.jnosql.communication.graph;
 
+import jakarta.data.exceptions.EmptyResultException;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.communication.ValueUtil;
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 
 import java.time.Duration;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.stream.Stream;
+
+import static org.apache.tinkerpop.gremlin.process.traversal.Order.asc;
+import static org.apache.tinkerpop.gremlin.process.traversal.Order.desc;
 
 /**
  * Default implementation of {@link GraphDatabaseManager} that serves as an adapter to the TinkerPop
@@ -59,7 +66,7 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
     public CommunicationEntity insert(CommunicationEntity entity) {
         Objects.requireNonNull(entity, "entity is required");
         Vertex vertex = graph.addVertex(entity.name());
-        entity.toMap().forEach(vertex::property);
+        entity.elements().forEach(e -> vertex.property(e.name(), ValueUtil.convert(e.value())));
         entity.add(ID_PROPERTY, vertex.id());
         return entity;
     }
@@ -72,7 +79,8 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
     @Override
     public Iterable<CommunicationEntity> insert(Iterable<CommunicationEntity> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        return null;
+        entities.forEach(this::insert);
+        return entities;
     }
 
     @Override
@@ -82,32 +90,73 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
 
     @Override
     public CommunicationEntity update(CommunicationEntity entity) {
-        return null;
+        Objects.requireNonNull(entity, "entity is required");
+        entity.find(ID_PROPERTY).ifPresent(id -> {
+            Iterator<Vertex> vertices = graph.vertices(id);
+            if(!vertices.hasNext()) {
+                throw new EmptyResultException("The entity does not exist with the id: " + id);
+            }
+            Vertex vertex = vertices.next();
+            entity.elements().forEach(e -> vertex.property(e.name(), ValueUtil.convert(e.value())));
+        });
+        return entity;
     }
 
     @Override
     public Iterable<CommunicationEntity> update(Iterable<CommunicationEntity> entities) {
+        Objects.requireNonNull(entities, "entities is required");
+        Stream.of(entities).forEach(this::update);
+        return entities;
+    }
+
+    @Override
+    public void delete(DeleteQuery query) {
+        Objects.requireNonNull(query, "delete is required");
+        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V().hasLabel(query.name());
+        query.condition().ifPresent(c ->{
+            GraphTraversal<Vertex, Vertex> predicate = TraversalExecutor.getPredicate(c);
+            traversal.filter(predicate);
+        });
+
+       traversal.drop().iterate();
+
+    }
+
+    @Override
+    public Stream<CommunicationEntity> select(SelectQuery query) {
+        Objects.requireNonNull(query, "query is required");
+        GraphTraversal<Vertex, Vertex> traversal = graph.traversal().V().hasLabel(query.name());
+        query.condition().ifPresent(c ->{
+            GraphTraversal<Vertex, Vertex> predicate = TraversalExecutor.getPredicate(c);
+            traversal.filter(predicate);
+        });
+
+        if(query.limit()> 0) {
+            traversal.limit(query.limit());
+        } else if(query.skip() > 0) {
+            traversal.limit(query.skip());
+        }
+       query.sorts().forEach(
+               s -> {
+                   if (s.isAscending()) {
+                       traversal.order().by(s.property(), asc);
+                   } else {
+                       traversal.order().by(s.property(), desc);
+                   }
+               });
+
         return null;
     }
 
     @Override
-    public void delete(DeleteQuery deleteQuery) {
-
-    }
-
-    @Override
-    public Stream<CommunicationEntity> select(SelectQuery selectQuery) {
-        return null;
-    }
-
-    @Override
-    public long count(String s) {
-        return 0;
+    public long count(String entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        GraphTraversal<Vertex, Long> count = graph.traversal().V().hasLabel(entity).count();
+        return count.next();
     }
 
     @Override
     public void close() {
-
     }
 
     /**
