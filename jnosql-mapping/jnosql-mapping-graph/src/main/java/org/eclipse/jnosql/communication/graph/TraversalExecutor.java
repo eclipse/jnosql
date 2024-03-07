@@ -54,7 +54,11 @@ final class TraversalExecutor {
                 return __.has(name, P.lte(value));
             }
             case BETWEEN -> {
-                return __.has(name, P.between(value, value));
+                List<Object> values = ValueUtil.convertToList(element.value());
+                if(values.size() == 2) {
+                    return __.has(name, P.between(values.get(0), values.get(1)));
+                }
+               throw new IllegalStateException("The between condition requires two parameters");
             }
             case IN -> {
                 return __.has(name, P.within(ValueUtil.convertToList(element.value())));

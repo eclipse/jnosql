@@ -2,6 +2,7 @@ package org.eclipse.jnosql.communication.graph;
 
 import net.datafaker.Faker;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
@@ -23,7 +24,11 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.communication.semistructured.DeleteQuery.delete;
 import static org.eclipse.jnosql.communication.semistructured.SelectQuery.select;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultGraphDatabaseManagerTest {
 
@@ -112,7 +117,7 @@ class DefaultGraphDatabaseManagerTest {
         var newField = Elements.of("newField", "10");
         entity.add(newField);
         var updated = entityManager.update(entity);
-        assertEquals(newField, updated.find("newField").get());
+        assertEquals(newField, updated.find("newField").orElseThrow());
     }
 
     @Test
@@ -121,7 +126,7 @@ class DefaultGraphDatabaseManagerTest {
 
         Optional<Element> id = documentEntity.find("_id");
         var query = select().from(COLLECTION_NAME)
-                .where("_id").eq(id.get().get())
+                .where("_id").eq(id.orElseThrow().get())
                 .build();
         var deleteQuery = delete().from(COLLECTION_NAME).where("_id")
                 .eq(id.get().get())
@@ -137,7 +142,7 @@ class DefaultGraphDatabaseManagerTest {
         Optional<Element> id = entity.find("_id");
 
         var query = select().from(COLLECTION_NAME)
-                .where("_id").eq(id.get().get())
+                .where("_id").eq(id.orElseThrow().get())
                 .build();
 
         var entities = entityManager.select(query).collect(Collectors.toList());
@@ -152,7 +157,7 @@ class DefaultGraphDatabaseManagerTest {
 
         var query = select().from(COLLECTION_NAME)
                 .where("name").eq("Poliana")
-                .and("city").eq("Salvador").and("_id").eq(id.get().get())
+                .and("city").eq("Salvador").and("_id").eq(id.orElseThrow().get())
                 .build();
 
         List<CommunicationEntity> entities = entityManager.select(query).collect(Collectors.toList());
@@ -167,7 +172,7 @@ class DefaultGraphDatabaseManagerTest {
         var query = select().from(COLLECTION_NAME)
                 .where("name").eq("Poliana")
                 .or("city").eq("Salvador")
-                .and(id.get().name()).eq(id.get().get())
+                .and(id.orElseThrow().name()).eq(id.get().get())
                 .build();
 
         List<CommunicationEntity> entities = entityManager.select(query).collect(Collectors.toList());
@@ -180,7 +185,7 @@ class DefaultGraphDatabaseManagerTest {
         DeleteQuery deleteQuery = delete().from(COLLECTION_NAME).where("type").eq("V").build();
         entityManager.delete(deleteQuery);
         Iterable<CommunicationEntity> entitiesSaved = entityManager.insert(getEntitiesWithValues());
-        List<CommunicationEntity> entities = StreamSupport.stream(entitiesSaved.spliterator(), false).collect(Collectors.toList());
+        List<CommunicationEntity> entities = StreamSupport.stream(entitiesSaved.spliterator(), false).toList();
 
         var query = select().from(COLLECTION_NAME)
                 .where("age").gt(22)
@@ -197,7 +202,7 @@ class DefaultGraphDatabaseManagerTest {
         DeleteQuery deleteQuery = delete().from(COLLECTION_NAME).where("type").eq("V").build();
         entityManager.delete(deleteQuery);
         Iterable<CommunicationEntity> entitiesSaved = entityManager.insert(getEntitiesWithValues());
-        List<CommunicationEntity> entities = StreamSupport.stream(entitiesSaved.spliterator(), false).collect(Collectors.toList());
+        List<CommunicationEntity> entities = StreamSupport.stream(entitiesSaved.spliterator(), false).toList();
 
         var query = select().from(COLLECTION_NAME)
                 .where("age").gte(23)
@@ -250,14 +255,38 @@ class DefaultGraphDatabaseManagerTest {
         DeleteQuery deleteQuery = delete().from(COLLECTION_NAME).where("type").eq("V").build();
         entityManager.delete(deleteQuery);
         Iterable<CommunicationEntity> entitiesSaved = entityManager.insert(getEntitiesWithValues());
-        List<CommunicationEntity> entities = StreamSupport.stream(entitiesSaved.spliterator(), false).collect(Collectors.toList());
+        List<CommunicationEntity> entities = StreamSupport.stream(entitiesSaved.spliterator(), false).toList();
 
         SelectQuery query = select().from(COLLECTION_NAME)
                 .where("location").in(asList("BR", "US"))
                 .and("type").eq("V")
                 .build();
 
-        assertEquals(entities, entityManager.select(query).collect(Collectors.toList()));
+        Assertions.assertThat(entityManager.select(query).toList()).containsAll(entities);
+    }
+
+    @Test
+    void shouldFindDocumentBetween() {
+        DeleteQuery deleteQuery = delete().from(COLLECTION_NAME).where("type").eq("V").build();
+        entityManager.delete(deleteQuery);
+        entityManager.insert(getEntitiesWithValues());
+
+        SelectQuery query = select().from(COLLECTION_NAME)
+                .where("age").between(22, 25)
+                .build();
+
+
+        var entities = entityManager.select(query).toList();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(entities).hasSize(2);
+            softly.assertThat(entities).extracting(e -> e.find("age").orElseThrow().get(Integer.class))
+                    .contains(22, 23);
+            softly.assertThat(entities).extracting(e -> e.find("name").orElseThrow().get(String.class))
+                    .contains("Luna", "Lucas");
+        });
+
+
+
     }
 
     @Test
@@ -291,7 +320,7 @@ class DefaultGraphDatabaseManagerTest {
         DeleteQuery deleteQuery = delete().from(COLLECTION_NAME).where("type").eq("V").build();
         entityManager.delete(deleteQuery);
         Iterable<CommunicationEntity> entitiesSaved = entityManager.insert(getEntitiesWithValues());
-        List<CommunicationEntity> entities = StreamSupport.stream(entitiesSaved.spliterator(), false).collect(Collectors.toList());
+        List<CommunicationEntity> entities = StreamSupport.stream(entitiesSaved.spliterator(), false).toList();
 
         SelectQuery query = select().from(COLLECTION_NAME)
                 .where("age").gt(22)
@@ -319,8 +348,6 @@ class DefaultGraphDatabaseManagerTest {
         DeleteQuery deleteQuery = delete().from(COLLECTION_NAME).where("type").eq("V").build();
         entityManager.delete(deleteQuery);
         Iterable<CommunicationEntity> entitiesSaved = entityManager.insert(getEntitiesWithValues());
-        List<CommunicationEntity> entities = StreamSupport.stream(entitiesSaved.spliterator(), false).
-                toList();
 
         SelectQuery query = select().from(COLLECTION_NAME)
                 .where("age").gt(22)
@@ -331,7 +358,7 @@ class DefaultGraphDatabaseManagerTest {
         List<CommunicationEntity> entitiesFound = entityManager.select(query).collect(Collectors.toList());
         assertEquals(2, entitiesFound.size());
         List<Integer> ages = entitiesFound.stream()
-                .map(e -> e.find("age").get().get(Integer.class))
+                .map(e -> e.find("age").orElseThrow().get(Integer.class))
                 .collect(Collectors.toList());
 
         assertThat(ages).contains(23, 25);
@@ -342,9 +369,9 @@ class DefaultGraphDatabaseManagerTest {
                 .orderBy("age").desc()
                 .build();
 
-        entitiesFound = entityManager.select(query).collect(Collectors.toList());
+        entitiesFound = entityManager.select(query).toList();
         ages = entitiesFound.stream()
-                .map(e -> e.find("age").get().get(Integer.class))
+                .map(e -> e.find("age").orElseThrow().get(Integer.class))
                 .collect(Collectors.toList());
         assertEquals(2, entitiesFound.size());
         assertThat(ages).contains(25, 23);
@@ -355,7 +382,7 @@ class DefaultGraphDatabaseManagerTest {
     void shouldFindAll() {
         entityManager.insert(getEntity());
         SelectQuery query = select().from(COLLECTION_NAME).build();
-        List<CommunicationEntity> entities = entityManager.select(query).collect(Collectors.toList());
+        List<CommunicationEntity> entities = entityManager.select(query).toList();
         assertFalse(entities.isEmpty());
     }
 
@@ -367,7 +394,7 @@ class DefaultGraphDatabaseManagerTest {
         assertFalse(entities.isEmpty());
         DeleteQuery deleteQuery = delete().from(COLLECTION_NAME).build();
         entityManager.delete(deleteQuery);
-        entities = entityManager.select(query).collect(Collectors.toList());
+        entities = entityManager.select(query).toList();
         assertTrue(entities.isEmpty());
     }
 
@@ -379,9 +406,11 @@ class DefaultGraphDatabaseManagerTest {
         assertFalse(entities.isEmpty());
         final CommunicationEntity entity = entities.get(0);
         assertEquals(3, entity.size());
-        assertTrue(entity.find("name").isPresent());
-        assertTrue(entity.find("_id").isPresent());
-        assertFalse(entity.find("city").isPresent());
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(entity.find("name")).isPresent();
+            softly.assertThat(entity.find("_id")).isPresent();
+            softly.assertThat(entity.find("city")).isPresent();
+        });
     }
 
 
@@ -404,17 +433,18 @@ class DefaultGraphDatabaseManagerTest {
         lucas.add(Element.of("location", "BR"));
         lucas.add(Element.of("type", "V"));
 
+        CommunicationEntity luna = CommunicationEntity.of(COLLECTION_NAME);
+        luna.add(Element.of("name", "Luna"));
+        luna.add(Element.of("age", 23));
+        luna.add(Element.of("location", "US"));
+        luna.add(Element.of("type", "V"));
+
         CommunicationEntity otavio = CommunicationEntity.of(COLLECTION_NAME);
         otavio.add(Element.of("name", "Otavio"));
         otavio.add(Element.of("age", 25));
         otavio.add(Element.of("location", "BR"));
         otavio.add(Element.of("type", "V"));
 
-        CommunicationEntity luna = CommunicationEntity.of(COLLECTION_NAME);
-        luna.add(Element.of("name", "Luna"));
-        luna.add(Element.of("age", 23));
-        luna.add(Element.of("location", "US"));
-        luna.add(Element.of("type", "V"));
 
         return asList(lucas, otavio, luna);
     }
