@@ -68,6 +68,7 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
         Vertex vertex = graph.addVertex(entity.name());
         entity.elements().forEach(e -> vertex.property(e.name(), ValueUtil.convert(e.value())));
         entity.add(ID_PROPERTY, vertex.id());
+        vertex.property(ID_PROPERTY, vertex.id());
         return entity;
     }
 
@@ -92,7 +93,7 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
     public CommunicationEntity update(CommunicationEntity entity) {
         Objects.requireNonNull(entity, "entity is required");
         entity.find(ID_PROPERTY).ifPresent(id -> {
-            Iterator<Vertex> vertices = graph.vertices(id);
+            Iterator<Vertex> vertices = graph.vertices(id.get());
             if(!vertices.hasNext()) {
                 throw new EmptyResultException("The entity does not exist with the id: " + id);
             }
@@ -133,7 +134,7 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
         if(query.limit()> 0) {
             traversal.limit(query.limit());
         } else if(query.skip() > 0) {
-            traversal.limit(query.skip());
+            traversal.skip(query.skip());
         }
        query.sorts().forEach(
                s -> {

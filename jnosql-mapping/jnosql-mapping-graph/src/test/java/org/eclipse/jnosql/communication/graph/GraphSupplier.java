@@ -14,10 +14,18 @@ public enum GraphSupplier implements Supplier<Graph> {
 
     private static final Logger LOGGER = Logger.getLogger(GraphSupplier.class.getName());
 
+    private final String directory;
+
+    private final Graph graph;
+
+    {
+        this.directory = new File("").getAbsolutePath() + "/target/jnosql-communication-graph/" + currentTimeMillis() + "/";
+        graph = Neo4jGraph.open(directory);
+    }
+
     @Override
     public Graph get() {
-        var directory = new File("").getAbsolutePath() + "/target/jnosql-communication-graph/" + currentTimeMillis() + "/";
         LOGGER.info("Starting Graph database at directory: " + directory);
-        return Neo4jGraph.open(directory);
+        return graph;
     }
 }
