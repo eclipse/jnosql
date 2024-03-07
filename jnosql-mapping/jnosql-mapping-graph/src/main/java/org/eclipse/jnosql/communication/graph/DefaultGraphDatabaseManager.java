@@ -18,6 +18,7 @@ import jakarta.data.exceptions.EmptyResultException;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.communication.CommunicationException;
 import org.eclipse.jnosql.communication.ValueUtil;
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
@@ -156,6 +157,11 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
 
     @Override
     public void close() {
+        try {
+            graph.close();
+        } catch (Exception e) {
+            throw new CommunicationException("There is an issue when close the Graph connection", e);
+        }
     }
 
     /**
