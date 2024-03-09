@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph;
+package org.eclipse.jnosql.communication.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.communication.CommunicationException;
@@ -28,7 +28,7 @@ public interface GraphConfiguration extends Function<Settings, Graph> {
 
 
     /**
-     * creates and returns a  {@link GraphConfiguration}  instance from {@link java.util.ServiceLoader}
+     * creates and returns a  {@link GraphConfiguration}  instance from {@link ServiceLoader}
      *
      * @param <T> the configuration type
      * @return {@link GraphConfiguration} instance

@@ -1,86 +1,68 @@
-/*
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
- *   All rights reserved. This program and the accompanying materials
- *   are made available under the terms of the Eclipse Public License v1.0
- *   and Apache License v2.0 which accompanies this distribution.
- *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
- *
- *   You may elect to redistribute this code under either of these licenses.
- *
- *   Contributors:
- *
- *   Otavio Santana
- */
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
-import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.communication.graph.GraphDatabaseManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.Database;
-import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
-
-/**
- * The default {@link GraphTemplate}
- */
+import org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
+import org.eclipse.jnosql.mapping.semistructured.EventPersistManager;
 
 @Default
-@Database(DatabaseType.GRAPH)
 @ApplicationScoped
-class DefaultGraphTemplate extends AbstractGraphTemplate {
+class DefaultGraphTemplate extends AbstractSemistructuredTemplate implements GraphTemplate {
 
-    private Instance<Graph> graph;
+    private final EntityConverter converter;
 
-    private EntitiesMetadata entities;
+    private final GraphDatabaseManager manager;
 
-    private GraphConverter converter;
+    private final EventPersistManager eventManager;
 
-    private GraphEventPersistManager persistManager;
+    private final EntitiesMetadata entities;
 
-    private Converters converters;
+    private final Converters converters;
+
 
     @Inject
-    DefaultGraphTemplate(Instance<Graph> graph, EntitiesMetadata entities, GraphConverter converter,
-                         GraphEventPersistManager persistManager,
-                         Converters converters) {
-        this.graph = graph;
-        this.entities = entities;
+    DefaultGraphTemplate(EntityConverter converter, GraphDatabaseManager manager,
+                         EventPersistManager eventManager,
+                         EntitiesMetadata entities, Converters converters) {
         this.converter = converter;
-        this.persistManager = persistManager;
+        this.manager = manager;
+        this.eventManager = eventManager;
+        this.entities = entities;
         this.converters = converters;
     }
 
-    DefaultGraphTemplate(){
+    DefaultGraphTemplate() {
+        this(null, null, null, null, null);
     }
 
     @Override
-    protected Graph getGraph() {
-        return graph.get();
-    }
-
-    @Override
-    protected EntitiesMetadata getEntities() {
-        return entities;
-    }
-
-    @Override
-    protected GraphConverter getConverter() {
+    protected EntityConverter converter() {
         return converter;
     }
 
     @Override
-    protected GraphEventPersistManager getEventManager() {
-        return persistManager;
+    protected DatabaseManager manager() {
+        return manager;
     }
 
     @Override
-    protected Converters getConverters() {
-        return converters;
+    protected EventPersistManager eventManager() {
+        return eventManager;
     }
 
+    @Override
+    protected EntitiesMetadata entities() {
+        return entities;
+    }
 
+    @Override
+    protected Converters converters() {
+        return converters;
+    }
 }
