@@ -63,8 +63,6 @@ public class GraphProducer implements Supplier<Graph> {
     }
 
     @Produces
-    @Default
-    @Database(value = DatabaseType.GRAPH)
     @ApplicationScoped
     @Override
     public Graph get() {

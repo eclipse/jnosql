@@ -67,11 +67,11 @@ public class RepositoryGraphBean<T extends DataRepository<T, ?>> extends Abstrac
         this.provider = provider;
         if (provider.isEmpty()) {
             this.qualifiers = new HashSet<>();
-            qualifiers.add(DatabaseQualifier.ofDocument());
+            qualifiers.add(DatabaseQualifier.ofGraph());
             qualifiers.add(AnnotationLiteralUtil.DEFAULT_ANNOTATION);
             qualifiers.add(AnnotationLiteralUtil.ANY_ANNOTATION);
         } else {
-            this.qualifiers = Collections.singleton(DatabaseQualifier.ofDocument(provider));
+            this.qualifiers = Collections.singleton(DatabaseQualifier.ofGraph(provider));
         }
     }
 
