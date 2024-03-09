@@ -97,7 +97,7 @@ abstract class AbstractGraphTemplate extends AbstractSemistructuredTemplate impl
         if (vertices.hasNext()) {
             List<Edge> edges = new ArrayList<>();
             vertices.next().edges(direction, labels).forEachRemaining(edges::add);
-            return edges.stream().map(converter()::toEdgeEntity).toList();
+            return edges.stream().map(e ->EdgeEntity.of(converter(), e)).toList();
         }
         return Collections.emptyList();
     }
