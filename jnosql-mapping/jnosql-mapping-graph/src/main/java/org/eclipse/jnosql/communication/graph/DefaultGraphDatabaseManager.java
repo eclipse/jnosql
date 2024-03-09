@@ -46,7 +46,7 @@ import static org.apache.tinkerpop.gremlin.process.traversal.Order.desc;
  */
 public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
 
-    static final String ID_PROPERTY = "_id";
+    public static final String ID_PROPERTY = "_id";
     private final Graph graph;
 
     DefaultGraphDatabaseManager(Graph graph) {

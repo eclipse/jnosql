@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.graph;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Vetoed;
 import jakarta.inject.Inject;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.communication.graph.GraphDatabaseManager;
 import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
@@ -33,7 +34,7 @@ import java.util.function.Function;
  * It implements the {@link Function} interface with {@link DatabaseManager} as input and {@link GraphTemplate} as output.
  */
 @ApplicationScoped
-public class GraphTemplateProducer implements Function<GraphDatabaseManager, GraphTemplate> {
+public class GraphTemplateProducer implements Function<Graph, GraphTemplate> {
 
     @Inject
     private EntityConverter converter;
@@ -49,9 +50,9 @@ public class GraphTemplateProducer implements Function<GraphDatabaseManager, Gra
 
 
     @Override
-    public GraphTemplate apply(GraphDatabaseManager manager) {
-        Objects.requireNonNull(manager, "manager is required");
-        return new ProducerGraphTemplate(converter, manager,
+    public GraphTemplate apply(Graph graph) {
+        Objects.requireNonNull(graph, "graph is required");
+        return new ProducerGraphTemplate(converter, graph,
                 eventManager, entities, converters);
     }
 
@@ -60,7 +61,6 @@ public class GraphTemplateProducer implements Function<GraphDatabaseManager, Gra
 
         private final EntityConverter converter;
 
-        private final GraphDatabaseManager manager;
 
         private final EventPersistManager eventManager;
 
@@ -68,11 +68,16 @@ public class GraphTemplateProducer implements Function<GraphDatabaseManager, Gra
 
         private final Converters converters;
 
-        public ProducerGraphTemplate(EntityConverter converter, GraphDatabaseManager manager,
+        private final Graph graph;
+
+        private final GraphDatabaseManager manager;
+
+        public ProducerGraphTemplate(EntityConverter converter, Graph graph,
                                      EventPersistManager eventManager,
                                      EntitiesMetadata entities, Converters converters) {
             this.converter = converter;
-            this.manager = manager;
+            this.graph = graph;
+            this.manager = GraphDatabaseManager.of(graph);
             this.eventManager = eventManager;
             this.entities = entities;
             this.converters = converters;

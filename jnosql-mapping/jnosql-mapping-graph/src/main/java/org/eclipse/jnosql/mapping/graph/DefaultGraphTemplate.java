@@ -3,15 +3,19 @@ package org.eclipse.jnosql.mapping.graph;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.communication.graph.GraphDatabaseManager;
-import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
+import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.eclipse.jnosql.mapping.semistructured.EventPersistManager;
 
+import static org.eclipse.jnosql.mapping.DatabaseType.GRAPH;
+
 @Default
 @ApplicationScoped
+@Database(GRAPH)
 class DefaultGraphTemplate extends AbstractGraphTemplate {
 
     private final EntityConverter converter;
@@ -23,17 +27,19 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     private final EntitiesMetadata entities;
 
     private final Converters converters;
+    private final Graph graph;
 
 
     @Inject
-    DefaultGraphTemplate(EntityConverter converter, GraphDatabaseManager manager,
+    DefaultGraphTemplate(EntityConverter converter, Graph graph,
                          EventPersistManager eventManager,
                          EntitiesMetadata entities, Converters converters) {
         this.converter = converter;
-        this.manager = manager;
+        this.graph = graph;
         this.eventManager = eventManager;
         this.entities = entities;
         this.converters = converters;
+        this.manager = GraphDatabaseManager.of(graph);
     }
 
     DefaultGraphTemplate() {
