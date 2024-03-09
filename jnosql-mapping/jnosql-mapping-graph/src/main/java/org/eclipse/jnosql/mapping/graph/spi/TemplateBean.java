@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.graph.spi;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.communication.graph.GraphDatabaseManager;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
@@ -56,7 +57,7 @@ class TemplateBean extends AbstractBean<GraphTemplate> {
 
         GraphTemplateProducer producer = getInstance(GraphTemplateProducer.class);
         Graph manager = getGraph();
-        return producer.get(manager);
+        return producer.apply(GraphDatabaseManager.of(manager));
     }
 
     private Graph getGraph() {
@@ -76,7 +77,7 @@ class TemplateBean extends AbstractBean<GraphTemplate> {
 
     @Override
     public String getId() {
-        return GraphTemplate.class.getName() + DatabaseType.COLUMN + "-" + provider;
+        return GraphTemplate.class.getName() + DatabaseType.GRAPH + "-" + provider;
     }
 
 }

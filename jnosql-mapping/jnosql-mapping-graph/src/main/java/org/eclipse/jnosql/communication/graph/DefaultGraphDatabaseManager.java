@@ -49,7 +49,7 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
     static final String ID_PROPERTY = "_id";
     private final Graph graph;
 
-    private DefaultGraphDatabaseManager(Graph graph) {
+    DefaultGraphDatabaseManager(Graph graph) {
         this.graph = graph;
     }
 
@@ -162,17 +162,5 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
         } catch (Exception e) {
             throw new CommunicationException("There is an issue when close the Graph connection", e);
         }
-    }
-
-    /**
-     * Creates a new instance of DefaultGraphDatabaseManager with the specified TinkerPop Graph.
-     *
-     * @param graph the TinkerPop Graph instance to be managed
-     * @return a new DefaultGraphDatabaseManager instance
-     * @throws NullPointerException if the graph parameter is null
-     */
-    public static GraphDatabaseManager of(Graph graph) {
-        Objects.requireNonNull(graph, "graph is required");
-        return new DefaultGraphDatabaseManager(graph);
     }
 }

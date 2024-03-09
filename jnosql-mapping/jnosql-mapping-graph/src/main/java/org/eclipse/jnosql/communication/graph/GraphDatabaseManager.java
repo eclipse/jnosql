@@ -17,6 +17,7 @@ package org.eclipse.jnosql.communication.graph;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -32,4 +33,16 @@ import java.util.function.Supplier;
  * </p>
  */
 public interface GraphDatabaseManager extends DatabaseManager, Supplier<Graph> {
+
+    /**
+     * Creates a new instance of DefaultGraphDatabaseManager with the specified TinkerPop Graph.
+     *
+     * @param graph the TinkerPop Graph instance to be managed
+     * @return a new DefaultGraphDatabaseManager instance
+     * @throws NullPointerException if the graph parameter is null
+     */
+    static GraphDatabaseManager of(Graph graph) {
+        Objects.requireNonNull(graph, "graph is required");
+        return new DefaultGraphDatabaseManager(graph);
+    }
 }

@@ -41,7 +41,7 @@ class DefaultGraphDatabaseManagerTest {
     @BeforeEach
     void setUp(){
         Graph graph = GraphSupplier.INSTANCE.get();
-        this.entityManager = DefaultGraphDatabaseManager.of(graph);
+        this.entityManager = GraphDatabaseManager.of(graph);
     }
 
     @BeforeEach
