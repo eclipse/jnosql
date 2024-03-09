@@ -5,7 +5,7 @@ import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
 
 import java.util.function.Function;
 
-enum EntityConverter implements Function<Vertex, CommunicationEntity>{
+public enum CommunicationEntityConverter implements Function<Vertex, CommunicationEntity>{
     INSTANCE;
 
 

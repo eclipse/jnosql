@@ -145,7 +145,7 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
                        traversal.order().by(s.property(), desc);
                    }
                });
-        return traversal.toStream().map(EntityConverter.INSTANCE);
+        return traversal.toStream().map(CommunicationEntityConverter.INSTANCE);
     }
 
     @Override
