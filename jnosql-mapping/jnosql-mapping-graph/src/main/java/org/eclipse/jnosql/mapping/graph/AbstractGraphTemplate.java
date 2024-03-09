@@ -31,8 +31,25 @@ import static org.apache.tinkerpop.gremlin.structure.T.id;
 
 abstract class AbstractGraphTemplate extends AbstractSemistructuredTemplate implements GraphTemplate {
 
+    /**
+     * Retrieves the {@link GraphDatabaseManager} associated with this graph template.
+     *
+     * @return the {@link GraphDatabaseManager} associated with this graph template
+     */
     protected abstract GraphDatabaseManager manager();
+
+    /**
+     * Retrieves the {@link GraphTraversalSource} associated with this graph template.
+     *
+     * @return the {@link GraphTraversalSource} associated with this graph template
+     */
     protected abstract GraphTraversalSource traversal();
+
+    /**
+     * Retrieves the {@link Graph} associated with this graph template.
+     *
+     * @return the {@link Graph} associated with this graph template
+     */
     protected abstract Graph graph();
 
 
