@@ -14,7 +14,15 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Direction;
+import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
+
+import java.util.Collection;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 
 /**
@@ -26,6 +34,183 @@ import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
  * @see org.apache.tinkerpop.gremlin.structure.Graph
  */
 public interface GraphTemplate extends SemistructuredTemplate {
+
+    /**
+     * Deletes a {@link org.apache.tinkerpop.gremlin.structure.Vertex}
+     *
+     * @param id  the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T> the id type
+     * @throws NullPointerException when id is null
+     */
+    <T> void delete(T id);
+
+    /**
+     * Deletes a {@link org.apache.tinkerpop.gremlin.structure.Edge}
+     *
+     * @param id  the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T> the id type
+     * @throws NullPointerException when either label and id are null
+     */
+    <T> void deleteEdge(T id);
+
+    /**
+     * Deletes {@link org.apache.tinkerpop.gremlin.structure.Edge} instances
+     *
+     * @param ids the ids to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T> the id type
+     * @throws NullPointerException when either label and id are null
+     */
+    <T> void deleteEdge(Iterable<T> ids);
+
+    /**
+     * Either find or create an Edge between this two entities.
+     * {@link org.apache.tinkerpop.gremlin.structure.Edge}
+     * <pre>entityOUT ---label---&#62; entityIN.</pre>
+     *
+     * @param incoming the incoming entity
+     * @param label    the Edge label
+     * @param outgoing the outgoing entity
+     * @param <I>      the incoming type
+     * @param <O>      the outgoing type
+     * @return the {@link EdgeEntity} of these two entities
+     * @throws NullPointerException                          Either when any elements are null or the entity is null
+     */
+    <O, I> EdgeEntity edge(O outgoing, String label, I incoming);
+
+    /**
+     * Either find or create an Edge between this two entities.
+     * {@link org.apache.tinkerpop.gremlin.structure.Edge}
+     * <pre>entityOUT ---label---&#62; entityIN.</pre>
+     *
+     * @param incoming the incoming entity
+     * @param label    the Edge label
+     * @param outgoing the outgoing entity
+     * @param <I>      the incoming type
+     * @param <O>      the outgoing type
+     * @return the {@link EdgeEntity} of these two entities
+     * @throws NullPointerException                          Either when any elements are null or the entity is null
+     */
+    default <O, I> EdgeEntity edge(O outgoing, Supplier<String> label, I incoming) {
+        Objects.requireNonNull(label, "supplier is required");
+        return edge(outgoing, label.get(), incoming);
+    }
+
+    /**
+     * returns the edges of from a vertex id
+     *
+     * @param id        the id
+     * @param direction the direction
+     * @param labels    the edge labels
+     * @param <K>       the K type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <K> Collection<EdgeEntity> edgesById(K id, Direction direction, String... labels);
+
+    /**
+     * returns the edges of from a vertex id
+     *
+     * @param id        the id
+     * @param direction the direction
+     * @param labels    the edge labels
+     * @param <K>       the K type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <K> Collection<EdgeEntity> edgesById(K id, Direction direction, Supplier<String>... labels);
+
+    /**
+     * returns the edges of from a vertex id
+     *
+     * @param id        the id
+     * @param direction the direction
+     * @param <K>       the K type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <K> Collection<EdgeEntity> edgesById(K id, Direction direction);
+
+    /**
+     * returns the edges of from an entity
+     *
+     * @param entity    the entity
+     * @param direction the direction
+     * @param labels    the edge labels
+     * @param <T>       the entity type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <T> Collection<EdgeEntity> edges(T entity, Direction direction, String... labels);
+
+    /**
+     * returns the edges of from an entity
+     *
+     * @param entity    the entity
+     * @param direction the direction
+     * @param labels    the edge labels
+     * @param <T>       the entity type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <T> Collection<EdgeEntity> edges(T entity, Direction direction, Supplier<String>... labels);
+
+    /**
+     * returns the edges of from an entity
+     *
+     * @param entity    the entity
+     * @param direction the direction
+     * @param <T>       the entity type
+     * @return the Edges
+     * @throws NullPointerException where there is any parameter null
+     */
+    <T> Collection<EdgeEntity> edges(T entity, Direction direction);
+
+    /**
+     * Finds an {@link EdgeEntity} from the Edge Id
+     *
+     * @param edgeId the edge id
+     * @param <E>    the edge id type
+     * @return the {@link EdgeEntity} otherwise {@link Optional#empty()}
+     * @throws IllegalStateException when edgeId is null
+     */
+    <E> Optional<EdgeEntity> edge(E edgeId);
+
+
+    /**
+     * Gets a {@link VertexTraversal} to run a query in the graph
+     *
+     * @param vertexIds get ids
+     * @return a {@link VertexTraversal} instance
+     * @throws IllegalStateException if any id element is null
+     */
+    VertexTraversal traversalVertex(Object... vertexIds);
+
+
+    /**
+     * Gets a {@link EdgeTraversal} to run a query in the graph
+     *
+     * @param edgeIds get ids
+     * @return a {@link VertexTraversal} instance
+     * @throws IllegalStateException if any id element is null
+     */
+    EdgeTraversal traversalEdge(Object... edgeIds);
+
+    /**
+     * Gets the current transaction
+     *
+     * @return the current {@link Transaction}
+     */
+    Transaction transaction();
+
+    /**
+     * Executes a Gremlin then bring the result as a {@link Stream}
+     *
+     * @param gremlin the query gremlin
+     * @param <T>     the entity type
+     * @return the result as {@link Stream}
+     * @throws NullPointerException when the gremlin is null
+     */
+    <T> Stream<T> gremlin(String gremlin);
 
 
 }
