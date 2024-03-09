@@ -14,11 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import jakarta.nosql.PreparedStatement;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -224,5 +226,23 @@ public interface GraphTemplate extends SemistructuredTemplate {
      */
     <T> Stream<T> gremlin(String gremlin);
 
+    /**
+     * Executes a Gremlin query then bring the result as a unique result
+     *
+     * @param gremlin the gremlin query
+     * @param <T>     the entity type
+     * @return the result as {@link List}
+     * @throws NullPointerException     when the query is null
+     */
+    <T> Optional<T> gremlinSingleResult(String gremlin);
+
+    /**
+     * Creates a {@link PreparedStatement} from the query
+     *
+     * @param gremlin the gremlin query
+     * @return a {@link PreparedStatement} instance
+     * @throws NullPointerException when the query is null
+     */
+    PreparedStatement gremlinPrepare(String gremlin);
 
 }

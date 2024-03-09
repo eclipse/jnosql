@@ -1,6 +1,8 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.data.exceptions.EmptyResultException;
+import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.nosql.PreparedStatement;
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Direction;
@@ -193,6 +195,26 @@ abstract class AbstractGraphTemplate extends AbstractSemistructuredTemplate impl
     public <T> Stream<T> gremlin(String gremlin) {
         requireNonNull(gremlin, "gremlin is required");
         return executor().executeGremlin(traversal(), gremlin);
+    }
+
+    @Override
+    public <T> Optional<T> gremlinSingleResult(String gremlin) {
+        Stream<T> entities = gremlin(gremlin);
+        final Iterator<T> iterator = entities.iterator();
+        if (!iterator.hasNext()) {
+            return Optional.empty();
+        }
+        final T entity = iterator.next();
+        if (!iterator.hasNext()) {
+            return Optional.ofNullable(entity);
+        }
+        throw new NonUniqueResultException("The gremlin query returns more than one result: " + gremlin);
+    }
+
+    @Override
+    public PreparedStatement gremlinPrepare(String gremlin){
+        requireNonNull(gremlin, "query is required");
+        return new DefaultPreparedStatement(executor(), gremlin, traversal());
     }
 
     private <T> void checkId(T entity) {
