@@ -3,6 +3,7 @@ package org.eclipse.jnosql.mapping.graph;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
@@ -61,6 +62,16 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     @Override
     protected GraphDatabaseManager manager() {
         return manager;
+    }
+
+    @Override
+    protected GraphTraversalSource traversal() {
+        return graph.traversal();
+    }
+
+    @Override
+    protected Graph graph() {
+        return graph;
     }
 
     @Override

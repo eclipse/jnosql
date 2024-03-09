@@ -8,6 +8,8 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.communication.CommunicationException;
+import org.eclipse.jnosql.communication.graph.CommunicationEntityConverter;
 import org.eclipse.jnosql.communication.graph.GraphDatabaseManager;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -19,6 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -52,6 +55,15 @@ abstract class AbstractGraphTemplate extends AbstractSemistructuredTemplate impl
      */
     protected abstract Graph graph();
 
+    private GremlinExecutor gremlinExecutor;
+
+
+    @Override
+    public <T, K> Optional<T> find(K idValue) {
+        requireNonNull(idValue, "id is required");
+        Optional<Vertex> vertex = traversal().V(idValue).tryNext();
+        return vertex.map(v -> converter().toEntity(CommunicationEntityConverter.INSTANCE.apply(v)));
+    }
 
     @Override
     public <T> void delete(T id) {
@@ -119,33 +131,46 @@ abstract class AbstractGraphTemplate extends AbstractSemistructuredTemplate impl
         return Collections.emptyList();
     }
 
+    @SafeVarargs
     @Override
-    public <K> Collection<EdgeEntity> edgesById(K id, Direction direction, Supplier<String>... labels) {
-        return null;
+    public final <K> Collection<EdgeEntity> edgesById(K id, Direction direction, Supplier<String>... labels) {
+        checkLabelsSupplier(labels);
+        return edgesByIdImpl(id, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
     }
 
     @Override
     public <K> Collection<EdgeEntity> edgesById(K id, Direction direction) {
-        return null;
+        return edgesByIdImpl(id, direction);
     }
 
     @Override
     public <T> Collection<EdgeEntity> edges(T entity, Direction direction, String... labels) {
-        return null;
+        return edgesImpl(entity, direction, labels);
     }
 
+    @SafeVarargs
     @Override
-    public <T> Collection<EdgeEntity> edges(T entity, Direction direction, Supplier<String>... labels) {
-        return null;
+    public final <T> Collection<EdgeEntity> edges(T entity, Direction direction, Supplier<String>... labels) {
+        checkLabelsSupplier(labels);
+        return edgesImpl(entity, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
     }
 
     @Override
     public <T> Collection<EdgeEntity> edges(T entity, Direction direction) {
-        return null;
+        return edgesImpl(entity, direction);
     }
 
     @Override
     public <E> Optional<EdgeEntity> edge(E edgeId) {
+        requireNonNull(edgeId, "edgeId is required");
+
+        Optional<Edge> edgeOptional = traversal().E(edgeId).tryNext();
+
+        if (edgeOptional.isPresent()) {
+            Edge edge = edgeOptional.get();
+            return Optional.of(EdgeEntity.of(converter(), edge));
+        }
+
         return Optional.empty();
     }
 
@@ -161,12 +186,13 @@ abstract class AbstractGraphTemplate extends AbstractSemistructuredTemplate impl
 
     @Override
     public Transaction transaction() {
-        return null;
+        return graph().tx();
     }
 
     @Override
     public <T> Stream<T> gremlin(String gremlin) {
-        return null;
+        requireNonNull(gremlin, "gremlin is required");
+        return executor().executeGremlin(traversal(), gremlin);
     }
 
     private <T> void checkId(T entity) {
@@ -200,6 +226,49 @@ abstract class AbstractGraphTemplate extends AbstractSemistructuredTemplate impl
         final Edge edge = outVertex.addEdge(label, inVertex);
         GraphTransactionUtil.transaction(graph());
         return edge;
+    }
+
+    private void checkLabelsSupplier(Supplier<String>[] labels) {
+        if (Stream.of(labels).anyMatch(Objects::isNull)) {
+            throw new IllegalStateException("Item cannot be null");
+        }
+    }
+
+    private <K> Collection<EdgeEntity> edgesByIdImpl(K id, Direction direction, String... labels) {
+
+        requireNonNull(id, "id is required");
+        requireNonNull(direction, "direction is required");
+
+        Iterator<Vertex> vertices = vertices(id);
+        if (vertices.hasNext()) {
+            List<Edge> edges = new ArrayList<>();
+            vertices.next().edges(direction, labels).forEachRemaining(edges::add);
+            return edges.stream().map(e -> EdgeEntity.of(converter(), e)).toList();
+        }
+        return Collections.emptyList();
+    }
+
+    private <T> Collection<EdgeEntity> edgesImpl(T entity, Direction direction, String... labels) {
+        requireNonNull(entity, "entity is required");
+
+        if (isIdNull(entity)) {
+            throw new IllegalStateException("Entity id is required");
+        }
+
+        Optional<Vertex> vertex = vertex(entity);
+        if (vertex.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        Object id = vertex.orElseThrow().id();
+        return edgesByIdImpl(id, direction, labels);
+    }
+
+    private GremlinExecutor executor() {
+        if (Objects.isNull(gremlinExecutor)) {
+            this.gremlinExecutor = new GremlinExecutor(converter());
+        }
+        return gremlinExecutor;
     }
 
 }

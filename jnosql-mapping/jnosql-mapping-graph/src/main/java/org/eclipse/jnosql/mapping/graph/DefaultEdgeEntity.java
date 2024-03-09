@@ -130,18 +130,16 @@ class DefaultEdgeEntity<O, I> implements EdgeEntity {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultEdgeEntity)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         DefaultEdgeEntity<?, ?> that = (DefaultEdgeEntity<?, ?>) o;
-        return Objects.equals(edge, that.edge) &&
-                Objects.equals(incoming, that.incoming) &&
-                Objects.equals(outgoing, that.outgoing);
+        return Objects.equals(edge.id(), that.edge.id());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(edge, incoming, outgoing);
+        return Objects.hashCode(edge.id());
     }
 
     @Override

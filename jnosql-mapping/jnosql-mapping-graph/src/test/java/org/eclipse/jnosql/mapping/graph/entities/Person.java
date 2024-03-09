@@ -110,4 +110,8 @@ public class Person {
     public static PersonBuilder builder() {
         return new PersonBuilder();
     }
+
+    public void setName(String name){
+        this.name = name;
+    }
 }

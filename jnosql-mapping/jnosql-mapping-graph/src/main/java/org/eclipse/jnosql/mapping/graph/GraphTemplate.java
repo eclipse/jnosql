@@ -96,6 +96,18 @@ public interface GraphTemplate extends SemistructuredTemplate {
     }
 
     /**
+     * Find an entity given {@link org.apache.tinkerpop.gremlin.structure.T#label} and
+     * {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     *
+     * @param id  the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T> the entity type
+     * @param <K> the id type
+     * @return the entity found otherwise {@link Optional#empty()}
+     * @throws NullPointerException when id is null
+     */
+    <T, K> Optional<T> find(K id);
+
+    /**
      * returns the edges of from a vertex id
      *
      * @param id        the id
