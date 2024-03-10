@@ -92,7 +92,7 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     public <T> VertexTraversal filter(Predicate<T> predicate) {
         requireNonNull(predicate, "predicate is required");
 
-        Predicate<Traverser<Vertex>> p = v -> predicate.test(converter.toEntity(GraphEntityConverter.INSTANCE.toEntity(converter, v.get())));
+        Predicate<Traverser<Vertex>> p = v -> predicate.test(GraphEntityConverter.INSTANCE.toEntity(converter, v.get()));
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.filter(p)), converter);
     }
 
