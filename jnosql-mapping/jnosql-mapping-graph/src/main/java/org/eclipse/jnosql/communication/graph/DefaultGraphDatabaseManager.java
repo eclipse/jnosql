@@ -71,6 +71,7 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
         entity.elements().forEach(e -> vertex.property(e.name(), ValueUtil.convert(e.value())));
         entity.add(ID_PROPERTY, vertex.id());
         vertex.property(ID_PROPERTY, vertex.id());
+        GraphTransactionUtil.transaction(graph);
         return entity;
     }
 
@@ -102,6 +103,7 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
             Vertex vertex = vertices.next();
             entity.elements().forEach(e -> vertex.property(e.name(), ValueUtil.convert(e.value())));
         });
+        GraphTransactionUtil.transaction(graph);
         return entity;
     }
 
@@ -122,6 +124,7 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
         });
 
        traversal.drop().iterate();
+        GraphTransactionUtil.transaction(graph);
     }
 
     @Override

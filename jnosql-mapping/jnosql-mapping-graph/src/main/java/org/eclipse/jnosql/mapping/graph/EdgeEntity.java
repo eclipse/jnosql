@@ -145,8 +145,8 @@ public interface EdgeEntity {
         Objects.requireNonNull(converter, "converter is required");
         Objects.requireNonNull(edge, "edge is required");
         var entityConverter = CommunicationEntityConverter.INSTANCE;
-        return new DefaultEdgeEntity<>(edge, converter.toEntity(entityConverter.apply(edge.outVertex())),
-                converter.toEntity(entityConverter.apply(edge.inVertex())));
+        return new DefaultEdgeEntity<>(edge, converter.toEntity(entityConverter.apply(edge.inVertex())),
+                converter.toEntity(entityConverter.apply(edge.outVertex())));
     }
 
 }

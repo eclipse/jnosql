@@ -11,9 +11,9 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.communication.CommunicationException;
 import org.eclipse.jnosql.communication.graph.CommunicationEntityConverter;
 import org.eclipse.jnosql.communication.graph.GraphDatabaseManager;
+import org.eclipse.jnosql.communication.graph.GraphTransactionUtil;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
@@ -198,7 +198,7 @@ abstract class AbstractGraphTemplate extends AbstractSemistructuredTemplate impl
         if (Stream.of(edgeIds).anyMatch(Objects::isNull)) {
             throw new IllegalStateException("No one edgeId element cannot be null");
         }
-        return null;
+        return new DefaultEdgeTraversal(() -> traversal().E(edgeIds), INITIAL_EDGE, converter());
     }
 
     @Override

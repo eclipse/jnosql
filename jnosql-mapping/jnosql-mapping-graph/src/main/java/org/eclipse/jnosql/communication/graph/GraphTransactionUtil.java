@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph;
+package org.eclipse.jnosql.communication.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
@@ -24,9 +24,10 @@ import java.util.logging.Logger;
 import static org.eclipse.jnosql.mapping.core.config.MappingConfigurations.GRAPH_TRANSACTION_AUTOMATIC;
 
 /**
- * Utilitarian to {@link Transaction}
+ * Utility class providing methods to manage transactions in a graph database.
+ * This class offers functionality to lock and unlock transactions, as well as automatic transaction management.
  */
-final class GraphTransactionUtil {
+public final class GraphTransactionUtil {
 
     private static final Logger LOGGER = Logger.getLogger(GraphTransactionUtil.class.getName());
     private static final ThreadLocal<Transaction> THREAD_LOCAL = new ThreadLocal<>();
@@ -35,53 +36,60 @@ final class GraphTransactionUtil {
     }
 
     /**
-     * Holds the current transaction to don't allow a {@link Transaction#commit()}
+     * Locks the current transaction, preventing it from being committed.
      *
-     * @param transaction the {@link Transaction}
+     * @param transaction the transaction to lock
      */
-    static void lock(Transaction transaction) {
+    public static void lock(Transaction transaction) {
         THREAD_LOCAL.set(transaction);
     }
 
     /**
-     * Unlocks the {@link Transaction} of the current thread
+     * Unlocks the current transaction.
+     * Allows the transaction to be committed.
      */
-    static void unlock() {
+    public static void unlock() {
         THREAD_LOCAL.remove();
     }
 
     /**
-     * Checks if possible to {@link Transaction#commit()},
-     * if checks it the {@link Transaction} holds and if it is defined as an automatic transaction.
+     * Automatically commits a transaction if enabled and not locked.
      *
-     * @param graph the graph
+     * @param graph the graph instance
      */
-    static void transaction(Graph graph) {
-        if (isAutomatic() && isNotLock() && Objects.nonNull(graph)) {
-            try {
-                Transaction transaction = graph.tx();
-                if (transaction != null) {
-                    transaction.commit();
+    public static void transaction(Graph graph) {
+        synchronized (graph) {
+            if (isAutomatic() && isNotLock() && Objects.nonNull(graph)) {
+                try {
+                    Transaction transaction = graph.tx();
+                    if (transaction != null) {
+                        transaction.commit();
+                    }
+                } catch (Exception exception) {
+                    LOGGER.info("Unable to do transaction automatically in the graph, reason: " +
+                            exception.getMessage());
                 }
-            } catch (Exception exception) {
-                LOGGER.info("Unable to do transaction automatically in the graph, reason: " +
-                        exception.getMessage());
-            }
 
+            }
         }
     }
 
     /**
-     * Check if the transaction is enabled
+     * Checks if automatic transaction management is enabled.
      *
-     * @return Check if the transaction is enabled
+     * @return true if automatic transaction management is enabled, false otherwise
      */
-    static boolean isAutomatic() {
+    public static boolean isAutomatic() {
         return MicroProfileSettings.INSTANCE.get(GRAPH_TRANSACTION_AUTOMATIC, String.class)
                 .map(Boolean::valueOf)
                 .orElse(true);
     }
 
+    /**
+     * Checks if the current transaction is not locked.
+     *
+     * @return true if the current transaction is not locked, false otherwise
+     */
     private static boolean isNotLock() {
         return THREAD_LOCAL.get() == null;
     }

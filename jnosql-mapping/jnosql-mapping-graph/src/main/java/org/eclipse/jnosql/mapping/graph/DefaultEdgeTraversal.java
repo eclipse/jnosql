@@ -131,7 +131,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     @Override
     public Optional<EdgeEntity> next() {
         Optional<Edge> edgeOptional = flow.apply(supplier.get()).tryNext();
-        return edgeOptional.map(edge ->EdgeEntity.of(converter, edge));
+        return edgeOptional.map(edge -> EdgeEntity.of(converter, edge));
     }
 
     @Override
