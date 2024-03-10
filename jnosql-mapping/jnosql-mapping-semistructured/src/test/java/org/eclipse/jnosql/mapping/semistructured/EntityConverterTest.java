@@ -34,7 +34,7 @@ import org.eclipse.jnosql.mapping.semistructured.entities.MainStepType;
 import org.eclipse.jnosql.mapping.semistructured.entities.Money;
 import org.eclipse.jnosql.mapping.semistructured.entities.Movie;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
-import org.eclipse.jnosql.mapping.semistructured.entities.SocialMedia;
+import org.eclipse.jnosql.mapping.semistructured.entities.SocialMediaContact;
 import org.eclipse.jnosql.mapping.semistructured.entities.Transition;
 import org.eclipse.jnosql.mapping.semistructured.entities.Vendor;
 import org.eclipse.jnosql.mapping.semistructured.entities.Worker;
@@ -597,18 +597,18 @@ class EntityConverterTest {
 
     @Test
     void shouldIgnoreWhenNull(){
-        CommunicationEntity entity = CommunicationEntity.of("SocialMedia");
+        CommunicationEntity entity = CommunicationEntity.of("SocialMediaContact");
         entity.add("_id", "id");
         entity.add("name", "Twitter");
         entity.add("users", null);
 
-        SocialMedia socialMedia = converter.toEntity(entity);
+        SocialMediaContact socialMediaContact = converter.toEntity(entity);
 
         SoftAssertions.assertSoftly(soft ->{
-            soft.assertThat(socialMedia).isNotNull();
-            soft.assertThat(socialMedia.getId()).isEqualTo("id");
-            soft.assertThat(socialMedia.getName()).isEqualTo("Twitter");
-            soft.assertThat(socialMedia.getUsers()).isNull();
+            soft.assertThat(socialMediaContact).isNotNull();
+            soft.assertThat(socialMediaContact.getId()).isEqualTo("id");
+            soft.assertThat(socialMediaContact.getName()).isEqualTo("Twitter");
+            soft.assertThat(socialMediaContact.getUsers()).isNull();
         });
     }
 

@@ -21,7 +21,7 @@ import jakarta.nosql.Id;
 import java.util.List;
 
 @Entity
-public class SocialMedia {
+public class SocialMediaContact {
 
     @Id
     private String id;
