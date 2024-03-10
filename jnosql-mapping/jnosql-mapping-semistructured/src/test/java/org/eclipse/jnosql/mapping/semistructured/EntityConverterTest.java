@@ -34,6 +34,7 @@ import org.eclipse.jnosql.mapping.semistructured.entities.MainStepType;
 import org.eclipse.jnosql.mapping.semistructured.entities.Money;
 import org.eclipse.jnosql.mapping.semistructured.entities.Movie;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
+import org.eclipse.jnosql.mapping.semistructured.entities.SocialMedia;
 import org.eclipse.jnosql.mapping.semistructured.entities.Transition;
 import org.eclipse.jnosql.mapping.semistructured.entities.Vendor;
 import org.eclipse.jnosql.mapping.semistructured.entities.Worker;
@@ -592,6 +593,23 @@ class EntityConverterTest {
 
         });
 
+    }
+
+    @Test
+    void shouldIgnoreWhenNull(){
+        CommunicationEntity entity = CommunicationEntity.of("SocialMedia");
+        entity.add("_id", "id");
+        entity.add("name", "Twitter");
+        entity.add("users", null);
+
+        SocialMedia socialMedia = converter.toEntity(entity);
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(socialMedia).isNotNull();
+            soft.assertThat(socialMedia.getId()).isEqualTo("id");
+            soft.assertThat(socialMedia.getName()).isEqualTo("Twitter");
+            soft.assertThat(socialMedia.getUsers()).isNull();
+        });
     }
 
 
