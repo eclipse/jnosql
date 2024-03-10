@@ -65,6 +65,7 @@ public class DefaultGraphDatabaseManager implements GraphDatabaseManager {
 
     @Override
     public CommunicationEntity insert(CommunicationEntity entity) {
+
         Objects.requireNonNull(entity, "entity is required");
         Vertex vertex = graph.addVertex(entity.name());
         entity.elements().forEach(e -> vertex.property(e.name(), ValueUtil.convert(e.value())));

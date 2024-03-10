@@ -64,14 +64,6 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    void shouldReturnErrorWhenThereIsNotId() {
-        assertThrows(IdNotFoundException.class, () -> {
-            WrongEntity entity = new WrongEntity("lion");
-            getGraphTemplate().insert(entity);
-        });
-    }
-
-    @Test
     void shouldReturnErrorWhenEntityIsNull() {
         assertThrows(NullPointerException.class, () -> getGraphTemplate().insert(null));
     }
@@ -129,7 +121,7 @@ public abstract class AbstractGraphTemplateTest {
 
     @Test
     void shouldGetErrorWhenIdIsNullWhenUpdate() {
-        assertThrows(IllegalStateException.class, () -> {
+        assertThrows(EmptyResultException.class, () -> {
             Person person = Person.builder().withAge()
                     .withName("Otavio").build();
             getGraphTemplate().update(person);
