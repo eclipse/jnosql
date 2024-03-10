@@ -4,6 +4,7 @@ import jakarta.data.exceptions.EmptyResultException;
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.nosql.PreparedStatement;
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
@@ -25,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -35,6 +37,13 @@ import static java.util.Objects.requireNonNull;
 import static org.apache.tinkerpop.gremlin.structure.T.id;
 
 abstract class AbstractGraphTemplate extends AbstractSemistructuredTemplate implements GraphTemplate {
+
+    private static final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> INITIAL_VERTEX =
+            g -> (GraphTraversal<Vertex, Vertex>) g;
+
+    private static final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> INITIAL_EDGE =
+            g -> (GraphTraversal<Vertex, Edge>) g;
+
 
     /**
      * Retrieves the {@link GraphDatabaseManager} associated with this graph template.
@@ -178,11 +187,17 @@ abstract class AbstractGraphTemplate extends AbstractSemistructuredTemplate impl
 
     @Override
     public VertexTraversal traversalVertex(Object... vertexIds) {
-        return null;
+        if (Stream.of(vertexIds).anyMatch(Objects::isNull)) {
+            throw new IllegalStateException("No one vertexId element cannot be null");
+        }
+        return new DefaultVertexTraversal(() -> traversal().V(vertexIds), INITIAL_VERTEX, converter());
     }
 
     @Override
     public EdgeTraversal traversalEdge(Object... edgeIds) {
+        if (Stream.of(edgeIds).anyMatch(Objects::isNull)) {
+            throw new IllegalStateException("No one edgeId element cannot be null");
+        }
         return null;
     }
 
