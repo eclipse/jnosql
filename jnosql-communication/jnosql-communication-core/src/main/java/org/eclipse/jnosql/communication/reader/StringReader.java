@@ -37,6 +37,9 @@ public final class StringReader implements ValueReader {
         if (CharSequence.class.equals(type) && CharSequence.class.isInstance(value)) {
             return (T) value;
         }
+        if (value == null) {
+            return null;
+        }
         return (T) value.toString();
     }
 
