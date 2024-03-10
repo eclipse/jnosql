@@ -147,7 +147,8 @@ public abstract class EntityConverter {
 
     protected <T> Consumer<String> feedObject(T entity, List<Element> elements, Map<String, FieldMetadata> fieldsGroupByName) {
         return (String k) -> {
-            Optional<Element> element = elements.stream().filter(c -> c.name().equals(k)).findFirst();
+            Optional<Element> element = elements.stream().filter(c -> c.name().equals(k))
+                    .filter(e -> !e.value().isNull()).findFirst();
             FieldMetadata field = fieldsGroupByName.get(k);
             FieldConverter fieldConverter = FieldConverter.get(field);
             if (ENTITY.equals(field.mappingType())) {
