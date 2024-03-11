@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.semistructured;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.semistructured.Element;
-import org.eclipse.jnosql.mapping.AttributeConverter;
+import jakarta.nosql.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;

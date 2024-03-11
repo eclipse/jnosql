@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.Convert;
+import jakarta.nosql.Convert;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 

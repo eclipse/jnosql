@@ -22,7 +22,7 @@ import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Repository;
 import jakarta.nosql.Entity;
-import org.eclipse.jnosql.mapping.Embeddable;
+import jakarta.nosql.Embeddable;
 import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.metadata.ClassScanner;
 

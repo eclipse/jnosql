@@ -20,7 +20,7 @@ import jakarta.enterprise.context.spi.CreationalContext;
 import jakarta.enterprise.inject.spi.Bean;
 import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.AttributeConverter;
+import jakarta.nosql.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.FieldParameterMetadata;
 
 import java.util.Iterator;

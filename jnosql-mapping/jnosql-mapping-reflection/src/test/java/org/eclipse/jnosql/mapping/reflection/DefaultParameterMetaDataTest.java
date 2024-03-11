@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import org.assertj.core.api.Assertions;
-import org.eclipse.jnosql.mapping.AttributeConverter;
+import jakarta.nosql.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
