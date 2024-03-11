@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.reflection.entities;
 
 
 import jakarta.nosql.Column;
-import org.eclipse.jnosql.mapping.Embeddable;
+import jakarta.nosql.Embeddable;
 
 import java.util.Objects;
 

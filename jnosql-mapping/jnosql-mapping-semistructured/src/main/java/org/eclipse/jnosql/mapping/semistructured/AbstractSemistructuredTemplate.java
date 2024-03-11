@@ -239,7 +239,7 @@ public abstract class AbstractSemistructuredTemplate implements SemistructuredTe
     }
 
     @Override
-    public jakarta.nosql.PreparedStatement prepare(String query) {
+    public org.eclipse.jnosql.mapping.PreparedStatement prepare(String query) {
         return new PreparedStatement(PARSER.prepare(query, manager(), getObserver()), converter());
     }
 

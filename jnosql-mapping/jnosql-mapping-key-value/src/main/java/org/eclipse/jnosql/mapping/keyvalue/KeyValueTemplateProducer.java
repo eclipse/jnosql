@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.keyvalue;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Vetoed;
 import jakarta.inject.Inject;
-import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 
 import java.util.Objects;

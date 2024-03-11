@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
 
-import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 
 /**

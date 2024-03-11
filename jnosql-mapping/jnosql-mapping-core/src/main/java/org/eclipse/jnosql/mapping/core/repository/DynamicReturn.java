@@ -217,12 +217,13 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      * @param <T> the type
      * @return a builder instance
      */
-    public static <T> DefaultDynamicReturnBuilder builder() {
-        return new DefaultDynamicReturnBuilder();
+    public static <T> DefaultDynamicReturnBuilder<T> builder() {
+        return new DefaultDynamicReturnBuilder<>();
     }
 
     /**
      * A builder of {@link DynamicReturn}
+     * @param <T> the type
      */
     public static final class DefaultDynamicReturnBuilder<T> {
 

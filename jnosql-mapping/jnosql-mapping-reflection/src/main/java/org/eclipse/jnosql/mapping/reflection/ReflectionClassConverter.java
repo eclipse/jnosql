@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import org.eclipse.jnosql.mapping.Convert;
+import jakarta.nosql.Convert;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;

@@ -42,7 +42,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.jnosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
+import static jakarta.nosql.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ReflectionClassConverterTest {

@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.Convert;
+import jakarta.nosql.Convert;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 import org.eclipse.jnosql.mapping.reflection.entities.Actor;
 import org.eclipse.jnosql.mapping.reflection.entities.Download;
@@ -41,7 +41,7 @@ import java.lang.reflect.Field;
 import java.util.Optional;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.eclipse.jnosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
+import static jakarta.nosql.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
 import static org.junit.jupiter.api.Assertions.*;
 
 

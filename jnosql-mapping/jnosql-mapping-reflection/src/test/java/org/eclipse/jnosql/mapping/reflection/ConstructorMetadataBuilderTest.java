@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.Convert;
+import jakarta.nosql.Convert;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 import org.eclipse.jnosql.mapping.reflection.entities.Person;

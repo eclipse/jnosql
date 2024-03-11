@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.core.query;
 
 import jakarta.inject.Inject;
 import jakarta.nosql.Template;
-import org.eclipse.jnosql.mapping.Convert;
+import jakarta.nosql.Convert;
 import org.eclipse.jnosql.mapping.core.VetedConverter;
 import org.eclipse.jnosql.mapping.core.entities.Person;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;

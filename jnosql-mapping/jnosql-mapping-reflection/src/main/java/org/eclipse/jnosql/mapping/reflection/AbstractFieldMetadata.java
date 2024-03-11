@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.NoSQLException;
 import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.mapping.AttributeConverter;
+import jakarta.nosql.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
