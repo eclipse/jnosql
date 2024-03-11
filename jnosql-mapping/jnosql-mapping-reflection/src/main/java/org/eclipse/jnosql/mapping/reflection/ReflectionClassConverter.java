@@ -50,7 +50,6 @@ public final class ReflectionClassConverter implements ClassConverter {
     }
 
 
-
     @Override
     public EntityMetadata apply(Class<?> entity) {
 
@@ -70,8 +69,8 @@ public final class ReflectionClassConverter implements ClassConverter {
                         Function.identity()), Collections::unmodifiableMap));
 
 
-        Constructor<?> constructor = reflections.getConstructor(entity);
-        InstanceSupplier instanceSupplier = () -> reflections.newInstance(constructor);
+        Constructor<?> constructor = Reflections.getConstructor(entity);
+        InstanceSupplier instanceSupplier = () -> Reflections.newInstance(constructor);
         InheritanceMetadata inheritance = reflections.getInheritance(entity).orElse(null);
         boolean hasInheritanceAnnotation = reflections.hasInheritanceAnnotation(entity);
 
@@ -176,11 +175,11 @@ public final class ReflectionClassConverter implements ClassConverter {
         Convert convert = field.getAnnotation(Convert.class);
         boolean id = reflections.isIdField(field);
         String columnName = id ? reflections.getIdName(field) : reflections.getColumnName(field);
-
+        String udt = reflections.getUDTName(field);
         FieldMappingBuilder builder = new FieldMappingBuilder().name(columnName)
-                .field(field).type(mappingType).id(id)
+                .field(field).type(mappingType).id(id).udt(udt)
                 .reader(bean -> reflections.getValue(bean, field))
-                .writer( (bean, value) -> reflections.setValue(bean, field, value));
+                .writer((bean, value) -> reflections.setValue(bean, field, value));
 
         if (nonNull(convert)) {
             builder.converter(convert.value());

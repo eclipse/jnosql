@@ -342,6 +342,14 @@ public class Reflections {
         return entity.getAnnotation(Inheritance.class) != null;
     }
 
+    public String getUDTName(Field field) {
+        Objects.requireNonNull(field, "field is required");
+        return Optional.ofNullable(field.getAnnotation(Column.class))
+                .map(Column::value)
+                .filter(StringUtils::isNotBlank)
+                .orElse(null);
+    }
+
 
     private String getDiscriminatorColumn(Class<?> parent) {
         return Optional
@@ -368,5 +376,6 @@ public class Reflections {
         Class<?> superclass = entity.getSuperclass();
         return superclass.getAnnotation(Inheritance.class) != null;
     }
+
 
 }
