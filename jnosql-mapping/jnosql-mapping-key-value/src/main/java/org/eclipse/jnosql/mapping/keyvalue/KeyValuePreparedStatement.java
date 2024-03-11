@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.PreparedStatement;
+import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.eclipse.jnosql.communication.Value;
 
 import java.util.Optional;

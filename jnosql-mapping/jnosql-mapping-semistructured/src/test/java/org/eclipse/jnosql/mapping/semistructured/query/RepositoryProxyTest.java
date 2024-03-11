@@ -26,7 +26,7 @@ import jakarta.data.Sort;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
 import jakarta.inject.Inject;
-import jakarta.nosql.PreparedStatement;
+import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;

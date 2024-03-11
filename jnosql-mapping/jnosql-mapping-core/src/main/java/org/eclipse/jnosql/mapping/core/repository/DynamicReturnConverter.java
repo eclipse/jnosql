@@ -14,7 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.core.repository;
 
-import jakarta.nosql.PreparedStatement;
+import org.eclipse.jnosql.mapping.PreparedStatement;
+
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -66,6 +67,7 @@ enum DynamicReturnConverter {
      *
      * @return the result from the query annotation
      */
+    @SuppressWarnings("unchecked")
     public Object convert(DynamicQueryMethodReturn dynamicQueryMethod) {
         Method method = dynamicQueryMethod.getMethod();
         Object[] args = dynamicQueryMethod.getArgs();

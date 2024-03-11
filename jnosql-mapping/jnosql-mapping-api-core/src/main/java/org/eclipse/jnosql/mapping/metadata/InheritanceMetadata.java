@@ -17,11 +17,11 @@ package org.eclipse.jnosql.mapping.metadata;
 import java.util.Objects;
 
 /**
- * The mapping information about {@link org.eclipse.jnosql.mapping.Inheritance}
+ * The mapping information about {@link jakarta.nosql.Inheritance}
  *
- * @param discriminatorValue  the information from the annotation {@link org.eclipse.jnosql.mapping.DiscriminatorValue}
+ * @param discriminatorValue  the information from the annotation {@link jakarta.nosql.DiscriminatorValue}
  *                            from entity or the {@link Class#getSimpleName()} of the entity
- * @param discriminatorColumn the information parent from the annotation {@link org.eclipse.jnosql.mapping.DiscriminatorColumn}
+ * @param discriminatorColumn the information parent from the annotation {@link jakarta.nosql.DiscriminatorColumn}
  *                            * or the "type"
  * @param parent              the parent class
  * @param entity              the entity class
