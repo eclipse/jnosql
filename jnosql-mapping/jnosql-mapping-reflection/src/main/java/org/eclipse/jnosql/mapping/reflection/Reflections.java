@@ -342,10 +342,23 @@ public class Reflections {
         return entity.getAnnotation(Inheritance.class) != null;
     }
 
+    /**
+     * Retrieves the User-Defined Type (UDT) name associated with the given field.
+     *
+     * <p>
+     * This method retrieves the UDT name specified in the {@link Column} annotation of the provided field.
+     * If the field is not annotated with {@link Column}, or if the UDT name is blank or not specified,
+     * this method returns {@code null}.
+     * </p>
+     *
+     * @param field the field from which to retrieve the UDT name
+     * @return the UDT name specified in the {@link Column} annotation of the field, or {@code null} if not specified
+     * @throws NullPointerException if the field is null
+     */
     public String getUDTName(Field field) {
         Objects.requireNonNull(field, "field is required");
         return Optional.ofNullable(field.getAnnotation(Column.class))
-                .map(Column::value)
+                .map(Column::ud)
                 .filter(StringUtils::isNotBlank)
                 .orElse(null);
     }
