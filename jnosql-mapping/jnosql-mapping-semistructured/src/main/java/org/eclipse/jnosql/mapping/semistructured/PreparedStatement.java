@@ -19,7 +19,7 @@ import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-final class PreparedStatement implements jakarta.nosql.PreparedStatement {
+final class PreparedStatement implements org.eclipse.jnosql.mapping.PreparedStatement {
 
     private final org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement preparedStatement;
 
@@ -32,14 +32,14 @@ final class PreparedStatement implements jakarta.nosql.PreparedStatement {
     }
 
     @Override
-    public jakarta.nosql.PreparedStatement bind(String name, Object value) {
+    public org.eclipse.jnosql.mapping.PreparedStatement bind(String name, Object value) {
         preparedStatement.bind(name, value);
         return this;
     }
 
     @Override
     public <T> Stream<T> result() {
-        return preparedStatement.result().map(c -> converter.toEntity(c));
+        return preparedStatement.result().map(converter::toEntity);
     }
 
     @Override

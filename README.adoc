@@ -52,22 +52,22 @@ Theses annotations from the Mapping API will look familiar to the Jakarta Persis
 |`@jakarta.nosql.Column`
 |Specify the mapped column for a persistent property or field.
 
-|`@org.eclipse.jnosql.mapping.Embeddable`
+|`@jakarta.nosql.Embeddable`
 |Specifies a class whose instances are stored as an intrinsic part of an owning entity and share the entity's identity.
 
-|`@org.eclipse.jnosql.mapping.Convert`
+|`@jakarta.nosql.Convert`
 |Specifies the conversion of a Basic field or property.
 
 |`@org.eclipse.jnosql.mapping.MappedSuperclass`
 |Designates a class whose mapping information is applied to the entities that inherit from it. A mapped superclass has no separate table defined for it.
 
-|`@org.eclipse.jnosql.mapping.Inheritance`
+|`@jakarta.nosql.Inheritance`
 |Specifies the inheritance strategy to be used for an entity class hierarchy.
 
-|`@org.eclipse.jnosql.mapping.DiscriminatorColumn`
+|`@jakarta.nosql.DiscriminatorColumn`
 |Specifies the discriminator column for the mapping strategy.
 
-|`@org.eclipse.jnosql.mapping.DiscriminatorValue`
+|`@jakarta.nosql.DiscriminatorValue`
 |Specifies the value of the discriminator column for entities of the given type.
 
 

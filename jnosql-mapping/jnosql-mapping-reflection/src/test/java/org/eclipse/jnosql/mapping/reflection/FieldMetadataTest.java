@@ -18,7 +18,7 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.inject.Inject;
 import jakarta.nosql.Column;
 import org.assertj.core.api.Assertions;
-import org.eclipse.jnosql.mapping.Embeddable;
+import jakarta.nosql.Embeddable;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;

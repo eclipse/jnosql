@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.keyvalue.entities;
 
 
-import org.eclipse.jnosql.mapping.AttributeConverter;
+import jakarta.nosql.AttributeConverter;
 
 public class PlateConverter implements AttributeConverter<Plate, String> {
 

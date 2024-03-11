@@ -14,9 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.metadata;
 
+
 import jakarta.nosql.Column;
 import jakarta.nosql.Id;
-import org.eclipse.jnosql.mapping.AttributeConverter;
+import jakarta.nosql.AttributeConverter;
 
 import java.util.Optional;
 

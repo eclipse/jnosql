@@ -22,7 +22,7 @@ import java.util.Set;
 
 /**
  * This interface defines a scanner for classes that are annotated with both the {@link jakarta.nosql.Entity}
- * and {@link org.eclipse.jnosql.mapping.Embeddable} annotations, as well as repositories: interfaces that
+ * and {@link jakarta.nosql.Embeddable} annotations, as well as repositories: interfaces that
  * extend {@link jakarta.data.repository.DataRepository} and are annotated with {@link jakarta.data.repository.Repository}.
  * The scanner facilitates the discovery of entities and repositories in the Eclipse JNoSQL context.
  */
@@ -44,9 +44,9 @@ public interface ClassScanner {
     Set<Class<?>> repositories();
 
     /**
-     * Returns a set of classes that are annotated with the {@link org.eclipse.jnosql.mapping.Embeddable} annotation.
+     * Returns a set of classes that are annotated with the {@link jakarta.nosql.Embeddable} annotation.
      *
-     * @return A set of classes with the {@link org.eclipse.jnosql.mapping.Embeddable} annotation.
+     * @return A set of classes with the {@link jakarta.nosql.Embeddable} annotation.
      */
     Set<Class<?>> embeddables();
 

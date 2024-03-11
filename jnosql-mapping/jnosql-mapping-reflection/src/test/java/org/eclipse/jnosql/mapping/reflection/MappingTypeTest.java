@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.Column;
-import org.eclipse.jnosql.mapping.Embeddable;
+import jakarta.nosql.Embeddable;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.mapping.reflection.entities.Actor;
 import org.eclipse.jnosql.mapping.reflection.entities.Address;

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 import jakarta.nosql.Column;
-import org.eclipse.jnosql.mapping.Embeddable;
+import jakarta.nosql.Embeddable;
 import org.eclipse.jnosql.mapping.core.entities.Actor;
 import org.eclipse.jnosql.mapping.core.entities.Address;
 import org.eclipse.jnosql.mapping.core.entities.Movie;
