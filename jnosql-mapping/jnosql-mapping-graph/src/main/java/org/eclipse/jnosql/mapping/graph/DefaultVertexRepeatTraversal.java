@@ -20,6 +20,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -32,7 +33,7 @@ class DefaultVertexRepeatTraversal extends AbstractVertexTraversal implements Ve
 
     DefaultVertexRepeatTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                                  Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow,
-                                 GraphConverter converter) {
+                                 EntityConverter converter) {
         super(supplier, flow, converter);
     }
 

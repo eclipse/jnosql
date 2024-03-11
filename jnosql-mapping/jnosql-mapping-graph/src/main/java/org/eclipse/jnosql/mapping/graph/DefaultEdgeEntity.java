@@ -14,9 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import org.eclipse.jnosql.communication.Value;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Property;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.graph.CommunicationEntityConverter;
+import org.eclipse.jnosql.communication.semistructured.Element;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 
 import java.util.Collections;
 import java.util.List;
@@ -68,10 +71,10 @@ class DefaultEdgeEntity<O, I> implements EdgeEntity {
     }
 
     @Override
-    public List<Property> properties() {
+    public List<Element> properties() {
         return edge.keys()
                 .stream()
-                .map(k -> DefaultProperty.of(k, edge.value(k)))
+                .map(k -> Element.of(k, edge.value(k)))
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
@@ -93,14 +96,14 @@ class DefaultEdgeEntity<O, I> implements EdgeEntity {
     @Override
     public void remove(String key) {
         requireNonNull(key, "key is required");
-        org.apache.tinkerpop.gremlin.structure.Property property = edge.property(key);
+        Property<?> property = edge.property(key);
         property.ifPresent(o -> property.remove());
     }
 
     @Override
     public Optional<Value> get(String key) {
         requireNonNull(key, "key is required");
-        org.apache.tinkerpop.gremlin.structure.Property property = edge.property(key);
+        Property<?> property = edge.property(key);
         if (property.isPresent()) {
             return Optional.of(Value.of(property.value()));
         }
@@ -127,18 +130,16 @@ class DefaultEdgeEntity<O, I> implements EdgeEntity {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultEdgeEntity)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         DefaultEdgeEntity<?, ?> that = (DefaultEdgeEntity<?, ?>) o;
-        return Objects.equals(edge, that.edge) &&
-                Objects.equals(incoming, that.incoming) &&
-                Objects.equals(outgoing, that.outgoing);
+        return Objects.equals(edge.id(), that.edge.id());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(edge, incoming, outgoing);
+        return Objects.hashCode(edge.id());
     }
 
     @Override
@@ -146,6 +147,15 @@ class DefaultEdgeEntity<O, I> implements EdgeEntity {
         return outgoing +
                 "---" + edge.label() +
                 " --->" + incoming;
+    }
+
+
+    public static EdgeEntity of(EntityConverter converter, Edge edge) {
+        Objects.requireNonNull(converter, "converter is required");
+        Objects.requireNonNull(edge, "edge is required");
+        var entityConverter = CommunicationEntityConverter.INSTANCE;
+        return new DefaultEdgeEntity<>(edge, converter.toEntity(entityConverter.apply(edge.outVertex())),
+                converter.toEntity(entityConverter.apply(edge.inVertex())));
     }
 
 }

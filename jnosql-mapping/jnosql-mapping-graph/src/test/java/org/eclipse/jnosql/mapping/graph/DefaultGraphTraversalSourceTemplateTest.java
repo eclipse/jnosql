@@ -17,17 +17,17 @@ package org.eclipse.jnosql.mapping.graph;
 import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
-import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, Transactional.class})
-@AddPackages(BookRepository.class)
-@AddPackages(Reflections.class)
+@AddPackages(value = {Converters.class, EntityConverter.class, Transactional.class})
+@AddPackages({BookRepository.class, Reflections.class, GraphProducer.class})
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 class DefaultGraphTraversalSourceTemplateTest extends AbstractGraphTemplateTest {
 

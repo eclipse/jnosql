@@ -14,25 +14,33 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import org.eclipse.jnosql.mapping.core.Converters;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
-
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Instance;
-import jakarta.enterprise.util.TypeLiteral;
+import jakarta.enterprise.inject.Vetoed;
 import jakarta.inject.Inject;
-import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.Iterator;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.communication.graph.GraphDatabaseManager;
+import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
+import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
+import org.eclipse.jnosql.mapping.semistructured.EventPersistManager;
 
-import static java.util.Objects.requireNonNull;
+import java.util.Objects;
+import java.util.function.Function;
 
 /**
- * The producer of {@link GraphTemplate}
+ * An {@code ApplicationScoped} producer class responsible for creating instances of {@link GraphTemplate}.
+ * It implements the {@link Function} interface with {@link DatabaseManager} as input and {@link GraphTemplate} as output.
  */
 @ApplicationScoped
-public class GraphTemplateProducer {
+public class GraphTemplateProducer implements Function<Graph, GraphTemplate> {
+
+    @Inject
+    private EntityConverter converter;
+
+    @Inject
+    private EventPersistManager eventManager;
 
     @Inject
     private EntitiesMetadata entities;
@@ -40,103 +48,78 @@ public class GraphTemplateProducer {
     @Inject
     private Converters converters;
 
-    @Inject
-    private GraphEventPersistManager persistManager;
 
-    @Inject
-    private GraphEventPersistManager eventManager;
-
-
-    /**
-     * creates a {@link GraphTemplate}
-     *
-     * @param graph the graph
-     * @return a new instance
-     * @throws NullPointerException when collectionManager is null
-     */
-    public GraphTemplate get(Graph graph) {
-        requireNonNull(graph, "graph is required");
-
-        SingleInstance<Graph> instance = new SingleInstance<>(graph);
-
-        GraphConverter converter = new DefaultGraphConverter(entities,
-                converters,instance, eventManager);
-        return new DefaultGraphTemplate(instance, entities, converter, persistManager, converters);
+    @Override
+    public GraphTemplate apply(Graph graph) {
+        Objects.requireNonNull(graph, "graph is required");
+        return new ProducerGraphTemplate(converter, graph,
+                eventManager, entities, converters);
     }
 
-    /**
-     * creates a {@link GraphTemplate}
-     *
-     * @param supplier the supplier
-     * @return a new instance
-     * @throws NullPointerException when supplier is null
-     */
-    public GraphTemplate get(GraphTraversalSourceSupplier supplier) {
-        requireNonNull(supplier, "supplier is required");
+    @Vetoed
+    static class ProducerGraphTemplate  extends AbstractGraphTemplate {
 
-        SingleInstance<GraphTraversalSourceSupplier> instance = new SingleInstance<>(supplier);
+        private final EntityConverter converter;
 
-        GraphConverter converter = new DefaultGraphTraversalSourceConverter(entities,
-                converters, instance, eventManager);
-        return new DefaultGraphTraversalSourceTemplate(instance, entities, converter, persistManager, converters);
-    }
 
-    static class SingleInstance<T> implements Instance<T> {
+        private final EventPersistManager eventManager;
 
-        private final T instance;
+        private final EntitiesMetadata entities;
 
-        SingleInstance(T instance) {
-            this.instance = instance;
+        private final Converters converters;
+
+        private final Graph graph;
+
+        private final GraphDatabaseManager manager;
+
+        public ProducerGraphTemplate(EntityConverter converter, Graph graph,
+                                     EventPersistManager eventManager,
+                                     EntitiesMetadata entities, Converters converters) {
+            this.converter = converter;
+            this.graph = graph;
+            this.manager = GraphDatabaseManager.of(graph);
+            this.eventManager = eventManager;
+            this.entities = entities;
+            this.converters = converters;
         }
 
-
-        @Override
-        public Instance<T> select(Annotation... annotations) {
-           throw new UnsupportedOperationException("this method is not support");
-        }
-
-        @Override
-        public <U extends T> Instance<U> select(Class<U> aClass, Annotation... annotations) {
-            throw new UnsupportedOperationException("this method is not support");
+        ProducerGraphTemplate() {
+            this(null, null, null, null, null);
         }
 
         @Override
-        public <U extends T> Instance<U> select(TypeLiteral<U> typeLiteral, Annotation... annotations) {
-            throw new UnsupportedOperationException("this method is not support");
+        protected EntityConverter converter() {
+            return converter;
         }
 
         @Override
-        public boolean isUnsatisfied() {
-            return false;
+        protected GraphDatabaseManager manager() {
+            return manager;
         }
 
         @Override
-        public boolean isAmbiguous() {
-            return false;
+        protected EventPersistManager eventManager() {
+            return eventManager;
         }
 
         @Override
-        public void destroy(T t) {
+        protected EntitiesMetadata entities() {
+            return entities;
         }
 
         @Override
-        public Handle<T> getHandle() {
-            throw new UnsupportedOperationException("this method is not support");
+        protected Converters converters() {
+            return converters;
         }
 
         @Override
-        public Iterable<? extends Handle<T>> handles() {
-            throw new UnsupportedOperationException("this method is not support");
+        protected GraphTraversalSource traversal() {
+            return graph.traversal();
         }
 
         @Override
-        public Iterator<T> iterator() {
-         return Collections.singletonList(instance).iterator();
-        }
-
-        @Override
-        public T get() {
-            return instance;
+        protected Graph graph() {
+            return graph;
         }
     }
 }

@@ -21,6 +21,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -32,7 +33,7 @@ class DefaultEdgeRepeatTraversal extends AbstractEdgeTraversal implements EdgeRe
 
     DefaultEdgeRepeatTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                                Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
-                               GraphConverter converter) {
+                               EntityConverter converter) {
         super(supplier, flow, converter);
     }
 

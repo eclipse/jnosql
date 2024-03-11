@@ -16,15 +16,14 @@ package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.data.repository.DataRepository;
 import jakarta.enterprise.context.spi.CreationalContext;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.DatabaseType;
-import org.eclipse.jnosql.mapping.graph.GraphConverter;
-import org.eclipse.jnosql.mapping.graph.GraphTemplate;
-import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.core.util.AnnotationLiteralUtil;
+import org.eclipse.jnosql.mapping.graph.GraphTemplate;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.semistructured.query.SemistructuredRepositoryProxy;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
@@ -33,10 +32,19 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+
 /**
- * Artemis discoveryBean to CDI extension to register Repository
+ * This class serves as a JNoSQL discovery bean for CDI extension, responsible for registering Repository instances.
+ * It extends {@link AbstractBean} and is parameterized with type {@code T} representing the repository type.
+ * <p>
+ * Upon instantiation, it initializes with the provided repository type, provider name, and qualifiers.
+ * The provider name specifies the database provider for the repository.
+ * </p>
+ *
+ * @param <T> the type of the repository
+ * @see AbstractBean
  */
-public class RepositoryGraphBean<T extends DataRepository<?,?>> extends AbstractBean<T>{
+public class RepositoryGraphBean<T extends DataRepository<T, ?>> extends AbstractBean<T> {
 
     private final Class<T> type;
 
@@ -54,7 +62,7 @@ public class RepositoryGraphBean<T extends DataRepository<?,?>> extends Abstract
      */
     @SuppressWarnings("unchecked")
     public RepositoryGraphBean(Class<?> type, String provider) {
-        this.type =  (Class<T>)type;
+        this.type = (Class<T>) type;
         this.types = Collections.singleton(type);
         this.provider = provider;
         if (provider.isEmpty()) {
@@ -73,22 +81,21 @@ public class RepositoryGraphBean<T extends DataRepository<?,?>> extends Abstract
     }
 
     @Override
-    public T create(CreationalContext<T> creationalContext) {
-
+    @SuppressWarnings("unchecked")
+    public T create(CreationalContext<T> context) {
         EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
-        GraphTemplate repository = provider.isEmpty() ? getInstance(GraphTemplate.class) :
+        var template = provider.isEmpty() ? getInstance(GraphTemplate.class) :
                 getInstance(GraphTemplate.class, DatabaseQualifier.ofGraph(provider));
-        GraphConverter converter = getInstance(GraphConverter.class);
-        Graph graph = provider.isEmpty() ? getInstance(Graph.class) :
-                getInstance(Graph.class, DatabaseQualifier.ofGraph(provider));
+
         Converters converters = getInstance(Converters.class);
 
-        GraphRepositoryProxy handler = new GraphRepositoryProxy(repository,
-                entities, type, graph, converter, converters);
+        var handler = new SemistructuredRepositoryProxy<>(template,
+                entities, type, converters);
         return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }
+
 
     @Override
     public Set<Type> getTypes() {
@@ -104,4 +111,5 @@ public class RepositoryGraphBean<T extends DataRepository<?,?>> extends Abstract
     public String getId() {
         return type.getName() + '@' + DatabaseType.GRAPH + "-" + provider;
     }
+
 }

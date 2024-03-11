@@ -15,35 +15,43 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.inject.Inject;
-import org.apache.tinkerpop.gremlin.structure.Graph;
+import jakarta.nosql.Template;
+import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
-import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import static org.eclipse.jnosql.mapping.DatabaseType.GRAPH;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, Transactional.class})
-@AddPackages(BookRepository.class)
+@AddPackages(value = {Converters.class, EntityConverter.class, GraphTemplate.class})
+@AddPackages(GraphProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
-public class GraphTemplateTest extends AbstractGraphTemplateTest{
+class GraphTemplateTest {
 
     @Inject
-    private GraphTemplate graphTemplate;
+    private Template template;
 
     @Inject
-    private Graph graph;
+    @Database(GRAPH)
+    private Template qualifier;
 
-    @Override
-    protected Graph getGraph() {
-        return graph;
+
+    @Test
+    void shouldInjectTemplate() {
+        Assertions.assertNotNull(template);
     }
 
-    @Override
-    protected GraphTemplate getGraphTemplate() {
-        return graphTemplate;
+    @Test
+    void shouldInjectQualifier() {
+        Assertions.assertNotNull(qualifier);
     }
 }

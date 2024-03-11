@@ -21,6 +21,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -30,7 +31,7 @@ import static java.util.Objects.requireNonNull;
 class DefaultEdgeUntilTraversal  extends AbstractEdgeTraversal implements EdgeUntilTraversal {
 
     DefaultEdgeUntilTraversal(Supplier<GraphTraversal<?, ?>> supplier, Function<GraphTraversal<?, ?>,
-            GraphTraversal<Vertex, Edge>> flow, GraphConverter converter) {
+            GraphTraversal<Vertex, Edge>> flow, EntityConverter converter) {
         super(supplier, flow, converter);
     }
 

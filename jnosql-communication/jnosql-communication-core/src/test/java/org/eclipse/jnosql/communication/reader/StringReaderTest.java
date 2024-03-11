@@ -57,6 +57,7 @@ class StringReaderTest {
             softly.assertThat(valueReader.read(CharSequence.class, 10.0)).as("Number compatible").isEqualTo("10.0");
             softly.assertThat(valueReader.read(CharSequence.class, 10)).as("CharSequence compatible").isEqualTo("10");
             softly.assertThat(valueReader.read(String.class, 10)).as("String compatible").isEqualTo("10");
+            softly.assertThat(valueReader.read(String.class, null)).as("null value compatible").isEqualTo(null);
         });
     }
 }

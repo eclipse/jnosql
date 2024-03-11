@@ -20,6 +20,8 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.communication.graph.CommunicationEntityConverter;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 
 import javax.script.Bindings;
 import javax.script.ScriptException;
@@ -29,11 +31,11 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 final class GremlinExecutor {
-    private final GraphConverter converter;
+    private final EntityConverter converter;
 
     private static final GremlinScriptEngine ENGINE = new GremlinLangScriptEngine();
 
-    GremlinExecutor(GraphConverter converter) {
+    GremlinExecutor(EntityConverter converter) {
         this.converter = converter;
     }
 
@@ -41,6 +43,7 @@ final class GremlinExecutor {
         return executeGremlin(traversalSource, gremlin, Collections.emptyMap());
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     <T> Stream<T> executeGremlin(GraphTraversalSource traversalSource, String gremlin, Map<String, Object> params) {
         try {
             Bindings bindings = ENGINE.createBindings();
@@ -64,17 +67,18 @@ final class GremlinExecutor {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private <T> Stream<T> convertToStream(Stream<?> stream) {
         return stream.map(this::getElement).map(e -> (T) e);
     }
 
     private Object getElement(Object entity) {
         if (entity instanceof Vertex vertex) {
-            return converter.toEntity(vertex);
+            return converter.toEntity(CommunicationEntityConverter.INSTANCE.apply(vertex));
         }
 
         if (entity instanceof Edge edge) {
-            return converter.toEdgeEntity(edge);
+            return EdgeEntity.of(converter, edge);
         }
         return entity;
     }

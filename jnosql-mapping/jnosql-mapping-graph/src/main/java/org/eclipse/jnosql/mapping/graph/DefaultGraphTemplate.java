@@ -16,71 +16,83 @@ package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
-import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.communication.graph.GraphDatabaseManager;
 import org.eclipse.jnosql.mapping.Database;
-import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
+import org.eclipse.jnosql.mapping.semistructured.EventPersistManager;
 
-/**
- * The default {@link GraphTemplate}
- */
+import static org.eclipse.jnosql.mapping.DatabaseType.GRAPH;
 
 @Default
-@Database(DatabaseType.GRAPH)
 @ApplicationScoped
+@Database(GRAPH)
 class DefaultGraphTemplate extends AbstractGraphTemplate {
 
-    private Instance<Graph> graph;
+    private final EntityConverter converter;
 
-    private EntitiesMetadata entities;
+    private final GraphDatabaseManager manager;
 
-    private GraphConverter converter;
+    private final EventPersistManager eventManager;
 
-    private GraphEventPersistManager persistManager;
+    private final EntitiesMetadata entities;
 
-    private Converters converters;
+    private final Converters converters;
+    private final Graph graph;
+
 
     @Inject
-    DefaultGraphTemplate(Instance<Graph> graph, EntitiesMetadata entities, GraphConverter converter,
-                         GraphEventPersistManager persistManager,
-                         Converters converters) {
-        this.graph = graph;
-        this.entities = entities;
+    DefaultGraphTemplate(EntityConverter converter, Graph graph,
+                         EventPersistManager eventManager,
+                         EntitiesMetadata entities, Converters converters) {
         this.converter = converter;
-        this.persistManager = persistManager;
+        this.graph = graph;
+        this.eventManager = eventManager;
+        this.entities = entities;
         this.converters = converters;
+        this.manager = GraphDatabaseManager.of(graph);
     }
 
-    DefaultGraphTemplate(){
-    }
-
-    @Override
-    protected Graph getGraph() {
-        return graph.get();
+    DefaultGraphTemplate() {
+        this(null, null, null, null, null);
     }
 
     @Override
-    protected EntitiesMetadata getEntities() {
-        return entities;
-    }
-
-    @Override
-    protected GraphConverter getConverter() {
+    protected EntityConverter converter() {
         return converter;
     }
 
     @Override
-    protected GraphEventPersistManager getEventManager() {
-        return persistManager;
+    protected GraphDatabaseManager manager() {
+        return manager;
     }
 
     @Override
-    protected Converters getConverters() {
-        return converters;
+    protected GraphTraversalSource traversal() {
+        return graph.traversal();
     }
 
+    @Override
+    protected Graph graph() {
+        return graph;
+    }
 
+    @Override
+    protected EventPersistManager eventManager() {
+        return eventManager;
+    }
+
+    @Override
+    protected EntitiesMetadata entities() {
+        return entities;
+    }
+
+    @Override
+    protected Converters converters() {
+        return converters;
+    }
 }

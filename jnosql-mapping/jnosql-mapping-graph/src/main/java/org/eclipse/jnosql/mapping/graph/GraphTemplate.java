@@ -15,9 +15,9 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.nosql.PreparedStatement;
-import jakarta.nosql.Template;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
+import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+
 
 /**
  * GraphTemplate is a helper class that increases productivity when performing common Graph operations.
@@ -34,7 +35,7 @@ import java.util.stream.Stream;
  *
  * @see org.apache.tinkerpop.gremlin.structure.Graph
  */
-public interface GraphTemplate extends Template {
+public interface GraphTemplate extends SemistructuredTemplate {
 
     /**
      * Deletes a {@link org.apache.tinkerpop.gremlin.structure.Vertex}
@@ -53,37 +54,6 @@ public interface GraphTemplate extends Template {
      * @throws NullPointerException when either label and id are null
      */
     <T> void deleteEdge(T id);
-
-    /**
-     * Find an entity given {@link org.apache.tinkerpop.gremlin.structure.T#label} and
-     * {@link org.apache.tinkerpop.gremlin.structure.T#id}
-     *
-     * @param id  the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
-     * @param <T> the entity type
-     * @param <K> the id type
-     * @return the entity found otherwise {@link Optional#empty()}
-     * @throws NullPointerException when id is null
-     */
-    <T, K> Optional<T> find(K id);
-
-    /**
-     * Updates entities
-     *
-     * @param entities entity to be updated
-     * @param <T>      the instance type
-     * @return the entity saved
-     * @throws IllegalStateException                     when document is null
-     */
-    <T> Iterable<T> update(Iterable<T> entities);
-
-    /**
-     * Deletes {@link org.apache.tinkerpop.gremlin.structure.Vertex} instances
-     *
-     * @param ids the ids to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
-     * @param <T> the id type
-     * @throws NullPointerException when id is null
-     */
-    <T> void delete(Iterable<T> ids);
 
     /**
      * Deletes {@link org.apache.tinkerpop.gremlin.structure.Edge} instances
@@ -126,6 +96,18 @@ public interface GraphTemplate extends Template {
         Objects.requireNonNull(label, "supplier is required");
         return edge(outgoing, label.get(), incoming);
     }
+
+    /**
+     * Find an entity given {@link org.apache.tinkerpop.gremlin.structure.T#label} and
+     * {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     *
+     * @param id  the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T> the entity type
+     * @param <K> the id type
+     * @return the entity found otherwise {@link Optional#empty()}
+     * @throws NullPointerException when id is null
+     */
+    <T, K> Optional<T> find(K id);
 
     /**
      * returns the edges of from a vertex id
@@ -235,14 +217,14 @@ public interface GraphTemplate extends Template {
     Transaction transaction();
 
     /**
-     * Executes a Gremlin then bring the result as a {@link List}
+     * Executes a Gremlin then bring the result as a {@link Stream}
      *
      * @param gremlin the query gremlin
      * @param <T>     the entity type
-     * @return the result as {@link List}
+     * @return the result as {@link Stream}
      * @throws NullPointerException when the gremlin is null
      */
-    <T> Stream<T> query(String gremlin);
+    <T> Stream<T> gremlin(String gremlin);
 
     /**
      * Executes a Gremlin query then bring the result as a unique result
@@ -252,7 +234,7 @@ public interface GraphTemplate extends Template {
      * @return the result as {@link List}
      * @throws NullPointerException     when the query is null
      */
-    <T> Optional<T> singleResult(String gremlin);
+    <T> Optional<T> gremlinSingleResult(String gremlin);
 
     /**
      * Creates a {@link PreparedStatement} from the query
@@ -261,46 +243,6 @@ public interface GraphTemplate extends Template {
      * @return a {@link PreparedStatement} instance
      * @throws NullPointerException when the query is null
      */
-    PreparedStatement prepare(String gremlin);
-
-    /**
-     * Returns the number of vertices from label
-     *
-     * @param label the label
-     * @return the number of elements
-     * @throws NullPointerException          when label is null
-     * @throws UnsupportedOperationException when the database dot not have support
-     */
-    long count(String label);
-
-    /**
-     * Returns the number of vertices from label
-     *
-     * @param <T>         the entity type
-     * @param type the label
-     * @return the number of elements
-     * @throws NullPointerException          when label is null
-     * @throws UnsupportedOperationException when the database dot not have support
-     */
-    <T> long count(Class<T> type);
-
-
-    /**
-     * Returns all entities on the database
-     * @param type the entity type filter
-     * @return the {@link Stream}
-     * @param <T> the entity type
-     * @throws NullPointerException when type is null
-     */
-    <T> Stream<T> findAll(Class<T> type);
-
-    /**
-     * delete all entities from the database
-     * @param type the entity type filter
-     * @param <T> the entity type
-     * @throws NullPointerException when type is null
-     */
-    <T> void deleteAll(Class<T> type);
-
+    PreparedStatement gremlinPrepare(String gremlin);
 
 }

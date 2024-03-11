@@ -19,9 +19,10 @@ import jakarta.nosql.Entity;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
-import org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.communication.graph.CommunicationEntityConverter;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 
 import java.util.Iterator;
 import java.util.Optional;
@@ -43,7 +44,7 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
 
     DefaultVertexTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                            Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> flow,
-                           GraphConverter converter) {
+                           EntityConverter converter) {
         super(supplier, flow, converter);
     }
 
@@ -91,7 +92,7 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     public <T> VertexTraversal filter(Predicate<T> predicate) {
         requireNonNull(predicate, "predicate is required");
 
-        Predicate<Traverser<Vertex>> p = v -> predicate.test(converter.toEntity(v.get()));
+        Predicate<Traverser<Vertex>> p = v -> predicate.test(GraphEntityConverter.INSTANCE.toEntity(converter, v.get()));
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.filter(p)), converter);
     }
 
@@ -175,12 +176,6 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     }
 
     @Override
-    public EntityTree tree() {
-        Tree<Vertex> tree = flow.andThen(GraphTraversal::tree).apply(supplier.get()).next();
-        return new DefaultEntityTree(converter, tree);
-    }
-
-    @Override
     public VertexTraversal hasNot(String propertyKey) {
         requireNonNull(propertyKey, "propertyKey is required");
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasNot(propertyKey)), converter);
@@ -189,13 +184,14 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     @Override
     public <T> Optional<T> next() {
         Optional<Vertex> vertex = flow.apply(supplier.get()).tryNext();
-        return vertex.map(converter::toEntity);
+        return vertex.map(CommunicationEntityConverter.INSTANCE).map(converter::toEntity);
     }
 
     @Override
     public <T> Stream<T> result() {
         return flow.apply(supplier.get())
                 .toStream()
+                .map(CommunicationEntityConverter.INSTANCE)
                 .map(converter::toEntity);
     }
 
@@ -217,7 +213,9 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     @Override
     public <T> Stream<T> next(int limit) {
         return flow.apply(supplier.get())
-                .next(limit).stream()
+                .next(limit)
+                .stream()
+                .map(CommunicationEntityConverter.INSTANCE)
                 .map(converter::toEntity);
     }
 

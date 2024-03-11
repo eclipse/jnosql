@@ -18,12 +18,13 @@ import jakarta.data.exceptions.NonUniqueResultException;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.graph.entities.Animal;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
-import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -41,12 +42,17 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, Transactional.class})
-@AddPackages(BookRepository.class)
+@AddPackages(value = {Converters.class, EntityConverter.class, GraphTemplate.class})
+@AddPackages(GraphProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 class DefaultVertexTraversalTest extends AbstractTraversalTest {
@@ -509,24 +515,5 @@ class DefaultVertexTraversalTest extends AbstractTraversalTest {
         assertEquals(3, people.size());
     }
 
-    @Test
-    void shouldCreateTree() {
-        Animal lion = graphTemplate.insert(new Animal("lion"));
-        Animal zebra = graphTemplate.insert(new Animal("zebra"));
-        Animal giraffe = graphTemplate.insert(new Animal("giraffe"));
-        Animal grass = graphTemplate.insert(new Animal("grass"));
-
-        graphTemplate.edge(lion, "eats", giraffe);
-        graphTemplate.edge(lion, "eats", zebra);
-        graphTemplate.edge(zebra, "eats", grass);
-        graphTemplate.edge(giraffe, "eats", grass);
-
-        EntityTree tree = graphTemplate.traversalVertex()
-                .hasLabel(Animal.class)
-                .in("eats")
-                .tree();
-
-        assertNotNull(tree);
-    }
 
 }

@@ -24,9 +24,12 @@ import org.eclipse.jnosql.mapping.semistructured.entities.Animal;
 import org.eclipse.jnosql.mapping.semistructured.entities.Book;
 import org.eclipse.jnosql.mapping.semistructured.entities.BookRelease;
 import org.eclipse.jnosql.mapping.semistructured.entities.Money;
+import org.eclipse.jnosql.mapping.semistructured.entities.SocialMediaContact;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.Computer;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.PetOwner;
+import org.eclipse.jnosql.mapping.semistructured.entities.constructor.SocialMediaFollowers;
+import org.eclipse.jnosql.mapping.semistructured.entities.constructor.SocialMediaFollowersRecord;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.SuperHero;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
@@ -197,4 +200,31 @@ class EntityConverterConstructorTest {
         });
     }
 
+    @Test
+    void shouldIgnoreWhenNullAtConstructor(){
+        CommunicationEntity entity = CommunicationEntity.of("SocialMediaFollowers");
+        entity.add("_id", "id");
+        entity.add("followers", null);
+
+        SocialMediaFollowers socialMediaContact = converter.toEntity(entity);
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(socialMediaContact).isNotNull();
+            soft.assertThat(socialMediaContact.getId()).isEqualTo("id");
+        });
+    }
+
+    @Test
+    void shouldIgnoreWhenNullAtRecord(){
+        CommunicationEntity entity = CommunicationEntity.of("SocialMediaFollowersRecord");
+        entity.add("_id", "id");
+        entity.add("followers", null);
+
+        SocialMediaFollowersRecord socialMediaContact = converter.toEntity(entity);
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(socialMediaContact).isNotNull();
+            soft.assertThat(socialMediaContact.id()).isEqualTo("id");
+        });
+    }
 }

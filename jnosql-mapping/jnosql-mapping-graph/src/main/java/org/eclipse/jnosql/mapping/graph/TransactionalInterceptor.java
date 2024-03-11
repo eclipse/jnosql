@@ -24,6 +24,7 @@ import jakarta.inject.Inject;
 import jakarta.interceptor.AroundInvoke;
 import jakarta.interceptor.Interceptor;
 import jakarta.interceptor.InvocationContext;
+import org.eclipse.jnosql.communication.graph.GraphTransactionUtil;
 
 
 @Transactional

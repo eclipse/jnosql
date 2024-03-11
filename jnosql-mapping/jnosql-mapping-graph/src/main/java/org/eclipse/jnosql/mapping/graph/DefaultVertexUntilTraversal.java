@@ -21,6 +21,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -34,7 +35,7 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
 
 
     DefaultVertexUntilTraversal(Supplier<GraphTraversal<?, ?>> supplier, Function<GraphTraversal<?, ?>,
-            GraphTraversal<Vertex, Vertex>> flow, GraphConverter converter) {
+            GraphTraversal<Vertex, Vertex>> flow, EntityConverter converter) {
         super(supplier, flow, converter);
     }
 

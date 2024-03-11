@@ -21,7 +21,7 @@ import jakarta.enterprise.inject.spi.CDI;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.communication.Settings;
 import org.eclipse.jnosql.mapping.core.config.MicroProfileSettings;
-import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
+import org.eclipse.jnosql.communication.graph.GraphConfiguration;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 
 import java.util.function.Supplier;

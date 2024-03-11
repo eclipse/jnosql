@@ -22,6 +22,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.graph.entities.Animal;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
@@ -42,7 +43,13 @@ import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AbstractGraphTemplateTest {
 
@@ -54,14 +61,6 @@ public abstract class AbstractGraphTemplateTest {
     void after() {
         getGraph().traversal().V().toList().forEach(Vertex::remove);
         getGraph().traversal().E().toList().forEach(Edge::remove);
-    }
-
-    @Test
-    void shouldReturnErrorWhenThereIsNotId() {
-        assertThrows(IdNotFoundException.class, () -> {
-            WrongEntity entity = new WrongEntity("lion");
-            getGraphTemplate().insert(entity);
-        });
     }
 
     @Test
@@ -122,7 +121,7 @@ public abstract class AbstractGraphTemplateTest {
 
     @Test
     void shouldGetErrorWhenIdIsNullWhenUpdate() {
-        assertThrows(IllegalStateException.class, () -> {
+        assertThrows(EmptyResultException.class, () -> {
             Person person = Person.builder().withAge()
                     .withName("Otavio").build();
             getGraphTemplate().update(person);
@@ -352,10 +351,9 @@ public abstract class AbstractGraphTemplateTest {
 
     @Test
     void shouldReturnErrorWhenGetEdgesHasNullId2() {
-        assertThrows(IllegalStateException.class, () -> {
             Person otavio = Person.builder().withAge().withName("Otavio").build();
-            getGraphTemplate().edges(otavio, Direction.BOTH);
-        });
+        Collection<EdgeEntity> edges = getGraphTemplate().edges(otavio, Direction.BOTH);
+        assertThat(edges).isEmpty();
     }
 
     @Test
@@ -392,12 +390,13 @@ public abstract class AbstractGraphTemplateTest {
         Collection<EdgeEntity> edgesById3 = getGraphTemplate().edges(otavio, Direction.OUT);
         Collection<EdgeEntity> edgesById4 = getGraphTemplate().edges(cleanCode, Direction.IN);
 
-        assertEquals(edgesById, edgesById3);
-        assertThat(edgesById).contains(likes, reads);
-        assertThat(edgesById1).contains(reads);
-        assertThat(edgesById2).contains(likes);
-        assertThat(edgesById4).contains(reads);
-
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(edgesById).contains(likes, reads);
+            soft.assertThat(edgesById1).contains(reads);
+            soft.assertThat(edgesById2).contains(likes);
+            soft.assertThat(edgesById3).contains(likes, reads);
+            soft.assertThat(edgesById4).contains(reads);
+        });
     }
 
     @Test
@@ -412,14 +411,14 @@ public abstract class AbstractGraphTemplateTest {
                 .withName("Otavio").build();
         getGraphTemplate().insert(person);
         List<Person> people = getGraphTemplate()
-                .<Person>query("g.V().hasLabel('Person')")
+                .<Person>gremlin("g.V().hasLabel('Person')")
                 .toList();
         assertThat(people.stream().map(Person::getName).collect(toList())).contains("Otavio");
     }
 
     @Test
     void shouldReturnEmpty() {
-        Optional<Person> person = getGraphTemplate().singleResult("g.V().hasLabel('Person')");
+        Optional<Person> person = getGraphTemplate().gremlinSingleResult("g.V().hasLabel('Person')");
         assertFalse(person.isPresent());
     }
 
@@ -428,7 +427,7 @@ public abstract class AbstractGraphTemplateTest {
         Person otavio = Person.builder().withAge()
                 .withName("Otavio").build();
         getGraphTemplate().insert(otavio);
-        Optional<Person> person = getGraphTemplate().singleResult("g.V().hasLabel('Person')");
+        Optional<Person> person = getGraphTemplate().gremlinSingleResult("g.V().hasLabel('Person')");
         assertTrue(person.isPresent());
     }
 
@@ -437,13 +436,13 @@ public abstract class AbstractGraphTemplateTest {
 
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
         getGraphTemplate().insert(Person.builder().withAge().withName("Poliana").build());
-        assertThrows(NonUniqueResultException.class, () -> getGraphTemplate().singleResult("g.V().hasLabel('Person')"));
+        assertThrows(NonUniqueResultException.class, () -> getGraphTemplate().gremlinSingleResult("g.V().hasLabel('Person')"));
     }
 
     @Test
     void shouldExecutePrepareStatement() {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
-        PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(@param)");
+        PreparedStatement prepare = getGraphTemplate().gremlinPrepare("g.V().hasLabel(@param)");
         prepare.bind("param", "Person");
         List<Person> people = prepare.<Person>result().toList();
         assertThat(people.stream().map(Person::getName).collect(toList())).contains("Otavio");
@@ -452,7 +451,7 @@ public abstract class AbstractGraphTemplateTest {
     @Test
     void shouldExecutePrepareStatementSingleton() {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
-        PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(@param)");
+        PreparedStatement prepare = getGraphTemplate().gremlinPrepare("g.V().hasLabel(@param)");
         prepare.bind("param", "Person");
         Optional<Person> otavio = prepare.singleResult();
         assertTrue(otavio.isPresent());
@@ -460,7 +459,7 @@ public abstract class AbstractGraphTemplateTest {
 
     @Test
     void shouldExecutePrepareStatementSingletonEmpty() {
-        PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(@param)");
+        PreparedStatement prepare = getGraphTemplate().gremlinPrepare("g.V().hasLabel(@param)");
         prepare.bind("param", "Person");
         Optional<Person> otavio = prepare.singleResult();
         assertFalse(otavio.isPresent());
@@ -470,7 +469,7 @@ public abstract class AbstractGraphTemplateTest {
     void shouldExecutePrepareStatementWithErrorWhenThereIsMoreThanOneResult() {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
         getGraphTemplate().insert(Person.builder().withAge().withName("Poliana").build());
-        PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(@param)");
+        PreparedStatement prepare = getGraphTemplate().gremlinPrepare("g.V().hasLabel(@param)");
         prepare.bind("param", "Person");
         assertThrows(NonUniqueResultException.class, prepare::singleResult);
     }

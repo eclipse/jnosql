@@ -18,6 +18,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.graph.Transactional;
+import org.eclipse.jnosql.mapping.graph.entities.Book;
 
 @ApplicationScoped
 public class BookTemplate {

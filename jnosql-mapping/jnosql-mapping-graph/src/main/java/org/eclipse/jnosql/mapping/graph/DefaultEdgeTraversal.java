@@ -21,6 +21,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 
 import java.util.Iterator;
 import java.util.Optional;
@@ -36,7 +37,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
 
     DefaultEdgeTraversal(Supplier<GraphTraversal<?, ?>> supplier,
                          Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Edge>> flow,
-                         GraphConverter converter) {
+                         EntityConverter converter) {
         super(supplier, flow, converter);
     }
 
@@ -86,7 +87,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     public EdgeTraversal filter(Predicate<EdgeEntity> predicate) {
         requireNonNull(predicate, "predicate is required");
 
-        Predicate<Traverser<Edge>> p = e -> predicate.test(converter.toEdgeEntity(e.get()));
+        Predicate<Traverser<Edge>> p = e -> predicate.test(EdgeEntity.of(converter, e.get()));
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.filter(p)), converter);
     }
 
@@ -130,12 +131,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     @Override
     public Optional<EdgeEntity> next() {
         Optional<Edge> edgeOptional = flow.apply(supplier.get()).tryNext();
-        if (edgeOptional.isPresent()) {
-            Edge edge = edgeOptional.get();
-            return Optional.of(converter.toEdgeEntity(edge));
-
-        }
-        return Optional.empty();
+        return edgeOptional.map(edge -> EdgeEntity.of(converter, edge));
     }
 
     @Override
@@ -160,12 +156,14 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
 
     @Override
     public Stream<EdgeEntity> stream() {
-        return flow.apply(supplier.get()).toList().stream().map(converter::toEdgeEntity);
+        return flow.apply(supplier.get()).toList().stream()
+                .map(edge -> EdgeEntity.of(converter, edge));
     }
 
     @Override
     public Stream<EdgeEntity> next(int limit) {
-        return flow.apply(supplier.get()).next(limit).stream().map(converter::toEdgeEntity);
+        return flow.apply(supplier.get()).next(limit).stream()
+                .map(edge -> EdgeEntity.of(converter, edge));
     }
 
     @Override

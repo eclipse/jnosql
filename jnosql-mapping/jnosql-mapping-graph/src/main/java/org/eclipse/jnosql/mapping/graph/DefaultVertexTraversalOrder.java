@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -28,7 +29,7 @@ final class DefaultVertexTraversalOrder extends AbstractVertexTraversal implemen
     private final String property;
 
     DefaultVertexTraversalOrder(Supplier<GraphTraversal<?, ?>> supplier, Function<GraphTraversal<?, ?>,
-            GraphTraversal<Vertex, Vertex>> flow, GraphConverter converter, String property) {
+            GraphTraversal<Vertex, Vertex>> flow, EntityConverter converter, String property) {
         super(supplier, flow, converter);
         this.property = property;
     }

@@ -17,13 +17,15 @@ package org.eclipse.jnosql.mapping.graph;
 import jakarta.data.exceptions.NonUniqueResultException;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.structure.T;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.graph.entities.Animal;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
-import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -40,11 +42,16 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, Transactional.class})
-@AddPackages(BookRepository.class)
+@AddPackages(value = {Converters.class, EntityConverter.class, GraphTemplate.class})
+@AddPackages(GraphProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 class DefaultEdgeTraversalTest extends AbstractTraversalTest {
@@ -408,13 +415,16 @@ class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         graphTemplate.edge(snake, "eats", mouse);
         graphTemplate.edge(mouse, "eats", plant);
 
-        Optional<EdgeEntity> result = graphTemplate.traversalEdge().repeat().has("when")
-                .until().has("when", new P<Object>((a, b) -> true, "night")).next();
+        EdgeEntity result = graphTemplate.traversalEdge().repeat().has("when")
+                .until().has("when", new P<Object>((a, b) -> true, "night")).next().orElseThrow();
 
-        assertTrue(result.isPresent());
 
-        assertEquals(snake, result.get().incoming());
-        assertEquals(lion, result.get().outgoing());
+        SoftAssertions.assertSoftly(softly -> {
+            Animal incoming = result.incoming();
+            Animal outgoing = result.outgoing();
+            softly.assertThat(incoming).isEqualTo(snake);
+            softly.assertThat(outgoing).isEqualTo(lion);
+        });
 
     }
 
