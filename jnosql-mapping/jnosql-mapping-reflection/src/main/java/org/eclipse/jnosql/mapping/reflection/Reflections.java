@@ -360,7 +360,7 @@ public class Reflections {
     public String getUDTName(Field field) {
         Objects.requireNonNull(field, "field is required");
         return Optional.ofNullable(field.getAnnotation(Column.class))
-                .map(Column::ud)
+                .map(Column::udt)
                 .filter(StringUtils::isNotBlank)
                 .orElse(null);
     }
