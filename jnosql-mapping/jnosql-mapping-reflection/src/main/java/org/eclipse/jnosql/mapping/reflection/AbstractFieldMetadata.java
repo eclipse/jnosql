@@ -51,8 +51,11 @@ abstract class AbstractFieldMetadata implements FieldMetadata {
 
     protected final Class<?> type;
 
+    protected final String udt;
+
     AbstractFieldMetadata(MappingType mappingType, Field field, String name,
-                          Class<? extends AttributeConverter<?, ?>> converter, FieldReader reader, FieldWriter writer) {
+                          Class<? extends AttributeConverter<?, ?>> converter,
+                          FieldReader reader, FieldWriter writer, String udt) {
         this.mappingType = mappingType;
         this.field = field;
         this.name = name;
@@ -61,6 +64,7 @@ abstract class AbstractFieldMetadata implements FieldMetadata {
         this.reader = reader;
         this.writer = writer;
         this.type = field.getType();
+        this.udt = udt;
     }
 
     @Override
@@ -76,6 +80,14 @@ abstract class AbstractFieldMetadata implements FieldMetadata {
     @Override
     public String fieldName() {
         return fieldName;
+    }
+
+    @Override
+    public Optional<String> udt(){
+        if(udt == null|| udt.isEmpty() || udt.isBlank()){
+            return Optional.empty();
+        }
+        return Optional.of(udt);
     }
 
     @Override

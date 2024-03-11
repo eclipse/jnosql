@@ -33,8 +33,8 @@ public class DefaultFieldMetadata extends AbstractFieldMetadata {
 
     DefaultFieldMetadata(MappingType type, Field field, String name,
                          Class<? extends AttributeConverter<?, ?>> converter, boolean id,
-                         FieldReader reader, FieldWriter writer) {
-        super(type, field, name, converter, reader, writer);
+                         FieldReader reader, FieldWriter writer, String udt) {
+        super(type, field, name, converter, reader, writer, udt);
         this.id = id;
     }
 

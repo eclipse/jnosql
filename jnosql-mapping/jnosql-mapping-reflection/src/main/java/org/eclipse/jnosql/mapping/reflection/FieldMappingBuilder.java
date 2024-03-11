@@ -41,62 +41,69 @@ class FieldMappingBuilder {
 
     private FieldWriter writer;
 
+    private String udt;
 
-    public FieldMappingBuilder withType(MappingType type) {
+
+    public FieldMappingBuilder type(MappingType type) {
         this.type = type;
         return this;
     }
 
-    public FieldMappingBuilder withField(Field field) {
+    public FieldMappingBuilder field(Field field) {
         this.field = field;
         return this;
     }
 
-    public FieldMappingBuilder withName(String name) {
+    public FieldMappingBuilder name(String name) {
         this.name = name;
         return this;
     }
 
-    public FieldMappingBuilder withTypeSupplier(TypeSupplier<?> typeSupplier) {
+    public FieldMappingBuilder typeSupplier(TypeSupplier<?> typeSupplier) {
         this.typeSupplier = typeSupplier;
         return this;
     }
 
-    public FieldMappingBuilder withEntityName(String entityName) {
+    public FieldMappingBuilder entityName(String entityName) {
         this.entityName = entityName;
         return this;
     }
 
-    public FieldMappingBuilder withConverter(Class<? extends AttributeConverter<?, ?>> converter) {
+    public FieldMappingBuilder converter(Class<? extends AttributeConverter<?, ?>> converter) {
         this.converter = converter;
         return this;
     }
 
-    public FieldMappingBuilder withId(boolean id) {
+    public FieldMappingBuilder id(boolean id) {
         this.id = id;
         return this;
     }
 
-    public FieldMappingBuilder withWriter(FieldWriter writer) {
+    public FieldMappingBuilder writer(FieldWriter writer) {
         this.writer = writer;
         return this;
     }
 
-    public FieldMappingBuilder withReader(FieldReader reader) {
+    public FieldMappingBuilder udt(String udt) {
+        this.udt = udt;
+        return this;
+    }
+
+    public FieldMappingBuilder reader(FieldReader reader) {
         this.reader = reader;
         return this;
     }
 
     public DefaultFieldMetadata buildDefault() {
-        return new DefaultFieldMetadata(type, field, name, converter, id, reader, writer);
+        return new DefaultFieldMetadata(type, field, name, converter, id, reader, writer, udt);
     }
 
     public GenericFieldMetadata buildGeneric() {
-        return new DefaultGenericFieldMetadata(type, field, name, typeSupplier, converter, reader, writer);
+        return new DefaultGenericFieldMetadata(type, field, name, typeSupplier, converter, reader, writer, udt);
     }
 
     public EmbeddedFieldMetadata buildEmbedded() {
-        return new EmbeddedFieldMetadata(type, field, name, entityName, reader, writer);
+        return new EmbeddedFieldMetadata(type, field, name, entityName, reader, writer, udt);
     }
 
 }
