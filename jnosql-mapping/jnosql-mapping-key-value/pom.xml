@@ -37,10 +37,5 @@
             <artifactId>jnosql-mapping-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>jakarta.nosql</groupId>
-            <artifactId>nosql-key-value</artifactId>
-            <version>${jakarta.nosql.version}</version>
-        </dependency>
     </dependencies>
 </project>
