@@ -18,7 +18,7 @@ import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.PreparedStatement;
-import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;

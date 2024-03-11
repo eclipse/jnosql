@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
 import jakarta.inject.Inject;
-import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueEntityConverter;

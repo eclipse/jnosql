@@ -24,7 +24,7 @@ import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.PreparedStatement;
-import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplate;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;

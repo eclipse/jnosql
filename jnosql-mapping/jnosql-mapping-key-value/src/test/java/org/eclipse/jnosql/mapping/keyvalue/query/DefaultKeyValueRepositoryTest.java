@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
-import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
