@@ -35,8 +35,9 @@ final class DefaultGenericFieldMetadata  extends AbstractFieldMetadata implement
     private final TypeSupplier<?> typeSupplier;
 
     DefaultGenericFieldMetadata(MappingType type, Field field, String name, TypeSupplier<?> typeSupplier,
-                         Class<? extends AttributeConverter<?, ?>> converter, FieldReader reader, FieldWriter writer) {
-        super(type, field, name, converter, reader, writer);
+                         Class<? extends AttributeConverter<?, ?>> converter,
+                                FieldReader reader, FieldWriter writer, String udt) {
+        super(type, field, name, converter, reader, writer, udt);
         this.typeSupplier = typeSupplier;
     }
 

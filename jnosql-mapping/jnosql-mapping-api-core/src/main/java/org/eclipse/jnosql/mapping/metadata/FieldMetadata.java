@@ -23,7 +23,7 @@ import java.util.Optional;
 
 /**
  * This class represents the information from {@link java.lang.reflect.Field}.
- * The strategy is to cache in all fields in a class to either read and write faster from Field
+ * The strategy is to cache in all fields in a class to either read and write faster from Field.
  */
 public interface FieldMetadata extends FieldParameterMetadata {
 
@@ -41,21 +41,20 @@ public interface FieldMetadata extends FieldParameterMetadata {
      *
      * @param bean  the bean
      * @param value the value to write
-     * @throws NullPointerException when there is null parameter
+     * @throws NullPointerException when there is a null parameter
      */
     void write(Object bean, Object value);
 
-     /**
-     * Returns the Java Fields name.
-     * {@link java.lang.reflect.Field#getName()}
+    /**
+     * Returns the Java Field's name.
      *
-     * @return The Java Field name {@link java.lang.reflect.Field#getName()}
+     * @return The Java Field name
      */
     String fieldName();
 
 
     /**
-     * Returns the object from the field type
+     * Returns the object from the field type.
      *
      * @param value the value {@link Value}
      * @return the instance from the field type
@@ -63,12 +62,19 @@ public interface FieldMetadata extends FieldParameterMetadata {
     Object value(Value value);
 
     /**
-     * Returns true is the field is annotated with {@link Id}
+     * Returns true if the field is annotated with {@link Id}.
      *
-     * @return true is annotated with {@link Id}
+     * @return true if annotated with {@link Id}
      */
     boolean isId();
 
+    /**
+     * Returns the user-defined type (UDT) associated with the field, if any.
+     * If no UDT is specified or the value is blank, the optional will be empty.
+     *
+     * @return an {@link java.util.Optional} containing the user-defined type, or an empty optional if not specified
+     */
+    Optional<String> udt();
 
     /**
      * Retrieves the value from the default method (usually named "value") of the provided annotation type.
