@@ -16,12 +16,14 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import org.assertj.core.api.Assertions;
 import jakarta.nosql.AttributeConverter;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.entities.Person;
 import org.eclipse.jnosql.mapping.reflection.entities.MoneyConverter;
 import org.eclipse.jnosql.mapping.reflection.entities.Person;
+import org.eclipse.jnosql.mapping.reflection.entities.UDTEntity;
 import org.eclipse.jnosql.mapping.reflection.entities.Worker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,4 +63,33 @@ class DefaultFieldMetadataTest {
         AttributeConverter<Object, Object> result = fieldMetadata.newConverter().orElseThrow();
         assertThat(result).isNotNull().isInstanceOf(MoneyConverter.class);
     }
+
+    @Test
+    void shouldReturnEmptyUDTWithEmptyString() {
+        EntityMetadata entityMetadata = converter.apply(UDTEntity.class);
+        FieldMetadata name = entityMetadata.fieldMapping("empty").orElseThrow();
+        fieldMetadata = (DefaultFieldMetadata) name;
+        assertThat(fieldMetadata.udt()).isEmpty();
+    }
+
+    @Test
+    void shouldReturnEmptyUDTWithBlankString() {
+        EntityMetadata entityMetadata = converter.apply(UDTEntity.class);
+        FieldMetadata name = entityMetadata.fieldMapping("blank").orElseThrow();
+        fieldMetadata = (DefaultFieldMetadata) name;
+        assertThat(fieldMetadata.udt()).isEmpty();
+    }
+
+    @Test
+    void shouldReturnUDT() {
+        EntityMetadata entityMetadata = converter.apply(UDTEntity.class);
+        FieldMetadata name = entityMetadata.fieldMapping("udt").orElseThrow();
+        fieldMetadata = (DefaultFieldMetadata) name;
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(fieldMetadata.udt()).isPresent();
+            soft.assertThat(fieldMetadata.udt().orElseThrow()).isEqualTo("sample");
+        });
+    }
+
 }
