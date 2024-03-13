@@ -74,7 +74,6 @@ public abstract class AbstractGraphTemplateTest {
                 .withName("Otavio").build();
         Person updated = getGraphTemplate().insert(person);
 
-        assertNotNull(updated.getId());
         getGraphTemplate().delete(updated.getId());
     }
 

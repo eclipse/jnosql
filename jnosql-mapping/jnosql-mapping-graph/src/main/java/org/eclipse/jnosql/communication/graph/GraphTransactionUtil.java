@@ -57,20 +57,18 @@ public final class GraphTransactionUtil {
      *
      * @param graph the graph instance
      */
-    public static void transaction(Graph graph) {
-        synchronized (graph) {
-            if (isAutomatic() && isNotLock() && Objects.nonNull(graph)) {
-                try {
-                    Transaction transaction = graph.tx();
-                    if (transaction != null) {
-                        transaction.commit();
-                    }
-                } catch (Exception exception) {
-                    LOGGER.info("Unable to do transaction automatically in the graph, reason: " +
-                            exception.getMessage());
+    public synchronized static void transaction(Graph graph) {
+        if (isAutomatic() && isNotLock() && Objects.nonNull(graph)) {
+            try {
+                Transaction transaction = graph.tx();
+                if (transaction != null) {
+                    transaction.commit();
                 }
-
+            } catch (Exception exception) {
+                LOGGER.info("Unable to do transaction automatically in the graph, reason: " +
+                        exception.getMessage());
             }
+
         }
     }
 
