@@ -88,7 +88,7 @@ enum ParameterConverter {
     static ParameterConverter of(ParameterMetaData parameter, EntitiesMetadata entities) {
         return switch (parameter.mappingType()) {
             case COLLECTION -> validateCollection(parameter, entities);
-            case ENTITY -> ENTITY;
+            case ENTITY, EMBEDDED_GROUP -> ENTITY;
             default -> DEFAULT;
         };
     }

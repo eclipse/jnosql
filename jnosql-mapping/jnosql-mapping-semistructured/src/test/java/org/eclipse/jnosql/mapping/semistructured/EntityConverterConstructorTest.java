@@ -240,13 +240,13 @@ class EntityConverterConstructorTest {
         entity.add("factory", List.of(Element.of("name", "Napa Valley Factory"),
                 Element.of("location", "Napa Valley")));
 
-        Beer wine = converter.toEntity(entity);
+        Beer beer = converter.toEntity(entity);
 
         SoftAssertions.assertSoftly(soft ->{
-            var factory = wine.factory();
-            soft.assertThat(wine).isNotNull();
-            soft.assertThat(wine.id()).isEqualTo("id");
-            soft.assertThat(wine.name()).isEqualTo("Vin Blanc");
+            var factory = beer.factory();
+            soft.assertThat(beer).isNotNull();
+            soft.assertThat(beer.id()).isEqualTo("id");
+            soft.assertThat(beer.name()).isEqualTo("Vin Blanc");
             soft.assertThat(factory).isNotNull();
             soft.assertThat(factory.name()).isEqualTo("Napa Valley Factory");
             soft.assertThat(factory.location()).isEqualTo("Napa Valley");
@@ -263,7 +263,7 @@ class EntityConverterConstructorTest {
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(communication).isNotNull();
-            soft.assertThat(communication.name()).isEqualTo("Wine");
+            soft.assertThat(communication.name()).isEqualTo("Beer");
             soft.assertThat(communication.find("_id").orElseThrow().get()).isEqualTo("id");
             soft.assertThat(communication.find("name").orElseThrow().get()).isEqualTo("Vin Blanc");
             communication.find("factory").ifPresent(e -> {
