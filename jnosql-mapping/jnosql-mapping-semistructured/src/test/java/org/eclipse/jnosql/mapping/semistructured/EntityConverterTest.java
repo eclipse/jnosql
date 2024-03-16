@@ -651,8 +651,10 @@ class EntityConverterTest {
             communication.find("factory").ifPresent(e -> {
                 List<Element> elements = e.get(new TypeReference<>(){});
                 soft.assertThat(elements).hasSize(2);
-                soft.assertThat(elements.stream().filter(c -> "name".equals(c.name())).findFirst().orElseThrow().get()).isEqualTo("Napa Valley Factory");
-                soft.assertThat(elements.stream().filter(c -> "location".equals(c.name())).findFirst().orElseThrow().get()).isEqualTo("Napa Valley");
+                soft.assertThat(elements.stream().filter(c -> "name".equals(c.name())).findFirst().orElseThrow().get())
+                        .isEqualTo("Napa Valley Factory");
+                soft.assertThat(elements.stream().filter(c -> "location".equals(c.name())).findFirst().orElseThrow().get())
+                        .isEqualTo("Napa Valley");
             });
 
         });
