@@ -635,6 +635,29 @@ class EntityConverterTest {
         });
     }
 
+    @Test
+    void shouldConvertGroupEmbeddableToCommunication(){
+
+        Wine wine = Wine.of("id", "Vin Blanc", WineFactory.of("Napa Valley Factory", "Napa Valley"));
+
+
+        var communication = converter.toCommunication(wine);
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(communication).isNotNull();
+            soft.assertThat(communication.name()).isEqualTo("Wine");
+            soft.assertThat(communication.find("_id").orElseThrow().get()).isEqualTo("id");
+            soft.assertThat(communication.find("name").orElseThrow().get()).isEqualTo("Vin Blanc");
+            communication.find("factory").ifPresent(e -> {
+                List<Element> elements = e.get(new TypeReference<>(){});
+                soft.assertThat(elements).hasSize(2);
+                soft.assertThat(elements.stream().filter(c -> "name".equals(c.name())).findFirst().orElseThrow().get()).isEqualTo("Napa Valley Factory");
+                soft.assertThat(elements.stream().filter(c -> "location".equals(c.name())).findFirst().orElseThrow().get()).isEqualTo("Napa Valley");
+            });
+
+        });
+    }
+
 
     private Object getValue(Optional<Element> column) {
         return column.map(Element::value).map(Value::get).orElse(null);
