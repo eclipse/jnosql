@@ -36,6 +36,7 @@ import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
 import static org.eclipse.jnosql.mapping.metadata.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.metadata.MappingType.EMBEDDED_GROUP;
 import static org.eclipse.jnosql.mapping.metadata.MappingType.ENTITY;
 
 
@@ -195,7 +196,7 @@ public abstract class EntityConverter {
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
             MappingType type = fieldsGroupByName.get(k).mappingType();
-            return EMBEDDED.equals(type) || ENTITY.equals(type);
+            return EMBEDDED.equals(type)|| EMBEDDED_GROUP.equals(type) || ENTITY.equals(type);
         };
         fieldsGroupByName.keySet().stream()
                 .filter(existField.or(isElementType))

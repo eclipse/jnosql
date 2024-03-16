@@ -28,6 +28,13 @@ public class WineFactory {
     @Column
     private String location;
 
+    public String getName() {
+        return name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
 
     @Override
     public String toString() {
