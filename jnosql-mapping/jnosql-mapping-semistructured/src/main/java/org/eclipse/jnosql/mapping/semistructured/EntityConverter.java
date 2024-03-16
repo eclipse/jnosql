@@ -106,6 +106,7 @@ public abstract class EntityConverter {
      * @return the modified entity instance
      * @throws NullPointerException when either the type or the entity are null
      */
+    @SuppressWarnings("unchecked")
     public <T> T toEntity(T type, CommunicationEntity entity) {
         requireNonNull(entity, "entity is required");
         requireNonNull(type, "type is required");
