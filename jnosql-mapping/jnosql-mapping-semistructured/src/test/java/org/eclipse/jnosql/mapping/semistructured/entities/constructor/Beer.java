@@ -23,4 +23,7 @@ import jakarta.nosql.Id;
 @Entity
 public record Beer(@Id String id, @Column String name, @Column BeerFactory factory) {
 
+    public static Beer of(String id, String name, BeerFactory factory) {
+        return new Beer(id, name, factory);
+    }
 }
