@@ -119,7 +119,7 @@ enum FieldConverter {
     static FieldConverter get(FieldMetadata field) {
         if (MappingType.EMBEDDED.equals(field.mappingType())) {
             return EMBEDDED;
-        } else if (MappingType.ENTITY.equals(field.mappingType())) {
+        } else if (MappingType.ENTITY.equals(field.mappingType())|| MappingType.EMBEDDED_GROUP.equals(field.mappingType())) {
             return ENTITY;
         } else if (isCollectionEmbeddable(field)) {
             return COLLECTION;

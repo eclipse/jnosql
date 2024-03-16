@@ -37,6 +37,8 @@ import org.eclipse.jnosql.mapping.semistructured.entities.Person;
 import org.eclipse.jnosql.mapping.semistructured.entities.SocialMediaContact;
 import org.eclipse.jnosql.mapping.semistructured.entities.Transition;
 import org.eclipse.jnosql.mapping.semistructured.entities.Vendor;
+import org.eclipse.jnosql.mapping.semistructured.entities.Wine;
+import org.eclipse.jnosql.mapping.semistructured.entities.WineFactory;
 import org.eclipse.jnosql.mapping.semistructured.entities.Worker;
 import org.eclipse.jnosql.mapping.semistructured.entities.WorkflowStep;
 import org.eclipse.jnosql.mapping.semistructured.entities.ZipCode;
@@ -609,6 +611,52 @@ class EntityConverterTest {
             soft.assertThat(socialMediaContact.getId()).isEqualTo("id");
             soft.assertThat(socialMediaContact.getName()).isEqualTo("Twitter");
             soft.assertThat(socialMediaContact.getUsers()).isNull();
+        });
+    }
+
+    @Test
+    void shouldConvertGroupEmbeddable(){
+        CommunicationEntity entity = CommunicationEntity.of("Wine");
+        entity.add("_id", "id");
+        entity.add("name", "Vin Blanc");
+        entity.add("factory", List.of(Element.of("name", "Napa Valley Factory"),
+                Element.of("location", "Napa Valley")));
+
+        Wine wine = converter.toEntity(entity);
+
+        SoftAssertions.assertSoftly(soft ->{
+            WineFactory factory = wine.getFactory();
+            soft.assertThat(wine).isNotNull();
+            soft.assertThat(wine.getId()).isEqualTo("id");
+            soft.assertThat(wine.getName()).isEqualTo("Vin Blanc");
+            soft.assertThat(factory).isNotNull();
+            soft.assertThat(factory.getName()).isEqualTo("Napa Valley Factory");
+            soft.assertThat(factory.getLocation()).isEqualTo("Napa Valley");
+        });
+    }
+
+    @Test
+    void shouldConvertGroupEmbeddableToCommunication(){
+
+        Wine wine = Wine.of("id", "Vin Blanc", WineFactory.of("Napa Valley Factory", "Napa Valley"));
+
+
+        var communication = converter.toCommunication(wine);
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(communication).isNotNull();
+            soft.assertThat(communication.name()).isEqualTo("Wine");
+            soft.assertThat(communication.find("_id").orElseThrow().get()).isEqualTo("id");
+            soft.assertThat(communication.find("name").orElseThrow().get()).isEqualTo("Vin Blanc");
+            communication.find("factory").ifPresent(e -> {
+                List<Element> elements = e.get(new TypeReference<>(){});
+                soft.assertThat(elements).hasSize(2);
+                soft.assertThat(elements.stream().filter(c -> "name".equals(c.name())).findFirst().orElseThrow().get())
+                        .isEqualTo("Napa Valley Factory");
+                soft.assertThat(elements.stream().filter(c -> "location".equals(c.name())).findFirst().orElseThrow().get())
+                        .isEqualTo("Napa Valley");
+            });
+
         });
     }
 

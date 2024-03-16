@@ -17,6 +17,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Introduce NoSQLRepository
 - Include the semistructured layers (mapping and communication)
 - Include Column and Document Templates
+- Include support to Embedded and EmbeddedCollection as group
 
 === Removed
 

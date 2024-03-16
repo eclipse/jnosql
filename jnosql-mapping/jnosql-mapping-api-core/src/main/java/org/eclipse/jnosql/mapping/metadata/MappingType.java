@@ -25,7 +25,7 @@ import java.util.Map;
  * enum that contains kinds of annotations to either fields constructor parameters on java.
  */
 public enum MappingType {
-    EMBEDDED, MAP, COLLECTION, DEFAULT, ENTITY;
+    EMBEDDED, EMBEDDED_GROUP, MAP, COLLECTION, DEFAULT, ENTITY;
 
 
     /**
@@ -46,11 +46,12 @@ public enum MappingType {
         if (Map.class.isAssignableFrom(type)) {
             return MappingType.MAP;
         }
-        if (type.isAnnotationPresent(Embeddable.class)) {
-            return MappingType.EMBEDDED;
-        }
         if (type.isAnnotationPresent(Entity.class)) {
             return MappingType.ENTITY;
+        }
+        if (type.isAnnotationPresent(Embeddable.class)) {
+            var value = type.getAnnotation(Embeddable.class).value();
+            return value == Embeddable.EmbeddableType.FLAT ? MappingType.EMBEDDED : MappingType.EMBEDDED_GROUP;
         }
 
         return MappingType.DEFAULT;

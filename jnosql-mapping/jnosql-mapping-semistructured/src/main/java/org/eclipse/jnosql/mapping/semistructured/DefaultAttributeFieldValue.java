@@ -30,6 +30,7 @@ import java.util.Optional;
 import static org.eclipse.jnosql.mapping.metadata.MappingType.COLLECTION;
 
 import static org.eclipse.jnosql.mapping.metadata.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.metadata.MappingType.EMBEDDED_GROUP;
 import static org.eclipse.jnosql.mapping.metadata.MappingType.ENTITY;
 import static java.util.Collections.singletonList;
 
@@ -63,7 +64,7 @@ final class DefaultAttributeFieldValue implements AttributeFieldValue {
             return singletonList(Element.of(getName(), null));
         } else if (EMBEDDED.equals(getType())) {
             return converter.toCommunication(value()).elements();
-        } else if (ENTITY.equals(getType())) {
+        } else if (ENTITY.equals(getType())|| EMBEDDED_GROUP.equals(getType())) {
             return singletonList(Element.of(getName(), converter.toCommunication(value()).elements()));
         } else if (isEmbeddableCollection()) {
             return singletonList(Element.of(getName(), getColumns(converter)));
