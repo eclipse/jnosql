@@ -16,7 +16,6 @@ package org.eclipse.jnosql.mapping.core.repository.returns;
 
 import jakarta.data.page.Page;
 
-import jakarta.data.page.Slice;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 
@@ -38,6 +37,6 @@ public class PageRepositoryReturn extends AbstractRepositoryReturn {
 
     @Override
     public boolean isCompatible(Class<?> entity, Class<?> returnType) {
-        return Page.class.equals(returnType) || Slice.class.equals(returnType);
+        return Page.class.equals(returnType);
     }
 }

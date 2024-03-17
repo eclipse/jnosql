@@ -18,7 +18,6 @@ import jakarta.data.Limit;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.BasicRepository;
-import jakarta.data.page.Slice;
 import jakarta.data.Sort;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.Condition;
@@ -441,7 +440,7 @@ public class RepositoryProxyPageRequestTest {
                 .thenReturn(Stream.of(ada));
 
         PageRequest pageRequest = getPageRequest();
-        Slice<Person> slice = personRepository.findByAge("120", pageRequest);
+        Page<Person> slice = personRepository.findByAge("120", pageRequest);
         Assertions.assertNotNull(slice);
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
@@ -623,7 +622,7 @@ public class RepositoryProxyPageRequestTest {
 
         Page<Person> findByNameOrderByAge(String name, PageRequest pageRequest);
 
-        Slice<Person> findByAge(String age, PageRequest pageRequest);
+        Page<Person> findByAge(String age, PageRequest pageRequest);
 
         List<Person> findByNameAndAge(String name, Integer age, PageRequest pageRequest);
 

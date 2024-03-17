@@ -65,6 +65,16 @@ public class NoSQLPage<T> implements Page<T> {
     }
 
     @Override
+    public boolean hasNext() {
+        throw new UnsupportedOperationException("Eclipse JNoSQL has no support for this feature ");
+    }
+
+    @Override
+    public boolean hasPrevious() {
+        throw new UnsupportedOperationException("Eclipse JNoSQL has no support for this feature ");
+    }
+
+    @Override
     public PageRequest<T> pageRequest() {
         return this.pageRequest;
     }
@@ -86,6 +96,21 @@ public class NoSQLPage<T> implements Page<T> {
     public <E> PageRequest<E> nextPageRequest(Class<E> type) {
         Objects.requireNonNull(type, "type is required");
         return (PageRequest<E>) this.pageRequest;
+    }
+
+    @Override
+    public PageRequest<T> previousPageRequest() {
+        return null;
+    }
+
+    @Override
+    public <E> PageRequest<E> previousPageRequest(Class<E> entityClass) {
+        return null;
+    }
+
+    @Override
+    public boolean hasTotals() {
+        throw new UnsupportedOperationException("Eclipse JNoSQL has no support for this feature ");
     }
 
     @Override

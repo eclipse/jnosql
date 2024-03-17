@@ -179,16 +179,15 @@ public abstract class AbstractRepository<T, K> implements NoSQLRepository<T, K>,
     }
 
     @Override
-    public boolean update(T entity) {
+    public <S extends T> S update(S entity) {
         Objects.requireNonNull(entity, "entity is required");
-        return template().update(entity) != null;
+        return template().update(entity);
     }
 
     @Override
-    public int updateAll(Iterable<T> entities) {
+    public <S extends T> Iterable<S> updateAll(Iterable<S> entities) {
         Objects.requireNonNull(entities, "entities is required");
-        template().update(entities);
-        return (int) StreamSupport.stream(entities.spliterator(), false).count();
+        return template().update(entities);
     }
 
     @Override

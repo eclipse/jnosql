@@ -81,15 +81,15 @@ public enum AnnotationOperation {
 
         private static Object executeIterable(Operation operation, Iterable entities, ReturnType returnType,
                                               boolean isArray, Object param) {
-            int count = operation.repository.updateAll(entities);
+            Iterable result = operation.repository.updateAll(entities);
             if (returnType.isVoid()) {
                 return Void.TYPE;
             } else if (returnType.isBoolean()) {
                 return true;
             } else if (returnType.isInt()) {
-                return count;
+                return (int) StreamSupport.stream(entities.spliterator(), false).count();
             } else if(returnType.isLong()){
-                return (long) count;
+                return StreamSupport.stream(entities.spliterator(), false).count();
             }else if (isArray) {
                 return param;
             } else {
@@ -98,7 +98,7 @@ public enum AnnotationOperation {
         }
 
         private static Object executeSingleEntity(Operation operation, Object param, ReturnType returnType) {
-            boolean result = operation.repository.update(param);
+            var result = operation.repository.update(param);
             if (returnType.isVoid()) {
                 return Void.TYPE;
             } else if (returnType.isBoolean()) {
