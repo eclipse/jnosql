@@ -95,17 +95,18 @@ public class NoSQLPage<T> implements Page<T> {
     @SuppressWarnings("unchecked")
     public <E> PageRequest<E> nextPageRequest(Class<E> type) {
         Objects.requireNonNull(type, "type is required");
-        return (PageRequest<E>) this.pageRequest;
+        return (PageRequest<E>) this.pageRequest.next();
     }
 
     @Override
     public PageRequest<T> previousPageRequest() {
-        return null;
+        return this.pageRequest.previous();
     }
 
     @Override
-    public <E> PageRequest<E> previousPageRequest(Class<E> entityClass) {
-        return null;
+    public <E> PageRequest<E> previousPageRequest(Class<E> type) {
+        Objects.requireNonNull(type, "type is required");
+        return (PageRequest<E>) this.pageRequest.previous();
     }
 
     @Override
