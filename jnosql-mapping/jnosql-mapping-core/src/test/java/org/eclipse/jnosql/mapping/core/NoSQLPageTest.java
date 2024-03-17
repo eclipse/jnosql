@@ -47,6 +47,9 @@ class NoSQLPageTest {
         assertThrows(UnsupportedOperationException.class, page::totalPages);
 
         assertThrows(UnsupportedOperationException.class, page::totalElements);
+        assertThrows(UnsupportedOperationException.class, page::hasNext);
+        assertThrows(UnsupportedOperationException.class, page::hasPrevious);
+        assertThrows(UnsupportedOperationException.class, page::hasTotals);
     }
 
     @Test
@@ -131,4 +134,5 @@ class NoSQLPageTest {
         assertEquals(page.hashCode(), page2.hashCode());
 
     }
+
 }
