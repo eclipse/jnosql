@@ -104,13 +104,13 @@ public enum AnnotationOperation {
             if (returnType.isVoid()) {
                 return Void.TYPE;
             } else if (returnType.isBoolean()) {
-                return result;
+                return true;
             } else if (returnType.isInt()) {
                 return 1;
             } else if (returnType.isLong()) {
                 return 1L;
             } else {
-                return param;
+                return result;
             }
         }
     },
