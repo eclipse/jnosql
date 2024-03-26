@@ -16,7 +16,6 @@ package org.eclipse.jnosql.mapping.core.repository.returns;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import jakarta.data.page.Slice;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.core.repository.RepositoryReturn;
@@ -47,11 +46,11 @@ class PageRepositoryReturnTest {
     @Test
     void shouldReturnIsCompatible() {
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Page.class));
-        Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Slice.class));
         assertFalse(repositoryReturn.isCompatible(Object.class, Person.class));
         assertFalse(repositoryReturn.isCompatible(Person.class, Object.class));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void shouldReturnPage() {
 
@@ -77,30 +76,6 @@ class PageRepositoryReturnTest {
         assertEquals(ada, content.get(0));
     }
 
-    @Test
-    void shouldReturnSlice() {
-
-        Person ada = new Person("Ada");
-
-        Mockito.when(page.content()).thenReturn(List.of(ada));
-
-        DynamicReturn<Person> dynamic = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withSingleResult(Optional::empty)
-                .withResult(Collections::emptyList)
-                .withSingleResultPagination(p -> Optional.empty())
-                .withStreamPagination(p -> Stream.of(ada))
-                .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(PageRequest.ofPage(2).size(2))
-                .withPage(p -> page)
-                .build();
-
-        Slice<Person> personPage = (Slice<Person>) repositoryReturn.convertPageRequest(dynamic);
-        List<Person> content = personPage.content();
-
-        assertFalse(content.isEmpty());
-        assertEquals(ada, content.get(0));
-    }
 
     @Test
     void shouldReturnErrorWhenUsePage() {

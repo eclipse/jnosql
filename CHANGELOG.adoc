@@ -10,7 +10,8 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 === Changed
 
-- Upgrade Jakarta Data to version 1.0.0-M3
+- Upgrade Jakarta Data to version 1.0.0-M4
+- Upgrade Jakarta NoSQL to version 1.0.0-M1
 
 === Added
 

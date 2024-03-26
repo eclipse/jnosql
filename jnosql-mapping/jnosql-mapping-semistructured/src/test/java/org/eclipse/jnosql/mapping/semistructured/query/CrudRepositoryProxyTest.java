@@ -19,6 +19,7 @@ import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.Sort;
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.communication.Condition;
@@ -741,7 +742,7 @@ class CrudRepositoryProxyTest {
     }
 
 
-    interface PersonRepository extends CrudRepository<Person, Long> {
+    interface PersonRepository extends NoSQLRepository<Person, Long> {
 
         List<Person> findBySalary_Currency(String currency);
 

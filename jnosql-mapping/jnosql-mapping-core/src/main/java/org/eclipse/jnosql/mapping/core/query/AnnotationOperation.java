@@ -18,7 +18,8 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.StreamSupport;
+
+import static java.util.stream.StreamSupport.stream;
 
 /**
  * Enumeration representing the operations with annotations.
@@ -37,7 +38,7 @@ public enum AnnotationOperation {
             Object param = operation.params[0];
             ReturnType returnType = new ReturnType(operation.method);
             if (param instanceof Iterable entities) {
-                Iterable<?> result = operation.repository.insertAll(entities);
+                List<?> result = operation.repository.insertAll(stream(entities.spliterator(), false).toList());
                 return returnInsert(returnType, result);
             } else if (param.getClass().isArray()) {
                 Iterable<?> result = operation.repository.insertAll(Arrays.asList((Object[]) param));
@@ -49,13 +50,13 @@ public enum AnnotationOperation {
         }
 
         private static Object returnInsert(ReturnType returnType, Object result) {
-            if(returnType.isVoid()){
+            if (returnType.isVoid()) {
                 return Void.TYPE;
-            }else if(returnType.isInt()){
+            } else if (returnType.isInt()) {
                 return 1;
-            } else if(returnType.isLong()){
+            } else if (returnType.isLong()) {
                 return 1L;
-            }else {
+            } else {
                 return result;
             }
         }
@@ -81,34 +82,35 @@ public enum AnnotationOperation {
 
         private static Object executeIterable(Operation operation, Iterable entities, ReturnType returnType,
                                               boolean isArray, Object param) {
-            int count = operation.repository.updateAll(entities);
+
+            List<?> result = operation.repository.updateAll(stream(entities.spliterator(), false).toList());
             if (returnType.isVoid()) {
                 return Void.TYPE;
             } else if (returnType.isBoolean()) {
                 return true;
             } else if (returnType.isInt()) {
-                return count;
-            } else if(returnType.isLong()){
-                return (long) count;
-            }else if (isArray) {
-                return param;
+                return result.size();
+            } else if (returnType.isLong()) {
+                return (long) result.size();
+            } else if (isArray) {
+                return result.toArray();
             } else {
                 return entities;
             }
         }
 
         private static Object executeSingleEntity(Operation operation, Object param, ReturnType returnType) {
-            boolean result = operation.repository.update(param);
+            var result = operation.repository.update(param);
             if (returnType.isVoid()) {
                 return Void.TYPE;
             } else if (returnType.isBoolean()) {
-                return result;
+                return true;
             } else if (returnType.isInt()) {
                 return 1;
             } else if (returnType.isLong()) {
                 return 1L;
             } else {
-                return param;
+                return result;
             }
         }
     },
@@ -133,15 +135,15 @@ public enum AnnotationOperation {
 
         private static Object executeIterable(Operation operation, Iterable entities, ReturnType returnType) {
 
-            operation.repository.deleteAll(entities);
+            operation.repository.deleteAll(stream(entities.spliterator(), false).toList());
             if (returnType.isVoid()) {
                 return Void.TYPE;
             } else if (returnType.isBoolean()) {
                 return true;
             } else if (returnType.isInt()) {
-                return (int) StreamSupport.stream(entities.spliterator(), false).count();
+                return (int) stream(entities.spliterator(), false).count();
             } else if (returnType.isLong()) {
-                return StreamSupport.stream(entities.spliterator(), false).count();
+                return stream(entities.spliterator(), false).count();
             }
             return null;
         }
@@ -154,7 +156,7 @@ public enum AnnotationOperation {
                 return true;
             } else if (returnType.isInt()) {
                 return 1;
-            }else if (returnType.isLong()) {
+            } else if (returnType.isLong()) {
                 return 1L;
             }
             return null;
@@ -170,7 +172,7 @@ public enum AnnotationOperation {
             Object param = operation.params[0];
             ReturnType returnType = new ReturnType(operation.method);
             if (param instanceof Iterable entities) {
-                Iterable<?> result = operation.repository.saveAll(entities);
+                Iterable<?> result = operation.repository.saveAll(stream(entities.spliterator(), false).toList());
                 return returnType.isVoid() ? Void.TYPE : result;
             } else if (param.getClass().isArray()) {
                 Iterable<?> result = operation.repository.saveAll(Arrays.asList((Object[]) param));
@@ -207,10 +209,9 @@ public enum AnnotationOperation {
         }
 
 
-
         @Override
         public int hashCode() {
-          return Objects.hash(method, repository) + 31 * Arrays.hashCode(params);
+            return Objects.hash(method, repository) + 31 * Arrays.hashCode(params);
         }
 
         @Override

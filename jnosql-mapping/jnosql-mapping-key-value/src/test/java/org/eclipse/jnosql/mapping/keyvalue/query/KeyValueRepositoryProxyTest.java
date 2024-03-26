@@ -101,7 +101,7 @@ class KeyValueRepositoryProxyTest {
         ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
 
         User user = new User("ada", "Ada", 10);
-        userRepository.saveAll(Collections.singleton(user));
+        userRepository.saveAll(Collections.singletonList(user));
         Mockito.verify(template).insert(captor.capture());
         User value = captor.getValue();
         assertEquals(user, value);
@@ -124,7 +124,7 @@ class KeyValueRepositoryProxyTest {
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
 
         User user = new User("ada", "Ada", 10);
-        userRepository.insertAll(Collections.singleton(user));
+        userRepository.insertAll(Collections.singletonList(user));
         Mockito.verify(template).insert(captor.capture());
         User value = (User) captor.getValue().iterator().next();
         assertEquals(user, value);
@@ -147,7 +147,7 @@ class KeyValueRepositoryProxyTest {
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
 
         User user = new User("ada", "Ada", 10);
-        userRepository.updateAll(Collections.singleton(user));
+        userRepository.updateAll(Collections.singletonList(user));
         Mockito.verify(template).update(captor.capture());
         User value = (User) captor.getValue().iterator().next();
         assertEquals(user, value);
