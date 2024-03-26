@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -16,7 +16,6 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
-import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
@@ -120,11 +119,13 @@ enum ClassGraphClassScanner implements ClassScanner {
     @SuppressWarnings("rawtypes")
     private static void checkInvalidRepositories(List<Class<DataRepository>> classes) {
         if (!classes.isEmpty()) {
+            Logger logger = Logger.getLogger(ClassGraphClassScanner.class.getName());
             String repositories = classes.stream()
                     .map(Class::getName)
                     .collect(Collectors.joining(","));
-            throw new MappingException("The following repositories are invalid because the Entities must have the " +
-                    jakarta.nosql.Entity.class.getName() + " annotation: " + repositories);
+            logger.info("The following repositories cannot be implemented by the Jakarta Data Provider JNoSQL " +
+                "because the entities do not have the " + jakarta.nosql.Entity.class.getName() + " annotation: " +
+                repositories);
         }
     }
 
