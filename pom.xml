@@ -551,6 +551,7 @@
     <modules>
         <module>jnosql-communication</module>
         <module>jnosql-mapping</module>
+        <!-- Do not add tck-runner should be kept seperate -->
     </modules>
     <profiles>
         <profile>
