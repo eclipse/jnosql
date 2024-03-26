@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~
+  ~  Copyright (c) 2024 Contributors to the Eclipse Foundation
+  ~   All rights reserved. This program and the accompanying materials
+  ~   are made available under the terms of the Eclipse Public License v1.0
+  ~   and Apache License v2.0 which accompanies this distribution.
+  ~   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+  ~   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+  ~
+  ~   You may elect to redistribute this code under either of these licenses.
+  ~
+  ~   Contributors:
+  ~
+  ~   Kyle Aure
+  ~
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.eclipse.jnosql</groupId>
+		<artifactId>jnosql-parent</artifactId>
+		<version>1.1.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>tck.runner.jnosql</artifactId>
+	<name>Jakarta Data TCK Runner for JNoSQL</name>
+
+	<repositories>
+		<!-- For artifacts not yet in Maven Central -->
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<name>Sonatype Nexus Staging</name>
+			<url>https://jakarta.oss.sonatype.org/content/repositories/staging/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<properties>
+		<targetDirectory>${project.basedir}/target</targetDirectory>
+
+		<!-- Dependency versions -->
+		<jakarta.data.tck.version>1.0.0-M4</jakarta.data.tck.version>
+		<sigtest.version>1.6</sigtest.version>
+		<arquillian.version>1.7.0.Final</arquillian.version>
+
+		<!-- TCK settings -->
+		<jakarta.tck.profile>none</jakarta.tck.profile>
+		<included.groups><![CDATA[standalone & nosql]]></included.groups>
+	</properties>
+
+	<dependencies>
+		<!-- tck - data - external TCK -->
+		<dependency>
+			<groupId>jakarta.data</groupId>
+			<artifactId>jakarta.data-tck</artifactId>
+			<version>${jakarta.data.tck.version}</version>
+		</dependency>
+		<!-- api - data -->
+		<dependency>
+			<groupId>jakarta.data</groupId>
+			<artifactId>jakarta.data-api</artifactId>
+			<version>${jakarta.data.api.version}</version>
+		</dependency>
+		<!-- impl - data -->
+		<!-- TODO figure out how to start a MongoDB instance, and configure it -->
+		<dependency>
+			<groupId>org.eclipse.jnosql.databases</groupId>
+			<artifactId>jnosql-mongodb</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- test frameworks -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${junit.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.netbeans.tools</groupId>
+			<artifactId>sigtest-maven-plugin</artifactId>
+			<version>${sigtest.version}</version>
+		</dependency>
+		<!-- CDI for resource injection -->
+		<dependency>
+			<groupId>org.jboss.weld.se</groupId>
+			<artifactId>weld-se-core</artifactId>
+			<version>5.1.0.Final</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- APIs referenced by TCK that do not require implementations for standalone tests -->
+		<dependency>
+			<groupId>org.jboss.shrinkwrap</groupId>
+			<artifactId>shrinkwrap-api</artifactId>
+			<version>1.2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian.junit5</groupId>
+			<artifactId>arquillian-junit5-core</artifactId>
+			<version>${arquillian.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.enterprise</groupId>
+			<artifactId>jakarta.enterprise.cdi-api</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<directory>${targetDirectory}</directory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<trimStackTrace>false</trimStackTrace>
+					<failIfNoTests>true</failIfNoTests>
+					<dependenciesToScan>jakarta.data:jakarta.data-tck</dependenciesToScan>
+					<statelessTestsetReporter
+						implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
+						<usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
+						<usePhrasedTestCaseClassName>true</usePhrasedTestCaseClassName>
+					</statelessTestsetReporter>
+					<systemPropertyVariables>
+						<java.util.logging.config.file>logging.properties</java.util.logging.config.file>
+						<jimage.dir>${project.build.directory}/jdk17-bundle</jimage.dir>
+						<signature.sigTestClasspath>
+							${project.build.directory}/dependency/jakarta.data-api-${jakarta.data.api.version}.jar:${project.build.directory}/jdk11-bundle/java.base:${project.build.directory}/jdk11-bundle/java.rmi:${project.build.directory}/jdk11-bundle/java.sql:${project.build.directory}/jdk11-bundle/java.naming</signature.sigTestClasspath>
+						<jakarta.tck.profile>${jakarta.tck.profile}</jakarta.tck.profile>
+					</systemPropertyVariables>
+					<groups>${included.groups}</groups>
+					<reportNameSuffix>${jakarta.tck.profile}</reportNameSuffix>
+					<testSourceDirectory>
+						${basedir}${file.separarator}src${file.separarator}main${file.separarator}java${file.separarator}</testSourceDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
