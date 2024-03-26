@@ -66,12 +66,12 @@ public class NoSQLPage<T> implements Page<T> {
 
     @Override
     public boolean hasNext() {
-        throw new UnsupportedOperationException(new StringBuilder("Eclipse JNoSQL has no support for this feature ").append("hasNext").toString());
+        throw new UnsupportedOperationException("Eclipse JNoSQL has no support for this feature hasNext");
     }
 
     @Override
     public boolean hasPrevious() {
-       throw new UnsupportedOperationException(new StringBuilder("Eclipse JNoSQL has no support for this feature ").append("hasPrevious").toString());
+       throw new UnsupportedOperationException("Eclipse JNoSQL has no support for this feature hasPrevious");
     }
 
     @Override
@@ -111,7 +111,7 @@ public class NoSQLPage<T> implements Page<T> {
 
     @Override
     public boolean hasTotals() {
-        throw new UnsupportedOperationException(new StringBuilder("Eclipse JNoSQL has no support for this feature ").append("hasTotals").toString());
+        throw new UnsupportedOperationException("Eclipse JNoSQL has no support for this feature hasTotals");
     }
 
     @Override
