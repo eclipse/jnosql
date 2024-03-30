@@ -269,6 +269,10 @@ public interface DatabaseManager extends AutoCloseable {
     default CursoredPage<CommunicationEntity> selectCursor(SelectQuery query, PageRequest<?> pageRequest){
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(pageRequest, "pageRequest is required");
+        if(query.sorts().isEmpty()){
+            throw new IllegalArgumentException("To execute a cursor pagination, it is necessary to define at least one sort field." +
+                    query);
+        }
         CursorExecutor executor = CursorExecutor.of(pageRequest.mode());
         return executor.cursor(query, pageRequest, this);
     }
