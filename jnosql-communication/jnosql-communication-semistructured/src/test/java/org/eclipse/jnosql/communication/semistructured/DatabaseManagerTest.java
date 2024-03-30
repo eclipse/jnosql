@@ -72,6 +72,28 @@ class DatabaseManagerTest {
     }
 
     @Test
+    void shouldReturnPaginationOffSetWhenReturnEmpty() {
+        SelectQuery query = SelectQuery.select().from("person")
+                .orderBy("name").asc().build();
+
+        Mockito.when(databaseManager.select(Mockito.any(SelectQuery.class)))
+                .thenReturn(Stream.empty());
+
+        CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
+                PageRequest.ofSize(10));
+
+        assertSoftly(soft -> {
+            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
+            soft.assertThat(entities.hasNext()).isFalse();
+            soft.assertThat(entities.hasPrevious()).isFalse();
+
+            soft.assertThat(entities).hasSize(0);
+            soft.assertThat(pageRequest.mode())
+                    .isEqualTo(PageRequest.Mode.OFFSET);
+        });
+    }
+
+    @Test
     void shouldReturnPaginationOffSet2() {
         SelectQuery query = SelectQuery.select().from("person")
                 .orderBy("name").asc()
@@ -384,6 +406,28 @@ class DatabaseManagerTest {
             soft.assertThat(pageRequest.mode())
                     .isEqualTo(PageRequest.Mode.CURSOR_PREVIOUS);
         });
+    }
+
+    @Test
+    void shouldReturnErrorSortSizeDifferentFromOrderSizeBeforeKey() {
+        SelectQuery query = SelectQuery.select().from("person")
+                .orderBy("name").asc()
+                .orderBy("age").asc()
+                .orderBy("id").asc().build();
+
+        assertThrows(IllegalArgumentException.class, () -> databaseManager.selectCursor(query,
+                PageRequest.ofSize(10).beforeKey("Ada", 20)));
+    }
+
+    @Test
+    void shouldReturnErrorSortSizeDifferentFromOrderSizeAfterKey() {
+        SelectQuery query = SelectQuery.select().from("person")
+                .orderBy("name").asc()
+                .orderBy("age").asc()
+                .orderBy("id").asc().build();
+
+        assertThrows(IllegalArgumentException.class, () -> databaseManager.selectCursor(query,
+                PageRequest.ofSize(10).afterKey("Ada", 20)));
     }
 
 

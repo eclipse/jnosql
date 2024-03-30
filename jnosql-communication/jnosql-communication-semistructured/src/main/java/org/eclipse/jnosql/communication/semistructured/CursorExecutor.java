@@ -76,6 +76,7 @@ enum CursorExecutor {
             CriteriaCondition condition = null;
             CriteriaCondition previousCondition = null;
             List<Sort<?>> sorts = query.sorts();
+            checkCursorKeySizes(cursor, sorts);
             for (int index = 0; index < sorts.size(); index++) {
                 Sort<?> sort = sorts.get(index);
                 Object key = cursor.get(index);
@@ -90,6 +91,8 @@ enum CursorExecutor {
             }
             return condition;
         }
+
+
     }, CURSOR_PREVIOUS {
         @SuppressWarnings("unchecked")
         @Override
@@ -117,6 +120,7 @@ enum CursorExecutor {
             CriteriaCondition condition = null;
             CriteriaCondition previousCondition = null;
             List<Sort<?>> sorts = query.sorts();
+            checkCursorKeySizes(cursor, sorts);
             for (int index = 0; index < sorts.size(); index++) {
                 Sort<?> sort = sorts.get(index);
                 Object key = cursor.get(index);
@@ -160,5 +164,12 @@ enum CursorExecutor {
         return new DefaultSelectQuery(pageRequest, 0, query.name(), query.columns(), query.sorts(),
                 query.condition().map(c -> CriteriaCondition.and(c, condition))
                         .orElse(condition));
+    }
+
+    private static void checkCursorKeySizes(PageRequest.Cursor cursor, List<Sort<?>> sorts) {
+        if(sorts.size() != cursor.size()) {
+            throw new IllegalArgumentException("The cursor size is different from the sort size. Cursor: "
+                    + cursor.size() + " Sort: " + sorts.size());
+        }
     }
 }
