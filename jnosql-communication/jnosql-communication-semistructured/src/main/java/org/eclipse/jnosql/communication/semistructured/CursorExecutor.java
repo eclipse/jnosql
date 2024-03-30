@@ -19,6 +19,7 @@ import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
 import jakarta.data.page.impl.CursoredPageRecord;
 import org.eclipse.jnosql.communication.CommunicationException;
+import org.eclipse.jnosql.communication.Condition;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,20 +49,51 @@ enum CursorExecutor {
             }
         }
 
-        private PageRequest.Cursor getCursor(List<Sort<?>> sorts, CommunicationEntity entity) {
-            List<Object> keys = new ArrayList<>(sorts.size());
-            for (Sort<?> sort : sorts) {
-                String name = sort.property();
-                Element element = entity.find(name)
-                        .orElseThrow(() -> new CommunicationException("The sort name does not exist in the entity: " + name));
-                keys.add(element.get());
-            }
-            return PageRequest.Cursor.forKey(keys.toArray());
-        }
+
     }, CURSOR_NEXT {
+        @SuppressWarnings("unchecked")
         @Override
         public CursoredPage<CommunicationEntity> cursor(SelectQuery query, PageRequest<?> pageRequest, DatabaseManager template) {
-            return null;
+
+
+            PageRequest.Cursor cursor = pageRequest.cursor().orElseThrow();
+            CriteriaCondition condition = getCriteriaCondition(query, cursor);
+
+            var select = new DefaultSelectQuery(pageRequest.size(), 0, query.name(), query.columns(), query.sorts(),
+                    query.condition().map(c -> c.and(condition)).orElse(condition));
+
+            var entities = template.select(select).toList();
+            var last = entities.isEmpty() ? null : entities.get(entities.size() - 1);
+            if (last == null) {
+                return new CursoredPageRecord<>(entities, Collections.emptyList(), -1, (PageRequest<CommunicationEntity>) pageRequest,
+                        null, null);
+            } else {
+                PageRequest.Cursor nextCursor = getCursor(query.sorts(), last);
+                PageRequest<CommunicationEntity> afterCursor = PageRequest.<CommunicationEntity>ofSize(pageRequest.size())
+                        .afterCursor(nextCursor);
+
+                return new CursoredPageRecord<>(entities, List.of(cursor, nextCursor), -1, (PageRequest<CommunicationEntity>)
+                        pageRequest, afterCursor, null);
+            }
+        }
+
+        static CriteriaCondition getCriteriaCondition(SelectQuery query, PageRequest.Cursor cursor) {
+            CriteriaCondition condition = null;
+            CriteriaCondition previousCondition = null;
+            List<Sort<?>> sorts = query.sorts();
+            for (int index = 0; index < sorts.size(); index++) {
+                Sort<?> sort = sorts.get(index);
+                Object key = cursor.get(index);
+                if(condition == null) {
+                    condition = CriteriaCondition.gt(sort.property(), key);
+                    previousCondition = CriteriaCondition.eq(sort.property(), key);
+                } else {
+                    condition = condition.or(previousCondition.and(CriteriaCondition.gt(sort.property(), key)));
+                    previousCondition = previousCondition.and(CriteriaCondition.eq(sort.property(), key));
+                }
+
+            }
+            return condition;
         }
     }, CURSOR_PREVIOUS {
         @Override
@@ -81,5 +113,16 @@ enum CursorExecutor {
             default -> OFF_SET;
         };
 
+    }
+
+    private static PageRequest.Cursor getCursor(List<Sort<?>> sorts, CommunicationEntity entity) {
+        List<Object> keys = new ArrayList<>(sorts.size());
+        for (Sort<?> sort : sorts) {
+            String name = sort.property();
+            Element element = entity.find(name)
+                    .orElseThrow(() -> new CommunicationException("The sort name does not exist in the entity: " + name));
+            keys.add(element.get());
+        }
+        return PageRequest.Cursor.forKey(keys.toArray());
     }
 }
