@@ -43,13 +43,13 @@ enum CursorExecutor {
                 PageRequest.Cursor cursor = getCursor(query.sorts(), last);
                 PageRequest<CommunicationEntity> afterCursor = PageRequest.<CommunicationEntity>ofSize(pageRequest.size()).afterCursor(cursor);
 
-                return new CursoredPageRecord<>(entities, Collections.emptyList(), -1, (PageRequest<CommunicationEntity>)
+                return new CursoredPageRecord<>(entities, List.of(cursor), -1, (PageRequest<CommunicationEntity>)
                         pageRequest, afterCursor, null);
             }
         }
 
-        private <T> PageRequest.Cursor getCursor(List<Sort<?>> sorts, CommunicationEntity entity) {
-            List<Object> keys = new ArrayList<>();
+        private PageRequest.Cursor getCursor(List<Sort<?>> sorts, CommunicationEntity entity) {
+            List<Object> keys = new ArrayList<>(sorts.size());
             for (Sort<?> sort : sorts) {
                 String name = sort.property();
                 Element element = entity.find(name)
