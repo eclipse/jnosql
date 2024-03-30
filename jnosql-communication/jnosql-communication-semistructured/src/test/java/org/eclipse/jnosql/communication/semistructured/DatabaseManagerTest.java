@@ -13,7 +13,6 @@ package org.eclipse.jnosql.communication.semistructured;
 
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
-import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Test;
@@ -132,6 +131,69 @@ class DatabaseManagerTest {
             soft.assertThat(criteriaConditions.get(1)).isEqualTo(
                     CriteriaCondition.eq("name", "Ada").and(CriteriaCondition.gt("age", 20)));
             soft.assertThat(criteriaConditions.get(2)).isEqualTo(
+                    CriteriaCondition.eq("name", "Ada").and(CriteriaCondition.eq("age", 20))
+                            .and(CriteriaCondition.gt("id", id)));
+        });
+
+        assertSoftly(soft -> {
+            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
+            PageRequest<CommunicationEntity> nextedPageRequest = entities.nextPageRequest();
+            PageRequest.Cursor cursor = nextedPageRequest.cursor().orElseThrow();
+
+            soft.assertThat(entities).hasSize(2);
+            soft.assertThat(pageRequest.mode())
+                    .isEqualTo(PageRequest.Mode.CURSOR_NEXT);
+            soft.assertThat(nextedPageRequest.mode())
+                    .isEqualTo(PageRequest.Mode.CURSOR_NEXT);
+            soft.assertThat(cursor.elements())
+                    .hasSize(3);
+            soft.assertThat(cursor.get(0)).isEqualTo("Poliana");
+            soft.assertThat(cursor.get(1)).isEqualTo(35);
+            soft.assertThat(cursor.get(2)).isNotNull();
+
+        });
+    }
+
+    @Test
+    void shouldReturnPaginationAfterKeySingleElementWhenThereIsCondition() {
+        SelectQuery query = SelectQuery.select().from("person")
+                .where("address").eq("street")
+                .orderBy("name").asc()
+                .orderBy("age").asc()
+                .orderBy("id").asc()
+                .build();
+
+        Mockito.when(databaseManager.select(Mockito.any(SelectQuery.class)))
+                .thenReturn(stream());
+
+        var id = UUID.randomUUID().toString();
+        CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
+                PageRequest.ofSize(10).afterKey("Ada", 20, id));
+
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        Mockito.verify(databaseManager).select(captor.capture());
+        SelectQuery selectQuery = captor.getValue();
+
+        CriteriaCondition condition = selectQuery.condition().orElseThrow();
+
+        assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
+            List<CriteriaCondition> criteriaConditions = condition.element().get(new TypeReference<>() {
+            });
+
+            soft.assertThat(criteriaConditions).hasSize(2);
+            soft.assertThat(criteriaConditions.get(0)).isEqualTo(CriteriaCondition.eq("address", "street"));
+
+            CriteriaCondition secondCondition = criteriaConditions.get(1);
+            soft.assertThat(secondCondition.condition()).isEqualTo(Condition.OR);
+            List<CriteriaCondition> secondConditions = secondCondition.element().get(new TypeReference<>() {
+            });
+
+            soft.assertThat(secondConditions).hasSize(3);
+            soft.assertThat(secondConditions.get(0)).isEqualTo(CriteriaCondition.gt("name", "Ada"));
+            soft.assertThat(secondConditions.get(1)).isEqualTo(
+                    CriteriaCondition.eq("name", "Ada").and(CriteriaCondition.gt("age", 20)));
+            soft.assertThat(secondConditions.get(2)).isEqualTo(
                     CriteriaCondition.eq("name", "Ada").and(CriteriaCondition.eq("age", 20))
                             .and(CriteriaCondition.gt("id", id)));
         });

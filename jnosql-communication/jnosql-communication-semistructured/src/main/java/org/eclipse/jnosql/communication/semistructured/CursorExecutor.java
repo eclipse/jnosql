@@ -60,7 +60,8 @@ enum CursorExecutor {
             CriteriaCondition condition = getCriteriaCondition(query, cursor);
 
             var select = new DefaultSelectQuery(pageRequest.size(), 0, query.name(), query.columns(), query.sorts(),
-                    query.condition().map(c -> c.and(condition)).orElse(condition));
+                    query.condition().map(c -> CriteriaCondition.and(c, condition))
+                            .orElse(condition));
 
             var entities = template.select(select).toList();
             var last = entities.isEmpty() ? null : entities.get(entities.size() - 1);
