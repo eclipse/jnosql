@@ -11,6 +11,7 @@
 
 package org.eclipse.jnosql.communication.semistructured;
 
+import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
 import org.assertj.core.api.Assertions;
@@ -451,7 +452,7 @@ class DatabaseManagerTest {
     @Test
     void shouldExists(){
         SelectQuery query = SelectQuery.select().from("person").build();
-        Mockito.when(databaseManager.select(query)).thenReturn(stream());
+        Mockito.when(databaseManager.select(Mockito.any())).thenReturn(stream());
 
         boolean exists = databaseManager.exists(query);
         Assertions.assertThat(exists).isTrue();
@@ -459,8 +460,8 @@ class DatabaseManagerTest {
 
     @Test
     void shouldNotExists(){
-        SelectQuery query = SelectQuery.select().from("person").build();
-        Mockito.when(databaseManager.select(query)).thenReturn(Stream.empty());
+        var query = SelectQuery.select().from("person").build();
+        Mockito.when(databaseManager.select(Mockito.any())).thenReturn(Stream.empty());
 
         boolean exists = databaseManager.exists(query);
         Assertions.assertThat(exists).isFalse();
@@ -479,6 +480,34 @@ class DatabaseManagerTest {
     void shouldPrepare(){
         var prepare = databaseManager.prepare("select * from person where name = @name");
         Assertions.assertThat(prepare).isNotNull();
+    }
+
+    @Test
+    void shouldReturnErrorSingleResult(){
+        SelectQuery query = SelectQuery.select().from("person").build();
+        Mockito.when(databaseManager.select(query)).thenReturn(stream());
+
+        Assertions.assertThatThrownBy(() -> databaseManager.singleResult(query))
+                .isInstanceOf(NonUniqueResultException.class);
+
+    }
+
+    @Test
+    void shouldSingleResult(){
+        SelectQuery query = SelectQuery.select().from("person").build();
+        Mockito.when(databaseManager.select(query)).thenReturn(Stream.of(CommunicationEntity.of("name")));
+
+        var entity = databaseManager.singleResult(query);
+        Assertions.assertThat(entity).isPresent();
+    }
+
+    @Test
+    void shouldReturnEmptyAtSingleResult(){
+        SelectQuery query = SelectQuery.select().from("person").build();
+        Mockito.when(databaseManager.select(query)).thenReturn(Stream.empty());
+
+        var entity = databaseManager.singleResult(query);
+        Assertions.assertThat(entity).isEmpty();
     }
 
 
