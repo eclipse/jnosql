@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  * @param <T> the type of the entity managed by this repository
  * @param <K> the type of the entity's primary key
  */
-public interface NoSQLRepository<T, K> extends BasicRepository<T, K>, CrudRepository<T, K>{
+public interface NoSQLRepository<T, K> extends BasicRepository<T, K>, CrudRepository<T, K> {
 
     /**
      * Deletes all persistent entities of the primary entity type that are managed by the repository.

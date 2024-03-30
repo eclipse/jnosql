@@ -41,6 +41,7 @@ public abstract class AbstractSemistructuredRepository<T, K> extends AbstractRep
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public Page<T> findAll(PageRequest pageRequest) {
         Objects.requireNonNull(pageRequest, "pageRequest is required");
