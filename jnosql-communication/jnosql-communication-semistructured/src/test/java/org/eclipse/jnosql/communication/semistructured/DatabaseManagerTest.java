@@ -13,6 +13,7 @@ package org.eclipse.jnosql.communication.semistructured;
 
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
+import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Test;
@@ -428,6 +429,56 @@ class DatabaseManagerTest {
 
         assertThrows(IllegalArgumentException.class, () -> databaseManager.selectCursor(query,
                 PageRequest.ofSize(10).afterKey("Ada", 20)));
+    }
+
+    @Test
+    void shouldCount(){
+        SelectQuery query = SelectQuery.select().from("person").build();
+        Mockito.when(databaseManager.select(query)).thenReturn(stream());
+
+        long count = databaseManager.count(query);
+        Assertions.assertThat(count).isNotZero().isEqualTo(2L);
+    }
+
+    @Test
+    void shouldReturnZeroWhenCountIsEmpty(){
+        SelectQuery query = SelectQuery.select().from("person").build();
+        Mockito.when(databaseManager.select(query)).thenReturn(Stream.empty());
+        long count = databaseManager.count(query);
+        Assertions.assertThat(count).isZero();
+    }
+
+    @Test
+    void shouldExists(){
+        SelectQuery query = SelectQuery.select().from("person").build();
+        Mockito.when(databaseManager.select(query)).thenReturn(stream());
+
+        boolean exists = databaseManager.exists(query);
+        Assertions.assertThat(exists).isTrue();
+    }
+
+    @Test
+    void shouldNotExists(){
+        SelectQuery query = SelectQuery.select().from("person").build();
+        Mockito.when(databaseManager.select(query)).thenReturn(Stream.empty());
+
+        boolean exists = databaseManager.exists(query);
+        Assertions.assertThat(exists).isFalse();
+    }
+
+    @Test
+    void shouldQuery(){
+        SelectQuery query = SelectQuery.select().from("person").build();
+        Mockito.when(databaseManager.select(query)).thenReturn(stream());
+
+        Stream<CommunicationEntity> entities = databaseManager.query("select * from person");
+        Assertions.assertThat(entities).hasSize(2);
+    }
+
+    @Test
+    void shouldPrepare(){
+        var prepare = databaseManager.prepare("select * from person where name = @name");
+        Assertions.assertThat(prepare).isNotNull();
     }
 
 
