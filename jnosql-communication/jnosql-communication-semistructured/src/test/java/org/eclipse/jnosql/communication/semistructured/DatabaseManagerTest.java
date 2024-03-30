@@ -33,14 +33,14 @@ class DatabaseManagerTest {
 
 
     @Test
-    void shouldReturnErrorWhenThereIsNotSort(){
+    void shouldReturnErrorWhenThereIsNotSort() {
         SelectQuery query = SelectQuery.builder().from("person").build();
         PageRequest<?> pageRequest = PageRequest.ofSize(10);
         assertThrows(IllegalArgumentException.class, () -> databaseManager.selectCursor(query, pageRequest));
     }
 
     @Test
-    void shouldReturnPaginationOffSet(){
+    void shouldReturnPaginationOffSet() {
         SelectQuery query = SelectQuery.select().from("person")
                 .orderBy("name").asc().build();
 
@@ -59,7 +59,7 @@ class DatabaseManagerTest {
         CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
                 PageRequest.ofSize(10));
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
             PageRequest<CommunicationEntity> nextedPageRequest = entities.nextPageRequest();
             PageRequest.Cursor cursor = nextedPageRequest.cursor().orElseThrow();
@@ -72,6 +72,45 @@ class DatabaseManagerTest {
             soft.assertThat(cursor.elements())
                     .hasSize(1);
             soft.assertThat(cursor.get(0)).isEqualTo("Poliana");
+
+        });
+    }
+
+    @Test
+    void shouldReturnPaginationOffSet2() {
+        SelectQuery query = SelectQuery.select().from("person")
+                .orderBy("name").asc()
+                .orderBy("age").desc().build();
+
+        var entity = CommunicationEntity.of("name");
+        entity.add("name", "Ada");
+        entity.add("age", 10);
+        entity.add("id", UUID.randomUUID().toString());
+
+        var entity2 = CommunicationEntity.of("name");
+        entity2.add("name", "Poliana");
+        entity2.add("age", 35);
+        entity2.add("id", UUID.randomUUID().toString());
+
+        Mockito.when(databaseManager.select(Mockito.any(SelectQuery.class)))
+                .thenReturn(Stream.of(entity, entity2));
+        CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
+                PageRequest.ofSize(10));
+
+        SoftAssertions.assertSoftly(soft -> {
+            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
+            PageRequest<CommunicationEntity> nextedPageRequest = entities.nextPageRequest();
+            PageRequest.Cursor cursor = nextedPageRequest.cursor().orElseThrow();
+
+            soft.assertThat(entities).hasSize(2);
+            soft.assertThat(pageRequest.mode())
+                    .isEqualTo(PageRequest.Mode.OFFSET);
+            soft.assertThat(nextedPageRequest.mode())
+                    .isEqualTo(PageRequest.Mode.CURSOR_NEXT);
+            soft.assertThat(cursor.elements())
+                    .hasSize(2);
+            soft.assertThat(cursor.get(0)).isEqualTo("Poliana");
+            soft.assertThat(cursor.get(1)).isEqualTo(35);
 
         });
     }
