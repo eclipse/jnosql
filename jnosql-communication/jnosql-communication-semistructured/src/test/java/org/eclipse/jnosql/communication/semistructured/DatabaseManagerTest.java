@@ -334,6 +334,59 @@ class DatabaseManagerTest {
         });
     }
 
+
+    @Test
+    void shouldReturnPaginationAfterKeyAndReturnEmpty() {
+        SelectQuery query = SelectQuery.select().from("person")
+                .orderBy("name").asc()
+                .orderBy("age").asc()
+                .orderBy("id").asc().build();
+
+        Mockito.when(databaseManager.select(Mockito.any(SelectQuery.class)))
+                .thenReturn(Stream.empty());
+
+        var id = UUID.randomUUID().toString();
+        CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
+                PageRequest.ofSize(10).afterKey("Ada", 20, id));
+
+        assertSoftly(soft -> {
+            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
+
+            soft.assertThat(entities).isEmpty();
+            soft.assertThat(entities.hasNext()).isFalse();
+            soft.assertThat(entities.hasPrevious()).isFalse();
+            soft.assertThat(pageRequest.mode())
+                    .isEqualTo(PageRequest.Mode.CURSOR_NEXT);
+        });
+    }
+
+
+    @Test
+    void shouldReturnPaginationBeforeKeyAndReturnEmpty() {
+        SelectQuery query = SelectQuery.select().from("person")
+                .orderBy("name").asc()
+                .orderBy("age").asc()
+                .orderBy("id").asc().build();
+
+        Mockito.when(databaseManager.select(Mockito.any(SelectQuery.class)))
+                .thenReturn(Stream.empty());
+
+        var id = UUID.randomUUID().toString();
+        CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
+                PageRequest.ofSize(10).beforeKey("Ada", 20, id));
+
+        assertSoftly(soft -> {
+            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
+
+            soft.assertThat(entities).isEmpty();
+            soft.assertThat(entities.hasNext()).isFalse();
+            soft.assertThat(entities.hasPrevious()).isFalse();
+            soft.assertThat(pageRequest.mode())
+                    .isEqualTo(PageRequest.Mode.CURSOR_PREVIOUS);
+        });
+    }
+
+
     private Stream<CommunicationEntity> stream() {
         var entity = CommunicationEntity.of("name");
         entity.add("name", "Ada");
