@@ -94,7 +94,7 @@ public abstract class BaseSemistructuredRepository<T, K> extends AbstractReposit
         SelectMethodProvider provider = SelectMethodProvider.INSTANCE;
         SelectQuery selectQuery = provider.apply(method, entityMetadata().name());
         QueryParams queryParams = SELECT_PARSER.apply(selectQuery, parser());
-        org.eclipse.jnosql.communication.semistructured.SelectQuery query = queryParams.query();
+        var query = queryParams.query();
         Params params = queryParams.params();
         paramsBinder().bind(params, args(args), method);
         return updateQueryDynamically(args(args), query);
@@ -105,9 +105,9 @@ public abstract class BaseSemistructuredRepository<T, K> extends AbstractReposit
     }
 
     protected org.eclipse.jnosql.communication.semistructured.DeleteQuery deleteQuery(Method method, Object[] args) {
-        DeleteMethodProvider deleteMethodFactory = DeleteMethodProvider.INSTANCE;
-        DeleteQuery deleteQuery = deleteMethodFactory.apply(method, entityMetadata().name());
-        DeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, parser());
+        var deleteMethodFactory = DeleteMethodProvider.INSTANCE;
+        var deleteQuery = deleteMethodFactory.apply(method, entityMetadata().name());
+        var queryParams = DELETE_PARSER.apply(deleteQuery, parser());
         var query = queryParams.query();
         Params params = queryParams.params();
         paramsBinder().bind(params, args(args), method);
@@ -182,6 +182,7 @@ public abstract class BaseSemistructuredRepository<T, K> extends AbstractReposit
 
 
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     protected Function<PageRequest, Page<T>> getPage(org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         return p -> {
             Stream<T> entities = template().select(query);
@@ -189,10 +190,12 @@ public abstract class BaseSemistructuredRepository<T, K> extends AbstractReposit
         };
     }
 
+    @SuppressWarnings("rawtypes")
     protected Function<PageRequest, Optional<T>> getSingleResult(org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         return p -> template().singleResult(query);
     }
 
+    @SuppressWarnings("rawtypes")
     protected Function<PageRequest, Stream<T>> streamPagination(org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         return p -> template().select(query);
     }

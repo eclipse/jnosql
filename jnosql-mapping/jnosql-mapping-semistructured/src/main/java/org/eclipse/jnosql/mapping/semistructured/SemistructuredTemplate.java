@@ -159,13 +159,24 @@ public interface SemistructuredTemplate extends Template {
     <T> void deleteAll(Class<T> type);
 
     /**
-     * Select entities using pagination
+     * Select entities using pagination with cursor-based paging.
      *
-     * @param query       - query to figure out entities
-     * @param pageRequest - page definition
-     * @param <T>         the instance type
-     * @return a {@link CursoredPage} instance
-     * @throws NullPointerException when query or pageRequest is null
+     * <p>This method retrieves entities based on cursor-based paging, where the cursor acts as a bookmark for the next page of results.
+     * If the provided {@link PageRequest} has a mode of {@link jakarta.data.page.PageRequest.Mode#OFFSET}, the method will consider
+     * the initial request as an offset-based pagination and extract the order key to create a new {@link PageRequest} with
+     * {@link jakarta.data.page.PageRequest.Mode#CURSOR_NEXT}. If the initial request is already cursor-based, the method will proceed as instructed.
+     * </p>
+     * <p>
+     * If the cursor-based pagination is used, at least one order key is required to be specified in the {@link SelectQuery} order
+     * clause; otherwise, an {@link IllegalStateException} will be thrown.
+     * </p>
+     *
+     * @param query         the query to retrieve entities
+     * @param pageRequest   the page request defining the cursor-based paging
+     * @param <T>           the entity type
+     * @return a {@link CursoredPage} instance containing the entities within the specified page
+     * @throws NullPointerException     if the query or pageRequest is null
+     * @throws IllegalStateException    if the cursor-based pagination is used without any order key specified
      */
-    <T> CursoredPage<T> select(SelectQuery query, PageRequest<T> pageRequest);
+    <T> CursoredPage<T> selectCursor(SelectQuery query, PageRequest<T> pageRequest);
 }
