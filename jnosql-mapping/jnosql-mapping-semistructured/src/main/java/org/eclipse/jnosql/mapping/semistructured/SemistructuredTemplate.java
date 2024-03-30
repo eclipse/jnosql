@@ -10,6 +10,9 @@
  */
 package org.eclipse.jnosql.mapping.semistructured;
 
+import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import jakarta.nosql.Template;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
@@ -154,4 +157,15 @@ public interface SemistructuredTemplate extends Template {
      * @throws NullPointerException when type is null
      */
     <T> void deleteAll(Class<T> type);
+
+    /**
+     * Select entities using pagination
+     *
+     * @param query       - query to figure out entities
+     * @param pageRequest - page definition
+     * @param <T>         the instance type
+     * @return a {@link CursoredPage} instance
+     * @throws NullPointerException when query or pageRequest is null
+     */
+    <T> CursoredPage<T> select(SelectQuery query, PageRequest<T> pageRequest);
 }
