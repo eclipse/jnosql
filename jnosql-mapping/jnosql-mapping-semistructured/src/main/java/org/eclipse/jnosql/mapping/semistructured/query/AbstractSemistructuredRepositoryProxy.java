@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.semistructured.query;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.Find;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
-import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.core.repository.RepositoryReflectionUtils;
