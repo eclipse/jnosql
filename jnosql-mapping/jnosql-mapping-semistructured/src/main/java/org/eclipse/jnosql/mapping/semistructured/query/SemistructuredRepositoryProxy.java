@@ -54,9 +54,10 @@ public class SemistructuredRepositoryProxy<T, K> extends AbstractSemistructuredR
      * @param converters The converters
      * @throws NullPointerException If either the template, metadata, or repository type is {@code null}.
      */
+   @SuppressWarnings({"unchecked", "rawtypes"})
    public SemistructuredRepositoryProxy(SemistructuredTemplate template,
                                         EntitiesMetadata entities, Class<?> repositoryType,
-                                  Converters converters) {
+                                        Converters converters) {
         this.template = template;
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];

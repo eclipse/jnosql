@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.data.Limit;
+import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.BasicRepository;
@@ -605,6 +606,26 @@ public class RepositoryProxyPageRequestTest {
         assertEquals(Element.of("name", "name"), condition.element());
     }
 
+    @Test
+    public void shouldFindByNameOrderByName() {
+        CursoredPage<Person> mock = Mockito.mock(CursoredPage.class);
+        when(template.selectCursor(any(SelectQuery.class),
+                any(PageRequest.class))).thenReturn(mock);
+
+        CursoredPage<Person> page = personRepository.findByNameOrderByName("name",
+                PageRequest.<Person>ofSize(10).afterKey("Ada"));
+
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(template).select(captor.capture());
+        SelectQuery query = captor.getValue();
+        CriteriaCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(EQUALS, condition.condition());
+        assertThat(query.sorts()).hasSize(1)
+                .containsExactly(Sort.asc("name"));
+        assertEquals(Element.of("name", "name"), condition.element());
+    }
+
 
     private PageRequest getPageRequest() {
         return PageRequest.ofPage(2).size(6);
@@ -613,6 +634,8 @@ public class RepositoryProxyPageRequestTest {
     interface PersonRepository extends BasicRepository<Person, Long> {
 
         Person findByName(String name, PageRequest<Person> pageRequest);
+
+        CursoredPage<Person> findByNameOrderByName(String name, PageRequest<Person> pageRequest);
 
         List<Person> findByName(String name, Sort<Person> sort);
 
