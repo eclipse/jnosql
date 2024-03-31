@@ -36,7 +36,7 @@ public class DynamicQuery implements Supplier<SelectQuery> {
     private final SpecialParameters special;
     private final SelectQuery query;
 
-    private DynamicQuery(SpecialParameters special, SelectQuery query) {
+    DynamicQuery(SpecialParameters special, SelectQuery query) {
         this.special = special;
         this.query = query;
     }

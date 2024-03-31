@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.semistructured.query;
 import jakarta.data.Limit;
 import jakarta.data.page.PageRequest;
 import jakarta.data.Sort;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.repository.SpecialParameters;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -55,7 +57,7 @@ class DynamicQueryTest {
         when(query.condition()).thenReturn(Optional.empty());
         when(query.name()).thenReturn("sampleQuery");
 
-        DynamicQuery dynamicQuery = DynamicQuery.of(new Object[]{}, query);
+        DynamicQuery dynamicQuery = new DynamicQuery(special, query);
 
         assertEquals(query, dynamicQuery.get());
     }
@@ -63,22 +65,23 @@ class DynamicQueryTest {
     @Test
     void shouldCreateDynamicQueryWithSortsAndLimit() {
         when(special.isEmpty()).thenReturn(false);
-        when(special.hasOnlySort()).thenReturn(true);
-        when(special.sorts()).thenReturn(List.of(mock(Sort.class)));
-        when(limit.startAt()).thenReturn(1L);
-        when(special.limit()).thenReturn(Optional.of(limit));
+        when(special.hasOnlySort()).thenReturn(false);
+        when(special.limit()).thenReturn(Optional.of(Limit.range(1,5)));
         when(query.condition()).thenReturn(Optional.empty());
         when(query.name()).thenReturn("sampleQuery");
-        when(query.sorts()).thenReturn(List.of(mock(Sort.class)));
+        when(query.sorts()).thenReturn(List.of(Sort.asc("name"), Sort.desc("age")));
         when(query.skip()).thenReturn(0L);
         when(query.limit()).thenReturn(10L);
 
-        DynamicQuery dynamicQuery = DynamicQuery.of(new Object[]{}, query);
+        DynamicQuery dynamicQuery = new DynamicQuery(special, query);
+        SelectQuery selectQuery = dynamicQuery.get();
 
-        assertEquals("sampleQuery", dynamicQuery.get().name());
-        assertEquals(0, dynamicQuery.get().skip());
-        assertEquals(10, dynamicQuery.get().limit());
-        assertEquals(1, dynamicQuery.get().sorts().size());
+        assertSoftly(softly -> {
+            softly.assertThat(selectQuery.name()).isEqualTo("sampleQuery");
+            softly.assertThat(selectQuery.skip()).isEqualTo(0);
+            softly.assertThat(selectQuery.limit()).isEqualTo(5L);
+            softly.assertThat(selectQuery.sorts()).hasSize(2);
+        });
     }
 
     @Test
@@ -86,25 +89,30 @@ class DynamicQueryTest {
         when(special.isEmpty()).thenReturn(false);
         when(special.hasOnlySort()).thenReturn(false);
         when(limit.startAt()).thenReturn(1L);
+        when(limit.maxResults()).thenReturn(5);
         when(special.limit()).thenReturn(Optional.of(limit));
         when(query.condition()).thenReturn(Optional.empty());
         when(query.name()).thenReturn("sampleQuery");
-        when(query.sorts()).thenReturn(List.of(mock(Sort.class)));
+        when(query.sorts()).thenReturn(Collections.emptyList());
         when(query.skip()).thenReturn(0L);
         when(query.limit()).thenReturn(10L);
 
-        DynamicQuery dynamicQuery = DynamicQuery.of(new Object[]{}, query);
+        DynamicQuery dynamicQuery = new DynamicQuery(special, query);
 
-        assertEquals("sampleQuery", dynamicQuery.get().name());
-        assertEquals(0, dynamicQuery.get().skip());
-        assertEquals(10, dynamicQuery.get().limit());
-        assertEquals(1, dynamicQuery.get().sorts().size());
+        SelectQuery selectQuery = dynamicQuery.get();
+
+        assertSoftly(softly -> {
+            softly.assertThat(selectQuery.name()).isEqualTo("sampleQuery");
+            softly.assertThat(selectQuery.skip()).isEqualTo(0);
+            softly.assertThat(selectQuery.limit()).isEqualTo(5);
+            softly.assertThat(selectQuery.sorts()).isEmpty();
+        });
     }
 
     @Test
     void shouldCreateDynamicQueryWithPageRequest() {
         when(special.isEmpty()).thenReturn(false);
-        when(special.pageRequest()).thenReturn(Optional.of(mock(PageRequest.class)));
+        when(special.isEmpty()).thenReturn(false);
         when(special.sorts()).thenReturn(List.of(mock(Sort.class)));
         when(query.condition()).thenReturn(Optional.empty());
         when(query.name()).thenReturn("sampleQuery");
@@ -112,12 +120,13 @@ class DynamicQueryTest {
         when(query.skip()).thenReturn(0L);
         when(query.limit()).thenReturn(10L);
 
-        DynamicQuery dynamicQuery = DynamicQuery.of(new Object[]{}, query);
+        DynamicQuery dynamicQuery = new DynamicQuery(special, query);
 
-        assertEquals("sampleQuery", dynamicQuery.get().name());
-        assertEquals(0, dynamicQuery.get().skip());
-        assertEquals(10, dynamicQuery.get().limit());
-        assertEquals(1, dynamicQuery.get().sorts().size());
+        SelectQuery selectQuery = dynamicQuery.get();
+        assertEquals("sampleQuery", selectQuery.name());
+        assertEquals(0, selectQuery.skip());
+        assertEquals(10, selectQuery.limit());
+        assertEquals(1, selectQuery.sorts().size());
     }
 
     @Test
