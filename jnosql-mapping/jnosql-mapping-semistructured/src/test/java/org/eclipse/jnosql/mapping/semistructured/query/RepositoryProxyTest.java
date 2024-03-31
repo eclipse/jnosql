@@ -83,7 +83,7 @@ import static org.mockito.Mockito.*;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
-class ColumnRepositoryProxyTest {
+class RepositoryProxyTest {
 
     private SemistructuredTemplate template;
 
