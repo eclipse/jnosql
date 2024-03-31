@@ -91,7 +91,7 @@ enum DynamicReturnConverter {
         Supplier<Stream<?>> streamSupplier = () -> entities;
         Supplier<Optional<?>> singleSupplier = DynamicReturn.toSingleResult(method).apply(streamSupplier);
 
-        DynamicReturn dynamicReturn = DynamicReturn.builder()
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
                 .withResult(streamSupplier)
