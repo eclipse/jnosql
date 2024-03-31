@@ -20,7 +20,11 @@ import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.Sort;
+import jakarta.data.repository.By;
+import jakarta.data.repository.Find;
+import jakarta.data.repository.Param;
 import jakarta.inject.Inject;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
@@ -615,16 +619,39 @@ public class RepositoryProxyPageRequestTest {
         CursoredPage<Person> page = personRepository.findByNameOrderByName("name",
                 PageRequest.<Person>ofSize(10).afterKey("Ada"));
 
+        SoftAssertions.assertSoftly(s -> {
+            s.assertThat(page).isEqualTo(mock);
+        });
+
+    }
+
+    @Test
+    public void shouldMachParameter() {
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
+                .of(Person.builder().build()));
+
+        personRepository.parameter("name", 10);
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
         SelectQuery query = captor.getValue();
-        CriteriaCondition condition = query.condition().get();
-        assertEquals("Person", query.name());
-        assertEquals(EQUALS, condition.condition());
-        assertThat(query.sorts()).hasSize(1)
-                .containsExactly(Sort.asc("name"));
-        assertEquals(Element.of("name", "name"), condition.element());
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.skip()).isEqualTo(0);
+            soft.assertThat(query.limit()).isEqualTo(0);
+            soft.assertThat(query.condition().isPresent()).isTrue();
+            soft.assertThat(query.sorts()).hasSize(0);
+            CriteriaCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(AND);
+            List<CriteriaCondition> conditions = condition.element().get(new TypeReference<>() {
+            });
+            soft.assertThat(conditions).hasSize(2);
+            soft.assertThat(conditions.get(0)).isEqualTo(CriteriaCondition.eq(Element.of("name", "name")));
+            soft.assertThat(conditions.get(1)).isEqualTo(CriteriaCondition.eq(Element.of("age", 10)));
+
+        });
     }
+
 
 
     private PageRequest getPageRequest() {
@@ -634,6 +661,9 @@ public class RepositoryProxyPageRequestTest {
     interface PersonRepository extends BasicRepository<Person, Long> {
 
         Person findByName(String name, PageRequest<Person> pageRequest);
+
+        @Find
+        List<Person> parameter(@By("name") String name, @By("age") Integer age);
 
         CursoredPage<Person> findByNameOrderByName(String name, PageRequest<Person> pageRequest);
 

@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.semistructured.query;
 import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.By;
 import jakarta.data.repository.Delete;
+import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.BasicRepository;
@@ -957,6 +958,7 @@ class RepositoryProxyTest {
         @OrderBy("age")
         List<Person> findByException();
 
+        @Find
         List<Person> find(@By("name") String name);
     }
 
