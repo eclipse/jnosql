@@ -19,6 +19,7 @@ import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
 import jakarta.data.page.impl.CursoredPageRecord;
 import org.eclipse.jnosql.communication.CommunicationException;
+import org.eclipse.jnosql.communication.TypeReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -152,12 +153,31 @@ enum CursorExecutor {
     private static PageRequest.Cursor getCursor(List<Sort<?>> sorts, CommunicationEntity entity) {
         List<Object> keys = new ArrayList<>(sorts.size());
         for (Sort<?> sort : sorts) {
-            String name = sort.property();
-            Element element = entity.find(name)
-                    .orElseThrow(() -> new CommunicationException("The sort name does not exist in the entity: " + name));
-            keys.add(element.get());
+            String[] names = sort.property().split("\\.");
+            keys.add(value(names, entity));
         }
         return PageRequest.Cursor.forKey(keys.toArray());
+    }
+
+    private static Object value(String[] names, CommunicationEntity entity) {
+        Element element = entity.find(names[0])
+                .orElseThrow(() -> new CommunicationException("The sort name does not exist in the entity: " + names[0]));
+        return value(names, element, 0);
+
+    }
+
+    private static Object value(String[] names, Element element, int index) {
+        if (names.length == 1) {
+            return element.get();
+        }
+        List<Element> elements = element.get(new TypeReference<>() {});
+        Element subElement = elements.stream().filter(e -> e.name().equals(names[index + 1]))
+                .findFirst().orElseThrow(() -> new CommunicationException("The sort name does not exist in the entity: " + names[index]));
+        if (names.length == index + 2) {
+            return subElement.get();
+        } else {
+            return value(names, subElement, index + 1);
+        }
     }
 
     private static DefaultSelectQuery updateQuery(int pageRequest, SelectQuery query, CriteriaCondition condition) {

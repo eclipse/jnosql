@@ -241,6 +241,29 @@ class DatabaseManagerTest {
         });
     }
 
+    @Test
+    void shouldFindSubElement() {
+        SelectQuery query = SelectQuery.select().from("person")
+                .orderBy("address.street").asc()
+                .build();
+
+        Mockito.when(databaseManager.select(Mockito.any(SelectQuery.class)))
+                .thenReturn(streamSubDocument());
+        CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
+                PageRequest.ofSize(10).afterKey("Paulista Avenue"));
+
+
+        assertSoftly(soft -> {
+            PageRequest<CommunicationEntity> nextedPageRequest = entities.nextPageRequest();
+            PageRequest.Cursor cursor = nextedPageRequest.cursor().orElseThrow();
+
+            soft.assertThat(entities).hasSize(1);
+            soft.assertThat(cursor.get(0)).isEqualTo("Paulista Avenue");
+
+        });
+    }
+
+
 
     @Test
     void shouldReturnPaginationBeforeKeySingleElementWhenConditionIsNull() {
@@ -522,6 +545,17 @@ class DatabaseManagerTest {
         entity2.add("age", 35);
         entity2.add("id", UUID.randomUUID().toString());
         return Stream.of(entity, entity2);
+    }
+
+    private Stream<CommunicationEntity> streamSubDocument() {
+        var entity = CommunicationEntity.of("name");
+        entity.add("name", "Ada");
+        entity.add("age", 10);
+        entity.add("id", UUID.randomUUID().toString());
+        entity.add("address", List.of(
+                Element.of("street", "Paulista Avenue"),
+                Element.of("number", 100)));
+        return Stream.of(entity);
     }
 
 
