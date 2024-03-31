@@ -622,7 +622,6 @@ public class RepositoryProxyPageRequestTest {
         SoftAssertions.assertSoftly(s -> {
             s.assertThat(page).isEqualTo(mock);
         });
-
     }
 
     @Test
@@ -652,6 +651,34 @@ public class RepositoryProxyPageRequestTest {
         });
     }
 
+    @Test
+    public void shouldParameterMatch() {
+        CursoredPage<Person> mock = Mockito.mock(CursoredPage.class);
+        when(template.selectCursor(any(SelectQuery.class),
+                any(PageRequest.class))).thenReturn(mock);
+
+        CursoredPage<Person> page = personRepository.findPageParameter("name",
+                PageRequest.<Person>ofSize(10).afterKey("Ada"));
+
+        SoftAssertions.assertSoftly(s -> s.assertThat(page).isEqualTo(mock));
+
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(template).selectCursor(captor.capture(), Mockito.any());
+        var query = captor.getValue();
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.skip()).isEqualTo(0);
+            soft.assertThat(query.limit()).isEqualTo(0);
+            soft.assertThat(query.condition().isPresent()).isTrue();
+            soft.assertThat(query.sorts()).hasSize(0);
+            CriteriaCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(EQUALS);
+            soft.assertThat(condition.element()).isEqualTo(Element.of("name", "name"));
+
+        });
+    }
+
 
 
     private PageRequest getPageRequest() {
@@ -666,6 +693,9 @@ public class RepositoryProxyPageRequestTest {
         List<Person> parameter(@By("name") String name, @By("age") Integer age);
 
         CursoredPage<Person> findByNameOrderByName(String name, PageRequest<Person> pageRequest);
+
+        @Find
+        CursoredPage<Person> findPageParameter(@By("name") String name, PageRequest<Person> pageRequest);
 
         List<Person> findByName(String name, Sort<Person> sort);
 

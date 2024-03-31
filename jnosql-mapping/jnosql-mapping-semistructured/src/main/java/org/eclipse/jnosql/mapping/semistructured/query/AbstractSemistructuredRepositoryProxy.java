@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.data.page.PageRequest;
+import jakarta.data.repository.Find;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
@@ -47,11 +48,20 @@ public abstract class AbstractSemistructuredRepositoryProxy<T, K> extends BaseSe
 
     @Override
     protected Object executeCursorPagination(Object instance, Method method, Object[] params) {
-        SelectQuery query = query(method, params);
-        SpecialParameters special = DynamicReturn.findSpecialParameters(params);
-        PageRequest<?> pageRequest = special.pageRequest()
-                .orElseThrow(() -> new IllegalArgumentException("Pageable is required in the method signature as parameter at " + method));
-        return this.template().selectCursor(query, pageRequest);
+        if (method.getAnnotation(Find.class) == null) {
+            var query = query(method, params);
+            SpecialParameters special = DynamicReturn.findSpecialParameters(params);
+            PageRequest<?> pageRequest = special.pageRequest()
+                    .orElseThrow(() -> new IllegalArgumentException("Pageable is required in the method signature as parameter at " + method));
+            return this.template().selectCursor(query, pageRequest);
+        } else {
+            Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
+            var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(parameters, entityMetadata());
+            SpecialParameters special = DynamicReturn.findSpecialParameters(params);
+            PageRequest<?> pageRequest = special.pageRequest()
+                    .orElseThrow(() -> new IllegalArgumentException("Pageable is required in the method signature as parameter at " + method));
+            return this.template().selectCursor(query, pageRequest);
+        }
     }
 
 
