@@ -11,7 +11,6 @@
 package org.eclipse.jnosql.mapping.semistructured;
 
 import jakarta.data.page.CursoredPage;
-import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import jakarta.nosql.Template;

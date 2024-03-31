@@ -16,6 +16,9 @@ package org.eclipse.jnosql.mapping.semistructured;
 
 
 import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.data.page.CursoredPage;
+import jakarta.data.page.PageRequest;
+import jakarta.data.page.impl.CursoredPageRecord;
 import jakarta.nosql.QueryMapper;
 
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
@@ -34,6 +37,7 @@ import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 
 import java.time.Duration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -297,6 +301,19 @@ public abstract class AbstractSemistructuredTemplate implements SemistructuredTe
             }
         }
         manager().delete(DeleteQuery.delete().from(metadata.name()).build());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> CursoredPage<T> selectCursor(SelectQuery query, PageRequest<T> pageRequest){
+        Objects.requireNonNull(query, "query is required");
+        Objects.requireNonNull(pageRequest, "pageRequest is required");
+        CursoredPage<CommunicationEntity> cursoredPage = this.manager().selectCursor(query, pageRequest);
+        List<T> entities = cursoredPage.stream().<T>map(c -> converter().toEntity(c)).toList();
+        PageRequest<T> nextPageRequest = cursoredPage.hasNext()? (PageRequest<T>) cursoredPage.nextPageRequest(): null;
+        PageRequest<T> beforePageRequest = cursoredPage.hasPrevious()? (PageRequest<T>) cursoredPage.previousPageRequest(): null;
+        List<PageRequest.Cursor> cursors = ((CursoredPageRecord<CommunicationEntity>) cursoredPage).cursors();
+        return new CursoredPageRecord<>(entities, cursors, -1, pageRequest, nextPageRequest, beforePageRequest);
     }
 
     protected <T> T persist(T entity, UnaryOperator<CommunicationEntity> persistAction) {
