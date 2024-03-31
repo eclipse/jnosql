@@ -51,15 +51,15 @@ public enum SemistructuredParameterBasedQuery {
         var convert = CDI.current().select(Converters.class).get();
         List<CriteriaCondition> conditions = new ArrayList<>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
-            conditions.add(getCondition(convert, entityMetadata, entry));
+            conditions.add(condition(convert, entityMetadata, entry));
         }
 
-        var columnCondition = columnCondition(conditions);
-        var columnFamily = entityMetadata.name();
-        return new MappingQuery(Collections.emptyList(), 0L, 0L, columnCondition, columnFamily);
+        var condition = condition(conditions);
+        var entity = entityMetadata.name();
+        return new MappingQuery(Collections.emptyList(), 0L, 0L, condition, entity);
     }
 
-    private CriteriaCondition columnCondition(List<CriteriaCondition> conditions) {
+    private CriteriaCondition condition(List<CriteriaCondition> conditions) {
         if (conditions.isEmpty()) {
             return null;
         } else if (conditions.size() == 1) {
@@ -68,7 +68,7 @@ public enum SemistructuredParameterBasedQuery {
         return CriteriaCondition.and(conditions.toArray(TO_ARRAY));
     }
 
-    private CriteriaCondition getCondition(Converters convert, EntityMetadata entityMetadata, Map.Entry<String, Object> entry) {
+    private CriteriaCondition condition(Converters convert, EntityMetadata entityMetadata, Map.Entry<String, Object> entry) {
         var name = entityMetadata.fieldMapping(entry.getKey())
                 .map(FieldMetadata::name)
                 .orElse(entry.getKey());
