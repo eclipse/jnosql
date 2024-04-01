@@ -152,7 +152,7 @@ public enum RepositoryType {
             return DEFAULT;
         }
         if (method.getAnnotationsByType(OrderBy.class).length > 0) {
-            return ORDER_BY;
+            return method.getAnnotation(Find.class) == null? ORDER_BY: PARAMETER_BASED;
         }
         if (!repositoryType.equals(declaringClass) && isCustomRepository(declaringClass)) {
             return CUSTOM_REPOSITORY;

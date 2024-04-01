@@ -128,6 +128,12 @@ class RepositoryTypeTest {
     }
 
     @Test
+    void shouldReturnParameterBased2() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.PARAMETER_BASED, RepositoryType.of(getMethod(DevRepository.class, "find2"), CrudRepository.class));
+    }
+
+
+    @Test
     void shouldReturnCountBy() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.COUNT_BY, RepositoryType.of(getMethod(DevRepository.class, "countByName"), CrudRepository.class));
     }
@@ -246,6 +252,9 @@ class RepositoryTypeTest {
         @Find
         List<String> find(String name);
 
+        @Find
+        @OrderBy("name")
+        List<String> find2(String name);
         CursoredPage<String> findByNameOrderByName(String name, PageRequest<String> pageable);
 
     }
