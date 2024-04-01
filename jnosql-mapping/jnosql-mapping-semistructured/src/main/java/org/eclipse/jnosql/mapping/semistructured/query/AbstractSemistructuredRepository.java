@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-;
+
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
@@ -41,6 +41,7 @@ public abstract class AbstractSemistructuredRepository<T, K> extends AbstractRep
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public Page<T> findAll(PageRequest pageRequest) {
         Objects.requireNonNull(pageRequest, "pageRequest is required");

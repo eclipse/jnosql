@@ -15,6 +15,9 @@
 package org.eclipse.jnosql.mapping.semistructured;
 
 import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.data.page.CursoredPage;
+import jakarta.data.page.PageRequest;
+import jakarta.data.page.impl.CursoredPageRecord;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.PreparedStatement;
@@ -43,6 +46,8 @@ import org.mockito.Mockito;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -438,5 +443,39 @@ class DefaultColumnTemplateTest {
     void shouldDeleteAll(){
         template.deleteAll(Person.class);
         verify(managerMock).delete(delete().from("Person").build());
+    }
+
+    @Test
+    void shouldSelectCursor(){
+        PageRequest<CommunicationEntity> request = PageRequest.ofSize(2);
+        PageRequest<CommunicationEntity> afterKey = PageRequest.<CommunicationEntity>ofSize(2)
+                .afterKey("Ada");
+        SelectQuery query = select().from("Person").orderBy("name").asc().build();
+
+        Mockito.when(managerMock.selectCursor(query, request))
+                .thenReturn(new CursoredPageRecord<>(content(),
+                        Collections.emptyList(), -1, request, afterKey, null));
+
+        PageRequest<Person> personRequest = PageRequest.ofSize(2);
+        CursoredPage<Person> result = template.selectCursor(query, personRequest);
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(result).isNotNull();
+            soft.assertThat(result.content()).hasSize(1);
+            soft.assertThat(result.hasNext()).isTrue();
+            Person person = result.stream().findFirst().orElseThrow();
+
+            soft.assertThat(person.getAge()).isEqualTo(10);
+            soft.assertThat(person.getName()).isEqualTo("Name");
+            soft.assertThat(person.getPhones()).containsExactly("234", "432");
+        });
+
+    }
+
+
+    private List<CommunicationEntity> content(){
+        CommunicationEntity columnEntity = CommunicationEntity.of("Person");
+        columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
+        return List.of(columnEntity);
     }
 }

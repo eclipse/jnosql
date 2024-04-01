@@ -14,9 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.core.query;
 
+import jakarta.data.page.CursoredPage;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Delete;
+import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
@@ -63,10 +65,6 @@ public enum RepositoryType {
     EXISTS_BY("existsBy"),
 
     /**
-     * The last condition is parameter based. That will match the parameter in a simple query.
-     */
-    PARAMETER_BASED(""),
-    /**
      * Methods from {@link Object}
      */
     OBJECT_METHOD(""),
@@ -91,6 +89,11 @@ public enum RepositoryType {
      */
     SAVE("", Save.class),
     /**
+     * The last condition is parameter based. That will match the parameter in a simple query.
+     * It will check by {@link jakarta.data.repository.Find} annotation
+     */
+    PARAMETER_BASED("", Find.class),
+    /**
      * Method that has {@link jakarta.data.repository.Insert} annotation
      */
     INSERT("", Insert.class),
@@ -101,7 +104,12 @@ public enum RepositoryType {
     /**
      * Method that has {@link jakarta.data.repository.Update} annotation
      */
-    UPDATE("", Update.class);
+    UPDATE("", Update.class),
+
+    /**
+     * This method is defined by the return type of {@link jakarta.data.page.CursoredPage}
+     */
+    CURSOR_PAGINATION("");
 
     private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(CrudRepository.class)
             .or(Predicate.isEqual(BasicRepository.class))
@@ -109,7 +117,7 @@ public enum RepositoryType {
 
     private static final Set<RepositoryType> KEY_WORLD_METHODS = EnumSet.of(FIND_BY, DELETE_BY, COUNT_BY, EXISTS_BY);
 
-    private static final Set<RepositoryType> OPERATION_ANNOTATIONS = EnumSet.of(INSERT, SAVE, DELETE, UPDATE, QUERY);
+    private static final Set<RepositoryType> OPERATION_ANNOTATIONS = EnumSet.of(INSERT, SAVE, DELETE, UPDATE, QUERY, PARAMETER_BASED);
     private final String keyword;
 
     private final Class<? extends Annotation> annotation;
@@ -146,9 +154,11 @@ public enum RepositoryType {
         if (method.getAnnotationsByType(OrderBy.class).length > 0) {
             return ORDER_BY;
         }
-
         if (!repositoryType.equals(declaringClass) && isCustomRepository(declaringClass)) {
             return CUSTOM_REPOSITORY;
+        }
+        if (method.getReturnType().equals(CursoredPage.class)) {
+            return CURSOR_PAGINATION;
         }
         String methodName = method.getName();
         if (FIND_ALL.keyword.equals(methodName)) {
@@ -162,13 +172,15 @@ public enum RepositoryType {
         }
         return KEY_WORLD_METHODS.stream()
                 .filter(k -> methodName.startsWith(k.keyword))
-                .findFirst().orElse(PARAMETER_BASED);
+                .findFirst()
+                .orElseThrow(() -> new UnsupportedOperationException("The method " + method
+                        + " is not supported. At the class " + declaringClass));
     }
 
     private static boolean isCustomRepository(Class<?> type) {
         try {
             return CDI.current().select(type).isResolvable();
-        }catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }

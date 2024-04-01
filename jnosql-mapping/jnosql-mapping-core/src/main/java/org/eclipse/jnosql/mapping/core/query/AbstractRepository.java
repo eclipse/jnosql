@@ -44,7 +44,7 @@ import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEP
  * @param <T> The entity type managed by this repository.
  * @param <K> The type of the entity's primary key.
  */
-public abstract class AbstractRepository<T, K> implements NoSQLRepository<T, K>, CrudRepository<T, K> {
+public abstract class AbstractRepository<T, K> implements NoSQLRepository<T, K> {
 
     /**
      * Retrieves the template associated with this repository.
@@ -201,7 +201,7 @@ public abstract class AbstractRepository<T, K> implements NoSQLRepository<T, K>,
     }
 
     @Override
-    public Page<T> findAll(PageRequest pageRequest) {
+    public Page<T> findAll(PageRequest<T> pageRequest) {
         throw new UnsupportedOperationException(String.format(getErrorMessage(), "findAll"));
     }
 

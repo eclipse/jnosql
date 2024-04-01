@@ -67,5 +67,4 @@ class KeyValueRepositoryProxy<T, K> extends AbstractKeyValueRepositoryProxy<T, K
         return metadata;
     }
 
-
 }

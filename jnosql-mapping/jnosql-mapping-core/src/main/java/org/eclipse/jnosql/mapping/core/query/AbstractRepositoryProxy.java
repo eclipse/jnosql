@@ -119,6 +119,16 @@ public abstract class AbstractRepositoryProxy<T, K> implements InvocationHandler
     protected abstract Object executeFindByQuery(Object instance, Method method, Object[] params);
 
     /**
+     * Executes a cursor pagination query based on the method and parameters.
+     *
+     * @param instance The instance on which the method was invoked.
+     * @param method   The method being invoked.
+     * @param params   The parameters of the method.
+     * @return The result of the cursor pagination query.
+     */
+    protected abstract Object executeCursorPagination(Object instance, Method method, Object[] params);
+
+    /**
      * Executes a custom operation based on the method and parameters, allowing for parameter-based queries.
      * This method is meant to handle repository methods that involve custom parameter-based logic.
      *
@@ -182,6 +192,9 @@ public abstract class AbstractRepositoryProxy<T, K> implements InvocationHandler
             }
             case UPDATE -> {
                 return unwrapInvocationTargetException(() -> UPDATE.invoke(new AnnotationOperation.Operation(method, params, repository())));
+            }
+            case CURSOR_PAGINATION -> {
+                return unwrapInvocationTargetException(() ->   executeCursorPagination(instance, method, params));
             }
             default -> {
                 return Void.class;

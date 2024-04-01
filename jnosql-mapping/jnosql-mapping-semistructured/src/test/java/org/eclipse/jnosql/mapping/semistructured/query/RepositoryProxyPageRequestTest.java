@@ -15,11 +15,16 @@
 package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.data.Limit;
+import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.Sort;
+import jakarta.data.repository.By;
+import jakarta.data.repository.Find;
+import jakarta.data.repository.Param;
 import jakarta.inject.Inject;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
@@ -605,6 +610,76 @@ public class RepositoryProxyPageRequestTest {
         assertEquals(Element.of("name", "name"), condition.element());
     }
 
+    @Test
+    public void shouldFindByNameOrderByName() {
+        CursoredPage<Person> mock = Mockito.mock(CursoredPage.class);
+        when(template.selectCursor(any(SelectQuery.class),
+                any(PageRequest.class))).thenReturn(mock);
+
+        CursoredPage<Person> page = personRepository.findByNameOrderByName("name",
+                PageRequest.<Person>ofSize(10).afterKey("Ada"));
+
+        SoftAssertions.assertSoftly(s -> {
+            s.assertThat(page).isEqualTo(mock);
+        });
+    }
+
+    @Test
+    public void shouldMachParameter() {
+        when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
+                .of(Person.builder().build()));
+
+        personRepository.parameter("name", 10);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(template).select(captor.capture());
+        SelectQuery query = captor.getValue();
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.skip()).isEqualTo(0);
+            soft.assertThat(query.limit()).isEqualTo(0);
+            soft.assertThat(query.condition().isPresent()).isTrue();
+            soft.assertThat(query.sorts()).hasSize(0);
+            CriteriaCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(AND);
+            List<CriteriaCondition> conditions = condition.element().get(new TypeReference<>() {
+            });
+            soft.assertThat(conditions).hasSize(2);
+            soft.assertThat(conditions.get(0)).isEqualTo(CriteriaCondition.eq(Element.of("name", "name")));
+            soft.assertThat(conditions.get(1)).isEqualTo(CriteriaCondition.eq(Element.of("age", 10)));
+
+        });
+    }
+
+    @Test
+    public void shouldParameterMatch() {
+        CursoredPage<Person> mock = Mockito.mock(CursoredPage.class);
+        when(template.selectCursor(any(SelectQuery.class),
+                any(PageRequest.class))).thenReturn(mock);
+
+        CursoredPage<Person> page = personRepository.findPageParameter("name",
+                PageRequest.<Person>ofSize(10).afterKey("Ada"));
+
+        SoftAssertions.assertSoftly(s -> s.assertThat(page).isEqualTo(mock));
+
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(template).selectCursor(captor.capture(), Mockito.any());
+        var query = captor.getValue();
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.skip()).isEqualTo(0);
+            soft.assertThat(query.limit()).isEqualTo(0);
+            soft.assertThat(query.condition().isPresent()).isTrue();
+            soft.assertThat(query.sorts()).hasSize(0);
+            CriteriaCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(EQUALS);
+            soft.assertThat(condition.element()).isEqualTo(Element.of("name", "name"));
+
+        });
+    }
+
+
 
     private PageRequest getPageRequest() {
         return PageRequest.ofPage(2).size(6);
@@ -612,45 +687,53 @@ public class RepositoryProxyPageRequestTest {
 
     interface PersonRepository extends BasicRepository<Person, Long> {
 
-        Person findByName(String name, PageRequest pageRequest);
+        Person findByName(String name, PageRequest<Person> pageRequest);
 
-        List<Person> findByName(String name, Sort sort);
+        @Find
+        List<Person> parameter(@By("name") String name, @By("age") Integer age);
 
-        List<Person> findByName(String name, Limit limit, Sort sort);
+        CursoredPage<Person> findByNameOrderByName(String name, PageRequest<Person> pageRequest);
 
-        List<Person> findByName(String name, Sort sort, PageRequest pageRequest);
+        @Find
+        CursoredPage<Person> findPageParameter(@By("name") String name, PageRequest<Person> pageRequest);
 
-        Page<Person> findByNameOrderByAge(String name, PageRequest pageRequest);
+        List<Person> findByName(String name, Sort<Person> sort);
 
-        Page<Person> findByAge(String age, PageRequest pageRequest);
+        List<Person> findByName(String name, Limit limit, Sort<Person> sort);
 
-        List<Person> findByNameAndAge(String name, Integer age, PageRequest pageRequest);
+        List<Person> findByName(String name, Sort<Person> sort, PageRequest<Person> pageRequest);
 
-        Set<Person> findByAgeAndName(Integer age, String name, PageRequest pageRequest);
+        Page<Person> findByNameOrderByAge(String name, PageRequest<Person> pageRequest);
 
-        Stream<Person> findByNameAndAgeOrderByName(String name, Integer age, PageRequest pageRequest);
+        Page<Person> findByAge(String age, PageRequest<Person> pageRequest);
 
-        Queue<Person> findByNameAndAgeOrderByAge(String name, Integer age, PageRequest pageRequest);
+        List<Person> findByNameAndAge(String name, Integer age, PageRequest<Person> pageRequest);
 
-        Set<Person> findByNameAndAgeGreaterThanEqual(String name, Integer age, PageRequest pageRequest);
+        Set<Person> findByAgeAndName(Integer age, String name, PageRequest<Person> pageRequest);
 
-        Set<Person> findByAgeGreaterThan(Integer age, PageRequest pageRequest);
+        Stream<Person> findByNameAndAgeOrderByName(String name, Integer age, PageRequest<Person> pageRequest);
 
-        Set<Person> findByAgeLessThanEqual(Integer age, PageRequest pageRequest);
+        Queue<Person> findByNameAndAgeOrderByAge(String name, Integer age, PageRequest<Person> pageRequest);
 
-        Set<Person> findByAgeLessThan(Integer age, PageRequest pageRequest);
+        Set<Person> findByNameAndAgeGreaterThanEqual(String name, Integer age, PageRequest<Person> pageRequest);
 
-        Set<Person> findByAgeBetween(Integer ageA, Integer ageB, PageRequest pageRequest);
+        Set<Person> findByAgeGreaterThan(Integer age, PageRequest<Person> pageRequest);
 
-        Set<Person> findByNameLike(String name, PageRequest pageRequest);
+        Set<Person> findByAgeLessThanEqual(Integer age, PageRequest<Person> pageRequest);
+
+        Set<Person> findByAgeLessThan(Integer age, PageRequest<Person> pageRequest);
+
+        Set<Person> findByAgeBetween(Integer ageA, Integer ageB, PageRequest<Person> pageRequest);
+
+        Set<Person> findByNameLike(String name, PageRequest<Person> pageRequest);
 
     }
 
     public interface VendorRepository extends BasicRepository<Vendor, String> {
 
-        Vendor findByPrefixes(String prefix, PageRequest pageRequest);
+        Vendor findByPrefixes(String prefix, PageRequest<Vendor> pageRequest);
 
-        Vendor findByPrefixesIn(List<String> prefix, PageRequest pageRequest);
+        Vendor findByPrefixesIn(List<String> prefix, PageRequest<Vendor> pageRequest);
 
     }
 }
