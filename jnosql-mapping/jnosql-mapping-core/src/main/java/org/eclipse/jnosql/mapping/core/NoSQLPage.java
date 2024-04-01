@@ -138,10 +138,12 @@ public class NoSQLPage<T> implements Page<T> {
 
     @Override
     public String toString() {
-        return "NoSQLPage{" +
-                "entities=" + entities +
-                ", pageRequest=" + pageRequest +
-                '}';
+        final StringBuilder sb = new StringBuilder();
+        sb.append("NoSQLPage{");
+        sb.append("entities=").append(entities);
+        sb.append(", pageRequest=").append(pageRequest);
+        sb.append('}');
+        return sb.toString();
     }
 
     /**
