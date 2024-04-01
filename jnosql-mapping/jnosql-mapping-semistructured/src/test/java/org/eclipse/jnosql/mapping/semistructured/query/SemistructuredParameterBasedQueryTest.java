@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.semistructured.query;
 
+import jakarta.data.Sort;
 import jakarta.inject.Inject;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
@@ -58,7 +59,7 @@ class SemistructuredParameterBasedQueryTest {
     @Test
     void shouldCreateQuerySingleParameter(){
         Map<String, Object> params = Map.of("name", "Ada");
-        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, metadata);
+        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, Collections.emptyList(), metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);
@@ -73,7 +74,7 @@ class SemistructuredParameterBasedQueryTest {
     @Test
     void shouldCreateQueryMultipleParams(){
         Map<String, Object> params = Map.of("name", "Ada", "age", 10);
-        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, metadata);
+        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, Collections.emptyList(), metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);
@@ -93,13 +94,27 @@ class SemistructuredParameterBasedQueryTest {
     @Test
     void shouldCreateQueryEmptyParams(){
         Map<String, Object> params = Collections.emptyMap();
-        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, metadata);
+        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, Collections.emptyList(), metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);
             soft.assertThat(query.skip()).isEqualTo(0L);
             soft.assertThat(query.name()).isEqualTo("Person");
             soft.assertThat(query.sorts()).isEmpty();
+            soft.assertThat(query.condition()).isEmpty();
+        });
+    }
+
+    @Test
+    void shouldAddSort(){
+        Map<String, Object> params = Collections.emptyMap();
+        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, List.of(Sort.asc("name")), metadata);
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(query.limit()).isEqualTo(0L);
+            soft.assertThat(query.skip()).isEqualTo(0L);
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.sorts()).contains(Sort.asc("name"));
             soft.assertThat(query.condition()).isEmpty();
         });
     }
