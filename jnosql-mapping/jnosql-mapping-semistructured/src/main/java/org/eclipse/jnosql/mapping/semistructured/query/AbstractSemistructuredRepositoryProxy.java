@@ -14,8 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.semistructured.query;
 
+import jakarta.data.Sort;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.OrderBy;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
@@ -23,7 +25,10 @@ import org.eclipse.jnosql.mapping.core.repository.RepositoryReflectionUtils;
 import org.eclipse.jnosql.mapping.core.repository.SpecialParameters;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Template method to Repository proxy on column
@@ -55,7 +60,7 @@ public abstract class AbstractSemistructuredRepositoryProxy<T, K> extends BaseSe
             return this.template().selectCursor(query, pageRequest);
         } else {
             Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
-            var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(parameters, entityMetadata());
+            var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(parameters, getSorts(method), entityMetadata());
             SpecialParameters special = DynamicReturn.findSpecialParameters(params);
             PageRequest<?> pageRequest = special.pageRequest()
                     .orElseThrow(() -> new IllegalArgumentException("Pageable is required in the method signature as parameter at " + method));
@@ -98,8 +103,17 @@ public abstract class AbstractSemistructuredRepositoryProxy<T, K> extends BaseSe
     protected Object executeParameterBased(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
         Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
-        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(parameters, entityMetadata());
+        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(parameters, getSorts(method), entityMetadata());
         return executeFindByQuery(method, params, type, updateQueryDynamically(params, query));
+    }
+
+    private static List<Sort<?>> getSorts(Method method) {
+        List<Sort<?>> sorts = new ArrayList<>();
+        OrderBy[] orders = method.getAnnotationsByType(OrderBy.class);
+        Stream.of(orders)
+                .map(o -> (o.descending() ? Sort.desc(o.value()) : Sort.asc(o.value())))
+                .forEach(sorts::add);
+        return sorts;
     }
 
 }
