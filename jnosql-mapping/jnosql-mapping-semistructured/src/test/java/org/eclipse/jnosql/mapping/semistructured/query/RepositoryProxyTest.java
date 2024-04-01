@@ -861,6 +861,38 @@ class RepositoryProxyTest {
             var condition = query.condition().orElseThrow();
             softly.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
             softly.assertThat(condition.element()).isEqualTo(Element.of("name", "Ada"));
+            softly.assertThat(query.sorts()).isEmpty();
+        });
+    }
+
+    @Test
+    void shouldExecuteMatchParameter2(){
+        personRepository.find2("Ada");
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(template).select(captor.capture());
+        SelectQuery query = captor.getValue();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(query.name()).isEqualTo("Person");
+            var condition = query.condition().orElseThrow();
+            softly.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            softly.assertThat(condition.element()).isEqualTo(Element.of("name", "Ada"));
+            softly.assertThat(query.sorts()).hasSize(1).contains(Sort.asc("name"));
+        });
+    }
+
+    @Test
+    void shouldExecuteMatchParameter3(){
+        personRepository.find3("Ada");
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(template).select(captor.capture());
+        SelectQuery query = captor.getValue();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(query.name()).isEqualTo("Person");
+            var condition = query.condition().orElseThrow();
+            softly.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            softly.assertThat(condition.element()).isEqualTo(Element.of("name", "Ada"));
+            softly.assertThat(query.sorts()).hasSize(2).contains(Sort.asc("name"),
+                    Sort.desc("age"));
         });
     }
 
@@ -960,6 +992,15 @@ class RepositoryProxyTest {
 
         @Find
         List<Person> find(@By("name") String name);
+
+        @Find
+        @OrderBy(value = "name")
+        List<Person> find2(@By("name") String name);
+
+        @Find
+        @OrderBy(value = "name")
+        @OrderBy(value = "age", descending = true)
+        List<Person> find3(@By("name") String name);
     }
 
     public interface VendorRepository extends BasicRepository<Vendor, String> {
