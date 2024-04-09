@@ -266,7 +266,7 @@ public interface DatabaseManager extends AutoCloseable {
      * @throws NullPointerException     if the query or pageRequest is null
      * @throws IllegalStateException    if the cursor-based pagination is used without any order key specified
      */
-    default CursoredPage<CommunicationEntity> selectCursor(SelectQuery query, PageRequest<?> pageRequest){
+    default CursoredPage<CommunicationEntity> selectCursor(SelectQuery query, PageRequest pageRequest){
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(pageRequest, "pageRequest is required");
         if(query.sorts().isEmpty()){

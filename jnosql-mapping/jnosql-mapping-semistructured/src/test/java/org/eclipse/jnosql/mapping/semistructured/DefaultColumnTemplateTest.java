@@ -447,8 +447,8 @@ class DefaultColumnTemplateTest {
 
     @Test
     void shouldSelectCursor(){
-        PageRequest<CommunicationEntity> request = PageRequest.ofSize(2);
-        PageRequest<CommunicationEntity> afterKey = PageRequest.<CommunicationEntity>ofSize(2)
+        PageRequest request = PageRequest.ofSize(2);
+        PageRequest afterKey = PageRequest.<CommunicationEntity>ofSize(2)
                 .afterKey("Ada");
         SelectQuery query = select().from("Person").orderBy("name").asc().build();
 
