@@ -294,7 +294,7 @@ class KeyValueRepositoryProxyTest {
     void shouldReturnUnsupportedOperationException() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll());
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.countBy());
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll(null));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findAll(null, null));
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.deleteAll());
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.countByName("name"));
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.find("name"));

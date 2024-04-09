@@ -33,12 +33,12 @@ import java.util.Optional;
 public final class SpecialParameters {
     static final SpecialParameters EMPTY = new SpecialParameters(null, null, Collections.emptyList());
 
-    private final PageRequest<?> pageRequest;
+    private final PageRequest pageRequest;
 
     private final List<Sort<?>> sorts;
     private final Limit limit;
 
-    private SpecialParameters(PageRequest<?> pageRequest, Limit limit, List<Sort<?>> sorts) {
+    private SpecialParameters(PageRequest pageRequest, Limit limit, List<Sort<?>> sorts) {
         this.pageRequest = pageRequest;
         this.sorts = sorts;
         this.limit = limit;
@@ -49,12 +49,12 @@ public final class SpecialParameters {
      *
      * @return a {@link PageRequest} or {@link Optional#empty()} when there is not PageRequest instance
      */
-    public Optional<PageRequest<?>> pageRequest() {
+    public Optional<PageRequest> pageRequest() {
         return Optional.ofNullable(pageRequest);
     }
 
     /**
-     * Returns the sorts including {@link PageRequest#sorts()} appended
+     * Returns the sorts
      *
      * @return the sorts as list
      */
@@ -126,24 +126,23 @@ public final class SpecialParameters {
 
     static SpecialParameters of(Object[] parameters) {
         List<Sort<?>> sorts = new ArrayList<>();
-        PageRequest<?> pageRequest = null;
+        PageRequest pageRequest = null;
         Limit limit = null;
         for (Object parameter : parameters) {
-            if (parameter instanceof PageRequest<?> pageRequestInstance) {
-                pageRequest = pageRequestInstance;
-                sorts.addAll(pageRequestInstance.sorts());
-            } else if (parameter instanceof Sort<?> sort) {
+            if (parameter instanceof Sort<?> sort) {
                 sorts.add(sort);
             } else if (parameter instanceof Limit limitInstance) {
                 limit = limitInstance;
-            } else if(parameter instanceof Iterable<?> iterable) {
+            } else if (parameter instanceof Order<?> order) {
+                order.iterator().forEachRemaining(sorts::add);
+            } else if (parameter instanceof PageRequest request) {
+               pageRequest = request;
+            } else if (parameter instanceof Iterable<?> iterable) {
                 for (Object value : iterable) {
                     if (value instanceof Sort<?> sortValue) {
                         sorts.add(sortValue);
                     }
                 }
-            } else if(parameter instanceof Order<?> order) {
-                order.iterator().forEachRemaining(sorts::add);
             }
         }
         return new SpecialParameters(pageRequest, limit, sorts);

@@ -177,5 +177,5 @@ public interface SemistructuredTemplate extends Template {
      * @throws NullPointerException     if the query or pageRequest is null
      * @throws IllegalStateException    if the cursor-based pagination is used without any order key specified
      */
-    <T> CursoredPage<T> selectCursor(SelectQuery query, PageRequest<T> pageRequest);
+    <T> CursoredPage<T> selectCursor(SelectQuery query, PageRequest pageRequest);
 }

@@ -41,7 +41,7 @@ class DatabaseManagerTest {
     @Test
     void shouldReturnErrorWhenThereIsNotSort() {
         SelectQuery query = SelectQuery.builder().from("person").build();
-        PageRequest<?> pageRequest = PageRequest.ofSize(10);
+        PageRequest pageRequest = PageRequest.ofSize(10);
         assertThrows(IllegalArgumentException.class, () -> databaseManager.selectCursor(query, pageRequest));
     }
 
@@ -57,8 +57,8 @@ class DatabaseManagerTest {
                 PageRequest.ofSize(10));
 
         assertSoftly(soft -> {
-            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
-            PageRequest<CommunicationEntity> nextedPageRequest = entities.nextPageRequest();
+            PageRequest pageRequest = entities.pageRequest();
+            PageRequest nextedPageRequest = entities.nextPageRequest();
             PageRequest.Cursor cursor = nextedPageRequest.cursor().orElseThrow();
 
             soft.assertThat(entities).hasSize(2);
@@ -85,7 +85,7 @@ class DatabaseManagerTest {
                 PageRequest.ofSize(10));
 
         assertSoftly(soft -> {
-            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
+            PageRequest pageRequest = entities.pageRequest();
             soft.assertThat(entities.hasNext()).isFalse();
             soft.assertThat(entities.hasPrevious()).isFalse();
 
@@ -108,8 +108,8 @@ class DatabaseManagerTest {
                 PageRequest.ofSize(10));
 
         assertSoftly(soft -> {
-            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
-            PageRequest<CommunicationEntity> nextedPageRequest = entities.nextPageRequest();
+            PageRequest pageRequest = entities.pageRequest();
+            PageRequest nextedPageRequest = entities.nextPageRequest();
             PageRequest.Cursor cursor = nextedPageRequest.cursor().orElseThrow();
 
             soft.assertThat(entities).hasSize(2);
@@ -160,8 +160,8 @@ class DatabaseManagerTest {
         });
 
         assertSoftly(soft -> {
-            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
-            PageRequest<CommunicationEntity> nextedPageRequest = entities.nextPageRequest();
+            PageRequest pageRequest = entities.pageRequest();
+            PageRequest nextedPageRequest = entities.nextPageRequest();
             PageRequest.Cursor cursor = nextedPageRequest.cursor().orElseThrow();
 
             soft.assertThat(entities).hasSize(2);
@@ -223,8 +223,8 @@ class DatabaseManagerTest {
         });
 
         assertSoftly(soft -> {
-            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
-            PageRequest<CommunicationEntity> nextedPageRequest = entities.nextPageRequest();
+            PageRequest pageRequest = entities.pageRequest();
+            PageRequest nextedPageRequest = entities.nextPageRequest();
             PageRequest.Cursor cursor = nextedPageRequest.cursor().orElseThrow();
 
             soft.assertThat(entities).hasSize(2);
@@ -254,7 +254,7 @@ class DatabaseManagerTest {
 
 
         assertSoftly(soft -> {
-            PageRequest<CommunicationEntity> nextedPageRequest = entities.nextPageRequest();
+            PageRequest nextedPageRequest = entities.nextPageRequest();
             PageRequest.Cursor cursor = nextedPageRequest.cursor().orElseThrow();
 
             soft.assertThat(entities).hasSize(1);
@@ -300,8 +300,8 @@ class DatabaseManagerTest {
         });
 
         assertSoftly(soft -> {
-            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
-            PageRequest<CommunicationEntity> nextedPageRequest = entities.previousPageRequest();
+            PageRequest pageRequest = entities.pageRequest();
+            PageRequest nextedPageRequest = entities.previousPageRequest();
             PageRequest.Cursor cursor = nextedPageRequest.cursor().orElseThrow();
 
             soft.assertThat(entities).hasSize(2);
@@ -363,8 +363,8 @@ class DatabaseManagerTest {
         });
 
         assertSoftly(soft -> {
-            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
-            PageRequest<CommunicationEntity> nextedPageRequest = entities.previousPageRequest();
+            PageRequest pageRequest = entities.pageRequest();
+            PageRequest nextedPageRequest = entities.previousPageRequest();
             PageRequest.Cursor cursor = nextedPageRequest.cursor().orElseThrow();
 
             soft.assertThat(entities).hasSize(2);
@@ -397,7 +397,7 @@ class DatabaseManagerTest {
                 PageRequest.ofSize(10).afterKey("Ada", 20, id));
 
         assertSoftly(soft -> {
-            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
+            PageRequest pageRequest = entities.pageRequest();
 
             soft.assertThat(entities).isEmpty();
             soft.assertThat(entities.hasNext()).isFalse();
@@ -423,7 +423,7 @@ class DatabaseManagerTest {
                 PageRequest.ofSize(10).beforeKey("Ada", 20, id));
 
         assertSoftly(soft -> {
-            PageRequest<CommunicationEntity> pageRequest = entities.pageRequest();
+            PageRequest pageRequest = entities.pageRequest();
 
             soft.assertThat(entities).isEmpty();
             soft.assertThat(entities.hasNext()).isFalse();

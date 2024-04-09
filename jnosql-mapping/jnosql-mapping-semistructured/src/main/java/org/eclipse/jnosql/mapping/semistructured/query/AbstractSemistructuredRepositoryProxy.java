@@ -55,14 +55,14 @@ public abstract class AbstractSemistructuredRepositoryProxy<T, K> extends BaseSe
         if (method.getAnnotation(Find.class) == null) {
             var query = query(method, params);
             SpecialParameters special = DynamicReturn.findSpecialParameters(params);
-            PageRequest<?> pageRequest = special.pageRequest()
+            PageRequest pageRequest = special.pageRequest()
                     .orElseThrow(() -> new IllegalArgumentException("Pageable is required in the method signature as parameter at " + method));
             return this.template().selectCursor(query, pageRequest);
         } else {
             Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
             var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(parameters, getSorts(method), entityMetadata());
             SpecialParameters special = DynamicReturn.findSpecialParameters(params);
-            PageRequest<?> pageRequest = special.pageRequest()
+            PageRequest pageRequest = special.pageRequest()
                     .orElseThrow(() -> new IllegalArgumentException("Pageable is required in the method signature as parameter at " + method));
             return this.template().selectCursor(query, pageRequest);
         }

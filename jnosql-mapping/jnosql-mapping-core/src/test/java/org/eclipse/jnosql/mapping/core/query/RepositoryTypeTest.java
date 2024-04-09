@@ -255,7 +255,7 @@ class RepositoryTypeTest {
         @Find
         @OrderBy("name")
         List<String> find2(String name);
-        CursoredPage<String> findByNameOrderByName(String name, PageRequest<String> pageable);
+        CursoredPage<String> findByNameOrderByName(String name, PageRequest pageable);
 
     }
 

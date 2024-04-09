@@ -447,8 +447,8 @@ class DefaultColumnTemplateTest {
 
     @Test
     void shouldSelectCursor(){
-        PageRequest<CommunicationEntity> request = PageRequest.ofSize(2);
-        PageRequest<CommunicationEntity> afterKey = PageRequest.<CommunicationEntity>ofSize(2)
+        PageRequest request = PageRequest.ofSize(2);
+        PageRequest afterKey = PageRequest.<CommunicationEntity>ofSize(2)
                 .afterKey("Ada");
         SelectQuery query = select().from("Person").orderBy("name").asc().build();
 
@@ -456,7 +456,7 @@ class DefaultColumnTemplateTest {
                 .thenReturn(new CursoredPageRecord<>(content(),
                         Collections.emptyList(), -1, request, afterKey, null));
 
-        PageRequest<Person> personRequest = PageRequest.ofSize(2);
+        PageRequest personRequest = PageRequest.ofSize(2);
         CursoredPage<Person> result = template.selectCursor(query, personRequest);
 
         SoftAssertions.assertSoftly(soft ->{

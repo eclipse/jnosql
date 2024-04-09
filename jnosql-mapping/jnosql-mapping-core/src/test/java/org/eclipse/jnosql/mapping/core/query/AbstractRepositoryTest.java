@@ -149,7 +149,7 @@ class AbstractRepositoryTest {
     @Test
     void shouldReturnException(){
         Assertions.assertThrows(UnsupportedOperationException.class, () -> this.repository.findAll());
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> this.repository.findAll(null));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> this.repository.findAll(null, null));
     }
 
     class PeopleRepository extends AbstractRepository<Person, Long> {
