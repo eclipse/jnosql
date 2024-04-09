@@ -119,7 +119,7 @@ public class RepositoryProxyPageRequestTest {
                 .of(Person.builder().build()));
 
         PageRequest pageRequest = getPageRequest();
-        personRepository.findByName("name", pageRequest);
+        personRepository.findByName("name", pageRequest, Order.by());
 
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).singleResult(captor.capture());
@@ -132,11 +132,11 @@ public class RepositoryProxyPageRequestTest {
 
         assertEquals(Element.of("name", "name"), condition.element());
 
-        assertNotNull(personRepository.findByName("name", pageRequest));
+        assertNotNull(personRepository.findByName("name", pageRequest, Order.by()));
         when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .empty());
 
-        assertNull(personRepository.findByName("name", pageRequest));
+        assertNull(personRepository.findByName("name", pageRequest, Order.by()));
 
 
     }
@@ -465,8 +465,10 @@ public class RepositoryProxyPageRequestTest {
         when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
-        PageRequest pageRequest = getPageRequest().sortBy(Sort.asc("name"));
-        personRepository.findByName("name", pageRequest);
+        PageRequest pageRequest = getPageRequest();
+        Sort<Person> name = Sort.asc("name");
+        Order<Person> order = Order.by(name);
+        personRepository.findByName("name", pageRequest, order);
 
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).singleResult(captor.capture());
@@ -477,14 +479,14 @@ public class RepositoryProxyPageRequestTest {
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
         assertThat(query.sorts()).hasSize(1)
-                .contains(Sort.asc("name"));
+                .contains(name);
 
         assertEquals(Element.of("name", "name"), condition.element());
 
-        assertNotNull(personRepository.findByName("name", pageRequest));
+        assertNotNull(personRepository.findByName("name", pageRequest, order));
         when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .empty());
-        assertNull(personRepository.findByName("name", pageRequest));
+        assertNull(personRepository.findByName("name", pageRequest, order));
     }
 
     @Test
@@ -493,8 +495,10 @@ public class RepositoryProxyPageRequestTest {
         when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
-        PageRequest pageRequest = getPageRequest().sortBy(Sort.asc("name"));
-        Page<Person> page = personRepository.findByNameOrderByAge("name", pageRequest);
+        Sort<Person> name = Sort.asc("name");
+        Order<Person> nameOrder = Order.by(name);
+        PageRequest pageRequest = getPageRequest();
+        Page<Person> page = personRepository.findByNameOrderByAge("name", pageRequest, nameOrder);
 
         Assertions.assertNotNull(page);
 
@@ -507,14 +511,14 @@ public class RepositoryProxyPageRequestTest {
         assertEquals(NoSQLPage.skip(pageRequest), query.limit());
         assertEquals(pageRequest.size(), query.limit());
         assertThat(query.sorts()).hasSize(2)
-                .containsExactly(Sort.asc("age"), Sort.asc("name"));
+                .containsExactly(Sort.asc("age"), name);
 
         assertEquals(Element.of("name", "name"), condition.element());
 
-        assertNotNull(personRepository.findByName("name", pageRequest));
+        assertNotNull(personRepository.findByName("name", pageRequest, nameOrder));
         when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .empty());
-        assertNull(personRepository.findByName("name", pageRequest));
+        assertNull(personRepository.findByName("name", pageRequest, nameOrder));
     }
 
     @Test
@@ -522,7 +526,7 @@ public class RepositoryProxyPageRequestTest {
         when(template.singleResult(any(SelectQuery.class))).thenReturn(Optional
                 .of(Person.builder().build()));
 
-        PageRequest pageRequest = getPageRequest().sortBy(Sort.desc("age"));
+        PageRequest pageRequest = getPageRequest();
         personRepository.findByName("name", Sort.asc("name"), pageRequest);
 
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
@@ -531,8 +535,8 @@ public class RepositoryProxyPageRequestTest {
         CriteriaCondition condition = query.condition().get();
         assertEquals("Person", query.name());
         assertEquals(EQUALS, condition.condition());
-        assertThat(query.sorts()).hasSize(2)
-                .containsExactly(Sort.asc("name"), Sort.desc("age"));
+        assertThat(query.sorts()).hasSize(1)
+                .containsExactly(Sort.asc("name"));
         assertEquals(Element.of("name", "name"), condition.element());
     }
 
@@ -614,7 +618,8 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByNameOrderByName() {
         CursoredPage<Person> mock = Mockito.mock(CursoredPage.class);
-        when(template.selectCursor(any(SelectQuery.class),
+
+        when(template.<Person>selectCursor(any(SelectQuery.class),
                 any(PageRequest.class))).thenReturn(mock);
 
         CursoredPage<Person> page = personRepository.findByNameOrderByName("name",
@@ -655,7 +660,7 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldParameterMatch() {
         CursoredPage<Person> mock = Mockito.mock(CursoredPage.class);
-        when(template.selectCursor(any(SelectQuery.class),
+        when(template.<Person>selectCursor(any(SelectQuery.class),
                 any(PageRequest.class))).thenReturn(mock);
 
         CursoredPage<Person> page = personRepository.findPageParameter("name",
@@ -688,7 +693,7 @@ public class RepositoryProxyPageRequestTest {
 
     interface PersonRepository extends BasicRepository<Person, Long> {
 
-        Person findByName(String name, PageRequest pageRequest);
+        Person findByName(String name, PageRequest pageRequest, Order<Person> order);
 
         @Find
         List<Person> parameter(@By("name") String name, @By("age") Integer age);
@@ -704,7 +709,7 @@ public class RepositoryProxyPageRequestTest {
 
         List<Person> findByName(String name, Sort<Person> sort, PageRequest pageRequest);
 
-        Page<Person> findByNameOrderByAge(String name, PageRequest pageRequest);
+        Page<Person> findByNameOrderByAge(String name, PageRequest pageRequest, Order<Person> order);
 
         Page<Person> findByAge(String age, PageRequest pageRequest);
 
