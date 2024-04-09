@@ -32,9 +32,9 @@ public class NoSQLPage<T> implements Page<T> {
 
     private final List<T> entities;
 
-    private final PageRequest<T> pageRequest;
+    private final PageRequest pageRequest;
 
-    private NoSQLPage(List<T> entities, PageRequest<T> pageRequest) {
+    private NoSQLPage(List<T> entities, PageRequest pageRequest) {
         this.entities = entities;
         this.pageRequest = pageRequest;
     }
@@ -75,39 +75,22 @@ public class NoSQLPage<T> implements Page<T> {
     }
 
     @Override
-    public PageRequest<T> pageRequest() {
+    public PageRequest pageRequest() {
         return this.pageRequest;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <E> PageRequest<E> pageRequest(Class<E> type) {
-        Objects.requireNonNull(type, "type is required");
-        return (PageRequest<E>) this.pageRequest;
-    }
 
     @Override
-    public PageRequest<T> nextPageRequest() {
+    public PageRequest nextPageRequest() {
         return this.pageRequest.next();
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public <E> PageRequest<E> nextPageRequest(Class<E> type) {
-        Objects.requireNonNull(type, "type is required");
-        return (PageRequest<E>) this.pageRequest.next();
-    }
 
     @Override
-    public PageRequest<T> previousPageRequest() {
+    public PageRequest previousPageRequest() {
         return this.pageRequest.previous();
     }
 
-    @Override
-    public <E> PageRequest<E> previousPageRequest(Class<E> type) {
-        Objects.requireNonNull(type, "type is required");
-        return (PageRequest<E>) this.pageRequest.previous();
-    }
 
     @Override
     public boolean hasTotals() {
@@ -151,7 +134,7 @@ public class NoSQLPage<T> implements Page<T> {
      * @return a {@link Page} instance
      * @param <T> the entity type
      */
-    public static <T> Page<T> of(List<T> entities, PageRequest<T> pageRequest) {
+    public static <T> Page<T> of(List<T> entities, PageRequest pageRequest) {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(pageRequest, "pageRequest is required");
         return new NoSQLPage<>(entities, pageRequest);
@@ -164,7 +147,7 @@ public class NoSQLPage<T> implements Page<T> {
      * @return the skip
      * @throws NullPointerException when parameter is null
      */
-    public static <T>  long skip(PageRequest<T> pageRequest) {
+    public static <T>  long skip(PageRequest pageRequest) {
         Objects.requireNonNull(pageRequest, "pageRequest is required");
         return pageRequest.size() * (pageRequest.page() - 1);
     }

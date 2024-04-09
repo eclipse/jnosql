@@ -88,7 +88,7 @@ class NoSQLPageTest {
     void shouldPageRequest() {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 PageRequest.ofPage(2));
-        PageRequest<Person> pageRequest = page.pageRequest();
+        PageRequest pageRequest = page.pageRequest();
         Assertions.assertNotNull(pageRequest);
         assertEquals(PageRequest.ofPage(2), pageRequest);
     }
@@ -97,7 +97,7 @@ class NoSQLPageTest {
     void shouldNextPageRequest() {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 PageRequest.ofPage(2));
-        PageRequest<Person> pageRequest = page.nextPageRequest();
+        PageRequest pageRequest = page.nextPageRequest();
         assertEquals(PageRequest.ofPage(3), pageRequest);
     }
 
@@ -143,7 +143,7 @@ class NoSQLPageTest {
     void shouldNext(){
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 PageRequest.ofPage(2));
-        PageRequest<Person> pageRequest = page.nextPageRequest();
+        PageRequest pageRequest = page.nextPageRequest();
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(pageRequest.page()).isEqualTo(3);
@@ -155,33 +155,7 @@ class NoSQLPageTest {
     void shouldPrevious(){
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 PageRequest.ofPage(2));
-        PageRequest<Person> pageRequest = page.previousPageRequest();
-
-        SoftAssertions.assertSoftly(soft ->{
-            soft.assertThat(pageRequest.page()).isEqualTo(1);
-            soft.assertThat(pageRequest.size()).isEqualTo(10);
-        });
-    }
-
-    @Test
-    void shouldNextEntity(){
-        Notification notification = new SmsNotification();
-        Page<Notification> page = NoSQLPage.of(Collections.singletonList(notification),
-                PageRequest.ofPage(2));
-        PageRequest<SmsNotification> pageRequest = page.nextPageRequest(SmsNotification.class);
-
-        SoftAssertions.assertSoftly(soft ->{
-            soft.assertThat(pageRequest.page()).isEqualTo(3);
-            soft.assertThat(pageRequest.size()).isEqualTo(10);
-        });
-    }
-
-    @Test
-    void shouldPreviousEntity(){
-        Notification notification = new SmsNotification();
-        Page<Notification> page = NoSQLPage.of(Collections.singletonList(notification),
-                PageRequest.ofPage(2));
-        PageRequest<SmsNotification> pageRequest = page.previousPageRequest(SmsNotification.class);
+        PageRequest pageRequest = page.previousPageRequest();
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(pageRequest.page()).isEqualTo(1);

@@ -456,7 +456,7 @@ class DefaultColumnTemplateTest {
                 .thenReturn(new CursoredPageRecord<>(content(),
                         Collections.emptyList(), -1, request, afterKey, null));
 
-        PageRequest<Person> personRequest = PageRequest.ofSize(2);
+        PageRequest personRequest = PageRequest.ofSize(2);
         CursoredPage<Person> result = template.selectCursor(query, personRequest);
 
         SoftAssertions.assertSoftly(soft ->{

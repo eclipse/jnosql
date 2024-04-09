@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.data.Limit;
+import jakarta.data.Order;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
@@ -234,7 +235,7 @@ public class RepositoryProxyPageRequestTest {
 
         PageRequest pageRequest = getPageRequest();
 
-        List<Person> persons = personRepository.findAll(pageRequest).content();
+        List<Person> persons = personRepository.findAll(pageRequest, Order.by()).content();
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
         SelectQuery query = captor.getValue();
@@ -687,53 +688,53 @@ public class RepositoryProxyPageRequestTest {
 
     interface PersonRepository extends BasicRepository<Person, Long> {
 
-        Person findByName(String name, PageRequest<Person> pageRequest);
+        Person findByName(String name, PageRequest pageRequest);
 
         @Find
         List<Person> parameter(@By("name") String name, @By("age") Integer age);
 
-        CursoredPage<Person> findByNameOrderByName(String name, PageRequest<Person> pageRequest);
+        CursoredPage<Person> findByNameOrderByName(String name, PageRequest pageRequest);
 
         @Find
-        CursoredPage<Person> findPageParameter(@By("name") String name, PageRequest<Person> pageRequest);
+        CursoredPage<Person> findPageParameter(@By("name") String name, PageRequest pageRequest);
 
         List<Person> findByName(String name, Sort<Person> sort);
 
         List<Person> findByName(String name, Limit limit, Sort<Person> sort);
 
-        List<Person> findByName(String name, Sort<Person> sort, PageRequest<Person> pageRequest);
+        List<Person> findByName(String name, Sort<Person> sort, PageRequest pageRequest);
 
-        Page<Person> findByNameOrderByAge(String name, PageRequest<Person> pageRequest);
+        Page<Person> findByNameOrderByAge(String name, PageRequest pageRequest);
 
-        Page<Person> findByAge(String age, PageRequest<Person> pageRequest);
+        Page<Person> findByAge(String age, PageRequest pageRequest);
 
-        List<Person> findByNameAndAge(String name, Integer age, PageRequest<Person> pageRequest);
+        List<Person> findByNameAndAge(String name, Integer age, PageRequest pageRequest);
 
-        Set<Person> findByAgeAndName(Integer age, String name, PageRequest<Person> pageRequest);
+        Set<Person> findByAgeAndName(Integer age, String name, PageRequest pageRequest);
 
-        Stream<Person> findByNameAndAgeOrderByName(String name, Integer age, PageRequest<Person> pageRequest);
+        Stream<Person> findByNameAndAgeOrderByName(String name, Integer age, PageRequest pageRequest);
 
-        Queue<Person> findByNameAndAgeOrderByAge(String name, Integer age, PageRequest<Person> pageRequest);
+        Queue<Person> findByNameAndAgeOrderByAge(String name, Integer age, PageRequest pageRequest);
 
-        Set<Person> findByNameAndAgeGreaterThanEqual(String name, Integer age, PageRequest<Person> pageRequest);
+        Set<Person> findByNameAndAgeGreaterThanEqual(String name, Integer age, PageRequest pageRequest);
 
-        Set<Person> findByAgeGreaterThan(Integer age, PageRequest<Person> pageRequest);
+        Set<Person> findByAgeGreaterThan(Integer age, PageRequest pageRequest);
 
-        Set<Person> findByAgeLessThanEqual(Integer age, PageRequest<Person> pageRequest);
+        Set<Person> findByAgeLessThanEqual(Integer age, PageRequest pageRequest);
 
-        Set<Person> findByAgeLessThan(Integer age, PageRequest<Person> pageRequest);
+        Set<Person> findByAgeLessThan(Integer age, PageRequest pageRequest);
 
-        Set<Person> findByAgeBetween(Integer ageA, Integer ageB, PageRequest<Person> pageRequest);
+        Set<Person> findByAgeBetween(Integer ageA, Integer ageB, PageRequest pageRequest);
 
-        Set<Person> findByNameLike(String name, PageRequest<Person> pageRequest);
+        Set<Person> findByNameLike(String name, PageRequest pageRequest);
 
     }
 
     public interface VendorRepository extends BasicRepository<Vendor, String> {
 
-        Vendor findByPrefixes(String prefix, PageRequest<Vendor> pageRequest);
+        Vendor findByPrefixes(String prefix, PageRequest pageRequest);
 
-        Vendor findByPrefixesIn(List<String> prefix, PageRequest<Vendor> pageRequest);
+        Vendor findByPrefixesIn(List<String> prefix, PageRequest pageRequest);
 
     }
 }

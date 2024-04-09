@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.semistructured.query;
 
+import jakarta.data.Order;
+import jakarta.data.Sort;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 
@@ -24,6 +26,7 @@ import org.eclipse.jnosql.mapping.semistructured.MappingQuery;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -41,12 +44,13 @@ public abstract class AbstractSemistructuredRepository<T, K> extends AbstractRep
     }
 
 
-    @SuppressWarnings("unchecked")
     @Override
-    public Page<T> findAll(PageRequest pageRequest) {
+    public Page<T> findAll(PageRequest pageRequest, Order<T> order) {
         Objects.requireNonNull(pageRequest, "pageRequest is required");
         EntityMetadata metadata = entityMetadata();
-        SelectQuery query = new MappingQuery(pageRequest.sorts(),
+        List<Sort<?>> sorts = new ArrayList<>();
+        order.forEach(sorts::add);
+        SelectQuery query = new MappingQuery(sorts,
                 pageRequest.size(), NoSQLPage.skip(pageRequest)
                 , null ,metadata.name());
 

@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.core.query;
 
+import jakarta.data.Order;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.CrudRepository;
@@ -201,7 +202,7 @@ public abstract class AbstractRepository<T, K> implements NoSQLRepository<T, K> 
     }
 
     @Override
-    public Page<T> findAll(PageRequest<T> pageRequest) {
+    public Page<T> findAll(PageRequest pageRequest, Order<T> order) {
         throw new UnsupportedOperationException(String.format(getErrorMessage(), "findAll"));
     }
 
