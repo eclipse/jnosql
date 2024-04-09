@@ -30,7 +30,7 @@ enum CursorExecutor {
     OFF_SET {
         @SuppressWarnings("unchecked")
         @Override
-        public CursoredPage<CommunicationEntity> cursor(SelectQuery query, PageRequest<?> pageRequest, DatabaseManager template) {
+        public CursoredPage<CommunicationEntity> cursor(SelectQuery query, PageRequest pageRequest, DatabaseManager template) {
 
             var select = new DefaultSelectQuery(pageRequest.size(), 0, query.name(), query.columns(), query.sorts(),
                     query.condition().orElse(null));
@@ -38,14 +38,13 @@ enum CursorExecutor {
             var entities = template.select(select).toList();
             var last = entities.isEmpty() ? null : entities.get(entities.size() - 1);
             if (last == null) {
-                return new CursoredPageRecord<>(entities, Collections.emptyList(), -1, (PageRequest<CommunicationEntity>) pageRequest,
+                return new CursoredPageRecord<>(entities, Collections.emptyList(), -1, pageRequest,
                         null, null);
             } else {
                 PageRequest.Cursor cursor = getCursor(query.sorts(), last);
-                PageRequest<CommunicationEntity> afterCursor = PageRequest.<CommunicationEntity>ofSize(pageRequest.size()).afterCursor(cursor);
+                PageRequest afterCursor = PageRequest.<CommunicationEntity>ofSize(pageRequest.size()).afterCursor(cursor);
 
-                return new CursoredPageRecord<>(entities, List.of(cursor), -1, (PageRequest<CommunicationEntity>)
-                        pageRequest, afterCursor, null);
+                return new CursoredPageRecord<>(entities, List.of(cursor), -1, pageRequest, afterCursor, null);
             }
         }
 
@@ -53,7 +52,7 @@ enum CursorExecutor {
     }, CURSOR_NEXT {
         @SuppressWarnings("unchecked")
         @Override
-        public CursoredPage<CommunicationEntity> cursor(SelectQuery query, PageRequest<?> pageRequest, DatabaseManager template) {
+        public CursoredPage<CommunicationEntity> cursor(SelectQuery query, PageRequest pageRequest, DatabaseManager template) {
 
             var cursor = pageRequest.cursor().orElseThrow();
             var condition = condition(query, cursor);
@@ -63,12 +62,12 @@ enum CursorExecutor {
             var entities = template.select(select).toList();
             var last = entities.isEmpty() ? null : entities.get(entities.size() - 1);
             if (last == null) {
-                return new CursoredPageRecord<>(entities, Collections.emptyList(), -1, (PageRequest<CommunicationEntity>) pageRequest,
+                return new CursoredPageRecord<>(entities, Collections.emptyList(), -1, pageRequest,
                         null, null);
             } else {
                 var nextCursor = getCursor(query.sorts(), last);
                 var afterCursor = PageRequest.<CommunicationEntity>ofSize(pageRequest.size()).afterCursor(nextCursor);
-                return new CursoredPageRecord<>(entities, List.of(cursor, nextCursor), -1, (PageRequest<CommunicationEntity>)
+                return new CursoredPageRecord<>(entities, List.of(cursor, nextCursor), -1,
                         pageRequest, afterCursor, null);
             }
         }
@@ -97,7 +96,7 @@ enum CursorExecutor {
     }, CURSOR_PREVIOUS {
         @SuppressWarnings("unchecked")
         @Override
-        public CursoredPage<CommunicationEntity> cursor(SelectQuery query, PageRequest<?> pageRequest, DatabaseManager template) {
+        public CursoredPage<CommunicationEntity> cursor(SelectQuery query, PageRequest pageRequest, DatabaseManager template) {
             var cursor = pageRequest.cursor().orElseThrow();
             var condition = condition(query, cursor);
 
@@ -106,14 +105,13 @@ enum CursorExecutor {
             var entities = template.select(select).toList();
             var last = entities.isEmpty() ? null : entities.get(entities.size() - 1);
             if (last == null) {
-                return new CursoredPageRecord<>(entities, Collections.emptyList(), -1, (PageRequest<CommunicationEntity>) pageRequest,
+                return new CursoredPageRecord<>(entities, Collections.emptyList(), -1, pageRequest,
                         null, null);
             } else {
                 var beforeCursor = getCursor(query.sorts(), last);
                 var beforeRequest = PageRequest.<CommunicationEntity>ofSize(pageRequest.size()).beforeCursor(beforeCursor);
 
-                return new CursoredPageRecord<>(entities, List.of(beforeCursor, cursor), -1, (PageRequest<CommunicationEntity>)
-                        pageRequest, null, beforeRequest);
+                return new CursoredPageRecord<>(entities, List.of(beforeCursor, cursor), -1, pageRequest, null, beforeRequest);
             }
         }
 
@@ -138,7 +136,7 @@ enum CursorExecutor {
         }
     };
 
-    abstract CursoredPage<CommunicationEntity> cursor(SelectQuery query, PageRequest<?> pageRequest, DatabaseManager template);
+    abstract CursoredPage<CommunicationEntity> cursor(SelectQuery query, PageRequest pageRequest, DatabaseManager template);
 
     public static CursorExecutor of(PageRequest.Mode value) {
 
