@@ -58,7 +58,7 @@ class MapperDeleteTest {
 
     private DatabaseManager managerMock;
 
-    private DefaultSemistructuredTemplate template;
+    private DefaultSemiStructuredTemplate template;
 
 
     private ArgumentCaptor<DeleteQuery> captor;
@@ -70,7 +70,7 @@ class MapperDeleteTest {
         Instance<DatabaseManager> instance = Mockito.mock(Instance.class);
         this.captor = ArgumentCaptor.forClass(DeleteQuery.class);
         when(instance.get()).thenReturn(managerMock);
-        this.template = new DefaultSemistructuredTemplate(converter, instance,
+        this.template = new DefaultSemiStructuredTemplate(converter, instance,
                 persistManager, entities, converters);
     }
 

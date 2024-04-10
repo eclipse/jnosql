@@ -26,7 +26,7 @@ import org.eclipse.jnosql.mapping.document.entities.PersonRepository;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
-import org.eclipse.jnosql.mapping.semistructured.query.SemistructuredRepositoryProxy;
+import org.eclipse.jnosql.mapping.semistructured.query.SemiStructuredRepositoryProxy;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableAutoWeld
-@AddPackages(value = {Converters.class, EntityConverter.class, SemistructuredRepositoryProxy.class})
+@AddPackages(value = {Converters.class, EntityConverter.class, SemiStructuredRepositoryProxy.class})
 @AddPackages({MockProducer.class, DocumentTemplate.class, Reflections.class})
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 class DocumentRepositoryExtensionTest {

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.semistructured.query;
 
 
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -31,11 +31,11 @@ import java.util.Objects;
  * @param <T> The entity type managed by the repository.
  * @param <K> The key type used for column-based operations.
  */
-public class SemistructuredRepositoryProxy<T, K> extends AbstractSemistructuredRepositoryProxy<T, K> {
+public class SemiStructuredRepositoryProxy<T, K> extends AbstractSemiStructuredRepositoryProxy<T, K> {
 
-    private final SemistructuredTemplate template;
+    private final SemiStructuredTemplate template;
 
-    private final SemistructuredRepository<T, K> repository;
+    private final SemiStructuredRepository<T, K> repository;
 
     private final EntityMetadata entityMetadata;
 
@@ -55,14 +55,14 @@ public class SemistructuredRepositoryProxy<T, K> extends AbstractSemistructuredR
      * @throws NullPointerException If either the template, metadata, or repository type is {@code null}.
      */
    @SuppressWarnings({"unchecked", "rawtypes"})
-   public SemistructuredRepositoryProxy(SemistructuredTemplate template,
+   public SemiStructuredRepositoryProxy(SemiStructuredTemplate template,
                                         EntitiesMetadata entities, Class<?> repositoryType,
                                         Converters converters) {
         this.template = template;
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
         this.entityMetadata = entities.get(typeClass);
-        this.repository = new SemistructuredRepository<>(template, entityMetadata);
+        this.repository = new SemiStructuredRepository<>(template, entityMetadata);
         this.converters = converters;
         this.repositoryType =  repositoryType;
     }
@@ -78,7 +78,7 @@ public class SemistructuredRepositoryProxy<T, K> extends AbstractSemistructuredR
     }
 
     @Override
-    protected SemistructuredTemplate template() {
+    protected SemiStructuredTemplate template() {
         return template;
     }
 
@@ -99,19 +99,19 @@ public class SemistructuredRepositoryProxy<T, K> extends AbstractSemistructuredR
      * @param <T> The entity type managed by the repository.
      * @param <K> The key type used for column-based operations.
      */
-    public static class SemistructuredRepository<T, K> extends AbstractSemistructuredRepository<T, K> {
+    public static class SemiStructuredRepository<T, K> extends AbstractSemiStructuredRepository<T, K> {
 
-        private final SemistructuredTemplate template;
+        private final SemiStructuredTemplate template;
 
         private final EntityMetadata entityMetadata;
 
-        SemistructuredRepository(SemistructuredTemplate template, EntityMetadata entityMetadata) {
+        SemiStructuredRepository(SemiStructuredTemplate template, EntityMetadata entityMetadata) {
             this.template = template;
             this.entityMetadata = entityMetadata;
         }
 
         @Override
-        protected SemistructuredTemplate template() {
+        protected SemiStructuredTemplate template() {
             return template;
         }
 
@@ -130,10 +130,10 @@ public class SemistructuredRepositoryProxy<T, K> extends AbstractSemistructuredR
          * @return A new instance of ColumnRepository.
          * @throws NullPointerException If either the template or metadata is {@code null}.
          */
-        public static <T, K> SemistructuredRepository<T, K> of(SemistructuredTemplate template, EntityMetadata metadata) {
+        public static <T, K> SemiStructuredRepository<T, K> of(SemiStructuredTemplate template, EntityMetadata metadata) {
             Objects.requireNonNull(template,"template is required");
             Objects.requireNonNull(metadata,"metadata is required");
-            return new SemistructuredRepository<>(template, metadata);
+            return new SemiStructuredRepository<>(template, metadata);
         }
     }
 }

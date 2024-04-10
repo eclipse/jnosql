@@ -22,7 +22,7 @@ import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
-import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
 import org.eclipse.jnosql.mapping.semistructured.MockProducer;
 import org.eclipse.jnosql.mapping.semistructured.entities.inheritance.EmailNotification;
 import org.eclipse.jnosql.mapping.core.Converters;
@@ -51,7 +51,7 @@ import static org.mockito.Mockito.verify;
 @AddExtensions({EntityMetadataExtension.class})
 class CrudInheritanceRepositoryProxyTest {
 
-    private SemistructuredTemplate template;
+    private SemiStructuredTemplate template;
 
     @Inject
     private EntitiesMetadata entities;
@@ -65,9 +65,9 @@ class CrudInheritanceRepositoryProxyTest {
 
     @BeforeEach
     public void setUp() {
-        this.template = Mockito.mock(SemistructuredTemplate.class);
+        this.template = Mockito.mock(SemiStructuredTemplate.class);
 
-        SemistructuredRepositoryProxy<EmailNotification, Long> personHandler = new SemistructuredRepositoryProxy<>(template,
+        SemiStructuredRepositoryProxy<EmailNotification, Long> personHandler = new SemiStructuredRepositoryProxy<>(template,
                 entities, EmailRepository.class, converters);
 
 

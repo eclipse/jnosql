@@ -34,7 +34,7 @@ import static org.eclipse.jnosql.mapping.core.util.ConverterUtil.getValue;
  * It leverages the provided parameters, PageRequest information, and entity metadata to construct a ColumnQuery object
  * tailored for querying a specific entity'sort columns.
  */
-public enum SemistructuredParameterBasedQuery {
+public enum SemiStructuredParameterBasedQuery {
 
 
     INSTANCE;

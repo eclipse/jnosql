@@ -44,14 +44,14 @@ abstract class AbstractMapperQuery {
 
     protected transient final Converters converters;
 
-    protected transient final SemistructuredTemplate template;
+    protected transient final SemiStructuredTemplate template;
 
     protected long start;
 
     protected long limit;
 
 
-    AbstractMapperQuery(EntityMetadata mapping, Converters converters, SemistructuredTemplate template) {
+    AbstractMapperQuery(EntityMetadata mapping, Converters converters, SemiStructuredTemplate template) {
         this.mapping = mapping;
         this.converters = converters;
         this.entity = mapping.name();

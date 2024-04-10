@@ -28,7 +28,7 @@ final class MapperDelete extends AbstractMapperQuery implements MapperDeleteFrom
         MapperDeleteWhere, MapperDeleteNameCondition, MapperDeleteNotCondition  {
 
 
-    MapperDelete(EntityMetadata mapping, Converters converters, SemistructuredTemplate template) {
+    MapperDelete(EntityMetadata mapping, Converters converters, SemiStructuredTemplate template) {
         super(mapping, converters, template);
     }
 

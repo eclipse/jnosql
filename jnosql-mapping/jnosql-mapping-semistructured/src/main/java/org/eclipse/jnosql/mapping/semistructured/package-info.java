@@ -20,7 +20,7 @@
  * <p>
  * The main components of this package include:
  * <ul>
- *     <li>{@link org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate}:
+ *     <li>{@link org.eclipse.jnosql.mapping.semistructured.AbstractSemiStructuredTemplate}:
  *     An abstract template class that serves as the foundation for implementing semistructured database operations.</li>
  *     <li>{@link org.eclipse.jnosql.mapping.semistructured.EventPersistManager}:
  *     A manager class responsible for firing events before and after entity persistence operations.</li>
@@ -37,7 +37,7 @@
  * in a consistent and efficient manner, abstracting away the complexities of the underlying database operations.
  * </p>
  *
- * @see org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate
+ * @see org.eclipse.jnosql.mapping.semistructured.AbstractSemiStructuredTemplate
  * @see org.eclipse.jnosql.mapping.semistructured.EventPersistManager
  * @see org.eclipse.jnosql.mapping.semistructured.EntityConverter
  * @see org.eclipse.jnosql.mapping.semistructured.AttributeFieldValue

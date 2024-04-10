@@ -137,7 +137,8 @@ class DatabaseManagerTest {
 
         var id = UUID.randomUUID().toString();
         CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
-                PageRequest.ofSize(10).afterKey("Ada", 20, id));
+                PageRequest.afterCursor(PageRequest.Cursor.forKey("Ada", 20, id), 1, 10 ,false));
+
 
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         Mockito.verify(databaseManager).select(captor.capture());
@@ -192,7 +193,8 @@ class DatabaseManagerTest {
 
         var id = UUID.randomUUID().toString();
         CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
-                PageRequest.ofSize(10).afterKey("Ada", 20, id));
+                PageRequest.afterCursor(PageRequest.Cursor.forKey("Ada", 20, id), 1, 10 ,false));
+
 
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         Mockito.verify(databaseManager).select(captor.capture());
@@ -250,8 +252,7 @@ class DatabaseManagerTest {
         Mockito.when(databaseManager.select(Mockito.any(SelectQuery.class)))
                 .thenReturn(streamSubDocument());
         CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
-                PageRequest.ofSize(10).afterKey("Paulista Avenue"));
-
+                PageRequest.afterCursor(PageRequest.Cursor.forKey("Paulista Avenue"), 1, 10 ,false));
 
         assertSoftly(soft -> {
             PageRequest nextedPageRequest = entities.nextPageRequest();
@@ -262,8 +263,6 @@ class DatabaseManagerTest {
 
         });
     }
-
-
 
     @Test
     void shouldReturnPaginationBeforeKeySingleElementWhenConditionIsNull() {
@@ -277,7 +276,7 @@ class DatabaseManagerTest {
 
         var id = UUID.randomUUID().toString();
         CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
-                PageRequest.ofSize(10).beforeKey("Ada", 20, id));
+                PageRequest.beforeCursor(PageRequest.Cursor.forKey("Ada", 20, id), 1, 10 ,false));
 
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         Mockito.verify(databaseManager).select(captor.capture());
@@ -332,7 +331,8 @@ class DatabaseManagerTest {
 
         var id = UUID.randomUUID().toString();
         CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
-                PageRequest.ofSize(10).beforeKey("Ada", 20, id));
+                PageRequest.beforeCursor(PageRequest.Cursor.forKey("Ada", 20, id), 1, 10 ,false));
+
 
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         Mockito.verify(databaseManager).select(captor.capture());
@@ -394,7 +394,7 @@ class DatabaseManagerTest {
 
         var id = UUID.randomUUID().toString();
         CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
-                PageRequest.ofSize(10).afterKey("Ada", 20, id));
+                PageRequest.afterCursor(PageRequest.Cursor.forKey("Ada", 20, id), 1, 10 ,false));
 
         assertSoftly(soft -> {
             PageRequest pageRequest = entities.pageRequest();
@@ -420,7 +420,7 @@ class DatabaseManagerTest {
 
         var id = UUID.randomUUID().toString();
         CursoredPage<CommunicationEntity> entities = databaseManager.selectCursor(query,
-                PageRequest.ofSize(10).beforeKey("Ada", 20, id));
+                PageRequest.beforeCursor(PageRequest.Cursor.forKey("Ada", 20, id), 1, 10 ,false));
 
         assertSoftly(soft -> {
             PageRequest pageRequest = entities.pageRequest();
@@ -441,7 +441,8 @@ class DatabaseManagerTest {
                 .orderBy("id").asc().build();
 
         assertThrows(IllegalArgumentException.class, () -> databaseManager.selectCursor(query,
-                PageRequest.ofSize(10).beforeKey("Ada", 20)));
+                PageRequest.beforeCursor(PageRequest.Cursor.forKey("Ada", 20), 1, 10 ,false)));
+
     }
 
     @Test
@@ -452,7 +453,8 @@ class DatabaseManagerTest {
                 .orderBy("id").asc().build();
 
         assertThrows(IllegalArgumentException.class, () -> databaseManager.selectCursor(query,
-                PageRequest.ofSize(10).afterKey("Ada", 20)));
+                PageRequest.afterCursor(PageRequest.Cursor.forKey("Ada", 20), 1, 10 ,false)));
+
     }
 
     @Test

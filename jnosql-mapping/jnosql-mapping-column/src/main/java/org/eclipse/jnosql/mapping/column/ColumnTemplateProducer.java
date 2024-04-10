@@ -20,7 +20,7 @@ import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.AbstractSemiStructuredTemplate;
 import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.eclipse.jnosql.mapping.semistructured.EventPersistManager;
 
@@ -73,10 +73,10 @@ public class ColumnTemplateProducer implements Function<DatabaseManager, ColumnT
 
     /**
      * Inner class that serves as the actual implementation of {@link ColumnTemplate}.
-     * It extends {@link AbstractSemistructuredTemplate} and implements {@link ColumnTemplate}.
+     * It extends {@link AbstractSemiStructuredTemplate} and implements {@link ColumnTemplate}.
      */
     @Vetoed
-    static class ProducerColumnTemplate extends AbstractSemistructuredTemplate implements ColumnTemplate {
+    static class ProducerColumnTemplate extends AbstractSemiStructuredTemplate implements ColumnTemplate {
 
         private final EntityConverter converter;
 

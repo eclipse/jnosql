@@ -38,7 +38,7 @@ import org.eclipse.jnosql.mapping.core.util.ParamsBinder;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 import org.eclipse.jnosql.mapping.semistructured.MappingQuery;
-import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public abstract class BaseSemistructuredRepository<T, K> extends AbstractReposit
      *
      * @return The SemistructuredTemplate instance.
      */
-    protected abstract SemistructuredTemplate template();
+    protected abstract SemiStructuredTemplate template();
 
     private CommunicationObserverParser parser;
 
@@ -120,7 +120,7 @@ public abstract class BaseSemistructuredRepository<T, K> extends AbstractReposit
 
     protected CommunicationObserverParser parser() {
         if (parser == null) {
-            this.parser = new RepositorySemistructuredObserverParser(entityMetadata());
+            this.parser = new RepositorySemiStructuredObserverParser(entityMetadata());
         }
         return parser;
     }

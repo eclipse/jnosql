@@ -20,13 +20,11 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.Database;
-import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 @Default
 @ApplicationScoped
-class DefaultSemistructuredTemplate extends AbstractSemistructuredTemplate {
+class DefaultSemiStructuredTemplate extends AbstractSemiStructuredTemplate {
 
     private EntityConverter converter;
 
@@ -39,7 +37,7 @@ class DefaultSemistructuredTemplate extends AbstractSemistructuredTemplate {
     private Converters converters;
 
     @Inject
-    DefaultSemistructuredTemplate(EntityConverter converter, Instance<DatabaseManager> manager,
+    DefaultSemiStructuredTemplate(EntityConverter converter, Instance<DatabaseManager> manager,
                                   EventPersistManager eventManager,
                                   EntitiesMetadata entities, Converters converters) {
         this.converter = converter;
@@ -49,7 +47,7 @@ class DefaultSemistructuredTemplate extends AbstractSemistructuredTemplate {
         this.converters = converters;
     }
 
-    DefaultSemistructuredTemplate(){
+    DefaultSemiStructuredTemplate(){
     }
 
     @Override

@@ -23,7 +23,7 @@ import org.eclipse.jnosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.core.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.core.util.AnnotationLiteralUtil;
-import org.eclipse.jnosql.mapping.semistructured.query.SemistructuredRepositoryProxy;
+import org.eclipse.jnosql.mapping.semistructured.query.SemiStructuredRepositoryProxy;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
@@ -89,7 +89,7 @@ public class RepositoryDocumentBean<T extends DataRepository<T, ?>> extends Abst
 
         Converters converters = getInstance(Converters.class);
 
-        var handler = new SemistructuredRepositoryProxy<>(template,
+        var handler = new SemiStructuredRepositoryProxy<>(template,
                 entities, type, converters);
         return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},

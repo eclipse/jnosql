@@ -66,7 +66,7 @@ class ParamsBinderTest {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals("findByAge")).findFirst().get();
         EntityMetadata entityMetadata = mappings.get(Person.class);
-        RepositorySemistructuredObserverParser parser = new RepositorySemistructuredObserverParser(entityMetadata);
+        RepositorySemiStructuredObserverParser parser = new RepositorySemiStructuredObserverParser(entityMetadata);
         paramsBinder = new ParamsBinder(entityMetadata, converters);
 
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
@@ -89,7 +89,7 @@ class ParamsBinderTest {
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals("findByAgeAndName")).findFirst().get();
         EntityMetadata entityMetadata = mappings.get(Person.class);
-        RepositorySemistructuredObserverParser parser = new RepositorySemistructuredObserverParser(entityMetadata);
+        RepositorySemiStructuredObserverParser parser = new RepositorySemiStructuredObserverParser(entityMetadata);
         paramsBinder = new ParamsBinder(entityMetadata, converters);
 
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;

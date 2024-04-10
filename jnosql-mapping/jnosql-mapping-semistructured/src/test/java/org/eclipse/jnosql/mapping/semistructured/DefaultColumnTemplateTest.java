@@ -91,7 +91,7 @@ class DefaultColumnTemplateTest {
 
     private DatabaseManager managerMock;
 
-    private DefaultSemistructuredTemplate template;
+    private DefaultSemiStructuredTemplate template;
 
     private ArgumentCaptor<CommunicationEntity> captor;
 
@@ -105,7 +105,7 @@ class DefaultColumnTemplateTest {
         captor = ArgumentCaptor.forClass(CommunicationEntity.class);
         Instance<DatabaseManager> instance = Mockito.mock(Instance.class);
         Mockito.when(instance.get()).thenReturn(managerMock);
-        this.template = new DefaultSemistructuredTemplate(converter, instance,
+        this.template = new DefaultSemiStructuredTemplate(converter, instance,
                 eventPersistManager, entities, converters);
     }
 
@@ -448,8 +448,8 @@ class DefaultColumnTemplateTest {
     @Test
     void shouldSelectCursor(){
         PageRequest request = PageRequest.ofSize(2);
-        PageRequest afterKey = PageRequest.<CommunicationEntity>ofSize(2)
-                .afterKey("Ada");
+
+        PageRequest afterKey = PageRequest.afterCursor(PageRequest.Cursor.forKey("Ada"), 1, 2, false);
         SelectQuery query = select().from("Person").orderBy("name").asc().build();
 
         Mockito.when(managerMock.selectCursor(query, request))

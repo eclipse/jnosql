@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -14,16 +14,18 @@
  */
 package org.eclipse.jnosql.mapping.semistructured.query;
 
-import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
-import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
-interface SemistructuredTokenProcessor {
+import static org.junit.jupiter.api.Assertions.*;
 
-    CriteriaCondition process(String token,
-                              int index,
-                              Object[] args,
-                              String methodName,
-                              EntityMetadata mapping,
-                              Converters converters);
+class RepositorySemiStructuredObserverParserTest {
+
+    @Test
+    void shouldCreateFromRepository() {
+        EntityMetadata entityMetadata = Mockito.mock(EntityMetadata.class);
+        var parser = RepositorySemiStructuredObserverParser.of(entityMetadata);
+        assertNotNull(parser);
+    }
 }

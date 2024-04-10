@@ -27,7 +27,7 @@ import org.eclipse.jnosql.mapping.EntityPrePersist;
  * 1) {@link EntityPrePersist} event fired before the entity is persisted.
  * 2) {@link EntityPostPersist} event fired after the entity is persisted.
  *
- * @see AbstractSemistructuredTemplate
+ * @see AbstractSemiStructuredTemplate
  */
 @ApplicationScoped
 public class EventPersistManager {
