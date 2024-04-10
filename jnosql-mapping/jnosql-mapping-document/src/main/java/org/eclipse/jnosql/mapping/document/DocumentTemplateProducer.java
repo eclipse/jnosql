@@ -21,7 +21,7 @@ import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Vetoed;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.AbstractSemiStructuredTemplate;
 import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.eclipse.jnosql.mapping.semistructured.EventPersistManager;
 
@@ -56,7 +56,7 @@ public class DocumentTemplateProducer implements Function<DatabaseManager, Docum
     }
 
     @Vetoed
-    static class ProducerDocumentTemplate  extends AbstractSemistructuredTemplate implements DocumentTemplate {
+    static class ProducerDocumentTemplate  extends AbstractSemiStructuredTemplate implements DocumentTemplate {
 
         private final EntityConverter converter;
 

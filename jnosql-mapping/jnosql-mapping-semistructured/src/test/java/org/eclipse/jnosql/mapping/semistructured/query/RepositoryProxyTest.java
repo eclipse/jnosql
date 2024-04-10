@@ -39,7 +39,7 @@ import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
-import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
 import org.eclipse.jnosql.mapping.semistructured.MockProducer;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
 import org.eclipse.jnosql.mapping.semistructured.entities.PersonStatisticRepository;
@@ -86,7 +86,7 @@ import static org.mockito.Mockito.*;
 @AddExtensions({EntityMetadataExtension.class})
 class RepositoryProxyTest {
 
-    private SemistructuredTemplate template;
+    private SemiStructuredTemplate template;
 
     @Inject
     private EntitiesMetadata entities;
@@ -101,12 +101,12 @@ class RepositoryProxyTest {
 
     @BeforeEach
     void setUp() {
-        this.template = Mockito.mock(SemistructuredTemplate.class);
+        this.template = Mockito.mock(SemiStructuredTemplate.class);
 
-        SemistructuredRepositoryProxy personHandler = new SemistructuredRepositoryProxy(template,
+        SemiStructuredRepositoryProxy personHandler = new SemiStructuredRepositoryProxy(template,
                 entities, PersonRepository.class, converters);
 
-        SemistructuredRepositoryProxy vendorHandler = new SemistructuredRepositoryProxy(template,
+        SemiStructuredRepositoryProxy vendorHandler = new SemiStructuredRepositoryProxy(template,
                 entities, VendorRepository.class, converters);
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());

@@ -27,7 +27,7 @@ import java.util.stream.Stream;
  * It extends the {@link Template} interface.
  * This interface provides methods for executing queries, counting elements, and preparing statements.
  */
-public interface SemistructuredTemplate extends Template {
+public interface SemiStructuredTemplate extends Template {
 
 
 

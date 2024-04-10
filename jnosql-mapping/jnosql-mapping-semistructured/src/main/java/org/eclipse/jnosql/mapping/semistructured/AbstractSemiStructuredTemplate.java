@@ -50,13 +50,13 @@ import java.util.stream.StreamSupport;
 import static java.util.Objects.requireNonNull;
 
 /**
- * An abstract implementation of the {@link SemistructuredTemplate} interface providing
+ * An abstract implementation of the {@link SemiStructuredTemplate} interface providing
  * a template method for working with semi-structured NoSQL databases.
  * Concrete subclasses must implement methods to provide necessary dependencies and configuration.
  *
- * @see SemistructuredTemplate
+ * @see SemiStructuredTemplate
  */
-public abstract class AbstractSemistructuredTemplate implements SemistructuredTemplate {
+public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTemplate {
 
     private static final QueryParser PARSER = new QueryParser();
 

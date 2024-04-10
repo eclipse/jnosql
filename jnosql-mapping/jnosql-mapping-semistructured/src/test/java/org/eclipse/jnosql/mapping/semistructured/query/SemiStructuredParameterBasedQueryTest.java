@@ -45,7 +45,7 @@ import java.util.Map;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
-class SemistructuredParameterBasedQueryTest {
+class SemiStructuredParameterBasedQueryTest {
 
     @Inject
     private EntitiesMetadata entitiesMetadata;
@@ -59,7 +59,7 @@ class SemistructuredParameterBasedQueryTest {
     @Test
     void shouldCreateQuerySingleParameter(){
         Map<String, Object> params = Map.of("name", "Ada");
-        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, Collections.emptyList(), metadata);
+        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(params, Collections.emptyList(), metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);
@@ -74,7 +74,7 @@ class SemistructuredParameterBasedQueryTest {
     @Test
     void shouldCreateQueryMultipleParams(){
         Map<String, Object> params = Map.of("name", "Ada", "age", 10);
-        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, Collections.emptyList(), metadata);
+        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(params, Collections.emptyList(), metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);
@@ -94,7 +94,7 @@ class SemistructuredParameterBasedQueryTest {
     @Test
     void shouldCreateQueryEmptyParams(){
         Map<String, Object> params = Collections.emptyMap();
-        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, Collections.emptyList(), metadata);
+        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(params, Collections.emptyList(), metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);
@@ -108,7 +108,7 @@ class SemistructuredParameterBasedQueryTest {
     @Test
     void shouldAddSort(){
         Map<String, Object> params = Collections.emptyMap();
-        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(params, List.of(Sort.asc("name")), metadata);
+        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(params, List.of(Sort.asc("name")), metadata);
 
         SoftAssertions.assertSoftly(soft ->{
             soft.assertThat(query.limit()).isEqualTo(0L);

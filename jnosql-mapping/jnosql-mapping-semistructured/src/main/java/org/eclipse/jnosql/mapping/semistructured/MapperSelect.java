@@ -41,7 +41,7 @@ final class MapperSelect extends AbstractMapperQuery implements MapperFrom, Mapp
 
     private final List<Sort<?>> sorts = new ArrayList<>();
 
-    MapperSelect(EntityMetadata mapping, Converters converters, SemistructuredTemplate template) {
+    MapperSelect(EntityMetadata mapping, Converters converters, SemiStructuredTemplate template) {
         super(mapping, converters, template);
     }
 

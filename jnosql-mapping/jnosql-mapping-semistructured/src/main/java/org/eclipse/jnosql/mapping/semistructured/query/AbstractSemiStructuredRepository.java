@@ -21,7 +21,7 @@ import jakarta.data.page.PageRequest;
 
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
-import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
 import org.eclipse.jnosql.mapping.semistructured.MappingQuery;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -34,9 +34,9 @@ import java.util.stream.Stream;
 /**
  * The {@link org.eclipse.jnosql.mapping.NoSQLRepository} template method
  */
-public abstract class AbstractSemistructuredRepository<T, K> extends AbstractRepository<T, K> {
+public abstract class AbstractSemiStructuredRepository<T, K> extends AbstractRepository<T, K> {
 
-    protected abstract SemistructuredTemplate template();
+    protected abstract SemiStructuredTemplate template();
 
     @Override
     public long countBy() {

@@ -60,7 +60,7 @@ class TemplateInheritanceTest {
 
     private DatabaseManager managerMock;
 
-    private DefaultSemistructuredTemplate template;
+    private DefaultSemiStructuredTemplate template;
 
 
     @BeforeEach
@@ -70,7 +70,7 @@ class TemplateInheritanceTest {
 
         Instance<DatabaseManager> instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerMock);
-        this.template = new DefaultSemistructuredTemplate(converter, instance,
+        this.template = new DefaultSemiStructuredTemplate(converter, instance,
                 documentEventPersistManager, entities, converters);
     }
 

@@ -22,14 +22,14 @@ import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.AbstractSemiStructuredTemplate;
 import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.eclipse.jnosql.mapping.semistructured.EventPersistManager;
 
 
 @Default
 @ApplicationScoped
-class DefaultColumnTemplate extends AbstractSemistructuredTemplate implements ColumnTemplate {
+class DefaultColumnTemplate extends AbstractSemiStructuredTemplate implements ColumnTemplate {
 
 
     private final EntityConverter converter;

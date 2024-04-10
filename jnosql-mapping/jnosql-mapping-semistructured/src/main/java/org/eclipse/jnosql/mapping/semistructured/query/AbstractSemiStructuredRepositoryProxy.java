@@ -36,7 +36,7 @@ import java.util.stream.Stream;
  * @param <T> the entity type
  * @param <K> the K entity
  */
-public abstract class AbstractSemistructuredRepositoryProxy<T, K> extends BaseSemistructuredRepository<T, K> {
+public abstract class AbstractSemiStructuredRepositoryProxy<T, K> extends BaseSemistructuredRepository<T, K> {
 
     @Override
     protected Object executeQuery(Object instance, Method method, Object[] params) {
@@ -60,7 +60,7 @@ public abstract class AbstractSemistructuredRepositoryProxy<T, K> extends BaseSe
             return this.template().selectCursor(query, pageRequest);
         } else {
             Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
-            var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(parameters, getSorts(method), entityMetadata());
+            var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(parameters, getSorts(method), entityMetadata());
             SpecialParameters special = DynamicReturn.findSpecialParameters(params);
             PageRequest pageRequest = special.pageRequest()
                     .orElseThrow(() -> new IllegalArgumentException("Pageable is required in the method signature as parameter at " + method));
@@ -103,7 +103,7 @@ public abstract class AbstractSemistructuredRepositoryProxy<T, K> extends BaseSe
     protected Object executeParameterBased(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
         Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
-        var query = SemistructuredParameterBasedQuery.INSTANCE.toQuery(parameters, getSorts(method), entityMetadata());
+        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(parameters, getSorts(method), entityMetadata());
         return executeFindByQuery(method, params, type, updateQueryDynamically(params, query));
     }
 

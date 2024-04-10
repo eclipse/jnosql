@@ -18,11 +18,11 @@ package org.eclipse.jnosql.mapping.column;
 
 
 
-import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
 
 
 /**
- * This interface extends the {@link SemistructuredTemplate} and represents a template for performing
+ * This interface extends the {@link SemiStructuredTemplate} and represents a template for performing
  * column-based operations in a semistructured database.
  * <p>
  * Implementations of this interface provide methods for CRUD (Create, Read, Update, Delete) operations
@@ -33,9 +33,9 @@ import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
  * abstracting away the complexities of the underlying database operations and providing a unified API for database access.
  * </p>
  *
- * @see SemistructuredTemplate
+ * @see SemiStructuredTemplate
  */
-public interface ColumnTemplate extends SemistructuredTemplate {
+public interface ColumnTemplate extends SemiStructuredTemplate {
 
 
 }

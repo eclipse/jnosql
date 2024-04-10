@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.graph;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
-import org.eclipse.jnosql.mapping.semistructured.SemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
 
 import java.util.Collection;
 import java.util.List;
@@ -35,7 +35,7 @@ import java.util.stream.Stream;
  *
  * @see org.apache.tinkerpop.gremlin.structure.Graph
  */
-public interface GraphTemplate extends SemistructuredTemplate {
+public interface GraphTemplate extends SemiStructuredTemplate {
 
     /**
      * Deletes a {@link org.apache.tinkerpop.gremlin.structure.Vertex}

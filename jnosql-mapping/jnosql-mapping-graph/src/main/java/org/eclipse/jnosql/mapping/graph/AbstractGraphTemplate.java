@@ -31,7 +31,7 @@ import org.eclipse.jnosql.communication.graph.GraphTransactionUtil;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.semistructured.AbstractSemistructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.AbstractSemiStructuredTemplate;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,7 +50,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 import static org.apache.tinkerpop.gremlin.structure.T.id;
 
-abstract class AbstractGraphTemplate extends AbstractSemistructuredTemplate implements GraphTemplate {
+abstract class AbstractGraphTemplate extends AbstractSemiStructuredTemplate implements GraphTemplate {
 
     private static final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Vertex>> INITIAL_VERTEX =
             g -> (GraphTraversal<Vertex, Vertex>) g;

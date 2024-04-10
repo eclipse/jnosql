@@ -23,11 +23,11 @@ import java.util.Objects;
 /**
  * The {@link CommunicationObserverParser} to {@link RepositoryObserverParser}
  */
-public final class RepositorySemistructuredObserverParser implements CommunicationObserverParser {
+public final class RepositorySemiStructuredObserverParser implements CommunicationObserverParser {
 
     private final RepositoryObserverParser parser;
 
-    RepositorySemistructuredObserverParser(EntityMetadata entityMetadata) {
+    RepositorySemiStructuredObserverParser(EntityMetadata entityMetadata) {
         this.parser = RepositoryObserverParser.of(entityMetadata);
     }
 
@@ -47,6 +47,6 @@ public final class RepositorySemistructuredObserverParser implements Communicati
      */
     public static CommunicationObserverParser of(EntityMetadata entityMetadata) {
         Objects.requireNonNull(entityMetadata, "entityMetadata is required");
-        return new RepositorySemistructuredObserverParser(entityMetadata);
+        return new RepositorySemiStructuredObserverParser(entityMetadata);
     }
 }
