@@ -448,8 +448,8 @@ class DefaultColumnTemplateTest {
     @Test
     void shouldSelectCursor(){
         PageRequest request = PageRequest.ofSize(2);
-        PageRequest afterKey = PageRequest.<CommunicationEntity>ofSize(2)
-                .afterKey("Ada");
+
+        PageRequest afterKey = PageRequest.afterCursor(PageRequest.Cursor.forKey("Ada"), 1, 2, false);
         SelectQuery query = select().from("Person").orderBy("name").asc().build();
 
         Mockito.when(managerMock.selectCursor(query, request))

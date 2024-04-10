@@ -82,13 +82,13 @@ public class NoSQLPage<T> implements Page<T> {
 
     @Override
     public PageRequest nextPageRequest() {
-        return this.pageRequest.next();
+        return PageRequest.ofPage(this.pageRequest.page() + 1, this.pageRequest.size(), this.pageRequest.requestTotal());
     }
 
 
     @Override
     public PageRequest previousPageRequest() {
-        return this.pageRequest.previous();
+        return PageRequest.ofPage(this.pageRequest.page() - 1, this.pageRequest.size(), this.pageRequest.requestTotal());
     }
 
 

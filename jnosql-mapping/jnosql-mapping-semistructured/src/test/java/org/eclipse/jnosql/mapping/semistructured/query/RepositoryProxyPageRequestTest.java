@@ -623,7 +623,7 @@ public class RepositoryProxyPageRequestTest {
                 any(PageRequest.class))).thenReturn(mock);
 
         CursoredPage<Person> page = personRepository.findByNameOrderByName("name",
-                PageRequest.<Person>ofSize(10).afterKey("Ada"));
+                PageRequest.afterCursor(PageRequest.Cursor.forKey("Ada"), 1, 10, false));
 
         SoftAssertions.assertSoftly(s -> {
             s.assertThat(page).isEqualTo(mock);
@@ -664,7 +664,7 @@ public class RepositoryProxyPageRequestTest {
                 any(PageRequest.class))).thenReturn(mock);
 
         CursoredPage<Person> page = personRepository.findPageParameter("name",
-                PageRequest.<Person>ofSize(10).afterKey("Ada"));
+                PageRequest.afterCursor(PageRequest.Cursor.forKey("Ada"), 1, 10, false));
 
         SoftAssertions.assertSoftly(s -> s.assertThat(page).isEqualTo(mock));
 
