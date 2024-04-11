@@ -69,6 +69,27 @@ public enum SemiStructuredParameterBasedQuery {
         return new MappingQuery(updateSorter, 0L, 0L, condition, entity);
     }
 
+    public org.eclipse.jnosql.communication.semistructured.SelectQuery toQueryNative(Map<String, Object> params,
+                                                                               List<Sort<?>> sorts,
+                                                                               EntityMetadata entityMetadata) {
+        List<CriteriaCondition> conditions = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            conditions.add(condition(entityMetadata, entry));
+        }
+
+        List<Sort<?>> updateSorter = new ArrayList<>();
+        for (Sort<?> sort : sorts) {
+            var name = entityMetadata.fieldMapping(sort.property())
+                    .map(FieldMetadata::name)
+                    .orElse(sort.property());
+            updateSorter.add(sort.isAscending()? Sort.asc(name): Sort.desc(name));
+        }
+
+        var condition = condition(conditions);
+        var entity = entityMetadata.name();
+        return new MappingQuery(updateSorter, 0L, 0L, condition, entity);
+    }
+
     private CriteriaCondition condition(List<CriteriaCondition> conditions) {
         if (conditions.isEmpty()) {
             return null;
@@ -83,6 +104,14 @@ public enum SemiStructuredParameterBasedQuery {
                 .map(FieldMetadata::name)
                 .orElse(entry.getKey());
         var value = getValue(entry.getValue(), entityMetadata, entry.getKey(), convert);
+        return CriteriaCondition.eq(name, value);
+    }
+
+    private CriteriaCondition condition( EntityMetadata entityMetadata, Map.Entry<String, Object> entry) {
+        var name = entityMetadata.fieldMapping(entry.getKey())
+                .map(FieldMetadata::name)
+                .orElse(entry.getKey());
+        var value = entry.getValue();
         return CriteriaCondition.eq(name, value);
     }
 }
