@@ -84,6 +84,15 @@ public final class CommunicationPreparedStatement {
     }
 
     /**
+     * Returns the select query if present.
+     *
+     * @return the select query
+     */
+    public Optional<SelectQuery> select(){
+        return Optional.ofNullable(selectQuery);
+    }
+
+    /**
      * Returns the result as a stream of entities.
      *
      * @return the stream of entities

@@ -15,11 +15,12 @@
 package org.eclipse.jnosql.mapping.semistructured;
 
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
-final class PreparedStatement implements org.eclipse.jnosql.mapping.PreparedStatement {
+public final class PreparedStatement implements org.eclipse.jnosql.mapping.PreparedStatement {
 
     private final org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement preparedStatement;
 
@@ -46,5 +47,9 @@ final class PreparedStatement implements org.eclipse.jnosql.mapping.PreparedStat
     public <T> Optional<T> singleResult() {
         Optional<CommunicationEntity> singleResult = preparedStatement.singleResult();
         return singleResult.map(converter::toEntity);
+    }
+
+    public Optional<SelectQuery> selectQuery(){
+        return preparedStatement.select();
     }
 }
