@@ -55,7 +55,7 @@ import java.util.stream.Stream;
  * @param <T> The type of entities managed by the repository.
  *
  */
-public abstract class BaseSemistructuredRepository<T, K> extends AbstractRepositoryProxy<T, K> {
+public abstract class BaseSemiStructuredRepository<T, K> extends AbstractRepositoryProxy<T, K> {
 
     private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();
 

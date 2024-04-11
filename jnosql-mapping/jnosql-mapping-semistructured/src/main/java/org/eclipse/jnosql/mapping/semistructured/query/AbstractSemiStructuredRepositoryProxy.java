@@ -36,7 +36,7 @@ import java.util.stream.Stream;
  * @param <T> the entity type
  * @param <K> the K entity
  */
-public abstract class AbstractSemiStructuredRepositoryProxy<T, K> extends BaseSemistructuredRepository<T, K> {
+public abstract class AbstractSemiStructuredRepositoryProxy<T, K> extends BaseSemiStructuredRepository<T, K> {
 
     @Override
     protected Object executeQuery(Object instance, Method method, Object[] params) {
