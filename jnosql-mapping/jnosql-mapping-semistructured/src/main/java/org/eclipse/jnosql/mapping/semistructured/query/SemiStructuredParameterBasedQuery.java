@@ -69,6 +69,13 @@ public enum SemiStructuredParameterBasedQuery {
         return new MappingQuery(updateSorter, 0L, 0L, condition, entity);
     }
 
+    /**
+     * Constructs a ColumnQuery based on the provided parameters, PageRequest information, and entity metadata.
+     * This method avoid CDI and don't start the container.
+     * @param params          The map of parameters used for filtering columns.
+     * @param entityMetadata  Metadata describing the structure of the entity.
+     * @return                 A ColumnQuery instance tailored for the specified entity.
+     */
     public org.eclipse.jnosql.communication.semistructured.SelectQuery toQueryNative(Map<String, Object> params,
                                                                                List<Sort<?>> sorts,
                                                                                EntityMetadata entityMetadata) {
