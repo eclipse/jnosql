@@ -29,6 +29,7 @@ import org.eclipse.jnosql.mapping.semistructured.EventPersistManager;
 
 @Default
 @ApplicationScoped
+@Database(DatabaseType.COLUMN)
 class DefaultColumnTemplate extends AbstractSemiStructuredTemplate implements ColumnTemplate {
 
 
