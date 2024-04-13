@@ -56,8 +56,10 @@ public class ColumnExtension implements Extension {
         LOGGER.info("Processing repositories as a Column implementation: " + crudTypes);
 
         databases.forEach(type -> {
-            final TemplateBean bean = new TemplateBean(type.getProvider());
-            afterBeanDiscovery.addBean(bean);
+            if (!type.getProvider().isBlank()) {
+                final TemplateBean bean = new TemplateBean(type.getProvider());
+                afterBeanDiscovery.addBean(bean);
+            }
         });
 
         crudTypes.forEach(type -> {
