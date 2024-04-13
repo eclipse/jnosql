@@ -303,15 +303,14 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
         manager().delete(DeleteQuery.delete().from(metadata.name()).build());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> CursoredPage<T> selectCursor(SelectQuery query, PageRequest pageRequest){
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(pageRequest, "pageRequest is required");
         CursoredPage<CommunicationEntity> cursoredPage = this.manager().selectCursor(query, pageRequest);
         List<T> entities = cursoredPage.stream().<T>map(c -> converter().toEntity(c)).toList();
-        PageRequest nextPageRequest = cursoredPage.hasNext()? (PageRequest) cursoredPage.nextPageRequest(): null;
-        PageRequest beforePageRequest = cursoredPage.hasPrevious()? (PageRequest) cursoredPage.previousPageRequest(): null;
+        PageRequest nextPageRequest = cursoredPage.hasNext()? cursoredPage.nextPageRequest() : null;
+        PageRequest beforePageRequest = cursoredPage.hasPrevious()? cursoredPage.previousPageRequest() : null;
         List<PageRequest.Cursor> cursors = ((CursoredPageRecord<CommunicationEntity>) cursoredPage).cursors();
         return new CursoredPageRecord<>(entities, cursors, -1, pageRequest, nextPageRequest, beforePageRequest);
     }

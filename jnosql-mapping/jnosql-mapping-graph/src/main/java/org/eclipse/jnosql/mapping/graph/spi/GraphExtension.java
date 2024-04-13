@@ -53,8 +53,10 @@ public class GraphExtension implements Extension {
                 databases.size(), crudTypes.size()));
         LOGGER.info("Processing repositories as a Graph implementation: " + crudTypes);
         databases.forEach(type -> {
-            final TemplateBean bean = new TemplateBean(type.getProvider());
-            afterBeanDiscovery.addBean(bean);
+            if (!type.getProvider().isBlank()) {
+                final TemplateBean bean = new TemplateBean(type.getProvider());
+                afterBeanDiscovery.addBean(bean);
+            }
         });
 
 

@@ -15,8 +15,10 @@
 package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.data.Sort;
+import jakarta.data.page.PageRequest;
 import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
+import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.semistructured.MappingQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -73,11 +75,12 @@ public enum SemiStructuredParameterBasedQuery {
      * Constructs a ColumnQuery based on the provided parameters, PageRequest information, and entity metadata.
      * This method avoid CDI and don't start the container.
      * @param params          The map of parameters used for filtering columns.
+     * @param pageRequest    The PageRequest object containing pagination information.
      * @param entityMetadata  Metadata describing the structure of the entity.
      * @return                 A ColumnQuery instance tailored for the specified entity.
      */
     public org.eclipse.jnosql.communication.semistructured.SelectQuery toQueryNative(Map<String, Object> params,
-                                                                               List<Sort<?>> sorts,
+                                                                               List<Sort<?>> sorts, PageRequest pageRequest,
                                                                                EntityMetadata entityMetadata) {
         List<CriteriaCondition> conditions = new ArrayList<>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
@@ -94,7 +97,13 @@ public enum SemiStructuredParameterBasedQuery {
 
         var condition = condition(conditions);
         var entity = entityMetadata.name();
-        return new MappingQuery(updateSorter, 0L, 0L, condition, entity);
+        long limit = 0;
+        long skip = 0;
+        if(pageRequest != null) {
+            limit = pageRequest.size();
+            skip = NoSQLPage.skip(pageRequest);
+        }
+        return new MappingQuery(updateSorter, limit, skip, condition, entity);
     }
 
     private CriteriaCondition condition(List<CriteriaCondition> conditions) {
