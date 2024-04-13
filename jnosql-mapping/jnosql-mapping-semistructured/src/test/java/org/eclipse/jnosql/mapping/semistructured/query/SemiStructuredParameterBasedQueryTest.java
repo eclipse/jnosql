@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.data.Sort;
+import jakarta.data.page.PageRequest;
 import jakarta.inject.Inject;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
@@ -51,17 +52,18 @@ class SemiStructuredParameterBasedQueryTest {
     private EntitiesMetadata entitiesMetadata;
 
     private EntityMetadata metadata;
+
     @BeforeEach
-    void setUp(){
+    void setUp() {
         this.metadata = entitiesMetadata.get(Person.class);
     }
 
     @Test
-    void shouldCreateQuerySingleParameter(){
+    void shouldCreateQuerySingleParameter() {
         Map<String, Object> params = Map.of("name", "Ada");
         var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(params, Collections.emptyList(), metadata);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(query.limit()).isEqualTo(0L);
             soft.assertThat(query.skip()).isEqualTo(0L);
             soft.assertThat(query.name()).isEqualTo("Person");
@@ -72,11 +74,11 @@ class SemiStructuredParameterBasedQueryTest {
     }
 
     @Test
-    void shouldCreateQueryMultipleParams(){
+    void shouldCreateQueryMultipleParams() {
         Map<String, Object> params = Map.of("name", "Ada", "age", 10);
         var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(params, Collections.emptyList(), metadata);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(query.limit()).isEqualTo(0L);
             soft.assertThat(query.skip()).isEqualTo(0L);
             soft.assertThat(query.name()).isEqualTo("Person");
@@ -92,11 +94,11 @@ class SemiStructuredParameterBasedQueryTest {
     }
 
     @Test
-    void shouldCreateQueryEmptyParams(){
+    void shouldCreateQueryEmptyParams() {
         Map<String, Object> params = Collections.emptyMap();
         var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(params, Collections.emptyList(), metadata);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(query.limit()).isEqualTo(0L);
             soft.assertThat(query.skip()).isEqualTo(0L);
             soft.assertThat(query.name()).isEqualTo("Person");
@@ -106,11 +108,11 @@ class SemiStructuredParameterBasedQueryTest {
     }
 
     @Test
-    void shouldAddSort(){
+    void shouldAddSort() {
         Map<String, Object> params = Collections.emptyMap();
         var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(params, List.of(Sort.asc("name")), metadata);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(query.limit()).isEqualTo(0L);
             soft.assertThat(query.skip()).isEqualTo(0L);
             soft.assertThat(query.name()).isEqualTo("Person");
@@ -120,11 +122,11 @@ class SemiStructuredParameterBasedQueryTest {
     }
 
     @Test
-    void shouldCreateQuerySingleParameterNative(){
+    void shouldCreateQuerySingleParameterNative() {
         Map<String, Object> params = Map.of("name", "Ada");
-        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQueryNative(params, Collections.emptyList(), metadata);
+        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQueryNative(params, Collections.emptyList(), null, metadata);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(query.limit()).isEqualTo(0L);
             soft.assertThat(query.skip()).isEqualTo(0L);
             soft.assertThat(query.name()).isEqualTo("Person");
@@ -135,11 +137,11 @@ class SemiStructuredParameterBasedQueryTest {
     }
 
     @Test
-    void shouldCreateQueryMultipleParamsNative(){
+    void shouldCreateQueryMultipleParamsNative() {
         Map<String, Object> params = Map.of("name", "Ada", "age", 10);
-        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQueryNative(params, Collections.emptyList(), metadata);
+        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQueryNative(params, Collections.emptyList(), null, metadata);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(query.limit()).isEqualTo(0L);
             soft.assertThat(query.skip()).isEqualTo(0L);
             soft.assertThat(query.name()).isEqualTo("Person");
@@ -155,11 +157,11 @@ class SemiStructuredParameterBasedQueryTest {
     }
 
     @Test
-    void shouldCreateQueryEmptyParamsNative(){
+    void shouldCreateQueryEmptyParamsNative() {
         Map<String, Object> params = Collections.emptyMap();
-        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQueryNative(params, Collections.emptyList(), metadata);
+        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQueryNative(params, Collections.emptyList(), null, metadata);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(query.limit()).isEqualTo(0L);
             soft.assertThat(query.skip()).isEqualTo(0L);
             soft.assertThat(query.name()).isEqualTo("Person");
@@ -169,15 +171,30 @@ class SemiStructuredParameterBasedQueryTest {
     }
 
     @Test
-    void shouldAddSortNative(){
+    void shouldAddSortNative() {
         Map<String, Object> params = Collections.emptyMap();
-        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQueryNative(params, List.of(Sort.asc("name")), metadata);
+        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQueryNative(params, List.of(Sort.asc("name")), null, metadata);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(query.limit()).isEqualTo(0L);
             soft.assertThat(query.skip()).isEqualTo(0L);
             soft.assertThat(query.name()).isEqualTo("Person");
             soft.assertThat(query.sorts()).contains(Sort.asc("name"));
+            soft.assertThat(query.condition()).isEmpty();
+        });
+    }
+
+    @Test
+    void shouldIncludePageRequest(){
+        Map<String, Object> params = Collections.emptyMap();
+        PageRequest pageRequest = PageRequest.ofPage(2).size(10);
+        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQueryNative(params, Collections.emptyList(), pageRequest, metadata);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(query.limit()).isEqualTo(10L);
+            soft.assertThat(query.skip()).isEqualTo(10L);
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.sorts()).isEmpty();
             soft.assertThat(query.condition()).isEmpty();
         });
     }

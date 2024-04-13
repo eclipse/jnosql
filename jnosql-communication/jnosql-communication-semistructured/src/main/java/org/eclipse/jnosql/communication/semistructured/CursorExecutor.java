@@ -28,7 +28,6 @@ import java.util.List;
 enum CursorExecutor {
 
     OFF_SET {
-        @SuppressWarnings("unchecked")
         @Override
         public CursoredPage<CommunicationEntity> cursor(SelectQuery query, PageRequest pageRequest, DatabaseManager template) {
 
@@ -50,7 +49,6 @@ enum CursorExecutor {
 
 
     }, CURSOR_NEXT {
-        @SuppressWarnings("unchecked")
         @Override
         public CursoredPage<CommunicationEntity> cursor(SelectQuery query, PageRequest pageRequest, DatabaseManager template) {
 
@@ -66,7 +64,7 @@ enum CursorExecutor {
                         null, null);
             } else {
                 var nextCursor = getCursor(query.sorts(), last);
-                var afterCursor = PageRequest.<CommunicationEntity>ofSize(pageRequest.size()).afterCursor(nextCursor);
+                var afterCursor = PageRequest.ofSize(pageRequest.size()).afterCursor(nextCursor);
                 return new CursoredPageRecord<>(entities, List.of(cursor, nextCursor), -1,
                         pageRequest, afterCursor, null);
             }
@@ -94,7 +92,6 @@ enum CursorExecutor {
 
 
     }, CURSOR_PREVIOUS {
-        @SuppressWarnings("unchecked")
         @Override
         public CursoredPage<CommunicationEntity> cursor(SelectQuery query, PageRequest pageRequest, DatabaseManager template) {
             var cursor = pageRequest.cursor().orElseThrow();
@@ -178,8 +175,8 @@ enum CursorExecutor {
         }
     }
 
-    private static DefaultSelectQuery updateQuery(int pageRequest, SelectQuery query, CriteriaCondition condition) {
-        return new DefaultSelectQuery(pageRequest, 0, query.name(), query.columns(), query.sorts(),
+    private static DefaultSelectQuery updateQuery(int limit, SelectQuery query, CriteriaCondition condition) {
+        return new DefaultSelectQuery(limit, 0, query.name(), query.columns(), query.sorts(),
                 query.condition().map(c -> CriteriaCondition.and(c, condition))
                         .orElse(condition));
     }
