@@ -53,7 +53,6 @@
 		<arquillian.version>1.7.0.Final</arquillian.version>
 
 		<!-- TCK settings -->
-		<jakarta.tck.profile>none</jakarta.tck.profile>
 		<included.groups><![CDATA[standalone & nosql]]></included.groups>
 	</properties>
 
@@ -149,10 +148,10 @@
 						<jimage.dir>${project.build.directory}/jdk17-bundle</jimage.dir>
 						<signature.sigTestClasspath>
 							${project.build.directory}/dependency/jakarta.data-api-${jakarta.data.api.version}.jar:${project.build.directory}/jdk11-bundle/java.base:${project.build.directory}/jdk11-bundle/java.rmi:${project.build.directory}/jdk11-bundle/java.sql:${project.build.directory}/jdk11-bundle/java.naming</signature.sigTestClasspath>
-						<jakarta.tck.profile>${jakarta.tck.profile}</jakarta.tck.profile>
+						<jakarta.tck.standalone>true</jakarta.tck.standalone>
 					</systemPropertyVariables>
 					<groups>${included.groups}</groups>
-					<reportNameSuffix>${jakarta.tck.profile}</reportNameSuffix>
+					<reportNameSuffix>standalone</reportNameSuffix>
 					<testSourceDirectory>
 						${basedir}${file.separarator}src${file.separarator}main${file.separarator}java${file.separarator}</testSourceDirectory>
 				</configuration>
