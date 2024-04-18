@@ -148,7 +148,7 @@
 						<jimage.dir>${project.build.directory}/jdk17-bundle</jimage.dir>
 						<signature.sigTestClasspath>
 							${project.build.directory}/dependency/jakarta.data-api-${jakarta.data.api.version}.jar:${project.build.directory}/jdk11-bundle/java.base:${project.build.directory}/jdk11-bundle/java.rmi:${project.build.directory}/jdk11-bundle/java.sql:${project.build.directory}/jdk11-bundle/java.naming</signature.sigTestClasspath>
-						<jakarta.tck.standalone>true</jakarta.tck.standalone>
+						<jakarta.tck.skip.deployment>true</jakarta.tck.skip.deployment>
 					</systemPropertyVariables>
 					<groups>${included.groups}</groups>
 					<reportNameSuffix>standalone</reportNameSuffix>
