@@ -91,12 +91,12 @@ class JakartaDataQueryProviderTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"SELECT name, age FROM entity ORDER BY name ASC", "SELECT name, age"})
+    @ValueSource(strings = {"SELECT name, age FROM entity", "SELECT name, age"})
     void shouldSelectFields(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(selectQuery.fields()).hasSize(2).contains("name", "order");
+            soft.assertThat(selectQuery.fields()).hasSize(2).contains("name", "age");
             soft.assertThat(selectQuery.where()).isEmpty();
             soft.assertThat(selectQuery.entity()).isEqualTo("entity");
             soft.assertThat(selectQuery.orderBy()).isEmpty();

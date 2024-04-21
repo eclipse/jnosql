@@ -56,7 +56,7 @@ public class SelectJDQL extends AbstractJDQLProvider implements BiFunction<Strin
         var aggregate = ctx.aggregate_expression();
 
         if (stateField != null) {
-            stateField.IDENTIFIER().forEach(s -> fields.add(s.getText()));
+            stateField.stream().map(ParseTree::getText).forEach(fields::add);
         } else if (aggregate != null) {
            this.count = true;
         }
