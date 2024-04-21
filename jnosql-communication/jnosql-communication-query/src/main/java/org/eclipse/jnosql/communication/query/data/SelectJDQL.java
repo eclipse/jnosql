@@ -17,7 +17,6 @@ import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;

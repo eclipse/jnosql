@@ -91,25 +91,64 @@ input_parameter : ':' IDENTIFIER | '?' INTEGER;
 
 literal : STRING | INTEGER | DOUBLE;
 
+// Token rules
+SELECT          : 'SELECT';
+UPDATE          : 'UPDATE';
+DELETE          : 'DELETE';
+FROM            : 'FROM';
+WHERE           : 'WHERE';
+SET             : 'SET';
+ORDER           : 'ORDER';
+BY              : 'BY';
+NOT             : 'NOT';
+IN              : 'IN';
+IS              : 'IS';
+NULL            : 'NULL';
+COUNT           : 'COUNT';
+TRUE            : 'TRUE';
+FALSE           : 'FALSE';
+ASC             : 'ASC';
+DESC            : 'DESC';
+AND             : 'AND';
+OR              : 'OR';
+ABS             : 'ABS';
+LENGTH          : 'LENGTH';
+LOWER           : 'LOWER';
+UPPER           : 'UPPER';
+LEFT            : 'LEFT';
+RIGHT           : 'RIGHT';
+LOCAL_DATE      : 'LOCAL DATE';
+LOCAL_DATETIME  : 'LOCAL DATETIME';
+LOCAL_TIME      : 'LOCAL TIME';
 
-// Define token for punctuation and separators
-COMMA : ',';
-LPAREN : '(';
-RPAREN : ')';
-DOT : '.';
-SEMI : ';';
-COLON : ':';
-QUESTION : '?';
+// Operators
+EQ              : '=';
+GT              : '>';
+LT              : '<';
+NEQ             : '<>';
+GTEQ            : '>=';
+LTEQ            : '<=';
+PLUS            : '+';
+MINUS           : '-';
+MUL             : '*';
+DIV             : '/';
+CONCAT          : '||';
 
-// Define token for identifiers
-IDENTIFIER : [a-zA-Z_][a-zA-Z0-9_]*;
+// Special Characters
+COMMA           : ',';
+DOT             : '.';
+LPAREN          : '(';
+RPAREN          : ')';
+COLON           : ':';
+QUESTION        : '?';
 
-// Define tokens for literals
-STRING : '"' ( ~["\\] | '\\' . )* '"';
-INTEGER : [0-9]+;
-DOUBLE : [0-9]+ '.' [0-9]* | '.' [0-9]+;
+// Identifier and literals
+IDENTIFIER      : [a-zA-Z_][a-zA-Z0-9_]*;
+STRING          : '"' ( ~["\\] | '\\' . )* '"';
+INTEGER         : [0-9]+;
+DOUBLE          : [0-9]+'.'[0-9]* | '.'[0-9]+;
 
-// Whitespace and comments
-WS : [ \t\r\n]+ -> skip ;
-LINE_COMMENT : '//' ~[\r\n]* -> skip;
-BLOCK_COMMENT : '/*' .*? '*/' -> skip;
+// Whitespace and Comments
+WS              : [ \t\r\n]+ -> skip ;
+LINE_COMMENT    : '//' ~[\r\n]* -> skip;
+BLOCK_COMMENT   : '/*' .*? '*/' -> skip;

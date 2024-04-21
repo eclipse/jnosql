@@ -31,7 +31,7 @@ class JakartaDataQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"FROM entity"})
-    void shouldReturnParserQuery2(String query) {
+    void shouldReturnParserQuery(String query) {
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
@@ -91,7 +91,7 @@ class JakartaDataQueryProviderTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"SELECT name;age FROM entity ORDER BY name ASC", "SELECT name, age"})
+    @ValueSource(strings = {"SELECT name, age FROM entity ORDER BY name ASC", "SELECT name, age"})
     void shouldSelectFields(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 

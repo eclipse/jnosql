@@ -47,7 +47,7 @@ abstract class AbstractJDQLProvider extends JDQLBaseListener {
         lexer.addErrorListener(QueryErrorListener.INSTANCE);
         parser.addErrorListener(QueryErrorListener.INSTANCE);
 
-        ParseTree tree = getParserTree().apply(parser);
+        ParseTree tree =parser.select_statement();
         ParseTreeWalker.DEFAULT.walk(this, tree);
 
         if (Objects.nonNull(condition)) {
