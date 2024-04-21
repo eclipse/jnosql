@@ -47,10 +47,8 @@ abstract class AbstractJDQLProvider extends JDQLBaseListener {
         lexer.addErrorListener(QueryErrorListener.INSTANCE);
         parser.addErrorListener(QueryErrorListener.INSTANCE);
 
-        ParseTree tree = parser.select_statement();
-        System.out.println(tree.toStringTree(parser));
-        ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(this, tree);
+        ParseTree tree = getParserTree().apply(parser);
+        ParseTreeWalker.DEFAULT.walk(this, tree);
 
         if (Objects.nonNull(condition)) {
             this.where = Where.of(condition);
@@ -58,8 +56,8 @@ abstract class AbstractJDQLProvider extends JDQLBaseListener {
     }
 
     @Override
-    public void exitEntity_name(JDQLParser.Entity_nameContext ctx) {
-        this.entity = ctx.getText();
+    public void exitFrom_clause(JDQLParser.From_clauseContext ctx) {
+        this.entity = ctx.entity_name().getText();
     }
 
     abstract Function<JDQLParser, ParseTree> getParserTree();

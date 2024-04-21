@@ -11,27 +11,27 @@
  */
 package org.eclipse.jnosql.communication.query.data;
 
-import org.antlr.v4.runtime.tree.ParseTree;
+import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.query.SelectQuery;
-import org.eclipse.jnosql.query.grammar.data.JDQLParser;
+import org.eclipse.jnosql.communication.query.Where;
 
-import java.util.Collections;
-import java.util.Objects;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.List;
+import java.util.Optional;
 
-public class SelectJDQL extends AbstractJDQLProvider implements BiFunction<String, String, SelectQuery> {
+record JDQLSelectQuery(List<String> fields, String entity, List<Sort<?>> orderBy, Where condition) implements SelectQuery {
 
     @Override
-    public SelectQuery apply(String query, String entity) {
-        Objects.requireNonNull(query, " query is required");
-        this.entity = entity;
-        runQuery(query);
-        return new JDQLSelectQuery(Collections.emptyList(), this.entity, Collections.emptyList(), where);
+    public Optional<Where> where() {
+        return Optional.ofNullable(condition);
     }
 
     @Override
-    Function<JDQLParser, ParseTree> getParserTree() {
-        return JDQLParser::select_statement;
+    public long skip() {
+        return 0;
+    }
+
+    @Override
+    public long limit() {
+        return 0;
     }
 }

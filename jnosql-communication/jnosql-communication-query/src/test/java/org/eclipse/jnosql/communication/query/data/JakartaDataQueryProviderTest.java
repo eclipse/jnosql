@@ -11,23 +11,11 @@
  */
 package org.eclipse.jnosql.communication.query.data;
 
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.Token;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.query.SelectQuery;
-import org.eclipse.jnosql.communication.query.Where;
-import org.eclipse.jnosql.query.grammar.data.JDQLLexer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JakartaDataQueryProviderTest {
 
@@ -41,23 +29,43 @@ class JakartaDataQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"FROM entity"})
-    void shouldReturnParserQuery(String query) {
-        CharStream stream = CharStreams.fromString(query);
-        JDQLLexer lexer = new JDQLLexer(stream);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
+    void shouldReturnParserQuery2(String query) {
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
-        tokens.fill();
-        for (Token token : tokens.getTokens()) {
-            System.out.println(token.getText() + " : " + token.getType());
-        }
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+        });
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"FROM entity"})
-    void shouldReturnParserQuery2(String query) {
-        SelectJDQL selectJDQL = new SelectJDQL();
-        selectJDQL.apply(query, "entity");
+    void shouldOverwriteTheEntity(String query) {
+        SelectQuery selectQuery = selectProvider.apply(query, "newEntity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+        });
     }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"", " "})
+    void shouldKeepEntityFromParameter(String query) {
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+        });
+    }
+
 
 
 }
