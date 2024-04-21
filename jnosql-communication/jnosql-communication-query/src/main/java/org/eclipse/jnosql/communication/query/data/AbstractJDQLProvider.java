@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2024 Contributors to the Eclipse Foundation
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  and Apache License v2.0 which accompanies this distribution.
@@ -9,31 +9,37 @@
  *  Contributors:
  *  Otavio Santana
  */
-package org.eclipse.jnosql.communication.query;
+package org.eclipse.jnosql.communication.query.data;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.eclipse.jnosql.query.grammar.QueryBaseListener;
-import org.eclipse.jnosql.query.grammar.QueryLexer;
-import org.eclipse.jnosql.query.grammar.QueryParser;
+import org.eclipse.jnosql.communication.query.QueryCondition;
+import org.eclipse.jnosql.communication.query.QueryErrorListener;
+import org.eclipse.jnosql.communication.query.Where;
+import org.eclipse.jnosql.query.grammar.data.JDQLBaseListener;
+import org.eclipse.jnosql.query.grammar.data.JDQLParser;
+import org.eclipse.jnosql.query.grammar.method.MethodLexer;
 
 import java.util.Objects;
 import java.util.function.Function;
 
-abstract class AbstractSupplier extends QueryBaseListener {
+abstract class AbstractJDQLProvider extends JDQLBaseListener {
 
-    abstract Function<QueryParser, ParseTree> getParserTree();
+    protected Where where;
+
+    protected QueryCondition condition;
+
+    protected boolean and = true;
 
     protected void runQuery(String query) {
-        Objects.requireNonNull(query, "query is required");
 
         CharStream stream = CharStreams.fromString(query);
-        QueryLexer lexer = new QueryLexer(stream);
+        MethodLexer lexer = new MethodLexer(stream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        QueryParser parser = new QueryParser(tokens);
+        JDQLParser parser = new JDQLParser(tokens);
         lexer.removeErrorListeners();
         parser.removeErrorListeners();
         lexer.addErrorListener(QueryErrorListener.INSTANCE);
@@ -42,5 +48,11 @@ abstract class AbstractSupplier extends QueryBaseListener {
         ParseTree tree = getParserTree().apply(parser);
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(this, tree);
+
+        if (Objects.nonNull(condition)) {
+            this.where = Where.of(condition);
+        }
     }
+
+    abstract Function<JDQLParser, ParseTree> getParserTree();
 }
