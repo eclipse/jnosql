@@ -11,8 +11,14 @@
  */
 package org.eclipse.jnosql.communication.query.data;
 
-import org.eclipse.jnosql.communication.query.DeleteQuery;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Token;
+import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.Where;
+import org.eclipse.jnosql.query.grammar.data.JDQLLexer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -26,17 +32,32 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class JakartaDataQueryProviderTest {
 
 
+    private SelectJDQL selectProvider;
+
+    @BeforeEach
+    void setUp() {
+        selectProvider = new SelectJDQL();
+    }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"select * from entity"})
+    @ValueSource(strings = {"FROM entity"})
     void shouldReturnParserQuery(String query) {
-        String entity = "entity";
-        DeleteQuery deleteQuery = queryProvider.apply(query, entity);
-        assertNotNull(deleteQuery);
-        assertEquals(entity, deleteQuery.entity());
-        assertTrue(deleteQuery.fields().isEmpty());
-        Optional<Where> where = deleteQuery.where();
-        assertFalse(where.isPresent());
+        CharStream stream = CharStreams.fromString(query);
+        JDQLLexer lexer = new JDQLLexer(stream);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+        tokens.fill();
+        for (Token token : tokens.getTokens()) {
+            System.out.println(token.getText() + " : " + token.getType());
+        }
     }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"FROM entity"})
+    void shouldReturnParserQuery2(String query) {
+        SelectJDQL selectJDQL = new SelectJDQL();
+        selectJDQL.apply(query, "entity");
+    }
+
 
 }

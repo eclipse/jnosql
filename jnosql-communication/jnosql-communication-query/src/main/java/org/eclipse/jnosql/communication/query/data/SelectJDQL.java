@@ -13,7 +13,6 @@ package org.eclipse.jnosql.communication.query.data;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.eclipse.jnosql.communication.query.SelectQuery;
-import org.eclipse.jnosql.communication.query.method.MethodQuery;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
 
 import java.util.Objects;
@@ -26,7 +25,7 @@ public class SelectJDQL extends AbstractJDQLProvider implements BiFunction<Strin
     public SelectQuery apply(String query, String entity) {
         Objects.requireNonNull(query, " query is required");
         Objects.requireNonNull(entity, " entity is required");
-        runQuery(MethodQuery.of(query).get());
+        runQuery(query);
         return null;
     }
 

@@ -20,8 +20,8 @@ import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryErrorListener;
 import org.eclipse.jnosql.communication.query.Where;
 import org.eclipse.jnosql.query.grammar.data.JDQLBaseListener;
+import org.eclipse.jnosql.query.grammar.data.JDQLLexer;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
-import org.eclipse.jnosql.query.grammar.method.MethodLexer;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -34,10 +34,12 @@ abstract class AbstractJDQLProvider extends JDQLBaseListener {
 
     protected boolean and = true;
 
+    protected String entity;
+
     protected void runQuery(String query) {
 
         CharStream stream = CharStreams.fromString(query);
-        MethodLexer lexer = new MethodLexer(stream);
+        JDQLLexer lexer = new JDQLLexer(stream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JDQLParser parser = new JDQLParser(tokens);
         lexer.removeErrorListeners();
@@ -45,13 +47,19 @@ abstract class AbstractJDQLProvider extends JDQLBaseListener {
         lexer.addErrorListener(QueryErrorListener.INSTANCE);
         parser.addErrorListener(QueryErrorListener.INSTANCE);
 
-        ParseTree tree = getParserTree().apply(parser);
+        ParseTree tree = parser.select_statement();
+        System.out.println(tree.toStringTree(parser));
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(this, tree);
 
         if (Objects.nonNull(condition)) {
             this.where = Where.of(condition);
         }
+    }
+
+    @Override
+    public void exitEntity_name(JDQLParser.Entity_nameContext ctx) {
+        this.entity = ctx.getText();
     }
 
     abstract Function<JDQLParser, ParseTree> getParserTree();
