@@ -91,3 +91,25 @@ input_parameter : ':' IDENTIFIER | '?' INTEGER;
 
 literal : STRING | INTEGER | DOUBLE;
 
+
+// Define token for punctuation and separators
+COMMA : ',';
+LPAREN : '(';
+RPAREN : ')';
+DOT : '.';
+SEMI : ';';
+COLON : ':';
+QUESTION : '?';
+
+// Define token for identifiers
+IDENTIFIER : [a-zA-Z_][a-zA-Z0-9_]*;
+
+// Define tokens for literals
+STRING : '"' ( ~["\\] | '\\' . )* '"';
+INTEGER : [0-9]+;
+DOUBLE : [0-9]+ '.' [0-9]* | '.' [0-9]+;
+
+// Whitespace and comments
+WS : [ \t\r\n]+ -> skip ;
+LINE_COMMENT : '//' ~[\r\n]* -> skip;
+BLOCK_COMMENT : '/*' .*? '*/' -> skip;
