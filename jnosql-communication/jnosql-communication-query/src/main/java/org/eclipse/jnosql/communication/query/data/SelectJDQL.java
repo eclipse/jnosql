@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class SelectJDQL extends AbstractJDQLProvider implements BiFunction<String, String, SelectQuery> {
+public class SelectJDQL extends AbstractWhere implements BiFunction<String, String, SelectQuery> {
 
     private final List<Sort<?>> sorts = new ArrayList<>();
 

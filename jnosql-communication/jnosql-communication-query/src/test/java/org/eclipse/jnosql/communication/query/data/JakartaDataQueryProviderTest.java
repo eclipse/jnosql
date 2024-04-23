@@ -91,6 +91,32 @@ class JakartaDataQueryProviderTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"FROM entity ORDER BY name DESC", "ORDER BY name DESC"})
+    void shouldQueryOrderDesc(String query){
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.where()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).hasSize(1).contains(Sort.desc("name"));
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"FROM entity ORDER BY name ASC, age DESC", "ORDER BY name ASC, age DESC"})
+    void shouldQueryOrders(String query){
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.where()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).hasSize(2).contains(Sort.asc("name"), Sort.desc("age"));
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"SELECT name, age FROM entity", "SELECT name, age"})
     void shouldSelectFields(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
@@ -102,6 +128,9 @@ class JakartaDataQueryProviderTest {
             soft.assertThat(selectQuery.orderBy()).isEmpty();
         });
     }
+
+
+
 
 
 

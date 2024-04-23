@@ -14,28 +14,16 @@ package org.eclipse.jnosql.communication.query.data;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryErrorListener;
-import org.eclipse.jnosql.communication.query.Where;
 import org.eclipse.jnosql.query.grammar.data.JDQLBaseListener;
 import org.eclipse.jnosql.query.grammar.data.JDQLLexer;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
 
-import java.util.Objects;
 import java.util.function.Function;
 
 abstract class AbstractJDQLProvider extends JDQLBaseListener {
-
-    protected Where where;
-
-    protected QueryCondition condition;
-
-    protected boolean and = true;
-
-    protected String entity;
 
     protected void runQuery(String query) {
 
@@ -51,15 +39,6 @@ abstract class AbstractJDQLProvider extends JDQLBaseListener {
 
         ParseTree tree = parser.select_statement();
         ParseTreeWalker.DEFAULT.walk(this, tree);
-
-        if (Objects.nonNull(condition)) {
-            this.where = Where.of(condition);
-        }
-    }
-
-    @Override
-    public void exitFrom_clause(JDQLParser.From_clauseContext ctx) {
-        this.entity = ctx.entity_name().getText();
     }
 
     abstract Function<JDQLParser, ParseTree> getParserTree();
