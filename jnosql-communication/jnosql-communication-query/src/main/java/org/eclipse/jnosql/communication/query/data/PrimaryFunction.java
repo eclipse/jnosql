@@ -27,7 +27,8 @@ enum PrimaryFunction implements Function<JDQLParser.Primary_expressionContext, Q
         if(context.literal() != null) {
             var literal = context.literal();
             if(literal.STRING() != null){
-                return StringQueryValue.of(literal.STRING().getText());
+                String text = literal.STRING().getText();
+                return StringQueryValue.of(text.substring(1, text.length() - 1));
             } else if(literal.INTEGER() != null) {
                 return NumberQueryValue.of(Integer.valueOf(literal.INTEGER().getText()));
             } else if(literal.DOUBLE() != null) {
