@@ -13,7 +13,11 @@ package org.eclipse.jnosql.communication.query.data;
 
 import jakarta.data.Sort;
 import org.assertj.core.api.SoftAssertions;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.query.NumberQueryValue;
+import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.SelectQuery;
+import org.eclipse.jnosql.communication.query.Where;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -126,6 +130,26 @@ class JakartaDataQueryProviderTest {
             soft.assertThat(selectQuery.where()).isEmpty();
             soft.assertThat(selectQuery.entity()).isEqualTo("entity");
             soft.assertThat(selectQuery.orderBy()).isEmpty();
+        });
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"WHERE age = 10", "FROM entity WHERE age = 10"})
+    void shouldEq(String query){
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).hasSize(2).contains("name", "age");
+            soft.assertThat(selectQuery.where()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.name()).isEqualTo("age");
+            soft.assertThat(condition.value()).isEqualTo(NumberQueryValue.of(10));
         });
     }
 

@@ -11,11 +11,22 @@
  */
 package org.eclipse.jnosql.communication.query.data;
 
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.Where;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+
+import static org.eclipse.jnosql.communication.Condition.AND;
+import static org.eclipse.jnosql.communication.Condition.EQUALS;
+import static org.eclipse.jnosql.communication.Condition.NOT;
+import static org.eclipse.jnosql.communication.Condition.OR;
 
 abstract class AbstractWhere extends AbstractJDQLProvider {
 
@@ -24,6 +35,8 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
     protected QueryCondition condition;
 
     protected boolean and = true;
+
+    protected boolean negation = false;
 
     protected String entity;
 
@@ -39,5 +52,112 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
     @Override
     public void exitFrom_clause(JDQLParser.From_clauseContext ctx) {
         this.entity = ctx.entity_name().getText();
+    }
+
+    @Override
+    public void exitConditional_expression(JDQLParser.Conditional_expressionContext ctx) {
+        super.exitConditional_expression(ctx);
+        for (var context : ctx.conditional_expression()) {
+            if (context.AND() != null) {
+                this.and = true;
+            } else if (context.OR() != null) {
+                this.and = false;
+            }
+            if (context.comparison_expression() != null) {
+                var comparison = context.comparison_expression();
+                if (comparison.NEQ() != null) {
+                    this.negation = true;
+                }
+                if(comparison.EQ()!=null){
+                    List<JDQLParser.Scalar_expressionContext> scalarExpressionContexts = comparison.scalar_expression();
+                    System.out.println(scalarExpressionContexts);
+                    this.condition = null;
+                }
+
+            }
+        }
+    }
+
+    @Override
+    public void exitComparison_expression(JDQLParser.Comparison_expressionContext ctx) {
+        super.exitComparison_expression(ctx);
+        boolean hasNot = Objects.nonNull(ctx.NEQ());
+        if(ctx.EQ()!=null){
+            var contexts = ctx.scalar_expression();
+            var name = contexts.get(0).getText();
+            var value = contexts.get(1);
+            var literal = PrimaryFunction.INSTANCE.apply(value.primary_expression());
+            checkCondition(new DefaultQueryCondition(name, EQUALS, literal), hasNot);
+        }
+    }
+
+    private void checkCondition(QueryCondition condition, boolean hasNot) {
+        QueryCondition newCondition = checkNotCondition(condition, hasNot);
+        if (Objects.isNull(this.condition)) {
+            this.condition = newCondition;
+            return;
+        }
+        if (and) {
+            appendCondition(AND, newCondition);
+        } else {
+            appendCondition(OR, newCondition);
+        }
+
+    }
+
+    private void appendCondition(Condition operator, QueryCondition newCondition) {
+
+        if (operator.equals(this.condition.condition())) {
+            ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.value());
+            List<QueryCondition> conditions = new ArrayList<>(conditionValue.get());
+            conditions.add(newCondition);
+            this.condition = new DefaultQueryCondition("_" + operator.name(), operator, ConditionQueryValue.of(conditions));
+        } else if (isNotAppendable()) {
+            List<QueryCondition> conditions = Arrays.asList(this.condition, newCondition);
+            this.condition = new DefaultQueryCondition("_" + operator.name(), operator, ConditionQueryValue.of(conditions));
+        } else {
+            List<QueryCondition> conditions = ConditionQueryValue.class.cast(this.condition.value()).get();
+            QueryCondition lastCondition = conditions.get(conditions.size() - 1);
+
+            if (isAppendable(lastCondition) && operator.equals(lastCondition.condition())) {
+                List<QueryCondition> lastConditions = new ArrayList<>(ConditionQueryValue.class
+                        .cast(lastCondition.value()).get());
+                lastConditions.add(newCondition);
+
+                QueryCondition newAppendable = new DefaultQueryCondition("_" + operator.name(),
+                        operator, ConditionQueryValue.of(lastConditions));
+
+                List<QueryCondition> newConditions = new ArrayList<>(conditions.subList(0, conditions.size() - 1));
+                newConditions.add(newAppendable);
+                this.condition = new DefaultQueryCondition(this.condition.name(), this.condition.condition(),
+                        ConditionQueryValue.of(newConditions));
+            } else {
+                QueryCondition newAppendable = new DefaultQueryCondition("_" + operator.name(),
+                        operator, ConditionQueryValue.of(Collections.singletonList(newCondition)));
+
+                List<QueryCondition> newConditions = new ArrayList<>(conditions);
+                newConditions.add(newAppendable);
+                this.condition = new DefaultQueryCondition(this.condition.name(), this.condition.condition(),
+                        ConditionQueryValue.of(newConditions));
+            }
+
+        }
+    }
+
+    private boolean isAppendable(QueryCondition condition) {
+        return (AND.equals(condition.condition()) || OR.equals(condition.condition()));
+    }
+
+    private boolean isNotAppendable() {
+        return !isAppendable(this.condition);
+    }
+
+    private QueryCondition checkNotCondition(QueryCondition condition, boolean hasNot) {
+        if (hasNot) {
+            ConditionQueryValue conditions = ConditionQueryValue.of(Collections.singletonList(condition));
+            return new DefaultQueryCondition("_NOT", NOT, conditions);
+        } else {
+            return condition;
+        }
     }
 }
