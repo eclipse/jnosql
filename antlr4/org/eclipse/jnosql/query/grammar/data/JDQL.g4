@@ -15,7 +15,7 @@ update_item : state_field_path_expression '=' (scalar_expression | 'NULL');
 
 select_clause : 'SELECT' select_list;
 select_list
-    : state_field_path_expression
+    : state_field_path_expression (',' state_field_path_expression)*
     | aggregate_expression
     ;
 aggregate_expression : 'COUNT' '(' 'THIS' ')';
@@ -144,7 +144,8 @@ QUESTION        : '?';
 
 // Identifier and literals
 IDENTIFIER      : [a-zA-Z_][a-zA-Z0-9_]*;
-STRING          : '"' ( ~["\\] | '\\' . )* '"';
+STRING : '"' ( ~["\\] | '\\' . )* '"'  // double quoted strings
+       | '\'' ( ~['\\] | '\\' . )* '\'';  // single quoted strings
 INTEGER         : [0-9]+;
 DOUBLE          : [0-9]+'.'[0-9]* | '.'[0-9]+;
 

@@ -245,7 +245,7 @@ class JakartaDataQueryProviderTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"WHERE active = TRUE", "FROM entity WHERE active = TRUE"})
+    @ValueSource(strings = {"WHERE active = TRUE", "FROM entity WHERE active = true"})
     void shouldUseSpecialExpressionTrue(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
@@ -263,7 +263,7 @@ class JakartaDataQueryProviderTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"WHERE active = FALSE", "FROM entity WHERE active = FALSE"})
+    @ValueSource(strings = {"WHERE active = FALSE", "FROM entity WHERE active = false"})
     void shouldUseSpecialExpressionFalse(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
