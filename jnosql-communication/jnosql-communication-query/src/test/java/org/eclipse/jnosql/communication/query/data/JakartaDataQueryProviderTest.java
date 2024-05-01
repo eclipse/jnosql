@@ -279,4 +279,76 @@ class JakartaDataQueryProviderTest {
             soft.assertThat(condition.value()).isEqualTo(BooleanQueryValue.FALSE);
         });
     }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"WHERE age < 10", "FROM entity WHERE age < 10"})
+    void shouldUseSpecialExpressionLesser(String query){
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.LESSER_THAN);
+            soft.assertThat(condition.name()).isEqualTo("age");
+            soft.assertThat(condition.value()).isEqualTo(NumberQueryValue.of(10));
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"WHERE age > 10", "FROM entity WHERE age > 10"})
+    void shouldUseSpecialExpressionGreater(String query){
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.GREATER_THAN);
+            soft.assertThat(condition.name()).isEqualTo("age");
+            soft.assertThat(condition.value()).isEqualTo(NumberQueryValue.of(10));
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"WHERE age <= 10", "FROM entity WHERE age <= 10"})
+    void shouldUseSpecialExpressionLesserThanEquals(String query){
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.LESSER_EQUALS_THAN);
+            soft.assertThat(condition.name()).isEqualTo("age");
+            soft.assertThat(condition.value()).isEqualTo(NumberQueryValue.of(10));
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"WHERE age >= 10", "FROM entity WHERE age >= 10"})
+    void shouldUseSpecialExpressionGreaterThanEquals(String query){
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.GREATER_EQUALS_THAN);
+            soft.assertThat(condition.name()).isEqualTo("age");
+            soft.assertThat(condition.value()).isEqualTo(NumberQueryValue.of(10));
+        });
+    }
 }

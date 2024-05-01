@@ -54,41 +54,31 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
         this.entity = ctx.entity_name().getText();
     }
 
-    /*@Override
-    public void exitConditional_expression(JDQLParser.Conditional_expressionContext ctx) {
-        super.exitConditional_expression(ctx);
-        for (var context : ctx.conditional_expression()) {
-            if (context.AND() != null) {
-                this.and = true;
-            } else if (context.OR() != null) {
-                this.and = false;
-            }
-            if (context.comparison_expression() != null) {
-                var comparison = context.comparison_expression();
-                if (comparison.NEQ() != null) {
-                    this.negation = true;
-                }
-                if(comparison.EQ()!=null){
-                    List<JDQLParser.Scalar_expressionContext> scalarExpressionContexts = comparison.scalar_expression();
-                    System.out.println(scalarExpressionContexts);
-                    this.condition = null;
-                }
-
-            }
-        }
-    }*/
-
     @Override
     public void exitComparison_expression(JDQLParser.Comparison_expressionContext ctx) {
         super.exitComparison_expression(ctx);
         boolean hasNot = Objects.nonNull(ctx.NEQ());
-        if(ctx.EQ()!=null){
-            var contexts = ctx.scalar_expression();
-            var name = contexts.get(0).getText();
-            var value = contexts.get(1);
-            var literal = PrimaryFunction.INSTANCE.apply(value.primary_expression());
-            checkCondition(new DefaultQueryCondition(name, EQUALS, literal), hasNot);
+        var contexts = ctx.scalar_expression();
+        var condition = getCondition(ctx);
+        var name = contexts.get(0).getText();
+        var value = contexts.get(1);
+        var literal = PrimaryFunction.INSTANCE.apply(value.primary_expression());
+        checkCondition(new DefaultQueryCondition(name, condition, literal), hasNot);
+    }
+
+    private Condition getCondition(JDQLParser.Comparison_expressionContext ctx) {
+        if (ctx.EQ() != null) {
+            return EQUALS;
+        } else if (ctx.LT() != null) {
+            return Condition.LESSER_THAN;
+        } else if (ctx.LTEQ() != null) {
+            return Condition.LESSER_EQUALS_THAN;
+        } else if (ctx.GT() != null) {
+            return Condition.GREATER_THAN;
+        } else if (ctx.GTEQ() != null) {
+            return Condition.GREATER_EQUALS_THAN;
         }
+        throw new UnsupportedOperationException("The operation does not support: " + ctx.getText());
     }
 
     private void checkCondition(QueryCondition condition, boolean hasNot) {
