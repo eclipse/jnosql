@@ -34,6 +34,8 @@ enum PrimaryFunction implements Function<JDQLParser.Primary_expressionContext, Q
             } else if(literal.DOUBLE() != null) {
                 return NumberQueryValue.of(Double.valueOf(literal.DOUBLE().getText()));
             }
+        } else if(context.input_parameter() != null) {
+            return DefaultQueryValue.of(context.input_parameter().getText());
         }
         return null;
     }

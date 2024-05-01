@@ -207,9 +207,39 @@ class JakartaDataQueryProviderTest {
         });
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"WHERE name = :name", "FROM entity WHERE name = :name"})
+    void shouldEQQueryWithCondition(String query){
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.name()).isEqualTo("name");
+            soft.assertThat(condition.value()).isEqualTo(DefaultQueryValue.of("name"));
+        });
+    }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"WHERE name = ?1", "FROM entity WHERE name = ?1"})
+    void shouldEQQueryWithConditionPosition(String query){
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
-
-
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.name()).isEqualTo("name");
+            soft.assertThat(condition.value()).isEqualTo(DefaultQueryValue.of("?1"));
+        });
+    }
 }

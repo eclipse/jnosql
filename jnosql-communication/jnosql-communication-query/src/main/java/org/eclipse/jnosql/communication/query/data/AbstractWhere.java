@@ -54,7 +54,7 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
         this.entity = ctx.entity_name().getText();
     }
 
-    @Override
+    /*@Override
     public void exitConditional_expression(JDQLParser.Conditional_expressionContext ctx) {
         super.exitConditional_expression(ctx);
         for (var context : ctx.conditional_expression()) {
@@ -76,7 +76,7 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
 
             }
         }
-    }
+    }*/
 
     @Override
     public void exitComparison_expression(JDQLParser.Comparison_expressionContext ctx) {
