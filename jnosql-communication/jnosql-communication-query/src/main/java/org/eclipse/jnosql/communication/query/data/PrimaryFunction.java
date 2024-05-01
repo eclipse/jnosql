@@ -11,6 +11,7 @@
  */
 package org.eclipse.jnosql.communication.query.data;
 
+import org.eclipse.jnosql.communication.query.BooleanQueryValue;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
 import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
@@ -36,6 +37,13 @@ enum PrimaryFunction implements Function<JDQLParser.Primary_expressionContext, Q
             }
         } else if(context.input_parameter() != null) {
             return DefaultQueryValue.of(context.input_parameter().getText());
+        }else if(context.special_expression() != null){
+            var specialExpression = context.special_expression().getText();
+            return switch (specialExpression) {
+                case "TRUE" -> BooleanQueryValue.TRUE;
+                case "FALSE" -> BooleanQueryValue.FALSE;
+                default -> throw new UnsupportedOperationException("The special expression is not supported yet: " + specialExpression);
+            };
         }
         return null;
     }
