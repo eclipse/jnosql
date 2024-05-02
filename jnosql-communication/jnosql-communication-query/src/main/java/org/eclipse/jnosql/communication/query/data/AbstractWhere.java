@@ -11,7 +11,6 @@
  */
 package org.eclipse.jnosql.communication.query.data;
 
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
@@ -37,8 +36,6 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
 
     protected boolean and = true;
 
-    protected boolean negation = false;
-
     protected String entity;
 
     @Override
@@ -59,8 +56,10 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
     public void exitComparison_expression(JDQLParser.Comparison_expressionContext ctx) {
         super.exitComparison_expression(ctx);
         boolean hasNot = false;
-        if(ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent){
+        if(ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
+                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent){
             hasNot = Objects.nonNull(grandParent.NOT());
+            and = Objects.isNull(grandParent.OR());
         }
         var contexts = ctx.scalar_expression();
         var condition = getCondition(ctx);
