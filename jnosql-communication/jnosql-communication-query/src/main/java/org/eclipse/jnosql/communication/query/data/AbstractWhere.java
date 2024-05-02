@@ -56,10 +56,11 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
     public void exitComparison_expression(JDQLParser.Comparison_expressionContext ctx) {
         super.exitComparison_expression(ctx);
         boolean hasNot = false;
+        boolean andCondition = true;
         if(ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
                 && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent){
             hasNot = Objects.nonNull(grandParent.NOT());
-            and = Objects.isNull(grandParent.OR());
+            andCondition = Objects.isNull(grandParent.OR());
         }
         var contexts = ctx.scalar_expression();
         var condition = getCondition(ctx);
@@ -67,6 +68,7 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
         var value = contexts.get(1);
         var literal = PrimaryFunction.INSTANCE.apply(value.primary_expression());
         checkCondition(new DefaultQueryCondition(name, condition, literal), hasNot);
+        and = andCondition;
     }
 
 
