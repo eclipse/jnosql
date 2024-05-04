@@ -59,6 +59,28 @@ class JakartaDataQueryProviderInTest {
         });
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"WHERE days IN (java.time.DayOfWeek.MONDAY, java.time.DayOfWeek.SUNDAY)", "FROM entity WHERE days IN (java.time.DayOfWeek.MONDAY, java.time.DayOfWeek.SUNDAY)"})
+    void shouldInEnumLiteral(String query){
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            QueryValue<?> value = condition.value();
+            soft.assertThat(condition.name()).isEqualTo("age");
+            soft.assertThat(condition.condition()).isEqualTo(Condition.IN);
+            soft.assertThat(value).isInstanceOf(ArrayQueryValue.class);
+            soft.assertThat(ArrayQueryValue.class.cast(value).get()).hasSize(2)
+                    .contains(NumberQueryValue.of(10), NumberQueryValue.of(12.12));
+
+        });
+    }
+
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"WHERE age NOT IN (10, 20)", "FROM entity WHERE age NOT IN (10, 20)"})
