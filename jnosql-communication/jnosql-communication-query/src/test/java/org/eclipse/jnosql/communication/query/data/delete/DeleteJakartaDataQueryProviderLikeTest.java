@@ -16,9 +16,8 @@ import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
 import org.eclipse.jnosql.communication.query.QueryValue;
-import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
-import org.eclipse.jnosql.communication.query.data.DeleteJDQL;
+import org.eclipse.jnosql.communication.query.data.DeleteProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -26,11 +25,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 class DeleteJakartaDataQueryProviderLikeTest {
 
 
-    private DeleteJDQL deleteProvider;
+    private DeleteProvider deleteProvider;
 
     @BeforeEach
     void setUp() {
-        deleteProvider = new DeleteJDQL();
+        deleteProvider = new DeleteProvider();
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

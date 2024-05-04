@@ -11,14 +11,13 @@
  */
 package org.eclipse.jnosql.communication.query.data;
 
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.eclipse.jnosql.communication.query.DeleteQuery;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
 
 import java.util.Objects;
 import java.util.function.Function;
 
-public class DeleteJDQL extends AbstractWhere implements Function<String, DeleteQuery> {
+public class DeleteProvider extends AbstractWhere implements Function<String, DeleteQuery> {
 
     @Override
     public DeleteQuery apply(String query) {

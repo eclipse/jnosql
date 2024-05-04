@@ -20,7 +20,7 @@ import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
-import org.eclipse.jnosql.communication.query.data.SelectJDQL;
+import org.eclipse.jnosql.communication.query.data.SelectProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -28,11 +28,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 class SelectJakartaDataQueryProviderBetweenTest {
 
 
-    private SelectJDQL selectProvider;
+    private SelectProvider selectProvider;
 
     @BeforeEach
     void setUp() {
-        selectProvider = new SelectJDQL();
+        selectProvider = new SelectProvider();
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
