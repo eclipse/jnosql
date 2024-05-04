@@ -28,7 +28,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.DayOfWeek;
 
-class JakartaDataQueryProviderTest {
+class SelectJakartaDataQueryProviderTest {
 
 
     private SelectJDQL selectProvider;

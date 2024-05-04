@@ -1,10 +1,10 @@
 /*
  *  Copyright (c) 2024 Contributors to the Eclipse Foundation
- *  All rights reserved. This program OR the accompanying materials
+ *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
- *  OR Apache License v2.0 which accompanies this distribution.
+ *  and Apache License v2.0 which accompanies this distribution.
  *  The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- *  OR the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+ *  and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
  *  You may elect to redistribute this code under either of these licenses.
  *  Contributors:
  *  Otavio Santana
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class JakartaDataQueryProviderOrTest {
+class SelectJakartaDataQueryProviderAndTest {
 
 
     private SelectJDQL selectProvider;
@@ -35,8 +35,8 @@ class JakartaDataQueryProviderOrTest {
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"WHERE age = 10 OR salary = 10.15", "FROM entity WHERE age = 10 OR salary = 10.15"})
-    void shouldORTwoConditions(String query){
+    @ValueSource(strings = {"WHERE age = 10 AND salary = 10.15", "FROM entity WHERE age = 10 AND salary = 10.15"})
+    void shouldAndTwoConditions(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
@@ -46,7 +46,7 @@ class JakartaDataQueryProviderOrTest {
             soft.assertThat(selectQuery.where()).isNotEmpty();
             var where = selectQuery.where().orElseThrow();
             var condition = where.condition();
-            soft.assertThat(condition.condition()).isEqualTo(Condition.OR);
+            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
 
             var values = (ConditionQueryValue) condition.value();
             var conditions = values.get();
@@ -60,8 +60,8 @@ class JakartaDataQueryProviderOrTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"WHERE age = 10 OR salary = 10.15 OR name =?1", "FROM entity WHERE age = 10 OR salary = 10.15 OR name =?1"})
-    void shouldORThreeConditions(String query){
+    @ValueSource(strings = {"WHERE age = 10 AND salary = 10.15 AND name =?1", "FROM entity WHERE age = 10 AND salary = 10.15 AND name =?1"})
+    void shouldAndThreeConditions(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
@@ -71,7 +71,7 @@ class JakartaDataQueryProviderOrTest {
             soft.assertThat(selectQuery.where()).isNotEmpty();
             var where = selectQuery.where().orElseThrow();
             var condition = where.condition();
-            soft.assertThat(condition.condition()).isEqualTo(Condition.OR);
+            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
 
             var values = (ConditionQueryValue) condition.value();
             var conditions = values.get();
@@ -88,7 +88,7 @@ class JakartaDataQueryProviderOrTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"WHERE age = 10 OR salary = 10.15 AND name =?1", "FROM entity WHERE age = 10 OR salary = 10.15 AND name =?1"})
+    @ValueSource(strings = {"WHERE age = 10 AND salary = 10.15 OR name =?1", "FROM entity WHERE age = 10 AND salary = 10.15 OR name =?1"})
     void shouldORMixConditions(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
@@ -99,7 +99,7 @@ class JakartaDataQueryProviderOrTest {
             soft.assertThat(selectQuery.where()).isNotEmpty();
             var where = selectQuery.where().orElseThrow();
             var condition = where.condition();
-            soft.assertThat(condition.condition()).isEqualTo(Condition.OR);
+            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
 
             var values = (ConditionQueryValue) condition.value();
             var conditions = values.get();
@@ -113,7 +113,7 @@ class JakartaDataQueryProviderOrTest {
             condition = conditions.get(2);
             values = (ConditionQueryValue) condition.value();
             conditions = values.get();
-            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
+            soft.assertThat(condition.condition()).isEqualTo(Condition.OR);
             soft.assertThat(conditions).hasSize(1);
 
             soft.assertThat(conditions.get(0).name()).isEqualTo("name");
