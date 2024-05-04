@@ -12,7 +12,6 @@
 package org.eclipse.jnosql.communication.query.data;
 
 import org.eclipse.jnosql.communication.Condition;
-import org.eclipse.jnosql.communication.query.ArrayQueryValue;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryValue;

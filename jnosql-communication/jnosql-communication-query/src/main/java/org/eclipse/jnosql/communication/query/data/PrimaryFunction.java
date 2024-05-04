@@ -15,7 +15,6 @@ import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.query.BooleanQueryValue;
 import org.eclipse.jnosql.communication.query.EnumQueryValue;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
-import org.eclipse.jnosql.communication.query.Query;
 import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
