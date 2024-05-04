@@ -18,7 +18,7 @@ import org.eclipse.jnosql.communication.query.Where;
 import java.util.List;
 import java.util.Optional;
 
-record JDQLSelectQuery(List<String> fields, String entity, List<Sort<?>> orderBy, Where condition) implements SelectQuery {
+record JDQLSelectQuery(List<String> fields, String entity, List<Sort<?>> orderBy, Where condition, boolean count) implements SelectQuery {
 
     @Override
     public Optional<Where> where() {
@@ -33,5 +33,10 @@ record JDQLSelectQuery(List<String> fields, String entity, List<Sort<?>> orderBy
     @Override
     public long limit() {
         return 0;
+    }
+
+    @Override
+    public boolean isCount() {
+        return count;
     }
 }

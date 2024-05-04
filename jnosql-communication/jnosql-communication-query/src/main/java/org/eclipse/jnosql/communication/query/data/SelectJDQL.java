@@ -38,7 +38,7 @@ public class SelectJDQL extends AbstractWhere implements BiFunction<String, Stri
         if(this.entity == null) {
             throw new IllegalArgumentException("The entity is required in the query");
         }
-        return new JDQLSelectQuery(fields, this.entity, sorts, where);
+        return new JDQLSelectQuery(fields, this.entity, sorts, where, count);
     }
 
     @Override

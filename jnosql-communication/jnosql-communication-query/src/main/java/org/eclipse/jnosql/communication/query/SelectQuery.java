@@ -18,50 +18,70 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Represents a select statement, which reads one or more fields for one or more entities.
- * It returns a result-set of the entities matching the request, where each entity contains the fields
- * corresponding to the query.
+ * Represents a select statement for querying a NoSQL database, which retrieves specified fields
+ * from one or more entities. This interface defines the structure of a select query that can
+ * return a result-set comprising entities that match the specified conditions. Each returned entity
+ * will include only the fields specified in the query, or all fields if no specific fields are requested.
  */
 public interface SelectQuery extends Query {
+
     /**
-     * Retrieves the fields to be retrieved in this query. If this list is empty, the query will retrieve the entire entity.
+     * Retrieves a list of field names to be retrieved by this query. If the list is empty,
+     * the query is understood to retrieve all fields of the entity.
      *
-     * @return the list of fields
+     * @return a list of field names; if empty, indicates all fields should be retrieved
      */
     List<String> fields();
 
     /**
-     * Retrieves the name of the entity.
+     * Retrieves the name of the entity on which the query is to be executed.
      *
-     * @return the entity name
+     * @return the name of the entity as a string
      */
     String entity();
 
     /**
-     * Retrieves the condition associated with this select query. If the condition is empty, the query may retrieve the entire entities.
+     * Retrieves the condition associated with this select query. The condition defines
+     * the constraints that determine which entities are included in the result-set.
+     * If no condition is provided, all entities of the specified type may be retrieved.
      *
-     * @return the {@link Where} entity, otherwise {@link Optional#empty()}
+     * @return an {@link Optional} describing the {@link Where} condition of the query;
+     *         {@link Optional#empty()} if no conditions are specified
      */
     Optional<Where> where();
 
     /**
-     * Retrieves the statement defining where the query should start.
+     * Retrieves the offset of the first row to return, allowing pagination over the result-set.
+     * A negative value or zero implies that no offset is applied.
      *
-     * @return the number of entities to skip, otherwise a negative value or zero
+     * @return the number of entities to skip before starting to return the results
      */
     long skip();
 
     /**
-     * Retrieves the statement limiting the number of rows returned by a query.
+     * Retrieves the limit on the number of rows to return from the query, useful for capping
+     * the result-set for performance or practical usage considerations.
+     * A negative value or zero implies no limit.
      *
-     * @return the maximum number of results, otherwise a negative value or zero
+     * @return the maximum number of results the query should return
      */
     long limit();
 
     /**
-     * Retrieves the list of orders used to sort the result-set in ascending or descending order.
+     * Retrieves the list of sorting specifications used to order the result-set.
+     * The order can be ascending or descending, based on one or more fields.
      *
-     * @return the list of orders
+     * @return a list of {@link Sort} objects defining the order of results;
+     *         never null but may be empty, indicating no specific ordering is requested
      */
     List<Sort<?>> orderBy();
+
+    /**
+     * Determines if the query should count the number of entities that match the query
+     * criteria without actually retrieving the entities themselves.
+     *
+     * @return true if the query should only count matching entities, false if it should
+     *         retrieve the entities
+     */
+    boolean isCount();
 }
