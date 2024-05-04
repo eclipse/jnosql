@@ -69,7 +69,7 @@ public class SelectJDQL extends AbstractWhere implements BiFunction<String, Stri
     }
 
     @Override
-    Function<JDQLParser, ParseTree> getParserTree() {
-        return JDQLParser::select_statement;
+    JDQLParser.Select_statementContext getTree(JDQLParser parser) {
+        return parser.select_statement();
     }
 }

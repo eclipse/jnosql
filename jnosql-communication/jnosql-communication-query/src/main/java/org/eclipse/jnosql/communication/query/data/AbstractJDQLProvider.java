@@ -14,6 +14,7 @@ package org.eclipse.jnosql.communication.query.data;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.jnosql.communication.query.QueryErrorListener;
@@ -37,9 +38,9 @@ abstract class AbstractJDQLProvider extends JDQLBaseListener {
         lexer.addErrorListener(QueryErrorListener.INSTANCE);
         parser.addErrorListener(QueryErrorListener.INSTANCE);
 
-        ParseTree tree = parser.select_statement();
+        var tree = getTree(parser);
         ParseTreeWalker.DEFAULT.walk(this, tree);
     }
 
-    abstract Function<JDQLParser, ParseTree> getParserTree();
+    abstract ParserRuleContext getTree(JDQLParser parser);
 }

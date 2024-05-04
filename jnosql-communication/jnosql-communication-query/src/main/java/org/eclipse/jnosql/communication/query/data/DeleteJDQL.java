@@ -16,15 +16,13 @@ import org.eclipse.jnosql.communication.query.DeleteQuery;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
 
 import java.util.Objects;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class DeleteJDQL extends AbstractWhere implements BiFunction<String, String, DeleteQuery> {
+public class DeleteJDQL extends AbstractWhere implements Function<String, DeleteQuery> {
 
     @Override
-    public DeleteQuery apply(String query, String entity) {
+    public DeleteQuery apply(String query) {
         Objects.requireNonNull(query, " query is required");
-        this.entity = entity;
         runQuery(query);
         if(this.entity == null) {
             throw new IllegalArgumentException("The entity is required in the query");
@@ -33,7 +31,7 @@ public class DeleteJDQL extends AbstractWhere implements BiFunction<String, Stri
     }
 
     @Override
-    Function<JDQLParser, ParseTree> getParserTree() {
-        return JDQLParser::delete_statement;
+    JDQLParser.Delete_statementContext getTree(JDQLParser parser) {
+        return parser.delete_statement();
     }
 }
