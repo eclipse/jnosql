@@ -15,6 +15,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.ArrayQueryValue;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
+import org.eclipse.jnosql.communication.query.EnumQueryValue;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
 import org.eclipse.jnosql.communication.query.ParamQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
@@ -24,6 +25,8 @@ import org.eclipse.jnosql.communication.query.StringQueryValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.time.DayOfWeek;
 
 class JakartaDataQueryProviderInTest {
 
@@ -72,11 +75,11 @@ class JakartaDataQueryProviderInTest {
             var where = selectQuery.where().orElseThrow();
             var condition = where.condition();
             QueryValue<?> value = condition.value();
-            soft.assertThat(condition.name()).isEqualTo("age");
+            soft.assertThat(condition.name()).isEqualTo("days");
             soft.assertThat(condition.condition()).isEqualTo(Condition.IN);
             soft.assertThat(value).isInstanceOf(ArrayQueryValue.class);
             soft.assertThat(ArrayQueryValue.class.cast(value).get()).hasSize(2)
-                    .contains(NumberQueryValue.of(10), NumberQueryValue.of(12.12));
+                    .contains(EnumQueryValue.of(DayOfWeek.MONDAY), EnumQueryValue.of(DayOfWeek.SUNDAY));
 
         });
     }

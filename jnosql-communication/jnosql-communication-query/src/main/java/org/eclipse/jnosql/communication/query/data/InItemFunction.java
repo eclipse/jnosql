@@ -11,6 +11,7 @@
  */
 package org.eclipse.jnosql.communication.query.data;
 
+import org.eclipse.jnosql.communication.query.EnumQueryValue;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
 import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
@@ -36,7 +37,8 @@ enum InItemFunction implements Function<JDQLParser.In_itemContext, QueryValue<?>
                 return NumberQueryValue.of(Integer.valueOf(literal.INTEGER().getText()));
             }
         } else if(item.enum_literal() != null){
-           throw new UnsupportedOperationException("The enum literal is not supported yet: " + item.getText());
+            Enum<?> value = EnumConverter.INSTANCE.apply(item.enum_literal().getText());
+            return EnumQueryValue.of(value);
         } else if(item.input_parameter() != null){
             return DefaultQueryValue.of(item.input_parameter().getText());
         }
