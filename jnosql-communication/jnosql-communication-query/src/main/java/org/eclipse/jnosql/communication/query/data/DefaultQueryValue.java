@@ -16,7 +16,8 @@ import org.eclipse.jnosql.communication.query.ParamQueryValue;
 
 /**
  * The default implementation of {@link ParamQueryValue}
- */ record DefaultQueryValue(String value) implements ParamQueryValue {
+ */
+public record DefaultQueryValue(String value) implements ParamQueryValue {
 
 
     @Override

@@ -9,24 +9,18 @@
  *  Contributors:
  *  Otavio Santana
  */
-package org.eclipse.jnosql.communication.query.data;
+package org.eclipse.jnosql.communication.query.data.select;
 
-import jakarta.data.Sort;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
-import org.eclipse.jnosql.communication.query.BooleanQueryValue;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
-import org.eclipse.jnosql.communication.query.QueryCondition;
-import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.SelectQuery;
-import org.eclipse.jnosql.communication.query.StringQueryValue;
-import org.junit.jupiter.api.Assertions;
+import org.eclipse.jnosql.communication.query.data.DefaultQueryValue;
+import org.eclipse.jnosql.communication.query.data.SelectJDQL;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import java.util.List;
 
 class JakartaDataQueryProviderAndTest {
 

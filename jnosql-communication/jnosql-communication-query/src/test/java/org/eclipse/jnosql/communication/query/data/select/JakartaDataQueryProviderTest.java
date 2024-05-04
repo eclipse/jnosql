@@ -9,7 +9,7 @@
  *  Contributors:
  *  Otavio Santana
  */
-package org.eclipse.jnosql.communication.query.data;
+package org.eclipse.jnosql.communication.query.data.select;
 
 import jakarta.data.Sort;
 import org.assertj.core.api.SoftAssertions;
@@ -19,6 +19,8 @@ import org.eclipse.jnosql.communication.query.EnumQueryValue;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
+import org.eclipse.jnosql.communication.query.data.DefaultQueryValue;
+import org.eclipse.jnosql.communication.query.data.SelectJDQL;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
