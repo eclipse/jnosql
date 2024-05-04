@@ -15,6 +15,7 @@ import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.ArrayQueryValue;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
+import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
 import org.eclipse.jnosql.communication.query.Where;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
@@ -120,6 +121,32 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
             and = andCondition;
         }
         DataArrayQueryValue value = new DataArrayQueryValue(List.of(firstValue, secondValue));
+        checkCondition(new DefaultQueryCondition(name, contextCondition, value), hasNot);
+        and = andCondition;
+    }
+
+    @Override
+    public void exitIn_expression(JDQLParser.In_expressionContext ctx) {
+        super.exitIn_expression(ctx);
+        boolean hasNot = Objects.nonNull(ctx.NOT());
+        boolean andCondition = true;
+
+        if(ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
+                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent){
+            andCondition = Objects.isNull(grandParent.OR());
+        }
+
+        var name = ctx.state_field_path_expression().getText();
+        var contextCondition = Condition.IN;
+        List<QueryValue<?>> values = new ArrayList<>();
+        for (JDQLParser.In_itemContext item : ctx.in_item()) {
+            values.add(InItemFunction.INSTANCE.apply(item));
+        }
+
+        if (this.condition != null && this.condition.value() instanceof ConditionQueryValue) {
+            and = andCondition;
+        }
+        DataArrayQueryValue value = new DataArrayQueryValue(values);
         checkCondition(new DefaultQueryCondition(name, contextCondition, value), hasNot);
         and = andCondition;
     }
