@@ -12,6 +12,7 @@
 package org.eclipse.jnosql.communication.query.data;
 
 import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.query.ArrayQueryValue;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
@@ -96,6 +97,30 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
             and = andCondition;
         }
         checkCondition(new DefaultQueryCondition(name, contextCondition, literal), hasNot);
+        and = andCondition;
+    }
+
+    @Override
+    public void exitBetween_expression(JDQLParser.Between_expressionContext ctx) {
+        super.exitBetween_expression(ctx);
+        boolean hasNot = Objects.nonNull(ctx.NOT());
+        boolean andCondition = true;
+
+        if(ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
+                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent){
+            andCondition = Objects.isNull(grandParent.OR());
+        }
+
+        var contexts = ctx.scalar_expression();
+        var name = contexts.get(0).getText();
+        var firstValue = PrimaryFunction.INSTANCE.apply(contexts.get(1).primary_expression());
+        var secondValue = PrimaryFunction.INSTANCE.apply(contexts.get(2).primary_expression());
+        var contextCondition = Condition.BETWEEN;
+        if (this.condition != null && this.condition.value() instanceof ConditionQueryValue) {
+            and = andCondition;
+        }
+        DataArrayQueryValue value = new DataArrayQueryValue(List.of(firstValue, secondValue));
+        checkCondition(new DefaultQueryCondition(name, contextCondition, value), hasNot);
         and = andCondition;
     }
 
