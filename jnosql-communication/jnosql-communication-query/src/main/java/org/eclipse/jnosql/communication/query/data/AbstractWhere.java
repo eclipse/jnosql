@@ -67,6 +67,9 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
         var name = contexts.get(0).getText();
         var value = contexts.get(1);
         var literal = PrimaryFunction.INSTANCE.apply(value.primary_expression());
+        if (this.condition != null && this.condition.value() instanceof ConditionQueryValue) {
+            and = andCondition;
+        }
         checkCondition(new DefaultQueryCondition(name, condition, literal), hasNot);
         and = andCondition;
     }

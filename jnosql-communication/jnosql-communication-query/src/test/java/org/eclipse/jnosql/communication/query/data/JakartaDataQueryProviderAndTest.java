@@ -92,4 +92,39 @@ class JakartaDataQueryProviderAndTest {
             soft.assertThat(conditions.get(2).value()).isEqualTo(DefaultQueryValue.of("?1"));
         });
     }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"WHERE age = 10 AND salary = 10.15 OR name =?1", "FROM entity WHERE age = 10 AND salary = 10.15 OR name =?1"})
+    void shouldORMixConditions(String query){
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
+
+            var values = (ConditionQueryValue) condition.value();
+            var conditions = values.get();
+            soft.assertThat(conditions).hasSize(3);
+            soft.assertThat(conditions.get(0).name()).isEqualTo("age");
+            soft.assertThat(conditions.get(0).value()).isEqualTo(NumberQueryValue.of(10));
+
+            soft.assertThat(conditions.get(1).name()).isEqualTo("salary");
+            soft.assertThat(conditions.get(1).value()).isEqualTo(NumberQueryValue.of(10.15));
+
+            condition = conditions.get(2);
+            values = (ConditionQueryValue) condition.value();
+            conditions = values.get();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.OR);
+            soft.assertThat(conditions).hasSize(1);
+
+            soft.assertThat(conditions.get(0).name()).isEqualTo("name");
+            soft.assertThat(conditions.get(0).value()).isEqualTo(DefaultQueryValue.of("?1"));
+
+        });
+    }
 }
