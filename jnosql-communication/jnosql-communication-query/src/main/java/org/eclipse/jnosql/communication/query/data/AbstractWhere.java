@@ -14,6 +14,7 @@ package org.eclipse.jnosql.communication.query.data;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
+import org.eclipse.jnosql.communication.query.StringQueryValue;
 import org.eclipse.jnosql.communication.query.Where;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
 
@@ -63,18 +64,40 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
             andCondition = Objects.isNull(grandParent.OR());
         }
         var contexts = ctx.scalar_expression();
-        var condition = getCondition(ctx);
+        var contextCondition = getCondition(ctx);
         var name = contexts.get(0).getText();
         var value = contexts.get(1);
         var literal = PrimaryFunction.INSTANCE.apply(value.primary_expression());
         if (this.condition != null && this.condition.value() instanceof ConditionQueryValue) {
             and = andCondition;
         }
-        checkCondition(new DefaultQueryCondition(name, condition, literal), hasNot);
+        checkCondition(new DefaultQueryCondition(name, contextCondition, literal), hasNot);
         and = andCondition;
     }
 
+    @Override
+    public void exitLike_expression(JDQLParser.Like_expressionContext ctx) {
+        super.exitLike_expression(ctx);
+        boolean hasNot = Objects.nonNull(ctx.NOT());
+        boolean andCondition = true;
 
+        if(ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
+                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent){
+            andCondition = Objects.isNull(grandParent.OR());
+        }
+
+        var contexts = ctx.scalar_expression();
+        var name = contexts.getText();
+        var contextCondition = Condition.LIKE;
+        var likeValueIndex = ctx.getChildCount() -1 ;
+        var likeValue = contexts.getParent().getChild(likeValueIndex).getText();
+        var literal = StringQueryValue.of(QuoteExtractor.INSTANCE.extract(likeValue));
+        if (this.condition != null && this.condition.value() instanceof ConditionQueryValue) {
+            and = andCondition;
+        }
+        checkCondition(new DefaultQueryCondition(name, contextCondition, literal), hasNot);
+        and = andCondition;
+    }
 
     private Condition getCondition(JDQLParser.Comparison_expressionContext ctx) {
         if (ctx.EQ() != null) {
