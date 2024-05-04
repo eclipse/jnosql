@@ -42,6 +42,12 @@ public class SelectJDQL extends AbstractWhere implements BiFunction<String, Stri
     }
 
     @Override
+    public void exitAggregate_expression(JDQLParser.Aggregate_expressionContext ctx) {
+        super.exitAggregate_expression(ctx);
+        this.count = true;
+    }
+
+    @Override
     public void exitOrderby_clause(JDQLParser.Orderby_clauseContext ctx) {
      ctx.orderby_item().stream().forEach(o -> {
          String field = o.state_field_path_expression().getText();
