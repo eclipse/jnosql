@@ -22,7 +22,6 @@ public final class QueryParser {
 
     private final SelectQueryParser select = new SelectQueryParser();
     private final DeleteQueryParser delete = new DeleteQueryParser();
-    private final InsertQueryParser insert = new InsertQueryParser();
     private final UpdateQueryParser update = new UpdateQueryParser();
 
     /**
@@ -37,16 +36,14 @@ public final class QueryParser {
      * @throws IllegalArgumentException when the query has value parameters
      * @throws QueryException           when there is error in the syntax
      */
-    public Stream<CommunicationEntity> query(String query, DatabaseManager manager, CommunicationObserverParser observer) {
+    public Stream<CommunicationEntity> query(String query, String entity, DatabaseManager manager, CommunicationObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
         return switch (command) {
-            case "select" -> select.query(query, manager, observer);
-            case "delete" -> delete.query(query, manager, observer);
-            case "insert" -> insert.query(query, manager, observer);
-            case "update" -> update.query(query, manager, observer);
+            case "DELETE" -> delete.query(query, manager, observer);
+            case "UPDATE" -> update.query(query, manager, observer);
             default ->
-                    throw new QueryException(String.format("The command was not recognized at the query %s ", query));
+                    select.query(query, entity, manager, observer);
         };
     }
 
@@ -62,17 +59,14 @@ public final class QueryParser {
      * @throws IllegalArgumentException when the query has value parameters
      * @throws QueryException           when there is error in the syntax
      */
-    public CommunicationPreparedStatement prepare(String query, DatabaseManager manager, CommunicationObserverParser observer) {
+    public CommunicationPreparedStatement prepare(String query, String entity, DatabaseManager manager, CommunicationObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
 
         return switch (command) {
-            case "select" -> select.prepare(query, manager, observer);
-            case "delete" -> delete.prepare(query, manager, observer);
-            case "insert" -> insert.prepare(query, manager, observer);
-            case "update" -> update.prepare(query, manager, observer);
-            default ->
-                    throw new QueryException(String.format("The command was not recognized at the query %s ", query));
+            case "DELETE" -> delete.prepare(query, manager, observer);
+            case "UPDATE" -> update.prepare(query, manager, observer);
+            default -> select.prepare(query, entity, manager, observer);
         };
     }
 

@@ -206,9 +206,24 @@ public interface DatabaseManager extends AutoCloseable {
      * @throws IllegalStateException    when there is no {@link QueryParser} available
      */
     default Stream<CommunicationEntity> query(String query) {
+      return query(query, null);
+    }
+
+    /**
+     * Executes a query and returns the result. If the query is an insert, update, or select command,
+     * it returns the result of the operation. If the query is a delete command, it returns an empty collection.
+     *
+     * @param query  the query as a string
+     * @param entity the entity name
+     * @return the result of the operation; for delete operations, an empty list is returned
+     * @throws NullPointerException     when the query is null
+     * @throws IllegalArgumentException when the query contains value parameters
+     * @throws IllegalStateException    when there is no {@link QueryParser} available
+     */
+    default Stream<CommunicationEntity> query(String query, String entity) {
         Objects.requireNonNull(query, "query is required");
         QueryParser parser = new QueryParser();
-        return parser.query(query, this, CommunicationObserverParser.EMPTY);
+        return parser.query(query, entity, this, CommunicationObserverParser.EMPTY);
     }
 
     /**
@@ -220,9 +235,22 @@ public interface DatabaseManager extends AutoCloseable {
      * @throws IllegalStateException when there is no {@link QueryParser} available
      */
     default CommunicationPreparedStatement prepare(String query) {
+       return prepare(query, null);
+    }
+
+    /**
+     * Prepares a query for execution.
+     *
+     * @param query  the query as a string
+     * @param entity the entity name
+     * @return a {@link CommunicationPreparedStatement} instance
+     * @throws NullPointerException  when the query is null
+     * @throws IllegalStateException when there is no {@link QueryParser} available
+     */
+    default CommunicationPreparedStatement prepare(String query, String entity) {
         Objects.requireNonNull(query, "query is required");
         QueryParser parser = new QueryParser();
-        return parser.prepare(query, this, CommunicationObserverParser.EMPTY);
+        return parser.prepare(query, entity,this, CommunicationObserverParser.EMPTY);
     }
 
     /**
