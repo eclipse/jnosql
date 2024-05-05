@@ -18,7 +18,7 @@ import org.eclipse.jnosql.communication.query.Where;
 import java.util.List;
 import java.util.Optional;
 
-record JDQLUpdateQuery(List<UpdateItem> set, Where condition) implements UpdateQuery {
+record JDQLUpdateQuery(String entity, List<UpdateItem> set, Where condition) implements UpdateQuery {
 
     @Override
     public Optional<Where> where() {

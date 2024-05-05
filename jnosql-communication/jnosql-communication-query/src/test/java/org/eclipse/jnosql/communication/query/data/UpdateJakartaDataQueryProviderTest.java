@@ -12,6 +12,8 @@
 package org.eclipse.jnosql.communication.query.data;
 
 import org.assertj.core.api.SoftAssertions;
+import org.eclipse.jnosql.communication.query.NumberQueryValue;
+import org.eclipse.jnosql.communication.query.StringQueryValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -26,12 +28,30 @@ class UpdateJakartaDataQueryProviderTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"UPDATE FROM entity SET name = 'Ada'"})
+    @ValueSource(strings = "UPDATE entity SET name = 'Ada'")
     void shouldReturnParserQuery(String query) {
         var updateQuery = updateProvider.apply(query);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(updateQuery.where()).isEmpty();
+            soft.assertThat(updateQuery.entity()).isEqualTo("entity");
+            soft.assertThat(updateQuery.set()).isNotNull().hasSize(1)
+                    .contains(JDQLUpdateItem.of("name", StringQueryValue.of("Ada")));
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "UPDATE entity SET name = 'Ada', age = 10, salary = 10.15")
+    void shouldReturnParserQueryAge(String query) {
+        var updateQuery = updateProvider.apply(query);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(updateQuery.where()).isEmpty();
+            soft.assertThat(updateQuery.entity()).isEqualTo("entity");
+            soft.assertThat(updateQuery.set()).isNotNull().hasSize(3)
+                    .contains(JDQLUpdateItem.of("name", StringQueryValue.of("Ada")),
+                            JDQLUpdateItem.of("age", NumberQueryValue.of(10)),
+                            JDQLUpdateItem.of("salary", NumberQueryValue.of(10.15)));
         });
     }
 

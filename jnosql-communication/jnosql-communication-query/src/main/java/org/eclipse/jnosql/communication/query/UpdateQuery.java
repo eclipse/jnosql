@@ -22,6 +22,13 @@ import java.util.Optional;
 public interface UpdateQuery extends Query {
 
     /**
+     * Retrieves the name of the entity on which the query is to be executed.
+     *
+     * @return the name of the entity as a string
+     */
+    String entity();
+
+    /**
      * Retrieves a list of update items that specify which fields to modify and their new values.
      * Each {@link UpdateItem} in the list represents a specific field and the value it should be set to.
      * This method provides the details necessary to construct the update part of the query.

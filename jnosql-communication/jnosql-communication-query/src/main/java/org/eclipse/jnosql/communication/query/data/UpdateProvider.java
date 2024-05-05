@@ -12,9 +12,12 @@
 package org.eclipse.jnosql.communication.query.data;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.jnosql.communication.query.UpdateItem;
 import org.eclipse.jnosql.communication.query.UpdateQuery;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -29,11 +32,33 @@ import java.util.function.Function;
  */
 public final class UpdateProvider extends AbstractWhere implements Function<String, UpdateQuery> {
 
+    private List<UpdateItem> items = new ArrayList<>();
 
     @Override
     public UpdateQuery apply(String query) {
         Objects.requireNonNull(query, " query is required");
-        return null;
+        runQuery(query);
+        if(this.entity == null) {
+            throw new IllegalArgumentException("The entity is required in the query");
+        }
+        return new JDQLUpdateQuery(this.entity, items, where);
+    }
+
+    @Override
+    public void exitUpdate_item(JDQLParser.Update_itemContext ctx) {
+        super.exitUpdate_item(ctx);
+        String name = ctx.state_field_path_expression().getText();
+        var scalarContext = ctx.scalar_expression();
+        var primaryExpression = scalarContext.primary_expression();
+        var value = PrimaryFunction.INSTANCE.apply(primaryExpression);
+        items.add(JDQLUpdateItem.of(name, value));
+
+    }
+
+    @Override
+    public void exitEntity_name(JDQLParser.Entity_nameContext ctx) {
+        super.exitEntity_name(ctx);
+        this.entity = ctx.getText();
     }
 
     @Override
