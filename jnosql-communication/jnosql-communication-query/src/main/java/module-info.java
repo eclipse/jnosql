@@ -17,10 +17,12 @@ module org.eclipse.jnosql.communication.query {
     requires java.management;
     requires java.logging;
 
-    exports org.eclipse.jnosql.communication.query.method;
     exports org.eclipse.jnosql.communication.query;
+    exports org.eclipse.jnosql.communication.query.data;
+    exports org.eclipse.jnosql.communication.query.method;
 
     opens org.eclipse.jnosql.communication.query;
+    opens org.eclipse.jnosql.communication.query.data;
     opens org.eclipse.jnosql.communication.query.method;
 
 
