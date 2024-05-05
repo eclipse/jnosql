@@ -15,7 +15,6 @@ import jakarta.data.exceptions.NonUniqueResultException;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
 
-import java.time.Duration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
