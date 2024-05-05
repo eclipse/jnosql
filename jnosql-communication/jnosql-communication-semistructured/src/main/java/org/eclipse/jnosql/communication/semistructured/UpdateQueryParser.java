@@ -17,6 +17,7 @@ import org.eclipse.jnosql.communication.query.UpdateItem;
 import org.eclipse.jnosql.communication.query.data.DeleteProvider;
 import org.eclipse.jnosql.communication.query.data.UpdateProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -57,7 +58,7 @@ public final class UpdateQueryParser implements BiFunction<org.eclipse.jnosql.co
         requireNonNull(communicationObserverParser, "columnObserverParser is required");
         Params params = Params.newParams();
         var query = getQuery(params, communicationObserverParser, updateQuery);
-        return new DeleteQueryParams(query, params);
+        return new UpdateQueryParams(query, params);
     }
 
     private UpdateQuery getQuery(String query, Params params, CommunicationObserverParser observer) {
@@ -69,34 +70,40 @@ public final class UpdateQueryParser implements BiFunction<org.eclipse.jnosql.co
     private UpdateQuery getQuery(Params params, CommunicationObserverParser observer, org.eclipse.jnosql.communication.query.UpdateQuery updateQuery) {
         var entity = observer.fireEntity(updateQuery.entity());
 
+        List<Element> set = new ArrayList<>();
         for (UpdateItem updateItem : updateQuery.set()) {
             var field = observer.fireField(entity, updateItem.name());
             var value = Values.get(updateItem.value(), params);
-
+            set.add(Element.of(field, value));
         }
         CriteriaCondition condition = updateQuery.where().map(c -> Conditions.getCondition(c, params, observer, entity))
                 .orElse(null);
 
-        return new DefaultDeleteQuery(entity, condition, columns);
+        return new DefaultUpdateQuery(entity, set, condition);
     }
 
-    private DeleteQuery getQuery(String query, CommunicationObserverParser observer) {
+    private UpdateQuery getQuery(String query, CommunicationObserverParser observer) {
 
-        var converter = new DeleteProvider();
-        org.eclipse.jnosql.communication.query.DeleteQuery deleteQuery = converter.apply(query);
+        var converter = new UpdateProvider();
+        var updateQuery = converter.apply(query);
 
-        String columnFamily = observer.fireEntity(deleteQuery.entity());
-        List<String> columns = deleteQuery.fields().stream()
-                .map(f -> observer.fireField(columnFamily, f))
-                .collect(Collectors.toList());
+        var entity = observer.fireEntity(updateQuery.entity());
         Params params = Params.newParams();
 
-        CriteriaCondition condition = deleteQuery.where()
-                .map(c -> Conditions.getCondition(c, params, observer, columnFamily)).orElse(null);
+        List<Element> set = new ArrayList<>();
+
+        for (UpdateItem updateItem : updateQuery.set()) {
+            var field = observer.fireField(entity, updateItem.name());
+            var value = Values.get(updateItem.value(), params);
+            set.add(Element.of(field, value));
+        }
+
+        CriteriaCondition condition = updateQuery.where()
+                .map(c -> Conditions.getCondition(c, params, observer, entity)).orElse(null);
 
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        return new DefaultDeleteQuery(columnFamily, condition, columns);
+        return new DefaultUpdateQuery(entity, set, condition);
     }
 }

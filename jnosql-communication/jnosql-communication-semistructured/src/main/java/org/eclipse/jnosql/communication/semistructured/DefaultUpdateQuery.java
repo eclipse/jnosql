@@ -11,12 +11,21 @@
 
 package org.eclipse.jnosql.communication.semistructured;
 
-import org.eclipse.jnosql.communication.Params;
 
-/**
- * The result of {@link UpdateQueryParams} that has {@link UpdateQuery} and {@link Params}.
- * @param updateQuery  the {@link UpdateQuery}
- * @param params the {@link Params}
- */
-public record UpdateQueryParams(UpdateQuery updateQuery, Params params) {
+import java.util.List;
+import java.util.Optional;
+
+import static java.util.Collections.emptyList;
+
+record DefaultUpdateQuery(String name, List<Element> set, CriteriaCondition criteriaCondition) implements UpdateQuery {
+
+    @Override
+    public Optional<CriteriaCondition> condition() {
+        return Optional.ofNullable(criteriaCondition);
+    }
+
+    @Override
+    public SelectQuery toSelectQuery() {
+        return new DefaultSelectQuery(0, 0, name, emptyList(), emptyList(), criteriaCondition);
+    }
 }
