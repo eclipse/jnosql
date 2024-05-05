@@ -21,6 +21,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
+/**
+ * Implements the selection logic for a NoSQL query processing system by extending {@link AbstractWhere}.
+ * This class is responsible for configuring and executing SELECT queries based on provided query strings
+ * and entity information. It parses the query to extract relevant conditions, sorting, and aggregation instructions,
+ * and then constructs a {@link SelectQuery} object that can be used to fetch results according to these specifications.
+ */
 public final class SelectProvider extends AbstractWhere implements BiFunction<String, String, SelectQuery> {
 
     private final List<Sort<?>> sorts = new ArrayList<>();

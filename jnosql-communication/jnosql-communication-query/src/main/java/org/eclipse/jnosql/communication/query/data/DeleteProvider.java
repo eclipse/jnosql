@@ -17,6 +17,15 @@ import org.eclipse.jnosql.query.grammar.data.JDQLParser;
 import java.util.Objects;
 import java.util.function.Function;
 
+/**
+ * Provides the mechanism to process and convert a DELETE query string into a {@link DeleteQuery} object.
+ * This class extends {@link AbstractWhere}, utilizing its capabilities to parse conditional expressions
+ * and determine the target entity for deletion based on the parsed query.
+ *
+ * <p>The class implements {@link Function<String, DeleteQuery>}, accepting a query string and returning
+ * a configured {@link DeleteQuery} that encapsulates the entity to be deleted and any applicable conditions
+ * specified in the WHERE clause.</p>
+ */
 public final class DeleteProvider extends AbstractWhere implements Function<String, DeleteQuery> {
 
     @Override
