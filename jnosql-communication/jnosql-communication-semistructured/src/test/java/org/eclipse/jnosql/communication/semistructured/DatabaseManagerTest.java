@@ -497,13 +497,13 @@ class DatabaseManagerTest {
         SelectQuery query = SelectQuery.select().from("person").build();
         Mockito.when(databaseManager.select(query)).thenReturn(stream());
 
-        Stream<CommunicationEntity> entities = databaseManager.query("select * from person");
+        Stream<CommunicationEntity> entities = databaseManager.query("FROM person");
         Assertions.assertThat(entities).hasSize(2);
     }
 
     @Test
     void shouldPrepare(){
-        var prepare = databaseManager.prepare("select * from person where name = @name");
+        var prepare = databaseManager.prepare("FROM person WHERE name = :name");
         Assertions.assertThat(prepare).isNotNull();
     }
 
