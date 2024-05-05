@@ -9,7 +9,7 @@
  *  Contributors:
  *  Otavio Santana
  */
-package org.eclipse.jnosql.communication.query.data.select;
+package org.eclipse.jnosql.communication.query.data;
 
 import jakarta.data.Sort;
 import org.assertj.core.api.SoftAssertions;

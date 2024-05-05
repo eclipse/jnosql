@@ -9,27 +9,21 @@
  *  Contributors:
  *  Otavio Santana
  */
-package org.eclipse.jnosql.communication.query.data.select;
+package org.eclipse.jnosql.communication.query.data;
 
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
-import org.eclipse.jnosql.communication.query.ArrayQueryValue;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
-import org.eclipse.jnosql.communication.query.EnumQueryValue;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
-import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
-import org.eclipse.jnosql.communication.query.data.DefaultQueryValue;
 import org.eclipse.jnosql.communication.query.data.SelectProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.time.DayOfWeek;
-
-class SelectJakartaDataQueryProviderInTest {
+class SelectJakartaDataQueryProviderLikeTest {
 
 
     private SelectProvider selectProvider;
@@ -40,8 +34,8 @@ class SelectJakartaDataQueryProviderInTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"WHERE age IN (10, 12.12, 'otavio', ?1, :param)", "FROM entity WHERE age IN (10, 12.12, 'otavio', ?1, :param)"})
-    void shouldIn(String query){
+    @ValueSource(strings = {"WHERE  name LIKE 'A%'", "FROM entity WHERE name LIKE 'A%'"})
+    void shouldLike(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
@@ -52,20 +46,15 @@ class SelectJakartaDataQueryProviderInTest {
             var where = selectQuery.where().orElseThrow();
             var condition = where.condition();
             QueryValue<?> value = condition.value();
-            soft.assertThat(condition.name()).isEqualTo("age");
-            soft.assertThat(condition.condition()).isEqualTo(Condition.IN);
-            soft.assertThat(value).isInstanceOf(ArrayQueryValue.class);
-            soft.assertThat(ArrayQueryValue.class.cast(value).get()).hasSize(5)
-                    .contains(NumberQueryValue.of(10), NumberQueryValue.of(12.12),
-                            StringQueryValue.of("otavio"), DefaultQueryValue.of("?1"),
-                            DefaultQueryValue.of("param"));
+            soft.assertThat(condition.condition()).isEqualTo(Condition.LIKE);
+            soft.assertThat(value).isEqualTo(StringQueryValue.of("A%"));
 
         });
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"WHERE days IN (java.time.DayOfWeek.MONDAY, java.time.DayOfWeek.SUNDAY)", "FROM entity WHERE days IN (java.time.DayOfWeek.MONDAY, java.time.DayOfWeek.SUNDAY)"})
-    void shouldInEnumLiteral(String query){
+    @ValueSource(strings = {"WHERE  name LIKE \"A%\"", "FROM entity WHERE name LIKE \"A%\""})
+    void shouldLikeDoubleQuote(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
@@ -76,19 +65,15 @@ class SelectJakartaDataQueryProviderInTest {
             var where = selectQuery.where().orElseThrow();
             var condition = where.condition();
             QueryValue<?> value = condition.value();
-            soft.assertThat(condition.name()).isEqualTo("days");
-            soft.assertThat(condition.condition()).isEqualTo(Condition.IN);
-            soft.assertThat(value).isInstanceOf(ArrayQueryValue.class);
-            soft.assertThat(ArrayQueryValue.class.cast(value).get()).hasSize(2)
-                    .contains(EnumQueryValue.of(DayOfWeek.MONDAY), EnumQueryValue.of(DayOfWeek.SUNDAY));
+            soft.assertThat(condition.condition()).isEqualTo(Condition.LIKE);
+            soft.assertThat(value).isEqualTo(StringQueryValue.of("A%"));
 
         });
     }
 
-
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"WHERE age NOT IN (10, 20)", "FROM entity WHERE age NOT IN (10, 20)"})
-    void shouldNegateBetween(String query){
+    @ValueSource(strings = {"WHERE  name NOT LIKE 'A%'", "FROM entity WHERE name NOT LIKE 'A%'"})
+    void shouldNegateLike(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
@@ -103,16 +88,14 @@ class SelectJakartaDataQueryProviderInTest {
             var values = (ConditionQueryValue) condition.value();
             var conditions = values.get();
             soft.assertThat(conditions).hasSize(1);
-            soft.assertThat(conditions.get(0).name()).isEqualTo("age");
-            soft.assertThat(conditions.get(0).value()).isInstanceOf(ArrayQueryValue.class);
-            soft.assertThat(ArrayQueryValue.class.cast(conditions.get(0).value()).get()).hasSize(2)
-                    .contains(NumberQueryValue.of(10), NumberQueryValue.of(20));
+            soft.assertThat(conditions.get(0).name()).isEqualTo("name");
+            soft.assertThat(conditions.get(0).value()).isEqualTo(StringQueryValue.of("A%"));
 
         });
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"WHERE name = 'Otavio' AND age IN (10, 20)", "FROM entity WHERE name = 'Otavio' AND age IN (10, 20)"})
+    @ValueSource(strings = {"WHERE  age = 10 AND name LIKE 'test'", "FROM entity WHERE  age = 10 AND name LIKE 'test'"})
     void shouldCombineAnd(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
@@ -128,22 +111,16 @@ class SelectJakartaDataQueryProviderInTest {
             var values = (ConditionQueryValue) condition.value();
             var conditions = values.get();
             soft.assertThat(conditions).hasSize(2);
+            soft.assertThat(conditions.get(0).name()).isEqualTo("age");
+            soft.assertThat(conditions.get(0).value()).isEqualTo(NumberQueryValue.of(10));
 
-            QueryCondition equalsCondition = conditions.get(0);
-            soft.assertThat(equalsCondition.name()).isEqualTo("name");
-            soft.assertThat(equalsCondition.value()).isEqualTo(StringQueryValue.of("Otavio"));
-
-            QueryCondition betweenCondition = conditions.get(1);
-            soft.assertThat(betweenCondition.condition()).isEqualTo(Condition.IN);
-            soft.assertThat(betweenCondition.value()).isInstanceOf(ArrayQueryValue.class);
-            soft.assertThat(ArrayQueryValue.class.cast(betweenCondition.value()).get()).hasSize(2)
-                    .contains(NumberQueryValue.of(10), NumberQueryValue.of(20));
-
+            soft.assertThat(conditions.get(1).name()).isEqualTo("name");
+            soft.assertThat(conditions.get(1).value()).isEqualTo(StringQueryValue.of("test"));
         });
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"WHERE age IN (10, 20) AND name = 'Otavio'", "FROM entity WHERE age IN (10, 20) AND name = 'Otavio'"})
+    @ValueSource(strings = {"WHERE name LIKE 'test' AND age = 10", "FROM entity WHERE name LIKE 'test' AND age = 10"})
     void shouldCombineAnd2(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
@@ -158,21 +135,18 @@ class SelectJakartaDataQueryProviderInTest {
 
             var values = (ConditionQueryValue) condition.value();
             var conditions = values.get();
-            QueryCondition equalsCondition = conditions.get(1);
-            soft.assertThat(equalsCondition.name()).isEqualTo("name");
-            soft.assertThat(equalsCondition.value()).isEqualTo(StringQueryValue.of("Otavio"));
+            soft.assertThat(conditions).hasSize(2);
+            soft.assertThat(conditions.get(1).name()).isEqualTo("age");
+            soft.assertThat(conditions.get(1).value()).isEqualTo(NumberQueryValue.of(10));
 
-            QueryCondition betweenCondition = conditions.get(0);
-            soft.assertThat(betweenCondition.condition()).isEqualTo(Condition.IN);
-            soft.assertThat(betweenCondition.value()).isInstanceOf(ArrayQueryValue.class);
-            soft.assertThat(ArrayQueryValue.class.cast(betweenCondition.value()).get()).hasSize(2)
-                    .contains(NumberQueryValue.of(10), NumberQueryValue.of(20));
+            soft.assertThat(conditions.get(0).name()).isEqualTo("name");
+            soft.assertThat(conditions.get(0).value()).isEqualTo(StringQueryValue.of("test"));
         });
     }
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"WHERE  name = 'Otavio' OR name IN (10, 20)", "FROM entity WHERE  name = 'Otavio' OR name IN (10, 20)"})
+    @ValueSource(strings = {"WHERE  age = 10 OR name LIKE 'test'", "FROM entity WHERE  age = 10 OR name LIKE 'test'"})
     void shouldCombineOr(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
@@ -187,20 +161,17 @@ class SelectJakartaDataQueryProviderInTest {
 
             var values = (ConditionQueryValue) condition.value();
             var conditions = values.get();
-            QueryCondition equalsCondition = conditions.get(0);
-            soft.assertThat(equalsCondition.name()).isEqualTo("name");
-            soft.assertThat(equalsCondition.value()).isEqualTo(StringQueryValue.of("Otavio"));
+            soft.assertThat(conditions).hasSize(2);
+            soft.assertThat(conditions.get(0).name()).isEqualTo("age");
+            soft.assertThat(conditions.get(0).value()).isEqualTo(NumberQueryValue.of(10));
 
-            QueryCondition betweenCondition = conditions.get(1);
-            soft.assertThat(betweenCondition.condition()).isEqualTo(Condition.IN);
-            soft.assertThat(betweenCondition.value()).isInstanceOf(ArrayQueryValue.class);
-            soft.assertThat(ArrayQueryValue.class.cast(betweenCondition.value()).get()).hasSize(2)
-                    .contains(NumberQueryValue.of(10), NumberQueryValue.of(20));
+            soft.assertThat(conditions.get(1).name()).isEqualTo("name");
+            soft.assertThat(conditions.get(1).value()).isEqualTo(StringQueryValue.of("test"));
         });
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"WHERE age IN (10, 20) OR name = 'Otavio'", "FROM entity WHERE age IN (10, 20) OR name = 'Otavio'"})
+    @ValueSource(strings = {"WHERE name LIKE 'test' OR age = 10", "FROM entity WHERE name LIKE 'test' OR age = 10"})
     void shouldCombineOr2(String query){
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
@@ -215,15 +186,12 @@ class SelectJakartaDataQueryProviderInTest {
 
             var values = (ConditionQueryValue) condition.value();
             var conditions = values.get();
-            QueryCondition equalsCondition = conditions.get(1);
-            soft.assertThat(equalsCondition.name()).isEqualTo("name");
-            soft.assertThat(equalsCondition.value()).isEqualTo(StringQueryValue.of("Otavio"));
+            soft.assertThat(conditions).hasSize(2);
+            soft.assertThat(conditions.get(1).name()).isEqualTo("age");
+            soft.assertThat(conditions.get(1).value()).isEqualTo(NumberQueryValue.of(10));
 
-            QueryCondition betweenCondition = conditions.get(0);
-            soft.assertThat(betweenCondition.condition()).isEqualTo(Condition.IN);
-            soft.assertThat(betweenCondition.value()).isInstanceOf(ArrayQueryValue.class);
-            soft.assertThat(ArrayQueryValue.class.cast(betweenCondition.value()).get()).hasSize(2)
-                    .contains(NumberQueryValue.of(10), NumberQueryValue.of(20));
+            soft.assertThat(conditions.get(0).name()).isEqualTo("name");
+            soft.assertThat(conditions.get(0).value()).isEqualTo(StringQueryValue.of("test"));
         });
     }
 

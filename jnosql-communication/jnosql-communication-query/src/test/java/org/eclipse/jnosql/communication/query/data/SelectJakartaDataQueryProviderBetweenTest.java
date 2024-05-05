@@ -9,90 +9,66 @@
  *  Contributors:
  *  Otavio Santana
  */
-package org.eclipse.jnosql.communication.query.data.delete;
+package org.eclipse.jnosql.communication.query.data;
 
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.ArrayQueryValue;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
-import org.eclipse.jnosql.communication.query.EnumQueryValue;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryValue;
+import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
-import org.eclipse.jnosql.communication.query.data.DefaultQueryValue;
-import org.eclipse.jnosql.communication.query.data.DeleteProvider;
+import org.eclipse.jnosql.communication.query.data.SelectProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.time.DayOfWeek;
-
-class DeleteJakartaDataQueryProviderInTest {
+class SelectJakartaDataQueryProviderBetweenTest {
 
 
-    private DeleteProvider deleteProvider;
+    private SelectProvider selectProvider;
 
     @BeforeEach
     void setUp() {
-        deleteProvider = new DeleteProvider();
+        selectProvider = new SelectProvider();
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM entity WHERE age IN (10, 12.12, 'otavio', ?1, :param)"})
-    void shouldIn(String query){
-        var deleteQuery = deleteProvider.apply(query);
+    @ValueSource(strings = {"WHERE age BETWEEN 10 AND 20", "FROM entity WHERE age BETWEEN 10 AND 20"})
+    void shouldBetween(String query){
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(deleteQuery.fields()).isEmpty();
-            soft.assertThat(deleteQuery.entity()).isEqualTo("entity");
-            soft.assertThat(deleteQuery.where()).isNotEmpty();
-            var where = deleteQuery.where().orElseThrow();
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
             var condition = where.condition();
             QueryValue<?> value = condition.value();
             soft.assertThat(condition.name()).isEqualTo("age");
-            soft.assertThat(condition.condition()).isEqualTo(Condition.IN);
-            soft.assertThat(value).isInstanceOf(ArrayQueryValue.class);
-            soft.assertThat(ArrayQueryValue.class.cast(value).get()).hasSize(5)
-                    .contains(NumberQueryValue.of(10), NumberQueryValue.of(12.12),
-                            StringQueryValue.of("otavio"), DefaultQueryValue.of("?1"),
-                            DefaultQueryValue.of("param"));
-
-        });
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM entity WHERE days IN (java.time.DayOfWeek.MONDAY, java.time.DayOfWeek.SUNDAY)"})
-    void shouldInEnumLiteral(String query){
-        var deleteQuery = deleteProvider.apply(query);
-
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(deleteQuery.fields()).isEmpty();
-            soft.assertThat(deleteQuery.entity()).isEqualTo("entity");
-            soft.assertThat(deleteQuery.where()).isNotEmpty();
-            var where = deleteQuery.where().orElseThrow();
-            var condition = where.condition();
-            QueryValue<?> value = condition.value();
-            soft.assertThat(condition.name()).isEqualTo("days");
-            soft.assertThat(condition.condition()).isEqualTo(Condition.IN);
+            soft.assertThat(condition.condition()).isEqualTo(Condition.BETWEEN);
             soft.assertThat(value).isInstanceOf(ArrayQueryValue.class);
             soft.assertThat(ArrayQueryValue.class.cast(value).get()).hasSize(2)
-                    .contains(EnumQueryValue.of(DayOfWeek.MONDAY), EnumQueryValue.of(DayOfWeek.SUNDAY));
+                    .contains(NumberQueryValue.of(10), NumberQueryValue.of(20));
 
         });
     }
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM entity WHERE age NOT IN (10, 20)"})
+    @ValueSource(strings = {"WHERE age NOT BETWEEN 10 AND 20", "FROM entity WHERE age NOT BETWEEN 10 AND 20"})
     void shouldNegateBetween(String query){
-        var deleteQuery = deleteProvider.apply(query);
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(deleteQuery.fields()).isEmpty();
-            soft.assertThat(deleteQuery.entity()).isEqualTo("entity");
-            soft.assertThat(deleteQuery.where()).isNotEmpty();
-            var where = deleteQuery.where().orElseThrow();
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
             var condition = where.condition();
             soft.assertThat(condition.condition()).isEqualTo(Condition.NOT);
 
@@ -108,15 +84,16 @@ class DeleteJakartaDataQueryProviderInTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM entity WHERE name = 'Otavio' AND age IN (10, 20)"})
+    @ValueSource(strings = {"WHERE name = 'Otavio' AND age BETWEEN 10 AND 20", "FROM entity WHERE name = 'Otavio' AND age BETWEEN 10 AND 20"})
     void shouldCombineAnd(String query){
-        var deleteQuery = deleteProvider.apply(query);
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(deleteQuery.fields()).isEmpty();
-            soft.assertThat(deleteQuery.entity()).isEqualTo("entity");
-            soft.assertThat(deleteQuery.where()).isNotEmpty();
-            var where = deleteQuery.where().orElseThrow();
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
             var condition = where.condition();
             soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
 
@@ -129,7 +106,7 @@ class DeleteJakartaDataQueryProviderInTest {
             soft.assertThat(equalsCondition.value()).isEqualTo(StringQueryValue.of("Otavio"));
 
             QueryCondition betweenCondition = conditions.get(1);
-            soft.assertThat(betweenCondition.condition()).isEqualTo(Condition.IN);
+            soft.assertThat(betweenCondition.condition()).isEqualTo(Condition.BETWEEN);
             soft.assertThat(betweenCondition.value()).isInstanceOf(ArrayQueryValue.class);
             soft.assertThat(ArrayQueryValue.class.cast(betweenCondition.value()).get()).hasSize(2)
                     .contains(NumberQueryValue.of(10), NumberQueryValue.of(20));
@@ -138,15 +115,16 @@ class DeleteJakartaDataQueryProviderInTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = "DELETE FROM entity WHERE age IN (10, 20) AND name = 'Otavio'")
+    @ValueSource(strings = {"WHERE age BETWEEN 10 AND 20 AND name = 'Otavio'", "FROM entity WHERE age BETWEEN 10 AND 20 AND name = 'Otavio'"})
     void shouldCombineAnd2(String query){
-        var deleteQuery = deleteProvider.apply(query);
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(deleteQuery.fields()).isEmpty();
-            soft.assertThat(deleteQuery.entity()).isEqualTo("entity");
-            soft.assertThat(deleteQuery.where()).isNotEmpty();
-            var where = deleteQuery.where().orElseThrow();
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
             var condition = where.condition();
             soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
 
@@ -157,7 +135,7 @@ class DeleteJakartaDataQueryProviderInTest {
             soft.assertThat(equalsCondition.value()).isEqualTo(StringQueryValue.of("Otavio"));
 
             QueryCondition betweenCondition = conditions.get(0);
-            soft.assertThat(betweenCondition.condition()).isEqualTo(Condition.IN);
+            soft.assertThat(betweenCondition.condition()).isEqualTo(Condition.BETWEEN);
             soft.assertThat(betweenCondition.value()).isInstanceOf(ArrayQueryValue.class);
             soft.assertThat(ArrayQueryValue.class.cast(betweenCondition.value()).get()).hasSize(2)
                     .contains(NumberQueryValue.of(10), NumberQueryValue.of(20));
@@ -166,15 +144,16 @@ class DeleteJakartaDataQueryProviderInTest {
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM entity WHERE  name = 'Otavio' OR name IN (10, 20)"})
+    @ValueSource(strings = {"WHERE  name = 'Otavio' OR name BETWEEN 10 AND 20", "FROM entity WHERE  name = 'Otavio' OR name BETWEEN 10 AND 20"})
     void shouldCombineOr(String query){
-        var deleteQuery = deleteProvider.apply(query);
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(deleteQuery.fields()).isEmpty();
-            soft.assertThat(deleteQuery.entity()).isEqualTo("entity");
-            soft.assertThat(deleteQuery.where()).isNotEmpty();
-            var where = deleteQuery.where().orElseThrow();
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
             var condition = where.condition();
             soft.assertThat(condition.condition()).isEqualTo(Condition.OR);
 
@@ -185,7 +164,7 @@ class DeleteJakartaDataQueryProviderInTest {
             soft.assertThat(equalsCondition.value()).isEqualTo(StringQueryValue.of("Otavio"));
 
             QueryCondition betweenCondition = conditions.get(1);
-            soft.assertThat(betweenCondition.condition()).isEqualTo(Condition.IN);
+            soft.assertThat(betweenCondition.condition()).isEqualTo(Condition.BETWEEN);
             soft.assertThat(betweenCondition.value()).isInstanceOf(ArrayQueryValue.class);
             soft.assertThat(ArrayQueryValue.class.cast(betweenCondition.value()).get()).hasSize(2)
                     .contains(NumberQueryValue.of(10), NumberQueryValue.of(20));
@@ -193,15 +172,16 @@ class DeleteJakartaDataQueryProviderInTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = "DELETE FROM entity WHERE age IN (10, 20) OR name = 'Otavio'")
+    @ValueSource(strings = {"WHERE age BETWEEN 10 AND 20 OR name = 'Otavio'", "FROM entity WHERE age BETWEEN 10 AND 20 OR name = 'Otavio'"})
     void shouldCombineOr2(String query){
-        var deleteQuery = deleteProvider.apply(query);
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(deleteQuery.fields()).isEmpty();
-            soft.assertThat(deleteQuery.entity()).isEqualTo("entity");
-            soft.assertThat(deleteQuery.where()).isNotEmpty();
-            var where = deleteQuery.where().orElseThrow();
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
             var condition = where.condition();
             soft.assertThat(condition.condition()).isEqualTo(Condition.OR);
 
@@ -212,7 +192,7 @@ class DeleteJakartaDataQueryProviderInTest {
             soft.assertThat(equalsCondition.value()).isEqualTo(StringQueryValue.of("Otavio"));
 
             QueryCondition betweenCondition = conditions.get(0);
-            soft.assertThat(betweenCondition.condition()).isEqualTo(Condition.IN);
+            soft.assertThat(betweenCondition.condition()).isEqualTo(Condition.BETWEEN);
             soft.assertThat(betweenCondition.value()).isInstanceOf(ArrayQueryValue.class);
             soft.assertThat(ArrayQueryValue.class.cast(betweenCondition.value()).get()).hasSize(2)
                     .contains(NumberQueryValue.of(10), NumberQueryValue.of(20));
