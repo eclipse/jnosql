@@ -15,6 +15,7 @@ import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Test;
@@ -533,6 +534,31 @@ class DatabaseManagerTest {
 
         var entity = databaseManager.singleResult(query);
         Assertions.assertThat(entity).isEmpty();
+    }
+
+    @Test
+    void shouldExecuteUpdate(){
+        List<Element> elements = List.of(Element.of("name", "Ada"), Element.of("age", 10));
+        var updateQuery = new DefaultUpdateQuery("person", elements, CriteriaCondition.eq("id", "id"));
+        var select = SelectQuery.select().from("person").where("id").eq("id").build();
+        var entity = CommunicationEntity.of("person");
+        entity.add("name", "Poliana");
+        Mockito.when(databaseManager.select(select)).thenReturn(Stream.of(entity));
+
+        databaseManager.update(updateQuery);
+
+        ArgumentCaptor<CommunicationEntity> captor = ArgumentCaptor.forClass(CommunicationEntity.class);
+        Mockito.verify(databaseManager).update(captor.capture());
+
+        CommunicationEntity communication = captor.getValue();
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(communication.find("name").orElseThrow().get()).isEqualTo("Ada");
+            soft.assertThat(communication.find("age").orElseThrow().get()).isEqualTo(10);
+            soft.assertThat(communication.name()).isEqualTo("person");
+        });
+
+
     }
 
 

@@ -16,7 +16,6 @@ import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
@@ -169,10 +168,12 @@ public interface DatabaseManager extends AutoCloseable {
      * @return the updated entities
      * @throws NullPointerException if the query is null
      */
-    default Iterable<CommunicationEntity> update(UpdateQuery query){
+    default Iterable<CommunicationEntity> update(UpdateQuery query) {
         Objects.requireNonNull(query, "query is required");
-        return Collections.emptyList();
+        var entities = this.select(query.toSelectQuery());
+        return entities.peek(e -> e.addAll(query.set())).map(this::update).toList();
     }
+
     /**
      * Deletes entities from the database based on the specified query.
      *
