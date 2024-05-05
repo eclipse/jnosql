@@ -146,8 +146,8 @@ QUESTION        : '?';
 IDENTIFIER      : [a-zA-Z_][a-zA-Z0-9_]*;
 STRING : '"' ( ~["\\] | '\\' . )* '"'  // double quoted strings
        | '\'' ( ~['\\] | '\\' . )* '\'';  // single quoted strings
-INTEGER         : [0-9]+;
-DOUBLE          : [0-9]+'.'[0-9]* | '.'[0-9]+;
+INTEGER         : '-'?[0-9]+;
+DOUBLE          : '-'?[0-9]+'.'[0-9]* | '-'?'.'[0-9]+;
 
 // Whitespace and Comments
 WS              : [ \t\r\n]+ -> skip ;
