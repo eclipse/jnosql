@@ -29,6 +29,7 @@ import java.util.function.Function;
  */
 public final class UpdateProvider extends AbstractWhere implements Function<String, UpdateQuery> {
 
+
     @Override
     public UpdateQuery apply(String query) {
         Objects.requireNonNull(query, " query is required");
