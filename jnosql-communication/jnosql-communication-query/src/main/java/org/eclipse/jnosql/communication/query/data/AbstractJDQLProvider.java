@@ -15,14 +15,12 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.jnosql.communication.query.QueryErrorListener;
 import org.eclipse.jnosql.query.grammar.data.JDQLBaseListener;
 import org.eclipse.jnosql.query.grammar.data.JDQLLexer;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
 
-import java.util.function.Function;
 
 abstract class AbstractJDQLProvider extends JDQLBaseListener {
 
