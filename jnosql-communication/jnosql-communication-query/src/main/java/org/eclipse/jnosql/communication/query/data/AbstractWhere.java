@@ -150,6 +150,11 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
         and = andCondition;
     }
 
+    @Override
+    public void exitFunction_expression(JDQLParser.Function_expressionContext ctx) {
+        throw new UnsupportedOperationException("The function is not supported in the query: " + ctx.getText());
+    }
+
     private Condition getCondition(JDQLParser.Comparison_expressionContext ctx) {
         if (ctx.EQ() != null) {
             return EQUALS;
