@@ -119,7 +119,7 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE age between 10 and 30"})
+    @ValueSource(strings = {"DELETE FROM God WHERE age BETWEEN 10 AND 30"})
     void shouldReturnParserQuery15(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
@@ -131,7 +131,7 @@ class DeleteQueryParserTest {
         CriteriaCondition condition = columnQuery.condition().get();
 
         assertEquals(Condition.BETWEEN, condition.condition());
-        assertEquals(Element.of("age", Arrays.asList(10L, 30L)), condition.element());
+        assertEquals(Element.of("age", Arrays.asList(10, 30)), condition.element());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -223,7 +223,7 @@ class DeleteQueryParserTest {
         List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
         Assertions.assertThat(conditions).contains(eq(Element.of("name", "Ada")),
-                eq(Element.of("age", 20L)));
+                eq(Element.of("age", 20)));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -242,7 +242,7 @@ class DeleteQueryParserTest {
         List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
         });
         Assertions.assertThat(conditions).contains(eq(Element.of("name", "Ada")),
-                eq(Element.of("age", 20L)));
+                eq(Element.of("age", 20)));
     }
 
 
