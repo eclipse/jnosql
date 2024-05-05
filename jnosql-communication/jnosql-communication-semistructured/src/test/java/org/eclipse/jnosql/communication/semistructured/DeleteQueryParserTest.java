@@ -41,7 +41,7 @@ class DeleteQueryParserTest {
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God"})
+    @ValueSource(strings = {"DELETE FROM God"})
     void shouldReturnParserQuery(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
@@ -53,21 +53,9 @@ class DeleteQueryParserTest {
         assertFalse(columnQuery.condition().isPresent());
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete name, address from God"})
-    void shouldReturnParserQuery1(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
-        parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
-
-        assertThat(columnQuery.columns()).contains("name", "address");
-        assertEquals("God", columnQuery.name());
-        assertFalse(columnQuery.condition().isPresent());
-    }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God where stamina > 10.23"})
+    @ValueSource(strings = {"DELETE FROM God WHERE stamina > 10.23"})
     void shouldReturnParserQuery11(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
@@ -83,7 +71,7 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God where stamina >= -10.23"})
+    @ValueSource(strings = {"DELETE FROM God WHERE stamina >= -10.23"})
     void shouldReturnParserQuery12(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
@@ -99,7 +87,7 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where stamina <= -10.23"})
+    @ValueSource(strings = {"DELETE FROM God WHERE stamina <= -10.23"})
     void shouldReturnParserQuery13(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
@@ -115,7 +103,7 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where stamina < -10.23"})
+    @ValueSource(strings = {"DELETE FROM God WHERE stamina < -10.23"})
     void shouldReturnParserQuery14(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
@@ -131,7 +119,7 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where age between 10 and 30"})
+    @ValueSource(strings = {"DELETE FROM God WHERE age between 10 and 30"})
     void shouldReturnParserQuery15(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
@@ -147,7 +135,7 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where name = \"diana\""})
+    @ValueSource(strings = {"DELETE FROM God WHERE name = \"diana\""})
     void shouldReturnParserQuery16(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
@@ -162,48 +150,9 @@ class DeleteQueryParserTest {
         assertEquals(Element.of("name", "diana"), condition.element());
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
-    void shouldReturnParserQuery18(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
-        parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
-
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
-
-        assertEquals(Condition.EQUALS, condition.condition());
-        Element element = condition.element();
-        List<Element> elements = element.get(new TypeReference<>() {
-        });
-        Assertions.assertThat(elements).contains(Element.of("apollo", "Brother"),
-                Element.of("Zeus", "Father"));
-        assertEquals("siblings", element.name());
-    }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where age = convert(12, java.lang.Integer)"})
-    void shouldReturnParserQuery19(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
-        parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
-
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.element();
-        assertEquals(Condition.EQUALS, condition.condition());
-        assertEquals("age", element.name());
-        assertEquals(Value.of(12), element.value());
-
-
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where name in (\"Ada\", \"Apollo\")"})
+    @ValueSource(strings = {"DELETE FROM God WHERE name IN (\"Ada\", \"Apollo\")"})
     void shouldReturnParserQuery20(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
@@ -222,7 +171,7 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God where name like \"Ada\""})
+    @ValueSource(strings = {"DELETE FROM God WHERE name LIKE \"Ada\""})
     void shouldReturnParserQuery21(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
@@ -239,7 +188,7 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God where name not like \"Ada\""})
+    @ValueSource(strings = {"DELETE FROM God WHERE name NOT LIKE \"Ada\""})
     void shouldReturnParserQuery22(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
@@ -259,7 +208,7 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where name = \"Ada\" and age = 20"})
+    @ValueSource(strings = {"DELETE FROM God WHERE name = \"Ada\" AND age = 20"})
     void shouldReturnParserQuery23(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
@@ -278,7 +227,7 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where name = \"Ada\" or age = 20"})
+    @ValueSource(strings = {"DELETE FROM God WHERE name = \"Ada\" OR age = 20"})
     void shouldReturnParserQuery24(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, manager, observer);
@@ -296,54 +245,9 @@ class DeleteQueryParserTest {
                 eq(Element.of("age", 20L)));
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where name = \"Ada\" and age = 20 or" +
-            " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
-    void shouldReturnParserQuery25(String query) {
-
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
-        parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
-
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.element();
-        assertEquals(Condition.AND, condition.condition());
-        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
-        });
-        assertEquals(Condition.EQUALS, conditions.get(0).condition());
-        assertEquals(Condition.EQUALS, conditions.get(1).condition());
-        assertEquals(Condition.OR, conditions.get(2).condition());
-
-    }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where name = \"Ada\" and age = 20 or" +
-            " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"} and birthday =" +
-            " convert(\"2007-12-03\", java.time.LocalDate)"})
-    void shouldReturnParserQuery26(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
-        parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
-
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.element();
-        assertEquals(Condition.AND, condition.condition());
-        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
-        });
-        assertEquals(Condition.EQUALS, conditions.get(0).condition());
-        assertEquals(Condition.EQUALS, conditions.get(1).condition());
-        assertEquals(Condition.OR, conditions.get(2).condition());
-        assertEquals(Condition.EQUALS, conditions.get(3).condition());
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where age = @age"})
+    @ValueSource(strings = {"DELETE FROM God WHERE age = :age"})
     void shouldReturnErrorWhenNeedPrepareStatement(String query) {
 
         assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
@@ -352,7 +256,7 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God where age = @age"})
+    @ValueSource(strings = {"DELETE FROM God WHERE age = :age"})
     void shouldReturnErrorWhenIsQueryWithParam(String query) {
 
         assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
@@ -360,7 +264,7 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God where age = @age"})
+    @ValueSource(strings = {"DELETE FROM God WHERE age = :age"})
     void shouldReturnErrorWhenDontBindParameters(String query) {
 
         CommunicationPreparedStatement prepare = parser.prepare(query, manager, observer);
@@ -368,7 +272,7 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God where age = @age"})
+    @ValueSource(strings = {"DELETE FROM God WHERE age = :age"})
     void shouldExecutePrepareStatement(String query) {
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
 
