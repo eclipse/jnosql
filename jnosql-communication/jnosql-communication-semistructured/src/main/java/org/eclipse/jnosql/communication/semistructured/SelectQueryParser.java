@@ -66,7 +66,7 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
     private SelectQuery query(String query, String entity, CommunicationObserverParser observer) {
 
         var converter = new SelectProvider();
-        org.eclipse.jnosql.communication.query.SelectQuery selectQuery = converter.apply(query, entity);
+        var selectQuery = converter.apply(query, entity);
         String columnFamily = observer.fireEntity(selectQuery.entity());
         long limit = selectQuery.limit();
         long skip = selectQuery.skip();
@@ -76,7 +76,7 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
         List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, columnFamily))
                 .collect(toList());
 
-        Params params = Params.newParams();
+        var params = Params.newParams();
         CriteriaCondition condition = selectQuery.where()
                 .map(c -> Conditions.getCondition(c, params, observer, columnFamily)).orElse(null);
 
@@ -88,7 +88,7 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
 
     private SelectQuery query(Params params, org.eclipse.jnosql.communication.query.SelectQuery selectQuery, CommunicationObserverParser observer) {
 
-        String entity = observer.fireEntity(selectQuery.entity());
+        var entity = observer.fireEntity(selectQuery.entity());
         long limit = selectQuery.limit();
         long skip = selectQuery.skip();
         List<String> columns = selectQuery.fields().stream()

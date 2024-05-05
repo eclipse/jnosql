@@ -140,13 +140,6 @@ public final class CommunicationPreparedStatement {
             case UPDATE -> {
                 return Stream.of(manager.update(entity));
             }
-            case INSERT -> {
-                if (Objects.isNull(duration)) {
-                    return Stream.of(manager.insert(entity));
-                } else {
-                    return Stream.of(manager.insert(entity, duration));
-                }
-            }
             default -> throw new UnsupportedOperationException("there is not support to operation type: " + type);
         }
     }
@@ -173,7 +166,7 @@ public final class CommunicationPreparedStatement {
     }
 
     enum PreparedStatementType {
-        SELECT, DELETE, UPDATE, INSERT
+        SELECT, DELETE, UPDATE
     }
 
 
@@ -201,17 +194,6 @@ public final class CommunicationPreparedStatement {
         return new CommunicationPreparedStatement(null, null,
                 deleteQuery, PreparedStatementType.DELETE, params, query,
                 params.getParametersNames(), null, manager);
-
-    }
-
-    static CommunicationPreparedStatement insert(CommunicationEntity entity,
-                                                 Params params,
-                                                 String query,
-                                                 Duration duration,
-                                                 DatabaseManager manager) {
-        return new CommunicationPreparedStatement(entity, null,
-                null, PreparedStatementType.INSERT, params, query,
-                params.getParametersNames(), duration, manager);
 
     }
 
