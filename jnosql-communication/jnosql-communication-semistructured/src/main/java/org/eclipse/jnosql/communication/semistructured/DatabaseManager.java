@@ -16,7 +16,9 @@ import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -152,6 +154,26 @@ public interface DatabaseManager extends AutoCloseable {
      */
     Iterable<CommunicationEntity> update(Iterable<CommunicationEntity> entities);
 
+    /**
+     * Modifies an existing entity in the database based on the specified query.
+     *
+     * <p>To perform an update, a matching entity with the same unique identifier must exist in the database.
+     * In databases using an append model to write data or following the BASE model, this method behaves
+     * the same as the {@link #insert} method.</p>
+     *
+     * <p>If the entity is versioned (e.g., with an annotation or by convention from the entity model),
+     * the version must also match. The version is automatically incremented during the update.</p>
+     *
+     * <p>Non-matching entities are ignored and do not cause an error.</p>
+     *
+     * @param query the query used to select entities to update
+     * @return the updated entities
+     * @throws NullPointerException if the query is null
+     */
+    default Iterable<CommunicationEntity> update(UpdateQuery query){
+        Objects.requireNonNull(query, "query is required");
+        return Collections.emptyList();
+    }
     /**
      * Deletes entities from the database based on the specified query.
      *

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 
 /**
@@ -28,11 +29,11 @@ import java.util.stream.Stream;
  */
 public final class CommunicationPreparedStatement {
 
-    private final CommunicationEntity entity;
-
     private final SelectQuery selectQuery;
 
     private final DeleteQuery deleteQuery;
+
+    private final UpdateQuery updateQuery;
 
     private final PreparedStatementType type;
 
@@ -42,28 +43,24 @@ public final class CommunicationPreparedStatement {
 
     private final List<String> paramsLeft;
 
-    private final Duration duration;
-
     private final DatabaseManager manager;
 
-    private CommunicationPreparedStatement(CommunicationEntity entity,
-                                           SelectQuery selectQuery,
+    private CommunicationPreparedStatement(SelectQuery selectQuery,
                                            DeleteQuery deleteQuery,
+                                           UpdateQuery updateQuery,
                                            PreparedStatementType type,
                                            Params params,
                                            String query,
                                            List<String> paramsLeft,
-                                           Duration duration,
                                            DatabaseManager manager) {
-        this.entity = entity;
         this.selectQuery = selectQuery;
         this.deleteQuery = deleteQuery;
+        this.updateQuery = updateQuery;
         this.type = type;
         this.params = params;
         this.query = query;
         this.paramsLeft = paramsLeft;
         this.manager = manager;
-        this.duration = duration;
     }
 
     /**
@@ -138,7 +135,7 @@ public final class CommunicationPreparedStatement {
                 return Stream.empty();
             }
             case UPDATE -> {
-                return Stream.of(manager.update(entity));
+                return StreamSupport.stream(manager.update(updateQuery).spliterator(), false);
             }
             default -> throw new UnsupportedOperationException("there is not support to operation type: " + type);
         }
@@ -180,9 +177,9 @@ public final class CommunicationPreparedStatement {
             Params params,
             String query,
             DatabaseManager manager) {
-        return new CommunicationPreparedStatement(null, selectQuery,
-                null, PreparedStatementType.SELECT, params, query,
-                params.getParametersNames(), null, manager);
+        return new CommunicationPreparedStatement(selectQuery,
+                null, null, PreparedStatementType.SELECT, params, query,
+                params.getParametersNames(), manager);
 
     }
 
@@ -191,19 +188,22 @@ public final class CommunicationPreparedStatement {
                                                  String query,
                                                  DatabaseManager manager) {
 
-        return new CommunicationPreparedStatement(null, null,
-                deleteQuery, PreparedStatementType.DELETE, params, query,
-                params.getParametersNames(), null, manager);
+        return new CommunicationPreparedStatement(null,
+                deleteQuery, null, PreparedStatementType.DELETE, params,
+                query,
+                params.getParametersNames(),
+                manager);
 
     }
 
-    static CommunicationPreparedStatement update(CommunicationEntity entity,
+    static CommunicationPreparedStatement update(UpdateQuery updateQuery,
                                                  Params params,
                                                  String query,
                                                  DatabaseManager manager) {
-        return new CommunicationPreparedStatement(entity, null,
-                null, PreparedStatementType.UPDATE, params, query,
-                params.getParametersNames(), null, manager);
+        return new CommunicationPreparedStatement(null, null,
+                updateQuery,
+                PreparedStatementType.UPDATE, params, query,
+                params.getParametersNames(),  manager);
 
     }
 }

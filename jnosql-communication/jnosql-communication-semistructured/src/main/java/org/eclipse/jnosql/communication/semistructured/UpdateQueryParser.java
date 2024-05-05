@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
 
@@ -34,18 +35,17 @@ public final class UpdateQueryParser implements BiFunction<org.eclipse.jnosql.co
 
 
     Stream<CommunicationEntity> query(String query, DatabaseManager manager, CommunicationObserverParser observer) {
-
-        DeleteQuery deleteQuery = getQuery(query, observer);
-        manager.delete(deleteQuery);
-        return Stream.empty();
+        var updateQuery = getQuery(query, observer);
+        return StreamSupport.stream(manager.update(updateQuery).spliterator(), false);
     }
 
 
     CommunicationPreparedStatement prepare(String query, DatabaseManager manager,
                                            CommunicationObserverParser observer) {
+
         Params params = Params.newParams();
-        DeleteQuery deleteQuery = getQuery(query, params, observer);
-        return CommunicationPreparedStatement.delete(deleteQuery, params, query, manager);
+        var updateQuery = getQuery(query, params, observer);
+        return CommunicationPreparedStatement.update(updateQuery, params, query, manager);
     }
 
 
