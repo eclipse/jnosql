@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-public class SelectProvider extends AbstractWhere implements BiFunction<String, String, SelectQuery> {
+public final class SelectProvider extends AbstractWhere implements BiFunction<String, String, SelectQuery> {
 
     private final List<Sort<?>> sorts = new ArrayList<>();
 

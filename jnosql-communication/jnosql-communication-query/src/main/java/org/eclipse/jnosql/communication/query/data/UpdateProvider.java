@@ -11,26 +11,23 @@
  */
 package org.eclipse.jnosql.communication.query.data;
 
-import org.eclipse.jnosql.communication.query.DeleteQuery;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.jnosql.communication.query.UpdateQuery;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
 
 import java.util.Objects;
 import java.util.function.Function;
 
-public final class DeleteProvider extends AbstractWhere implements Function<String, DeleteQuery> {
+public final class UpdateProvider extends AbstractWhere implements Function<String, UpdateQuery> {
 
     @Override
-    public DeleteQuery apply(String query) {
+    public UpdateQuery apply(String query) {
         Objects.requireNonNull(query, " query is required");
-        runQuery(query);
-        if(this.entity == null) {
-            throw new IllegalArgumentException("The entity is required in the query");
-        }
-        return DeleteQuery.of(entity, where);
+        return null;
     }
 
     @Override
-    JDQLParser.Delete_statementContext getTree(JDQLParser parser) {
-        return parser.delete_statement();
+    ParserRuleContext getTree(JDQLParser parser) {
+        return parser.update_statement();
     }
 }
