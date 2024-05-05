@@ -27,8 +27,8 @@ import java.util.stream.StreamSupport;
 import static java.util.Objects.requireNonNull;
 
 /**
- * The {@link UpdateQueryParser} has the logic to convert from {@link org.eclipse.jnosql.communication.query.DeleteQuery}
- * to {@link DeleteQueryParams}.
+ * The {@link UpdateQueryParser} has the logic to convert from {@link org.eclipse.jnosql.communication.query.UpdateQuery}
+ * to {@link UpdateQueryParams}.
  */
 public final class UpdateQueryParser implements BiFunction<org.eclipse.jnosql.communication.query.UpdateQuery, CommunicationObserverParser, UpdateQueryParams> {
 

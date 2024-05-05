@@ -22,6 +22,7 @@ public final class QueryParser {
 
     private final SelectQueryParser select = new SelectQueryParser();
     private final DeleteQueryParser delete = new DeleteQueryParser();
+    private final UpdateQueryParser update = new UpdateQueryParser();
 
     /**
      * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
@@ -40,7 +41,7 @@ public final class QueryParser {
         String command = query.substring(0, 6);
         return switch (command) {
             case "DELETE" -> delete.query(query, manager, observer);
-           // case "UPDATE" -> update.query(query, manager, observer);
+            case "UPDATE" -> update.query(query, manager, observer);
             default ->
                     select.query(query, entity, manager, observer);
         };
@@ -64,7 +65,7 @@ public final class QueryParser {
 
         return switch (command) {
             case "DELETE" -> delete.prepare(query, manager, observer);
-           // case "UPDATE" -> update.prepare(query, manager, observer);
+            case "UPDATE" -> update.prepare(query, manager, observer);
             default -> select.prepare(query, entity, manager, observer);
         };
     }
