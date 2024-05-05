@@ -11,12 +11,12 @@
 package org.eclipse.jnosql.communication.semistructured;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.QueryException;
 import jakarta.data.Sort;
 import jakarta.data.Direction;
 import org.eclipse.jnosql.communication.TypeReference;
-import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -116,7 +116,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        checkBaseQuery(selectQuery, 0L, 0L);
+        checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
         CriteriaCondition condition = selectQuery.condition().get();
 
@@ -132,7 +132,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        checkBaseQuery(selectQuery, 0L, 0L);
+        checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
         CriteriaCondition condition = selectQuery.condition().get();
 
@@ -149,7 +149,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        checkBaseQuery(selectQuery, 0L, 0L);
+        checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
         CriteriaCondition condition = selectQuery.condition().get();
 
@@ -165,7 +165,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        checkBaseQuery(selectQuery, 0L, 0L);
+        checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
         CriteriaCondition condition = selectQuery.condition().get();
 
@@ -181,7 +181,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        checkBaseQuery(selectQuery, 0L, 0L);
+        checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
         CriteriaCondition condition = selectQuery.condition().get();
 
@@ -197,7 +197,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        checkBaseQuery(selectQuery, 0L, 0L);
+        checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
         CriteriaCondition condition = selectQuery.condition().get();
 
@@ -213,7 +213,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        checkBaseQuery(selectQuery, 0L, 0L);
+        checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
         CriteriaCondition condition = selectQuery.condition().get();
 
@@ -229,7 +229,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        checkBaseQuery(selectQuery, 0L, 0L);
+        checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
         CriteriaCondition condition = selectQuery.condition().get();
         Element element = condition.element();
@@ -248,7 +248,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        checkBaseQuery(selectQuery, 0L, 0L);
+        checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
         CriteriaCondition condition = selectQuery.condition().get();
         Element element = condition.element();
@@ -265,7 +265,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        checkBaseQuery(selectQuery, 0L, 0L);
+        checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
         CriteriaCondition condition = selectQuery.condition().get();
         Element element = condition.element();
@@ -285,7 +285,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        checkBaseQuery(selectQuery, 0L, 0L);
+        checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
         CriteriaCondition condition = selectQuery.condition().get();
         Element element = condition.element();
@@ -304,7 +304,7 @@ class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         SelectQuery selectQuery = captor.getValue();
 
-        checkBaseQuery(selectQuery, 0L, 0L);
+        checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
         CriteriaCondition condition = selectQuery.condition().get();
         Element element = condition.element();
@@ -348,11 +348,60 @@ class SelectQueryParserTest {
         assertEquals(12, element.get());
     }
 
-    private void checkBaseQuery(SelectQuery selectQuery, long limit, long skip) {
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"FROM God WHERE age = ?1"})
+    void shouldExecutePrepareStatementIndex(String query) {
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+
+        CommunicationPreparedStatement prepare = parser.prepare(query, null, manager, observer);
+        prepare.bind(1, 12);
+        prepare.result();
+        Mockito.verify(manager).select(captor.capture());
+        SelectQuery selectQuery = captor.getValue();
+        CriteriaCondition criteriaCondition = selectQuery.condition().get();
+        Element element = criteriaCondition.element();
+        assertEquals(Condition.EQUALS, criteriaCondition.condition());
+        assertEquals("age", element.name());
+        assertEquals(12, element.get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"FROM God WHERE age = ?1 AND name = ?2"})
+    void shouldExecutePrepareStatementIndex2(String query) {
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+
+        CommunicationPreparedStatement prepare = parser.prepare(query, null, manager, observer);
+        prepare.bind(1, 12);
+        prepare.bind(2, "Otavio");
+        prepare.result();
+        Mockito.verify(manager).select(captor.capture());
+        SelectQuery selectQuery = captor.getValue();
+        CriteriaCondition criteriaCondition = selectQuery.condition().get();
+        Element element = criteriaCondition.element();
+        assertEquals(Condition.AND, criteriaCondition.condition());
+        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
+        });
+        var age = conditions.get(0).element();
+        var name = conditions.get(1).element();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(conditions).hasSize(2);
+
+            soft.assertThat(age.name()).isEqualTo("age");
+            soft.assertThat(age.get()).isEqualTo(12);
+            soft.assertThat(conditions.get(0).condition()).isEqualTo(Condition.EQUALS);
+
+            soft.assertThat(name.name()).isEqualTo("name");
+            soft.assertThat(name.get()).isEqualTo("Otavio");
+            soft.assertThat(conditions.get(1).condition()).isEqualTo(Condition.EQUALS);
+        });
+    }
+
+    private void checkBaseQuery(SelectQuery selectQuery) {
         assertTrue(selectQuery.columns().isEmpty());
         assertTrue(selectQuery.sorts().isEmpty());
-        assertEquals(limit, selectQuery.limit());
-        assertEquals(skip, selectQuery.skip());
+        assertEquals(0L, selectQuery.limit());
+        assertEquals(0L, selectQuery.skip());
         assertEquals("God", selectQuery.name());
     }
 }

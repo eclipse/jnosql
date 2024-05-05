@@ -84,6 +84,33 @@ public final class CommunicationPreparedStatement {
     }
 
     /**
+     * Binds an argument to a positional parameter.
+     *
+     * @param index the parameter index
+     * @param value the parameter value
+     * @return the same query instance
+     * @throws NullPointerException when either name or value is null
+     * The first parameter is 1, the second is 2, ...
+     */
+    public CommunicationPreparedStatement bind(int index, Object value) {
+        Objects.requireNonNull(value, "value is required");
+
+        if(index < 1) {
+            throw new IllegalArgumentException("The index should be greater than zero");
+        } else if(index == 1) {
+            if(paramsLeft.contains("?")){
+                paramsLeft.remove("?");
+                params.bind("?", value);
+                return this;
+            }
+        }
+        var name = "?" + index;
+        paramsLeft.remove("?" + index);
+        params.bind(name, value);
+        return this;
+    }
+
+    /**
      * Returns the select query if present.
      *
      * @return the select query
