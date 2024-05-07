@@ -155,12 +155,18 @@ public interface DatabaseManager extends AutoCloseable {
     /**
      * Modifies an existing entity in the database based on the specified query.
      *
-     * <p>To perform an update, a matching entity with the same unique identifier must exist in the database.
-     * In databases using an append model to write data or following the BASE model, this method behaves
-     * the same as the {@link #insert} method.</p>
+     * <p>This default implementation of the update operation is executed in memory. It fetches the
+     * entities using a selection query, applies updates in memory, and then writes each updated entity
+     * back to the database. While this method provides a straightforward and universal approach, it may
+     * impact performance due to multiple database read and write operations.</p>
      *
-     * <p>If the entity is versioned (e.g., with an annotation or by convention from the entity model),
-     * the version must also match. The version is automatically incremented during the update.</p>
+     * <p>To enhance performance, especially in production environments, it is recommended that this
+     * method is overridden by the database driver to perform the update operation directly in the database.
+     * Implementing direct database updates minimizes the overhead associated with in-memory operations
+     * and network latency.</p>
+     *
+     * <p>For databases using an append model to write data or following the BASE model, this method behaves
+     * the same as the {@link #insert} method when not overridden.</p>
      *
      * <p>Non-matching entities are ignored and do not cause an error.</p>
      *
