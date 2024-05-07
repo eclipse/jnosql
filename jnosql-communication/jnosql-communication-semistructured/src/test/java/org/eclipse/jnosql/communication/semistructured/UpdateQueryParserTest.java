@@ -10,8 +10,6 @@
  */
 package org.eclipse.jnosql.communication.semistructured;
 
-import jakarta.data.Direction;
-import jakarta.data.Sort;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
@@ -25,10 +23,8 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.communication.semistructured.CriteriaCondition.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -60,216 +56,280 @@ class UpdateQueryParserTest {
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE stamina > 10.23"})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE stamina > 10.23"})
     void shouldReturnParserQuery11(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
         parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
+        Mockito.verify(manager).update(captor.capture());
+        var updateQuery = captor.getValue();
 
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
+        checkBaseQuery(updateQuery);
+        assertTrue(updateQuery.condition().isPresent());
+        CriteriaCondition condition = updateQuery.condition().get();
 
-        assertEquals(Condition.GREATER_THAN, condition.condition());
-        assertEquals(Element.of("stamina", 10.23), condition.element());
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.GREATER_THAN);
+            soft.assertThat(condition.element()).isEqualTo(Element.of("stamina", 10.23));
+            soft.assertThat(updateQuery.set()).isNotNull().hasSize(1)
+                    .contains(Element.of("age", 10));
+        });
+
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE stamina >= -10.23"})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE stamina >= -10.23"})
     void shouldReturnParserQuery12(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
         parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
+        Mockito.verify(manager).update(captor.capture());
+        var updateQuery = captor.getValue();
 
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
+        checkBaseQuery(updateQuery);
+        assertTrue(updateQuery.condition().isPresent());
+        var condition = updateQuery.condition().get();
 
-        assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
-        assertEquals(Element.of("stamina", -10.23), condition.element());
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.GREATER_EQUALS_THAN);
+            soft.assertThat(condition.element()).isEqualTo(Element.of("stamina", -10.23));
+            soft.assertThat(updateQuery.set()).isNotNull().hasSize(1)
+                    .contains(Element.of("age", 10));
+        });
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE stamina <= -10.23"})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE stamina <= -10.23"})
     void shouldReturnParserQuery13(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
         parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
+        Mockito.verify(manager).update(captor.capture());
+        var updateQuery = captor.getValue();
 
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
+        checkBaseQuery(updateQuery);
+        assertTrue(updateQuery.condition().isPresent());
+        CriteriaCondition condition = updateQuery.condition().get();
 
-        assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
-        assertEquals(Element.of("stamina", -10.23), condition.element());
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.LESSER_EQUALS_THAN);
+            soft.assertThat(condition.element()).isEqualTo(Element.of("stamina", -10.23));
+            soft.assertThat(updateQuery.set()).isNotNull().hasSize(1)
+                    .contains(Element.of("age", 10));
+        });
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE stamina < -10.23"})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE stamina < -10.23"})
     void shouldReturnParserQuery14(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
         parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
+        Mockito.verify(manager).update(captor.capture());
+        UpdateQuery updateQuery = captor.getValue();
 
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
+        checkBaseQuery(updateQuery);
+        assertTrue(updateQuery.condition().isPresent());
+        CriteriaCondition condition = updateQuery.condition().get();
 
-        assertEquals(Condition.LESSER_THAN, condition.condition());
-        assertEquals(Element.of("stamina", -10.23), condition.element());
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.LESSER_THAN);
+            soft.assertThat(condition.element()).isEqualTo(Element.of("stamina", -10.23));
+            soft.assertThat(updateQuery.set()).isNotNull().hasSize(1)
+                    .contains(Element.of("age", 10));
+        });
+
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE age BETWEEN 10 AND 30"})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE age BETWEEN 10 AND 30"})
     void shouldReturnParserQuery15(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
         parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
+        Mockito.verify(manager).update(captor.capture());
+        var updateQuery = captor.getValue();
 
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
+        checkBaseQuery(updateQuery);
+        assertTrue(updateQuery.condition().isPresent());
+        CriteriaCondition condition = updateQuery.condition().get();
 
-        assertEquals(Condition.BETWEEN, condition.condition());
-        assertEquals(Element.of("age", Arrays.asList(10, 30)), condition.element());
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.BETWEEN);
+            soft.assertThat(condition.element()).isEqualTo(Element.of("age", Arrays.asList(10, 30)));
+            soft.assertThat(updateQuery.set()).isNotNull().hasSize(1)
+                    .contains(Element.of("age", 10));
+        });
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE name = \"diana\""})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE name = \"diana\""})
     void shouldReturnParserQuery16(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
         parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
+        Mockito.verify(manager).update(captor.capture());
+        UpdateQuery updateQuery = captor.getValue();
 
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
+        checkBaseQuery(updateQuery);
+        assertTrue(updateQuery.condition().isPresent());
+        CriteriaCondition condition = updateQuery.condition().get();
 
-        assertEquals(Condition.EQUALS, condition.condition());
-        assertEquals(Element.of("name", "diana"), condition.element());
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.element()).isEqualTo(Element.of("name", "diana"));
+            soft.assertThat(updateQuery.set()).isNotNull().hasSize(1)
+                    .contains(Element.of("age", 10));
+        });
+
     }
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE name IN (\"Ada\", \"Apollo\")"})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE name IN (\"Ada\", \"Apollo\")"})
     void shouldReturnParserQuery20(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
         parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
+        Mockito.verify(manager).update(captor.capture());
+        var updateQuery = captor.getValue();
 
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.element();
-        assertEquals(Condition.IN, condition.condition());
-        assertEquals("name", element.name());
-        List<String> values = element.get(new TypeReference<>() {
+        checkBaseQuery(updateQuery);
+        assertTrue(updateQuery.condition().isPresent());
+        CriteriaCondition condition = updateQuery.condition().get();
+
+
+        SoftAssertions.assertSoftly(soft -> {
+            Element element = condition.element();
+            List<String> values = element.get(new TypeReference<>() {
+            });
+            soft.assertThat(condition.condition()).isEqualTo(Condition.IN);
+            soft.assertThat(condition.element().name()).isEqualTo("name");
+            soft.assertThat(values).contains("Ada", "Apollo");
+            soft.assertThat(updateQuery.set()).isNotNull().hasSize(1)
+                    .contains(Element.of("age", 10));
         });
-        assertThat(values).contains("Ada", "Apollo");
+
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE name LIKE \"Ada\""})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE name LIKE \"Ada\""})
     void shouldReturnParserQuery21(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
         parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
+        Mockito.verify(manager).update(captor.capture());
+        var updateQuery = captor.getValue();
 
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.element();
-        assertEquals(Condition.LIKE, condition.condition());
-        assertEquals("name", element.name());
-        assertEquals("Ada", element.get());
+        checkBaseQuery(updateQuery);
+        assertTrue(updateQuery.condition().isPresent());
+        CriteriaCondition condition = updateQuery.condition().get();
+
+        SoftAssertions.assertSoftly(soft -> {
+            Element element = condition.element();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.LIKE);
+            soft.assertThat(element.name()).isEqualTo("name");
+            soft.assertThat(element.get()).isEqualTo("Ada");
+            soft.assertThat(updateQuery.set()).isNotNull().hasSize(1)
+                    .contains(Element.of("age", 10));
+        });
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE name NOT LIKE \"Ada\""})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE name NOT LIKE \"Ada\""})
     void shouldReturnParserQuery22(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
         parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
+        Mockito.verify(manager).update(captor.capture());
+        UpdateQuery updateQuery = captor.getValue();
 
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.element();
-        assertEquals(Condition.NOT, condition.condition());
-        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
+        checkBaseQuery(updateQuery);
+        assertTrue(updateQuery.condition().isPresent());
+        CriteriaCondition condition = updateQuery.condition().get();
+
+        SoftAssertions.assertSoftly(soft -> {
+            var element = condition.element();
+            List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
+            });
+            var criteriaCondition = conditions.get(0);
+
+            soft.assertThat(condition.condition()).isEqualTo(Condition.NOT);
+            soft.assertThat(criteriaCondition.condition()).isEqualTo(Condition.LIKE);
+            soft.assertThat(conditions.get(0).element().name()).isEqualTo("name");
+            soft.assertThat(conditions.get(0).element().get()).isEqualTo("Ada");
+            soft.assertThat(updateQuery.set()).isNotNull().hasSize(1)
+                    .contains(Element.of("age", 10));
         });
-        CriteriaCondition criteriaCondition = conditions.get(0);
-        assertEquals(Condition.LIKE, criteriaCondition.condition());
-        assertEquals(Element.of("name", "Ada"), criteriaCondition.element());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE name = \"Ada\" AND age = 20"})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE name = \"Ada\" AND age = 20"})
     void shouldReturnParserQuery23(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
         parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
+        Mockito.verify(manager).update(captor.capture());
+        var updateQuery = captor.getValue();
 
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.element();
-        assertEquals(Condition.AND, condition.condition());
-        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
+        checkBaseQuery(updateQuery);
+        assertTrue(updateQuery.condition().isPresent());
+        CriteriaCondition condition = updateQuery.condition().get();
+
+        SoftAssertions.assertSoftly(soft ->{
+            Element element = condition.element();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
+            List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
+            });
+            soft.assertThat(conditions).contains(eq(Element.of("name", "Ada")),
+                    eq(Element.of("age", 20)));
         });
-        Assertions.assertThat(conditions).contains(eq(Element.of("name", "Ada")),
-                eq(Element.of("age", 20)));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE name = \"Ada\" OR age = 20"})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE name = \"Ada\" OR age = 20"})
     void shouldReturnParserQuery24(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
         parser.query(query, manager, observer);
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
+        Mockito.verify(manager).update(captor.capture());
+        var updateQuery = captor.getValue();
 
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.condition().isPresent());
-        CriteriaCondition condition = columnQuery.condition().get();
-        Element element = condition.element();
-        assertEquals(Condition.OR, condition.condition());
-        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
+        checkBaseQuery(updateQuery);
+        assertTrue(updateQuery.condition().isPresent());
+        CriteriaCondition condition = updateQuery.condition().get();
+
+        SoftAssertions.assertSoftly(soft -> {
+            Element element = condition.element();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.OR);
+            List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
+            });
+            soft.assertThat(conditions).contains(eq(Element.of("name", "Ada")),
+                    eq(Element.of("age", 20)));
         });
-        Assertions.assertThat(conditions).contains(eq(Element.of("name", "Ada")),
-                eq(Element.of("age", 20)));
     }
 
-
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE age = :age"})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE age = :age"})
     void shouldReturnErrorWhenNeedPrepareStatement(String query) {
-
         assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
-
-
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE age = :age"})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE age = :age"})
     void shouldReturnErrorWhenIsQueryWithParam(String query) {
-
         assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
-
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE age = :age"})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE age = ?1"})
+    void shouldReturnErrorWhenIsQueryWithParamPosition(String query) {
+        assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"UPDATE entity SET age = ?1"})
+    void shouldReturnErrorWhenIsQueryWithParamSetPosition(String query) {
+        assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"UPDATE entity SET age = :age"})
+    void shouldReturnErrorWhenIsQueryWithParamSet(String query) {
+        assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE age = :age"})
     void shouldReturnErrorWhenDontBindParameters(String query) {
 
         CommunicationPreparedStatement prepare = parser.prepare(query, manager, observer);
@@ -277,24 +337,68 @@ class UpdateQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE age = :age"})
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE age = :age"})
     void shouldExecutePrepareStatement(String query) {
-        ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
 
         CommunicationPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("age", 12);
         prepare.result();
-        Mockito.verify(manager).delete(captor.capture());
-        DeleteQuery columnQuery = captor.getValue();
-        CriteriaCondition criteriaCondition = columnQuery.condition().get();
-        Element element = criteriaCondition.element();
-        assertEquals(Condition.EQUALS, criteriaCondition.condition());
-        assertEquals("age", element.name());
-        assertEquals(12, element.get());
+        Mockito.verify(manager).update(captor.capture());
+        var updateQuery = captor.getValue();
+        CriteriaCondition criteriaCondition = updateQuery.condition().get();
+        SoftAssertions.assertSoftly(soft -> {
+            Element element = criteriaCondition.element();
+            soft.assertThat(criteriaCondition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(element.name()).isEqualTo("age");
+            soft.assertThat(element.get()).isEqualTo(12);
+        });
     }
 
-    private void checkBaseQuery(DeleteQuery columnQuery) {
-        assertTrue(columnQuery.columns().isEmpty());
-        assertEquals("God", columnQuery.name());
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"UPDATE entity SET age = 10 WHERE age = ?1"})
+    void shouldExecutePrepareStatementPosition(String query) {
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
+
+        CommunicationPreparedStatement prepare = parser.prepare(query, manager, observer);
+        prepare.bind(1, 12);
+        prepare.result();
+        Mockito.verify(manager).update(captor.capture());
+        var updateQuery = captor.getValue();
+        CriteriaCondition criteriaCondition = updateQuery.condition().get();
+        SoftAssertions.assertSoftly(soft -> {
+            Element element = criteriaCondition.element();
+            soft.assertThat(criteriaCondition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(element.name()).isEqualTo("age");
+            soft.assertThat(element.get()).isEqualTo(12);
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"UPDATE entity SET name = :name WHERE age = :age"})
+    void shouldExecutePrepareStatementSet(String query) {
+        var captor = ArgumentCaptor.forClass(UpdateQuery.class);
+
+        CommunicationPreparedStatement prepare = parser.prepare(query, manager, observer);
+        prepare.bind("age", 12);
+        prepare.bind("name", "Ada");
+        prepare.result();
+        Mockito.verify(manager).update(captor.capture());
+        var updateQuery = captor.getValue();
+        CriteriaCondition criteriaCondition = updateQuery.condition().get();
+        SoftAssertions.assertSoftly(soft -> {
+            Element element = criteriaCondition.element();
+            soft.assertThat(criteriaCondition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(element.name()).isEqualTo("age");
+            soft.assertThat(element.get()).isEqualTo(12);
+            soft.assertThat(updateQuery.set()).hasSize(1);
+            var setItem = updateQuery.set().get(0);
+            soft.assertThat(setItem.name()).isEqualTo("name");
+            soft.assertThat(setItem.value().get()).isEqualTo("Ada");
+        });
+    }
+
+    private void checkBaseQuery(UpdateQuery updateQuery) {
+        assertEquals("entity", updateQuery.name());
     }
 }

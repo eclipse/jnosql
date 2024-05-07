@@ -43,7 +43,7 @@ class SelectQueryParserTest {
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God ORDER BY name ASC"})
+    @ValueSource(strings = {"FROM entity ORDER BY name ASC"})
     void shouldReturnParserQuery3(String query) {
         var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -54,12 +54,12 @@ class SelectQueryParserTest {
         assertThat(selectQuery.sorts()).contains(Sort.of("name", Direction.ASC, false));
         assertEquals(0L, selectQuery.limit());
         assertEquals(0L, selectQuery.skip());
-        assertEquals("God", selectQuery.name());
+        assertEquals("entity", selectQuery.name());
         assertFalse(selectQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God ORDER BY name ASC"})
+    @ValueSource(strings = {"FROM entity ORDER BY name ASC"})
     void shouldReturnParserQuery4(String query) {
         var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -70,12 +70,12 @@ class SelectQueryParserTest {
         assertThat(selectQuery.sorts()).contains(Sort.of("name", Direction.ASC, false));
         assertEquals(0L, selectQuery.limit());
         assertEquals(0L, selectQuery.skip());
-        assertEquals("God", selectQuery.name());
+        assertEquals("entity", selectQuery.name());
         assertFalse(selectQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God ORDER BY name DESC"})
+    @ValueSource(strings = {"FROM entity ORDER BY name DESC"})
     void shouldReturnParserQuery5(String query) {
         var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -86,12 +86,12 @@ class SelectQueryParserTest {
         assertThat(selectQuery.sorts()).contains(Sort.of("name", Direction.DESC, false));
         assertEquals(0L, selectQuery.limit());
         assertEquals(0L, selectQuery.skip());
-        assertEquals("God", selectQuery.name());
+        assertEquals("entity", selectQuery.name());
         assertFalse(selectQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God ORDER BY name DESC, age ASC"})
+    @ValueSource(strings = {"FROM entity ORDER BY name DESC, age ASC"})
     void shouldReturnParserQuery6(String query) {
 
         var captor = ArgumentCaptor.forClass(SelectQuery.class);
@@ -104,12 +104,12 @@ class SelectQueryParserTest {
                 Sort.asc("age"));
         assertEquals(0L, selectQuery.limit());
         assertEquals(0L, selectQuery.skip());
-        assertEquals("God", selectQuery.name());
+        assertEquals("entity", selectQuery.name());
         assertFalse(selectQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE age = 10"})
+    @ValueSource(strings = {"FROM entity WHERE age = 10"})
     void shouldReturnParserQuery10(String query) {
         var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -125,7 +125,7 @@ class SelectQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE stamina > 10.23"})
+    @ValueSource(strings = {"FROM entity WHERE stamina > 10.23"})
     void shouldReturnParserQuery11(String query) {
         var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -141,7 +141,7 @@ class SelectQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE stamina >= -10.23"})
+    @ValueSource(strings = {"FROM entity WHERE stamina >= -10.23"})
     void shouldReturnParserQuery12(String query) {
         var captor = ArgumentCaptor.forClass(SelectQuery.class);
         
@@ -158,7 +158,7 @@ class SelectQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE stamina <= -10.23"})
+    @ValueSource(strings = {"FROM entity WHERE stamina <= -10.23"})
     void shouldReturnParserQuery13(String query) {
         var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -174,7 +174,7 @@ class SelectQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE stamina < -10.23"})
+    @ValueSource(strings = {"FROM entity WHERE stamina < -10.23"})
     void shouldReturnParserQuery14(String query) {
         var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -190,7 +190,7 @@ class SelectQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE age BETWEEN 10 AND 30"})
+    @ValueSource(strings = {"FROM entity WHERE age BETWEEN 10 AND 30"})
     void shouldReturnParserQuery15(String query) {
         var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -206,7 +206,7 @@ class SelectQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE name = \"diana\""})
+    @ValueSource(strings = {"FROM entity WHERE name = \"diana\""})
     void shouldReturnParserQuery16(String query) {
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -215,14 +215,14 @@ class SelectQueryParserTest {
 
         checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
-        CriteriaCondition condition = selectQuery.condition().get();
+        var condition = selectQuery.condition().get();
 
         assertEquals(Condition.EQUALS, condition.condition());
         assertEquals(Element.of("name", "diana"), condition.element());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE name IN (\"Ada\", \"Apollo\")"})
+    @ValueSource(strings = {"FROM entity WHERE name IN (\"Ada\", \"Apollo\")"})
     void shouldReturnParserQuery20(String query) {
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -231,7 +231,7 @@ class SelectQueryParserTest {
 
         checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
-        CriteriaCondition condition = selectQuery.condition().get();
+        var condition = selectQuery.condition().get();
         Element element = condition.element();
         assertEquals(Condition.IN, condition.condition());
         assertEquals("name", element.name());
@@ -241,7 +241,7 @@ class SelectQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE name LIKE \"Ada\""})
+    @ValueSource(strings = {"FROM entity WHERE name LIKE \"Ada\""})
     void shouldReturnParserQuery21(String query) {
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -258,7 +258,7 @@ class SelectQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE name NOT LIKE \"Ada\""})
+    @ValueSource(strings = {"FROM entity WHERE name NOT LIKE \"Ada\""})
     void shouldReturnParserQuery22(String query) {
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -278,7 +278,7 @@ class SelectQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE name = \"Ada\" AND age = 20"})
+    @ValueSource(strings = {"FROM entity WHERE name = \"Ada\" AND age = 20"})
     void shouldReturnParserQuery23(String query) {
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -297,7 +297,7 @@ class SelectQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE name = \"Ada\" OR age = 20"})
+    @ValueSource(strings = {"FROM entity WHERE name = \"Ada\" OR age = 20"})
     void shouldReturnParserQuery24(String query) {
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
@@ -317,14 +317,14 @@ class SelectQueryParserTest {
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE age = :age"})
+    @ValueSource(strings = {"FROM entity WHERE age = :age"})
     void shouldReturnErrorWhenIsQueryWithParam(String query) {
 
         assertThrows(QueryException.class, () -> parser.query(query, null, manager, observer));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE age = :age"})
+    @ValueSource(strings = {"FROM entity WHERE age = :age"})
     void shouldReturnErrorWhenDontBindParameters(String query) {
 
         CommunicationPreparedStatement prepare = parser.prepare(query, null, manager, observer);
@@ -332,7 +332,7 @@ class SelectQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE age = :age"})
+    @ValueSource(strings = {"FROM entity WHERE age = :age"})
     void shouldExecutePrepareStatement(String query) {
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
 
@@ -349,7 +349,7 @@ class SelectQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE age = ?1"})
+    @ValueSource(strings = {"FROM entity WHERE age = ?1"})
     void shouldExecutePrepareStatementIndex(String query) {
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
 
@@ -366,7 +366,7 @@ class SelectQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"FROM God WHERE age = ?1 AND name = ?2"})
+    @ValueSource(strings = {"FROM entity WHERE age = ?1 AND name = ?2"})
     void shouldExecutePrepareStatementIndex2(String query) {
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
 
@@ -402,6 +402,6 @@ class SelectQueryParserTest {
         assertTrue(selectQuery.sorts().isEmpty());
         assertEquals(0L, selectQuery.limit());
         assertEquals(0L, selectQuery.skip());
-        assertEquals("God", selectQuery.name());
+        assertEquals("entity", selectQuery.name());
     }
 }
