@@ -14,21 +14,17 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.PreparedStatement;
-import org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
-import org.eclipse.jnosql.communication.keyvalue.KeyValuePreparedStatement;
 import org.eclipse.jnosql.mapping.core.Converters;
-import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
-import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.keyvalue.entities.Person;
 import org.eclipse.jnosql.mapping.keyvalue.entities.User;
+import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -46,13 +42,14 @@ import org.mockito.quality.Strictness;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @EnableAutoWeld
@@ -268,75 +265,6 @@ class DefaultKeyValueTemplateTest {
     void shouldRemoveIterable() {
         template.delete(singletonList(KEY));
         Mockito.verify(manager).delete(singletonList(KEY));
-    }
-
-    @Test
-    void shouldExecuteClass() {
-        template.query("remove id");
-        Mockito.verify(manager).query("remove id");
-    }
-
-    @Test
-    @MockitoSettings(strictness = Strictness.LENIENT)
-    void shouldReturnErrorWhenQueryIsNull() {
-        assertThrows(NullPointerException.class, () -> template.query(null));
-        assertThrows(NullPointerException.class, () -> template.query(null, String.class));
-    }
-
-    @Test
-    void shouldExecuteClassNotClass() {
-        template.query("remove id");
-        Mockito.verify(manager).query("remove id");
-    }
-
-    @Test
-    void shouldExecuteQuery() {
-        when(manager.query("get id"))
-                .thenReturn(Stream.of(Value.of("12")));
-
-        List<Integer> ids = template.query("get id", Integer.class).collect(toList());
-        assertThat(ids).contains(12);
-    }
-
-    @Test
-    void shouldReturnSingleResult() {
-        when(manager.query("get id"))
-                .thenReturn(Stream.of(Value.of("12")));
-
-        Optional<Integer> id = template.getSingleResult("get id", Integer.class);
-        assertTrue(id.isPresent());
-    }
-
-    @Test
-    void shouldReturnSingleResult2() {
-
-        when(manager.query("get id2"))
-                .thenReturn(Stream.empty());
-
-        assertFalse(template.getSingleResult("get id2", Integer.class).isPresent());
-    }
-
-    @Test
-    void shouldReturnSingleResult3() {
-        when(manager.query("get id3"))
-                .thenReturn(Stream.of(Value.of("12"), Value.of("15")));
-        assertThrows(NonUniqueResultException.class, () -> template.getSingleResult("get id3", Integer.class));
-    }
-
-    @Test
-    void shouldExecutePrepare() {
-        org.eclipse.jnosql.communication.keyvalue.KeyValuePreparedStatement prepare = Mockito.mock(KeyValuePreparedStatement.class);
-        when(prepare.result()).thenReturn(Stream.of(Value.of("12")));
-        when(prepare.singleResult()).thenReturn(Optional.of(Value.of("12")));
-        when(manager.prepare("get @id")).thenReturn(prepare);
-
-        PreparedStatement statement = template.prepare("get @id", Integer.class);
-        statement.bind("id", 12);
-        List<Integer> resultList = statement.<Integer>result().collect(toList());
-        assertThat(resultList).contains(12);
-        Optional<Object> singleResult = statement.singleResult();
-        assertTrue(singleResult.isPresent());
-        assertEquals(12, singleResult.get());
     }
 
     @Test

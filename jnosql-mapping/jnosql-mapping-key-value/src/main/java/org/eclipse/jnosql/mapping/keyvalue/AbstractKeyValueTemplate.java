@@ -15,15 +15,12 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 
-import jakarta.data.exceptions.NonUniqueResultException;
-import org.eclipse.jnosql.mapping.PreparedStatement;
 import jakarta.nosql.QueryMapper;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 
 import java.time.Duration;
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -125,44 +122,6 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     public <K> void delete(Iterable<K> keys) {
         requireNonNull(keys, "keys is required");
         getManager().delete(keys);
-    }
-
-    @Override
-    public <T> Stream<T> query(String query, Class<T> type) {
-        requireNonNull(query, "query is required");
-        requireNonNull(type, "type is required");
-        Stream<Value> values = getManager().query(query);
-        return values.map(v -> v.get(type));
-    }
-
-    @Override
-    public <T> Optional<T> getSingleResult(String query, Class<T> type) {
-        requireNonNull(query, "query is required");
-        requireNonNull(type, "type is required");
-
-        Stream<T> entities = query(query, type);
-        final Iterator<T> iterator = entities.iterator();
-        if (!iterator.hasNext()) {
-            return Optional.empty();
-        }
-        final T entity = iterator.next();
-        if (!iterator.hasNext()) {
-            return Optional.of(entity);
-        }
-        throw new NonUniqueResultException("No Unique result found to the query: " + query);
-    }
-
-    @Override
-    public void query(String query) {
-        requireNonNull(query, "query is required");
-        getManager().query(query);
-    }
-
-    @Override
-    public <T> PreparedStatement prepare(String query, Class<T> type) {
-        requireNonNull(query, "query is required");
-        requireNonNull(type, "type is required");
-        return new KeyValuePreparedStatement(getManager().prepare(query), type);
     }
 
     @Override
