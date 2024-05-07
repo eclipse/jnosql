@@ -269,12 +269,37 @@ class DeleteQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"DELETE FROM God WHERE age = ?1"})
+    void shouldReturnErrorWhenDontBindParametersPosition(String query) {
+
+        var prepare = parser.prepare(query, manager, observer);
+        assertThrows(QueryException.class, prepare::result);
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"DELETE FROM God WHERE age = :age"})
     void shouldExecutePrepareStatement(String query) {
         var captor = ArgumentCaptor.forClass(DeleteQuery.class);
 
         var prepare = parser.prepare(query, manager, observer);
         prepare.bind("age", 12);
+        prepare.result();
+        Mockito.verify(manager).delete(captor.capture());
+        DeleteQuery columnQuery = captor.getValue();
+        CriteriaCondition criteriaCondition = columnQuery.condition().get();
+        Element element = criteriaCondition.element();
+        assertEquals(Condition.EQUALS, criteriaCondition.condition());
+        assertEquals("age", element.name());
+        assertEquals(12, element.get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"DELETE FROM God WHERE age = ?1"})
+    void shouldExecutePrepareStatementPosition(String query) {
+        var captor = ArgumentCaptor.forClass(DeleteQuery.class);
+
+        var prepare = parser.prepare(query, manager, observer);
+        prepare.bind(1, 12);
         prepare.result();
         Mockito.verify(manager).delete(captor.capture());
         DeleteQuery columnQuery = captor.getValue();
