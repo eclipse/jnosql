@@ -45,10 +45,10 @@ class SelectQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"FROM God ORDER BY name ASC"})
     void shouldReturnParserQuery3(String query) {
-        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
         Mockito.verify(manager).select(captor.capture());
-        SelectQuery selectQuery = captor.getValue();
+        var selectQuery = captor.getValue();
 
         assertTrue(selectQuery.columns().isEmpty());
         assertThat(selectQuery.sorts()).contains(Sort.of("name", Direction.ASC, false));
@@ -61,10 +61,10 @@ class SelectQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"FROM God ORDER BY name ASC"})
     void shouldReturnParserQuery4(String query) {
-        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
         Mockito.verify(manager).select(captor.capture());
-        SelectQuery selectQuery = captor.getValue();
+        var selectQuery = captor.getValue();
 
         assertTrue(selectQuery.columns().isEmpty());
         assertThat(selectQuery.sorts()).contains(Sort.of("name", Direction.ASC, false));
@@ -77,10 +77,10 @@ class SelectQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"FROM God ORDER BY name DESC"})
     void shouldReturnParserQuery5(String query) {
-        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
         Mockito.verify(manager).select(captor.capture());
-        SelectQuery selectQuery = captor.getValue();
+        var selectQuery = captor.getValue();
 
         assertTrue(selectQuery.columns().isEmpty());
         assertThat(selectQuery.sorts()).contains(Sort.of("name", Direction.DESC, false));
@@ -94,10 +94,10 @@ class SelectQueryParserTest {
     @ValueSource(strings = {"FROM God ORDER BY name DESC, age ASC"})
     void shouldReturnParserQuery6(String query) {
 
-        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
         Mockito.verify(manager).select(captor.capture());
-        SelectQuery selectQuery = captor.getValue();
+        var selectQuery = captor.getValue();
 
         assertTrue(selectQuery.columns().isEmpty());
         assertThat(selectQuery.sorts()).contains(Sort.desc("name"),
@@ -111,10 +111,10 @@ class SelectQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"FROM God WHERE age = 10"})
     void shouldReturnParserQuery10(String query) {
-        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
         Mockito.verify(manager).select(captor.capture());
-        SelectQuery selectQuery = captor.getValue();
+        var selectQuery = captor.getValue();
 
         checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
@@ -127,10 +127,10 @@ class SelectQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"FROM God WHERE stamina > 10.23"})
     void shouldReturnParserQuery11(String query) {
-        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
         Mockito.verify(manager).select(captor.capture());
-        SelectQuery selectQuery = captor.getValue();
+        var selectQuery = captor.getValue();
 
         checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
@@ -143,7 +143,7 @@ class SelectQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"FROM God WHERE stamina >= -10.23"})
     void shouldReturnParserQuery12(String query) {
-        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         
         parser.query(query, null, manager, observer);
         Mockito.verify(manager).select(captor.capture());
@@ -160,10 +160,10 @@ class SelectQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"FROM God WHERE stamina <= -10.23"})
     void shouldReturnParserQuery13(String query) {
-        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
         Mockito.verify(manager).select(captor.capture());
-        SelectQuery selectQuery = captor.getValue();
+        var selectQuery = captor.getValue();
 
         checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
@@ -176,10 +176,10 @@ class SelectQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"FROM God WHERE stamina < -10.23"})
     void shouldReturnParserQuery14(String query) {
-        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
         Mockito.verify(manager).select(captor.capture());
-        SelectQuery selectQuery = captor.getValue();
+        var selectQuery = captor.getValue();
 
         checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
@@ -192,10 +192,10 @@ class SelectQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"FROM God WHERE age BETWEEN 10 AND 30"})
     void shouldReturnParserQuery15(String query) {
-        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, observer);
         Mockito.verify(manager).select(captor.capture());
-        SelectQuery selectQuery = captor.getValue();
+        var selectQuery = captor.getValue();
 
         checkBaseQuery(selectQuery);
         assertTrue(selectQuery.condition().isPresent());
