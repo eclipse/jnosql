@@ -42,8 +42,7 @@ public final class QueryParser {
         return switch (command) {
             case "DELETE" -> delete.query(query, manager, observer);
             case "UPDATE" -> update.query(query, manager, observer);
-            default ->
-                    select.query(query, entity, manager, observer);
+            default -> select.query(query, entity, manager, observer);
         };
     }
 
