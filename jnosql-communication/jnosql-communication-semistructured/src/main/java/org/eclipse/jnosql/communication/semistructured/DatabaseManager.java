@@ -153,6 +153,34 @@ public interface DatabaseManager extends AutoCloseable {
     Iterable<CommunicationEntity> update(Iterable<CommunicationEntity> entities);
 
     /**
+     * Modifies an existing entity in the database based on the specified query.
+     *
+     * <p>This default implementation of the update operation is executed in memory. It fetches the
+     * entities using a selection query, applies updates in memory, and then writes each updated entity
+     * back to the database. While this method provides a straightforward and universal approach, it may
+     * impact performance due to multiple database read and write operations.</p>
+     *
+     * <p>To enhance performance, especially in production environments, it is recommended that this
+     * method is overridden by the database driver to perform the update operation directly in the database.
+     * Implementing direct database updates minimizes the overhead associated with in-memory operations
+     * and network latency.</p>
+     *
+     * <p>For databases using an append model to write data or following the BASE model, this method behaves
+     * the same as the {@link #insert} method when not overridden.</p>
+     *
+     * <p>Non-matching entities are ignored and do not cause an error.</p>
+     *
+     * @param query the query used to select entities to update
+     * @return the updated entities
+     * @throws NullPointerException if the query is null
+     */
+    default Iterable<CommunicationEntity> update(UpdateQuery query) {
+        Objects.requireNonNull(query, "query is required");
+        var entities = this.select(query.toSelectQuery());
+        return entities.peek(e -> e.addAll(query.set())).map(this::update).toList();
+    }
+
+    /**
      * Deletes entities from the database based on the specified query.
      *
      * @param query the query used to select entities to be deleted
@@ -206,9 +234,24 @@ public interface DatabaseManager extends AutoCloseable {
      * @throws IllegalStateException    when there is no {@link QueryParser} available
      */
     default Stream<CommunicationEntity> query(String query) {
+      return query(query, null);
+    }
+
+    /**
+     * Executes a query and returns the result. If the query is an insert, update, or select command,
+     * it returns the result of the operation. If the query is a delete command, it returns an empty collection.
+     *
+     * @param query  the query as a string
+     * @param entity the entity name
+     * @return the result of the operation; for delete operations, an empty list is returned
+     * @throws NullPointerException     when the query is null
+     * @throws IllegalArgumentException when the query contains value parameters
+     * @throws IllegalStateException    when there is no {@link QueryParser} available
+     */
+    default Stream<CommunicationEntity> query(String query, String entity) {
         Objects.requireNonNull(query, "query is required");
         QueryParser parser = new QueryParser();
-        return parser.query(query, this, CommunicationObserverParser.EMPTY);
+        return parser.query(query, entity, this, CommunicationObserverParser.EMPTY);
     }
 
     /**
@@ -220,9 +263,22 @@ public interface DatabaseManager extends AutoCloseable {
      * @throws IllegalStateException when there is no {@link QueryParser} available
      */
     default CommunicationPreparedStatement prepare(String query) {
+       return prepare(query, null);
+    }
+
+    /**
+     * Prepares a query for execution.
+     *
+     * @param query  the query as a string
+     * @param entity the entity name
+     * @return a {@link CommunicationPreparedStatement} instance
+     * @throws NullPointerException  when the query is null
+     * @throws IllegalStateException when there is no {@link QueryParser} available
+     */
+    default CommunicationPreparedStatement prepare(String query, String entity) {
         Objects.requireNonNull(query, "query is required");
         QueryParser parser = new QueryParser();
-        return parser.prepare(query, this, CommunicationObserverParser.EMPTY);
+        return parser.prepare(query, entity,this, CommunicationObserverParser.EMPTY);
     }
 
     /**

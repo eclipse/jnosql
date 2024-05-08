@@ -13,66 +13,95 @@ package org.eclipse.jnosql.communication.semistructured;
 
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
-import org.eclipse.jnosql.communication.query.JSONQueryValue;
-import org.eclipse.jnosql.communication.query.QueryCondition;
-import org.eclipse.jnosql.communication.query.UpdateQuery;
-import org.eclipse.jnosql.communication.query.UpdateQueryConverter;
+import org.eclipse.jnosql.communication.query.UpdateItem;
+import org.eclipse.jnosql.communication.query.data.UpdateProvider;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-final class UpdateQueryParser extends ConditionQueryParser {
+import static java.util.Objects.requireNonNull;
+
+/**
+ * The {@link UpdateQueryParser} has the logic to convert from {@link org.eclipse.jnosql.communication.query.UpdateQuery}
+ * to {@link UpdateQueryParams}.
+ */
+public final class UpdateQueryParser implements BiFunction<org.eclipse.jnosql.communication.query.UpdateQuery, CommunicationObserverParser, UpdateQueryParams> {
 
 
 
     Stream<CommunicationEntity> query(String query, DatabaseManager manager, CommunicationObserverParser observer) {
+        var updateQuery = getQuery(query, observer);
+        return StreamSupport.stream(manager.update(updateQuery).spliterator(), false);
+    }
 
-        UpdateQueryConverter converter = new UpdateQueryConverter();
-        UpdateQuery updateQuery = converter.apply(query);
+
+    CommunicationPreparedStatement prepare(String query, DatabaseManager manager,
+                                           CommunicationObserverParser observer) {
 
         Params params = Params.newParams();
+        var updateQuery = getQuery(query, params, observer);
+        return CommunicationPreparedStatement.update(updateQuery, params, query, manager);
+    }
 
-        CommunicationEntity entity = getEntity(params, updateQuery, observer);
+
+
+    @Override
+    public UpdateQueryParams apply(org.eclipse.jnosql.communication.query.UpdateQuery updateQuery,
+                                   CommunicationObserverParser communicationObserverParser) {
+
+        requireNonNull(updateQuery, "updateQuery is required");
+        requireNonNull(communicationObserverParser, "columnObserverParser is required");
+        Params params = Params.newParams();
+        var query = getQuery(params, communicationObserverParser, updateQuery);
+        return new UpdateQueryParams(query, params);
+    }
+
+    private UpdateQuery getQuery(String query, Params params, CommunicationObserverParser observer) {
+        var converter = new UpdateProvider();
+        var updateQuery = converter.apply(query);
+        return getQuery(params, observer, updateQuery);
+    }
+
+    private UpdateQuery getQuery(Params params, CommunicationObserverParser observer, org.eclipse.jnosql.communication.query.UpdateQuery updateQuery) {
+        var entity = observer.fireEntity(updateQuery.entity());
+
+        List<Element> set = new ArrayList<>();
+        for (UpdateItem updateItem : updateQuery.set()) {
+            var field = observer.fireField(entity, updateItem.name());
+            var value = Values.get(updateItem.value(), params);
+            set.add(Element.of(field, value));
+        }
+        CriteriaCondition condition = updateQuery.where().map(c -> Conditions.getCondition(c, params, observer, entity))
+                .orElse(null);
+
+        return new DefaultUpdateQuery(entity, set, condition);
+    }
+
+    private UpdateQuery getQuery(String query, CommunicationObserverParser observer) {
+
+        var converter = new UpdateProvider();
+        var updateQuery = converter.apply(query);
+
+        var entity = observer.fireEntity(updateQuery.entity());
+        Params params = Params.newParams();
+
+        List<Element> set = new ArrayList<>();
+
+        for (UpdateItem updateItem : updateQuery.set()) {
+            var field = observer.fireField(entity, updateItem.name());
+            var value = Values.get(updateItem.value(), params);
+            set.add(Element.of(field, value));
+        }
+
+        CriteriaCondition condition = updateQuery.where()
+                .map(c -> Conditions.getCondition(c, params, observer, entity)).orElse(null);
 
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        return Stream.of(manager.update(entity));
+        return new DefaultUpdateQuery(entity, set, condition);
     }
-
-
-    CommunicationPreparedStatement prepare(String query, DatabaseManager manager, CommunicationObserverParser observer) {
-
-        Params params = Params.newParams();
-
-        UpdateQueryConverter converter = new UpdateQueryConverter();
-        UpdateQuery updateQuery = converter.apply(query);
-
-        CommunicationEntity entity = getEntity(params, updateQuery, observer);
-
-        return CommunicationPreparedStatement.update(entity, params, query, manager);
-    }
-
-
-    private CommunicationEntity getEntity(Params params, UpdateQuery updateQuery, CommunicationObserverParser observer) {
-        String columnFamily = observer.fireEntity(updateQuery.entity());
-
-        return getEntity(new UpdateQueryConditionSupplier(updateQuery), columnFamily, params, observer);
-    }
-
-    private record UpdateQueryConditionSupplier(UpdateQuery query) implements ConditionQuerySupplier {
-
-
-        @Override
-            public List<QueryCondition> conditions() {
-                return query.conditions();
-            }
-
-            @Override
-            public Optional<JSONQueryValue> value() {
-                return query.value();
-            }
-        }
-
 }

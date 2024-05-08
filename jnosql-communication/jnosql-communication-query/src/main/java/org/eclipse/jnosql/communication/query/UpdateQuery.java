@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2024 Contributors to the Eclipse Foundation
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  and Apache License v2.0 which accompanies this distribution.
@@ -11,91 +11,43 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Updating an entity is done using an <b>UPDATE</b> statement.
+ * Represents an update operation within a NoSQL database context. This interface defines
+ * the structure of an update query that modifies fields of entities that match specified conditions.
+ * Update queries allow setting new values for various fields of an entity or entities.
  */
-public final class UpdateQuery implements Query {
-
-    private final String entity;
-
-    private final List<DefaultQueryCondition> conditions;
-
-    private final JSONQueryValue value;
-
-    UpdateQuery(String entity, List<DefaultQueryCondition> conditions, JSONQueryValue value) {
-        this.entity = entity;
-        this.conditions = conditions;
-        this.value = value;
-    }
+public interface UpdateQuery extends Query {
 
     /**
-     * The entity name
-     * @return the entity name
-     */
-    public String entity() {
-        return entity;
-    }
-
-    /**
-     * The list of changes as conditions. Each condition will use the equals operator, {@link org.eclipse.jnosql.communication.Condition#EQUALS},
-     *  e.g., name = "any name"
-     * @return the conditions
-     */
-    public List<QueryCondition> conditions() {
-        return Collections.unmodifiableList(conditions);
-    }
-
-    /**
-     * Returns the value to update when the query uses JSON value instead of Conditions.
-     * In an insert, an operation is not able to use both: {@link UpdateQuery#conditions()} and
-     * {@link UpdateQuery#value()}.
-     * Therefore, execution will use just one operation type.
-     * @return a {@link JSONQueryValue} or {@link Optional#empty()} when it uses {@link UpdateQuery#conditions()}
-     */
-    public Optional<JSONQueryValue> value() {
-        return Optional.ofNullable(value);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof UpdateQuery that)) {
-            return false;
-        }
-        return Objects.equals(entity, that.entity) &&
-                Objects.equals(conditions, that.conditions);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(entity, conditions);
-    }
-
-    @Override
-    public String toString() {
-        if (conditions.isEmpty() && value != null) {
-            return "update " + entity + ' ' + value;
-        } else {
-            return "update " + entity + " (" + conditions + ") ";
-        }
-    }
-
-    /**
-     * Obtains an instance of {@link UpdateQuery} from a text string.
+     * Retrieves the name of the entity on which the query is to be executed.
      *
-     * @param query the query
-     * @return {@link UpdateQuery} instance
-     * @throws NullPointerException                    when the query is null
+     * @return the name of the entity as a string
      */
-   public static UpdateQuery parse(String query) {
-        Objects.requireNonNull(query, "query is required");
-        return new UpdateQueryConverter().apply(query);
-    }
+    String entity();
+
+    /**
+     * Retrieves a list of update items that specify which fields to modify and their new values.
+     * Each {@link UpdateItem} in the list represents a specific field and the value it should be set to.
+     * This method provides the details necessary to construct the update part of the query.
+     *
+     * @return a list of {@link UpdateItem} objects representing the fields to update and their new values;
+     *         never null but can be empty, which indicates that no fields are specified for updating
+     */
+    List<UpdateItem> set();
+
+    /**
+     * Retrieves the condition that specifies which entities should be updated. The condition,
+     * defined using a {@link Where} clause, acts as a filter that determines which entities
+     * in the database meet the criteria for updating. If no condition is provided, it implies
+     * that all entities of the specified type may potentially be updated, depending on the
+     * database implementation and the query execution context.
+     *
+     * @return an {@link Optional} containing the {@link Where} condition if specified; otherwise,
+     *         {@link Optional#empty()}, which indicates that no specific conditions have been set,
+     *         potentially impacting all entities of the type
+     */
+    Optional<Where> where();
 }

@@ -11,9 +11,6 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-
-import org.eclipse.jnosql.query.grammar.QueryParser;
-
 import java.util.Objects;
 
 /**
@@ -59,12 +56,8 @@ public final class NumberQueryValue implements QueryValue<Number> {
         return ValueType.NUMBER;
     }
 
-    static NumberQueryValue of(QueryParser.NumberContext context) {
-        String value = context.getText();
-        if (value.contains(".")) {
-            return new NumberQueryValue(Double.valueOf(value));
-        }
-        return new NumberQueryValue(Long.valueOf(value));
+    public static NumberQueryValue of(Number number) {
+        return new NumberQueryValue(number);
     }
 
 

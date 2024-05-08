@@ -15,12 +15,10 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 import jakarta.nosql.Template;
-import org.eclipse.jnosql.mapping.PreparedStatement;
 
 import java.time.Duration;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
@@ -100,66 +98,6 @@ public interface KeyValueTemplate extends Template {
      * @throws NullPointerException when the key is null
      */
     <K, T> Optional<T> get(K key, Class<T> type);
-
-    /**
-     * Executes a database query.
-     *
-     * <p>
-     * <b>The query syntax belongs to each provider, thus, it is not within Jakarta NoSQL's scope to define it.
-     * Accordingly, it might vary between implementations and NoSQL providers.</b>
-     * </p>
-     *
-     * @param query the query
-     * @param type  the entity class
-     * @param <T>   the entity type
-     * @return a stream of query results; an empty stream if no results are found
-     * @throws NullPointerException          when the query is null, or when the query is 'get' and the entity class is not provided
-     * @throws UnsupportedOperationException when the provider does not support query by text
-     */
-    <T> Stream<T> query(String query, Class<T> type);
-
-    /**
-     * Executes a database query and returns a single result.
-     *
-     * <p>
-     * <b>The query syntax belongs to each provider, thus, it is not within Jakarta NoSQL's scope to define it.
-     * Accordingly, it might vary between implementations and NoSQL providers.</b>
-     * </p>
-     *
-     * @param query the query
-     * @param type  the entity class
-     * @param <T>   the entity type
-     * @return an {@link Optional} containing the single result, or {@link Optional#empty()} if no result is found
-     * @throws NullPointerException          when the query is null, or when the query is 'get' and the entity class is not provided
-     * @throws UnsupportedOperationException when the provider does not support query by text
-     */
-    <T> Optional<T> getSingleResult(String query, Class<T> type);
-
-    /**
-     * Executes a database query without returning a result, e.g., for 'put' or 'remove' operations.
-     *
-     * @param query the query
-     * @throws NullPointerException          when the query is null
-     * @throws UnsupportedOperationException when the provider does not support query by text
-     */
-    void query(String query);
-
-    /**
-     * Executes a database query with a {@link PreparedStatement}.
-     *
-     * <p>
-     * <b>The query syntax belongs to each provider, thus, it is not within Jakarta NoSQL's scope to define it.
-     * Accordingly, it might vary between implementations and NoSQL providers.</b>
-     * </p>
-     *
-     * @param query the query
-     * @param type  the entity class
-     * @param <T>   the entity type
-     * @return a {@link PreparedStatement} instance
-     * @throws NullPointerException          when the query is null, or when the query is 'get' and the entity class is not provided
-     * @throws UnsupportedOperationException when the provider does not support query by text
-     */
-    <T> PreparedStatement prepare(String query, Class<T> type);
 
     /**
      * Finds a list of values associated with the specified keys.

@@ -84,7 +84,7 @@ class DefaultElementQueryBuilderTest {
     void shouldReturnErrorSelectWhenOrderIsNull() {
         assertThrows(NullPointerException.class,() -> {
             String documentCollection = "documentCollection";
-            builder().from(documentCollection).sort((Sort) null);
+            builder().from(documentCollection).sort((Sort<?>) null);
         });
     }
 

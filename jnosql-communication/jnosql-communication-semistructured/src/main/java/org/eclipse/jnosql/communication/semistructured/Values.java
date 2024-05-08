@@ -12,16 +12,12 @@ package org.eclipse.jnosql.communication.semistructured;
 
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
-import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.query.ArrayQueryValue;
-import org.eclipse.jnosql.communication.query.Function;
-import org.eclipse.jnosql.communication.query.FunctionQueryValue;
-import org.eclipse.jnosql.communication.query.JSONQueryValue;
+import org.eclipse.jnosql.communication.query.EnumQueryValue;
 import org.eclipse.jnosql.communication.query.ParamQueryValue;
 import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.ValueType;
 
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -39,27 +35,15 @@ final class Values {
                 return value.get();
             }
             case PARAMETER -> {
-                return parameters.add(ParamQueryValue.class.cast(value).get());
+                return parameters.add(((ParamQueryValue) value).get());
             }
             case ARRAY -> {
-                return Stream.of(ArrayQueryValue.class.cast(value).get())
+                return Stream.of(((ArrayQueryValue) value).get())
                         .map(v -> get(v, parameters))
                         .collect(toList());
             }
-            case FUNCTION -> {
-                Function function = FunctionQueryValue.class.cast(value).get();
-                String name = function.name();
-                Object[] params = function.params();
-                if ("convert".equals(name)) {
-                    return Value.of(get(QueryValue.class.cast(params[0]), parameters))
-                            .get((Class<?>) params[1]);
-                }
-                String message = String.format("There is not support to the function: %s with parameters %s", name,
-                        Arrays.toString(params));
-                throw new QueryException(message);
-            }
-            case JSON -> {
-                return JsonObjects.getColumns(JSONQueryValue.class.cast(value).get());
+            case ENUM -> {
+                return ((EnumQueryValue) value).get().name();
             }
             default -> throw new QueryException("There is not support to the value: " + type);
         }

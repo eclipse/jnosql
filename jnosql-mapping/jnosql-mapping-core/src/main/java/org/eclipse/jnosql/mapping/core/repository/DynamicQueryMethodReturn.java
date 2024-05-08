@@ -44,23 +44,23 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
         this.prepareConverter = prepareConverter;
     }
 
-    Method getMethod() {
+    Method method() {
         return method;
     }
 
-    Object[] getArgs() {
+    Object[] args() {
         return args;
     }
 
-    Class<?> getTypeClass() {
+    Class<?> typeClass() {
         return typeClass;
     }
 
-    Function<String, Stream<?>> getQueryConverter() {
+    Function<String, Stream<?>> queryConverter() {
         return queryConverter;
     }
 
-    Function<String, PreparedStatement> getPrepareConverter() {
+    Function<String, PreparedStatement> prepareConverter() {
         return prepareConverter;
     }
 
@@ -114,6 +114,7 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
             this.prepareConverter = prepareConverter;
             return this;
         }
+
         public DynamicQueryMethodReturn build() {
             Objects.requireNonNull(method, "method is required");
             Objects.requireNonNull(typeClass, "typeClass is required");

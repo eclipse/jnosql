@@ -12,42 +12,64 @@
 package org.eclipse.jnosql.communication.query;
 
 /**
- * The values type that the query supports at this syntax.
+ * Enum representing the types of values supported by a query syntax in NoSQL databases.
+ * This enum categorizes the types of data that can be used within queries,
+ * facilitating type-specific processing and validation across various NoSQL systems.
  */
 public enum ValueType {
     /**
-     * Conditions are statements that are created by the programmer which evaluates
-     * actions in the program and evaluates if it's true or false.
+     * Represents a logical condition used within queries. Conditions are
+     * expressions that evaluate to true or false, determining the flow or
+     * outcomes of query operations in NoSQL databases.
      */
     CONDITION,
+
     /**
-     * The values that implements {@link Number}
+     * Represents numeric values. This type is for values that implement
+     * the {@link Number} interface, such as integers, floats, and doubles,
+     * typically used in mathematical or comparative operations within queries.
      */
     NUMBER,
+
     /**
-     * The values that implements {@link CharSequence} in general it will be {@link String}
+     * Represents textual data. This type is for values that implement
+     * the {@link CharSequence} interface, generally instantiated as {@link String}.
+     * Used for operations involving textual manipulation or comparison in NoSQL queries.
      */
     STRING,
+
     /**
-     * That parameter is for dynamic query where you define prepare statement.
+     * Represents a parameter in a dynamically constructed query.
+     * Parameters are placeholders in queries that are bound to actual
+     * values at runtime, enhancing flexibility and security in NoSQL databases.
      */
     PARAMETER,
+
     /**
-     * An array is a series of memory locations
+     * Represents an array of values. Arrays are collections of elements, each
+     * stored at contiguous memory locations, allowing for indexed access.
+     * Used in NoSQL queries to handle multiple values efficiently.
      */
     ARRAY,
+
     /**
-     *This type defines a task to be defined on query.
+     * Represents a function to be executed as part of the query. Functions
+     * might involve calculations, data transformation, or other operations
+     * that are executed during the query processing phase in NoSQL systems.
      */
     FUNCTION,
+
     /**
-     * JSON is an open standard file format and data interchange
-     * format that uses human-readable text to store and transmit data objects consisting
-     * of attribute–value pairs and arrays.
+     * Represents an enumeration type. Enums are special data types that
+     * define a set of constants. Used in NoSQL queries to ensure data integrity
+     * by restricting values to predefined options.
      */
-    JSON,
+    ENUM,
+
     /**
-     * In computer science, a Boolean is a logical data type that can have only the values true or false
+     * Represents a Boolean value. In computer science, a Boolean is a data
+     * type that can have only the values true or false. Used in NoSQL queries to
+     * handle logical branching and conditional checks.
      */
     BOOLEAN
 }

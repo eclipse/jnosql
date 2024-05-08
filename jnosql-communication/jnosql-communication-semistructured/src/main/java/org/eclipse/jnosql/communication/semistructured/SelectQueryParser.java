@@ -15,7 +15,7 @@ import jakarta.data.Direction;
 import jakarta.data.Sort;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
-import org.eclipse.jnosql.communication.query.SelectQueryConverter;
+import org.eclipse.jnosql.communication.query.data.SelectProvider;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,21 +34,21 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
     public SelectQueryParser() {
     }
 
-    Stream<CommunicationEntity> query(String query, DatabaseManager manager, CommunicationObserverParser observer) {
+    Stream<CommunicationEntity> query(String query, String entity, DatabaseManager manager, CommunicationObserverParser observer) {
 
-        SelectQuery selectQuery = getColumnQuery(query, observer);
+        var selectQuery = query(query, entity, observer);
         return manager.select(selectQuery);
     }
 
 
-    CommunicationPreparedStatement prepare(String query, DatabaseManager manager, CommunicationObserverParser observer) {
+    CommunicationPreparedStatement prepare(String query, String entity, DatabaseManager manager, CommunicationObserverParser observer) {
 
         Params params = Params.newParams();
-        SelectQueryConverter converter = new SelectQueryConverter();
-        org.eclipse.jnosql.communication.query.SelectQuery selectQuery = converter.apply(query);
+        var converter = new SelectProvider();
+        var selectQuery = converter.apply(query, entity);
 
-        SelectQuery columnQuery = getColumnQuery(params, selectQuery, observer);
-        return CommunicationPreparedStatement.select(columnQuery, params, query, manager);
+        var prepareQuery = query(params, selectQuery, observer);
+        return CommunicationPreparedStatement.select(prepareQuery, params, query, manager);
     }
 
 
@@ -58,15 +58,15 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
         Objects.requireNonNull(observer, "observer is required");
 
         Params params = Params.newParams();
-        SelectQuery columnQuery = getColumnQuery(params, selectQuery, observer);
+        SelectQuery columnQuery = query(params, selectQuery, observer);
         return new QueryParams(columnQuery, params);
     }
 
 
-    private SelectQuery getColumnQuery(String query, CommunicationObserverParser observer) {
+    private SelectQuery query(String query, String entity, CommunicationObserverParser observer) {
 
-        SelectQueryConverter converter = new SelectQueryConverter();
-        org.eclipse.jnosql.communication.query.SelectQuery selectQuery = converter.apply(query);
+        var converter = new SelectProvider();
+        var selectQuery = converter.apply(query, entity);
         String columnFamily = observer.fireEntity(selectQuery.entity());
         long limit = selectQuery.limit();
         long skip = selectQuery.skip();
@@ -76,7 +76,7 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
         List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, columnFamily))
                 .collect(toList());
 
-        Params params = Params.newParams();
+        var params = Params.newParams();
         CriteriaCondition condition = selectQuery.where()
                 .map(c -> Conditions.getCondition(c, params, observer, columnFamily)).orElse(null);
 
@@ -86,21 +86,21 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
         return new DefaultSelectQuery(limit, skip, columnFamily, columns, sorts, condition);
     }
 
-    private SelectQuery getColumnQuery(Params params, org.eclipse.jnosql.communication.query.SelectQuery selectQuery, CommunicationObserverParser observer) {
+    private SelectQuery query(Params params, org.eclipse.jnosql.communication.query.SelectQuery selectQuery, CommunicationObserverParser observer) {
 
-        String columnFamily = observer.fireEntity(selectQuery.entity());
+        var entity = observer.fireEntity(selectQuery.entity());
         long limit = selectQuery.limit();
         long skip = selectQuery.skip();
         List<String> columns = selectQuery.fields().stream()
-                .map(f -> observer.fireField(columnFamily, f))
+                .map(f -> observer.fireField(entity, f))
                 .collect(Collectors.toList());
 
-        List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, columnFamily)).collect(toList());
+        List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, entity)).collect(toList());
         CriteriaCondition condition = selectQuery.where()
-                .map(c -> Conditions.getCondition(c, params, observer, columnFamily))
+                .map(c -> Conditions.getCondition(c, params, observer, entity))
                 .orElse(null);
 
-        return new DefaultSelectQuery(limit, skip, columnFamily, columns, sorts, condition);
+        return new DefaultSelectQuery(limit, skip, entity, columns, sorts, condition);
     }
 
     private Sort<?> toSort(Sort<?> sort, CommunicationObserverParser observer, String entity) {

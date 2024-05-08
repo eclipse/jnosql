@@ -218,6 +218,7 @@ class DynamicQueryMethodReturnTest {
                 .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
+
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Stream);
         Stream<Person> persons = (Stream) execute;

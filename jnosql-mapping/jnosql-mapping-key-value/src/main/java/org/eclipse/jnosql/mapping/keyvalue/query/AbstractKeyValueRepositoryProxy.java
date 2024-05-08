@@ -16,7 +16,6 @@ package org.eclipse.jnosql.mapping.keyvalue.query;
 
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepositoryProxy;
-import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 
 import java.lang.reflect.Method;
 
@@ -32,14 +31,7 @@ public abstract class AbstractKeyValueRepositoryProxy<T, K> extends AbstractRepo
 
     @Override
     protected Object executeQuery(Object instance, Method method, Object[] params) {
-        Class<?> typeClass = type();
-        DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
-                .withArgs(params)
-                .withMethod(method)
-                .withTypeClass(typeClass)
-                .withPrepareConverter(q -> template().prepare(q, typeClass))
-                .withQueryConverter(q -> template().query(q, typeClass)).build();
-        return methodReturn.execute();
+        throw new UnsupportedOperationException("Key Value repository does not query");
     }
 
     @Override

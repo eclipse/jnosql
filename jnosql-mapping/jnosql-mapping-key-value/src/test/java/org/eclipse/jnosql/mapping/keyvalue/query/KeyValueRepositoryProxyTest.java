@@ -218,64 +218,6 @@ class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    void shouldFindByQuery() {
-        User user = new User("12", "Ada", 10);
-        when(template.query("get \"12\"", User.class)).thenReturn(Stream.of(user));
-
-        userRepository.findByQuery();
-        verify(template).query("get \"12\"", User.class);
-
-    }
-
-    @Test
-    void shouldFindByQueryWithParameter() {
-        User user = new User("12", "Ada", 10);
-        List<String> keys = Arrays.asList("key", "key2");
-        PreparedStatement prepare = Mockito.mock(PreparedStatement.class);
-        when(template.prepare("get @id", User.class)).thenReturn(prepare);
-
-        userRepository.findByQuery("id");
-        verify(template).prepare("get @id", User.class);
-
-    }
-
-    @Test
-    void shouldExecuteDefaultMethod() {
-        User user = new User("12", "Otavio", 30);
-        PreparedStatement prepare = Mockito.mock(PreparedStatement.class);
-        Mockito.when(template.prepare("get @id", User.class))
-                .thenReturn(prepare);
-        Mockito.when(prepare.result()).thenReturn(Stream.of(user));
-        userRepository.otavio();
-        verify(template).prepare("get @id", User.class);
-        verify(prepare).bind("id", "otavio");
-    }
-
-    @Test
-    void shouldUseQueriesFromOtherInterface() {
-        User user = new User("12", "Ada", 30);
-        PreparedStatement prepare = Mockito.mock(PreparedStatement.class);
-        Mockito.when(template.prepare("get @key", User.class))
-                .thenReturn(prepare);
-        Mockito.when(prepare.result()).thenReturn(Stream.of(user));
-        userRepository.key("Ada");
-        verify(template).prepare("get @key", User.class);
-        verify(prepare).bind("key", "Ada");
-    }
-
-    @Test
-    void shouldUseDefaultMethodFromOtherInterface() {
-        User user = new User("12", "Poliana", 30);
-        PreparedStatement prepare = Mockito.mock(PreparedStatement.class);
-        Mockito.when(template.prepare("get @key", User.class))
-                .thenReturn(prepare);
-        Mockito.when(prepare.result()).thenReturn(Stream.of(user));
-        userRepository.poliana();
-        verify(template).prepare("get @key", User.class);
-        verify(prepare).bind("key", "Poliana");
-    }
-
-    @Test
     void shouldReturnErrorWhenExecuteMethodQuery() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> userRepository.findByName("name"));
     }

@@ -20,11 +20,18 @@ import jakarta.data.page.PageRequest;
 import jakarta.data.Sort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.BOOLEAN;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SpecialParametersTest {
@@ -120,5 +127,44 @@ class SpecialParametersTest {
         assertThat(parameters.sorts()).hasSize(3)
                 .contains(Sort.asc("name"),
                         Sort.desc("age"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(classes = {Sort.class, Limit.class, PageRequest.class, Order.class})
+    void shouldReturnTrueSpecialParameter(Class<?> type){
+        org.assertj.core.api.Assertions.assertThat(SpecialParameters.isSpecialParameter(type)).isTrue();
+    }
+
+    @ParameterizedTest
+    @ValueSource(classes = {String.class, Integer.class, Long.class, Double.class, Float.class, Boolean.class, Object.class})
+    void shouldReturnNotSpecialParameter(Class<?> type){
+        org.assertj.core.api.Assertions.assertThat(SpecialParameters.isNotSpecialParameter(type)).isTrue();
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideSpecialParameters")
+    void shouldReturnTrueSpecialParameter(Object parameter){
+        org.assertj.core.api.Assertions.assertThat(SpecialParameters.isSpecialParameter(parameter)).isTrue();
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideNonSpecialParameters")
+    void shouldReturnNotSpecialParameter(Object parameter){
+        org.assertj.core.api.Assertions.assertThat(SpecialParameters.isNotSpecialParameter(parameter)).isTrue();
+    }
+
+
+    private static Stream<Arguments> provideSpecialParameters() {
+        return Stream.of(Arguments.of(Sort.asc("name")),
+                Arguments.of(Limit.of(10)),
+                Arguments.of(PageRequest.ofPage(10)),
+                Arguments.of(Order.by(Sort.asc("name"), Sort.desc("age"))));
+    }
+
+    private static Stream<Arguments> provideNonSpecialParameters() {
+        return Stream.of(Arguments.of("123"),
+                Arguments.of(10L),
+                Arguments.of(BigDecimal.valueOf(10)),
+                Arguments.of(Boolean.TRUE));
     }
 }

@@ -65,6 +65,11 @@ final class MethodSelectQuery  implements SelectQuery {
         return Collections.unmodifiableList(sorts);
     }
 
+    @Override
+    public boolean isCount() {
+        return false;
+    }
+
     public boolean equals(Object o) {
         if (this == o) {
             return true;

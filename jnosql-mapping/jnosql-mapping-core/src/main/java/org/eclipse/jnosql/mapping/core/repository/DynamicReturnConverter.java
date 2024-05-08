@@ -69,11 +69,11 @@ enum DynamicReturnConverter {
      */
     @SuppressWarnings("unchecked")
     public Object convert(DynamicQueryMethodReturn dynamicQueryMethod) {
-        Method method = dynamicQueryMethod.getMethod();
-        Object[] args = dynamicQueryMethod.getArgs();
-        Function<String, Stream<?>> queryConverter = dynamicQueryMethod.getQueryConverter();
-        Function<String, PreparedStatement> prepareConverter = dynamicQueryMethod.getPrepareConverter();
-        Class<?> typeClass = dynamicQueryMethod.getTypeClass();
+        Method method = dynamicQueryMethod.method();
+        Object[] args = dynamicQueryMethod.args();
+        Function<String, Stream<?>> queryConverter = dynamicQueryMethod.queryConverter();
+        Function<String, PreparedStatement> prepareConverter = dynamicQueryMethod.prepareConverter();
+        Class<?> typeClass = dynamicQueryMethod.typeClass();
 
         String value = RepositoryReflectionUtils.INSTANCE.getQuery(method);
 

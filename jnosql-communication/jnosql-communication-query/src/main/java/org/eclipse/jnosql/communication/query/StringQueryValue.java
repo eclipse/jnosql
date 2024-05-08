@@ -11,8 +11,6 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import org.eclipse.jnosql.query.grammar.QueryParser;
-
 import java.util.Objects;
 
 /**
@@ -57,9 +55,8 @@ public final class StringQueryValue implements QueryValue<String> {
         return ValueType.STRING;
     }
 
-    static StringQueryValue of(QueryParser.StringContext context) {
-        String text = context.STRING().getText();
-        return new StringQueryValue(text.substring(1, text.length() - 1));
+    public static StringQueryValue of(String text) {
+        return new StringQueryValue(text);
     }
 
 
