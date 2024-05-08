@@ -76,6 +76,8 @@ public enum RepositoryReflectionUtils {
             By by = parameter.getAnnotation(By.class);
             if (Objects.nonNull(by)) {
                 params.put(by.value(), args[index]);
+            } else if(parameter.isNamePresent()) {
+                params.put(parameter.getName(), args[index]);
             }
         }
         return params;
