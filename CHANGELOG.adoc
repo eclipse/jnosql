@@ -12,6 +12,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Upgrade Jakarta Data to version 1.0.0-RC1
 - Upgrade Jakarta NoSQL to version 1.0.0-M1
+- Replace query language to Jakarta Data Query Language as default
 
 === Added
 
@@ -20,6 +21,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Include Column and Document Templates
 - Include support to Embedded and EmbeddedCollection as group
 - Include support to CursoredPage pagination
+- Include support to Jakarta Data Query language as default
 
 === Removed
 
