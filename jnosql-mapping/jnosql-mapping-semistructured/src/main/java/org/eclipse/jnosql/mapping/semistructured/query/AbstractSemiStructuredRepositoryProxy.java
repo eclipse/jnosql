@@ -41,12 +41,14 @@ public abstract class AbstractSemiStructuredRepositoryProxy<T, K> extends BaseSe
     @Override
     protected Object executeQuery(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
+        var entity = entityMetadata().name();
         DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
                 .withArgs(params)
                 .withMethod(method)
                 .withTypeClass(type)
-                .withPrepareConverter(q -> template().prepare(q))
-                .withQueryConverter(q -> template().query(q)).build();
+                .withPrepareConverter(q -> template().prepare(q, entity))
+                .withQueryConverter(q -> template().query(q, entity))
+                .build();
         return methodReturn.execute();
     }
 

@@ -584,7 +584,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldExecuteJNoSQLQuery() {
         personRepository.findByQuery();
-        verify(template).query("select * from Person");
+        verify(template).query("FROM Person");
     }
 
     @Test
@@ -593,6 +593,14 @@ class CrudRepositoryProxyTest {
         when(template.prepare(Mockito.anyString())).thenReturn(statement);
         personRepository.findByQuery("Ada");
         verify(statement).bind("id", "Ada");
+    }
+
+    @Test
+    void shouldExecuteJNoSQLPrepareIndex() {
+        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        when(template.prepare(Mockito.anyString())).thenReturn(statement);
+        personRepository.findByQuery(10);
+        verify(statement).bind("?1", 10);
     }
 
     @Test
@@ -648,7 +656,7 @@ class CrudRepositoryProxyTest {
         verify(template).select(captor.capture());
         SelectQuery query = captor.getValue();
         CriteriaCondition condition = query.condition().get();
-        final Sort sort = query.sorts().get(0);
+        final Sort<?> sort = query.sorts().get(0);
         final Element document = condition.element();
         assertEquals("Person", query.name());
         assertEquals("salary.currency", document.name());
@@ -780,11 +788,14 @@ class CrudRepositoryProxyTest {
 
         Set<Person> findByNameLike(String name);
 
-        @Query("select * from Person")
+        @Query("FROM Person")
         Optional<Person> findByQuery();
 
-        @Query("select * from Person where id = @id")
+        @Query("FROM Person WHERE id = :id")
         Optional<Person> findByQuery(@Param("id") String id);
+
+        @Query("FROM Person WHERE age = ?1")
+        Optional<Person> findByQuery(int age);
     }
 
     public interface VendorRepository extends CrudRepository<Vendor, String> {
