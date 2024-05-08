@@ -388,7 +388,7 @@ class DefaultColumnTemplateTest {
     }
     @Test
     void shouldConvertEntityNameClassName() {
-        template.query("FROM " + Person.class.getName());
+        template.query("FROM " + Person.class.getSimpleName());
         ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         SelectQuery query = queryCaptor.getValue();
