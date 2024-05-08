@@ -299,7 +299,7 @@ Optional<Car> car = template.find(Car.class, 1L);
 
 template.delete(Car.class).where("id").eq(1L).execute();
 
-Optional<Car> result = template.singleResult("select * from Car where _id = 1");
+Optional<Car> result = template.singleResult("FROM Car WHERE _id = 1");
 ----
 
 Column Family is database agnostic. Thus, you can change the database in your application with no or minimal impact on source code.
@@ -398,7 +398,7 @@ Optional<Car> car = template.find(Car.class, 1L);
 
 template.delete(Car.class).where("id").eq(1L).execute();
 
-Optional<Car> result = template.singleResult("select * from Car where _id = 1");
+Optional<Car> result = template.singleResult("FROM Car WHERE _id = 1");
 ----
 
 Document is database agnostic. Thus, you can change the database in your application with no or minimal impact on source code.
