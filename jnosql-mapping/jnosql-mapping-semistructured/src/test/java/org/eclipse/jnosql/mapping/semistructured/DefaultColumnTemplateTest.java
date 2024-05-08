@@ -362,7 +362,7 @@ class DefaultColumnTemplateTest {
 
     @Test
     void shouldExecuteQuery() {
-        template.query("select * from Person");
+        template.query("FROM Person");
         ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         SelectQuery query = queryCaptor.getValue();
@@ -371,7 +371,7 @@ class DefaultColumnTemplateTest {
 
     @Test
     void shouldConvertEntity() {
-        template.query("select * from Movie");
+        template.query("FROM Movie");
         ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         SelectQuery query = queryCaptor.getValue();
@@ -380,7 +380,7 @@ class DefaultColumnTemplateTest {
 
     @Test
     void shouldConvertEntityName() {
-        template.query("select * from download");
+        template.query("SELECT name FROM download");
         ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         SelectQuery query = queryCaptor.getValue();
@@ -388,7 +388,7 @@ class DefaultColumnTemplateTest {
     }
     @Test
     void shouldConvertEntityNameClassName() {
-        template.query("select * from " + Person.class.getName());
+        template.query("FROM " + Person.class.getName());
         ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         SelectQuery query = queryCaptor.getValue();
@@ -397,7 +397,7 @@ class DefaultColumnTemplateTest {
 
     @Test
     void shouldConvertConvertFromAnnotationEntity(){
-        template.query("select * from Vendor" );
+        template.query("FROM Vendor" );
         ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         SelectQuery query = queryCaptor.getValue();
@@ -406,7 +406,7 @@ class DefaultColumnTemplateTest {
 
     @Test
     void shouldPreparedStatement() {
-        PreparedStatement preparedStatement = template.prepare("select * from Person where name = @name");
+        PreparedStatement preparedStatement = template.prepare("FROM Person WHERE name = :name");
         preparedStatement.bind("name", "Ada");
         preparedStatement.result();
         ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);
