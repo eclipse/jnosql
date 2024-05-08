@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,7 +60,8 @@ class RepositoryReflectionUtilsTest {
 
     @Test
     void shouldFindByAge(){
-        Method method = PersonRepository.class.getDeclaredMethods()[2];
+        Method method = Stream.of(PersonRepository.class.getDeclaredMethods()).filter(m -> m.getName().equals("findAge"))
+                .findFirst().orElseThrow();
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, new Object[]{10});
         assertThat(params)
                 .hasSize(1)
@@ -68,7 +70,8 @@ class RepositoryReflectionUtilsTest {
 
     @Test
     void shouldFindByAgeAndName(){
-        Method method = PersonRepository.class.getDeclaredMethods()[1];
+        Method method = Stream.of(PersonRepository.class.getDeclaredMethods()).filter(m -> m.getName().equals("findAgeAndName"))
+                .findFirst().orElseThrow();
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, new Object[]{10, "Ada"});
         assertThat(params)
                 .hasSize(2)
