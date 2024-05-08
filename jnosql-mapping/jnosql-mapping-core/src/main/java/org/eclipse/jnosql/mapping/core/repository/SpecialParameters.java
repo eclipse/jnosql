@@ -147,4 +147,50 @@ public final class SpecialParameters {
         }
         return new SpecialParameters(pageRequest, limit, sorts);
     }
+
+    /**
+     * Returns true if the parameter is a special parameter
+     *
+     * @param parameter the parameter
+     * @return true if the parameter is a special parameter
+     */
+    public static boolean isSpecialParameter(Object parameter) {
+        return parameter instanceof Sort<?>
+                || parameter instanceof Limit
+                || parameter instanceof Order<?>
+                || parameter instanceof PageRequest;
+    }
+
+    /**
+     * Returns true if the parameter is not a special parameter
+     *
+     * @param parameter the parameter
+     * @return true if the parameter is not a special parameter
+     */
+    public static boolean isNotSpecialParameter(Object parameter) {
+        return !isSpecialParameter(parameter);
+    }
+
+    /**
+     * Returns true if the parameter is a special parameter
+     *
+     * @param parameter the parameter
+     * @return true if the parameter is a special parameter
+     */
+    public static boolean isSpecialParameter(Class<?> parameter) {
+        return Sort.class.isAssignableFrom(parameter)
+                || Limit.class.isAssignableFrom(parameter)
+                || Order.class.isAssignableFrom(parameter)
+                || PageRequest.class.isAssignableFrom(parameter);
+    }
+
+    /**
+     * Returns true if the parameter is not a special parameter
+     *
+     * @param parameter the parameter
+     * @return true if the parameter is not a special parameter
+     */
+    public static boolean isNotSpecialParameter(Class<?> parameter) {
+        return !isSpecialParameter(parameter);
+    }
 }
