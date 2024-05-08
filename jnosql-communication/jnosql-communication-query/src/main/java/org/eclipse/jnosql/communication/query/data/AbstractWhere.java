@@ -92,7 +92,7 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
         var contextCondition = Condition.LIKE;
         var likeValueIndex = ctx.getChildCount() -1 ;
         var likeValue = contexts.getParent().getChild(likeValueIndex).getText();
-        var literal = StringQueryValue.of(QuoteExtractor.INSTANCE.extract(likeValue));
+        var literal = StringQueryValue.of(likeValue.substring(1, likeValue.length() -1));
         if (this.condition != null && this.condition.value() instanceof ConditionQueryValue) {
             and = andCondition;
         }
