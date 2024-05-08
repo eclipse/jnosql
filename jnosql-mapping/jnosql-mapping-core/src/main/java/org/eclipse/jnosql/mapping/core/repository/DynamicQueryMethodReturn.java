@@ -34,16 +34,14 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
     private final Class<?> typeClass;
     private final java.util.function.Function<String, Stream<?>> queryConverter;
     private final Function<String, PreparedStatement> prepareConverter;
-    private final String entity;
 
     private DynamicQueryMethodReturn(Method method, Object[] args, Class<?> typeClass, Function<String, Stream<?>> queryConverter,
-                                     Function<String, PreparedStatement> prepareConverter, String entity) {
+                                     Function<String, PreparedStatement> prepareConverter) {
         this.method = method;
         this.args = args;
         this.typeClass = typeClass;
         this.queryConverter = queryConverter;
         this.prepareConverter = prepareConverter;
-        this.entity = entity;
     }
 
     Method method() {
@@ -66,10 +64,6 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
         return prepareConverter;
     }
 
-    String entity() {
-        return entity;
-    }
-
     public static DynamicQueryMethodReturnBuilder builder() {
         return new DynamicQueryMethodReturnBuilder();
     }
@@ -90,8 +84,6 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
         private Function<String, Stream<?>> queryConverter;
 
         private Function<String, PreparedStatement> prepareConverter;
-
-        private String entity;
 
         private DynamicQueryMethodReturnBuilder() {
         }
@@ -123,19 +115,13 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
             return this;
         }
 
-        public DynamicQueryMethodReturnBuilder withEntity(String entity) {
-            this.entity = entity;
-            return this;
-        }
-
         public DynamicQueryMethodReturn build() {
             Objects.requireNonNull(method, "method is required");
             Objects.requireNonNull(typeClass, "typeClass is required");
             Objects.requireNonNull(queryConverter, "queryConverter is required");
             Objects.requireNonNull(prepareConverter, "prepareConverter is required");
-            Objects.requireNonNull(entity, "entity is required");
 
-            return new DynamicQueryMethodReturn(method, args, typeClass, queryConverter, prepareConverter, entity);
+            return new DynamicQueryMethodReturn(method, args, typeClass, queryConverter, prepareConverter);
         }
     }
 
