@@ -224,7 +224,14 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
     @Override
     public <T> Stream<T> query(String query) {
         requireNonNull(query, "query is required");
-        return PARSER.query(query, manager(), getObserver()).map(c -> converter().toEntity(c));
+        return PARSER.query(query, null, manager(), getObserver()).map(c -> converter().toEntity(c));
+    }
+
+    @Override
+    public <T> Stream<T> query(String query, String entity) {
+        requireNonNull(query, "query is required");
+        requireNonNull(entity, "entity is required");
+        return PARSER.query(query, entity, manager(), getObserver()).map(c -> converter().toEntity(c));
     }
 
     @Override
@@ -243,8 +250,28 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
     }
 
     @Override
+    public <T> Optional<T> singleResult(String query, String entityName) {
+        Stream<T> entities = query(query, entityName);
+        final Iterator<T> iterator = entities.iterator();
+
+        if (!iterator.hasNext()) {
+            return Optional.empty();
+        }
+        final T entity = iterator.next();
+        if (!iterator.hasNext()) {
+            return Optional.of(entity);
+        }
+        throw new NonUniqueResultException("No unique result found to the query: " + query);
+    }
+
+    @Override
     public org.eclipse.jnosql.mapping.PreparedStatement prepare(String query) {
-        return new PreparedStatement(PARSER.prepare(query, manager(), getObserver()), converter());
+        return new PreparedStatement(PARSER.prepare(query, null, manager(), getObserver()), converter());
+    }
+
+    @Override
+    public org.eclipse.jnosql.mapping.PreparedStatement prepare(String query, String entity) {
+        return new PreparedStatement(PARSER.prepare(query, entity, manager(), getObserver()), converter());
     }
 
 
