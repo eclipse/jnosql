@@ -584,13 +584,13 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldExecuteJNoSQLQuery() {
         personRepository.findByQuery();
-        verify(template).query("FROM Person");
+        verify(template).query("FROM Person", "Person");
     }
 
     @Test
     void shouldExecuteJNoSQLPrepare() {
         PreparedStatement statement = Mockito.mock(PreparedStatement.class);
-        when(template.prepare(Mockito.anyString())).thenReturn(statement);
+        when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(statement);
         personRepository.findByQuery("Ada");
         verify(statement).bind("id", "Ada");
     }
@@ -598,7 +598,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldExecuteJNoSQLPrepareIndex() {
         PreparedStatement statement = Mockito.mock(PreparedStatement.class);
-        when(template.prepare(Mockito.anyString())).thenReturn(statement);
+        when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(statement);
         personRepository.findByQuery(10);
         verify(statement).bind("?1", 10);
     }
