@@ -46,6 +46,7 @@ class DynamicQueryMethodReturnTest {
                 .withMethod(method)
                 .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
+                .withEntity("Person")
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Optional);
@@ -65,6 +66,7 @@ class DynamicQueryMethodReturnTest {
                 .withMethod(method)
                 .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
+                .withEntity("Person")
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Optional);
@@ -86,6 +88,7 @@ class DynamicQueryMethodReturnTest {
                 .withMethod(method)
                 .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
+                .withEntity("Person")
                 .build();
 
         Assertions.assertThrows(NonUniqueResultException.class, dynamicReturn::execute);
@@ -103,6 +106,7 @@ class DynamicQueryMethodReturnTest {
                 .withMethod(method)
                 .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
+                .withEntity("Person")
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Person);
@@ -122,6 +126,7 @@ class DynamicQueryMethodReturnTest {
                 .withMethod(method)
                 .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
+                .withEntity("Person")
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertNull(execute);
@@ -139,6 +144,7 @@ class DynamicQueryMethodReturnTest {
                 .withMethod(method)
                 .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
+                .withEntity("Person")
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof List);
@@ -160,6 +166,7 @@ class DynamicQueryMethodReturnTest {
                 .withMethod(method)
                 .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
+                .withEntity("Person")
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Iterable);
@@ -178,6 +185,7 @@ class DynamicQueryMethodReturnTest {
                 .withMethod(method)
                 .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
+                .withEntity("Person")
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Collection);
@@ -198,6 +206,7 @@ class DynamicQueryMethodReturnTest {
                 .withMethod(method)
                 .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
+                .withEntity("Person")
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Queue);
@@ -217,6 +226,7 @@ class DynamicQueryMethodReturnTest {
                 .withMethod(method)
                 .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
+                .withEntity("Person")
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Stream);
@@ -239,6 +249,7 @@ class DynamicQueryMethodReturnTest {
                 .withQueryConverter(stream)
                 .withArgs(new Object[]{"Ada"})
                 .withPrepareConverter(s -> preparedStatement)
+                .withEntity("Person")
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Iterable);
