@@ -3,25 +3,25 @@ grammar JDQL;
 statement : select_statement | update_statement | delete_statement;
 
 select_statement : select_clause? from_clause? where_clause? orderby_clause?;
-update_statement : 'UPDATE' entity_name set_clause where_clause?;
-delete_statement : 'DELETE' from_clause where_clause?;
+update_statement : UPDATE entity_name set_clause where_clause?;
+delete_statement : DELETE from_clause where_clause?;
 
-from_clause : 'FROM' entity_name;
+from_clause : FROM entity_name;
 
-where_clause : 'WHERE' conditional_expression;
+where_clause : WHERE conditional_expression;
 
-set_clause : 'SET' update_item (',' update_item)*;
+set_clause : SET update_item (',' update_item)*;
 update_item : state_field_path_expression '=' (scalar_expression | 'NULL');
 
-select_clause : 'SELECT' select_list;
+select_clause : SELECT select_list;
 select_list
     : state_field_path_expression (',' state_field_path_expression)*
     | aggregate_expression
     ;
-aggregate_expression : 'COUNT' '(' 'THIS' ')';
+aggregate_expression : COUNT '(' 'THIS' ')';
 
-orderby_clause : 'ORDER' 'BY' orderby_item (',' orderby_item)*;
-orderby_item : state_field_path_expression ('ASC' | 'DESC');
+orderby_clause : ORDER BY orderby_item (',' orderby_item)*;
+orderby_item : state_field_path_expression (ASC | DESC);
 
 conditional_expression
     // highest to lowest precedence
@@ -31,19 +31,19 @@ conditional_expression
     | between_expression
     | like_expression
     | comparison_expression
-    | 'NOT' conditional_expression
-    | conditional_expression 'AND' conditional_expression
-    | conditional_expression 'OR' conditional_expression
+    | NOT conditional_expression
+    | conditional_expression AND conditional_expression
+    | conditional_expression OR conditional_expression
     ;
 
 comparison_expression : scalar_expression ('=' | '>' | '>=' | '<' | '<=' | '<>') scalar_expression;
-between_expression : scalar_expression 'NOT'? 'BETWEEN' scalar_expression 'AND' scalar_expression;
-like_expression : scalar_expression 'NOT'? 'LIKE' STRING;
+between_expression : scalar_expression NOT? BETWEEN scalar_expression AND scalar_expression;
+like_expression : scalar_expression NOT? LIKE STRING;
 
-in_expression : state_field_path_expression 'NOT'? 'IN' '(' in_item (',' in_item)* ')';
+in_expression : state_field_path_expression NOT? IN '(' in_item (',' in_item)* ')';
 in_item : literal | enum_literal | input_parameter; // could simplify to just literal
 
-null_comparison_expression : state_field_path_expression 'IS' 'NOT'? 'NULL';
+null_comparison_expression : state_field_path_expression IS NOT? NULL;
 
 scalar_expression
     // highest to lowest precedence
@@ -91,35 +91,37 @@ input_parameter : ':' IDENTIFIER | '?' INTEGER;
 
 literal : STRING | INTEGER | DOUBLE;
 
-// Token rules
-SELECT          : 'SELECT';
-UPDATE          : 'UPDATE';
-DELETE          : 'DELETE';
-FROM            : 'FROM';
-WHERE           : 'WHERE';
-SET             : 'SET';
-ORDER           : 'ORDER';
-BY              : 'BY';
-NOT             : 'NOT';
-IN              : 'IN';
-IS              : 'IS';
-NULL            : 'NULL';
-COUNT           : 'COUNT';
-TRUE            : 'TRUE';
-FALSE           : 'FALSE';
-ASC             : 'ASC';
-DESC            : 'DESC';
-AND             : 'AND';
-OR              : 'OR';
-ABS             : 'ABS';
-LENGTH          : 'LENGTH';
-LOWER           : 'LOWER';
-UPPER           : 'UPPER';
-LEFT            : 'LEFT';
-RIGHT           : 'RIGHT';
-LOCAL_DATE      : 'LOCAL DATE';
-LOCAL_DATETIME  : 'LOCAL DATETIME';
-LOCAL_TIME      : 'LOCAL TIME';
+// Tokens defined to be case-insensitive using character classes
+SELECT          : [sS][eE][lL][eE][cC][tT];
+UPDATE          : [uU][pP][dD][aA][tT][eE];
+DELETE          : [dD][eE][lL][eE][tT][eE];
+FROM            : [fF][rR][oO][mM];
+WHERE           : [wW][hH][eE][rR][eE];
+SET             : [sS][eE][tT];
+ORDER           : [oO][rR][dD][eE][rR];
+BY              : [bB][yY];
+NOT             : [nN][oO][tT];
+IN              : [iI][nN];
+IS              : [iI][sS];
+NULL            : [nN][uU][lL][lL];
+COUNT           : [cC][oO][uU][nN][tT];
+TRUE            : [tT][rR][uU][eE];
+FALSE           : [fF][aA][lL][sS][eE];
+ASC             : [aA][sS][cC];
+DESC            : [dD][eE][sS][cC];
+AND             : [aA][nN][dD];
+OR              : [oO][rR];
+ABS             : [aA][bB][sS];
+LENGTH          : [lL][eE][nN][gG][tT][hH];
+LOWER           : [lL][oO][wW][eE][rR];
+UPPER           : [uU][pP][pP][eE][rR];
+LEFT            : [lL][eE][fF][tT];
+RIGHT           : [rR][iI][gG][hH][tT];
+LOCAL_DATE      : [lL][oO][cC][aA][lL] [dD][aA][tT][eE];
+LOCAL_DATETIME  : [lL][oO][cC][aA][lL] [dD][aA][tT][eE][tT][iI][mM][eE];
+LOCAL_TIME      : [lL][oO][cC][aA][lL] [tT][iI][mM][eE];
+BETWEEN         : [bB][eE][tT][wW][eE][eE][nN];
+LIKE            : [lL][iI][kK][eE];
 
 // Operators
 EQ              : '=';
