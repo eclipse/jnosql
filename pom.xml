@@ -61,7 +61,7 @@
         <apache-rat-plugin.version>0.15</apache-rat-plugin.version>
         <jacoco.maven.version>0.8.11</jacoco.maven.version>
         <jakarta.annotation.version>3.0.0</jakarta.annotation.version>
-        <jakarta.enterprise.cdi.version>4.0.1</jakarta.enterprise.cdi.version>
+        <jakarta.enterprise.cdi.version>4.1.0</jakarta.enterprise.cdi.version>
         <jakarta.json.bind.version>3.0.0</jakarta.json.bind.version>
         <jakarta.json.version>2.1.3</jakarta.json.version>
         <jakarta.data.api.version>1.0.0-RC1</jakarta.data.api.version>
