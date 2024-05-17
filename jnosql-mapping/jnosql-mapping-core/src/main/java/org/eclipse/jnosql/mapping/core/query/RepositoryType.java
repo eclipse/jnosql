@@ -151,9 +151,6 @@ public enum RepositoryType {
         if (IS_REPOSITORY_METHOD.test(declaringClass)) {
             return DEFAULT;
         }
-        if (method.getAnnotationsByType(OrderBy.class).length > 0) {
-            return method.getAnnotation(Find.class) == null? ORDER_BY: PARAMETER_BASED;
-        }
         if (!repositoryType.equals(declaringClass) && isCustomRepository(declaringClass)) {
             return CUSTOM_REPOSITORY;
         }
@@ -163,6 +160,9 @@ public enum RepositoryType {
         String methodName = method.getName();
         if (FIND_ALL.keyword.equals(methodName)) {
             return FIND_ALL;
+        }
+        if (method.getAnnotationsByType(OrderBy.class).length > 0) {
+            return method.getAnnotation(Find.class) == null? ORDER_BY: PARAMETER_BASED;
         }
         Predicate<RepositoryType> hasAnnotation = a -> method.getAnnotation(a.annotation) != null;
         if (OPERATION_ANNOTATIONS.stream().anyMatch(hasAnnotation)) {
