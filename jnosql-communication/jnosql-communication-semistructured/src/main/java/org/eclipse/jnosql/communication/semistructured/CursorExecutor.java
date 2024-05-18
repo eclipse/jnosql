@@ -32,7 +32,7 @@ enum CursorExecutor {
         public CursoredPage<CommunicationEntity> cursor(SelectQuery query, PageRequest pageRequest, DatabaseManager template) {
 
             var select = new DefaultSelectQuery(pageRequest.size(), 0, query.name(), query.columns(), query.sorts(),
-                    query.condition().orElse(null));
+                    query.condition().orElse(null), false);
 
             var entities = template.select(select).toList();
             var last = entities.isEmpty() ? null : entities.get(entities.size() - 1);
@@ -178,7 +178,7 @@ enum CursorExecutor {
     private static DefaultSelectQuery updateQuery(int limit, SelectQuery query, CriteriaCondition condition) {
         return new DefaultSelectQuery(limit, 0, query.name(), query.columns(), query.sorts(),
                 query.condition().map(c -> CriteriaCondition.and(c, condition))
-                        .orElse(condition));
+                        .orElse(condition),false);
     }
 
     private static void checkCursorKeySizes(PageRequest.Cursor cursor, List<Sort<?>> sorts) {

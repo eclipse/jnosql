@@ -26,6 +26,6 @@ record DefaultUpdateQuery(String name, List<Element> set, CriteriaCondition crit
 
     @Override
     public SelectQuery toSelectQuery() {
-        return new DefaultSelectQuery(0, 0, name, emptyList(), emptyList(), criteriaCondition);
+        return new DefaultSelectQuery(0, 0, name, emptyList(), emptyList(), criteriaCondition, false);
     }
 }
