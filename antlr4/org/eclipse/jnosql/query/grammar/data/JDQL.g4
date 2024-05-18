@@ -18,7 +18,7 @@ select_list
     : state_field_path_expression (',' state_field_path_expression)*
     | aggregate_expression
     ;
-aggregate_expression : COUNT '(' 'THIS' ')';
+aggregate_expression : COUNT '(' THIS ')';
 
 orderby_clause : ORDER BY orderby_item (',' orderby_item)*;
 orderby_item : state_field_path_expression (ASC | DESC);
@@ -122,6 +122,7 @@ LOCAL_DATETIME  : [lL][oO][cC][aA][lL] [dD][aA][tT][eE][tT][iI][mM][eE];
 LOCAL_TIME      : [lL][oO][cC][aA][lL] [tT][iI][mM][eE];
 BETWEEN         : [bB][eE][tT][wW][eE][eE][nN];
 LIKE            : [lL][iI][kK][eE];
+THIS            : [tT][hH][iI][sS];
 
 // Operators
 EQ              : '=';
