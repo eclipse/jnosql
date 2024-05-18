@@ -416,6 +416,39 @@ class SelectQueryParserTest {
         });
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select count(this) FROM entity WHERE age = ?1 AND name = ?2"})
+    void shouldCountExecutePrepareStatementIndex2(String query) {
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+
+        CommunicationPreparedStatement prepare = parser.prepare(query, null, manager, observer);
+        prepare.bind(1, 12);
+        prepare.bind(2, "Otavio");
+        prepare.result();
+        Mockito.verify(manager).select(captor.capture());
+        SelectQuery selectQuery = captor.getValue();
+        CriteriaCondition criteriaCondition = selectQuery.condition().get();
+        Element element = criteriaCondition.element();
+        assertEquals(Condition.AND, criteriaCondition.condition());
+        List<CriteriaCondition> conditions = element.get(new TypeReference<>() {
+        });
+        var age = conditions.get(0).element();
+        var name = conditions.get(1).element();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.isCount()).isTrue();
+            soft.assertThat(conditions).hasSize(2);
+
+            soft.assertThat(age.name()).isEqualTo("age");
+            soft.assertThat(age.get()).isEqualTo(12);
+            soft.assertThat(conditions.get(0).condition()).isEqualTo(Condition.EQUALS);
+
+            soft.assertThat(name.name()).isEqualTo("name");
+            soft.assertThat(name.get()).isEqualTo("Otavio");
+            soft.assertThat(conditions.get(1).condition()).isEqualTo(Condition.EQUALS);
+        });
+    }
+
 
     private void checkBaseQuery(SelectQuery selectQuery) {
         assertTrue(selectQuery.columns().isEmpty());

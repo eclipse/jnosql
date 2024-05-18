@@ -101,7 +101,9 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
                 .map(c -> Conditions.getCondition(c, params, observer, entity))
                 .orElse(null);
 
-        return new DefaultSelectQuery(limit, skip, entity, columns, sorts, condition, false);
+        boolean count = selectQuery.isCount();
+
+        return new DefaultSelectQuery(limit, skip, entity, columns, sorts, condition, count);
     }
 
     private Sort<?> toSort(Sort<?> sort, CommunicationObserverParser observer, String entity) {
