@@ -397,6 +397,26 @@ class SelectQueryParserTest {
         });
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select count(this) from entity"})
+    void shouldCount(String query) {
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
+        parser.query(query, null, manager, observer);
+        Mockito.verify(manager).select(captor.capture());
+        var selectQuery = captor.getValue();
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(selectQuery.columns()).isEmpty();
+            softly.assertThat(selectQuery.isCount()).isTrue();
+            softly.assertThat(selectQuery.name()).isEqualTo("entity");
+            softly.assertThat(selectQuery.condition()).isEmpty();
+            softly.assertThat(selectQuery.limit()).isZero();
+            softly.assertThat(selectQuery.skip()).isZero();
+            softly.assertThat(selectQuery.sorts()).isEmpty();
+        });
+    }
+
+
     private void checkBaseQuery(SelectQuery selectQuery) {
         assertTrue(selectQuery.columns().isEmpty());
         assertTrue(selectQuery.sorts().isEmpty());
