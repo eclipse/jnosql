@@ -79,6 +79,15 @@ public interface SelectQuery {
     List<Sort<?>> sorts();
 
     /**
+     * Returns true if the query is a count query.
+     *
+     * @return true if the query is a count query
+     */
+    default boolean isCount(){
+        return false;
+    }
+
+    /**
      * Starts the first step of {@link SelectElements} creation using a fluent API.
      * This step informs the fields to return to the query, similar to "select field, fieldB from database" in a database query.
      *
