@@ -424,8 +424,8 @@ class SelectQueryParserTest {
         CommunicationPreparedStatement prepare = parser.prepare(query, null, manager, observer);
         prepare.bind(1, 12);
         prepare.bind(2, "Otavio");
-        prepare.result();
-        Mockito.verify(manager).select(captor.capture());
+        prepare.count();
+        Mockito.verify(manager).count(captor.capture());
         SelectQuery selectQuery = captor.getValue();
         CriteriaCondition criteriaCondition = selectQuery.condition().get();
         Element element = criteriaCondition.element();
@@ -447,6 +447,18 @@ class SelectQueryParserTest {
             soft.assertThat(name.get()).isEqualTo("Otavio");
             soft.assertThat(conditions.get(1).condition()).isEqualTo(Condition.EQUALS);
         });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select count(this) FROM entity WHERE age = ?1 AND name = ?2"})
+    void shouldReturnErrorWhenResultInsteadOfCount(String query) {
+
+        CommunicationPreparedStatement prepare = parser.prepare(query, null, manager, observer);
+        prepare.bind(1, 12);
+        prepare.bind(2, "Otavio");
+
+        assertThrows(UnsupportedOperationException.class, prepare::result);
+        assertThrows(UnsupportedOperationException.class, prepare::singleResult);
     }
 
 
