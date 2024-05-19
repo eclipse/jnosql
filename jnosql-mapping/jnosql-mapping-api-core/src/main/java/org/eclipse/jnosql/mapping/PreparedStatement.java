@@ -47,4 +47,11 @@ public interface PreparedStatement {
      * @return the single result wrapped in an {@link Optional}; empty if no result is found
      */
     <T> Optional<T> singleResult();
+
+    /**
+     * Returns the number of elements in the result.
+     *
+     * @return the number of elements in the result
+     */
+    long count();
 }
