@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.mapping;
 
+import org.eclipse.jnosql.communication.QueryException;
+
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -51,7 +53,9 @@ public interface PreparedStatement {
     /**
      * Returns the number of elements in the result.
      *
-     * @return the number of elements in the result
+     * @return the number of elements
+     * @throws QueryException if there are parameters left to bind
+     * @throws IllegalArgumentException if the operation is not a count operation
      */
     long count();
 }
