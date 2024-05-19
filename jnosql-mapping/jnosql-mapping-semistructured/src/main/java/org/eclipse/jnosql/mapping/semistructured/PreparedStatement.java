@@ -58,6 +58,11 @@ public final class PreparedStatement implements org.eclipse.jnosql.mapping.Prepa
         return singleResult.map(converter::toEntity);
     }
 
+    @Override
+    public long count() {
+        return preparedStatement.count();
+    }
+
     /**
      * Optionally returns the underlying {@link SelectQuery} associated with this PreparedStatement,
      * if applicable.

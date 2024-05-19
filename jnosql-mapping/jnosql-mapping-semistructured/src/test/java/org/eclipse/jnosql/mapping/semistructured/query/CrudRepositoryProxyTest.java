@@ -705,6 +705,29 @@ class CrudRepositoryProxyTest {
     }
 
     @Test
+    void shouldCount() {
+
+        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(statement);
+
+        when(template.count(any(SelectQuery.class)))
+                .thenReturn(10L);
+
+        long result = personRepository.count("Ada", 10);
+
+        assertEquals(10L, result);
+
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(template).count(captor.capture());
+        SelectQuery query = captor.getValue();
+        CriteriaCondition negate = query.condition().get();
+        assertEquals(Condition.NOT, negate.condition());
+        CriteriaCondition condition = negate.element().get(CriteriaCondition.class);
+        assertEquals(GREATER_THAN, condition.condition());
+        assertEquals(Element.of("age", 10), condition.element());
+    }
+
+    @Test
     void shouldConvertMapAddressRepository() {
 
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
@@ -796,6 +819,9 @@ class CrudRepositoryProxyTest {
 
         @Query("FROM Person WHERE age = ?1")
         Optional<Person> findByQuery(int age);
+
+        @Query("select count(this) FROM Person WHERE name = ?1 and age > ?2")
+        long count(String name, int age);
     }
 
     public interface VendorRepository extends CrudRepository<Vendor, String> {
