@@ -58,4 +58,11 @@ public interface PreparedStatement {
      * @throws IllegalArgumentException if the operation is not a count operation
      */
     long count();
+
+    /**
+     * Checks if the operation is a count operation.
+     *
+     * @return {@code true} if the operation is a count operation, otherwise {@code false}
+     */
+    boolean isCount();
 }

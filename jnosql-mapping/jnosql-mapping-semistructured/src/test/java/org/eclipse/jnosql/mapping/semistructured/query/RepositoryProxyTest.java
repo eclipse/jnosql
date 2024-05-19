@@ -604,8 +604,10 @@ class RepositoryProxyTest {
 
     @Test
     void shouldExecuteJNoSQLQuery() {
+        PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
+        when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(preparedStatement);
         personRepository.findByQuery();
-        verify(template).query("FROM Person", "Person");
+        verify(template).prepare("FROM Person", "Person");
     }
 
     @Test

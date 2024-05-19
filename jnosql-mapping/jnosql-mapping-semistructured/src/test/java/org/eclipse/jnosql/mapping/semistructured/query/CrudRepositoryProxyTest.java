@@ -583,8 +583,10 @@ class CrudRepositoryProxyTest {
 
     @Test
     void shouldExecuteJNoSQLQuery() {
+        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(statement);
         personRepository.findByQuery();
-        verify(template).query("FROM Person", "Person");
+        verify(template).prepare("FROM Person", "Person");
     }
 
     @Test
@@ -710,21 +712,12 @@ class CrudRepositoryProxyTest {
         PreparedStatement statement = Mockito.mock(PreparedStatement.class);
         when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(statement);
 
-        when(template.count(any(SelectQuery.class)))
-                .thenReturn(10L);
+        when(statement.isCount()).thenReturn(true);
+        when(statement.count()).thenReturn(10L);
 
         long result = personRepository.count("Ada", 10);
 
         assertEquals(10L, result);
-
-        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
-        verify(template).count(captor.capture());
-        SelectQuery query = captor.getValue();
-        CriteriaCondition negate = query.condition().get();
-        assertEquals(Condition.NOT, negate.condition());
-        CriteriaCondition condition = negate.element().get(CriteriaCondition.class);
-        assertEquals(GREATER_THAN, condition.condition());
-        assertEquals(Element.of("age", 10), condition.element());
     }
 
     @Test

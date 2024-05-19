@@ -71,32 +71,19 @@ enum DynamicReturnConverter {
     public Object convert(DynamicQueryMethodReturn dynamicQueryMethod) {
         Method method = dynamicQueryMethod.method();
         Object[] args = dynamicQueryMethod.args();
-        Function<String, Stream<?>> queryConverter = dynamicQueryMethod.queryConverter();
         Function<String, PreparedStatement> prepareConverter = dynamicQueryMethod.prepareConverter();
         Class<?> typeClass = dynamicQueryMethod.typeClass();
 
         String value = RepositoryReflectionUtils.INSTANCE.getQuery(method);
 
-        if(dynamicQueryMethod.isCount()){
-            Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);
-            if (params.isEmpty()) {
-                return queryConverter.apply(value).count();
-            } else {
-                var prepare = prepareConverter.apply(value);
-                params.forEach(prepare::bind);
-                return prepare.count();
-            }
-        }
-
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);
-        Stream<?> entities;
-        if (params.isEmpty()) {
-            entities = queryConverter.apply(value);
-        } else {
-            PreparedStatement prepare = prepareConverter.apply(value);
-            params.forEach(prepare::bind);
-            entities = prepare.result();
+        PreparedStatement prepare = prepareConverter.apply(value);
+        params.forEach(prepare::bind);
+
+        if(prepare.isCount()){
+            return prepare.count();
         }
+        Stream<?> entities = prepare.result();
 
         Supplier<Stream<?>> streamSupplier = () -> entities;
         Supplier<Optional<?>> singleSupplier = DynamicReturn.toSingleResult(method).apply(streamSupplier);

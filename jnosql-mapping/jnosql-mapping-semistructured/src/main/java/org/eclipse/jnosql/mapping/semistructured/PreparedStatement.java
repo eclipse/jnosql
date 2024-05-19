@@ -63,6 +63,11 @@ public final class PreparedStatement implements org.eclipse.jnosql.mapping.Prepa
         return preparedStatement.count();
     }
 
+    @Override
+    public boolean isCount() {
+        return selectQuery().map(SelectQuery::isCount).orElse(false);
+    }
+
     /**
      * Optionally returns the underlying {@link SelectQuery} associated with this PreparedStatement,
      * if applicable.
