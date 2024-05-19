@@ -18,6 +18,7 @@ import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -247,6 +248,29 @@ class DynamicQueryMethodReturnTest {
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 
+    @Test
+    void shouldReturnLong() throws NoSuchMethodException {
+        var preparedStatement = Mockito.mock(PreparedStatement.class);
+        Mockito.when(preparedStatement.count()).thenReturn(1L);
+        Method method = getMethod(PersonRepository.class, "count");
+
+
+        Function<String, Stream<?>> stream = q -> Stream.of(new Person("Ada"));
+        var dynamicReturn = DynamicQueryMethodReturn.builder()
+                .withTypeClass(Person.class)
+                .withMethod(method)
+                .withQueryConverter(stream)
+                .withCount(true)
+                .withPrepareConverter(s -> preparedStatement)
+                .build();
+
+        Object execute = dynamicReturn.execute();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(execute).isInstanceOf(Long.class);
+            soft.assertThat(execute).isEqualTo(1L);
+        });
+    }
+
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
         return Stream.of(repository.getDeclaredMethods())
                 .filter(m -> m.getName().equals(methodName))
@@ -286,6 +310,12 @@ class DynamicQueryMethodReturnTest {
 
         @Query("query")
         List<Person> query(@Param("name") String name);
+
+        @Query("select count(this) from Person")
+        long count();
+
+        @Query("select count(this) from Person where name = :name")
+        long count(@Param("name") String name);
     }
 
 }

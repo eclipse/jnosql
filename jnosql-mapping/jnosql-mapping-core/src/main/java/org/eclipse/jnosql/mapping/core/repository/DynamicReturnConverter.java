@@ -77,6 +77,16 @@ enum DynamicReturnConverter {
 
         String value = RepositoryReflectionUtils.INSTANCE.getQuery(method);
 
+        if(dynamicQueryMethod.isCount()){
+            Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);
+            if (params.isEmpty()) {
+                return queryConverter.apply(value).count();
+            } else {
+                var prepare = prepareConverter.apply(value);
+                params.forEach(prepare::bind);
+                return prepare.count();
+            }
+        }
 
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);
         Stream<?> entities;
