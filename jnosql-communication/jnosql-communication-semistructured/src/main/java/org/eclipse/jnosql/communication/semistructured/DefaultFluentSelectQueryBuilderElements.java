@@ -183,7 +183,7 @@ class DefaultFluentSelectQueryBuilderElements extends BaseQueryBuilder implement
 
     @Override
     public SelectQuery build() {
-        return new DefaultSelectQuery(limit, skip, entity, columns, sorts, condition);
+        return new DefaultSelectQuery(limit, skip, entity, columns, sorts, condition, false);
     }
 
     @Override

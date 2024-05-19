@@ -67,23 +67,24 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
 
         var converter = new SelectProvider();
         var selectQuery = converter.apply(query, entity);
-        String columnFamily = observer.fireEntity(selectQuery.entity());
-        long limit = selectQuery.limit();
-        long skip = selectQuery.skip();
-        List<String> columns = selectQuery.fields().stream()
-                .map(f -> observer.fireField(columnFamily, f))
+        var entityName = observer.fireEntity(selectQuery.entity());
+        var limit = selectQuery.limit();
+        var skip = selectQuery.skip();
+        var columns = selectQuery.fields().stream()
+                .map(f -> observer.fireField(entityName, f))
                 .collect(Collectors.toList());
-        List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, columnFamily))
+        List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, entityName))
                 .collect(toList());
 
         var params = Params.newParams();
-        CriteriaCondition condition = selectQuery.where()
-                .map(c -> Conditions.getCondition(c, params, observer, columnFamily)).orElse(null);
+        var condition = selectQuery.where()
+                .map(c -> Conditions.getCondition(c, params, observer, entityName)).orElse(null);
 
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        return new DefaultSelectQuery(limit, skip, columnFamily, columns, sorts, condition);
+        boolean count = selectQuery.isCount();
+        return new DefaultSelectQuery(limit, skip, entityName, columns, sorts, condition, count);
     }
 
     private SelectQuery query(Params params, org.eclipse.jnosql.communication.query.SelectQuery selectQuery, CommunicationObserverParser observer) {
@@ -100,7 +101,9 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
                 .map(c -> Conditions.getCondition(c, params, observer, entity))
                 .orElse(null);
 
-        return new DefaultSelectQuery(limit, skip, entity, columns, sorts, condition);
+        boolean count = selectQuery.isCount();
+
+        return new DefaultSelectQuery(limit, skip, entity, columns, sorts, condition, count);
     }
 
     private Sort<?> toSort(Sort<?> sort, CommunicationObserverParser observer, String entity) {

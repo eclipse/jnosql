@@ -26,7 +26,7 @@ import static java.util.Optional.ofNullable;
  * The default implementation of column query.
  */
 record DefaultSelectQuery(long limit, long skip, String name,
-                          List<String> columns, List<Sort<?>> sorts, CriteriaCondition criteriaCondition)
+                          List<String> columns, List<Sort<?>> sorts, CriteriaCondition criteriaCondition, boolean count)
         implements SelectQuery {
 
 
@@ -62,6 +62,11 @@ record DefaultSelectQuery(long limit, long skip, String name,
     }
 
     @Override
+    public boolean isCount() {
+        return count;
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(limit, skip, name, columns, sorts, criteriaCondition);
     }
@@ -69,11 +74,11 @@ record DefaultSelectQuery(long limit, long skip, String name,
 
     static SelectQuery countBy(SelectQuery query) {
         return new DefaultSelectQuery(0, 0, query.name(), query.columns(),
-                Collections.emptyList(), query.condition().orElse(null));
+                Collections.emptyList(), query.condition().orElse(null), true);
     }
 
     static SelectQuery existsBy(SelectQuery query) {
         return new DefaultSelectQuery(1, 0, query.name(), query.columns(),
-                Collections.emptyList(), query.condition().orElse(null));
+                Collections.emptyList(), query.condition().orElse(null), false);
     }
 }

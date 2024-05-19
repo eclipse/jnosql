@@ -105,7 +105,7 @@ class DefaultQueryBuilder implements SelectQuery.QueryBuilder {
             throw new IllegalArgumentException("The document collection is mandatory to build");
         }
         return new DefaultSelectQuery(limit, skip, entity,
-                columns, sorts, condition);
+                columns, sorts, condition, false);
     }
 
     @Override

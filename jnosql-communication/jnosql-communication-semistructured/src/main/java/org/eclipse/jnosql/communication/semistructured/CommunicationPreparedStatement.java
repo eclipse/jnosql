@@ -140,6 +140,24 @@ public final class CommunicationPreparedStatement {
         }
     }
 
+    /**
+     * Returns the number of elements in the result.
+     *
+     * @return the number of elements
+     * @throws QueryException if there are parameters left to bind
+     * @throws IllegalArgumentException if the operation is not a count operation
+     */
+    public long count(){
+        if (!paramsLeft.isEmpty()) {
+            throw new QueryException("Check all the parameters before execute the query, params left: " + paramsLeft);
+        }
+        if (PreparedStatementType.COUNT.equals(type)) {
+            return manager.count(selectQuery);
+        }
+        throw new IllegalArgumentException("The count operation is only allowed for COUNT queries");
+
+    }
+
 
 
     /**
@@ -164,7 +182,7 @@ public final class CommunicationPreparedStatement {
     }
 
     enum PreparedStatementType {
-        SELECT, DELETE, UPDATE
+        SELECT, DELETE, UPDATE, COUNT
     }
 
 
@@ -178,9 +196,15 @@ public final class CommunicationPreparedStatement {
             Params params,
             String query,
             DatabaseManager manager) {
-        return new CommunicationPreparedStatement(selectQuery,
-                null, null, PreparedStatementType.SELECT, params, query,
-                params.getParametersNames(), manager);
+        if (selectQuery.isCount()) {
+            return new CommunicationPreparedStatement(selectQuery,
+                    null, null, PreparedStatementType.COUNT, params, query,
+                    params.getParametersNames(), manager);
+        } else {
+            return new CommunicationPreparedStatement(selectQuery,
+                    null, null, PreparedStatementType.SELECT, params, query,
+                    params.getParametersNames(), manager);
+        }
 
     }
 

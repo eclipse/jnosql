@@ -69,4 +69,14 @@ final class DefaultPreparedStatement implements PreparedStatement {
         }
         throw new NonUniqueResultException("There is more than one result found in the gremlin query: " + gremlin);
     }
+
+    @Override
+    public long count() {
+       throw new UnsupportedOperationException("There is no count operation in the graph database with Gremlin");
+    }
+
+    @Override
+    public boolean isCount() {
+        return false;
+    }
 }

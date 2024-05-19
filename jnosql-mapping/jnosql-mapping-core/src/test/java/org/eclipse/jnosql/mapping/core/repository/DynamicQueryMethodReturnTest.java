@@ -18,6 +18,7 @@ import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -40,11 +41,10 @@ class DynamicQueryMethodReturnTest {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getOptional");
 
-        Function<String, Stream<?>> stream = q -> Stream.empty();
+        Mockito.when(preparedStatement.result()).thenReturn(Stream.empty());
         DynamicQueryMethodReturn dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
                 .withMethod(method)
-                .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
@@ -58,12 +58,11 @@ class DynamicQueryMethodReturnTest {
 
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getOptional");
+       Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
 
-        Function<String, Stream<?>> stream = q -> Stream.of(new Person("Ada"));
         DynamicQueryMethodReturn dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
                 .withMethod(method)
-                .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
@@ -79,12 +78,11 @@ class DynamicQueryMethodReturnTest {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getOptional");
 
-        Function<String, Stream<?>> stream = q -> Stream.of(new Person("Poliana"), new
-                Person("Otavio"));
+        Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Poliana"), new
+                Person("Otavio")));
         DynamicQueryMethodReturn dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
                 .withMethod(method)
-                .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
 
@@ -97,11 +95,10 @@ class DynamicQueryMethodReturnTest {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getInstance");
 
-        Function<String, Stream<?>> stream = q -> Stream.of(new Person("Ada"));
+        Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         DynamicQueryMethodReturn dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
                 .withMethod(method)
-                .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
@@ -116,11 +113,10 @@ class DynamicQueryMethodReturnTest {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getInstance");
 
-        Function<String, Stream<?>> stream = q -> Stream.empty();
+        Mockito.when(preparedStatement.result()).thenReturn(Stream.empty());
         DynamicQueryMethodReturn dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
                 .withMethod(method)
-                .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
@@ -133,11 +129,10 @@ class DynamicQueryMethodReturnTest {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getList");
 
-        Function<String, Stream<?>> stream = q -> Stream.of(new Person("Ada"));
+        Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         DynamicQueryMethodReturn dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
                 .withMethod(method)
-                .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
@@ -154,11 +149,10 @@ class DynamicQueryMethodReturnTest {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getIterable");
 
-        Function<String, Stream<?>> stream = q -> Stream.of(new Person("Ada"));
+        Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         DynamicQueryMethodReturn dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
                 .withMethod(method)
-                .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
@@ -172,11 +166,10 @@ class DynamicQueryMethodReturnTest {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getCollection");
 
-        Function<String, Stream<?>> stream = q -> Stream.of(new Person("Ada"));
+        Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         DynamicQueryMethodReturn dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
                 .withMethod(method)
-                .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
@@ -192,11 +185,10 @@ class DynamicQueryMethodReturnTest {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getQueue");
 
-        Function<String, Stream<?>> stream = q -> Stream.of(new Person("Ada"));
+        Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         DynamicQueryMethodReturn dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
                 .withMethod(method)
-                .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
@@ -211,11 +203,10 @@ class DynamicQueryMethodReturnTest {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getStream");
 
-        Function<String, Stream<?>> stream = q -> Stream.of(new Person("Ada"));
+        Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         DynamicQueryMethodReturn dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
                 .withMethod(method)
-                .withQueryConverter(stream)
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
 
@@ -233,11 +224,10 @@ class DynamicQueryMethodReturnTest {
 
         Method method = getMethod(PersonRepository.class, "query");
 
-        Function<String, Stream<?>> stream = q -> Stream.of(new Person("Ada"));
+        Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         DynamicQueryMethodReturn dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
                 .withMethod(method)
-                .withQueryConverter(stream)
                 .withArgs(new Object[]{"Ada"})
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
@@ -245,6 +235,27 @@ class DynamicQueryMethodReturnTest {
         Assertions.assertTrue(execute instanceof Iterable);
         Iterable<Person> persons = (List) execute;
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
+    }
+
+    @Test
+    void shouldReturnLong() throws NoSuchMethodException {
+        var preparedStatement = Mockito.mock(PreparedStatement.class);
+        Mockito.when(preparedStatement.count()).thenReturn(1L);
+        Mockito.when(preparedStatement.isCount()).thenReturn(true);
+        Method method = getMethod(PersonRepository.class, "count");
+
+
+        var dynamicReturn = DynamicQueryMethodReturn.builder()
+                .withTypeClass(Person.class)
+                .withMethod(method)
+                .withPrepareConverter(s -> preparedStatement)
+                .build();
+
+        Object execute = dynamicReturn.execute();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(execute).isInstanceOf(Long.class);
+            soft.assertThat(execute).isEqualTo(1L);
+        });
     }
 
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
@@ -286,6 +297,9 @@ class DynamicQueryMethodReturnTest {
 
         @Query("query")
         List<Person> query(@Param("name") String name);
+
+        @Query("select count(this) from Person")
+        long count();
     }
 
 }
