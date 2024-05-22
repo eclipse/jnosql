@@ -79,17 +79,12 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
         }
         this.findBySimpleName.put(type.getSimpleName(), metadata);
         this.findByClassName.put(type.getName(), metadata);
-        this.classes.put(type, metadata);
         return metadata;
     }
 
     @Override
     public EntityMetadata get(Class<?> entity) {
-        EntityMetadata metadata = classes.get(entity);
-        if (metadata == null) {
-           return load(entity);
-        }
-        return metadata;
+        return classes.computeIfAbsent(entity, this::load);
     }
 
     @Override
