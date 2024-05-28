@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.data.repository.DataRepository;
 import org.eclipse.jnosql.mapping.metadata.ClassScanner;
 
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -48,5 +49,10 @@ public final class ReflectionClassScanner implements ClassScanner {
     @Override
     public Set<Class<?>> repositoriesStandard() {
         return ClassGraphClassScanner.INSTANCE.repositoriesStandard();
+    }
+
+    @Override
+    public Set<Class<?>> customRepositories() {
+        return  ClassGraphClassScanner.INSTANCE.customRepositories();
     }
 }
