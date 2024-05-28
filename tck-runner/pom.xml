@@ -52,7 +52,7 @@
 		<sigtest.version>1.6</sigtest.version>
 		<arquillian.version>1.7.0.Final</arquillian.version>
 
-		<!-- TCK settings -->
+	    <!-- TCK settings -->
 		<included.groups><![CDATA[standalone & nosql]]></included.groups>
 	</properties>
 
@@ -105,6 +105,14 @@
 			<artifactId>arquillian-junit5-core</artifactId>
 			<version>${arquillian.version}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jboss.arquillian.container/arquillian-weld-embedded -->
+		<dependency>
+			<groupId>org.jboss.arquillian.container</groupId>
+			<artifactId>arquillian-weld-embedded</artifactId>
+			<version>4.0.0.Final</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>jakarta.servlet</groupId>
 			<artifactId>jakarta.servlet-api</artifactId>
