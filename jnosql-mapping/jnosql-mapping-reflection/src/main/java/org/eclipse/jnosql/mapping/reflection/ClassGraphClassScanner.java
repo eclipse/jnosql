@@ -61,9 +61,11 @@ enum ClassGraphClassScanner implements ClassScanner {
         logger.fine("Starting scan class to find entities, embeddable and repositories.");
         try (ScanResult result = new ClassGraph().enableAllInfo().scan()) {
             var notSupportedRepositories = loadNotSupportedRepositories(result);
+            logger.info("The following repositories are not supported: " + notSupportedRepositories);
             this.entities.addAll(loadEntities(result));
             this.embeddables.addAll(loadEmbeddable(result));
             this.repositories.addAll(loadRepositories(result));
+            this.customRepositories.addAll(loadCustomRepositories(result));
             notSupportedRepositories.forEach(this.repositories::remove);
         }
         logger.fine(String.format("Finished the class scan with entities %d, embeddables %d and repositories: %d"
@@ -123,6 +125,13 @@ enum ClassGraphClassScanner implements ClassScanner {
                 .loadClasses(DataRepository.class)
                 .stream().filter(RepositoryFilter.INSTANCE)
                 .toList();
+    }
+
+    private static List<Class<?>> loadCustomRepositories(ScanResult scan) {
+        return scan.getClassesWithAnnotation(Repository.class)
+                .getInterfaces()
+                .filter(c -> !c.implementsInterface(DataRepository.class))
+                .loadClasses().stream().toList();
     }
 
     @SuppressWarnings("rawtypes")
