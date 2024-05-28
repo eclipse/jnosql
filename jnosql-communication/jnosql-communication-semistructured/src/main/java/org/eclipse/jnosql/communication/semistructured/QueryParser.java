@@ -38,7 +38,7 @@ public final class QueryParser {
      */
     public Stream<CommunicationEntity> query(String query, String entity, DatabaseManager manager, CommunicationObserverParser observer) {
         validation(query, manager, observer);
-        String command = query.substring(0, 6);
+        String command = extractQueryCommand(query);
         return switch (command) {
             case "DELETE" -> delete.query(query, manager, observer);
             case "UPDATE" -> update.query(query, manager, observer);
@@ -60,8 +60,7 @@ public final class QueryParser {
      */
     public CommunicationPreparedStatement prepare(String query, String entity, DatabaseManager manager, CommunicationObserverParser observer) {
         validation(query, manager, observer);
-        String command = query.substring(0, 6);
-
+        String command = extractQueryCommand(query);
         return switch (command) {
             case "DELETE" -> delete.prepare(query, manager, observer);
             case "UPDATE" -> update.prepare(query, manager, observer);
@@ -69,6 +68,9 @@ public final class QueryParser {
         };
     }
 
+    private String extractQueryCommand(String query){
+        return query.substring(0, 6).toUpperCase();
+    }
 
     private void validation(String query, DatabaseManager manager, CommunicationObserverParser observer) {
         Objects.requireNonNull(query, "query is required");

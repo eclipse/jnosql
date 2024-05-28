@@ -12,7 +12,6 @@ package org.eclipse.jnosql.communication.semistructured;
 
 import org.eclipse.jnosql.communication.Condition;
 import jakarta.data.exceptions.NonUniqueResultException;
-import org.eclipse.jnosql.communication.QueryException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -49,7 +48,7 @@ class DefaultElementQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"FROM God"})
-    void shouldReturnParserQuery(String query) {
+    void shouldReturnParsedSelectQuery(String query) {
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         parser.query(query, null, manager, CommunicationObserverParser.EMPTY);
         Mockito.verify(manager).select(captor.capture());
@@ -64,10 +63,10 @@ class DefaultElementQueryParserTest {
 
     }
 
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God"})
-    void shouldReturnParserQuery1(String query) {
+    @ParameterizedTest(name = "Should parser the query {0} FROM God")
+    @ValueSource(strings = {"DELETE", "delete", "DeLeTe", "dElEtE", "DElete", "deLETE", "DeleTE", "DELete"})
+    void shouldReturnParsedDeleteQuery(String queryCommand) {
+        var query = queryCommand + " FROM God";
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
         parser.query(query, null, manager, CommunicationObserverParser.EMPTY);
         Mockito.verify(manager).delete(captor.capture());
@@ -93,9 +92,10 @@ class DefaultElementQueryParserTest {
         assertEquals(Element.of("name", "Diana"), entity.find("name").get());
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"DELETE FROM God WHERE age = :age"})
-    void shouldExecutePrepareStatement(String query) {
+    @ParameterizedTest(name = "Should parser the query {0} FROM God WHERE age = :age")
+    @ValueSource(strings = {"DELETE", "delete", "DeLeTe", "dElEtE", "DElete", "deLETE", "DeleTE", "DELete"})
+    void shouldExecutePrepareStatement(String queryCommand) {
+        var query = queryCommand + " FROM God WHERE age = :age";
         ArgumentCaptor<DeleteQuery> captor = ArgumentCaptor.forClass(DeleteQuery.class);
 
         CommunicationPreparedStatement prepare = parser.prepare(query, null, manager, CommunicationObserverParser.EMPTY);
