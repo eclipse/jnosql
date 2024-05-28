@@ -18,4 +18,4 @@ jobs:
           java-version: ${{ matrix.java-version }}
           cache: maven
       - name: Test with maven
-        run: mvn test --file tck-runner/pom.xml
+        run: mvn test -Djakarta.tck.profile=standalone --file tck-runner/pom.xml
