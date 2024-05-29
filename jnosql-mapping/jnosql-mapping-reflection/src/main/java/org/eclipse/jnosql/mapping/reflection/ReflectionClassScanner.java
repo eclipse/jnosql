@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.data.repository.DataRepository;
 import org.eclipse.jnosql.mapping.metadata.ClassScanner;
 
-import java.util.Collections;
 import java.util.Set;
 
 /**
