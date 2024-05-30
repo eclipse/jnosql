@@ -21,11 +21,14 @@ import org.eclipse.jnosql.mapping.core.query.AnnotationOperation;
 import org.eclipse.jnosql.mapping.core.query.RepositoryType;
 import org.eclipse.jnosql.mapping.core.repository.ThrowingSupplier;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.DELETE;
@@ -38,9 +41,9 @@ import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.UPDATE;
  * The implementation is based on {@link InvocationHandler} and it's used to create a custom repository.
 
  */
-public class CustomRepository implements InvocationHandler {
+public class CustomRepositoryHandler implements InvocationHandler {
 
-    private static final Logger LOGGER = Logger.getLogger(CustomRepository.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CustomRepositoryHandler.class.getName());
 
     private final EntitiesMetadata entitiesMetadata;
 
@@ -50,7 +53,7 @@ public class CustomRepository implements InvocationHandler {
 
     private final Converters converters;
 
-    CustomRepository(EntitiesMetadata entitiesMetadata, SemiStructuredTemplate template,
+    CustomRepositoryHandler(EntitiesMetadata entitiesMetadata, SemiStructuredTemplate template,
                              Class<?> customRepositoryType,
                              Converters converters) {
         this.entitiesMetadata = entitiesMetadata;
@@ -83,7 +86,14 @@ public class CustomRepository implements InvocationHandler {
     }
 
     private AbstractRepository<?,?> repository(Method method) {
-        return null;
+        Class<?> typeClass = (Class<?>) method.getReturnType();
+        if (typeClass.isArray()) {
+            typeClass = typeClass.getComponentType();
+        } else if(Iterable.class.isAssignableFrom(typeClass)) {
+            typeClass = (Class<?>) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
+        }
+        Optional<EntityMetadata> entity = entitiesMetadata.findByClassName(typeClass.getName());
+        return entity.map(entityMetadata -> new SemiStructuredRepositoryProxy.SemiStructuredRepository<>(template, entityMetadata)).orElse(null);
     }
 
     protected Object unwrapInvocationTargetException(ThrowingSupplier<Object> supplier) throws Throwable {

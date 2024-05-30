@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.inject.Inject;
+import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -22,26 +23,27 @@ import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.eclipse.jnosql.mapping.semistructured.MockProducer;
 import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
+import org.eclipse.jnosql.mapping.semistructured.entities.Person;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.lang.reflect.Proxy;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, EntityConverter.class})
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
-class CustomRepositoryTest {
+class CustomRepositoryHandlerTest {
 
     @Inject
     private EntitiesMetadata entitiesMetadata;
 
-    @Inject
     private SemiStructuredTemplate template;
 
     @Inject
@@ -49,12 +51,46 @@ class CustomRepositoryTest {
 
     private People people;
 
-    @Test
-    void setUp(){
-
-        CustomRepository customRepository = new CustomRepository(entitiesMetadata, template, People.class, converters);
+    @BeforeEach
+    void setUp() {
+        template = Mockito.mock(SemiStructuredTemplate.class);
+        CustomRepositoryHandler customRepositoryHandler = new CustomRepositoryHandler(entitiesMetadata, template, People.class, converters);
         people = (People) Proxy.newProxyInstance(People.class.getClassLoader(), new Class[]{People.class},
-                personHandler);
+                customRepositoryHandler);
+    }
+
+    @Test
+    void shouldInsertEntity() {
+        Person person = Person.builder().withAge(26).withName("Ada").build();
+        Mockito.when(template.insert(person)).thenReturn(person);
+        Person result = people.insert(person);
+
+        Mockito.verify(template).insert(person);
+        Mockito.verifyNoMoreInteractions(template);
+        Assertions.assertThat(result).isEqualTo(person);
+    }
+
+    @Test
+    void shouldInsertListEntity() {
+        var persons = List.of(Person.builder().withAge(26).withName("Ada").build());
+        Mockito.when(template.insert(persons)).thenReturn(persons);
+        List<Person> result = people.insert(persons);
+
+        Mockito.verify(template).insert(persons);
+        Mockito.verifyNoMoreInteractions(template);
+        Assertions.assertThat(result).isEqualTo(persons);
+    }
+
+    @Test
+    void shouldInsertArrayEntity() {
+        Person ada = Person.builder().withAge(26).withName("Ada").build();
+        var persons = new Person[]{ada};
+        Mockito.when(template.insert(Mockito.any())).thenReturn(List.of(ada));
+        Person[] result = people.insert(persons);
+
+        Mockito.verify(template).insert(List.of(ada));
+        Mockito.verifyNoMoreInteractions(template);
+        Assertions.assertThat(result).isEqualTo(persons);
     }
 
 
