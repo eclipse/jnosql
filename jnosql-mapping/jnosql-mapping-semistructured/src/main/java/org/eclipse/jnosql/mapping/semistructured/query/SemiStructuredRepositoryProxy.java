@@ -43,8 +43,6 @@ public class SemiStructuredRepositoryProxy<T, K> extends AbstractSemiStructuredR
 
     private final Class<?> repositoryType;
 
-
-
     /**
      * Creates a new instance of ColumnRepositoryProxy.
      *
