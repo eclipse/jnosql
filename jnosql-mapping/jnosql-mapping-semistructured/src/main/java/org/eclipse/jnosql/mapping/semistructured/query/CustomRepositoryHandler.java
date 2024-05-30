@@ -28,6 +28,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.TypeVariable;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -74,7 +75,7 @@ public class CustomRepositoryHandler implements InvocationHandler {
                 return unwrapInvocationTargetException(() -> INSERT.invoke(new AnnotationOperation.Operation(method, params, repository(method))));
             }
             case DELETE -> {
-                return unwrapInvocationTargetException(() -> DELETE.invoke(new AnnotationOperation.Operation(method, params, repository(method))));
+                return unwrapInvocationTargetException(() -> DELETE.invoke(new AnnotationOperation.Operation(method, params, repository(params))));
             }
             case UPDATE -> {
                 return unwrapInvocationTargetException(() -> UPDATE.invoke(new AnnotationOperation.Operation(method, params, repository(method))));
@@ -86,11 +87,23 @@ public class CustomRepositoryHandler implements InvocationHandler {
     }
 
     private AbstractRepository<?,?> repository(Method method) {
-        Class<?> typeClass = (Class<?>) method.getReturnType();
+        Class<?> typeClass = method.getReturnType();
         if (typeClass.isArray()) {
             typeClass = typeClass.getComponentType();
         } else if(Iterable.class.isAssignableFrom(typeClass)) {
             typeClass = (Class<?>) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
+        }
+        Optional<EntityMetadata> entity = entitiesMetadata.findByClassName(typeClass.getName());
+        return entity.map(entityMetadata -> new SemiStructuredRepositoryProxy.SemiStructuredRepository<>(template, entityMetadata)).orElse(null);
+    }
+
+    private AbstractRepository<?,?> repository(Object[] params) {
+        Class<?> typeClass =  params[0].getClass();
+        if (typeClass.isArray()) {
+            typeClass = typeClass.getComponentType();
+        } else if(Iterable.class.isAssignableFrom(typeClass)) {
+            var entity = ((Iterable<?>) params[0]).iterator().next();
+            typeClass = entity.getClass();
         }
         Optional<EntityMetadata> entity = entitiesMetadata.findByClassName(typeClass.getName());
         return entity.map(entityMetadata -> new SemiStructuredRepositoryProxy.SemiStructuredRepository<>(template, entityMetadata)).orElse(null);

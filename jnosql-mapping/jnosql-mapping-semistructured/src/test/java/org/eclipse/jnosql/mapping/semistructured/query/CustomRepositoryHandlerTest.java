@@ -128,4 +128,32 @@ class CustomRepositoryHandlerTest {
         Assertions.assertThat(result).isEqualTo(persons);
     }
 
+    @Test
+    void shouldDeleteEntity() {
+        Person person = Person.builder().withId(1).withAge(26).withName("Ada").build();
+        people.delete(person);
+
+        Mockito.verify(template).delete(Person.class, 1L);
+        Mockito.verifyNoMoreInteractions(template);
+    }
+
+    @Test
+    void shouldDeleteListEntity() {
+        var persons = List.of(Person.builder().withId(12L).withAge(26).withName("Ada").build());
+         people.delete(persons);
+
+        Mockito.verify(template).delete(Person.class, 12L);
+        Mockito.verifyNoMoreInteractions(template);
+    }
+
+    @Test
+    void shouldDeleteArrayEntity() {
+        Person ada = Person.builder().withId(2L).withAge(26).withName("Ada").build();
+        var persons = new Person[]{ada};
+        people.delete(persons);
+
+        Mockito.verify(template).delete(Person.class, 2L);
+        Mockito.verifyNoMoreInteractions(template);
+    }
+
 }
