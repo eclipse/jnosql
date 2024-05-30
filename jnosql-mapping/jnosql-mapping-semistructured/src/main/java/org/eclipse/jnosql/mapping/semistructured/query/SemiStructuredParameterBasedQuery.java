@@ -58,13 +58,7 @@ public enum SemiStructuredParameterBasedQuery {
             conditions.add(condition(convert, entityMetadata, entry));
         }
 
-        List<Sort<?>> updateSorter = new ArrayList<>();
-        for (Sort<?> sort : sorts) {
-            var name = entityMetadata.fieldMapping(sort.property())
-                    .map(FieldMetadata::name)
-                    .orElse(sort.property());
-            updateSorter.add(sort.isAscending()? Sort.asc(name): Sort.desc(name));
-        }
+        List<Sort<?>> updateSorter = getSorts(sorts, entityMetadata);
 
         var condition = condition(conditions);
         var entity = entityMetadata.name();
@@ -87,13 +81,7 @@ public enum SemiStructuredParameterBasedQuery {
             conditions.add(condition(entityMetadata, entry));
         }
 
-        List<Sort<?>> updateSorter = new ArrayList<>();
-        for (Sort<?> sort : sorts) {
-            var name = entityMetadata.fieldMapping(sort.property())
-                    .map(FieldMetadata::name)
-                    .orElse(sort.property());
-            updateSorter.add(sort.isAscending()? Sort.asc(name): Sort.desc(name));
-        }
+        List<Sort<?>> updateSorter = getSorts(sorts, entityMetadata);
 
         var condition = condition(conditions);
         var entity = entityMetadata.name();
@@ -129,5 +117,16 @@ public enum SemiStructuredParameterBasedQuery {
                 .orElse(entry.getKey());
         var value = entry.getValue();
         return CriteriaCondition.eq(name, value);
+    }
+
+    private List<Sort<?>> getSorts(List<Sort<?>> sorts, EntityMetadata entityMetadata) {
+        List<Sort<?>> updateSorter = new ArrayList<>();
+        for (Sort<?> sort : sorts) {
+            var name = entityMetadata.fieldMapping(sort.property())
+                    .map(FieldMetadata::name)
+                    .orElse(sort.property());
+            updateSorter.add(sort.isAscending()? Sort.asc(name): Sort.desc(name));
+        }
+        return updateSorter;
     }
 }
