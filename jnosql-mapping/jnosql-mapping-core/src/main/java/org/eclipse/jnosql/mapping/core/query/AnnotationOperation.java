@@ -44,7 +44,8 @@ public enum AnnotationOperation {
                 return returnInsert(returnType, result);
             } else if (param.getClass().isArray()) {
                 Iterable<?> result = operation.repository.insertAll(getArray(param));
-                return returnInsert(returnType, result);
+
+                return returnInsert(returnType, iterableToArray(param, result));
             } else {
                 var result = operation.repository.insert(param);
                 return returnInsert(returnType, result);
@@ -185,6 +186,15 @@ public enum AnnotationOperation {
             }
         }
     };
+
+    private static Object iterableToArray(Object param, Iterable<?> result) {
+        List<Object> elements = new ArrayList<>();
+        for (Object o : result) {
+            elements.add(o);
+        }
+        Object newArray = Array.newInstance(param.getClass().getComponentType(), elements.size());
+        return elements.toArray((Object[]) newArray);
+    }
 
     private static List<Object> getArray(Object param) {
         List<Object> entities = new ArrayList<>();
