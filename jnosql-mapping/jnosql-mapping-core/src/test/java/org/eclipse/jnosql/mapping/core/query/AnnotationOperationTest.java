@@ -68,16 +68,15 @@ class AnnotationOperationTest {
         Assertions.assertThat(List.of(person)).isEqualTo(invoked);
     }
 
-
     @Test
     void shouldInsertArrayObjectParameter() throws Throwable {
         Method method = PersonRepository.class.getDeclaredMethod("array", Person[].class);
-        Person person = Person.builder().build();
+        Person person = Person.builder().withName("Ada").withAge(8).build();
         Mockito.when(repository.insertAll(List.of(person))).thenReturn(List.of(person));
         Object invoked = INSERT.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
                 repository));
         Mockito.verify(repository).insertAll(List.of(person));
-        Assertions.assertThat(List.of(person)).isEqualTo(invoked);
+        Assertions.assertThat(new Person[]{person}).isEqualTo(invoked);
     }
 
 
