@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.data.repository.Insert;
+import jakarta.data.repository.Update;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
 
 import java.util.List;
@@ -29,4 +30,14 @@ public interface People {
 
     @Insert
     Person[] insert(Person[] person);
+
+
+    @Update
+    List<Person> update(List<Person> people);
+
+    @Update
+    Person update(Person person);
+
+    @Update
+    Person[] update(Person[] person);
 }

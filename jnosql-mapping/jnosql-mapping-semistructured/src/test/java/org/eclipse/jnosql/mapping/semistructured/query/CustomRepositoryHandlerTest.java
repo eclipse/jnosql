@@ -94,4 +94,38 @@ class CustomRepositoryHandlerTest {
     }
 
 
+    @Test
+    void shouldUpdateEntity() {
+        Person person = Person.builder().withAge(26).withName("Ada").build();
+        Mockito.when(template.update(person)).thenReturn(person);
+        Person result = people.update(person);
+
+        Mockito.verify(template).update(person);
+        Mockito.verifyNoMoreInteractions(template);
+        Assertions.assertThat(result).isEqualTo(person);
+    }
+
+    @Test
+    void shouldUpdateListEntity() {
+        var persons = List.of(Person.builder().withAge(26).withName("Ada").build());
+        Mockito.when(template.update(persons)).thenReturn(persons);
+        List<Person> result = people.update(persons);
+
+        Mockito.verify(template).update(persons);
+        Mockito.verifyNoMoreInteractions(template);
+        Assertions.assertThat(result).isEqualTo(persons);
+    }
+
+    @Test
+    void shouldUpdateArrayEntity() {
+        Person ada = Person.builder().withAge(26).withName("Ada").build();
+        var persons = new Person[]{ada};
+        Mockito.when(template.update(Mockito.any())).thenReturn(List.of(ada));
+        Person[] result = people.update(persons);
+
+        Mockito.verify(template).update(List.of(ada));
+        Mockito.verifyNoMoreInteractions(template);
+        Assertions.assertThat(result).isEqualTo(persons);
+    }
+
 }
