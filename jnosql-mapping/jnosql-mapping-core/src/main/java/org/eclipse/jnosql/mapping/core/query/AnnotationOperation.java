@@ -96,7 +96,7 @@ public enum AnnotationOperation {
             } else if (returnType.isLong()) {
                 return (long) result.size();
             } else if (isArray) {
-                return result.toArray();
+                return  iterableToArray(param, result);
             } else {
                 return entities;
             }
@@ -179,7 +179,7 @@ public enum AnnotationOperation {
                 return returnType.isVoid() ? Void.TYPE : result;
             } else if (param.getClass().isArray()) {
                 Iterable<?> result = operation.repository.saveAll(getArray(param));
-                return returnType.isVoid() ? Void.TYPE : result;
+                return returnType.isVoid() ? Void.TYPE : iterableToArray(param, result);
             } else {
                 Object result = operation.repository.save(param);
                 return returnType.isVoid() ? Void.TYPE : result;
