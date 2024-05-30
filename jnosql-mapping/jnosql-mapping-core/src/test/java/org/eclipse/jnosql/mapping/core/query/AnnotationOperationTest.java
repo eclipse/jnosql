@@ -47,6 +47,7 @@ class AnnotationOperationTest {
         Assertions.assertThatThrownBy(() -> UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{person, person}, repository)))
                 .isInstanceOf(UnsupportedOperationException.class);
     }
+
     @Test
     void shouldInsertSingleParameter() throws Throwable {
         Method method = PersonRepository.class.getDeclaredMethod("same", Person.class);
@@ -69,7 +70,7 @@ class AnnotationOperationTest {
 
 
     @Test
-    void shouldInsertArrayParameter() throws Throwable {
+    void shouldInsertArrayObjectParameter() throws Throwable {
         Method method = PersonRepository.class.getDeclaredMethod("array", Person[].class);
         Person person = Person.builder().build();
         Mockito.when(repository.insertAll(List.of(person))).thenReturn(List.of(person));
@@ -78,6 +79,7 @@ class AnnotationOperationTest {
         Mockito.verify(repository).insertAll(List.of(person));
         Assertions.assertThat(List.of(person)).isEqualTo(invoked);
     }
+
 
     @Test
     void shouldUpdateSingleParameter() throws Throwable {
