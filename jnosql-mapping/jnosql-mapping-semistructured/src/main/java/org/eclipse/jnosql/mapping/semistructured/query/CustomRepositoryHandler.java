@@ -68,16 +68,16 @@ public class CustomRepositoryHandler implements InvocationHandler {
         RepositoryType type = RepositoryType.of(method, customRepositoryType);
         switch (type) {
             case SAVE -> {
-                return unwrapInvocationTargetException(() -> SAVE.invoke(new AnnotationOperation.Operation(method, params, repository(method))));
+                return unwrapInvocationTargetException(() -> SAVE.invoke(new AnnotationOperation.Operation(method, params, repository(params))));
             }
             case INSERT -> {
-                return unwrapInvocationTargetException(() -> INSERT.invoke(new AnnotationOperation.Operation(method, params, repository(method))));
+                return unwrapInvocationTargetException(() -> INSERT.invoke(new AnnotationOperation.Operation(method, params, repository(params))));
             }
             case DELETE -> {
                 return unwrapInvocationTargetException(() -> DELETE.invoke(new AnnotationOperation.Operation(method, params, repository(params))));
             }
             case UPDATE -> {
-                return unwrapInvocationTargetException(() -> UPDATE.invoke(new AnnotationOperation.Operation(method, params, repository(method))));
+                return unwrapInvocationTargetException(() -> UPDATE.invoke(new AnnotationOperation.Operation(method, params, repository(params))));
             }
             default -> {
                 return Void.class;
