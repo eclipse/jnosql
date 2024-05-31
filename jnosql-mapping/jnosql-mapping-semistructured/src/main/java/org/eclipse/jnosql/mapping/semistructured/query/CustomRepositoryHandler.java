@@ -28,6 +28,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -64,8 +65,10 @@ public class CustomRepositoryHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] params) throws Throwable {
-        LOGGER.info("Executing the method: " + method);
+
         RepositoryType type = RepositoryType.of(method, customRepositoryType);
+        LOGGER.info("Executing the method " + method + " with the parameters " + Arrays.toString(params) + " and the type " + type);
+
         switch (type) {
             case SAVE -> {
                 return unwrapInvocationTargetException(() -> SAVE.invoke(new AnnotationOperation.Operation(method, params, repository(params))));
