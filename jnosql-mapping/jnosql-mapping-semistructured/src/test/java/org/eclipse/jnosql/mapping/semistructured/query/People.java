@@ -23,6 +23,7 @@ import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
+import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
 
@@ -49,6 +50,15 @@ public interface People {
 
     @Update
     Person[] update(Person[] person);
+
+    @Save
+    List<Person> save(List<Person> people);
+
+    @Save
+    Person save(Person person);
+
+    @Save
+    Person[] save(Person[] person);
 
 
     @Delete

@@ -166,6 +166,45 @@ class CustomRepositoryHandlerTest {
     }
 
     @Test
+    void shouldSaveEntity() {
+        Person person = Person.builder().withAge(26).withName("Ada").build();
+        Mockito.when(template.insert(person)).thenReturn(person);
+        Person result = people.save(person);
+
+        Mockito.verify(template).insert(person);
+        Mockito.verify(template).find(Person.class, 0L);
+        Assertions.assertThat(result).isEqualTo(person);
+    }
+
+    @Test
+    void shouldSaveListEntity() {
+        Person ada = Person.builder().withAge(26).withName("Ada").build();
+        var persons = List.of(ada);
+        Mockito.when(template.insert(persons)).thenReturn(persons);
+        Mockito.when(template.insert(ada)).thenReturn(ada);
+        List<Person> result = people.save(persons);
+
+        Mockito.verify(template).insert(ada);
+        Mockito.verify(template).find(Person.class, 0L);
+        Assertions.assertThat(result).isEqualTo(persons);
+    }
+
+    @Test
+    void shouldSaveArrayEntity() {
+        Person ada = Person.builder().withAge(26).withName("Ada").build();
+        var persons = new Person[]{ada};
+        Mockito.when(template.insert(Mockito.any())).thenReturn(List.of(ada));
+        Mockito.when(template.insert(ada)).thenReturn(ada);
+        Person[] result = people.save(persons);
+
+        Mockito.verify(template).insert(ada);
+        Mockito.verify(template).find(Person.class, 0L);
+        Assertions.assertThat(result).isEqualTo(persons);
+    }
+
+
+
+    @Test
     void shouldExecuteObjectMethods(){
         Assertions.assertThat(people.toString()).isNotNull();
         Assertions.assertThat(people.hashCode()).isNotEqualTo(0);
