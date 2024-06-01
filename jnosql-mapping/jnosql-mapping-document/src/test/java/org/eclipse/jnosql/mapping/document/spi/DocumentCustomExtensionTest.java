@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.document.spi;
 
 import jakarta.inject.Inject;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.core.Converters;
@@ -22,6 +23,7 @@ import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.document.MockProducer;
 import org.eclipse.jnosql.mapping.document.entities.People;
+import org.eclipse.jnosql.mapping.document.entities.Person;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
@@ -55,15 +57,32 @@ class DocumentCustomExtensionTest {
     @Test
     void shouldInitiate() {
         assertNotNull(people);
+        Person person = people.insert(Person.builder().build());
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(person).isNotNull();
+            soft.assertThat(person.getName()).isEqualTo("Default");
+        });
     }
 
     @Test
     void shouldUseMock(){
         assertNotNull(pepoleMock);
+
+        Person person = pepoleMock.insert(Person.builder().build());
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(person).isNotNull();
+            soft.assertThat(person.getName()).isEqualTo("documentRepositoryMock");
+        });
     }
 
     @Test
     void shouldUseDefault(){
         assertNotNull(repository);
+
+        Person person = repository.insert(Person.builder().build());
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(person).isNotNull();
+            soft.assertThat(person.getName()).isEqualTo("Default");
+        });
     }
 }

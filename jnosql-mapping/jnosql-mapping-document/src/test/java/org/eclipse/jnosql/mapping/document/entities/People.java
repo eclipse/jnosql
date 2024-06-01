@@ -17,11 +17,10 @@ package org.eclipse.jnosql.mapping.document.entities;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.Repository;
 
-import java.util.List;
 
 @Repository
 public interface People {
 
     @Insert
-    List<Person> insert(List<Person> people);
+    Person insert(Person person);
 }
