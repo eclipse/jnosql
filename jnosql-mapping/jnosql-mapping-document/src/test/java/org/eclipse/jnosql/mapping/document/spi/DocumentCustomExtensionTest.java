@@ -15,15 +15,14 @@
 package org.eclipse.jnosql.mapping.document.spi;
 
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.document.MockProducer;
-import org.eclipse.jnosql.mapping.document.entities.Person;
-import org.eclipse.jnosql.mapping.document.entities.PersonRepository;
+import org.eclipse.jnosql.mapping.document.entities.People;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
-import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
@@ -39,47 +38,32 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
-class DocumentExtensionTest {
-
+class DocumentCustomExtensionTest {
 
     @Inject
     @Database(value = DatabaseType.DOCUMENT)
-    private PersonRepository repository;
+    private People people;
 
     @Inject
     @Database(value = DatabaseType.DOCUMENT, provider = "documentRepositoryMock")
-    private PersonRepository repositoryMock;
+    private People pepoleMock;
 
     @Inject
-    @Database(value = DatabaseType.DOCUMENT, provider = "documentRepositoryMock")
-    private DocumentTemplate templateMock;
+    private People repository;
 
-    @Inject
-    private DocumentTemplate template;
 
     @Test
     void shouldInitiate() {
-        assertNotNull(repository);
-        Person person = repository.save(Person.builder().build());
-        assertEquals("Default", person.getName());
+        assertNotNull(people);
     }
 
     @Test
     void shouldUseMock(){
-        assertNotNull(repositoryMock);
-        Person person = repositoryMock.save(Person.builder().build());
-        assertEquals("documentRepositoryMock", person.getName());
+        assertNotNull(pepoleMock);
     }
 
     @Test
-    void shouldInjectTemplate() {
-        assertNotNull(templateMock);
-        assertNotNull(template);
-    }
-
-    @Test
-    void shouldInjectRepository() {
+    void shouldUseDefault(){
         assertNotNull(repository);
-        assertNotNull(repositoryMock);
     }
 }
