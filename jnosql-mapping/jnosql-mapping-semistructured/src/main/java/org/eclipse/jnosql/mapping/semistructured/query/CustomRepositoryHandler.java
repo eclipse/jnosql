@@ -17,11 +17,14 @@ package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
+import jakarta.data.repository.Query;
 import jakarta.enterprise.inject.spi.CDI;
+import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.core.query.AnnotationOperation;
 import org.eclipse.jnosql.mapping.core.query.RepositoryType;
+import org.eclipse.jnosql.mapping.core.repository.RepositoryReflectionUtils;
 import org.eclipse.jnosql.mapping.core.repository.ThrowingSupplier;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -32,6 +35,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -45,7 +49,6 @@ import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.UPDATE;
 /**
  * This class is the engine of a custom repository from  Jakarta Data specification.
  * The implementation is based on {@link InvocationHandler} and it's used to create a custom repository.
-
  */
 public class CustomRepositoryHandler implements InvocationHandler {
 
@@ -67,8 +70,8 @@ public class CustomRepositoryHandler implements InvocationHandler {
     private final Converters converters;
 
     CustomRepositoryHandler(EntitiesMetadata entitiesMetadata, SemiStructuredTemplate template,
-                             Class<?> customRepositoryType,
-                             Converters converters) {
+                            Class<?> customRepositoryType,
+                            Converters converters) {
         this.entitiesMetadata = entitiesMetadata;
         this.template = template;
         this.customRepositoryType = customRepositoryType;
@@ -107,25 +110,52 @@ public class CustomRepositoryHandler implements InvocationHandler {
                 Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
                 return unwrapInvocationTargetException(() -> method.invoke(customRepository, params));
             }
+            case QUERY -> {
+                var repositoryMetadata = repositoryMetadata(method);
+                if (repositoryMetadata.metadata().isEmpty()) {
+                    var query = method.getAnnotation(Query.class);
+                    Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getParams(method, params);
+                    var prepare = template.prepare(query.value());
+                    parameters.forEach(prepare::bind);
+                    if (prepare.isCount()) {
+                        return prepare.count();
+                    }
+                    Stream<?> entities = prepare.result();
+                    if (method.getReturnType().equals(long.class) || method.getReturnType().equals(Long.class)) {
+                        return entities.count();
+                    }
+                    return Void.class;
+                }
+                return unwrapInvocationTargetException(() -> repository(method).invoke(instance, method, params));
+
+            }
+            case DELETE_BY, COUNT_BY, EXISTS_BY ->
+                    throw new UnsupportedOperationException("The custom repository does not support the method " + method);
             default -> {
                 return Void.class;
             }
         }
     }
 
-    private SemiStructuredRepositoryProxy<?,?> repository(Method method) {
+    private SemiStructuredRepositoryProxy<?, ?> repository(Method method) {
+        RepositoryMetadata result = repositoryMetadata(method);
+        Class<?> entityType = result.typeClass();
+        return result.metadata().map(entityMetadata -> new SemiStructuredRepositoryProxy<>(template, entityMetadata, entityType, converters))
+                .orElseThrow(() -> new UnsupportedOperationException("The repository does not support the method " + method));
+    }
 
-
+    private RepositoryMetadata repositoryMetadata(Method method) {
         Class<?> typeClass = method.getReturnType();
         if (typeClass.isArray()) {
             typeClass = typeClass.getComponentType();
-        } else if(Iterable.class.isAssignableFrom(typeClass) || Stream.class.isAssignableFrom(typeClass) || Optional.class.isAssignableFrom(typeClass)) {
+        } else if (Iterable.class.isAssignableFrom(typeClass) || Stream.class.isAssignableFrom(typeClass) || Optional.class.isAssignableFrom(typeClass)) {
             typeClass = (Class<?>) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
         }
-        Optional<EntityMetadata> entity = entitiesMetadata.findByClassName(typeClass.getName());
-        Class<?> entityType = typeClass;
-        return entity.map(entityMetadata -> new SemiStructuredRepositoryProxy<>(template, entityMetadata, entityType, converters))
-                .orElseThrow(() -> new UnsupportedOperationException("The repository does not support the method " + method));
+        Optional<EntityMetadata> metadata = entitiesMetadata.findByClassName(typeClass.getName());
+        return new RepositoryMetadata(typeClass, metadata);
+    }
+
+    private record RepositoryMetadata(Class<?> typeClass, Optional<EntityMetadata> metadata) {
     }
 
     private AbstractRepository<?, ?> repository(Object[] params, Method method) {

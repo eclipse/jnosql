@@ -21,6 +21,7 @@ import jakarta.inject.Inject;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
+import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -298,5 +299,44 @@ class CustomRepositoryHandlerTest {
             soft.assertThat(query.name()).isEqualTo("Person");
             soft.assertThat(query.condition()).isNotEmpty();
         });
+    }
+
+
+    @Test
+    void shouldExecuteQuery(){
+
+        var preparedStatement = Mockito.mock(PreparedStatement.class);
+        Mockito.when(template.prepare(Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(preparedStatement);
+        Mockito.when(template.query(Mockito.anyString()))
+                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+
+        var result = people.queryName("Ada");
+
+        Assertions.assertThat(result).isNotNull().isInstanceOf(List.class);
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(template).prepare(captor.capture(), Mockito.eq("Person"));
+        Mockito.verifyNoMoreInteractions(template);
+        var query = captor.getValue();
+
+        Assertions.assertThat(query).isEqualTo("from Person where name = :name");
+    }
+
+    @Test
+    void shouldExecuteQueryWithVoid(){
+
+        var preparedStatement = Mockito.mock(PreparedStatement.class);
+        Mockito.when(template.prepare(Mockito.anyString())).thenReturn(preparedStatement);
+        Mockito.when(template.query(Mockito.anyString()))
+                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+
+        people.deleteByName("Ada");
+
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(template).prepare(captor.capture());
+        Mockito.verifyNoMoreInteractions(template);
+        var query = captor.getValue();
+
+        Assertions.assertThat(query).isEqualTo("delete from Person where name = :name");
     }
 }
