@@ -71,5 +71,13 @@ public class GraphExtension implements Extension {
             databases.forEach(database -> afterBeanDiscovery
                     .addBean(new RepositoryGraphBean<>(type, database.getProvider())));
         });
+
+        customRepositories.forEach(type -> {
+            if (!databases.contains(DatabaseMetadata.DEFAULT_DOCUMENT)) {
+                afterBeanDiscovery.addBean(new CustomRepositoryGraphBean<>(type, ""));
+            }
+            databases.forEach(database ->
+                    afterBeanDiscovery.addBean(new CustomRepositoryGraphBean<>(type, database.getProvider())));
+        });
     }
 }
