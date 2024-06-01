@@ -36,7 +36,6 @@ public class CustomRepositoryHandlerBuilder {
 
     private Converters converters;
 
-
     /**
      * Sets the entities metadata for the custom repository handler.
      *
@@ -80,7 +79,7 @@ public class CustomRepositoryHandlerBuilder {
      * @return the current instance of {@link CustomRepositoryHandlerBuilder}
      */
     public CustomRepositoryHandlerBuilder converters(Converters converters) {
-        this.converters = Objects.requireNonNull(converters, "converters is required");;
+        this.converters = Objects.requireNonNull(converters, "converters is required");
         return this;
     }
 
