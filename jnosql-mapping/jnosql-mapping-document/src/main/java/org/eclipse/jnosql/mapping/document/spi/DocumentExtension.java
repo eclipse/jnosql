@@ -70,7 +70,6 @@ public class DocumentExtension implements Extension {
             }
         });
 
-
         crudTypes.forEach(type -> {
             if (!databases.contains(DatabaseMetadata.DEFAULT_DOCUMENT)) {
                 afterBeanDiscovery.addBean(new RepositoryDocumentBean<>(type, ""));
