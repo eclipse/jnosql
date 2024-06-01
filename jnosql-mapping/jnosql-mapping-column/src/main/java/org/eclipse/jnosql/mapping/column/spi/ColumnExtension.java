@@ -54,7 +54,7 @@ public class ColumnExtension implements Extension {
         Set<Class<?>> crudTypes = scanner.repositoriesStandard();
         Set<Class<?>> customRepositories = scanner.customRepositories();
 
-        LOGGER.info(String.format("Processing Document extension: %d databases crud %d found, custom repositories: %d",
+        LOGGER.info(String.format("Processing Column extension: %d databases crud %d found, custom repositories: %d",
                 databases.size(), crudTypes.size(), customRepositories.size()));
         LOGGER.info("Processing repositories as a Column implementation: " + crudTypes);
 
