@@ -21,6 +21,8 @@ import jakarta.data.repository.By;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
+import jakarta.data.repository.Param;
+import jakarta.data.repository.Query;
 import jakarta.data.repository.Update;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
 
@@ -70,6 +72,12 @@ public interface People {
 
     @Find
     List<Person> name(@By("name") String name);
+
+    @Query("from Person where name = :name")
+    List<Person> queryName(@Param("name") String name);
+
+    @Query("delete from Person where name = :name")
+    void deleteByName(@Param("name") String name);
 
     default String defaultMethod() {
         return "default";
