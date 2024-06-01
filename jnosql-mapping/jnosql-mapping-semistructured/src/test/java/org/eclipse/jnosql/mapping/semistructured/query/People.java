@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.semistructured.query;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
+import jakarta.data.repository.By;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
@@ -68,7 +69,7 @@ public interface People {
     Optional<Person> findByIdAndName(Long id, String name);
 
     @Find
-    Person name(String name);
+    List<Person> name(@By("name") String name);
 
     default String defaultMethod() {
         return "default";

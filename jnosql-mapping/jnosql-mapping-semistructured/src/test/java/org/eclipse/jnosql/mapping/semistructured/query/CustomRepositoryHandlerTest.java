@@ -279,4 +279,24 @@ class CustomRepositoryHandlerTest {
         });
     }
 
+    @Test
+    void shouldExecutePathParameter() {
+
+        Mockito.when(template.select(Mockito.any(SelectQuery.class)))
+                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+
+        var result = people.name("Ada");
+
+        Assertions.assertThat(result).isNotNull().isInstanceOf(List.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        Mockito.verify(template).select(captor.capture());
+        Mockito.verifyNoMoreInteractions(template);
+        SelectQuery query = captor.getValue();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(query.sorts()).isEmpty();
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.condition()).isNotEmpty();
+        });
+    }
 }
