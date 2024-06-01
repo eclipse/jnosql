@@ -63,7 +63,7 @@ class CustomRepositoryHandlerTest {
     @BeforeEach
     void setUp() {
         template = Mockito.mock(SemiStructuredTemplate.class);
-        CustomRepositoryHandler customRepositoryHandler = new CustomRepositoryHandler(entitiesMetadata, template, People.class, converters);
+        CustomRepositoryHandler customRepositoryHandler = new CustomRepositoryHandlerBuilder().entitiesMetadata(entitiesMetadata).template(template).customRepositoryType(People.class).converters(converters).build();
         people = (People) Proxy.newProxyInstance(People.class.getClassLoader(), new Class[]{People.class},
                 customRepositoryHandler);
     }

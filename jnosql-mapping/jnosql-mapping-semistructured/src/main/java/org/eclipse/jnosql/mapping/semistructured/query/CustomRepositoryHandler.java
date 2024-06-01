@@ -177,4 +177,13 @@ public class CustomRepositoryHandler implements InvocationHandler {
             throw ex.getCause();
         }
     }
+
+    /**
+     * Creates a new {@link CustomRepositoryHandlerBuilder} instance.
+     *
+     * @return a {@link CustomRepositoryHandlerBuilder} instance
+     */
+    public static CustomRepositoryHandlerBuilder builder() {
+        return new CustomRepositoryHandlerBuilder();
+    }
 }
