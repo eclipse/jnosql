@@ -14,8 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.semistructured.query;
 
+import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
+import jakarta.data.page.PageRequest;
 import jakarta.inject.Inject;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
+import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -29,10 +34,13 @@ import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.lang.reflect.Proxy;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, EntityConverter.class})
@@ -154,6 +162,121 @@ class CustomRepositoryHandlerTest {
 
         Mockito.verify(template).delete(Person.class, 2L);
         Mockito.verifyNoMoreInteractions(template);
+    }
+
+    @Test
+    void shouldExecuteObjectMethods(){
+        Assertions.assertThat(people.toString()).isNotNull();
+        Assertions.assertThat(people.hashCode()).isNotEqualTo(0);
+    }
+
+    @Test
+    void shouldExecuteDefaultMethod(){
+        Assertions.assertThat(people.defaultMethod()).isEqualTo("default");
+    }
+
+    @Test
+    void shouldExecuteFindByAge() {
+        Mockito.when(template.select(Mockito.any(SelectQuery.class)))
+                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+        var result = people.findByAge(26);
+
+        Assertions.assertThat(result).hasSize(1).isNotNull().isInstanceOf(List.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        Mockito.verify(template).select(captor.capture());
+        Mockito.verifyNoMoreInteractions(template);
+        SelectQuery query = captor.getValue();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(query.sorts()).isEmpty();
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.condition()).isPresent();
+        });
+    }
+
+    @Test
+    void shouldExecuteFindById() {
+
+        Mockito.when(template.singleResult(Mockito.any(SelectQuery.class)))
+                .thenReturn(Optional.of(Person.builder().withAge(26).withName("Ada").build()));
+
+        var result = people.findById(26L);
+
+        Assertions.assertThat(result).isNotNull().isInstanceOf(Person.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        Mockito.verify(template).singleResult(captor.capture());
+        Mockito.verifyNoMoreInteractions(template);
+        SelectQuery query = captor.getValue();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(query.sorts()).isEmpty();
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.condition()).isPresent();
+        });
+    }
+
+    @Test
+    void shouldExecuteFindByIdAndName() {
+
+        Mockito.when(template.singleResult(Mockito.any(SelectQuery.class)))
+                .thenReturn(Optional.of(Person.builder().withAge(26).withName("Ada").build()));
+
+        var result = people.findByIdAndName(26L, "Ada");
+
+        Assertions.assertThat(result).isNotNull().isPresent().isInstanceOf(Optional.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        Mockito.verify(template).singleResult(captor.capture());
+        Mockito.verifyNoMoreInteractions(template);
+        SelectQuery query = captor.getValue();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(query.sorts()).isEmpty();
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.condition()).isPresent();
+        });
+    }
+
+    @Test
+    void shouldExecuteFindPagination() {
+
+        Mockito.when(template.select(Mockito.any(SelectQuery.class)))
+                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+
+        var result = people.findByAge(26, PageRequest.ofSize(2));
+
+        Assertions.assertThat(result).isNotNull().isInstanceOf(Page.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        Mockito.verify(template).select(captor.capture());
+        Mockito.verifyNoMoreInteractions(template);
+        SelectQuery query = captor.getValue();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(query.sorts()).isEmpty();
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.condition()).isPresent();
+        });
+    }
+
+    @Test
+    void shouldExecuteFindCursorPagination() {
+
+        var mock = Mockito.mock(CursoredPage.class);
+        Mockito.when(template.selectCursor(Mockito.any(SelectQuery.class), Mockito.any(PageRequest.class)))
+                .thenReturn(mock);
+
+        var result = people.findByName("Ada", PageRequest.ofSize(2));
+
+        Assertions.assertThat(result).isNotNull().isInstanceOf(CursoredPage.class);
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        Mockito.verify(template).selectCursor(captor.capture(), Mockito.any(PageRequest.class));
+        Mockito.verifyNoMoreInteractions(template);
+        SelectQuery query = captor.getValue();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(query.sorts()).isEmpty();
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.condition()).isPresent();
+        });
     }
 
 }

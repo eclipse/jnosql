@@ -15,6 +15,8 @@
 package org.eclipse.jnosql.mapping.semistructured.query;
 
 
+import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
 import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
@@ -31,7 +33,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.DELETE;
 import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.INSERT;
@@ -46,6 +50,13 @@ import static org.eclipse.jnosql.mapping.core.query.AnnotationOperation.UPDATE;
 public class CustomRepositoryHandler implements InvocationHandler {
 
     private static final Logger LOGGER = Logger.getLogger(CustomRepositoryHandler.class.getName());
+
+    private static final Predicate<Class<?>> IS_ITERABLE = Iterable.class::isAssignableFrom;
+    private static final Predicate<Class<?>> IS_STREAM = Stream.class::isAssignableFrom;
+    private static final Predicate<Class<?>> IS_OPTIONAL = Optional.class::isAssignableFrom;
+    private static final Predicate<Class<?>> IS_PAGE = Page.class::isAssignableFrom;
+    private static final Predicate<Class<?>> IS_CURSOR_PAGE = CursoredPage.class::isAssignableFrom;
+    private static final Predicate<Class<?>> IS_GENERIC_SUPPORTED_TYPE = IS_ITERABLE.or(IS_STREAM).or(IS_OPTIONAL).or(IS_PAGE).or(IS_CURSOR_PAGE);
 
     private final EntitiesMetadata entitiesMetadata;
 
@@ -83,14 +94,14 @@ public class CustomRepositoryHandler implements InvocationHandler {
             case UPDATE -> {
                 return unwrapInvocationTargetException(() -> UPDATE.invoke(new AnnotationOperation.Operation(method, params, repository(params, method))));
             }
-            case DEFAULT -> {
+            case DEFAULT_METHOD -> {
                 return unwrapInvocationTargetException(() -> InvocationHandler.invokeDefault(instance, method, params));
             }
             case OBJECT_METHOD -> {
                 return unwrapInvocationTargetException(() -> unwrapInvocationTargetException(() -> method.invoke(this, params)));
             }
-            case FIND_ALL, FIND_BY, PARAMETER_BASED -> {
-                return unwrapInvocationTargetException(() -> repository(method));
+            case FIND_ALL, FIND_BY, PARAMETER_BASED, CURSOR_PAGINATION -> {
+                return unwrapInvocationTargetException(() -> repository(method).invoke(instance, method, params));
             }
             case CUSTOM_REPOSITORY -> {
                 Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
@@ -103,10 +114,12 @@ public class CustomRepositoryHandler implements InvocationHandler {
     }
 
     private SemiStructuredRepositoryProxy<?,?> repository(Method method) {
+
+
         Class<?> typeClass = method.getReturnType();
         if (typeClass.isArray()) {
             typeClass = typeClass.getComponentType();
-        } else if(Iterable.class.isAssignableFrom(typeClass)) {
+        } else if(Iterable.class.isAssignableFrom(typeClass) || Stream.class.isAssignableFrom(typeClass) || Optional.class.isAssignableFrom(typeClass)) {
             typeClass = (Class<?>) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
         }
         Optional<EntityMetadata> entity = entitiesMetadata.findByClassName(typeClass.getName());
@@ -115,11 +128,11 @@ public class CustomRepositoryHandler implements InvocationHandler {
                 .orElseThrow(() -> new UnsupportedOperationException("The repository does not support the method " + method));
     }
 
-    private AbstractRepository<?,?> repository(Object[] params,Method method) {
-        Class<?> typeClass =  params[0].getClass();
+    private AbstractRepository<?, ?> repository(Object[] params, Method method) {
+        Class<?> typeClass = params[0].getClass();
         if (typeClass.isArray()) {
             typeClass = typeClass.getComponentType();
-        } else if(Iterable.class.isAssignableFrom(typeClass)) {
+        } else if (IS_GENERIC_SUPPORTED_TYPE.test(typeClass)) {
             var entity = ((Iterable<?>) params[0]).iterator().next();
             typeClass = entity.getClass();
         }

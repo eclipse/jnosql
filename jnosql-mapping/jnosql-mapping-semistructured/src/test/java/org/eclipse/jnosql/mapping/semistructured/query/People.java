@@ -14,12 +14,17 @@
  */
 package org.eclipse.jnosql.mapping.semistructured.query;
 
+import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
+import jakarta.data.page.PageRequest;
 import jakarta.data.repository.Delete;
+import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.Update;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface People {
 
@@ -51,4 +56,21 @@ public interface People {
 
     @Delete
     void delete(Person[] person);
+
+    List<Person> findByAge(int age);
+
+    Person findById(Long id);
+
+    Page<Person> findByAge(int age, PageRequest pageRequest);
+
+    CursoredPage<Person> findByName(String name, PageRequest pageRequest);
+
+    Optional<Person> findByIdAndName(Long id, String name);
+
+    @Find
+    Person name(String name);
+
+    default String defaultMethod() {
+        return "default";
+    }
 }

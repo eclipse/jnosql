@@ -72,7 +72,7 @@ public class SemiStructuredRepositoryProxy<T, K> extends AbstractSemiStructuredR
         this.entityMetadata = metadata;
         this.repository = new SemiStructuredRepository<>(template, entityMetadata);
         this.converters = converters;
-        this.repositoryType =  null;
+        this.repositoryType =  typeClass;
     }
 
     @Override
