@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.semistructured.query;
 
 
+import jakarta.enterprise.inject.spi.CDI;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.core.query.AnnotationOperation;
@@ -64,23 +65,36 @@ public class CustomRepositoryHandler implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] params) throws Throwable {
+    public Object invoke(Object instance, Method method, Object[] params) throws Throwable {
 
         RepositoryType type = RepositoryType.of(method, customRepositoryType);
         LOGGER.info("Executing the method " + method + " with the parameters " + Arrays.toString(params) + " and the type " + type);
 
         switch (type) {
             case SAVE -> {
-                return unwrapInvocationTargetException(() -> SAVE.invoke(new AnnotationOperation.Operation(method, params, repository(params))));
+                return unwrapInvocationTargetException(() -> SAVE.invoke(new AnnotationOperation.Operation(method, params, repository(params, method))));
             }
             case INSERT -> {
-                return unwrapInvocationTargetException(() -> INSERT.invoke(new AnnotationOperation.Operation(method, params, repository(params))));
+                return unwrapInvocationTargetException(() -> INSERT.invoke(new AnnotationOperation.Operation(method, params, repository(params, method))));
             }
             case DELETE -> {
-                return unwrapInvocationTargetException(() -> DELETE.invoke(new AnnotationOperation.Operation(method, params, repository(params))));
+                return unwrapInvocationTargetException(() -> DELETE.invoke(new AnnotationOperation.Operation(method, params, repository(params, method))));
             }
             case UPDATE -> {
-                return unwrapInvocationTargetException(() -> UPDATE.invoke(new AnnotationOperation.Operation(method, params, repository(params))));
+                return unwrapInvocationTargetException(() -> UPDATE.invoke(new AnnotationOperation.Operation(method, params, repository(params, method))));
+            }
+            case DEFAULT -> {
+                return unwrapInvocationTargetException(() -> InvocationHandler.invokeDefault(instance, method, params));
+            }
+            case OBJECT_METHOD -> {
+                return unwrapInvocationTargetException(() -> unwrapInvocationTargetException(() -> method.invoke(this, params)));
+            }
+            case FIND_ALL, FIND_BY, PARAMETER_BASED -> {
+                return unwrapInvocationTargetException(() -> repository(method));
+            }
+            case CUSTOM_REPOSITORY -> {
+                Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
+                return unwrapInvocationTargetException(() -> method.invoke(customRepository, params));
             }
             default -> {
                 return Void.class;
@@ -88,7 +102,7 @@ public class CustomRepositoryHandler implements InvocationHandler {
         }
     }
 
-    private AbstractRepository<?,?> repository(Method method) {
+    private SemiStructuredRepositoryProxy<?,?> repository(Method method) {
         Class<?> typeClass = method.getReturnType();
         if (typeClass.isArray()) {
             typeClass = typeClass.getComponentType();
@@ -96,10 +110,12 @@ public class CustomRepositoryHandler implements InvocationHandler {
             typeClass = (Class<?>) ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
         }
         Optional<EntityMetadata> entity = entitiesMetadata.findByClassName(typeClass.getName());
-        return entity.map(entityMetadata -> new SemiStructuredRepositoryProxy.SemiStructuredRepository<>(template, entityMetadata)).orElse(null);
+        Class<?> entityType = typeClass;
+        return entity.map(entityMetadata -> new SemiStructuredRepositoryProxy<>(template, entityMetadata, entityType, converters))
+                .orElseThrow(() -> new UnsupportedOperationException("The repository does not support the method " + method));
     }
 
-    private AbstractRepository<?,?> repository(Object[] params) {
+    private AbstractRepository<?,?> repository(Object[] params,Method method) {
         Class<?> typeClass =  params[0].getClass();
         if (typeClass.isArray()) {
             typeClass = typeClass.getComponentType();
@@ -108,7 +124,8 @@ public class CustomRepositoryHandler implements InvocationHandler {
             typeClass = entity.getClass();
         }
         Optional<EntityMetadata> entity = entitiesMetadata.findByClassName(typeClass.getName());
-        return entity.map(entityMetadata -> new SemiStructuredRepositoryProxy.SemiStructuredRepository<>(template, entityMetadata)).orElse(null);
+        return entity.map(entityMetadata -> new SemiStructuredRepositoryProxy.SemiStructuredRepository<>(template, entityMetadata))
+                .orElseThrow(() -> new UnsupportedOperationException("The repository does not support the method: " + method));
     }
 
     protected Object unwrapInvocationTargetException(ThrowingSupplier<Object> supplier) throws Throwable {
