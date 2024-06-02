@@ -29,10 +29,13 @@ final class MethodSelectQuery  implements SelectQuery {
 
     private final List<Sort<?>> sorts;
 
-    MethodSelectQuery(String entity, List<Sort<?>> sorts, Where where) {
+    private final long limit;
+
+    MethodSelectQuery(String entity, List<Sort<?>> sorts, Where where, long limit) {
         this.entity = entity;
         this.sorts = sorts;
         this.where = where;
+        this.limit = limit;
     }
 
 
@@ -57,7 +60,7 @@ final class MethodSelectQuery  implements SelectQuery {
 
     @Override
     public long limit() {
-        return 0;
+        return limit;
     }
 
     @Override
