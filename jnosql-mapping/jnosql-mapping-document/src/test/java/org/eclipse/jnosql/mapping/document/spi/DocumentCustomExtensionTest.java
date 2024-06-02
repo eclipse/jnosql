@@ -53,7 +53,6 @@ class DocumentCustomExtensionTest {
     @Inject
     private People repository;
 
-
     @Test
     void shouldInitiate() {
         assertNotNull(people);
