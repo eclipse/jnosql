@@ -2,7 +2,7 @@ grammar Method;
 select: selectStart where? order? EOF;
 deleteBy: 'deleteBy' where? EOF;
 
-selectStart: 'findBy' limit?| 'countBy'| 'existsBy';
+selectStart: 'find' limit 'By' | 'findBy'| 'countBy'| 'existsBy';
 where: condition (and condition| or condition)* ;
 condition: eq | gt | gte | lt | lte | between | in | like | truth | untruth;
 order: 'OrderBy' orderName (orderName)*;
