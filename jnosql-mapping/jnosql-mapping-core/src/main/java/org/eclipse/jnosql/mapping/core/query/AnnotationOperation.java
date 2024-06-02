@@ -14,7 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.core.query;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -41,8 +43,9 @@ public enum AnnotationOperation {
                 List<?> result = operation.repository.insertAll(stream(entities.spliterator(), false).toList());
                 return returnInsert(returnType, result);
             } else if (param.getClass().isArray()) {
-                Iterable<?> result = operation.repository.insertAll(Arrays.asList((Object[]) param));
-                return returnInsert(returnType, result);
+                Iterable<?> result = operation.repository.insertAll(getArray(param));
+
+                return returnInsert(returnType, iterableToArray(param, result));
             } else {
                 var result = operation.repository.insert(param);
                 return returnInsert(returnType, result);
@@ -73,7 +76,7 @@ public enum AnnotationOperation {
             if (param instanceof Iterable entities) {
                 return executeIterable(operation, entities, returnType, false, null);
             } else if (param.getClass().isArray()) {
-                List<Object> entities = Arrays.asList((Object[]) param);
+                List<Object> entities = getArray(param);
                 return executeIterable(operation, entities, returnType, true, param);
             } else {
                 return executeSingleEntity(operation, param, returnType);
@@ -93,7 +96,7 @@ public enum AnnotationOperation {
             } else if (returnType.isLong()) {
                 return (long) result.size();
             } else if (isArray) {
-                return result.toArray();
+                return  iterableToArray(param, result);
             } else {
                 return entities;
             }
@@ -126,7 +129,7 @@ public enum AnnotationOperation {
             if (param instanceof Iterable entities) {
                 return executeIterable(operation, entities, returnType);
             } else if (param.getClass().isArray()) {
-                List<Object> entities = Arrays.asList((Object[]) param);
+                List<Object> entities = getArray(param);
                 return executeIterable(operation, entities, returnType);
             } else {
                 return executeSingleEntity(operation, param, returnType);
@@ -175,14 +178,34 @@ public enum AnnotationOperation {
                 Iterable<?> result = operation.repository.saveAll(stream(entities.spliterator(), false).toList());
                 return returnType.isVoid() ? Void.TYPE : result;
             } else if (param.getClass().isArray()) {
-                Iterable<?> result = operation.repository.saveAll(Arrays.asList((Object[]) param));
-                return returnType.isVoid() ? Void.TYPE : result;
+                Iterable<?> result = operation.repository.saveAll(getArray(param));
+                return returnType.isVoid() ? Void.TYPE : iterableToArray(param, result);
             } else {
                 Object result = operation.repository.save(param);
                 return returnType.isVoid() ? Void.TYPE : result;
             }
         }
     };
+
+    private static Object iterableToArray(Object param, Iterable<?> result) {
+        List<Object> elements = new ArrayList<>();
+        for (Object o : result) {
+            elements.add(o);
+        }
+        Object newArray = Array.newInstance(param.getClass().getComponentType(), elements.size());
+        return elements.toArray((Object[]) newArray);
+    }
+
+    private static List<Object> getArray(Object param) {
+        List<Object> entities = new ArrayList<>();
+        int length = Array.getLength(param);
+        for (int index = 0; index < length; index++) {
+            Object element = Array.get(param, index);
+           entities.add(element);
+        }
+
+        return entities;
+    }
 
     private static void checkParameterNumber(Operation operation) {
         if (operation.params.length != 1) {

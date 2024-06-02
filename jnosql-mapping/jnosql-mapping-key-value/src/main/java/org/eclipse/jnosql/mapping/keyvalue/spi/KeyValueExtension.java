@@ -47,9 +47,13 @@ public class KeyValueExtension implements Extension {
 
         ClassScanner scanner = ClassScanner.load();
         Set<Class<?>> crudTypes = scanner.repositoriesStandard();
+        Set<Class<?>> customRepositories = scanner.customRepositories();
+
         LOGGER.info(String.format("Processing Key-Value extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
         LOGGER.info("Processing repositories as a Key-Value implementation: " + crudTypes);
+
+        LOGGER.info("Ignoring custom repositories as a Key-Value implementation: " + customRepositories);
 
         databases.forEach(type -> {
             final TemplateBean bean = new TemplateBean(type.getProvider());

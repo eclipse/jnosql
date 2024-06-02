@@ -49,4 +49,9 @@ public final class ReflectionClassScanner implements ClassScanner {
     public Set<Class<?>> repositoriesStandard() {
         return ClassGraphClassScanner.INSTANCE.repositoriesStandard();
     }
+
+    @Override
+    public Set<Class<?>> customRepositories() {
+        return  ClassGraphClassScanner.INSTANCE.customRepositories();
+    }
 }

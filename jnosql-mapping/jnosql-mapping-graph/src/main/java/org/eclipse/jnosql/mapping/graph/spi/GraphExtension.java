@@ -49,8 +49,12 @@ public class GraphExtension implements Extension {
         ClassScanner scanner = ClassScanner.load();
         Set<Class<?>> crudTypes = scanner.repositoriesStandard();
 
-        LOGGER.info(String.format("Processing graph extension: %d databases crud %d found",
-                databases.size(), crudTypes.size()));
+
+        Set<Class<?>> customRepositories = scanner.customRepositories();
+
+        LOGGER.info(String.format("Processing graph extension: %d databases crud %d found, custom repositories: %d",
+                databases.size(), crudTypes.size(), customRepositories.size()));
+
         LOGGER.info("Processing repositories as a Graph implementation: " + crudTypes);
         databases.forEach(type -> {
             if (!type.getProvider().isBlank()) {
@@ -66,6 +70,14 @@ public class GraphExtension implements Extension {
             }
             databases.forEach(database -> afterBeanDiscovery
                     .addBean(new RepositoryGraphBean<>(type, database.getProvider())));
+        });
+
+        customRepositories.forEach(type -> {
+            if (!databases.contains(DatabaseMetadata.DEFAULT_DOCUMENT)) {
+                afterBeanDiscovery.addBean(new CustomRepositoryGraphBean<>(type, ""));
+            }
+            databases.forEach(database ->
+                    afterBeanDiscovery.addBean(new CustomRepositoryGraphBean<>(type, database.getProvider())));
         });
     }
 }

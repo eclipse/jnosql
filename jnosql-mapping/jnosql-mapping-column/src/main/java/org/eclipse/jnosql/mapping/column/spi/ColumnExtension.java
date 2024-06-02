@@ -22,6 +22,7 @@ import jakarta.enterprise.inject.spi.ProcessProducer;
 import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.Databases;
+import org.eclipse.jnosql.mapping.column.query.CustomRepositoryColumnBean;
 import org.eclipse.jnosql.mapping.column.query.RepositoryColumnBean;
 import org.eclipse.jnosql.mapping.metadata.ClassScanner;
 
@@ -51,8 +52,10 @@ public class ColumnExtension implements Extension {
 
         ClassScanner scanner = ClassScanner.load();
         Set<Class<?>> crudTypes = scanner.repositoriesStandard();
-        LOGGER.info(String.format("Processing Column extension: %d databases crud %d found",
-                databases.size(), crudTypes.size()));
+        Set<Class<?>> customRepositories = scanner.customRepositories();
+
+        LOGGER.info(String.format("Processing Column extension: %d databases crud %d found, custom repositories: %d",
+                databases.size(), crudTypes.size(), customRepositories.size()));
         LOGGER.info("Processing repositories as a Column implementation: " + crudTypes);
 
         databases.forEach(type -> {
@@ -68,6 +71,15 @@ public class ColumnExtension implements Extension {
             }
             databases.forEach(database -> afterBeanDiscovery
                     .addBean(new RepositoryColumnBean<>(type, database.getProvider())));
+        });
+
+
+        customRepositories.forEach(type -> {
+            if (!databases.contains(DatabaseMetadata.DEFAULT_COLUMN)) {
+                afterBeanDiscovery.addBean(new CustomRepositoryColumnBean<>(type, ""));
+            }
+            databases.forEach(database ->
+                    afterBeanDiscovery.addBean(new CustomRepositoryColumnBean<>(type, database.getProvider())));
         });
 
     }

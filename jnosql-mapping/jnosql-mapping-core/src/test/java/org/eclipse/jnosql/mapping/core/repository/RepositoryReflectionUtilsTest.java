@@ -23,6 +23,7 @@ import org.eclipse.jnosql.mapping.core.entities.Person;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -34,7 +35,8 @@ class RepositoryReflectionUtilsTest {
 
     @Test
     void shouldGetParams(){
-        Method method = PersonRepository.class.getDeclaredMethods()[0];
+        Method method = Arrays.stream(PersonRepository.class.getDeclaredMethods()).filter(m -> m.getName().equals("query"))
+                .findFirst().orElseThrow();
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, new Object[]{"Ada"});
         assertThat(params)
                 .hasSize(1)
@@ -44,14 +46,16 @@ class RepositoryReflectionUtilsTest {
 
     @Test
     void shouldQuery(){
-        Method method = PersonRepository.class.getDeclaredMethods()[0];
+        Method method = Arrays.stream(PersonRepository.class.getDeclaredMethods()).filter(m -> m.getName().equals("query"))
+                .findFirst().orElseThrow();
         String query = RepositoryReflectionUtils.INSTANCE.getQuery(method);
         assertEquals("FROM Person WHERE name = :name", query);
     }
 
     @Test
     void shouldBy(){
-        Method method = PersonRepository.class.getDeclaredMethods()[0];
+        Method method = Arrays.stream(PersonRepository.class.getDeclaredMethods()).filter(m -> m.getName().equals("query"))
+                .findFirst().orElseThrow();
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getBy(method, new Object[]{"Ada"});
         assertThat(params)
                 .hasSize(1)

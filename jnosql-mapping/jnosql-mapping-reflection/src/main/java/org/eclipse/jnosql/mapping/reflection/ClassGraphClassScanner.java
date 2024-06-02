@@ -48,20 +48,25 @@ enum ClassGraphClassScanner implements ClassScanner {
     private final Set<Class<?>> entities;
     private final Set<Class<?>> repositories;
     private final Set<Class<?>> embeddables;
+    private final Set<Class<?>> customRepositories;
 
 
     ClassGraphClassScanner() {
         entities = new HashSet<>();
         embeddables = new HashSet<>();
         repositories = new HashSet<>();
+        customRepositories = new HashSet<>();
 
         Logger logger = Logger.getLogger(ClassGraphClassScanner.class.getName());
         logger.fine("Starting scan class to find entities, embeddable and repositories.");
         try (ScanResult result = new ClassGraph().enableAllInfo().scan()) {
-            checkInvalidRepositories(loadInvalidRepositories(result));
+            var notSupportedRepositories = loadNotSupportedRepositories(result);
+            logger.info("The following repositories are not supported: " + notSupportedRepositories);
             this.entities.addAll(loadEntities(result));
             this.embeddables.addAll(loadEmbeddable(result));
             this.repositories.addAll(loadRepositories(result));
+            this.customRepositories.addAll(loadCustomRepositories(result));
+            notSupportedRepositories.forEach(this.repositories::remove);
         }
         logger.fine(String.format("Finished the class scan with entities %d, embeddables %d and repositories: %d"
                 , entities.size(), embeddables.size(), repositories.size()));
@@ -106,34 +111,34 @@ enum ClassGraphClassScanner implements ClassScanner {
                 }).collect(Collectors.toUnmodifiableSet());
     }
 
+    @Override
+    public Set<Class<?>> customRepositories() {
+        return customRepositories;
+    }
+
 
     @SuppressWarnings("rawtypes")
     private static List<Class<DataRepository>> loadRepositories(ScanResult scan) {
         return scan.getClassesWithAnnotation(Repository.class)
                 .getInterfaces()
+                .filter(c -> c.implementsInterface(DataRepository.class))
                 .loadClasses(DataRepository.class)
                 .stream().filter(RepositoryFilter.INSTANCE)
                 .toList();
     }
 
-    @SuppressWarnings("rawtypes")
-    private static void checkInvalidRepositories(List<Class<DataRepository>> classes) {
-        if (!classes.isEmpty()) {
-            Logger logger = Logger.getLogger(ClassGraphClassScanner.class.getName());
-            String repositories = classes.stream()
-                    .map(Class::getName)
-                    .collect(Collectors.joining(","));
-            logger.info("The following repositories cannot be implemented by the Jakarta Data Provider JNoSQL " +
-                "because the entities do not have the " + jakarta.nosql.Entity.class.getName() + " annotation: " +
-                repositories);
-        }
-    }
-
-
-    @SuppressWarnings("rawtypes")
-    private static List<Class<DataRepository>> loadInvalidRepositories(ScanResult scan) {
+    private static List<Class<?>> loadCustomRepositories(ScanResult scan) {
         return scan.getClassesWithAnnotation(Repository.class)
                 .getInterfaces()
+                .filter(c -> !c.implementsInterface(DataRepository.class))
+                .loadClasses().stream().toList();
+    }
+
+    @SuppressWarnings("rawtypes")
+    private static List<Class<DataRepository>> loadNotSupportedRepositories(ScanResult scan) {
+        return scan.getClassesWithAnnotation(Repository.class)
+                .getInterfaces()
+                .filter(c -> c.implementsInterface(DataRepository.class))
                 .loadClasses(DataRepository.class)
                 .stream().filter(RepositoryFilter.INSTANCE::isInvalid)
                 .toList();

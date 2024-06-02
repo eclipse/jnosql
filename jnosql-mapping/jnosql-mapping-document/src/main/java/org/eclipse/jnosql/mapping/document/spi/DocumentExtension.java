@@ -23,6 +23,7 @@ import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.Databases;
+import org.eclipse.jnosql.mapping.document.query.CustomRepositoryDocumentBean;
 import org.eclipse.jnosql.mapping.document.query.RepositoryDocumentBean;
 import org.eclipse.jnosql.mapping.metadata.ClassScanner;
 
@@ -56,8 +57,10 @@ public class DocumentExtension implements Extension {
 
         Set<Class<?>> crudTypes = scanner.repositoriesStandard();
 
-        LOGGER.info(String.format("Processing Document extension: %d databases crud %d found",
-                databases.size(), crudTypes.size()));
+        Set<Class<?>> customRepositories = scanner.customRepositories();
+
+        LOGGER.info(String.format("Processing Document extension: %d databases crud %d found, custom repositories: %d",
+                databases.size(), crudTypes.size(), customRepositories.size()));
         LOGGER.info("Processing repositories as a Document implementation: " + crudTypes);
 
         databases.forEach(type -> {
@@ -67,13 +70,20 @@ public class DocumentExtension implements Extension {
             }
         });
 
-
         crudTypes.forEach(type -> {
             if (!databases.contains(DatabaseMetadata.DEFAULT_DOCUMENT)) {
                 afterBeanDiscovery.addBean(new RepositoryDocumentBean<>(type, ""));
             }
             databases.forEach(database ->
                 afterBeanDiscovery.addBean(new RepositoryDocumentBean<>(type, database.getProvider())));
+        });
+
+        customRepositories.forEach(type -> {
+            if (!databases.contains(DatabaseMetadata.DEFAULT_DOCUMENT)) {
+                afterBeanDiscovery.addBean(new CustomRepositoryDocumentBean<>(type, ""));
+            }
+            databases.forEach(database ->
+                    afterBeanDiscovery.addBean(new CustomRepositoryDocumentBean<>(type, database.getProvider())));
         });
 
     }

@@ -64,7 +64,7 @@ import static org.mockito.Mockito.verify;
 @AddPackages(MockProducer.class)
 @AddPackages(Reflections.class)
 @AddExtensions({EntityMetadataExtension.class})
-class DefaultColumnTemplateTest {
+class DefaultSemiStructuredTemplateTest {
 
     private final Person person = Person.builder().
             withAge().
@@ -303,6 +303,29 @@ class DefaultColumnTemplateTest {
     }
 
     @Test
+    void shouldReturnSingleResultQuery() {
+        CommunicationEntity columnEntity = CommunicationEntity.of("Person");
+        columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
+
+        Mockito.when(managerMock
+                        .select(any(SelectQuery.class)))
+                .thenReturn(Stream.of(columnEntity));
+
+        Optional<Person> result = template.singleResult("from Person");
+        assertTrue(result.isPresent());
+    }
+
+    @Test
+    void shouldReturnSingleResultQueryIsEmpty() {
+        Mockito.when(managerMock
+                        .select(any(SelectQuery.class)))
+                .thenReturn(Stream.empty());
+
+        Optional<Person> result = template.singleResult("from Person");
+        assertFalse(result.isPresent());
+    }
+
+    @Test
     void shouldReturnErrorWhenThereMoreThanASingleResult() {
         Assertions.assertThrows(NonUniqueResultException.class, () -> {
             CommunicationEntity columnEntity = CommunicationEntity.of("Person");
@@ -370,6 +393,16 @@ class DefaultColumnTemplateTest {
     }
 
     @Test
+    void shouldExecuteQueryEntity() {
+        template.query("FROM Person", "Person");
+        ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(managerMock).select(queryCaptor.capture());
+        SelectQuery query = queryCaptor.getValue();
+        assertEquals("Person", query.name());
+    }
+
+
+    @Test
     void shouldConvertEntity() {
         template.query("FROM Movie");
         ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);
@@ -407,6 +440,17 @@ class DefaultColumnTemplateTest {
     @Test
     void shouldPreparedStatement() {
         PreparedStatement preparedStatement = template.prepare("FROM Person WHERE name = :name");
+        preparedStatement.bind("name", "Ada");
+        preparedStatement.result();
+        ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(managerMock).select(queryCaptor.capture());
+        SelectQuery query = queryCaptor.getValue();
+        assertEquals("Person", query.name());
+    }
+
+    @Test
+    void shouldPreparedStatementEntity() {
+        PreparedStatement preparedStatement = template.prepare("FROM Person WHERE name = :name", "Person");
         preparedStatement.bind("name", "Ada");
         preparedStatement.result();
         ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);

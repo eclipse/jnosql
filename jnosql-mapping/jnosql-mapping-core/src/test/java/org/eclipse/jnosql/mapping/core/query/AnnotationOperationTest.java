@@ -47,6 +47,7 @@ class AnnotationOperationTest {
         Assertions.assertThatThrownBy(() -> UPDATE.invoke(new AnnotationOperation.Operation(method, new Object[]{person, person}, repository)))
                 .isInstanceOf(UnsupportedOperationException.class);
     }
+
     @Test
     void shouldInsertSingleParameter() throws Throwable {
         Method method = PersonRepository.class.getDeclaredMethod("same", Person.class);
@@ -67,17 +68,17 @@ class AnnotationOperationTest {
         Assertions.assertThat(List.of(person)).isEqualTo(invoked);
     }
 
-
     @Test
-    void shouldInsertArrayParameter() throws Throwable {
+    void shouldInsertArrayObjectParameter() throws Throwable {
         Method method = PersonRepository.class.getDeclaredMethod("array", Person[].class);
-        Person person = Person.builder().build();
+        Person person = Person.builder().withName("Ada").withAge(8).build();
         Mockito.when(repository.insertAll(List.of(person))).thenReturn(List.of(person));
         Object invoked = INSERT.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
                 repository));
         Mockito.verify(repository).insertAll(List.of(person));
-        Assertions.assertThat(List.of(person)).isEqualTo(invoked);
+        Assertions.assertThat(new Person[]{person}).isEqualTo(invoked);
     }
+
 
     @Test
     void shouldUpdateSingleParameter() throws Throwable {
@@ -402,12 +403,12 @@ class AnnotationOperationTest {
     @Test
     void shouldSaveArrayParameter() throws Throwable {
         Method method = PersonRepository.class.getDeclaredMethod("array", Person[].class);
-        Person person = Person.builder().build();
+        Person person = Person.builder().withName("Ada").withAge(12).build();
         Mockito.when(repository.saveAll(List.of(person))).thenReturn(List.of(person));
-        Object invoked = SAVE.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
+        Person[] invoked = (Person[]) SAVE.invoke(new AnnotationOperation.Operation(method, new Object[]{new Person[]{person}},
                 repository));
         Mockito.verify(repository).saveAll(List.of(person));
-        Assertions.assertThat(List.of(person)).isEqualTo(invoked);
+        Assertions.assertThat(invoked).contains(person);
     }
 
     @Test

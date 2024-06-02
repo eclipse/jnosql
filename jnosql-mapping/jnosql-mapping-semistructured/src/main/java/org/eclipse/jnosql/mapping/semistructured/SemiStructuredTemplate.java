@@ -29,8 +29,6 @@ import java.util.stream.Stream;
  */
 public interface SemiStructuredTemplate extends Template {
 
-
-
     /**
      * Returns the number of elements in a specified column family.
      *

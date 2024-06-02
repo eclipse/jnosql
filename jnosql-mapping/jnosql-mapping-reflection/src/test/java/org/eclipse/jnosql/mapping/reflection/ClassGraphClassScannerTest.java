@@ -20,6 +20,7 @@ import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.reflection.entities.AnimalRepository;
 import org.eclipse.jnosql.mapping.reflection.entities.Contact;
 import org.eclipse.jnosql.mapping.reflection.entities.Job;
+import org.eclipse.jnosql.mapping.reflection.entities.Library;
 import org.eclipse.jnosql.mapping.reflection.entities.MovieRepository;
 import org.eclipse.jnosql.mapping.reflection.entities.NoSQLVendor;
 import org.eclipse.jnosql.mapping.reflection.entities.Person;
@@ -86,8 +87,7 @@ class ClassGraphClassScannerTest {
         Set<Class<?>> repositories = classScanner.repositories(NoSQLRepository.class);
         Assertions.assertNotNull(repositories);
 
-        assertThat(repositories).hasSize(1)
-                .contains(PersonRepository.class);
+        assertThat(repositories).hasSize(1).contains(PersonRepository.class);
     }
 
     @Test
@@ -95,5 +95,12 @@ class ClassGraphClassScannerTest {
         Set<Class<?>> repositories = classScanner.repositoriesStandard();
         assertThat(repositories).hasSize(2)
                 .contains(PersonRepository.class, MovieRepository.class);
+    }
+
+    @Test
+    void shouldReturnCustomRepositories() {
+        Set<Class<?>> repositories = classScanner.customRepositories();
+        assertThat(repositories).hasSize(1)
+                .contains(Library.class);
     }
 }

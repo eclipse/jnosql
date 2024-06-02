@@ -236,22 +236,17 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
 
     @Override
     public <T> Optional<T> singleResult(String query) {
-        Stream<T> entities = query(query);
-        final Iterator<T> iterator = entities.iterator();
-
-        if (!iterator.hasNext()) {
-            return Optional.empty();
-        }
-        final T entity = iterator.next();
-        if (!iterator.hasNext()) {
-            return Optional.of(entity);
-        }
-        throw new NonUniqueResultException("No unique result found to the query: " + query);
+        return singleResult(query, null);
     }
 
     @Override
     public <T> Optional<T> singleResult(String query, String entityName) {
-        Stream<T> entities = query(query, entityName);
+        Stream<T> entities;
+        if(entityName == null){
+            entities = query(query);
+        } else {
+            entities = query(query, entityName);
+        }
         final Iterator<T> iterator = entities.iterator();
 
         if (!iterator.hasNext()) {

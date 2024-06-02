@@ -69,6 +69,13 @@ public interface ClassScanner {
     Set<Class<?>> repositoriesStandard();
 
     /**
+     * Returns a set of custom repository interfaces that are not standard repositories.
+     *
+     * @return A set of custom repository interfaces.
+     */
+    Set<Class<?>> customRepositories();
+
+    /**
      * Loads and returns an instance of the {@link ClassScanner} implementation using the ServiceLoader mechanism.
      *
      * @return An instance of the loaded {@link ClassScanner} implementation.
