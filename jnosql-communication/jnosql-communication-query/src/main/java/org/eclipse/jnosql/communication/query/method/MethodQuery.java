@@ -22,7 +22,7 @@ public final class MethodQuery implements Supplier<String> {
 
     private final String value;
     private static final Pattern PATTERN = Pattern.compile("findBy|deleteBy|countBy|existsBy|"
-            + "OrderBy|"
+            + "OrderBy|First(?=\\d+By)|(?<=First\\d{1,})By|"
             + "And|Or(?!der)|Not|Equals|GreaterThanEqual|True|False|" +
             "LessThanEqual|GreaterThan|LessThan|Between|In|Like|Asc|Desc");
     private static final Map<String, String> CACHE = Collections.synchronizedMap(new WeakHashMap<>());
