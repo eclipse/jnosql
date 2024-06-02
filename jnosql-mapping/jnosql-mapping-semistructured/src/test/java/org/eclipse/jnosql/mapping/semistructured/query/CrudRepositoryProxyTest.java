@@ -19,6 +19,7 @@ import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.Sort;
 import jakarta.inject.Inject;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.assertj.core.api.Assertions;
@@ -248,6 +249,28 @@ class CrudRepositoryProxyTest {
 
         assertNull(personRepository.findByName("name"));
 
+
+    }
+
+    @Test
+    void shouldFindByFirstAgeInstance() {
+
+        when(template.select(any(SelectQuery.class)))
+                .thenReturn(Stream.of(Person.builder().build()));
+
+        personRepository.findFirst10ByAge(10);
+
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(template).select(captor.capture());
+        SelectQuery query = captor.getValue();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.condition()).isPresent();
+            soft.assertThat(query.limit()).isEqualTo(10);
+            CriteriaCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(EQUALS);
+            soft.assertThat(condition.element().value().get()).isEqualTo( 10);
+        });
 
     }
 
@@ -767,6 +790,8 @@ class CrudRepositoryProxyTest {
 
 
     interface PersonRepository extends NoSQLRepository<Person, Long> {
+
+        List<Person> findFirst10ByAge(int age);
 
         List<Person> findBySalary_Currency(String currency);
 
