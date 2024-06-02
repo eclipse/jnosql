@@ -46,7 +46,7 @@ public enum RepositoryType {
     /**
      * General query method returning the repository type.It starts with "findBy" key word
      */
-    FIND_BY("findBy"),
+    FIND_BY("find"),
     /**
      * Delete query method returning either no result (void) or the delete count. It starts with "deleteBy" keyword
      */
