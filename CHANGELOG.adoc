@@ -11,6 +11,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 === Added
 
 - Enables custom Repository
+- Include the `First`method in the method by query in the Repository
 
 == [1.1.1] - 2023-05-25
 

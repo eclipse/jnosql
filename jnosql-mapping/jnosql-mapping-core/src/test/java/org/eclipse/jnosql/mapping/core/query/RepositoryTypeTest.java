@@ -82,6 +82,11 @@ class RepositoryTypeTest {
     }
 
     @Test
+    void shouldReturnFindFirstBy() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.FIND_BY, RepositoryType.of(getMethod(DevRepository.class, "findFirst10ByAge"), CrudRepository.class));
+    }
+
+    @Test
     void shouldReturnSave() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.SAVE, RepositoryType.of(getMethod(DevRepository.class, "save"), DevRepository.class));
     }
@@ -214,6 +219,8 @@ class RepositoryTypeTest {
         String findByName(String name);
 
         String deleteByName(String name);
+
+        String findFirst10ByAge(String name);
 
         Stream<String> findAll();
 

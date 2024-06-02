@@ -27,12 +27,14 @@ public final class SelectMethodQueryProvider extends AbstractMethodQueryProvider
 
     private final List<Sort<?>> sorts = new ArrayList<>();
 
+    private long limit = 0;
+
     @Override
     public SelectQuery apply(String query, String entity) {
         Objects.requireNonNull(query, " query is required");
         Objects.requireNonNull(entity, " entity is required");
         runQuery(MethodQuery.of(query).get());
-        return new MethodSelectQuery(entity, sorts, where);
+        return new MethodSelectQuery(entity, sorts, where, limit);
     }
 
     @Override
@@ -41,13 +43,21 @@ public final class SelectMethodQueryProvider extends AbstractMethodQueryProvider
     }
 
     @Override
+    public void exitMax(MethodParser.MaxContext ctx) {
+        String text = ctx.INT().getText();
+        this.limit = Long.parseLong(text);
+    }
+
+    @Override
     Function<MethodParser, ParseTree> getParserTree() {
         return MethodParser::select;
     }
 
-    private Sort sort(MethodParser.OrderNameContext context) {
+    private Sort<?> sort(MethodParser.OrderNameContext context) {
         String text = context.variable().getText();
         Direction type = context.desc() == null ? Direction.ASC : Direction.DESC;
         return Sort.of(getFormatField(text), type, false);
     }
+
+
 }
