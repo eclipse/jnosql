@@ -102,8 +102,17 @@ public class CustomRepositoryHandler implements InvocationHandler {
             case OBJECT_METHOD -> {
                 return unwrapInvocationTargetException(() -> unwrapInvocationTargetException(() -> method.invoke(this, params)));
             }
-            case FIND_ALL, FIND_BY, PARAMETER_BASED, CURSOR_PAGINATION -> {
-                return unwrapInvocationTargetException(() -> repository(method).invoke(instance, method, params));
+            case PARAMETER_BASED -> {
+                return unwrapInvocationTargetException(() -> repository(method).executeParameterBased(instance, method, params));
+            }
+            case CURSOR_PAGINATION -> {
+                return unwrapInvocationTargetException(() -> repository(method).executeCursorPagination(instance, method, params));
+            }
+            case FIND_ALL -> {
+                return unwrapInvocationTargetException(() -> repository(method).executeFindAll(instance, method, params));
+            }
+            case FIND_BY -> {
+                return unwrapInvocationTargetException(() -> repository(method).executeFindByQuery(instance, method, params));
             }
             case CUSTOM_REPOSITORY -> {
                 Object customRepository = CDI.current().select(method.getDeclaringClass()).get();
