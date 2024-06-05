@@ -23,6 +23,7 @@ import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.ParamQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryErrorListener;
+import org.eclipse.jnosql.communication.query.StringQueryValue;
 import org.eclipse.jnosql.communication.query.Where;
 import org.eclipse.jnosql.query.grammar.method.MethodBaseListener;
 import org.eclipse.jnosql.query.grammar.method.MethodLexer;
@@ -37,6 +38,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.joining;
 import static org.eclipse.jnosql.communication.Condition.AND;
 import static org.eclipse.jnosql.communication.Condition.BETWEEN;
 import static org.eclipse.jnosql.communication.Condition.EQUALS;
@@ -48,7 +50,6 @@ import static org.eclipse.jnosql.communication.Condition.LESSER_THAN;
 import static org.eclipse.jnosql.communication.Condition.LIKE;
 import static org.eclipse.jnosql.communication.Condition.NOT;
 import static org.eclipse.jnosql.communication.Condition.OR;
-import static java.util.stream.Collectors.joining;
 
 abstract class AbstractMethodQueryProvider extends MethodBaseListener {
 
@@ -58,6 +59,8 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     protected QueryCondition condition;
 
     protected boolean and = true;
+
+    protected boolean shouldCount = false;
 
     protected void runQuery(String query) {
 
@@ -80,6 +83,11 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     }
 
     abstract Function<MethodParser, ParseTree> getParserTree();
+
+    @Override
+    public void exitSelectStart(MethodParser.SelectStartContext ctx) {
+        this.shouldCount = ctx.getText().startsWith("count");
+    }
 
     @Override
     public void exitEq(MethodParser.EqContext ctx) {
@@ -156,6 +164,13 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
         Condition operator = BETWEEN;
         ArrayQueryValue value = MethodArrayValue.of(variable);
         checkCondition(new MethodCondition(variable, operator, value), hasNot);
+    }
+
+    @Override
+    public void exitNullable(MethodParser.NullableContext ctx) {
+        boolean hasNot = Objects.nonNull(ctx.not());
+        String variable = getVariable(ctx.variable());
+        checkCondition(new MethodCondition(variable, EQUALS, StringQueryValue.of(null)), hasNot);
     }
 
     @Override
