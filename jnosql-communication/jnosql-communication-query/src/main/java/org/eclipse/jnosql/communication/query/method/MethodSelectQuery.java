@@ -31,11 +31,14 @@ final class MethodSelectQuery  implements SelectQuery {
 
     private final long limit;
 
-    MethodSelectQuery(String entity, List<Sort<?>> sorts, Where where, long limit) {
+    private final boolean count;
+
+    MethodSelectQuery(String entity, List<Sort<?>> sorts, Where where, long limit, boolean count) {
         this.entity = entity;
         this.sorts = sorts;
         this.where = where;
         this.limit = limit;
+        this.count = count;
     }
 
 
@@ -70,7 +73,7 @@ final class MethodSelectQuery  implements SelectQuery {
 
     @Override
     public boolean isCount() {
-        return false;
+        return count;
     }
 
     public boolean equals(Object o) {

@@ -144,6 +144,11 @@ class RepositoryTypeTest {
     }
 
     @Test
+    void shouldReturnCountAll() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.COUNT_ALL, RepositoryType.of(getMethod(DevRepository.class, "countAll"), CrudRepository.class));
+    }
+
+    @Test
     void shouldReturnExistsBy() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.EXISTS_BY, RepositoryType.of(getMethod(DevRepository.class, "existsByName"), CrudRepository.class));
     }
@@ -228,6 +233,8 @@ class RepositoryTypeTest {
         String query(String query);
 
         Long countByName(String name);
+
+        Long countAll();
 
         Long existsByName(String name);
 

@@ -34,7 +34,7 @@ public final class SelectMethodQueryProvider extends AbstractMethodQueryProvider
         Objects.requireNonNull(query, " query is required");
         Objects.requireNonNull(entity, " entity is required");
         runQuery(MethodQuery.of(query).get());
-        return new MethodSelectQuery(entity, sorts, where, limit);
+        return new MethodSelectQuery(entity, sorts, where, limit, shouldCount);
     }
 
     @Override

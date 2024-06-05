@@ -56,6 +56,9 @@ public enum RepositoryType {
      */
     FIND_ALL("findAll"),
     /**
+     * Count projection returning a numeric result. It starts and ends with "countAll" keyword
+     */
+    COUNT_ALL("countAll"),/**
      * Count projection returning a numeric result. It starts with "countBy" keyword
      */
     COUNT_BY("countBy"),
@@ -115,7 +118,7 @@ public enum RepositoryType {
             .or(Predicate.isEqual(BasicRepository.class))
             .or(Predicate.isEqual(NoSQLRepository.class));
 
-    private static final Set<RepositoryType> KEY_WORLD_METHODS = EnumSet.of(FIND_BY, DELETE_BY, COUNT_BY, EXISTS_BY);
+    private static final Set<RepositoryType> KEY_WORLD_METHODS = EnumSet.of(FIND_BY, DELETE_BY, COUNT_ALL, COUNT_BY, EXISTS_BY);
 
     private static final Set<RepositoryType> OPERATION_ANNOTATIONS = EnumSet.of(INSERT, SAVE, DELETE, UPDATE, QUERY, PARAMETER_BASED);
     private final String keyword;

@@ -31,7 +31,7 @@ public record DefaultQueryValue(String value) implements ParamQueryValue {
     }
 
     public static DefaultQueryValue of(String text) {
-        if(text.startsWith(":")) {
+        if(text != null && text.startsWith(":")) {
             return new DefaultQueryValue(text.substring(1));
         }
         return new DefaultQueryValue(text);

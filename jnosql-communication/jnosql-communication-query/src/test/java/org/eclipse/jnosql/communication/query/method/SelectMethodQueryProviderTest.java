@@ -11,15 +11,16 @@
  */
 package org.eclipse.jnosql.communication.query.method;
 
-import org.eclipse.jnosql.communication.Condition;
-import jakarta.data.Sort;
 import jakarta.data.Direction;
+import jakarta.data.Sort;
+import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.BooleanQueryValue;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.ParamQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.SelectQuery;
+import org.eclipse.jnosql.communication.query.StringQueryValue;
 import org.eclipse.jnosql.communication.query.Where;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -32,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SelectMethodQueryProviderTest {
@@ -40,7 +42,7 @@ class SelectMethodQueryProviderTest {
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"findBy", "countBy", "existsBy"})
+    @ValueSource(strings = {"findBy", "existsBy"})
     void shouldReturnParserQuery(String query) {
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
@@ -48,11 +50,29 @@ class SelectMethodQueryProviderTest {
         assertEquals(entity, selectQuery.entity());
         assertTrue(selectQuery.fields().isEmpty());
         assertTrue(selectQuery.orderBy().isEmpty());
+        assertFalse(selectQuery.isCount());
         assertEquals(0, selectQuery.limit());
         assertEquals(0, selectQuery.skip());
         Optional<Where> where = selectQuery.where();
         assertFalse(where.isPresent());
     }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"countBy", "countAll"})
+    void shouldReturnParsedCountableQuery(String query) {
+        String entity = "entity";
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
+        assertNotNull(selectQuery);
+        assertEquals(entity, selectQuery.entity());
+        assertTrue(selectQuery.fields().isEmpty());
+        assertTrue(selectQuery.orderBy().isEmpty());
+        assertTrue(selectQuery.isCount());
+        assertEquals(0, selectQuery.limit());
+        assertEquals(0, selectQuery.skip());
+        Optional<Where> where = selectQuery.where();
+        assertFalse(where.isPresent());
+    }
+
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findFirst10By"})
@@ -470,6 +490,53 @@ class SelectMethodQueryProviderTest {
         checkNotCondition(query, Condition.EQUALS, "name");
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findByNameNotNull", "countByNameNotNull", "existsByNameNotNull"})
+    void shouldReturnParserQuery36(String query) {
+        String entity = "entity";
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
+        assertNotNull(selectQuery);
+        assertEquals(entity, selectQuery.entity());
+        assertTrue(selectQuery.fields().isEmpty());
+        assertTrue(selectQuery.orderBy().isEmpty());
+        assertEquals(0, selectQuery.limit());
+        assertEquals(0, selectQuery.skip());
+        Optional<Where> where = selectQuery.where();
+        assertTrue(where.isPresent());
+        QueryCondition condition = where.get().condition();
+        QueryValue<?> value = condition.value();
+        assertEquals(Condition.NOT, condition.condition());
+
+
+        assertEquals("_NOT", condition.name());
+        assertTrue(value instanceof ConditionQueryValue);
+        QueryCondition condition1 = ConditionQueryValue.class.cast(value).get().get(0);
+
+        assertEquals("name", condition1.name());
+        assertEquals(Condition.EQUALS, condition1.condition());
+        var param = condition1.value();
+        assertNull(StringQueryValue.class.cast(param).get());
+
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findByNameNull", "countByNameNull", "existsByNameNull"})
+    void shouldReturnParserQuery37(String query) {
+        String entity = "entity";
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
+        assertNotNull(selectQuery);
+        assertEquals(entity, selectQuery.entity());
+        assertTrue(selectQuery.fields().isEmpty());
+        assertTrue(selectQuery.orderBy().isEmpty());
+        assertEquals(0, selectQuery.limit());
+        assertEquals(0, selectQuery.skip());
+        Optional<Where> where = selectQuery.where();
+        assertTrue(where.isPresent());
+        QueryCondition condition = where.get().condition();
+        assertEquals("name", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertNull(condition.value().get());
+    }
 
     private void checkOrderBy(String query, Direction direction, Direction direction2) {
         String entity = "entity";

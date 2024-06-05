@@ -151,7 +151,7 @@ public abstract class AbstractRepositoryProxy<T, K> implements InvocationHandler
             case FIND_BY -> {
                 return unwrapInvocationTargetException(() ->   executeFindByQuery(instance, method, params));
             }
-            case COUNT_BY -> {
+            case COUNT_ALL, COUNT_BY -> {
                 return unwrapInvocationTargetException(() ->   executeCountByQuery(instance, method, params));
             }
             case EXISTS_BY -> {

@@ -137,7 +137,7 @@ public class CustomRepositoryHandler implements InvocationHandler {
                 return unwrapInvocationTargetException(() -> repository(method).invoke(instance, method, params));
 
             }
-            case DELETE_BY, COUNT_BY, EXISTS_BY ->
+            case DELETE_BY, COUNT_ALL, COUNT_BY, EXISTS_BY ->
                     throw new UnsupportedOperationException("The custom repository does not support the method " + method);
             default -> {
                 return Void.class;
