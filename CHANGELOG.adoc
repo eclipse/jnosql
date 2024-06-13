@@ -14,6 +14,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Include the `First` keyword in the method by query in the Repository
 - Include the `Null`, `NotNull` and `countAll` keywords in the method by query in the Repository
 
+=== Fixed
+
+- Fix the `Orderby` annotation in the Repository
+
 == [1.1.1] - 2023-05-25
 
 === Changed
