@@ -538,6 +538,20 @@ class SelectMethodQueryProviderTest {
         assertNull(condition.value().get());
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findByNameContains", "findByNameEndsWith", "findByNameStartsWith"})
+    void shouldReturnUnsupportedOperationExceptionQuery(String query) {
+        String entity = "entity";
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> queryProvider.apply(query, entity));
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findByNameNotContains", "findByNameNotEndsWith", "findByNameNotStartsWith"})
+    void shouldReturnUnsupportedOperationExceptionQueryWithNegation(String query) {
+        String entity = "entity";
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> queryProvider.apply(query, entity));
+    }
+
     private void checkOrderBy(String query, Direction direction, Direction direction2) {
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
