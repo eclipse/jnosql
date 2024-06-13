@@ -23,6 +23,7 @@ import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.core.repository.RepositoryReflectionUtils;
 import org.eclipse.jnosql.mapping.core.repository.SpecialParameters;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public abstract class AbstractSemiStructuredRepositoryProxy<T, K> extends BaseSe
             return this.template().selectCursor(query, pageRequest);
         } else {
             Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
-            var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(parameters, getSorts(method), entityMetadata());
+            var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(parameters, getSorts(method, entityMetadata()), entityMetadata());
             SpecialParameters special = DynamicReturn.findSpecialParameters(params);
             PageRequest pageRequest = special.pageRequest()
                     .orElseThrow(() -> new IllegalArgumentException("Pageable is required in the method signature as parameter at " + method));
@@ -104,15 +105,15 @@ public abstract class AbstractSemiStructuredRepositoryProxy<T, K> extends BaseSe
     protected Object executeParameterBased(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
         Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
-        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(parameters, getSorts(method), entityMetadata());
+        var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(parameters, getSorts(method, entityMetadata()), entityMetadata());
         return executeFindByQuery(method, params, type, updateQueryDynamically(params, query));
     }
 
-    private static List<Sort<?>> getSorts(Method method) {
+    private static List<Sort<?>> getSorts(Method method, EntityMetadata metadata) {
         List<Sort<?>> sorts = new ArrayList<>();
         OrderBy[] orders = method.getAnnotationsByType(OrderBy.class);
         Stream.of(orders)
-                .map(o -> (o.descending() ? Sort.desc(o.value()) : Sort.asc(o.value())))
+                .map(o -> (o.descending() ? Sort.desc(metadata.columnField(o.value())) : Sort.asc(metadata.columnField(o.value()))))
                 .forEach(sorts::add);
         return sorts;
     }
