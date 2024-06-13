@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.semistructured.query;
 
+import jakarta.data.Direction;
 import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.page.Page;
@@ -49,7 +50,10 @@ public abstract class AbstractSemiStructuredRepository<T, K> extends AbstractRep
         Objects.requireNonNull(pageRequest, "pageRequest is required");
         EntityMetadata metadata = entityMetadata();
         List<Sort<?>> sorts = new ArrayList<>();
-        order.forEach(sorts::add);
+        order.forEach(sort -> {
+            Sort<?> sortQuery = Sort.of(metadata.columnField(sort.property()), sort.isAscending() ? Direction.ASC : Direction.DESC, false);
+            sorts.add(sortQuery);
+        });
         SelectQuery query = new MappingQuery(sorts,
                 pageRequest.size(), NoSQLPage.skip(pageRequest)
                 , null ,metadata.name());
