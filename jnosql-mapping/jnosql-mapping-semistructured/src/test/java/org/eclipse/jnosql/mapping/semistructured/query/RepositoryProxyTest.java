@@ -911,6 +911,21 @@ class RepositoryProxyTest {
     }
 
     @Test
+    void shouldExecuteMatchParameterId(){
+        personRepository.find(10L);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(template).select(captor.capture());
+        SelectQuery query = captor.getValue();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(query.name()).isEqualTo("Person");
+            var condition = query.condition().orElseThrow();
+            softly.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            softly.assertThat(condition.element()).isEqualTo(Element.of("_id", 10L));
+            softly.assertThat(query.sorts()).hasSize(1).contains(Sort.asc("_id"));
+        });
+    }
+
+    @Test
     void shouldExecuteMatchParameter2(){
         personRepository.find2("Ada");
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
@@ -1050,6 +1065,11 @@ class RepositoryProxyTest {
         @OrderBy("name")
         @OrderBy("age")
         List<Person> findByException();
+
+        @OrderBy("id")
+        @Find
+        List<Person> find(@By("id") Long id);
+
 
         @Find
         List<Person> find(@By("name") String name);
