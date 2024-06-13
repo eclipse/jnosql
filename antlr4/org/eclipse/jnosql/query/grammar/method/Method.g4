@@ -4,7 +4,7 @@ deleteBy: 'deleteBy' where? EOF;
 
 selectStart: 'find' limit 'By' | 'findBy' | 'countAll' | 'countBy' | 'existsBy';
 where: condition (and condition| or condition)* ;
-condition: eq | gt | gte | lt | lte | between | in | like | truth | untruth | nullable;
+condition: eq | gt | gte | lt | lte | between | in | like | truth | untruth | nullable | contains | endsWith | startsWith;
 order: 'OrderBy' orderName (orderName)*;
 orderName: variable | variable asc | variable desc;
 limit : 'First' max?;
@@ -22,6 +22,9 @@ lte: variable not? 'LessThanEqual';
 between: variable not? 'Between';
 in: variable not? 'In';
 like: variable not? 'Like';
+contains: variable not? 'Contains';
+endsWith: variable not? 'EndsWith';
+startsWith: variable not? 'StartsWith';
 nullable: variable not? 'Null';
 not: 'Not';
 variable: ANY_NAME;

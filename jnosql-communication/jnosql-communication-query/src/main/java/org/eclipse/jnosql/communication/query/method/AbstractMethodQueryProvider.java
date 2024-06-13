@@ -183,6 +183,21 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
         this.and = false;
     }
 
+    @Override
+    public void exitContains(MethodParser.ContainsContext ctx) {
+        throw new UnsupportedOperationException("Contains is not supported in Eclipse JNoSQL method query");
+    }
+
+    @Override
+    public void exitEndsWith(MethodParser.EndsWithContext ctx) {
+        throw new UnsupportedOperationException("EndsWith is not supported in Eclipse JNoSQL method query");
+    }
+
+    @Override
+    public void exitStartsWith(MethodParser.StartsWithContext ctx) {
+        throw new UnsupportedOperationException("StartsWith is not supported in Eclipse JNoSQL method query");
+    }
+
     private void appendCondition(boolean hasNot, String variable, Condition operator) {
         ParamQueryValue queryValue = new MethodParamQueryValue(variable);
         checkCondition(new MethodCondition(variable, operator, queryValue), hasNot);
