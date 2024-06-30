@@ -202,7 +202,7 @@ public abstract class BaseSemiStructuredRepository<T, K> extends AbstractReposit
     protected org.eclipse.jnosql.communication.semistructured.SelectQuery updateQueryDynamically(Object[] args,
                                                                                                  org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         var documentQuery = includeInheritance(query);
-        SpecialParameters special = DynamicReturn.findSpecialParameters(args);
+        SpecialParameters special = DynamicReturn.findSpecialParameters(args, sortParser());
 
         if (special.isEmpty()) {
             return documentQuery;
@@ -241,6 +241,10 @@ public abstract class BaseSemiStructuredRepository<T, K> extends AbstractReposit
             return new MappingQuery(sorts, size, skip,
                     documentQuery.condition().orElse(null), documentQuery.name());
         }).orElse(documentQuery);
+    }
+
+    protected Function<String, String> sortParser() {
+        return property -> parser().fireField(entityMetadata().name(), property);
     }
 
 

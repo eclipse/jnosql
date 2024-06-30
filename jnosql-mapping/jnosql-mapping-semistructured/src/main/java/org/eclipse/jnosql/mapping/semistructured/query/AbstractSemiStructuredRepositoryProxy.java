@@ -56,14 +56,14 @@ public abstract class AbstractSemiStructuredRepositoryProxy<T, K> extends BaseSe
     protected Object executeCursorPagination(Object instance, Method method, Object[] params) {
         if (method.getAnnotation(Find.class) == null) {
             var query = query(method, params);
-            SpecialParameters special = DynamicReturn.findSpecialParameters(params);
+            SpecialParameters special = DynamicReturn.findSpecialParameters(params, sortParser());
             PageRequest pageRequest = special.pageRequest()
                     .orElseThrow(() -> new IllegalArgumentException("Pageable is required in the method signature as parameter at " + method));
             return this.template().selectCursor(query, pageRequest);
         } else {
             Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
             var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(parameters, getSorts(method, entityMetadata()), entityMetadata());
-            SpecialParameters special = DynamicReturn.findSpecialParameters(params);
+            SpecialParameters special = DynamicReturn.findSpecialParameters(params, sortParser());
             PageRequest pageRequest = special.pageRequest()
                     .orElseThrow(() -> new IllegalArgumentException("Pageable is required in the method signature as parameter at " + method));
             return this.template().selectCursor(query, pageRequest);
