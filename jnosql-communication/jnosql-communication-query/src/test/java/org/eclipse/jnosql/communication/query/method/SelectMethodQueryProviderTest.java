@@ -539,7 +539,7 @@ class SelectMethodQueryProviderTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"findByNameContains", "findByNameEndsWith", "findByNameStartsWith"})
+    @ValueSource(strings = {"findByNameContains", "findByNameEndsWith", "findByNameStartsWith", "findByStreetNameIgnoreCaseLike"})
     void shouldReturnUnsupportedOperationExceptionQuery(String query) {
         String entity = "entity";
         Assertions.assertThrows(UnsupportedOperationException.class, () -> queryProvider.apply(query, entity));
