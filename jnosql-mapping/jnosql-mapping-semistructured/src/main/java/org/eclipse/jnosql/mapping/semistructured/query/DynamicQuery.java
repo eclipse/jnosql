@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -90,12 +91,13 @@ public class DynamicQuery implements Supplier<SelectQuery> {
      * Creates a {@link DynamicQuery} instance
      * @param args the method parameters
      * @param query the column query
+     * @param sortParser the sort parser
      * @return the {@link DynamicQuery} instance
      * @throws NullPointerException when either args or query are null
      */
-    public static DynamicQuery of(Object[] args, SelectQuery query) {
+    public static DynamicQuery of(Object[] args, SelectQuery query,  Function<String, String> sortParser) {
         Objects.requireNonNull(args, "args is required");
         Objects.requireNonNull(query, "query is required");
-        return new DynamicQuery(DynamicReturn.findSpecialParameters(args), query);
+        return new DynamicQuery(DynamicReturn.findSpecialParameters(args, sortParser), query);
     }
 }

@@ -69,6 +69,9 @@ public final class QueryParser {
     }
 
     private String extractQueryCommand(String query){
+        if(query.length() < 6){
+           return "";
+        }
         return query.substring(0, 6).toUpperCase();
     }
 
@@ -76,8 +79,5 @@ public final class QueryParser {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(manager, "manager is required");
         Objects.requireNonNull(observer, "manager is observer");
-        if (query.length() < 6) {
-            throw new QueryException(String.format("The query %s is invalid", query));
-        }
     }
 }

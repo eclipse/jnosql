@@ -28,6 +28,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -139,8 +140,10 @@ class DynamicQueryTest {
         when(query.skip()).thenReturn(0L);
         when(query.limit()).thenReturn(10L);
 
+        Function<String, String> sortParser = Function.identity();
+
         DynamicQuery dynamicQuery = DynamicQuery.of(new Object[]{Sort.asc("name"), Limit.of(20)}
-        , query);
+        , query, sortParser);
 
         SelectQuery columnQuery = dynamicQuery.get();
         assertEquals("sampleQuery", columnQuery.name());

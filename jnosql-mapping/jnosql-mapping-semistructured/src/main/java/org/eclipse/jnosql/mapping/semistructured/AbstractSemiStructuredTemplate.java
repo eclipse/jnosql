@@ -271,8 +271,8 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
 
 
     @Override
-    public long count(String columnFamily) {
-        return manager().count(columnFamily);
+    public long count(String entity) {
+        return manager().count(entity);
     }
 
 

@@ -198,6 +198,11 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
         throw new UnsupportedOperationException("StartsWith is not supported in Eclipse JNoSQL method query");
     }
 
+    @Override
+    public void exitIgnoreCase(MethodParser.IgnoreCaseContext ctx) {
+        throw new UnsupportedOperationException("IgnoreCase is not supported in Eclipse JNoSQL method query");
+    }
+
     private void appendCondition(boolean hasNot, String variable, Condition operator) {
         ParamQueryValue queryValue = new MethodParamQueryValue(variable);
         checkCondition(new MethodCondition(variable, operator, queryValue), hasNot);

@@ -1036,6 +1036,9 @@ class RepositoryProxyTest {
         @Query("FROM Person")
         Optional<Person> findByQuery();
 
+        @Query(" ")
+        Optional<Person> all();
+
         @Query("FROM Person WHERE id = :id")
         Optional<Person> findByQuery(@Param("id") String id);
 

@@ -57,13 +57,14 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      * Finds {@link SpecialParameters} from array object
      *
      * @param params the params
+     * @param sortParser the sort parser
      * @return a {@link SpecialParameters} instance
      */
-    public static SpecialParameters findSpecialParameters(Object[] params) {
+    public static SpecialParameters findSpecialParameters(Object[] params, Function<String, String> sortParser) {
         if (params == null || params.length == 0) {
             return SpecialParameters.EMPTY;
         }
-        return SpecialParameters.of(params);
+        return SpecialParameters.of(params, sortParser);
     }
 
     /**
