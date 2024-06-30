@@ -21,6 +21,7 @@ import jakarta.data.page.PageRequest;
 import jakarta.data.Sort;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -136,6 +137,8 @@ public final class SpecialParameters {
                 limit = limitInstance;
             } else if (parameter instanceof Order<?> order) {
                 order.sorts().stream().map(s -> mapper(s, sortParser)).forEach(sorts::add);
+            } else if(parameter instanceof Sort<?>[] sortArray){
+                Arrays.stream(sortArray).map(s -> mapper(s, sortParser)).forEach(sorts::add);
             } else if (parameter instanceof PageRequest request) {
                pageRequest = request;
             } else if (parameter instanceof Iterable<?> iterable) {

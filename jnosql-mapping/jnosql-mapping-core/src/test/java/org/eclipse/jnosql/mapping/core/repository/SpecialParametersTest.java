@@ -133,6 +133,16 @@ class SpecialParametersTest {
     }
 
     @Test
+    void shouldReturnArrayOrder(){
+        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio",
+                new Sort[]{Sort.asc("name"), Sort.desc("age")}}, SORT_MAPPER);
+        assertFalse(parameters.isEmpty());
+        assertThat(parameters.sorts()).hasSize(2)
+                .containsExactly(Sort.asc("name"),
+                        Sort.desc("age"));
+    }
+
+    @Test
     void shouldReturnOrderMapper(){
         Function<String, String> upper = String::toUpperCase;
         Order<?> order = Order.by(Sort.asc("name"), Sort.desc("age"));
