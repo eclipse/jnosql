@@ -12,7 +12,6 @@ package org.eclipse.jnosql.communication.semistructured;
 
 import org.eclipse.jnosql.communication.QueryException;
 
-import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Stream;
 
