@@ -14,7 +14,7 @@ asc: 'Asc';
 desc: 'Desc';
 truth: variable 'True';
 untruth: variable 'False';
-eq: variable | variable ignoreCase? not? 'Equals'| variable not;
+eq: variable | variable ignoreCase? not? 'Equals'?;
 gt: variable ignoreCase? not? 'GreaterThan';
 gte: variable ignoreCase? not? 'GreaterThanEqual';
 lt: variable ignoreCase? not? 'LessThan';
