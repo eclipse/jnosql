@@ -15,14 +15,13 @@
 package org.eclipse.jnosql.mapping.semistructured.query;
 
 import jakarta.data.Sort;
-import jakarta.data.page.PageRequest;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.OrderBy;
+import jakarta.data.repository.Query;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.core.repository.RepositoryReflectionUtils;
-import org.eclipse.jnosql.mapping.core.repository.SpecialParameters;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import java.lang.reflect.Method;
@@ -47,24 +46,41 @@ public abstract class AbstractSemiStructuredRepositoryProxy<T, K> extends BaseSe
                 .withArgs(params)
                 .withMethod(method)
                 .withTypeClass(type)
-                .withPrepareConverter(q -> template().prepare(q, entity))
+                .withPrepareConverter(textQuery -> {
+                    var prepare = (org.eclipse.jnosql.mapping.semistructured.PreparedStatement)template().prepare(textQuery, entity);
+                    prepare.setSelectMapper(query -> updateQueryDynamically(params, query));
+                    return prepare;
+                })
                 .build();
         return methodReturn.execute();
     }
 
     @Override
     protected Object executeCursorPagination(Object instance, Method method, Object[] params) {
-        if (method.getAnnotation(Find.class) == null) {
+
+        if (method.getAnnotation(Query.class) != null) {
+            var entity = entityMetadata().name();
+            var textQuery = method.getAnnotation(Query.class).value();
+            var prepare = (org.eclipse.jnosql.mapping.semistructured.PreparedStatement)template().prepare(textQuery, entity);
+            var argsParams = RepositoryReflectionUtils.INSTANCE.getParams(method, params);
+            argsParams.forEach(prepare::bind);
+            var selectQuery = updateQueryDynamically(params, prepare.selectQuery().orElseThrow());
+            var special = DynamicReturn.findSpecialParameters(params, sortParser());
+            var pageRequest = special.pageRequest()
+                    .orElseThrow(() -> new IllegalArgumentException("Pageable is required in the method signature as parameter at " + method));
+
+            return this.template().selectCursor(selectQuery, pageRequest);
+        } else if (method.getAnnotation(Find.class) == null) {
             var query = query(method, params);
-            SpecialParameters special = DynamicReturn.findSpecialParameters(params, sortParser());
-            PageRequest pageRequest = special.pageRequest()
+            var special = DynamicReturn.findSpecialParameters(params, sortParser());
+            var pageRequest = special.pageRequest()
                     .orElseThrow(() -> new IllegalArgumentException("Pageable is required in the method signature as parameter at " + method));
             return this.template().selectCursor(query, pageRequest);
         } else {
-            Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
+            var parameters = RepositoryReflectionUtils.INSTANCE.getBy(method, params);
             var query = SemiStructuredParameterBasedQuery.INSTANCE.toQuery(parameters, getSorts(method, entityMetadata()), entityMetadata());
-            SpecialParameters special = DynamicReturn.findSpecialParameters(params, sortParser());
-            PageRequest pageRequest = special.pageRequest()
+            var special = DynamicReturn.findSpecialParameters(params, sortParser());
+            var pageRequest = special.pageRequest()
                     .orElseThrow(() -> new IllegalArgumentException("Pageable is required in the method signature as parameter at " + method));
             return this.template().selectCursor(query, pageRequest);
         }

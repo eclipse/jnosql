@@ -604,7 +604,7 @@ class RepositoryProxyTest {
 
     @Test
     void shouldExecuteJNoSQLQuery() {
-        PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
+        PreparedStatement preparedStatement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
         when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(preparedStatement);
         personRepository.findByQuery();
         verify(template).prepare("FROM Person", "Person");
@@ -612,7 +612,7 @@ class RepositoryProxyTest {
 
     @Test
     void shouldExecuteJNoSQLPrepare() {
-        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        PreparedStatement statement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
         when(template.prepare(Mockito.anyString(),Mockito.anyString() )).thenReturn(statement);
         personRepository.findByQuery("Ada");
         verify(statement).bind("id", "Ada");
@@ -620,7 +620,7 @@ class RepositoryProxyTest {
 
     @Test
     void shouldExecuteJNoSQLPrepareAge() {
-        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        PreparedStatement statement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
         when(template.prepare(Mockito.anyString(),Mockito.anyString() )).thenReturn(statement);
         personRepository.findByQueryAge(10);
         verify(statement).bind("?1", 10);
@@ -628,7 +628,7 @@ class RepositoryProxyTest {
 
     @Test
     void shouldExecuteJNoSQLPrepareUpdate() {
-        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        PreparedStatement statement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
         when(template.prepare(Mockito.anyString(),Mockito.anyString() )).thenReturn(statement);
         personRepository.update(10, "id");
         verify(statement).bind("?1", 10);
@@ -637,7 +637,7 @@ class RepositoryProxyTest {
 
     @Test
     void shouldExecuteJNoSQLPrepareUpdate2() {
-        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        PreparedStatement statement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
         when(template.prepare(Mockito.anyString(),Mockito.anyString() )).thenReturn(statement);
         personRepository.update("name", "id");
         verify(statement).bind("name", "name");
@@ -646,7 +646,7 @@ class RepositoryProxyTest {
 
     @Test
     void shouldExecuteJNoSQLPrepareDelete() {
-        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        PreparedStatement statement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
         when(template.prepare(Mockito.anyString(),Mockito.anyString() )).thenReturn(statement);
         personRepository.delete("10");
         verify(statement).bind("?1", "10");
@@ -654,7 +654,7 @@ class RepositoryProxyTest {
 
     @Test
     void shouldExecuteJNoSQLPrepareDelete2() {
-        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        PreparedStatement statement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
         when(template.prepare(Mockito.anyString(),Mockito.anyString() )).thenReturn(statement);
         personRepository.delete("name", "id");
         verify(statement).bind("name", "name");

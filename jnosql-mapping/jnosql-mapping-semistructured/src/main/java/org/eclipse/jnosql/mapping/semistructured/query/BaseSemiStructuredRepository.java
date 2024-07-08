@@ -20,14 +20,12 @@ import jakarta.data.Sort;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.communication.Params;
-import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.method.DeleteMethodProvider;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser;
 import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
 import org.eclipse.jnosql.communication.semistructured.DeleteQueryParser;
 import org.eclipse.jnosql.communication.semistructured.Element;
-import org.eclipse.jnosql.communication.semistructured.QueryParams;
 import org.eclipse.jnosql.communication.semistructured.SelectQueryParser;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
@@ -89,11 +87,11 @@ public abstract class BaseSemiStructuredRepository<T, K> extends AbstractReposit
 
 
     protected org.eclipse.jnosql.communication.semistructured.SelectQuery query(Method method, Object[] args) {
-        SelectMethodProvider provider = SelectMethodProvider.INSTANCE;
-        SelectQuery selectQuery = provider.apply(method, entityMetadata().name());
-        QueryParams queryParams = SELECT_PARSER.apply(selectQuery, parser());
+        var provider = SelectMethodProvider.INSTANCE;
+        var selectQuery = provider.apply(method, entityMetadata().name());
+        var queryParams = SELECT_PARSER.apply(selectQuery, parser());
         var query = queryParams.query();
-        Params params = queryParams.params();
+        var params = queryParams.params();
         paramsBinder().bind(params, args(args), method);
         return updateQueryDynamically(args(args), query);
     }

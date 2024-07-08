@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -27,6 +28,8 @@ import java.util.stream.StreamSupport;
  * Represents a precompiled query statement.
  */
 public final class CommunicationPreparedStatement {
+
+    private static final UnaryOperator<SelectQuery> SELECT_MAPPER_DEFAULT = s -> s;
 
     private final SelectQuery selectQuery;
 
@@ -43,6 +46,8 @@ public final class CommunicationPreparedStatement {
     private final List<String> paramsLeft;
 
     private final DatabaseManager manager;
+
+    private UnaryOperator<SelectQuery> selectMapper = SELECT_MAPPER_DEFAULT;
 
     private CommunicationPreparedStatement(SelectQuery selectQuery,
                                            DeleteQuery deleteQuery,
@@ -111,7 +116,7 @@ public final class CommunicationPreparedStatement {
      *
      * @return the select query
      */
-    public Optional<SelectQuery> select(){
+    public Optional<SelectQuery> select() {
         return Optional.ofNullable(selectQuery);
     }
 
@@ -127,7 +132,7 @@ public final class CommunicationPreparedStatement {
         }
         switch (type) {
             case SELECT -> {
-                return manager.select(selectQuery);
+                return manager.select(operator().apply(selectQuery));
             }
             case DELETE -> {
                 manager.delete(deleteQuery);
@@ -138,6 +143,25 @@ public final class CommunicationPreparedStatement {
             }
             default -> throw new UnsupportedOperationException("there is not support to operation type: " + type);
         }
+    }
+
+    /**
+     * Returns the operator to be used in the query.
+     *
+     * @return the operator
+     */
+    public UnaryOperator<SelectQuery> operator() {
+        return this.selectMapper;
+    }
+
+    /**
+     * Sets the operator to be used in the query.
+     *
+     * @param selectMapper the operator
+     */
+    public void setSelectMapper(UnaryOperator<SelectQuery> selectMapper) {
+        Objects.requireNonNull(selectMapper, "selectMapper is required");
+        this.selectMapper = selectMapper;
     }
 
     /**

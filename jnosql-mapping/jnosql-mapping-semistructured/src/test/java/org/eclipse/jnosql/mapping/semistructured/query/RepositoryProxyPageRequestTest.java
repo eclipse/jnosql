@@ -23,6 +23,8 @@ import jakarta.data.repository.BasicRepository;
 import jakarta.data.Sort;
 import jakarta.data.repository.By;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.Param;
+import jakarta.data.repository.Query;
 import jakarta.inject.Inject;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
@@ -684,6 +686,37 @@ public class RepositoryProxyPageRequestTest {
         });
     }
 
+    @Test
+    public void shouldParameterQuery() {
+        CursoredPage<Person> mock = Mockito.mock(CursoredPage.class);
+        var prepare = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
+
+        when(prepare.selectQuery()).thenReturn(Optional.of(SelectQuery.select().from("Person").where("name").eq("ada").build()));
+        when(template.<Person>selectCursor(any(SelectQuery.class),
+                any(PageRequest.class))).thenReturn(mock);
+
+        when(template.<Person>prepare(any(String.class),
+                any(String.class))).thenReturn(prepare);
+
+        CursoredPage<Person> page = personRepository.cursorJQDL("name",
+                PageRequest.afterCursor(PageRequest.Cursor.forKey("Ada"), 1, 10, false));
+
+        SoftAssertions.assertSoftly(s -> s.assertThat(page).isEqualTo(mock));
+
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        verify(template).selectCursor(captor.capture(), Mockito.any());
+        var query = captor.getValue();
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.skip()).isEqualTo(0);
+            soft.assertThat(query.condition().isPresent()).isTrue();
+            soft.assertThat(query.sorts()).hasSize(0);
+            CriteriaCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(EQUALS);
+        });
+    }
+
 
 
     private PageRequest getPageRequest() {
@@ -701,6 +734,9 @@ public class RepositoryProxyPageRequestTest {
 
         @Find
         CursoredPage<Person> findPageParameter(@By("name") String name, PageRequest pageRequest);
+
+        @Query("select * from Person where name = :name")
+        CursoredPage<Person> cursorJQDL(@Param("name") String name, PageRequest pageRequest);
 
         List<Person> findByName(String name, Sort<Person> sort);
 
