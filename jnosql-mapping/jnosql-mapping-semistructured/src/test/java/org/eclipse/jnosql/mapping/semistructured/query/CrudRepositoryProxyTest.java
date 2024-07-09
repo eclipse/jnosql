@@ -606,7 +606,7 @@ class CrudRepositoryProxyTest {
 
     @Test
     void shouldExecuteJNoSQLQuery() {
-        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        PreparedStatement statement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
         when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(statement);
         personRepository.findByQuery();
         verify(template).prepare("FROM Person", "Person");
@@ -614,7 +614,7 @@ class CrudRepositoryProxyTest {
 
     @Test
     void shouldExecuteJNoSQLPrepare() {
-        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        PreparedStatement statement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
         when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(statement);
         personRepository.findByQuery("Ada");
         verify(statement).bind("id", "Ada");
@@ -622,7 +622,7 @@ class CrudRepositoryProxyTest {
 
     @Test
     void shouldExecuteJNoSQLPrepareIndex() {
-        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        PreparedStatement statement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
         when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(statement);
         personRepository.findByQuery(10);
         verify(statement).bind("?1", 10);
@@ -732,7 +732,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldCount() {
 
-        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        PreparedStatement statement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
         when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(statement);
 
         when(statement.isCount()).thenReturn(true);

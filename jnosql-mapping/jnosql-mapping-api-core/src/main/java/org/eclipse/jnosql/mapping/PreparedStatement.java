@@ -65,4 +65,5 @@ public interface PreparedStatement {
      * @return {@code true} if the operation is a count operation, otherwise {@code false}
      */
     boolean isCount();
+
 }

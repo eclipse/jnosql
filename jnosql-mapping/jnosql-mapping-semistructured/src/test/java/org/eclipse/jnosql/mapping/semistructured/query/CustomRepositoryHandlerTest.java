@@ -347,7 +347,7 @@ class CustomRepositoryHandlerTest {
     @Test
     void shouldExecuteQuery(){
 
-        var preparedStatement = Mockito.mock(PreparedStatement.class);
+        var preparedStatement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
         Mockito.when(template.prepare(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(preparedStatement);
         Mockito.when(template.query(Mockito.anyString()))

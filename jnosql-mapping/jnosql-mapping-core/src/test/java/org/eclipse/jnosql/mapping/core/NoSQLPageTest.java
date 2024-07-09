@@ -49,11 +49,24 @@ class NoSQLPageTest {
                 PageRequest.ofPage(2));
 
         assertThrows(UnsupportedOperationException.class, page::totalPages);
-
         assertThrows(UnsupportedOperationException.class, page::totalElements);
-        assertThrows(UnsupportedOperationException.class, page::hasNext);
-        assertThrows(UnsupportedOperationException.class, page::hasPrevious);
         assertThrows(UnsupportedOperationException.class, page::hasTotals);
+    }
+
+    @Test
+    void shouldReturnTrueHasNext(){
+        Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
+                PageRequest.ofPage(2));
+
+        org.assertj.core.api.Assertions.assertThat(page.hasNext()).isTrue();
+    }
+
+    @Test
+    void shouldReturnTrueHasPrevious(){
+        Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
+                PageRequest.ofPage(2));
+
+        org.assertj.core.api.Assertions.assertThat(page.hasPrevious()).isTrue();
     }
 
     @Test

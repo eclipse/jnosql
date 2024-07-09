@@ -66,12 +66,12 @@ public class NoSQLPage<T> implements Page<T> {
 
     @Override
     public boolean hasNext() {
-        throw new UnsupportedOperationException("Eclipse JNoSQL has no support for this feature hasNext");
+      return true;
     }
 
     @Override
     public boolean hasPrevious() {
-       throw new UnsupportedOperationException("Eclipse JNoSQL has no support for this feature hasPrevious");
+        return true;
     }
 
     @Override
