@@ -91,13 +91,12 @@ public class DynamicQuery implements Supplier<SelectQuery> {
      * Creates a {@link DynamicQuery} instance
      * @param args the method parameters
      * @param query the column query
-     * @param sortParser the sort parser
      * @return the {@link DynamicQuery} instance
      * @throws NullPointerException when either args or query are null
      */
-    public static DynamicQuery of(Object[] args, SelectQuery query,  Function<String, String> sortParser) {
+    public static DynamicQuery of(Object[] args, SelectQuery query) {
         Objects.requireNonNull(args, "args is required");
         Objects.requireNonNull(query, "query is required");
-        return new DynamicQuery(DynamicReturn.findSpecialParameters(args, sortParser), query);
+        return new DynamicQuery(DynamicReturn.findSpecialParameters(args, Function.identity()), query);
     }
 }

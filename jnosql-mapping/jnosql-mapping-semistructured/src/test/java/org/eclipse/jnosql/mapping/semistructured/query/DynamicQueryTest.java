@@ -140,10 +140,8 @@ class DynamicQueryTest {
         when(query.skip()).thenReturn(0L);
         when(query.limit()).thenReturn(10L);
 
-        Function<String, String> sortParser = Function.identity();
-
         DynamicQuery dynamicQuery = DynamicQuery.of(new Object[]{Sort.asc("name"), Limit.of(20)}
-        , query, sortParser);
+        , query);
 
         SelectQuery columnQuery = dynamicQuery.get();
         assertEquals("sampleQuery", columnQuery.name());
