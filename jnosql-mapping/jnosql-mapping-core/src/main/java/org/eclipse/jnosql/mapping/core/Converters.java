@@ -26,6 +26,7 @@ import org.eclipse.jnosql.mapping.metadata.FieldParameterMetadata;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -67,7 +68,7 @@ public class Converters {
             CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
             return (T) beanManager.getReference(bean, type, ctx);
         } else {
-            LOGGER.info("The converter type: " + type + " not found on CDI context, creating by constructor");
+            LOGGER.log(Level.FINE, "The converter type: " + type + " not found on CDI context, creating by constructor");
             return (T) metadata.newConverter() .orElseThrow(() -> new NoSuchElementException("There is not converter to the field: "
                     + metadata.name() + " in the Field: " + metadata.type()));
         }
