@@ -16,6 +16,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.BooleanQueryValue;
 import org.eclipse.jnosql.communication.query.EnumQueryValue;
+import org.eclipse.jnosql.communication.query.NullQueryValue;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
@@ -400,16 +401,17 @@ class SelectJakartaDataQueryProviderTest {
         SelectQuery selectQuery = selectProvider.apply(query, "entity");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.fields()).hasSize(1).contains("hexadecimal");
             soft.assertThat(selectQuery.entity()).isEqualTo("entity");
             soft.assertThat(selectQuery.orderBy()).isEmpty();
             soft.assertThat(selectQuery.where()).isNotEmpty();
             var where = selectQuery.where().orElseThrow();
             var condition = where.condition();
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
-            soft.assertThat(condition.name()).isEqualTo("age");
-            soft.assertThat(condition.value()).isEqualTo(NumberQueryValue.of(10));
-            soft.assertThat(selectQuery.isCount()).isTrue();
+            soft.assertThat(condition.name()).isEqualTo("hexadecimal");
+            soft.assertThat(condition.value()).isEqualTo(NullQueryValue.INSTANCE);
+            soft.assertThat(selectQuery.isCount()).isFalse();
         });
     }
+
 }
