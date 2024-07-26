@@ -17,6 +17,7 @@ import org.eclipse.jnosql.communication.QueryException;
 import jakarta.data.Sort;
 import jakarta.data.Direction;
 import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -460,6 +461,43 @@ class SelectQueryParserTest {
         assertThrows(UnsupportedOperationException.class, prepare::result);
         assertThrows(UnsupportedOperationException.class, prepare::singleResult);
     }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"FROM entity WHERE name is null"})
+    void shouldRunIsNull(String query) {
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        parser.query(query, null, manager, observer);
+        Mockito.verify(manager).select(captor.capture());
+        var selectQuery = captor.getValue();
+
+        checkBaseQuery(selectQuery);
+        assertTrue(selectQuery.condition().isPresent());
+        var condition = selectQuery.condition().get();
+
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals(Element.of("name", null), condition.element());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"FROM entity WHERE name is not null"})
+    void shouldRunIsNotNull(String query) {
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        parser.query(query, null, manager, observer);
+        Mockito.verify(manager).select(captor.capture());
+        var selectQuery = captor.getValue();
+
+        checkBaseQuery(selectQuery);
+        assertTrue(selectQuery.condition().isPresent());
+        var condition = selectQuery.condition().get();
+        var criteriaCondition = condition.element().get(CriteriaCondition.class);
+        assertEquals(Condition.NOT, condition.condition());
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(criteriaCondition.condition()).isEqualTo(Condition.EQUALS);
+            softly.assertThat(criteriaCondition.element()).isEqualTo(Element.of("name", null));
+        });
+    }
+
 
 
     private void checkBaseQuery(SelectQuery selectQuery) {
