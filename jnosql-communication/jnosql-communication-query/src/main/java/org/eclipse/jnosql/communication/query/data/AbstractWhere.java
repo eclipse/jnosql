@@ -67,6 +67,11 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
         }
         var contexts = ctx.scalar_expression();
         var contextCondition = getCondition(ctx);
+
+        if(contextCondition.equals(NOT)){
+            contextCondition = EQUALS;
+            hasNot = !hasNot;
+        }
         var name = contexts.get(0).getText();
         var value = contexts.get(1);
         var literal = PrimaryFunction.INSTANCE.apply(value.primary_expression());
@@ -185,6 +190,9 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
             return Condition.GREATER_THAN;
         } else if (ctx.GTEQ() != null) {
             return Condition.GREATER_EQUALS_THAN;
+        }
+        else if (ctx.NEQ() != null) {
+            return NOT;
         }
         throw new UnsupportedOperationException("The operation does not support: " + ctx.getText());
     }
