@@ -16,9 +16,7 @@ package org.eclipse.jnosql.mapping.core.repository.returns;
 
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ArrayRepositoryReturn extends AbstractRepositoryReturn {
 
