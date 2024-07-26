@@ -80,10 +80,12 @@ class ArrayRepositoryReturnTest {
                 .withPagination(PageRequest.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
-        List<Person> person = (List<Person>) repositoryReturn.convertPageRequest(dynamic);
-        Assertions.assertNotNull(person);
-        assertFalse(person.isEmpty());
-        assertEquals(ada, person.get(0));
+        Person[] person = (Person[]) repositoryReturn.convertPageRequest(dynamic);
+        SoftAssertions.assertSoftly(s -> {
+            s.assertThat(person).isNotNull();
+            s.assertThat(person).hasSize(1);
+            s.assertThat(person[0]).isEqualTo(ada);
+        });
     }
 
 
