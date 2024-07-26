@@ -32,12 +32,25 @@ public class ArrayRepositoryReturn extends AbstractRepositoryReturn {
     }
 
     @Override
+
     public <T> Object convert(DynamicReturn<T> dynamicReturn) {
-        return dynamicReturn.result().collect(Collectors.toList());
+        List<T> entities = dynamicReturn.result().toList();
+       return toArray(entities);
     }
 
     @Override
     public <T> Object convertPageRequest(DynamicReturn<T> dynamicReturn) {
-        return dynamicReturn.streamPagination().collect(Collectors.toList());
+        List<T> entities = dynamicReturn.streamPagination().toList();
+        return toArray(entities);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T[] toArray(List<T> entities) {
+        if (entities.isEmpty()) {
+            return (T[]) java.lang.reflect.Array.newInstance(Object.class, 0);
+        }
+        T[] array = (T[]) java.lang.reflect.Array.newInstance(
+                entities.get(0).getClass(), entities.size());
+        return entities.toArray(array);
     }
 }
