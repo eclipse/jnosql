@@ -19,6 +19,7 @@ import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
 import org.eclipse.jnosql.query.grammar.data.JDQLParser;
 
+import java.util.Locale;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
@@ -44,7 +45,7 @@ enum PrimaryFunction implements Function<JDQLParser.Primary_expressionContext, Q
             return DefaultQueryValue.of(context.input_parameter().getText());
         } else if (context.special_expression() != null) {
             var specialExpression = context.special_expression().getText();
-            return switch (specialExpression) {
+            return switch (specialExpression.toUpperCase(Locale.US)) {
                 case "TRUE" -> BooleanQueryValue.TRUE;
                 case "FALSE" -> BooleanQueryValue.FALSE;
                 default ->
