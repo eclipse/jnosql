@@ -13,6 +13,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Enables custom Repository
 - Include the `First` keyword in the method by query in the Repository
 - Include the `Null`, `NotNull` and `countAll` keywords in the method by query in the Repository
+- Include condition to is NUll and is Not Null in the query
 
 === Fixed
 

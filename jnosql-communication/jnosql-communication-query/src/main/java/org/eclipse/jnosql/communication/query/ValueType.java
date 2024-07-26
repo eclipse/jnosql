@@ -71,5 +71,6 @@ public enum ValueType {
      * type that can have only the values true or false. Used in NoSQL queries to
      * handle logical branching and conditional checks.
      */
-    BOOLEAN
+    BOOLEAN,
+    NULL:
 }

@@ -77,6 +77,25 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
     }
 
     @Override
+    public void exitNull_comparison_expression(JDQLParser.Null_comparison_expressionContext ctx) {
+        super.exitNull_comparison_expression(ctx);
+        boolean hasNot = false;
+        boolean andCondition = true;
+        if(ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
+                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent){
+            hasNot = Objects.nonNull(grandParent.NOT());
+            andCondition = Objects.isNull(grandParent.OR());
+        }
+        var stateFieldPathExpressionContext = ctx.state_field_path_expression();
+        var name = stateFieldPathExpressionContext.getText();
+        if (this.condition != null && this.condition.value() instanceof ConditionQueryValue) {
+            and = andCondition;
+        }
+        checkCondition(new DefaultQueryCondition(name, EQUALS, literal), hasNot);
+        and = andCondition;
+    }
+
+    @Override
     public void exitLike_expression(JDQLParser.Like_expressionContext ctx) {
         super.exitLike_expression(ctx);
         boolean hasNot = Objects.nonNull(ctx.NOT());
