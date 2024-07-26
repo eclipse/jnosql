@@ -54,7 +54,7 @@ record DefaultValue(Object value)  implements Value {
         if (REFERENCE_READER.test(Objects.requireNonNull(supplier, "supplier is required"))) {
             return REFERENCE_READER.convert(supplier, value);
         }
-        throw new UnsupportedOperationException("The type " + supplier + " is not supported");
+        throw new UnsupportedOperationException("The type " + supplier.get().getTypeName() + " is not supported");
     }
 
     @Override
