@@ -306,4 +306,40 @@ class DeleteJakartaDataQueryProviderTest {
         });
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "DELETE FROM entity WHERE NOT age <> 10")
+    void shouldUseNotNotEquals(String query) {
+        var deleteQuery = deleteProvider.apply(query);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(deleteQuery.fields()).isEmpty();
+            soft.assertThat(deleteQuery.entity()).isEqualTo("entity");
+            soft.assertThat(deleteQuery.where()).isNotEmpty();
+            var where = deleteQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.name()).isEqualTo("age");
+            soft.assertThat(condition.value()).isEqualTo(NumberQueryValue.of(10));
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "DELETE FROM entity WHERE age <> 10")
+    void shouldUseNotEquals(String query) {
+        var deleteQuery = deleteProvider.apply(query);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(deleteQuery.fields()).isEmpty();
+            soft.assertThat(deleteQuery.entity()).isEqualTo("entity");
+            soft.assertThat(deleteQuery.where()).isNotEmpty();
+            var where = deleteQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.NOT);
+            var notCondition = (ConditionQueryValue) condition.value();
+            var queryCondition = notCondition.get().get(0);
+            soft.assertThat(queryCondition.name()).isEqualTo("age");
+            soft.assertThat(queryCondition.value()).isEqualTo(NumberQueryValue.of(10));
+        });
+    }
+
 }
