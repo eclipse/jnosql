@@ -14,8 +14,11 @@ package org.eclipse.jnosql.communication.query.data;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.BooleanQueryValue;
+import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.EnumQueryValue;
+import org.eclipse.jnosql.communication.query.NullQueryValue;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
+import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
 import org.eclipse.jnosql.communication.query.data.DefaultQueryValue;
 import org.eclipse.jnosql.communication.query.data.DeleteProvider;
@@ -265,6 +268,41 @@ class DeleteJakartaDataQueryProviderTest {
             soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
             soft.assertThat(condition.name()).isEqualTo("days");
             soft.assertThat(condition.value()).isEqualTo(EnumQueryValue.of(DayOfWeek.MONDAY));
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "DELETE FROM entity WHERE hexadecimal IS NULL")
+    void shouldQueryIsNull(String query) {
+        var deleteQuery = deleteProvider.apply(query);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(deleteQuery.fields()).isEmpty();
+            soft.assertThat(deleteQuery.entity()).isEqualTo("entity");
+            var where = deleteQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.EQUALS);
+            soft.assertThat(condition.name()).isEqualTo("hexadecimal");
+            soft.assertThat(condition.value()).isEqualTo(NullQueryValue.INSTANCE);
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "DELETE FROM entity WHERE hexadecimal IS NOT NULL")
+    void shouldQueryIsNotNull(String query) {
+
+        var deleteQuery = deleteProvider.apply(query);
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(deleteQuery.fields()).isEmpty();
+            soft.assertThat(deleteQuery.entity()).isEqualTo("entity");
+            soft.assertThat(deleteQuery.where()).isNotEmpty();
+            var where = deleteQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.NOT);
+            var notCondition = (ConditionQueryValue) condition.value();
+            var queryCondition = notCondition.get().get(0);
+            soft.assertThat(queryCondition.name()).isEqualTo("hexadecimal");
+            soft.assertThat(queryCondition.value()).isEqualTo(NullQueryValue.INSTANCE);
         });
     }
 
