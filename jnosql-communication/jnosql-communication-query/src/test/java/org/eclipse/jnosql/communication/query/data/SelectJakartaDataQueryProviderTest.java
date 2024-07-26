@@ -15,6 +15,7 @@ import jakarta.data.Sort;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.BooleanQueryValue;
+import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.EnumQueryValue;
 import org.eclipse.jnosql.communication.query.NullQueryValue;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
@@ -414,4 +415,24 @@ class SelectJakartaDataQueryProviderTest {
         });
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "SELECT hexadecimal WHERE hexadecimal IS NOT NULL")
+    void shouldQueryIsNotNull(String query){
+        var selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).hasSize(1).contains("hexadecimal");
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.NOT);
+            var notCondition = (ConditionQueryValue) condition.value();
+            var queryCondition = notCondition.get().get(0);
+            soft.assertThat(queryCondition.name()).isEqualTo("hexadecimal");
+            soft.assertThat(queryCondition.value()).isEqualTo(NullQueryValue.INSTANCE);
+            soft.assertThat(selectQuery.isCount()).isFalse();
+        });
+    }
 }
