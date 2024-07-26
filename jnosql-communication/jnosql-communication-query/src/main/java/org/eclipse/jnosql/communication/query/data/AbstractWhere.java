@@ -13,6 +13,7 @@ package org.eclipse.jnosql.communication.query.data;
 
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
+import org.eclipse.jnosql.communication.query.NullQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
@@ -79,11 +80,10 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
     @Override
     public void exitNull_comparison_expression(JDQLParser.Null_comparison_expressionContext ctx) {
         super.exitNull_comparison_expression(ctx);
-        boolean hasNot = false;
+        boolean hasNot = Objects.nonNull(ctx.NOT());
         boolean andCondition = true;
         if(ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
                 && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent){
-            hasNot = Objects.nonNull(grandParent.NOT());
             andCondition = Objects.isNull(grandParent.OR());
         }
         var stateFieldPathExpressionContext = ctx.state_field_path_expression();
@@ -91,7 +91,7 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
         if (this.condition != null && this.condition.value() instanceof ConditionQueryValue) {
             and = andCondition;
         }
-        checkCondition(new DefaultQueryCondition(name, EQUALS, literal), hasNot);
+        checkCondition(new DefaultQueryCondition(name, EQUALS, NullQueryValue.INSTANCE), hasNot);
         and = andCondition;
     }
 
