@@ -81,11 +81,11 @@ special_expression
     |  FALSE
     ;
 
-state_field_path_expression : IDENTIFIER ('.' IDENTIFIER)*;
+state_field_path_expression : IDENTIFIER ('.' IDENTIFIER)* | FULLY_QUALIFIED_IDENTIFIER;
 
 entity_name : IDENTIFIER; // no ambiguity
 
-enum_literal : IDENTIFIER ('.' IDENTIFIER)*; // ambiguity with state_field_path_expression resolvable semantically
+enum_literal : IDENTIFIER ('.' IDENTIFIER)* | FULLY_QUALIFIED_IDENTIFIER; // ambiguity with state_field_path_expression resolvable semantically
 
 input_parameter : ':' IDENTIFIER | '?' INTEGER;
 
@@ -150,9 +150,10 @@ COLON           : ':';
 QUESTION        : '?';
 
 // Identifier and literals
+FULLY_QUALIFIED_IDENTIFIER : [a-zA-Z_][a-zA-Z0-9_]*('.'[a-zA-Z_][a-zA-Z0-9_]*)+;
 IDENTIFIER      : [a-zA-Z_][a-zA-Z0-9_]*;
-STRING : '"' ( ~["\\] | '\\' . )* '"'  // double quoted strings
-       | '\'' ( ~['\\] | '\\' . )* '\'';  // single quoted strings
+STRING          : '"' ( ~["\\] | '\\' . )* '"'  // double quoted strings
+                | '\'' ( ~['\\] | '\\' . )* '\'';  // single quoted strings
 INTEGER         : '-'?[0-9]+;
 DOUBLE          : '-'?[0-9]+'.'[0-9]* | '-'?'.'[0-9]+;
 
