@@ -74,11 +74,11 @@ function_expression
     ;
 
 special_expression
-    : 'LOCAL' 'DATE'
-    | 'LOCAL' 'DATETIME'
-    | 'LOCAL' 'TIME'
-    | 'TRUE'
-    | 'FALSE'
+    : LOCAL DATE
+    | LOCAL DATETIME
+    | LOCAL TIME
+    |  TRUE
+    |  FALSE
     ;
 
 state_field_path_expression : IDENTIFIER ('.' IDENTIFIER)*;
@@ -123,6 +123,10 @@ LOCAL_TIME      : [lL][oO][cC][aA][lL] [tT][iI][mM][eE];
 BETWEEN         : [bB][eE][tT][wW][eE][eE][nN];
 LIKE            : [lL][iI][kK][eE];
 THIS            : [tT][hH][iI][sS];
+LOCAL           : [lL][oO][cC][aA][lL];
+DATE            : [dD][aA][tT][eE];
+DATETIME        : [dD][aA][tT][eE][tT][iI][mM][eE];
+TIME            : [tT][iI][mM][eE];
 
 // Operators
 EQ              : '=';
