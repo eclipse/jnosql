@@ -45,6 +45,9 @@ final class Values {
             case ENUM -> {
                 return ((EnumQueryValue) value).get().name();
             }
+            case NULL -> {
+                return null;
+            }
             default -> throw new QueryException("There is not support to the value: " + type);
         }
     }
