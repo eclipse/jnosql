@@ -65,12 +65,12 @@ primary_expression
     ;
 
 function_expression
-    : 'ABS' '(' scalar_expression ')'
-    | 'LENGTH' '(' scalar_expression ')'
-    | 'LOWER' '(' scalar_expression ')'
-    | 'UPPER' '(' scalar_expression ')'
-    | 'LEFT' '(' scalar_expression ',' scalar_expression ')'
-    | 'RIGHT' '(' scalar_expression ',' scalar_expression ')'
+    : ABS '(' scalar_expression ')'
+    | LENGTH '(' scalar_expression ')'
+    | LOWER '(' scalar_expression ')'
+    | UPPER '(' scalar_expression ')'
+    | LEFT '(' scalar_expression ',' scalar_expression ')'
+    | RIGHT '(' scalar_expression ',' scalar_expression ')'
     ;
 
 special_expression
