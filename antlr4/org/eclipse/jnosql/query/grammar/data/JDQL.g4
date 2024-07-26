@@ -11,7 +11,7 @@ from_clause : FROM entity_name;
 where_clause : WHERE conditional_expression;
 
 set_clause : SET update_item (',' update_item)*;
-update_item : state_field_path_expression '=' (scalar_expression | 'NULL');
+update_item : state_field_path_expression '=' (scalar_expression | NULL);
 
 select_clause : SELECT select_list;
 select_list
