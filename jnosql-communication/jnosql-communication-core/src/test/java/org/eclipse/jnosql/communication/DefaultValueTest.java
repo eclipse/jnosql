@@ -163,7 +163,7 @@ class DefaultValueTest {
             Map<String, List<String>> result = value.get(new TypeReference<>() {
             });
         }).isInstanceOf(UnsupportedOperationException.class)
-                .hasMessage("The type TypeReference{type=java.util.Map<java.lang.String, java.util.List<java.lang.String>>} is not supported");
+                .hasMessage("The type java.util.Map<java.lang.String, java.util.List<java.lang.String>> is not supported");
     }
 
     @Test
