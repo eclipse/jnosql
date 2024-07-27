@@ -49,6 +49,11 @@ public final class SelectMethodQueryProvider extends AbstractMethodQueryProvider
     }
 
     @Override
+    public void exitFirstOne(MethodParser.FirstOneContext ctx) {
+        this.limit = 1L;
+    }
+
+    @Override
     Function<MethodParser, ParseTree> getParserTree() {
         return MethodParser::select;
     }
