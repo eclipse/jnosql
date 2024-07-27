@@ -76,7 +76,7 @@ class SelectMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findFirst10By"})
-    void shouldFindFirstLimit(String query) {
+    void shouldFindFirstTenLimit(String query) {
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
@@ -84,6 +84,21 @@ class SelectMethodQueryProviderTest {
         assertTrue(selectQuery.fields().isEmpty());
         assertTrue(selectQuery.orderBy().isEmpty());
         assertEquals(10, selectQuery.limit());
+        assertEquals(0, selectQuery.skip());
+        Optional<Where> where = selectQuery.where();
+        assertFalse(where.isPresent());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findFirstBy"})
+    void shouldFindFirstLimit(String query) {
+        String entity = "entity";
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
+        assertNotNull(selectQuery);
+        assertEquals(entity, selectQuery.entity());
+        assertTrue(selectQuery.fields().isEmpty());
+        assertTrue(selectQuery.orderBy().isEmpty());
+        assertEquals(1, selectQuery.limit());
         assertEquals(0, selectQuery.skip());
         Optional<Where> where = selectQuery.where();
         assertFalse(where.isPresent());
