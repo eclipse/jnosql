@@ -71,5 +71,11 @@ public enum ValueType {
      * type that can have only the values true or false. Used in NoSQL queries to
      * handle logical branching and conditional checks.
      */
-    BOOLEAN
+    BOOLEAN,
+    /**
+     * Represents a null value. Null is a special value in NoSQL databases that
+     * indicates the absence of a value. Used in queries to handle missing or
+     * unknown data, or to represent the absence of a value in a specific context.
+     */
+    NULL
 }

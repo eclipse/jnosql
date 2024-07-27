@@ -11,7 +11,7 @@ from_clause : FROM entity_name;
 where_clause : WHERE conditional_expression;
 
 set_clause : SET update_item (',' update_item)*;
-update_item : state_field_path_expression '=' (scalar_expression | 'NULL');
+update_item : state_field_path_expression '=' (scalar_expression | NULL);
 
 select_clause : SELECT select_list;
 select_list
@@ -65,27 +65,27 @@ primary_expression
     ;
 
 function_expression
-    : 'ABS' '(' scalar_expression ')'
-    | 'LENGTH' '(' scalar_expression ')'
-    | 'LOWER' '(' scalar_expression ')'
-    | 'UPPER' '(' scalar_expression ')'
-    | 'LEFT' '(' scalar_expression ',' scalar_expression ')'
-    | 'RIGHT' '(' scalar_expression ',' scalar_expression ')'
+    : ABS '(' scalar_expression ')'
+    | LENGTH '(' scalar_expression ')'
+    | LOWER '(' scalar_expression ')'
+    | UPPER '(' scalar_expression ')'
+    | LEFT '(' scalar_expression ',' scalar_expression ')'
+    | RIGHT '(' scalar_expression ',' scalar_expression ')'
     ;
 
 special_expression
-    : 'LOCAL' 'DATE'
-    | 'LOCAL' 'DATETIME'
-    | 'LOCAL' 'TIME'
-    | 'TRUE'
-    | 'FALSE'
+    : LOCAL DATE
+    | LOCAL DATETIME
+    | LOCAL TIME
+    |  TRUE
+    |  FALSE
     ;
 
-state_field_path_expression : IDENTIFIER ('.' IDENTIFIER)*;
+state_field_path_expression : IDENTIFIER ('.' IDENTIFIER)* | FULLY_QUALIFIED_IDENTIFIER;
 
 entity_name : IDENTIFIER; // no ambiguity
 
-enum_literal : IDENTIFIER ('.' IDENTIFIER)*; // ambiguity with state_field_path_expression resolvable semantically
+enum_literal : IDENTIFIER ('.' IDENTIFIER)* | FULLY_QUALIFIED_IDENTIFIER; // ambiguity with state_field_path_expression resolvable semantically
 
 input_parameter : ':' IDENTIFIER | '?' INTEGER;
 
@@ -123,6 +123,10 @@ LOCAL_TIME      : [lL][oO][cC][aA][lL] [tT][iI][mM][eE];
 BETWEEN         : [bB][eE][tT][wW][eE][eE][nN];
 LIKE            : [lL][iI][kK][eE];
 THIS            : [tT][hH][iI][sS];
+LOCAL           : [lL][oO][cC][aA][lL];
+DATE            : [dD][aA][tT][eE];
+DATETIME        : [dD][aA][tT][eE][tT][iI][mM][eE];
+TIME            : [tT][iI][mM][eE];
 
 // Operators
 EQ              : '=';
@@ -146,9 +150,10 @@ COLON           : ':';
 QUESTION        : '?';
 
 // Identifier and literals
+FULLY_QUALIFIED_IDENTIFIER : [a-zA-Z_][a-zA-Z0-9_]*('.'[a-zA-Z_][a-zA-Z0-9_]*)+;
 IDENTIFIER      : [a-zA-Z_][a-zA-Z0-9_]*;
-STRING : '"' ( ~["\\] | '\\' . )* '"'  // double quoted strings
-       | '\'' ( ~['\\] | '\\' . )* '\'';  // single quoted strings
+STRING          : '"' ( ~["\\] | '\\' . )* '"'  // double quoted strings
+                | '\'' ( ~['\\] | '\\' . )* '\'';  // single quoted strings
 INTEGER         : '-'?[0-9]+;
 DOUBLE          : '-'?[0-9]+'.'[0-9]* | '-'?'.'[0-9]+;
 

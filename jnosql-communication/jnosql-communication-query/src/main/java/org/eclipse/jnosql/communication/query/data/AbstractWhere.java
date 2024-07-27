@@ -13,6 +13,7 @@ package org.eclipse.jnosql.communication.query.data;
 
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
+import org.eclipse.jnosql.communication.query.NullQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
@@ -59,13 +60,18 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
         super.exitComparison_expression(ctx);
         boolean hasNot = false;
         boolean andCondition = true;
-        if(ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
-                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent){
+        if (ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
+                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent) {
             hasNot = Objects.nonNull(grandParent.NOT());
             andCondition = Objects.isNull(grandParent.OR());
         }
         var contexts = ctx.scalar_expression();
         var contextCondition = getCondition(ctx);
+
+        if (contextCondition.equals(NOT)) {
+            contextCondition = EQUALS;
+            hasNot = !hasNot;
+        }
         var name = contexts.get(0).getText();
         var value = contexts.get(1);
         var literal = PrimaryFunction.INSTANCE.apply(value.primary_expression());
@@ -77,22 +83,40 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
     }
 
     @Override
+    public void exitNull_comparison_expression(JDQLParser.Null_comparison_expressionContext ctx) {
+        super.exitNull_comparison_expression(ctx);
+        boolean hasNot = Objects.nonNull(ctx.NOT());
+        boolean andCondition = true;
+        if (ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
+                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent) {
+            andCondition = Objects.isNull(grandParent.OR());
+        }
+        var stateFieldPathExpressionContext = ctx.state_field_path_expression();
+        var name = stateFieldPathExpressionContext.getText();
+        if (this.condition != null && this.condition.value() instanceof ConditionQueryValue) {
+            and = andCondition;
+        }
+        checkCondition(new DefaultQueryCondition(name, EQUALS, NullQueryValue.INSTANCE), hasNot);
+        and = andCondition;
+    }
+
+    @Override
     public void exitLike_expression(JDQLParser.Like_expressionContext ctx) {
         super.exitLike_expression(ctx);
         boolean hasNot = Objects.nonNull(ctx.NOT());
         boolean andCondition = true;
 
-        if(ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
-                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent){
+        if (ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
+                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent) {
             andCondition = Objects.isNull(grandParent.OR());
         }
 
         var contexts = ctx.scalar_expression();
         var name = contexts.getText();
         var contextCondition = Condition.LIKE;
-        var likeValueIndex = ctx.getChildCount() -1 ;
+        var likeValueIndex = ctx.getChildCount() - 1;
         var likeValue = contexts.getParent().getChild(likeValueIndex).getText();
-        var literal = StringQueryValue.of(likeValue.substring(1, likeValue.length() -1));
+        var literal = StringQueryValue.of(likeValue.substring(1, likeValue.length() - 1));
         if (this.condition != null && this.condition.value() instanceof ConditionQueryValue) {
             and = andCondition;
         }
@@ -106,8 +130,8 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
         boolean hasNot = Objects.nonNull(ctx.NOT());
         boolean andCondition = true;
 
-        if(ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
-                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent){
+        if (ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
+                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent) {
             andCondition = Objects.isNull(grandParent.OR());
         }
 
@@ -130,8 +154,8 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
         boolean hasNot = Objects.nonNull(ctx.NOT());
         boolean andCondition = true;
 
-        if(ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
-                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent){
+        if (ctx.getParent() instanceof JDQLParser.Conditional_expressionContext ctxParent
+                && ctxParent.getParent() instanceof JDQLParser.Conditional_expressionContext grandParent) {
             andCondition = Objects.isNull(grandParent.OR());
         }
 
@@ -166,6 +190,8 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
             return Condition.GREATER_THAN;
         } else if (ctx.GTEQ() != null) {
             return Condition.GREATER_EQUALS_THAN;
+        } else if (ctx.NEQ() != null) {
+            return NOT;
         }
         throw new UnsupportedOperationException("The operation does not support: " + ctx.getText());
     }

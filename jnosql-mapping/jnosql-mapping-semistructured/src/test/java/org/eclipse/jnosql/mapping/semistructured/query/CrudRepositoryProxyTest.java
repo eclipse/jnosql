@@ -258,8 +258,11 @@ class CrudRepositoryProxyTest {
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(Person.builder().build()));
 
-        personRepository.findFirst10ByAge(10);
-
+        Person[] first10ByAge = personRepository.findFirst10ByAge(10);
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(first10ByAge).isNotNull();
+            soft.assertThat(first10ByAge).hasSize(1);
+        });
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(template).select(captor.capture());
         SelectQuery query = captor.getValue();
@@ -791,7 +794,7 @@ class CrudRepositoryProxyTest {
 
     interface PersonRepository extends NoSQLRepository<Person, Long> {
 
-        List<Person> findFirst10ByAge(int age);
+        Person[] findFirst10ByAge(int age);
 
         List<Person> findBySalary_Currency(String currency);
 
