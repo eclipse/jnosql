@@ -500,4 +500,14 @@ class SelectJakartaDataQueryProviderTest {
             soft.assertThat(selectQuery.isCount()).isFalse();
         });
     }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "WHERE hexadecimal <> ' ORDER BY isn''t a keyword when inside a literal' AND hexadecimal IN ('4a', '4b', '4c')")
+    void shouldUseNotEqualsCombined(String query) {
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+        });
+    }
 }
