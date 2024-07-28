@@ -43,7 +43,7 @@ public final class SelectMethodQueryProvider extends AbstractMethodQueryProvider
     }
 
     @Override
-    public void exitMax(MethodParser.MaxContext ctx) {
+    public void exitLimitNumber(MethodParser.LimitNumberContext ctx) {
         String text = ctx.INT().getText();
         this.limit = Long.parseLong(text);
     }
