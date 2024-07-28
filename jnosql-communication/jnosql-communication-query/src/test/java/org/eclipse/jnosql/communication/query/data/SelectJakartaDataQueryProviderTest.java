@@ -530,4 +530,12 @@ class SelectJakartaDataQueryProviderTest {
             soft.assertThat(selectQuery.isCount()).isFalse();
         });
     }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "Select id Where isOdd = true and (id = :id or id < :exclusiveMax) Order by id Desc")
+    void shouldReturnErrorWhenUseParenthesis(String query) {
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            selectProvider.apply(query, "entity");
+        });
+    }
 }
