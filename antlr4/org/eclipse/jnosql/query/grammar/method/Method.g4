@@ -2,12 +2,14 @@ grammar Method;
 select: selectStart where? order? EOF;
 deleteBy: 'deleteBy' where? EOF;
 
-selectStart: 'find' limit 'By'? | 'findBy' | 'countAll' | 'countBy' | 'existsBy';
+selectStart: 'find' limit 'By' | 'findBy' | 'countAll' | 'countBy' | 'existsBy';
 where: condition (and condition| or condition)* ;
 condition: eq | gt | gte | lt | lte | between | in | like | truth | untruth | nullable | contains | endsWith | startsWith;
 order: 'OrderBy' orderName (orderName)*;
 orderName: variable | variable asc | variable desc;
-limit : 'First' max?;
+limit: firstLimit | firstOne;
+firstLimit : 'First' max;
+firstOne: 'First';
 and: 'And';
 or: 'Or';
 asc: 'Asc';
