@@ -180,17 +180,18 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
     }
 
     private Condition getCondition(JDQLParser.Comparison_expressionContext ctx) {
-        if (ctx.EQ() != null) {
+        var context = ctx.comparison_operator();
+        if (context.EQ() != null) {
             return EQUALS;
-        } else if (ctx.LT() != null) {
+        } else if (context.LT() != null) {
             return Condition.LESSER_THAN;
-        } else if (ctx.LTEQ() != null) {
+        } else if (context.LTEQ() != null) {
             return Condition.LESSER_EQUALS_THAN;
-        } else if (ctx.GT() != null) {
+        } else if (context.GT() != null) {
             return Condition.GREATER_THAN;
-        } else if (ctx.GTEQ() != null) {
+        } else if (context.GTEQ() != null) {
             return Condition.GREATER_EQUALS_THAN;
-        } else if (ctx.NEQ() != null) {
+        } else if (context.NEQ() != null) {
             return NOT;
         }
         throw new UnsupportedOperationException("The operation does not support: " + ctx.getText());
