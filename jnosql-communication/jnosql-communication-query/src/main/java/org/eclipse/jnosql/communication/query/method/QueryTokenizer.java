@@ -37,7 +37,7 @@ public final class QueryTokenizer implements Supplier<String> {
 
     private static final Pattern TOKENIZER_PATTERN = Pattern.compile(
             "findBy|deleteBy|countAll|countBy|existsBy|OrderBy|"
-                    + "First(?=\\d*By)|First(?=By\\b)|(?<=First\\d{1,})By|(?<=First)By(?![a-zA-Z])|(?<!First)By(?![a-zA-Z])|IgnoreCase|"
+                    + "First(?=\\d*By)|First(?=By)|(?<=First\\d{1,})By|(?<=First)By|(?<!First)By|IgnoreCase|"
                     + "And|Or(?!der)|Null|Not|Equals|GreaterThanEqual|True|False|Contains|EndsWith|StartsWith|"
                     + "LessThanEqual|GreaterThan|LessThan|Between|In|Like|Asc|Desc"
     );

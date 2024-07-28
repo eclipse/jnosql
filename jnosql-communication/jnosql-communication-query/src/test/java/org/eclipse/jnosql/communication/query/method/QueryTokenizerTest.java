@@ -325,5 +325,21 @@ class QueryTokenizerTest {
         assertEquals("findBy Salary_Currency And Name", queryTokenizer.get());
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc"})
+    void shouldRunQuery35(String query) {
+        QueryTokenizer queryTokenizer = QueryTokenizer.of(query);
+        assertNotNull(queryTokenizer);
+        assertEquals("find First By Hexadecimal StartsWith And IsControl OrderBy Id Asc", queryTokenizer.get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findByFirstNameAndLastName"})
+    void shouldRunQuery36(String query) {
+        QueryTokenizer queryTokenizer = QueryTokenizer.of(query);
+        assertNotNull(queryTokenizer);
+        assertEquals("findBy FirstName And LastName", queryTokenizer.get());
+    }
+
 
 }
