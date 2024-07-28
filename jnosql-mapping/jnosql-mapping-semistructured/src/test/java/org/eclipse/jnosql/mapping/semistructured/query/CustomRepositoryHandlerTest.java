@@ -41,6 +41,7 @@ import org.mockito.Mockito;
 import java.lang.reflect.Proxy;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @EnableAutoWeld
@@ -380,5 +381,15 @@ class CustomRepositoryHandlerTest {
         var query = captor.getValue();
 
         Assertions.assertThat(query).isEqualTo("delete from Person where name = :name");
+    }
+
+    @Test
+    void shouldExecuteCountBy() {
+
+        var preparedStatement = Mockito.mock(PreparedStatement.class);
+        Mockito.when(template.prepare(Mockito.anyString())).thenReturn(preparedStatement);
+        Mockito.when(template.query(Mockito.anyString()))
+                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+        people.countByIdIn(Set.of(1L, 2L));
     }
 }
