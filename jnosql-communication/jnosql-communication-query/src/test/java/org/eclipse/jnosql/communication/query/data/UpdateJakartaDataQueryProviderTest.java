@@ -11,11 +11,13 @@
  */
 package org.eclipse.jnosql.communication.query.data;
 
+import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -158,6 +160,28 @@ class UpdateJakartaDataQueryProviderTest {
             soft.assertThat(updateQuery.set()).isNotNull().hasSize(1)
                     .contains(JDQLUpdateItem.of("name", StringQueryValue.of("Ada")));
         });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"UPDATE Box SET length = length + ?1"})
+    void shouldReturnErrorAtPlusOperationInUpdate(String query) {
+        Assertions.assertThatThrownBy(() ->updateProvider.apply(query))
+                .isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test
+    void shouldReturnErrorAtMinusOperationInUpdate() {
+
+    }
+
+    @Test
+    void shouldReturnErrorAtSubtractOperationInUpdate() {
+
+    }
+
+    @Test
+    void shouldReturnErrorAtMultiplyOperationInUpdate() {
+
     }
 
 }
