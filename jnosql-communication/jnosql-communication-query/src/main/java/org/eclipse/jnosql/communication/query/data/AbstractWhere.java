@@ -83,6 +83,14 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
     }
 
     @Override
+    public void exitConditional_expression(JDQLParser.Conditional_expressionContext ctx) {
+        super.exitConditional_expression(ctx);
+       if(Objects.nonNull(ctx.LPAREN()) || Objects.nonNull(ctx.RPAREN())) {
+           throw new UnsupportedOperationException("Eclipse JNoSQL does not support parenthesis is not supported in the query: " + ctx.getText());
+        }
+    }
+
+    @Override
     public void exitNull_comparison_expression(JDQLParser.Null_comparison_expressionContext ctx) {
         super.exitNull_comparison_expression(ctx);
         boolean hasNot = Objects.nonNull(ctx.NOT());
