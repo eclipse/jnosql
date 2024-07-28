@@ -403,7 +403,7 @@ class CustomRepositoryHandlerTest {
             soft.assertThat(query.sorts()).isEmpty();
             soft.assertThat(query.name()).isEqualTo("Person");
             soft.assertThat(query.condition()).isNotEmpty();
-            CriteriaCondition condition = query.condition().orElseThrow();
+            var condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(Condition.IN);
             soft.assertThat(condition.element().name()).isEqualTo("_id");
             soft.assertThat(condition.element().value().get()).isEqualTo(Set.of(1L, 2L));
@@ -430,7 +430,7 @@ class CustomRepositoryHandlerTest {
             soft.assertThat(query.sorts()).isEmpty();
             soft.assertThat(query.name()).isEqualTo("Person");
             soft.assertThat(query.condition()).isNotEmpty();
-            CriteriaCondition condition = query.condition().orElseThrow();
+            var condition = query.condition().orElseThrow();
             soft.assertThat(condition.condition()).isEqualTo(Condition.IN);
             soft.assertThat(condition.element().name()).isEqualTo("_id");
             soft.assertThat(condition.element().value().get()).isEqualTo(Set.of(1L, 2L));
