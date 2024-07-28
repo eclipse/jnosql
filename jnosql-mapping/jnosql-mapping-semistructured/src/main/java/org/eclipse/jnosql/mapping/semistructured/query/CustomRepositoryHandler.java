@@ -32,7 +32,9 @@ import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
@@ -68,6 +70,8 @@ public class CustomRepositoryHandler implements InvocationHandler {
 
     private final Converters converters;
 
+    private final SemiStructuredRepositoryProxy<?, ?> defaultRepository;
+
     CustomRepositoryHandler(EntitiesMetadata entitiesMetadata, SemiStructuredTemplate template,
                             Class<?> customRepositoryType,
                             Converters converters) {
@@ -75,13 +79,14 @@ public class CustomRepositoryHandler implements InvocationHandler {
         this.template = template;
         this.customRepositoryType = customRepositoryType;
         this.converters = converters;
+        this.defaultRepository = findDefaultRepository();
     }
 
     @Override
     public Object invoke(Object instance, Method method, Object[] params) throws Throwable {
 
         RepositoryType type = RepositoryType.of(method, customRepositoryType);
-        LOGGER.info("Executing the method " + method + " with the parameters " + Arrays.toString(params) + " and the type " + type);
+        LOGGER.fine("Executing the method " + method + " with the parameters " + Arrays.toString(params) + " and the type " + type);
 
         switch (type) {
             case SAVE -> {
@@ -137,12 +142,64 @@ public class CustomRepositoryHandler implements InvocationHandler {
                 return unwrapInvocationTargetException(() -> repository(method).invoke(instance, method, params));
 
             }
-            case DELETE_BY, COUNT_ALL, COUNT_BY, EXISTS_BY ->
-                    throw new UnsupportedOperationException("The custom repository does not support the method " + method);
-            default -> {
-                return Void.class;
+            case COUNT_BY, COUNT_ALL -> {
+                return unwrapInvocationTargetException(() -> defaultRepository().executeCountByQuery(instance, method, params));
             }
+            case EXISTS_BY -> {
+                return unwrapInvocationTargetException(() -> defaultRepository().executeExistByQuery(instance, method, params));
+            }
+            case DELETE_BY -> {
+                return unwrapInvocationTargetException(() -> defaultRepository().executeDeleteByAll(instance, method, params));
+            }
+            default -> throw new UnsupportedOperationException("The custom repository does not support the method " + method);
         }
+    }
+
+    protected Object unwrapInvocationTargetException(ThrowingSupplier<Object> supplier) throws Throwable {
+        try {
+            return supplier.get();
+        } catch (InvocationTargetException ex) {
+            throw ex.getCause();
+        }
+    }
+
+    /**
+     * Creates a new {@link CustomRepositoryHandlerBuilder} instance.
+     *
+     * @return a {@link CustomRepositoryHandlerBuilder} instance
+     */
+    public static CustomRepositoryHandlerBuilder builder() {
+        return new CustomRepositoryHandlerBuilder();
+    }
+
+    private SemiStructuredRepositoryProxy<?, ?> findDefaultRepository() {
+        LOGGER.fine("Looking for the default repository from the custom repository methods: " + customRepositoryType);
+        Method[] methods = customRepositoryType.getMethods();
+        for (Method method : methods) {
+            var type = RepositoryType.of(method, customRepositoryType);
+            switch (type) {
+                case PARAMETER_BASED, CURSOR_PAGINATION, FIND_ALL, FIND_BY -> {
+                    LOGGER.fine("The default repository found: " + method);
+                    return repository(method);
+                }
+                case SAVE, INSERT, DELETE, UPDATE -> {
+                    LOGGER.fine("The default repository found: " + method);
+                    return repository(method, method.getParameters());
+                }
+                default -> {
+
+                }
+            }
+
+        }
+        return null;
+    }
+
+    private SemiStructuredRepositoryProxy<?, ?> defaultRepository() {
+        if (defaultRepository == null) {
+            throw new UnsupportedOperationException("The custom repository does not contains methods to be used as default: " + customRepositoryType);
+        }
+        return defaultRepository;
     }
 
     private SemiStructuredRepositoryProxy<?, ?> repository(Method method) {
@@ -179,20 +236,39 @@ public class CustomRepositoryHandler implements InvocationHandler {
                 .orElseThrow(() -> new UnsupportedOperationException("The repository does not support the method: " + method));
     }
 
-    protected Object unwrapInvocationTargetException(ThrowingSupplier<Object> supplier) throws Throwable {
-        try {
-            return supplier.get();
-        } catch (InvocationTargetException ex) {
-            throw ex.getCause();
+    private SemiStructuredRepositoryProxy<?, ?> repository(Method method, Parameter[] params) {
+        if (params.length == 0) {
+            throw new IllegalArgumentException("Method must have at least one parameter");
         }
+
+        Class<?> typeClass = getTypeClassFromParameter(params[0]);
+        Optional<EntityMetadata> entity = entitiesMetadata.findByClassName(typeClass.getName());
+        return entity.map(entityMetadata -> new SemiStructuredRepositoryProxy<>(template, entityMetadata, typeClass, converters))
+                .orElseThrow(() -> new UnsupportedOperationException("The repository does not support the method: " + method));
     }
 
-    /**
-     * Creates a new {@link CustomRepositoryHandlerBuilder} instance.
-     *
-     * @return a {@link CustomRepositoryHandlerBuilder} instance
-     */
-    public static CustomRepositoryHandlerBuilder builder() {
-        return new CustomRepositoryHandlerBuilder();
+    private Class<?> getTypeClassFromParameter(Parameter parameter) {
+        Class<?> typeClass = parameter.getType();
+        if (typeClass.isArray()) {
+            return typeClass.getComponentType();
+        } else if (IS_GENERIC_SUPPORTED_TYPE.test(typeClass)) {
+            return getGenericTypeFromParameter(parameter);
+        }
+        return typeClass;
     }
+
+    private Class<?> getGenericTypeFromParameter(Parameter parameter) {
+        // This method needs to infer the generic type from the parameter's type.
+        // Here's a simple implementation assuming we are dealing with Iterable types
+        Type parameterType = parameter.getParameterizedType();
+        if (parameterType instanceof ParameterizedType parameterizedType) {
+            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+            if (actualTypeArguments.length > 0 && actualTypeArguments[0] instanceof Class) {
+                return (Class<?>) actualTypeArguments[0];
+            }
+        }
+        throw new IllegalArgumentException("Cannot determine generic type from parameter");
+    }
+
+
 }
