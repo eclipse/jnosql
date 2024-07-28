@@ -18,7 +18,7 @@ select_list
     : state_field_path_expression (COMMA state_field_path_expression)*
     | aggregate_expression
     ;
-aggregate_expression : COUNT LPAREN THIS RPAREN;
+aggregate_expression : COUNT '(' THIS ')';
 
 orderby_clause : ORDER BY orderby_item (COMMA orderby_item)*;
 orderby_item : state_field_path_expression (ASC | DESC)?;
@@ -42,7 +42,7 @@ comparison_operator : EQ | GT | GTEQ | LT | LTEQ | NEQ;
 between_expression : scalar_expression NOT? BETWEEN scalar_expression AND scalar_expression;
 like_expression : scalar_expression NOT? LIKE STRING;
 
-in_expression : state_field_path_expression NOT? IN LPAREN in_item (COMMA in_item)* RPAREN;
+in_expression : state_field_path_expression NOT? IN '(' in_item (',' in_item)* ')';
 in_item : literal | enum_literal | input_parameter; // could simplify to just literal
 
 null_comparison_expression : state_field_path_expression IS NOT? NULL;
@@ -51,8 +51,6 @@ scalar_expression
     // highest to lowest precedence
     : LPAREN scalar_expression RPAREN
     | primary_expression
-    | PLUS scalar_expression
-    | MINUS scalar_expression
     | scalar_expression MUL scalar_expression
     | scalar_expression DIV scalar_expression
     | scalar_expression PLUS scalar_expression
@@ -70,12 +68,12 @@ primary_expression
     ;
 
 function_expression
-    : ABS LPAREN scalar_expression RPAREN
-    | LENGTH LPAREN scalar_expression RPAREN
-    | LOWER LPAREN scalar_expression RPAREN
-    | UPPER LPAREN scalar_expression RPAREN
-    | LEFT LPAREN scalar_expression COMMA scalar_expression RPAREN
-    | RIGHT LPAREN scalar_expression COMMA scalar_expression RPAREN
+    : ('abs(' | 'ABS(') scalar_expression ')'
+    | ('length(' | 'LENGTH(') scalar_expression ')'
+    | ('lower(' | 'LOWER(') scalar_expression ')'
+    | ('upper(' | 'UPPER(') scalar_expression ')'
+    | ('left(' | 'LEFT(') scalar_expression ',' scalar_expression ')'
+    | ('right(' | 'RIGHT(') scalar_expression ',' scalar_expression ')'
     ;
 
 special_expression
@@ -116,12 +114,6 @@ ASC             : [aA][sS][cC];
 DESC            : [dD][eE][sS][cC];
 AND             : [aA][nN][dD];
 OR              : [oO][rR];
-ABS             : [aA][bB][sS];
-LENGTH          : [lL][eE][nN][gG][tT][hH];
-LOWER           : [lL][oO][wW][eE][rR];
-UPPER           : [uU][pP][pP][eE][rR];
-LEFT            : [lL][eE][fF][tT];
-RIGHT           : [rR][iI][gG][hH][tT];
 LOCAL_DATE      : [lL][oO][cC][aA][lL] [dD][aA][tT][eE];
 LOCAL_DATETIME  : [lL][oO][cC][aA][lL] [dD][aA][tT][eE][tT][iI][mM][eE];
 LOCAL_TIME      : [lL][oO][cC][aA][lL] [tT][iI][mM][eE];
@@ -155,7 +147,7 @@ COLON           : ':';
 QUESTION        : '?';
 
 // Identifier and literals
-FULLY_QUALIFIED_IDENTIFIER : [a-zA-Z_][a-zA-Z0-9_]*('.'[a-zA-Z_][a-zA-Z0-9_]*)+;
+FULLY_QUALIFIED_IDENTIFIER : [a-zA-Z_][a-zA-Z0-9_]* (DOT [a-zA-Z_][a-zA-Z0-9_]*)+;
 IDENTIFIER                 : [a-zA-Z_][a-zA-Z0-9_]*;
 STRING                     : '\'' ( ~('\'' | '\\') | '\\' . | '\'\'' )* '\''  // single quoted strings with embedded single quotes handled
                           | '"' ( ~["\\] | '\\' . )* '"' ;  // double quoted strings
