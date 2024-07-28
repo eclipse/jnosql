@@ -8,7 +8,7 @@ condition: eq | gt | gte | lt | lte | between | in | like | truth | untruth | nu
 order: 'OrderBy' orderName (orderName)*;
 orderName: variable | variable asc | variable desc;
 limit: firstLimit | firstOne;
-firstLimit : 'First' max;
+firstLimit : 'First' limitNumber;
 firstOne: 'First';
 and: 'And';
 or: 'Or';
@@ -31,7 +31,7 @@ nullable: variable ignoreCase? not? 'Null';
 ignoreCase: 'IgnoreCase';
 not: 'Not';
 variable: ANY_NAME;
-max: INT;
+limitNumber: INT;
 ANY_NAME: [a-zA-Z_.][a-zA-Z_.0-9-]*;
 WS: [ \t\r\n]+ -> skip ;
 INT: [0-9]+;
