@@ -554,6 +554,13 @@ class SelectMethodQueryProviderTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc"})
+    void shouldReturnParserQuery38(String query) {
+        String entity = "entity";
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> queryProvider.apply(query, entity));
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByNameContains", "findByNameEndsWith", "findByNameStartsWith", "findByStreetNameIgnoreCaseLike", "findByHexadecimalIgnoreCase"})
     void shouldReturnUnsupportedOperationExceptionQuery(String query) {
         String entity = "entity";
@@ -566,6 +573,8 @@ class SelectMethodQueryProviderTest {
         String entity = "entity";
         Assertions.assertThrows(UnsupportedOperationException.class, () -> queryProvider.apply(query, entity));
     }
+
+
 
     private void checkOrderBy(String query, Direction direction, Direction direction2) {
         String entity = "entity";
