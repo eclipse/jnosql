@@ -158,7 +158,7 @@ class MethodQueryTest {
     void shouldRunQuery14(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("findBy FirstName Not  Like", methodQuery.get());
+        assertEquals("findBy FirstName Not Like", methodQuery.get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -166,7 +166,7 @@ class MethodQueryTest {
     void shouldRunQuery15(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("findBy FirstName Like  OrderBy Name Asc Age Desc", methodQuery.get());
+        assertEquals("findBy FirstName Like OrderBy Name Asc Age Desc", methodQuery.get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -174,7 +174,7 @@ class MethodQueryTest {
     void shouldRunQuery16(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("findBy FirstName Like  OrderBy Name Asc Age", methodQuery.get());
+        assertEquals("findBy FirstName Like OrderBy Name Asc Age", methodQuery.get());
     }
 
 
@@ -274,7 +274,7 @@ class MethodQueryTest {
     void shouldRunQuery28(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("deleteBy FirstName Not  Like", methodQuery.get());
+        assertEquals("deleteBy FirstName Not Like", methodQuery.get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
