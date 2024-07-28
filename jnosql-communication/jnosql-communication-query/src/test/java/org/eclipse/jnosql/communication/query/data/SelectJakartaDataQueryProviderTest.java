@@ -19,6 +19,8 @@ import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.EnumQueryValue;
 import org.eclipse.jnosql.communication.query.NullQueryValue;
 import org.eclipse.jnosql.communication.query.NumberQueryValue;
+import org.eclipse.jnosql.communication.query.QueryCondition;
+import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.StringQueryValue;
 import org.junit.jupiter.api.Assertions;
@@ -498,6 +500,42 @@ class SelectJakartaDataQueryProviderTest {
             soft.assertThat(queryCondition.name()).isEqualTo("age");
             soft.assertThat(queryCondition.value()).isEqualTo(NumberQueryValue.of(10));
             soft.assertThat(selectQuery.isCount()).isFalse();
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "WHERE hexadecimal <> ' ORDER BY isn''t a keyword when inside a literal' AND hexadecimal IN ('4a', '4b', '4c')")
+    void shouldUseNotEqualsCombined(String query) {
+        SelectQuery selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
+
+            var conditions = (ConditionQueryValue) condition.value();
+            var negation = (ConditionQueryValue)conditions.get().get(0).value();
+
+            var queryCondition = negation.get().get(0);
+            soft.assertThat(queryCondition.name()).isEqualTo("hexadecimal");
+            soft.assertThat(queryCondition.value()).isEqualTo(StringQueryValue.of(" ORDER BY isn''t a keyword when inside a literal"));
+            var in = conditions.get().get(1);
+            soft.assertThat(in.condition()).isEqualTo(Condition.IN);
+            var value = (DataArrayQueryValue) in.value();
+            soft.assertThat(value.get()).contains(StringQueryValue.of("4a"), StringQueryValue.of("4b"), StringQueryValue.of("4c"));
+            soft.assertThat(selectQuery.isCount()).isFalse();
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "Select id Where isOdd = true and (id = :id or id < :exclusiveMax) Order by id Desc")
+    void shouldReturnErrorWhenUseParenthesis(String query) {
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            selectProvider.apply(query, "entity");
         });
     }
 }

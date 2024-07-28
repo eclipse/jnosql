@@ -342,4 +342,30 @@ class DeleteJakartaDataQueryProviderTest {
         });
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "DELETE FROM entity WHERE hexadecimal <> ' ORDER BY isn''t a keyword when inside a literal' AND hexadecimal IN ('4a', '4b', '4c')")
+    void shouldUseNotEqualsCombined(String query) {
+        var deleteQuery = deleteProvider.apply(query);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(deleteQuery.fields()).isEmpty();
+            soft.assertThat(deleteQuery.entity()).isEqualTo("entity");
+            soft.assertThat(deleteQuery.where()).isNotEmpty();
+            var where = deleteQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
+
+            var conditions = (ConditionQueryValue) condition.value();
+            var negation = (ConditionQueryValue)conditions.get().get(0).value();
+
+            var queryCondition = negation.get().get(0);
+            soft.assertThat(queryCondition.name()).isEqualTo("hexadecimal");
+            soft.assertThat(queryCondition.value()).isEqualTo(StringQueryValue.of(" ORDER BY isn''t a keyword when inside a literal"));
+            var in = conditions.get().get(1);
+            soft.assertThat(in.condition()).isEqualTo(Condition.IN);
+            var value = (DataArrayQueryValue) in.value();
+            soft.assertThat(value.get()).contains(StringQueryValue.of("4a"), StringQueryValue.of("4b"), StringQueryValue.of("4c"));
+        });
+    }
+
 }

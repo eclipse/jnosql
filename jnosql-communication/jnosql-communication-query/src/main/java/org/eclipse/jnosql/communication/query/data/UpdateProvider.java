@@ -49,11 +49,19 @@ public final class UpdateProvider extends AbstractWhere implements Function<Stri
         super.exitUpdate_item(ctx);
         String name = ctx.state_field_path_expression().getText();
         var scalarContext = ctx.scalar_expression();
+        if(isArithmeticOperation(scalarContext)) {
+            throw new UnsupportedOperationException("Eclipse JNoSQL does not support arithmetic operations in the UPDATE clause: " + scalarContext.getText());
+        }
+        if(hasParenthesis(scalarContext)) {
+            throw new UnsupportedOperationException("Eclipse JNoSQL does not support parenthesis in the UPDATE clause: " + scalarContext.getText());
+        }
         var primaryExpression = scalarContext.primary_expression();
         var value = PrimaryFunction.INSTANCE.apply(primaryExpression);
         items.add(JDQLUpdateItem.of(name, value));
 
     }
+
+
 
     @Override
     public void exitEntity_name(JDQLParser.Entity_nameContext ctx) {
@@ -65,4 +73,16 @@ public final class UpdateProvider extends AbstractWhere implements Function<Stri
     ParserRuleContext getTree(JDQLParser parser) {
         return parser.update_statement();
     }
+
+    private static boolean isArithmeticOperation(JDQLParser.Scalar_expressionContext scalarContext) {
+        return Objects.nonNull(scalarContext.MUL())
+                || Objects.nonNull(scalarContext.DIV())
+                || Objects.nonNull(scalarContext.PLUS())
+                || Objects.nonNull(scalarContext.MINUS())
+                || Objects.nonNull(scalarContext.CONCAT());
+    }
+    private boolean hasParenthesis(JDQLParser.Scalar_expressionContext scalarContext) {
+        return Objects.nonNull(scalarContext.LPAREN()) || Objects.nonNull(scalarContext.RPAREN());
+    }
+
 }

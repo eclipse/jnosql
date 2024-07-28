@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 class EnumConverterTest {
     @Test
     @DisplayName("Successfully convert string to enum")
-    void testSuccessfulConversion() {
+    void shouldSuccessfulConversion() {
         String input = "java.time.DayOfWeek.MONDAY";
         Enum<?> result = EnumConverter.INSTANCE.apply(input);
 
@@ -32,7 +32,7 @@ class EnumConverterTest {
 
     @Test
     @DisplayName("Handle non-existent enum constant")
-    void testNonExistentEnumConstant() {
+    void shouldNonExistentEnumConstant() {
         String input = "java.time.DayOfWeek.NOTADAY";
         SoftAssertions softly = new SoftAssertions();
         softly.assertThatThrownBy(() -> EnumConverter.INSTANCE.apply(input))
@@ -44,7 +44,7 @@ class EnumConverterTest {
 
     @Test
     @DisplayName("Handle invalid enum class name")
-    void testInvalidEnumClassName() {
+    void shouldInvalidEnumClassName() {
         String input = "com.example.NonExistentEnum.SOME_VALUE";
         SoftAssertions softly = new SoftAssertions();
         softly.assertThatThrownBy(() -> EnumConverter.INSTANCE.apply(input))
@@ -53,4 +53,18 @@ class EnumConverterTest {
                 .hasMessageContaining("There is an issue to load class because: " + input);
         softly.assertAll();
     }
+
+    @Test
+    @DisplayName("Successfully convert inner class")
+    void shouldUserInnerClass() {
+        String input = "org.eclipse.jnosql.communication.query.data.OuterClass.InnerEnum.VALUE1";
+        Enum<?> result = EnumConverter.INSTANCE.apply(input);
+
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(result)
+                .as("Check if MONDAY is correctly converted")
+                .isEqualTo(OuterClass.InnerEnum.VALUE1);
+        softly.assertAll();
+    }
+
 }

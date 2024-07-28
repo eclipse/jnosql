@@ -25,15 +25,33 @@ enum EnumConverter implements Function<String, Enum<?>> {
             var lastDotIndex = text.lastIndexOf('.');
             var enumClassName = text.substring(0, lastDotIndex);
             var enumValueName = text.substring(lastDotIndex + 1);
-            Class<?> enumClass = Class.forName(enumClassName);
-            if (enumClass.isEnum()) {
-                Class<? extends Enum> enumType = enumClass.asSubclass(Enum.class);
-                return Enum.valueOf(enumType, enumValueName);
-            } else {
-                throw new QueryException("There is an issue to load class because it is not an enum: " + enumClassName);
+
+            // Try loading the class directly
+            try {
+                return getEnumValue(enumClassName, enumValueName);
+            } catch (ClassNotFoundException e) {
+                // Replace last '.' with '$' for inner classes and try again
+                int secondLastDotIndex = enumClassName.lastIndexOf('.');
+                if (secondLastDotIndex != -1) {
+                    enumClassName = enumClassName.substring(0, secondLastDotIndex) + '$' + enumClassName.substring(secondLastDotIndex + 1);
+                    return getEnumValue(enumClassName, enumValueName);
+                } else {
+                    throw e;
+                }
             }
         } catch (ClassNotFoundException | IllegalArgumentException exp) {
             throw new QueryException("There is an issue to load class because: " + text, exp);
+        }
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private Enum<?> getEnumValue(String enumClassName, String enumValueName) throws ClassNotFoundException {
+        Class<?> enumClass = Class.forName(enumClassName);
+        if (enumClass.isEnum()) {
+            Class<? extends Enum> enumType = enumClass.asSubclass(Enum.class);
+            return Enum.valueOf(enumType, enumValueName);
+        } else {
+            throw new QueryException("There is an issue to load class because it is not an enum: " + enumClassName);
         }
     }
 }

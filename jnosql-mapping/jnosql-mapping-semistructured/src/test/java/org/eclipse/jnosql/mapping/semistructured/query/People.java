@@ -29,6 +29,7 @@ import org.eclipse.jnosql.mapping.semistructured.entities.Person;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface People {
 
@@ -79,6 +80,10 @@ public interface People {
     CursoredPage<Person> findByName(String name, PageRequest pageRequest);
 
     Optional<Person> findByIdAndName(Long id, String name);
+
+    long countByIdIn(Set<Long> ids);
+
+    boolean existsByIdIn(Set<Long> ids);
 
     @Find
     List<Person> name(@By("name") String name);

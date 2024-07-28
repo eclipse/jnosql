@@ -33,7 +33,7 @@ public final class SelectMethodQueryProvider extends AbstractMethodQueryProvider
     public SelectQuery apply(String query, String entity) {
         Objects.requireNonNull(query, " query is required");
         Objects.requireNonNull(entity, " entity is required");
-        runQuery(MethodQuery.of(query).get());
+        runQuery(QueryTokenizer.of(query).get());
         return new MethodSelectQuery(entity, sorts, where, limit, shouldCount);
     }
 
@@ -43,9 +43,14 @@ public final class SelectMethodQueryProvider extends AbstractMethodQueryProvider
     }
 
     @Override
-    public void exitMax(MethodParser.MaxContext ctx) {
+    public void exitLimitNumber(MethodParser.LimitNumberContext ctx) {
         String text = ctx.INT().getText();
         this.limit = Long.parseLong(text);
+    }
+
+    @Override
+    public void exitFirstOne(MethodParser.FirstOneContext ctx) {
+        this.limit = 1L;
     }
 
     @Override
