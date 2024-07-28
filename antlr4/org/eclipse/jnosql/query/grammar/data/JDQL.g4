@@ -10,22 +10,22 @@ from_clause : FROM entity_name;
 
 where_clause : WHERE conditional_expression;
 
-set_clause : SET update_item (',' update_item)*;
-update_item : state_field_path_expression '=' (scalar_expression | NULL);
+set_clause : SET update_item (COMMA update_item)*;
+update_item : state_field_path_expression EQ (scalar_expression | NULL);
 
 select_clause : SELECT select_list;
 select_list
-    : state_field_path_expression (',' state_field_path_expression)*
+    : state_field_path_expression (COMMA state_field_path_expression)*
     | aggregate_expression
     ;
-aggregate_expression : COUNT '(' THIS ')';
+aggregate_expression : COUNT LPAREN THIS RPAREN;
 
-orderby_clause : ORDER BY orderby_item (',' orderby_item)*;
-orderby_item : state_field_path_expression (ASC | DESC);
+orderby_clause : ORDER BY orderby_item (COMMA orderby_item)*;
+orderby_item : state_field_path_expression (ASC | DESC)?;
 
 conditional_expression
     // highest to lowest precedence
-    : '(' conditional_expression ')'
+    : LPAREN conditional_expression RPAREN
     | null_comparison_expression
     | in_expression
     | between_expression
@@ -36,23 +36,28 @@ conditional_expression
     | conditional_expression OR conditional_expression
     ;
 
-comparison_expression : scalar_expression ('=' | '>' | '>=' | '<' | '<=' | '<>') scalar_expression;
+comparison_expression : scalar_expression comparison_operator scalar_expression;
+comparison_operator : EQ | GT | GTEQ | LT | LTEQ | NEQ;
+
 between_expression : scalar_expression NOT? BETWEEN scalar_expression AND scalar_expression;
 like_expression : scalar_expression NOT? LIKE STRING;
 
-in_expression : state_field_path_expression NOT? IN '(' in_item (',' in_item)* ')';
+in_expression : state_field_path_expression NOT? IN LPAREN in_item (COMMA in_item)* RPAREN;
 in_item : literal | enum_literal | input_parameter; // could simplify to just literal
 
 null_comparison_expression : state_field_path_expression IS NOT? NULL;
 
 scalar_expression
     // highest to lowest precedence
-    : '(' scalar_expression ')'
+    : LPAREN scalar_expression RPAREN
     | primary_expression
-    | ('+' | '-') scalar_expression
-    | scalar_expression ('*' | '/') scalar_expression
-    | scalar_expression ('+' | '-') scalar_expression
-    | scalar_expression '||' scalar_expression
+    | PLUS scalar_expression
+    | MINUS scalar_expression
+    | scalar_expression MUL scalar_expression
+    | scalar_expression DIV scalar_expression
+    | scalar_expression PLUS scalar_expression
+    | scalar_expression MINUS scalar_expression
+    | scalar_expression CONCAT scalar_expression
     ;
 
 primary_expression
@@ -65,29 +70,29 @@ primary_expression
     ;
 
 function_expression
-    : ABS '(' scalar_expression ')'
-    | LENGTH '(' scalar_expression ')'
-    | LOWER '(' scalar_expression ')'
-    | UPPER '(' scalar_expression ')'
-    | LEFT '(' scalar_expression ',' scalar_expression ')'
-    | RIGHT '(' scalar_expression ',' scalar_expression ')'
+    : ABS LPAREN scalar_expression RPAREN
+    | LENGTH LPAREN scalar_expression RPAREN
+    | LOWER LPAREN scalar_expression RPAREN
+    | UPPER LPAREN scalar_expression RPAREN
+    | LEFT LPAREN scalar_expression COMMA scalar_expression RPAREN
+    | RIGHT LPAREN scalar_expression COMMA scalar_expression RPAREN
     ;
 
 special_expression
-    : LOCAL DATE
-    | LOCAL DATETIME
-    | LOCAL TIME
-    |  TRUE
-    |  FALSE
+    : LOCAL_DATE
+    | LOCAL_DATETIME
+    | LOCAL_TIME
+    | TRUE
+    | FALSE
     ;
 
-state_field_path_expression : IDENTIFIER ('.' IDENTIFIER)* | FULLY_QUALIFIED_IDENTIFIER;
+state_field_path_expression : IDENTIFIER (DOT IDENTIFIER)* | FULLY_QUALIFIED_IDENTIFIER;
 
 entity_name : IDENTIFIER; // no ambiguity
 
-enum_literal : IDENTIFIER ('.' IDENTIFIER)* | FULLY_QUALIFIED_IDENTIFIER; // ambiguity with state_field_path_expression resolvable semantically
+enum_literal : IDENTIFIER (DOT IDENTIFIER)* | FULLY_QUALIFIED_IDENTIFIER; // ambiguity with state_field_path_expression resolvable semantically
 
-input_parameter : ':' IDENTIFIER | '?' INTEGER;
+input_parameter : COLON IDENTIFIER | QUESTION INTEGER;
 
 literal : STRING | INTEGER | DOUBLE;
 
