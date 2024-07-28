@@ -52,11 +52,16 @@ public final class UpdateProvider extends AbstractWhere implements Function<Stri
         if(isArithmeticOperation(scalarContext)) {
             throw new UnsupportedOperationException("Eclipse JNoSQL does not support arithmetic operations in the UPDATE clause: " + scalarContext.getText());
         }
+        if(hasParenthesis(scalarContext)) {
+            throw new UnsupportedOperationException("Eclipse JNoSQL does not support parenthesis in the UPDATE clause: " + scalarContext.getText());
+        }
         var primaryExpression = scalarContext.primary_expression();
         var value = PrimaryFunction.INSTANCE.apply(primaryExpression);
         items.add(JDQLUpdateItem.of(name, value));
 
     }
+
+
 
     @Override
     public void exitEntity_name(JDQLParser.Entity_nameContext ctx) {
@@ -75,6 +80,9 @@ public final class UpdateProvider extends AbstractWhere implements Function<Stri
                 || Objects.nonNull(scalarContext.PLUS())
                 || Objects.nonNull(scalarContext.MINUS())
                 || Objects.nonNull(scalarContext.CONCAT());
+    }
+    private boolean hasParenthesis(JDQLParser.Scalar_expressionContext scalarContext) {
+        return Objects.nonNull(scalarContext.LPAREN()) || Objects.nonNull(scalarContext.RPAREN());
     }
 
 }

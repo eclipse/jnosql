@@ -197,4 +197,11 @@ class UpdateJakartaDataQueryProviderTest {
                 .isInstanceOf(UnsupportedOperationException.class);
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"UPDATE Box SET length = (length)"})
+    void shouldReturnErrorWhenHaveParenthesis(String query) {
+        Assertions.assertThatThrownBy(() ->updateProvider.apply(query))
+                .isInstanceOf(UnsupportedOperationException.class);
+    }
+
 }
