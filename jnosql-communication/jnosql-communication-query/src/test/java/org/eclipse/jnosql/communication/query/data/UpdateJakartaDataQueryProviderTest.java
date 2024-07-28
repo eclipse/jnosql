@@ -169,19 +169,32 @@ class UpdateJakartaDataQueryProviderTest {
                 .isInstanceOf(UnsupportedOperationException.class);
     }
 
-    @Test
-    void shouldReturnErrorAtMinusOperationInUpdate() {
-
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"UPDATE Box SET length = length - ?1"})
+    void shouldReturnErrorAtMinusOperationInUpdate(String query) {
+        Assertions.assertThatThrownBy(() ->updateProvider.apply(query))
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 
-    @Test
-    void shouldReturnErrorAtSubtractOperationInUpdate() {
-
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"UPDATE Box SET length = length * ?1"})
+    void shouldReturnErrorAtMultiplyOperationInUpdate(String query) {
+        Assertions.assertThatThrownBy(() ->updateProvider.apply(query))
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 
-    @Test
-    void shouldReturnErrorAtMultiplyOperationInUpdate() {
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"UPDATE Box SET length = length / ?1"})
+    void shouldReturnErrorAtDivOperationInUpdate(String query) {
+        Assertions.assertThatThrownBy(() ->updateProvider.apply(query))
+                .isInstanceOf(UnsupportedOperationException.class);
+    }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"UPDATE Box SET length = length || ?1"})
+    void shouldReturnErrorAtConcatOperationInUpdate(String query) {
+        Assertions.assertThatThrownBy(() ->updateProvider.apply(query))
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 
 }
