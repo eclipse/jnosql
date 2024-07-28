@@ -20,6 +20,8 @@ import jakarta.data.page.PageRequest;
 import jakarta.inject.Inject;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.eclipse.jnosql.mapping.core.Converters;
@@ -391,5 +393,48 @@ class CustomRepositoryHandlerTest {
         Mockito.when(template.query(Mockito.anyString()))
                 .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
         people.countByIdIn(Set.of(1L, 2L));
+
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        Mockito.verify(template).count(captor.capture());
+        Mockito.verifyNoMoreInteractions(template);
+        SelectQuery query = captor.getValue();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(query.sorts()).isEmpty();
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.condition()).isNotEmpty();
+            CriteriaCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.IN);
+            soft.assertThat(condition.element().name()).isEqualTo("_id");
+            soft.assertThat(condition.element().value().get()).isEqualTo(Set.of(1L, 2L));
+        });
+
+    }
+
+    @Test
+    void shouldExecuteExistBy() {
+
+        var preparedStatement = Mockito.mock(PreparedStatement.class);
+        Mockito.when(template.prepare(Mockito.anyString())).thenReturn(preparedStatement);
+        Mockito.when(template.query(Mockito.anyString()))
+                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+
+        people.existsByIdIn(Set.of(1L, 2L));
+
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        Mockito.verify(template).exists(captor.capture());
+        Mockito.verifyNoMoreInteractions(template);
+        SelectQuery query = captor.getValue();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(query.sorts()).isEmpty();
+            soft.assertThat(query.name()).isEqualTo("Person");
+            soft.assertThat(query.condition()).isNotEmpty();
+            CriteriaCondition condition = query.condition().orElseThrow();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.IN);
+            soft.assertThat(condition.element().name()).isEqualTo("_id");
+            soft.assertThat(condition.element().value().get()).isEqualTo(Set.of(1L, 2L));
+        });
+
     }
 }
