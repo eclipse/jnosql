@@ -21,11 +21,12 @@ import java.util.regex.Pattern;
 public final class MethodQuery implements Supplier<String> {
 
     private final String value;
-    private static final Pattern PATTERN = Pattern.compile("findBy|deleteBy|countAll|countBy|existsBy|"
-            + "OrderBy|First(?=\\d*By)|First(?=By)|(?<=First\\d{1,})By|IgnoreCase|"
-            + "And|Or(?!der)|Null|Not|Equals|GreaterThanEqual|True|False|Contains|EndsWith|StartsWith|"
-            + "LessThanEqual|GreaterThan|LessThan|Between|In|Like|Asc|Desc");
-
+    private static final Pattern PATTERN = Pattern.compile(
+            "findBy|deleteBy|countAll|countBy|existsBy|OrderBy|"
+                    + "First(?=\\d*By)|First(?=By)|(?<=First\\d{1,})By|(?<=First)By|(?<!First)By|IgnoreCase|"
+                    + "And|Or(?!der)|Null|Not|Equals|GreaterThanEqual|True|False|Contains|EndsWith|StartsWith|"
+                    + "LessThanEqual|GreaterThan|LessThan|Between|In|Like|Asc|Desc"
+    );
 
     private static final Map<String, String> CACHE = Collections.synchronizedMap(new WeakHashMap<>());
     private MethodQuery(String value) {
@@ -63,7 +64,7 @@ public final class MethodQuery implements Supplier<String> {
         Objects.requireNonNull(query, "query is required");
         String value = CACHE.get(query);
         if (Objects.isNull(value)) {
-            value = PATTERN.matcher(query).replaceAll(" $0 ").trim();
+            value = PATTERN.matcher(query).replaceAll(" $0 ").trim().replaceAll("\\s+", " ");
             CACHE.put(query, value);
         }
         return new MethodQuery(value);
