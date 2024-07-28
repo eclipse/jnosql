@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * It implements the Supplier interface to provide the processed query string
  * when needed.
  */
-public final class MethodQuery implements Supplier<String> {
+public final class QueryTokenizer implements Supplier<String> {
 
     /**
      * The limit to the first keyword, after this limit the first keyword will be ignored
@@ -44,7 +44,7 @@ public final class MethodQuery implements Supplier<String> {
 
     private static final Map<String, String> CACHE = Collections.synchronizedMap(new WeakHashMap<>());
 
-    private MethodQuery(String value) {
+    private QueryTokenizer(String value) {
         this.value = value;
     }
 
@@ -66,7 +66,7 @@ public final class MethodQuery implements Supplier<String> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        MethodQuery that = (MethodQuery) o;
+        QueryTokenizer that = (QueryTokenizer) o;
         return Objects.equals(value, that.value);
     }
 
@@ -75,9 +75,9 @@ public final class MethodQuery implements Supplier<String> {
         return value.hashCode();
     }
 
-    public static MethodQuery of(String query) {
+    public static QueryTokenizer of(String query) {
         Objects.requireNonNull(query, "query is required");
-        return new MethodQuery(CACHE.computeIfAbsent(query, q -> {
+        return new QueryTokenizer(CACHE.computeIfAbsent(query, q -> {
             String tokenized = TOKENIZER_PATTERN.matcher(q).replaceAll(" $0 ").trim().replaceAll("\\s+", " ");
             return adjustFirstKeywordPosition(tokenized);
         }));
