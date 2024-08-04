@@ -14,8 +14,44 @@
  */
 package org.eclipse.jnosql.mapping.semistructured;
 
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 enum SelectFieldMapper {
     INSTANCE;
 
 
+    public <T> Stream<T> map(Stream<T> entities, MapperObserver observer, EntitiesMetadata entitiesMetadata) {
+        if (observer.fields().isEmpty()) {
+            return entities;
+        }
+        List<String> fields = observer.fields();
+        EntityMetadata metadata = entitiesMetadata.findByName(observer.entity());
+        if (fields.size() == 1) {
+            var field = fields.get(0);
+            return entities.map(e -> field(e, metadata, field));
+        } else {
+            return entities.map(e -> fields(e, fields, metadata));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T fields(T e, List<String> fields, EntityMetadata metadata) {
+        List<Object> values = new ArrayList<>();
+        for (String field : fields) {
+            values.add(field(e, metadata, field));
+        }
+        return (T) values.toArray();
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T field(T entity, EntityMetadata metadata, String field) {
+        var fieldMetadata = metadata.fieldMapping(field).orElseThrow();
+        var value = fieldMetadata.read(entity);
+        return (T) value;
+    }
 }

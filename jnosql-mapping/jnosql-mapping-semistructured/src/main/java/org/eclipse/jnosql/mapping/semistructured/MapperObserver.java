@@ -28,7 +28,7 @@ final class MapperObserver implements CommunicationObserverParser {
 
     private final EntitiesMetadata mappings;
 
-    private List<String> fields = new ArrayList<>();
+    private final List<String> fields = new ArrayList<>();
 
     private String entity;
 
@@ -60,11 +60,14 @@ final class MapperObserver implements CommunicationObserverParser {
 
     private Optional<EntityMetadata> getEntityMetadata(String entity) {
         try {
+            this.entity = entity;
             return Optional.of(this.mappings.findByName(entity));
         } catch (ClassInformationNotFoundException e) {
             return this.mappings.findBySimpleName(entity)
                     .or(() -> this.mappings.findByClassName(entity));
         }
     }
+
+
 
 }

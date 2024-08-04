@@ -22,7 +22,6 @@ import jakarta.data.page.impl.CursoredPageRecord;
 import jakarta.nosql.QueryMapper;
 
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
-import org.eclipse.jnosql.communication.semistructured.CommunicationObserverParser;
 import org.eclipse.jnosql.communication.semistructured.DatabaseManager;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
 import org.eclipse.jnosql.communication.semistructured.QueryParser;
@@ -212,7 +211,8 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
     public <T> Stream<T> query(String query) {
         requireNonNull(query, "query is required");
         var observer = observer();
-        return PARSER.query(query, null, manager(), observer).map(c -> converter().toEntity(c));
+        Stream<T> stream = PARSER.query(query, null, manager(), observer).map(c -> converter().toEntity(c));
+        return SelectFieldMapper.INSTANCE.map(stream, observer, entities());
     }
 
     @Override
@@ -220,7 +220,8 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
         requireNonNull(query, "query is required");
         requireNonNull(entity, "entity is required");
         var observer = observer();
-        return PARSER.query(query, entity, manager(), observer).map(c -> converter().toEntity(c));
+        Stream<T> stream =  PARSER.query(query, entity, manager(), observer).map(c -> converter().toEntity(c));
+        return SelectFieldMapper.INSTANCE.map(stream, observer, entities());
     }
 
     @Override
@@ -365,7 +366,7 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
         return SelectQuery.select().from(metadata.name()).build();
     }
 
-    private CommunicationObserverParser observer() {
+    private MapperObserver observer() {
         return new MapperObserver(entities());
     }
 }

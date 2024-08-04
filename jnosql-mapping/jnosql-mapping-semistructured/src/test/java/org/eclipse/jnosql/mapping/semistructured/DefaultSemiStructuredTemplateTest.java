@@ -419,6 +419,7 @@ class DefaultSemiStructuredTemplateTest {
         SelectQuery query = queryCaptor.getValue();
         assertEquals("download", query.name());
     }
+
     @Test
     void shouldConvertEntityNameClassName() {
         template.query("FROM " + Person.class.getSimpleName());
