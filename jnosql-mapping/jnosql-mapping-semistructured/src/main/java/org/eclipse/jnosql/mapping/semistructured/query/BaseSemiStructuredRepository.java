@@ -242,7 +242,7 @@ public abstract class BaseSemiStructuredRepository<T, K> extends AbstractReposit
     }
 
     protected Function<String, String> sortParser() {
-        return property -> parser().fireField(entityMetadata().name(), property);
+        return property -> parser().fireSortProperty(entityMetadata().name(), property);
     }
 
 

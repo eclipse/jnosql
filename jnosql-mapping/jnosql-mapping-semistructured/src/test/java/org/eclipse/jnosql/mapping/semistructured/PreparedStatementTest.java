@@ -98,7 +98,7 @@ class PreparedStatementTest {
         Mockito.when(communicationPreparedStatement.singleResult()).thenReturn(Optional.of(entity));
         MapperObserver mapperObserver = new MapperObserver(entitiesMetadata);
         mapperObserver.fireEntity("Person");
-        mapperObserver.fireField("Person", "name");
+        mapperObserver.fireSelectField("Person", "name");
         var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, mapperObserver, entitiesMetadata);
         Optional<String> name = preparedStatement.singleResult();
         Assertions.assertThat(name).isPresent().get().isEqualTo("Ada");
@@ -115,8 +115,8 @@ class PreparedStatementTest {
         Mockito.when(communicationPreparedStatement.singleResult()).thenReturn(Optional.of(entity));
         MapperObserver mapperObserver = new MapperObserver(entitiesMetadata);
         mapperObserver.fireEntity("Person");
-        mapperObserver.fireField("Person", "name");
-        mapperObserver.fireField("Person", "age");
+        mapperObserver.fireSelectField("Person", "name");
+        mapperObserver.fireSelectField("Person", "age");
         var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, mapperObserver, entitiesMetadata);
         Optional<Object[]> fields = preparedStatement.singleResult();
         Assertions.assertThat(fields).isPresent().get().isEqualTo(new Object[]{"Ada", 20});
@@ -133,7 +133,7 @@ class PreparedStatementTest {
         Mockito.when(communicationPreparedStatement.result()).thenReturn(Stream.of(entity));
         MapperObserver mapperObserver = new MapperObserver(entitiesMetadata);
         mapperObserver.fireEntity("Person");
-        mapperObserver.fireField("Person", "name");
+        mapperObserver.fireSelectField("Person", "name");
         var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, mapperObserver, entitiesMetadata);
         Stream<String> name = preparedStatement.result();
         Assertions.assertThat(name).isNotEmpty().hasSize(1).contains("Ada");
@@ -150,8 +150,8 @@ class PreparedStatementTest {
         Mockito.when(communicationPreparedStatement.result()).thenReturn(Stream.of(entity));
         MapperObserver mapperObserver = new MapperObserver(entitiesMetadata);
         mapperObserver.fireEntity("Person");
-        mapperObserver.fireField("Person", "name");
-        mapperObserver.fireField("Person", "age");
+        mapperObserver.fireSelectField("Person", "name");
+        mapperObserver.fireSelectField("Person", "age");
         var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, mapperObserver, entitiesMetadata);
         Stream<Object[]> fields = preparedStatement.result();
         Assertions.assertThat(fields).isNotEmpty().hasSize(1).contains(new Object[]{"Ada", 20});

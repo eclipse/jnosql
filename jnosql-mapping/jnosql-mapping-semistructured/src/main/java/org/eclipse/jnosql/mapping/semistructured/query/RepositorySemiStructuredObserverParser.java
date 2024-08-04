@@ -37,7 +37,17 @@ public final class RepositorySemiStructuredObserverParser implements Communicati
     }
 
     @Override
-    public String fireField(String entity, String field) {
+    public String fireSelectField(String entity, String field) {
+        return parser.field(field);
+    }
+
+    @Override
+    public String fireSortProperty(String entity, String field) {
+        return parser.field(field);
+    }
+
+    @Override
+    public String fireConditionField(String entity, String field) {
         return parser.field(field);
     }
 

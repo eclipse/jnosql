@@ -36,7 +36,6 @@ final class MapperObserver implements CommunicationObserverParser {
         this.mappings = mappings;
     }
 
-
     @Override
     public String fireEntity(String entity) {
         Optional<EntityMetadata> mapping = getEntityMetadata(entity);
@@ -44,10 +43,19 @@ final class MapperObserver implements CommunicationObserverParser {
     }
 
     @Override
-    public String fireField(String entity, String field) {
-        Optional<EntityMetadata> mapping = getEntityMetadata(entity);
+    public String fireSelectField(String entity, String field) {
         this.fields.add(field);
-        return mapping.map(c -> c.columnField(field)).orElse(field);
+        return mapField(entity, field);
+    }
+
+    @Override
+    public String fireSortProperty(String entity, String field) {
+        return mapField(entity, field);
+    }
+
+    @Override
+    public String fireConditionField(String entity, String field) {
+        return mapField(entity, field);
     }
 
     List<String> fields() {
@@ -56,6 +64,11 @@ final class MapperObserver implements CommunicationObserverParser {
 
     String entity() {
         return entity;
+    }
+
+    private String mapField(String entity, String field) {
+        Optional<EntityMetadata> mapping = getEntityMetadata(entity);
+        return mapping.map(c -> c.columnField(field)).orElse(field);
     }
 
     private Optional<EntityMetadata> getEntityMetadata(String entity) {
@@ -67,7 +80,5 @@ final class MapperObserver implements CommunicationObserverParser {
                     .or(() -> this.mappings.findByClassName(entity));
         }
     }
-
-
 
 }
