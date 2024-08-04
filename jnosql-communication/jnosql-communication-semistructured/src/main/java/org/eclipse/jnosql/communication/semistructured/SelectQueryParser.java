@@ -71,7 +71,7 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
         var limit = selectQuery.limit();
         var skip = selectQuery.skip();
         var columns = selectQuery.fields().stream()
-                .map(f -> observer.fireField(entityName, f))
+                .map(f -> observer.fireSelectField(entityName, f))
                 .collect(Collectors.toList());
         List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, entityName))
                 .collect(toList());
@@ -93,7 +93,7 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
         long limit = selectQuery.limit();
         long skip = selectQuery.skip();
         List<String> columns = selectQuery.fields().stream()
-                .map(f -> observer.fireField(entity, f))
+                .map(f -> observer.fireSelectField(entity, f))
                 .collect(Collectors.toList());
 
         List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, entity)).collect(toList());
@@ -107,7 +107,7 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
     }
 
     private Sort<?> toSort(Sort<?> sort, CommunicationObserverParser observer, String entity) {
-        return Sort.of(observer.fireField(entity, sort.property()),
+        return Sort.of(observer.fireSortProperty(entity, sort.property()),
                 sort.isAscending()? Direction.ASC: Direction.DESC, false);
     }
 

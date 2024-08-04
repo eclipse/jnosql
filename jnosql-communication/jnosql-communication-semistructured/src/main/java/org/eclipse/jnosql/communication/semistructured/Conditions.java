@@ -63,7 +63,7 @@ final class Conditions {
     }
 
     private static String getName(QueryCondition condition, CommunicationObserverParser observer, String entity) {
-        return observer.fireField(entity, condition.name());
+        return observer.fireConditionField(entity, condition.name());
     }
 
 }

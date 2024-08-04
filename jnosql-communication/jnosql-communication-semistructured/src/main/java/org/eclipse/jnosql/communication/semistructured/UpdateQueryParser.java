@@ -70,7 +70,7 @@ public final class UpdateQueryParser implements BiFunction<org.eclipse.jnosql.co
 
         List<Element> set = new ArrayList<>();
         for (UpdateItem updateItem : updateQuery.set()) {
-            var field = observer.fireField(entity, updateItem.name());
+            var field = observer.fireSelectField(entity, updateItem.name());
             var value = Values.get(updateItem.value(), params);
             set.add(Element.of(field, value));
         }
@@ -91,7 +91,7 @@ public final class UpdateQueryParser implements BiFunction<org.eclipse.jnosql.co
         List<Element> set = new ArrayList<>();
 
         for (UpdateItem updateItem : updateQuery.set()) {
-            var field = observer.fireField(entity, updateItem.name());
+            var field = observer.fireSelectField(entity, updateItem.name());
             var value = Values.get(updateItem.value(), params);
             set.add(Element.of(field, value));
         }
