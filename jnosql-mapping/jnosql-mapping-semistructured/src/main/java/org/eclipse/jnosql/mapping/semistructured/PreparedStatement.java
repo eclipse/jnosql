@@ -67,8 +67,7 @@ public final class PreparedStatement implements org.eclipse.jnosql.mapping.Prepa
     public <T> Optional<T> singleResult() {
         Optional<CommunicationEntity> singleResult = preparedStatement.singleResult();
         Optional<T> result = singleResult.map(converter::toEntity);
-        Function<T, T> fieldMapper = SelectFieldMapper.INSTANCE.map(observer, entitiesMetadata);
-        return result.map(fieldMapper);
+        return result.map(SelectFieldMapper.INSTANCE.map(observer, entitiesMetadata));
     }
 
     @Override

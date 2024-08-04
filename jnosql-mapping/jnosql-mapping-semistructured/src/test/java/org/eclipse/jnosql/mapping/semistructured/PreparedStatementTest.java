@@ -74,7 +74,7 @@ class PreparedStatementTest {
     @Test
     void shouldReturnSingleResult(){
         var communicationPreparedStatement = Mockito.mock(org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement.class);
-        CommunicationEntity entity = CommunicationEntity.of("Person");
+        var entity = CommunicationEntity.of("Person");
         entity.add("name", "Ada");
         entity.add("age", 20);
         entity.add("_id", 20);
@@ -83,9 +83,42 @@ class PreparedStatementTest {
 
         var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, new MapperObserver(entitiesMetadata), entitiesMetadata);
         Optional<Person> person = preparedStatement.singleResult();
-
         Assertions.assertThat(person).isPresent();
+    }
 
+    @Test
+    void shouldReturnSingleFieldInSingleResult() {
+        var communicationPreparedStatement = Mockito.mock(org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement.class);
+        var entity = CommunicationEntity.of("Person");
+        entity.add("name", "Ada");
+        entity.add("age", 20);
+        entity.add("_id", 20);
+
+        Mockito.when(communicationPreparedStatement.singleResult()).thenReturn(Optional.of(entity));
+        MapperObserver mapperObserver = new MapperObserver(entitiesMetadata);
+        mapperObserver.fireEntity("Person");
+        mapperObserver.fireField("Person", "name");
+        var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, mapperObserver, entitiesMetadata);
+        Optional<String> name = preparedStatement.singleResult();
+        Assertions.assertThat(name).isPresent().get().isEqualTo("Ada");
+    }
+
+    @Test
+    void shouldReturnSingleFieldsInSingleResult() {
+        var communicationPreparedStatement = Mockito.mock(org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement.class);
+        var entity = CommunicationEntity.of("Person");
+        entity.add("name", "Ada");
+        entity.add("age", 20);
+        entity.add("_id", 20);
+
+        Mockito.when(communicationPreparedStatement.singleResult()).thenReturn(Optional.of(entity));
+        MapperObserver mapperObserver = new MapperObserver(entitiesMetadata);
+        mapperObserver.fireEntity("Person");
+        mapperObserver.fireField("Person", "name");
+        mapperObserver.fireField("Person", "age");
+        var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, mapperObserver, entitiesMetadata);
+        Optional<Object[]> fields = preparedStatement.singleResult();
+        Assertions.assertThat(fields).isPresent().get().isEqualTo(new Object[]{"Ada", 20});
     }
 
 }
