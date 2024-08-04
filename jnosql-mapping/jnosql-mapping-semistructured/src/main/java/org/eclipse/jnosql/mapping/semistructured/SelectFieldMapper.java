@@ -19,25 +19,26 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.function.Function;
 
 enum SelectFieldMapper {
+
     INSTANCE;
 
-
-    public <T> Stream<T> map(Stream<T> entities, MapperObserver observer, EntitiesMetadata entitiesMetadata) {
+    <T> Function<T, T> map(MapperObserver observer, EntitiesMetadata entitiesMetadata) {
         if (observer.fields().isEmpty()) {
-            return entities;
+            return Function.identity();
         }
         List<String> fields = observer.fields();
         EntityMetadata metadata = entitiesMetadata.findByName(observer.entity());
         if (fields.size() == 1) {
             var field = fields.get(0);
-            return entities.map(e -> field(e, metadata, field));
+            return entity -> field(entity, metadata, field);
         } else {
-            return entities.map(e -> fields(e, fields, metadata));
+            return entity -> fields(entity, fields, metadata);
         }
     }
+
 
     @SuppressWarnings("unchecked")
     private <T> T fields(T e, List<String> fields, EntityMetadata metadata) {
