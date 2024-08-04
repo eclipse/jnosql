@@ -81,7 +81,11 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
      */
     protected abstract EventPersistManager eventManager();
 
-
+    /**
+     * Retrieves the metadata for entities.
+     *
+     * @return the entities metadata
+     */
     protected abstract EntitiesMetadata entities();
 
     /**
