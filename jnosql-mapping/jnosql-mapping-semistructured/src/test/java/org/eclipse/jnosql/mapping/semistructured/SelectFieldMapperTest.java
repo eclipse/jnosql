@@ -47,7 +47,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @AddExtensions({EntityMetadataExtension.class})
 class SelectFieldMapperTest {
 
-
     private final List<Element> columns = List.of(
             Element.of("age", 10L),
             Element.of("phones", Arrays.asList("234", "432")),
