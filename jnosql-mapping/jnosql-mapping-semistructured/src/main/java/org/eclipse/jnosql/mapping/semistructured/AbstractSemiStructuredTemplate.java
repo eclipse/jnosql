@@ -99,16 +99,6 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
 
     private final UnaryOperator<CommunicationEntity> update = e -> manager().update(e);
 
-    private CommunicationObserverParser observer;
-
-
-    private CommunicationObserverParser getObserver() {
-        if (Objects.isNull(observer)) {
-            observer = new MapperObserver(entities());
-        }
-        return observer;
-    }
-
     @Override
     public <T> T insert(T entity) {
         requireNonNull(entity, "entity is required");
@@ -157,13 +147,6 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
     public void delete(DeleteQuery query) {
         requireNonNull(query, "query is required");
         manager().delete(query);
-    }
-
-
-    @Override
-    public <T> Stream<T> select(SelectQuery query) {
-        requireNonNull(query, "query is required");
-        return executeQuery(query);
     }
 
     @Override
@@ -228,15 +211,36 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
     @Override
     public <T> Stream<T> query(String query) {
         requireNonNull(query, "query is required");
-        return PARSER.query(query, null, manager(), getObserver()).map(c -> converter().toEntity(c));
+        var observer = observer();
+        return PARSER.query(query, null, manager(), observer).map(c -> converter().toEntity(c));
     }
 
     @Override
     public <T> Stream<T> query(String query, String entity) {
         requireNonNull(query, "query is required");
         requireNonNull(entity, "entity is required");
-        return PARSER.query(query, entity, manager(), getObserver()).map(c -> converter().toEntity(c));
+        var observer = observer();
+        return PARSER.query(query, entity, manager(), observer).map(c -> converter().toEntity(c));
     }
+
+    @Override
+    public org.eclipse.jnosql.mapping.PreparedStatement prepare(String query) {
+        var observer = observer();
+        return new PreparedStatement(PARSER.prepare(query, null, manager(), observer), converter());
+    }
+
+    @Override
+    public org.eclipse.jnosql.mapping.PreparedStatement prepare(String query, String entity) {
+        var observer = observer();
+        return new PreparedStatement(PARSER.prepare(query, entity, manager(), observer), converter());
+    }
+
+    @Override
+    public <T> Stream<T> select(SelectQuery query) {
+        requireNonNull(query, "query is required");
+        return executeQuery(query);
+    }
+
 
     @Override
     public <T> Optional<T> singleResult(String query) {
@@ -262,17 +266,6 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
         }
         throw new NonUniqueResultException("No unique result found to the query: " + query);
     }
-
-    @Override
-    public org.eclipse.jnosql.mapping.PreparedStatement prepare(String query) {
-        return new PreparedStatement(PARSER.prepare(query, null, manager(), getObserver()), converter());
-    }
-
-    @Override
-    public org.eclipse.jnosql.mapping.PreparedStatement prepare(String query, String entity) {
-        return new PreparedStatement(PARSER.prepare(query, entity, manager(), getObserver()), converter());
-    }
-
 
     @Override
     public long count(String entity) {
@@ -370,5 +363,9 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
             }
         }
         return SelectQuery.select().from(metadata.name()).build();
+    }
+
+    private CommunicationObserverParser observer() {
+        return new MapperObserver(entities());
     }
 }
