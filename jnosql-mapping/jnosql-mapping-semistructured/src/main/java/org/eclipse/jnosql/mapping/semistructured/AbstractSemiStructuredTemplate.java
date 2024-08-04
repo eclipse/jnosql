@@ -211,8 +211,7 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
     public <T> Stream<T> query(String query) {
         requireNonNull(query, "query is required");
         var observer = observer();
-        Stream<T> stream = PARSER.query(query, null, manager(), observer).map(c -> converter().toEntity(c));
-        return SelectFieldMapper.INSTANCE.map(stream, observer, entities());
+        return PARSER.query(query, null, manager(), observer).map(mappers(observer));
     }
 
     @Override
@@ -220,20 +219,19 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
         requireNonNull(query, "query is required");
         requireNonNull(entity, "entity is required");
         var observer = observer();
-        Stream<T> stream =  PARSER.query(query, entity, manager(), observer).map(c -> converter().toEntity(c));
-        return SelectFieldMapper.INSTANCE.map(stream, observer, entities());
+        return PARSER.query(query, null, manager(), observer).map(mappers(observer));
     }
 
     @Override
     public org.eclipse.jnosql.mapping.PreparedStatement prepare(String query) {
         var observer = observer();
-        return new PreparedStatement(PARSER.prepare(query, null, manager(), observer), converter());
+        return new PreparedStatement(PARSER.prepare(query, null, manager(), observer), converter(), observer, entities());
     }
 
     @Override
     public org.eclipse.jnosql.mapping.PreparedStatement prepare(String query, String entity) {
         var observer = observer();
-        return new PreparedStatement(PARSER.prepare(query, entity, manager(), observer), converter());
+        return new PreparedStatement(PARSER.prepare(query, entity, manager(), observer), converter(), observer, entities());
     }
 
     @Override
@@ -368,5 +366,16 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
 
     private MapperObserver observer() {
         return new MapperObserver(entities());
+    }
+
+    private <T> Function<CommunicationEntity, T> mappers(MapperObserver observer) {
+        Function<T, T> fieldMapper = fieldMapper(observer);
+        Function<CommunicationEntity, T> entityMapper = c -> converter().toEntity(c);
+        return entityMapper.andThen(fieldMapper);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T fieldMapper(MapperObserver observer) {
+        return (T) SelectFieldMapper.INSTANCE.<T>map(observer, entities());
     }
 }

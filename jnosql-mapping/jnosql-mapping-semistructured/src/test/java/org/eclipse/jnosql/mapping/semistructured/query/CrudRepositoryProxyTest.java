@@ -791,6 +791,20 @@ class CrudRepositoryProxyTest {
 
     }
 
+    @Test
+    void shouldExecuteSingleQuery() {
+
+        PreparedStatement statement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
+        when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(statement);
+
+        when(statement.isCount()).thenReturn(true);
+        when(statement.count()).thenReturn(10L);
+
+        long result = personRepository.count("Ada", 10);
+
+        assertEquals(10L, result);
+    }
+
 
     interface PersonRepository extends NoSQLRepository<Person, Long> {
 
@@ -843,6 +857,9 @@ class CrudRepositoryProxyTest {
 
         @Query("select count(this) FROM Person WHERE name = ?1 and age > ?2")
         long count(String name, int age);
+
+        @Query("SELECT id WHERE age > ?1")
+        List<Long> querySingle(int age);
     }
 
     public interface VendorRepository extends CrudRepository<Vendor, String> {

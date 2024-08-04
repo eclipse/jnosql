@@ -49,7 +49,7 @@ class PreparedStatementTest {
     void shouldReturnCount(){
         var communicationPreparedStatement = Mockito.mock(org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement.class);
         Mockito.when(communicationPreparedStatement.count()).thenReturn(10L);
-        var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter);
+        var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, new MapperObserver(entitiesMetadata), entitiesMetadata);
         Assertions.assertThat(preparedStatement.count()).isEqualTo(10L);
     }
 
@@ -57,7 +57,7 @@ class PreparedStatementTest {
     void shouldReturnFalseWhenQueryIsEmpty(){
         var communicationPreparedStatement = Mockito.mock(org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement.class);
         Mockito.when(communicationPreparedStatement.select()).thenReturn(Optional.empty());
-        var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter);
+        var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, new MapperObserver(entitiesMetadata), entitiesMetadata);
         Assertions.assertThat(preparedStatement.isCount()).isFalse();
     }
 
@@ -67,7 +67,7 @@ class PreparedStatementTest {
         var query = Mockito.mock(SelectQuery.class);
         Mockito.when(query.isCount()).thenReturn(true);
         Mockito.when(communicationPreparedStatement.select()).thenReturn(Optional.of(query));
-        var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter);
+        var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, new MapperObserver(entitiesMetadata), entitiesMetadata);
         Assertions.assertThat(preparedStatement.isCount()).isTrue();
     }
 
@@ -81,7 +81,7 @@ class PreparedStatementTest {
 
         Mockito.when(communicationPreparedStatement.singleResult()).thenReturn(Optional.of(entity));
 
-        var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter);
+        var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, new MapperObserver(entitiesMetadata), entitiesMetadata);
         Optional<Person> person = preparedStatement.singleResult();
 
         Assertions.assertThat(person).isPresent();
