@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, EntityConverter.class})
@@ -119,6 +120,41 @@ class PreparedStatementTest {
         var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, mapperObserver, entitiesMetadata);
         Optional<Object[]> fields = preparedStatement.singleResult();
         Assertions.assertThat(fields).isPresent().get().isEqualTo(new Object[]{"Ada", 20});
+    }
+
+    @Test
+    void shouldReturnSingleFieldInResult() {
+        var communicationPreparedStatement = Mockito.mock(org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement.class);
+        var entity = CommunicationEntity.of("Person");
+        entity.add("name", "Ada");
+        entity.add("age", 20);
+        entity.add("_id", 20);
+
+        Mockito.when(communicationPreparedStatement.result()).thenReturn(Stream.of(entity));
+        MapperObserver mapperObserver = new MapperObserver(entitiesMetadata);
+        mapperObserver.fireEntity("Person");
+        mapperObserver.fireField("Person", "name");
+        var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, mapperObserver, entitiesMetadata);
+        Stream<String> name = preparedStatement.result();
+        Assertions.assertThat(name).isNotEmpty().hasSize(1).contains("Ada");
+    }
+
+    @Test
+    void shouldReturnSingleFieldsInResult() {
+        var communicationPreparedStatement = Mockito.mock(org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement.class);
+        var entity = CommunicationEntity.of("Person");
+        entity.add("name", "Ada");
+        entity.add("age", 20);
+        entity.add("_id", 20);
+
+        Mockito.when(communicationPreparedStatement.result()).thenReturn(Stream.of(entity));
+        MapperObserver mapperObserver = new MapperObserver(entitiesMetadata);
+        mapperObserver.fireEntity("Person");
+        mapperObserver.fireField("Person", "name");
+        mapperObserver.fireField("Person", "age");
+        var preparedStatement = new PreparedStatement(communicationPreparedStatement, converter, mapperObserver, entitiesMetadata);
+        Stream<Object[]> fields = preparedStatement.result();
+        Assertions.assertThat(fields).isNotEmpty().hasSize(1).contains(new Object[]{"Ada", 20});
     }
 
 }
