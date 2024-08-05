@@ -106,7 +106,6 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
             Objects.requireNonNull(method, "method is required");
             Objects.requireNonNull(typeClass, "typeClass is required");
             Objects.requireNonNull(prepareConverter, "prepareConverter is required");
-
             return new DynamicQueryMethodReturn(method, args, typeClass, prepareConverter);
         }
     }

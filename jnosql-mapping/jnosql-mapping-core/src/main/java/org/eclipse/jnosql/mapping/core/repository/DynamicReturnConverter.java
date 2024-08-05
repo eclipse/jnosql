@@ -80,9 +80,10 @@ enum DynamicReturnConverter {
         PreparedStatement prepare = prepareConverter.apply(value);
         params.forEach(prepare::bind);
 
-        if(prepare.isCount()){
+        if (prepare.isCount()) {
             return prepare.count();
         }
+
         Stream<?> entities = prepare.result();
 
         Supplier<Stream<?>> streamSupplier = () -> entities;
