@@ -42,16 +42,17 @@ public abstract class AbstractSemiStructuredRepositoryProxy<T, K> extends BaseSe
     protected Object executeQuery(Object instance, Method method, Object[] params) {
         Class<?> type = entityMetadata().type();
         var entity = entityMetadata().name();
+        var pageRequest = DynamicReturn.findPageRequest(params);
         var methodReturn = DynamicQueryMethodReturn.builder()
                 .withArgs(params)
                 .withMethod(method)
                 .withTypeClass(type)
+                .pageRequest(pageRequest)
                 .withPrepareConverter(textQuery -> {
-                    var prepare = (org.eclipse.jnosql.mapping.semistructured.PreparedStatement)template().prepare(textQuery, entity);
+                    var prepare = (org.eclipse.jnosql.mapping.semistructured.PreparedStatement) template().prepare(textQuery, entity);
                     prepare.setSelectMapper(query -> updateQueryDynamically(params, query));
                     return prepare;
-                })
-                .build();
+                }).build();
         return methodReturn.execute();
     }
 
