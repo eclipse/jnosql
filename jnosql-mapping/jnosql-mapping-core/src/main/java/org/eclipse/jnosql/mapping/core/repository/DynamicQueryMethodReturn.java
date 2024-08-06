@@ -99,8 +99,8 @@ public final class DynamicQueryMethodReturn<T> implements MethodDynamicExecutabl
         return page;
     }
 
-    public static DynamicQueryMethodReturnBuilder builder() {
-        return new DynamicQueryMethodReturnBuilder();
+    public static <T> DynamicQueryMethodReturnBuilder<T> builder() {
+        return new DynamicQueryMethodReturnBuilder<>();
     }
 
     @Override
