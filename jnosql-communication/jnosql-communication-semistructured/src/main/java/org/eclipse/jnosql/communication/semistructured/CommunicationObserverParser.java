@@ -41,7 +41,32 @@ public interface CommunicationObserverParser {
      * @return the result of processing the field name
      * @throws NullPointerException when either entity or field is null
      */
-    default String fireField(String entity, String field) {
+    default String fireSelectField(String entity, String field) {
+        return field;
+    }
+
+    /**
+     * Fires an event for each sort property in the mapper process.
+     *
+     * @param entity the entity name
+     * @param field  the field name
+     * @return the result of processing the sort property
+     * @throws NullPointerException when either entity or field is null
+     */
+    default String fireSortProperty(String entity, String field) {
+        return field;
+    }
+
+
+    /**
+     * Fires an event for each condition field in the mapper process.
+     *
+     * @param entity the entity name
+     * @param field  the field name
+     * @return the result of processing the condition field
+     * @throws NullPointerException when either entity or field is null
+     */
+    default String fireConditionField(String entity, String field) {
         return field;
     }
 

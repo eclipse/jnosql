@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.core.repository;
 
 
-
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 
 import java.lang.reflect.Method;
@@ -25,20 +25,23 @@ import java.util.function.Function;
 /**
  * This instance has the information to run the JNoSQL native query at {@link jakarta.data.repository.CrudRepository}
  */
-public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
+public final class DynamicQueryMethodReturn<T> implements MethodDynamicExecutable {
 
 
     private final Method method;
     private final Object[] args;
     private final Class<?> typeClass;
     private final Function<String, PreparedStatement> prepareConverter;
+    private final PageRequest pageRequest;
 
     private DynamicQueryMethodReturn(Method method, Object[] args, Class<?> typeClass,
-                                     Function<String, PreparedStatement> prepareConverter) {
+                                     Function<String, PreparedStatement> prepareConverter,
+                                     PageRequest pageRequest) {
         this.method = method;
         this.args = args;
         this.typeClass = typeClass;
         this.prepareConverter = prepareConverter;
+        this.pageRequest = pageRequest;
     }
 
     Method method() {
@@ -57,9 +60,16 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
         return prepareConverter;
     }
 
+    PageRequest pageRequest() {
+        return pageRequest;
+    }
 
-    public static DynamicQueryMethodReturnBuilder builder() {
-        return new DynamicQueryMethodReturnBuilder();
+    boolean hasPagination() {
+        return pageRequest != null;
+    }
+
+    public static <T> DynamicQueryMethodReturnBuilder<T> builder() {
+        return new DynamicQueryMethodReturnBuilder<>();
     }
 
     @Override
@@ -67,47 +77,49 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
         return DynamicReturnConverter.INSTANCE.convert(this);
     }
 
-    public static final class DynamicQueryMethodReturnBuilder {
+    public static final class DynamicQueryMethodReturnBuilder<T> {
 
         private Method method;
-
         private Object[] args;
-
         private Class<?> typeClass;
-
         private Function<String, PreparedStatement> prepareConverter;
+        private PageRequest pageRequest;
 
         private DynamicQueryMethodReturnBuilder() {
         }
 
-        public DynamicQueryMethodReturnBuilder withMethod(Method method) {
+        public DynamicQueryMethodReturnBuilder<T> method(Method method) {
             this.method = method;
             return this;
         }
 
-        public DynamicQueryMethodReturnBuilder withArgs(Object[] args) {
+        public DynamicQueryMethodReturnBuilder<T> args(Object[] args) {
             if(args != null) {
                 this.args = args.clone();
             }
             return this;
         }
 
-        public DynamicQueryMethodReturnBuilder withTypeClass(Class<?> typeClass) {
+        public DynamicQueryMethodReturnBuilder<T> typeClass(Class<?> typeClass) {
             this.typeClass = typeClass;
             return this;
         }
 
-        public DynamicQueryMethodReturnBuilder withPrepareConverter(Function<String, PreparedStatement> prepareConverter) {
+        public DynamicQueryMethodReturnBuilder<T> prepareConverter(Function<String, PreparedStatement> prepareConverter) {
             this.prepareConverter = prepareConverter;
             return this;
         }
 
-        public DynamicQueryMethodReturn build() {
+        public DynamicQueryMethodReturnBuilder<T> pageRequest(PageRequest pageRequest) {
+            this.pageRequest = pageRequest;
+            return this;
+        }
+
+        public DynamicQueryMethodReturn<T> build() {
             Objects.requireNonNull(method, "method is required");
             Objects.requireNonNull(typeClass, "typeClass is required");
             Objects.requireNonNull(prepareConverter, "prepareConverter is required");
-
-            return new DynamicQueryMethodReturn(method, args, typeClass, prepareConverter);
+            return new DynamicQueryMethodReturn<>(method, args, typeClass, prepareConverter, pageRequest);
         }
     }
 

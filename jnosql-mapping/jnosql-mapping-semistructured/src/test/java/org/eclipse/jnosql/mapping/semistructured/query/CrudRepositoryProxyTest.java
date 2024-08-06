@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.semistructured.query;
 
+import jakarta.data.page.Page;
+import jakarta.data.page.PageRequest;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
@@ -94,13 +96,13 @@ class CrudRepositoryProxyTest {
     public void setUp() {
         this.template = Mockito.mock(SemiStructuredTemplate.class);
 
-        SemiStructuredRepositoryProxy personHandler = new SemiStructuredRepositoryProxy(template,
+        var personHandler = new SemiStructuredRepositoryProxy<>(template,
                 entities, PersonRepository.class, converters);
 
-        SemiStructuredRepositoryProxy vendorHandler = new SemiStructuredRepositoryProxy(template,
+        var vendorHandler = new SemiStructuredRepositoryProxy<>(template,
                 entities, VendorRepository.class, converters);
 
-        SemiStructuredRepositoryProxy addressHandler = new SemiStructuredRepositoryProxy(template,
+        var addressHandler = new SemiStructuredRepositoryProxy<>(template,
                 entities, AddressRepository.class, converters);
 
 
@@ -791,6 +793,36 @@ class CrudRepositoryProxyTest {
 
     }
 
+    @Test
+    void shouldExecuteSingleQuery() {
+
+        PreparedStatement statement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
+        when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(statement);
+
+        when(statement.isCount()).thenReturn(true);
+        when(statement.count()).thenReturn(10L);
+
+        long result = personRepository.count("Ada", 10);
+
+        assertEquals(10L, result);
+    }
+
+    @Test
+    void shouldExecuteQueryWithPagination() {
+        PreparedStatement statement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
+        when(template.prepare(Mockito.anyString(), Mockito.anyString())).thenReturn(statement);
+        when(statement.result()).thenReturn(Stream.of(10L));
+        var page = personRepository.queryPagination(10, PageRequest.ofPage(10));
+        verify(statement).bind("?1", 10);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(page).isNotNull();
+            soft.assertThat(page.content()).contains(10L);
+            soft.assertThat(page.content()).hasSize(1);
+        });
+    }
+
+
 
     interface PersonRepository extends NoSQLRepository<Person, Long> {
 
@@ -843,6 +875,12 @@ class CrudRepositoryProxyTest {
 
         @Query("select count(this) FROM Person WHERE name = ?1 and age > ?2")
         long count(String name, int age);
+
+        @Query("SELECT id WHERE age > ?1")
+        List<Long> querySingle(int age);
+
+        @Query("SELECT id WHERE age > ?1")
+        Page<Long> queryPagination(int age, PageRequest pageRequest);
     }
 
     public interface VendorRepository extends CrudRepository<Vendor, String> {

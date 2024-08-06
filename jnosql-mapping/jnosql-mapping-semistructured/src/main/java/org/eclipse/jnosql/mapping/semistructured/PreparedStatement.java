@@ -16,9 +16,11 @@ package org.eclipse.jnosql.mapping.semistructured;
 
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
+import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
@@ -37,10 +39,16 @@ public final class PreparedStatement implements org.eclipse.jnosql.mapping.Prepa
 
     private final EntityConverter converter;
 
+    private final MapperObserver observer;
+
+    private final EntitiesMetadata entitiesMetadata;
+
     PreparedStatement(org.eclipse.jnosql.communication.semistructured.CommunicationPreparedStatement preparedStatement,
-                      EntityConverter converter) {
+                      EntityConverter converter, MapperObserver observer, EntitiesMetadata entitiesMetadata) {
         this.preparedStatement = preparedStatement;
         this.converter = converter;
+        this.observer = observer;
+        this.entitiesMetadata = entitiesMetadata;
     }
 
     @Override
@@ -51,13 +59,15 @@ public final class PreparedStatement implements org.eclipse.jnosql.mapping.Prepa
 
     @Override
     public <T> Stream<T> result() {
-        return preparedStatement.result().map(converter::toEntity);
+        Function<T, T> fieldMapper = SelectFieldMapper.INSTANCE.map(observer, entitiesMetadata);
+        return preparedStatement.result().<T>map(converter::toEntity).map(fieldMapper);
     }
 
     @Override
     public <T> Optional<T> singleResult() {
         Optional<CommunicationEntity> singleResult = preparedStatement.singleResult();
-        return singleResult.map(converter::toEntity);
+        Optional<T> result = singleResult.map(converter::toEntity);
+        return result.map(SelectFieldMapper.INSTANCE.map(observer, entitiesMetadata));
     }
 
     @Override
@@ -76,7 +86,7 @@ public final class PreparedStatement implements org.eclipse.jnosql.mapping.Prepa
      *
      * @return an optional {@link SelectQuery} representing the query details bound to this PreparedStatement
      */
-    public Optional<SelectQuery> selectQuery(){
+    public Optional<SelectQuery> selectQuery() {
         return preparedStatement.select();
     }
 
@@ -89,6 +99,5 @@ public final class PreparedStatement implements org.eclipse.jnosql.mapping.Prepa
         Objects.requireNonNull(selectMapper, "selectMapper is required");
         this.preparedStatement.setSelectMapper(selectMapper);
     }
-
 
 }

@@ -32,7 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class NoSQLPageTest {
 
-
     @Test
     void shouldReturnErrorWhenNull() {
         assertThrows(NullPointerException.class, ()->
@@ -41,7 +40,6 @@ class NoSQLPageTest {
         assertThrows(NullPointerException.class, ()->
                 NoSQLPage.of(null, PageRequest.ofPage(2)));
     }
-
 
     @Test
     void shouldReturnUnsupportedOperation() {

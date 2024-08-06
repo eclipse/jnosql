@@ -14,15 +14,14 @@
  */
 package org.eclipse.jnosql.mapping.core.repository;
 
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.mapping.PreparedStatement;
-
+import org.eclipse.jnosql.mapping.core.NoSQLPage;
 
 import java.lang.reflect.Method;
 import java.util.Map;
-import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -67,8 +66,8 @@ enum DynamicReturnConverter {
      *
      * @return the result from the query annotation
      */
-    @SuppressWarnings("unchecked")
-    public Object convert(DynamicQueryMethodReturn dynamicQueryMethod) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public Object convert(DynamicQueryMethodReturn<?> dynamicQueryMethod) {
         Method method = dynamicQueryMethod.method();
         Object[] args = dynamicQueryMethod.args();
         Function<String, PreparedStatement> prepareConverter = dynamicQueryMethod.prepareConverter();
@@ -80,22 +79,25 @@ enum DynamicReturnConverter {
         PreparedStatement prepare = prepareConverter.apply(value);
         params.forEach(prepare::bind);
 
-        if(prepare.isCount()){
+        if (prepare.isCount()) {
             return prepare.count();
         }
-        Stream<?> entities = prepare.result();
 
-        Supplier<Stream<?>> streamSupplier = () -> entities;
-        Supplier<Optional<?>> singleSupplier = DynamicReturn.toSingleResult(method).apply(streamSupplier);
+        var pageRequest = dynamicQueryMethod.pageRequest();
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(typeClass)
-                .withMethodSource(method)
-                .withResult(streamSupplier)
-                .withSingleResult(singleSupplier)
-                .build();
+                .classSource(typeClass)
+                .methodSource(method)
+                .result(() -> prepare.result())
+                .singleResult(() -> prepare.singleResult())
+                .pagination(pageRequest)
+                .streamPagination(p -> prepare.result())
+                .singleResultPagination(p -> prepare.singleResult())
+                .page(p -> {
+                    Stream<?> entities = prepare.result();
+                    return NoSQLPage.of(entities.toList(), (PageRequest) p);
+                }).build();
 
         return convert(dynamicReturn);
     }
-
 }

@@ -14,10 +14,12 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Include the `First` keyword in the method by query in the Repository
 - Include the `Null`, `NotNull` and `countAll` keywords in the method by query in the Repository
 - Include condition to is NUll and is Not Null in the query
+- Include pagination with Query annotation
 
 === Fixed
 
 - Fix the `Orderby` annotation in the Repository
+- Make the JDQL return the correct type when the select is by field
 
 == [1.1.1] - 2023-05-25
 

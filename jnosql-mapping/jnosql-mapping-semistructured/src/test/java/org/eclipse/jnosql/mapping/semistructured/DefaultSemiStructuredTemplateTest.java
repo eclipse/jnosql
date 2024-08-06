@@ -111,12 +111,12 @@ class DefaultSemiStructuredTemplateTest {
 
     @Test
     void shouldInsert() {
-        CommunicationEntity columnEntity = CommunicationEntity.of("Person");
-        columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
+        var communicationEntity = CommunicationEntity.of("Person");
+        communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
                 .insert(any(CommunicationEntity.class)))
-                .thenReturn(columnEntity);
+                .thenReturn(communicationEntity);
 
         template.insert(this.person);
         verify(managerMock).insert(captor.capture());
@@ -130,12 +130,12 @@ class DefaultSemiStructuredTemplateTest {
 
     @Test
     void shouldMergeOnInsert() {
-        CommunicationEntity columnEntity = CommunicationEntity.of("Person");
-        columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
+        var communicationEntity = CommunicationEntity.of("Person");
+        communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
                 .insert(any(CommunicationEntity.class)))
-                .thenReturn(columnEntity);
+                .thenReturn(communicationEntity);
 
         Person person = Person.builder().build();
         Person result = template.insert(person);
@@ -152,13 +152,13 @@ class DefaultSemiStructuredTemplateTest {
 
     @Test
     void shouldInsertTTL() {
-        CommunicationEntity columnEntity = CommunicationEntity.of("Person");
-        columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
+        var communicationEntity = CommunicationEntity.of("Person");
+        communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
                 .insert(any(CommunicationEntity.class),
                         any(Duration.class)))
-                .thenReturn(columnEntity);
+                .thenReturn(communicationEntity);
 
         template.insert(this.person, Duration.ofHours(2));
         verify(managerMock).insert(captor.capture(), Mockito.eq(Duration.ofHours(2)));
@@ -171,12 +171,12 @@ class DefaultSemiStructuredTemplateTest {
 
     @Test
     void shouldUpdate() {
-        CommunicationEntity columnEntity = CommunicationEntity.of("Person");
-        columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
+        var communicationEntity = CommunicationEntity.of("Person");
+        communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
                 .update(any(CommunicationEntity.class)))
-                .thenReturn(columnEntity);
+                .thenReturn(communicationEntity);
 
         template.update(this.person);
         verify(managerMock).update(captor.capture());
@@ -189,12 +189,12 @@ class DefaultSemiStructuredTemplateTest {
 
     @Test
     void shouldMergeOnUpdate() {
-        CommunicationEntity columnEntity = CommunicationEntity.of("Person");
-        columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
+        var communicationEntity = CommunicationEntity.of("Person");
+        communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
                 .update(any(CommunicationEntity.class)))
-                .thenReturn(columnEntity);
+                .thenReturn(communicationEntity);
 
         Person person = Person.builder().build();
         Person result = template.update(person);
@@ -208,13 +208,13 @@ class DefaultSemiStructuredTemplateTest {
 
     @Test
     void shouldInsertEntitiesTTL() {
-        CommunicationEntity columnEntity = CommunicationEntity.of("Person");
-        columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
+        var communicationEntity = CommunicationEntity.of("Person");
+        communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
         Duration duration = Duration.ofHours(2);
 
         Mockito.when(managerMock
                 .insert(any(CommunicationEntity.class), Mockito.eq(duration)))
-                .thenReturn(columnEntity);
+                .thenReturn(communicationEntity);
 
         template.insert(Arrays.asList(person, person), duration);
         verify(managerMock, times(2)).insert(any(CommunicationEntity.class), any(Duration.class));
@@ -222,12 +222,12 @@ class DefaultSemiStructuredTemplateTest {
 
     @Test
     void shouldInsertEntities() {
-        CommunicationEntity columnEntity = CommunicationEntity.of("Person");
-        columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
+        var communicationEntity = CommunicationEntity.of("Person");
+        communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
                 .insert(any(CommunicationEntity.class)))
-                .thenReturn(columnEntity);
+                .thenReturn(communicationEntity);
 
         template.insert(Arrays.asList(person, person));
         verify(managerMock, times(2)).insert(any(CommunicationEntity.class));
@@ -235,12 +235,12 @@ class DefaultSemiStructuredTemplateTest {
 
     @Test
     void shouldUpdateEntities() {
-        CommunicationEntity columnEntity = CommunicationEntity.of("Person");
-        columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
+        var communicationEntity = CommunicationEntity.of("Person");
+        communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
                 .update(any(CommunicationEntity.class)))
-                .thenReturn(columnEntity);
+                .thenReturn(communicationEntity);
 
         template.update(Arrays.asList(person, person));
         verify(managerMock, times(2)).update(any(CommunicationEntity.class));
@@ -419,6 +419,7 @@ class DefaultSemiStructuredTemplateTest {
         SelectQuery query = queryCaptor.getValue();
         assertEquals("download", query.name());
     }
+
     @Test
     void shouldConvertEntityNameClassName() {
         template.query("FROM " + Person.class.getSimpleName());

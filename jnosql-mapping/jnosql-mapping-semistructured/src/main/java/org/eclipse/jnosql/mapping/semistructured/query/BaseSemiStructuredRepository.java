@@ -138,14 +138,14 @@ public abstract class BaseSemiStructuredRepository<T, K> extends AbstractReposit
     @SuppressWarnings("unchecked")
     protected Object executeFindByQuery(Method method, Object[] args, Class<?> typeClass, org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(typeClass)
-                .withMethodSource(method)
-                .withResult(() -> template().select(query))
-                .withSingleResult(() -> template().singleResult(query))
-                .withPagination(DynamicReturn.findPageRequest(args))
-                .withStreamPagination(streamPagination(query))
-                .withSingleResultPagination(getSingleResult(query))
-                .withPage(getPage(query))
+                .classSource(typeClass)
+                .methodSource(method)
+                .result(() -> template().select(query))
+                .singleResult(() -> template().singleResult(query))
+                .pagination(DynamicReturn.findPageRequest(args))
+                .streamPagination(streamPagination(query))
+                .singleResultPagination(getSingleResult(query))
+                .page(getPage(query))
                 .build();
         return dynamicReturn.execute();
     }
@@ -176,9 +176,6 @@ public abstract class BaseSemiStructuredRepository<T, K> extends AbstractReposit
         return template().exists(query);
     }
 
-
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
     protected Function<PageRequest, Page<T>> getPage(org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         return p -> {
             Stream<T> entities = template().select(query);
@@ -186,12 +183,10 @@ public abstract class BaseSemiStructuredRepository<T, K> extends AbstractReposit
         };
     }
 
-    @SuppressWarnings("rawtypes")
     protected Function<PageRequest, Optional<T>> getSingleResult(org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         return p -> template().singleResult(query);
     }
 
-    @SuppressWarnings("rawtypes")
     protected Function<PageRequest, Stream<T>> streamPagination(org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         return p -> template().select(query);
     }
@@ -242,7 +237,7 @@ public abstract class BaseSemiStructuredRepository<T, K> extends AbstractReposit
     }
 
     protected Function<String, String> sortParser() {
-        return property -> parser().fireField(entityMetadata().name(), property);
+        return property -> parser().fireSortProperty(entityMetadata().name(), property);
     }
 
 

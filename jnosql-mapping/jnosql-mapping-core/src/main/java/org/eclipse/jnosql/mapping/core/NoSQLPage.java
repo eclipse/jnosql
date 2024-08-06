@@ -66,12 +66,12 @@ public class NoSQLPage<T> implements Page<T> {
 
     @Override
     public boolean hasNext() {
-      return true;
+      return hasContent();
     }
 
     @Override
     public boolean hasPrevious() {
-        return true;
+        return hasContent();
     }
 
     @Override

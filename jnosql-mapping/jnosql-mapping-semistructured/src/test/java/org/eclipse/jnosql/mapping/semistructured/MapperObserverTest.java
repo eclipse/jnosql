@@ -68,26 +68,73 @@ class MapperObserverTest {
 
     @Test
     void shouldFireField(){
-        var field = parser.fireField("Worker", "salary");
+        var field = parser.fireSelectField("Worker", "salary");
         Assertions.assertEquals("money", field);
     }
 
     @Test
     void shouldFireFieldFromClassName(){
-        var field = parser.fireField(Worker.class.getName(), "salary");
+        var field = parser.fireSelectField(Worker.class.getName(), "salary");
         Assertions.assertEquals("money", field);
     }
 
     @Test
     void shouldFireFieldFromSimplesName(){
-        var field = parser.fireField(Worker.class.getSimpleName(), "salary");
+        var field = parser.fireSelectField(Worker.class.getSimpleName(), "salary");
         Assertions.assertEquals("money", field);
     }
 
     @Test
     void shouldFireFieldFromEntity(){
-        var field = parser.fireField(Vendor.class.getSimpleName(), "name");
+        var field = parser.fireSelectField(Vendor.class.getSimpleName(), "name");
         Assertions.assertEquals("_id", field);
     }
 
+    @Test
+    void shouldFireConditionField(){
+        var field = parser.fireConditionField("Worker", "salary");
+        Assertions.assertEquals("money", field);
+    }
+
+    @Test
+    void shouldFireConditionFieldFromClassName(){
+        var field = parser.fireConditionField(Worker.class.getName(), "salary");
+        Assertions.assertEquals("money", field);
+    }
+
+    @Test
+    void shouldFireConditionFieldFromSimplesName(){
+        var field = parser.fireConditionField(Worker.class.getSimpleName(), "salary");
+        Assertions.assertEquals("money", field);
+    }
+
+    @Test
+    void shouldFireConditionFieldFromEntity(){
+        var field = parser.fireConditionField(Vendor.class.getSimpleName(), "name");
+        Assertions.assertEquals("_id", field);
+    }
+
+    @Test
+    void shouldFireSortPropertyField(){
+        var field = parser.fireSortProperty("Worker", "salary");
+        Assertions.assertEquals("money", field);
+    }
+
+    @Test
+    void shouldFireSortPropertyFieldFromClassName(){
+        var field = parser.fireSortProperty(Worker.class.getName(), "salary");
+        Assertions.assertEquals("money", field);
+    }
+
+    @Test
+    void shouldFireSortPropertyFieldFromSimplesName(){
+        var field = parser.fireSortProperty(Worker.class.getSimpleName(), "salary");
+        Assertions.assertEquals("money", field);
+    }
+
+    @Test
+    void shouldFireSortPropertyFieldFromEntity(){
+        var field = parser.fireSortProperty(Vendor.class.getSimpleName(), "name");
+        Assertions.assertEquals("_id", field);
+    }
 }

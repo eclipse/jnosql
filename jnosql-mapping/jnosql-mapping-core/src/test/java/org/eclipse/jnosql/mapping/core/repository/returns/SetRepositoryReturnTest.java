@@ -52,14 +52,14 @@ class SetRepositoryReturnTest {
     void shouldReturnSet() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withSingleResult(Optional::empty)
-                .withResult(() -> Stream.of(ada))
-                .withSingleResultPagination(p -> Optional.empty())
-                .withStreamPagination(p -> Stream.of(ada))
-                .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(PageRequest.ofPage(2).size(2))
-                .withPage(p -> page)
+                .classSource(Person.class)
+                .singleResult(Optional::empty)
+                .result(() -> Stream.of(ada))
+                .singleResultPagination(p -> Optional.empty())
+                .streamPagination(p -> Stream.of(ada))
+                .methodSource(Person.class.getDeclaredMethods()[0])
+                .pagination(PageRequest.ofPage(2).size(2))
+                .page(p -> page)
                 .build();
 
         Set<Person> person = (Set<Person>) repositoryReturn.convert(dynamic);
@@ -72,14 +72,14 @@ class SetRepositoryReturnTest {
     void shouldReturnSetPage() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withSingleResult(Optional::empty)
-                .withResult(Collections::emptyList)
-                .withSingleResultPagination(p -> Optional.empty())
-                .withStreamPagination(p -> Stream.of(ada))
-                .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(PageRequest.ofPage(2).size(2))
-                .withPage(p -> page)
+                .classSource(Person.class)
+                .singleResult(Optional::empty)
+                .result(Collections::emptyList)
+                .singleResultPagination(p -> Optional.empty())
+                .streamPagination(p -> Stream.of(ada))
+                .methodSource(Person.class.getDeclaredMethods()[0])
+                .pagination(PageRequest.ofPage(2).size(2))
+                .page(p -> page)
                 .build();
         Set<Person> person = (Set<Person>) repositoryReturn.convertPageRequest(dynamic);
         Assertions.assertNotNull(person);

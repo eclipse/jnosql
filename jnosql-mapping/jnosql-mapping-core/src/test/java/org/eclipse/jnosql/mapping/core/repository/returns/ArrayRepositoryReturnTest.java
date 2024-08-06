@@ -25,7 +25,6 @@ import org.mockito.Mock;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -53,10 +52,10 @@ class ArrayRepositoryReturnTest {
     void shouldReturnArray() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
-                .withSingleResult(Optional::empty)
-                .withClassSource(Person.class)
-                .withResult(() -> Stream.of(ada))
-                .withMethodSource(Person.class.getDeclaredMethods()[0])
+                .singleResult(Optional::empty)
+                .classSource(Person.class)
+                .result(() -> Stream.of(ada))
+                .methodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         Person[] person = (Person[]) repositoryReturn.convert(dynamic);
         SoftAssertions.assertSoftly(s -> {
@@ -71,14 +70,14 @@ class ArrayRepositoryReturnTest {
     void shouldReturnListPage() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withSingleResult(Optional::empty)
-                .withResult(Collections::emptyList)
-                .withSingleResultPagination(p -> Optional.empty())
-                .withStreamPagination(p -> Stream.of(ada))
-                .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(PageRequest.ofPage(2).size(2))
-                .withPage(p -> page)
+                .classSource(Person.class)
+                .singleResult(Optional::empty)
+                .result(Collections::emptyList)
+                .singleResultPagination(p -> Optional.empty())
+                .streamPagination(p -> Stream.of(ada))
+                .methodSource(Person.class.getDeclaredMethods()[0])
+                .pagination(PageRequest.ofPage(2).size(2))
+                .page(p -> page)
                 .build();
         Person[] person = (Person[]) repositoryReturn.convertPageRequest(dynamic);
         SoftAssertions.assertSoftly(s -> {

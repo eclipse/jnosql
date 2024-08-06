@@ -19,6 +19,8 @@ import org.eclipse.jnosql.mapping.metadata.ClassInformationNotFoundException;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 final class MapperObserver implements CommunicationObserverParser {
@@ -26,10 +28,13 @@ final class MapperObserver implements CommunicationObserverParser {
 
     private final EntitiesMetadata mappings;
 
+    private final List<String> fields = new ArrayList<>();
+
+    private String entity;
+
     MapperObserver(EntitiesMetadata mappings) {
         this.mappings = mappings;
     }
-
 
     @Override
     public String fireEntity(String entity) {
@@ -38,13 +43,37 @@ final class MapperObserver implements CommunicationObserverParser {
     }
 
     @Override
-    public String fireField(String entity, String field) {
+    public String fireSelectField(String entity, String field) {
+        this.fields.add(field);
+        return mapField(entity, field);
+    }
+
+    @Override
+    public String fireSortProperty(String entity, String field) {
+        return mapField(entity, field);
+    }
+
+    @Override
+    public String fireConditionField(String entity, String field) {
+        return mapField(entity, field);
+    }
+
+    List<String> fields() {
+        return fields;
+    }
+
+    String entity() {
+        return entity;
+    }
+
+    private String mapField(String entity, String field) {
         Optional<EntityMetadata> mapping = getEntityMetadata(entity);
         return mapping.map(c -> c.columnField(field)).orElse(field);
     }
 
     private Optional<EntityMetadata> getEntityMetadata(String entity) {
         try {
+            this.entity = entity;
             return Optional.of(this.mappings.findByName(entity));
         } catch (ClassInformationNotFoundException e) {
             return this.mappings.findBySimpleName(entity)

@@ -52,14 +52,14 @@ class StreamRepositoryReturnTest {
     void shouldReturnStreamPage() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withSingleResult(Optional::empty)
-                .withResult(Collections::emptyList)
-                .withSingleResultPagination(p -> Optional.empty())
-                .withStreamPagination(p -> Stream.of(ada))
-                .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(PageRequest.ofPage(2).size(2))
-                .withPage(p -> page)
+                .classSource(Person.class)
+                .singleResult(Optional::empty)
+                .result(Collections::emptyList)
+                .singleResultPagination(p -> Optional.empty())
+                .streamPagination(p -> Stream.of(ada))
+                .methodSource(Person.class.getDeclaredMethods()[0])
+                .pagination(PageRequest.ofPage(2).size(2))
+                .page(p -> page)
                 .build();
         Stream<Person> person = (Stream<Person>) repositoryReturn.convertPageRequest(dynamic);
         Assertions.assertNotNull(person);
@@ -72,10 +72,10 @@ class StreamRepositoryReturnTest {
     void shouldReturnStream() {
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
-                .withSingleResult(Optional::empty)
-                .withClassSource(Person.class)
-                .withResult(() -> Stream.of(ada))
-                .withMethodSource(Person.class.getDeclaredMethods()[0])
+                .singleResult(Optional::empty)
+                .classSource(Person.class)
+                .result(() -> Stream.of(ada))
+                .methodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         Stream<Person> person = (Stream<Person>) repositoryReturn.convert(dynamic);
         Assertions.assertNotNull(person);
