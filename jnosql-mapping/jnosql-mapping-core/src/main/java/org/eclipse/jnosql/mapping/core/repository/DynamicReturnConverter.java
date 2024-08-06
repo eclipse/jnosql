@@ -86,14 +86,14 @@ enum DynamicReturnConverter {
         var pageRequest = dynamicQueryMethod.pageRequest();
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(typeClass)
-                .withMethodSource(method)
-                .withResult(() -> prepare.result())
-                .withSingleResult(() -> prepare.singleResult())
-                .withPagination(pageRequest)
-                .withStreamPagination(p -> prepare.result())
-                .withSingleResultPagination(p -> prepare.singleResult())
-                .withPage(p -> {
+                .classSource(typeClass)
+                .methodSource(method)
+                .result(() -> prepare.result())
+                .singleResult(() -> prepare.singleResult())
+                .pagination(pageRequest)
+                .streamPagination(p -> prepare.result())
+                .singleResultPagination(p -> prepare.singleResult())
+                .page(p -> {
                     Stream<?> entities = prepare.result();
                     return NoSQLPage.of(entities.toList(), (PageRequest) p);
                 }).build();

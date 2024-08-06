@@ -138,14 +138,14 @@ public abstract class BaseSemiStructuredRepository<T, K> extends AbstractReposit
     @SuppressWarnings("unchecked")
     protected Object executeFindByQuery(Method method, Object[] args, Class<?> typeClass, org.eclipse.jnosql.communication.semistructured.SelectQuery query) {
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(typeClass)
-                .withMethodSource(method)
-                .withResult(() -> template().select(query))
-                .withSingleResult(() -> template().singleResult(query))
-                .withPagination(DynamicReturn.findPageRequest(args))
-                .withStreamPagination(streamPagination(query))
-                .withSingleResultPagination(getSingleResult(query))
-                .withPage(getPage(query))
+                .classSource(typeClass)
+                .methodSource(method)
+                .result(() -> template().select(query))
+                .singleResult(() -> template().singleResult(query))
+                .pagination(DynamicReturn.findPageRequest(args))
+                .streamPagination(streamPagination(query))
+                .singleResultPagination(getSingleResult(query))
+                .page(getPage(query))
                 .build();
         return dynamicReturn.execute();
     }

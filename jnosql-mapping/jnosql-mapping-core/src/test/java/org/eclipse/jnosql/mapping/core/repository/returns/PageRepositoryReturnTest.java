@@ -59,14 +59,14 @@ class PageRepositoryReturnTest {
         Mockito.when(page.content()).thenReturn(List.of(ada));
 
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withSingleResult(Optional::empty)
-                .withResult(Collections::emptyList)
-                .withSingleResultPagination(p -> Optional.empty())
-                .withStreamPagination(p -> Stream.of(ada))
-                .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(PageRequest.ofPage(2).size(2))
-                .withPage(p -> page)
+                .classSource(Person.class)
+                .singleResult(Optional::empty)
+                .result(Collections::emptyList)
+                .singleResultPagination(p -> Optional.empty())
+                .streamPagination(p -> Stream.of(ada))
+                .methodSource(Person.class.getDeclaredMethods()[0])
+                .pagination(PageRequest.ofPage(2).size(2))
+                .page(p -> page)
                 .build();
 
         Page<Person> personPage = (Page<Person>) repositoryReturn.convertPageRequest(dynamic);
@@ -82,10 +82,10 @@ class PageRepositoryReturnTest {
 
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
-                .withSingleResult(Optional::empty)
-                .withClassSource(Person.class)
-                .withResult(() -> Stream.of(ada))
-                .withMethodSource(Person.class.getDeclaredMethods()[0])
+                .singleResult(Optional::empty)
+                .classSource(Person.class)
+                .result(() -> Stream.of(ada))
+                .methodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         Assertions.assertThrows(DynamicQueryException.class, () -> repositoryReturn.convert(dynamic));
     }

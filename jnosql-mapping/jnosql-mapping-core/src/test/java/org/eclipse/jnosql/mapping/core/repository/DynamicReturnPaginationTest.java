@@ -64,13 +64,13 @@ class DynamicReturnPaginationTest {
         when(singlePagination.apply(pageRequest)).thenReturn(Optional.empty());
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page).build();
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page).build();
         Object execute = dynamicReturn.execute();
 
         Assertions.assertTrue(execute instanceof Optional);
@@ -93,13 +93,13 @@ class DynamicReturnPaginationTest {
         when(singlePagination.apply(pageRequest)).thenReturn(Optional.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page).build();
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page).build();
 
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Optional);
@@ -121,13 +121,13 @@ class DynamicReturnPaginationTest {
         when(singlePagination.apply(pageRequest)).thenReturn(Optional.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page).build();
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page).build();
 
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Person);
@@ -148,13 +148,13 @@ class DynamicReturnPaginationTest {
         when(singlePagination.apply(pageRequest)).thenReturn(Optional.empty());
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page)
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page)
                 .build();
 
         Object execute = dynamicReturn.execute();
@@ -174,13 +174,13 @@ class DynamicReturnPaginationTest {
         when(streamPagination.apply(pageRequest)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page)
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof List);
@@ -202,13 +202,13 @@ class DynamicReturnPaginationTest {
         when(streamPagination.apply(pageRequest)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page)
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page)
                 .build();
 
         Object execute = dynamicReturn.execute();
@@ -229,13 +229,13 @@ class DynamicReturnPaginationTest {
         when(streamPagination.apply(pageRequest)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page)
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Collection);
@@ -256,13 +256,13 @@ class DynamicReturnPaginationTest {
         when(streamPagination.apply(pageRequest)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page)
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Set);
@@ -283,13 +283,13 @@ class DynamicReturnPaginationTest {
         when(streamPagination.apply(pageRequest)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page)
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Queue);
@@ -311,13 +311,13 @@ class DynamicReturnPaginationTest {
         when(streamPagination.apply(pageRequest)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page)
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Stream);
@@ -337,13 +337,13 @@ class DynamicReturnPaginationTest {
         when(streamPagination.apply(pageRequest)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page)
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof SortedSet);
@@ -364,13 +364,13 @@ class DynamicReturnPaginationTest {
         when(streamPagination.apply(pageRequest)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page)
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof NavigableSet);
@@ -392,13 +392,13 @@ class DynamicReturnPaginationTest {
         when(streamPagination.apply(pageRequest)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page)
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Deque);
@@ -416,13 +416,13 @@ class DynamicReturnPaginationTest {
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         PageRequest pageRequest = getPagination();
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(Person.class)
-                .withMethodSource(method).withResult(stream)
-                .withSingleResult(singleResult)
-                .withPagination(pageRequest)
-                .withStreamPagination(streamPagination)
-                .withSingleResultPagination(singlePagination)
-                .withPage(page)
+                .classSource(Person.class)
+                .methodSource(method).result(stream)
+                .singleResult(singleResult)
+                .pagination(pageRequest)
+                .streamPagination(streamPagination)
+                .singleResultPagination(singlePagination)
+                .page(page)
                 .build();
 
         dynamicReturn.execute();
