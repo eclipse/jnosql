@@ -325,7 +325,8 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @return a new instance
          * @throws NullPointerException when there is null attributes
          */
-        public DynamicReturn build() {
+        @SuppressWarnings({"rawtypes", "unchecked"})
+        public DynamicReturn<T> build() {
             requireNonNull(classSource, "the class Source is required");
             requireNonNull(methodSource, "the method Source is required");
             requireNonNull(singleResult, "the single result supplier is required");
