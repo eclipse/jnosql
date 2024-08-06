@@ -226,6 +226,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      * A builder of {@link DynamicReturn}
      * @param <T> the type
      */
+    @SuppressWarnings("rawtypes")
     public static final class DefaultDynamicReturnBuilder<T> {
 
         private Class<?> classSource;
