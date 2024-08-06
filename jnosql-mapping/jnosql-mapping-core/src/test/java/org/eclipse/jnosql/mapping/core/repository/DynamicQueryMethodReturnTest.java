@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 class DynamicQueryMethodReturnTest {
@@ -45,9 +44,9 @@ class DynamicQueryMethodReturnTest {
 
         Mockito.when(preparedStatement.result()).thenReturn(Stream.empty());
         var dynamicReturn = DynamicQueryMethodReturn.builder()
-                .withTypeClass(Person.class)
-                .withMethod(method)
-                .withPrepareConverter(s -> preparedStatement)
+                .typeClass(Person.class)
+                .method(method)
+                .prepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertTrue(execute instanceof Optional);
@@ -65,9 +64,9 @@ class DynamicQueryMethodReturnTest {
         Mockito.when(preparedStatement.singleResult()).thenReturn(Optional.of(new Person("Ada")));
 
         var dynamicReturn = DynamicQueryMethodReturn.builder()
-                .withTypeClass(Person.class)
-                .withMethod(method)
-                .withPrepareConverter(s -> preparedStatement)
+                .typeClass(Person.class)
+                .method(method)
+                .prepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertInstanceOf(Optional.class, execute);
@@ -86,9 +85,9 @@ class DynamicQueryMethodReturnTest {
                 Person("Otavio")));
         Mockito.when(preparedStatement.singleResult()).thenThrow(new NonUniqueResultException(""));
         var dynamicReturn = DynamicQueryMethodReturn.builder()
-                .withTypeClass(Person.class)
-                .withMethod(method)
-                .withPrepareConverter(s -> preparedStatement)
+                .typeClass(Person.class)
+                .method(method)
+                .prepareConverter(s -> preparedStatement)
                 .build();
 
         Assertions.assertThrows(NonUniqueResultException.class, dynamicReturn::execute);
@@ -103,9 +102,9 @@ class DynamicQueryMethodReturnTest {
         Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         Mockito.when(preparedStatement.singleResult()).thenReturn(Optional.of(new Person("Ada")));
         var dynamicReturn = DynamicQueryMethodReturn.builder()
-                .withTypeClass(Person.class)
-                .withMethod(method)
-                .withPrepareConverter(s -> preparedStatement)
+                .typeClass(Person.class)
+                .method(method)
+                .prepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertInstanceOf(Person.class, execute);
@@ -121,9 +120,9 @@ class DynamicQueryMethodReturnTest {
 
         Mockito.when(preparedStatement.result()).thenReturn(Stream.empty());
         var dynamicReturn = DynamicQueryMethodReturn.builder()
-                .withTypeClass(Person.class)
-                .withMethod(method)
-                .withPrepareConverter(s -> preparedStatement)
+                .typeClass(Person.class)
+                .method(method)
+                .prepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertNull(execute);
@@ -137,9 +136,9 @@ class DynamicQueryMethodReturnTest {
 
         Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         var dynamicReturn = DynamicQueryMethodReturn.builder()
-                .withTypeClass(Person.class)
-                .withMethod(method)
-                .withPrepareConverter(s -> preparedStatement)
+                .typeClass(Person.class)
+                .method(method)
+                .prepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertInstanceOf(List.class, execute);
@@ -157,9 +156,9 @@ class DynamicQueryMethodReturnTest {
 
         Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         var dynamicReturn = DynamicQueryMethodReturn.builder()
-                .withTypeClass(Person.class)
-                .withMethod(method)
-                .withPrepareConverter(s -> preparedStatement)
+                .typeClass(Person.class)
+                .method(method)
+                .prepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertInstanceOf(Iterable.class, execute);
@@ -174,9 +173,9 @@ class DynamicQueryMethodReturnTest {
 
         Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         var dynamicReturn = DynamicQueryMethodReturn.builder()
-                .withTypeClass(Person.class)
-                .withMethod(method)
-                .withPrepareConverter(s -> preparedStatement)
+                .typeClass(Person.class)
+                .method(method)
+                .prepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertInstanceOf(Collection.class, execute);
@@ -193,9 +192,9 @@ class DynamicQueryMethodReturnTest {
 
         Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         var dynamicReturn = DynamicQueryMethodReturn.builder()
-                .withTypeClass(Person.class)
-                .withMethod(method)
-                .withPrepareConverter(s -> preparedStatement)
+                .typeClass(Person.class)
+                .method(method)
+                .prepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertInstanceOf(Queue.class, execute);
@@ -211,9 +210,9 @@ class DynamicQueryMethodReturnTest {
 
         Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         var dynamicReturn = DynamicQueryMethodReturn.builder()
-                .withTypeClass(Person.class)
-                .withMethod(method)
-                .withPrepareConverter(s -> preparedStatement)
+                .typeClass(Person.class)
+                .method(method)
+                .prepareConverter(s -> preparedStatement)
                 .build();
 
         Object execute = dynamicReturn.execute();
@@ -232,10 +231,10 @@ class DynamicQueryMethodReturnTest {
 
         Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         var dynamicReturn = DynamicQueryMethodReturn.builder()
-                .withTypeClass(Person.class)
-                .withMethod(method)
-                .withArgs(new Object[]{"Ada"})
-                .withPrepareConverter(s -> preparedStatement)
+                .typeClass(Person.class)
+                .method(method)
+                .args(new Object[]{"Ada"})
+                .prepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
         Assertions.assertInstanceOf(Iterable.class, execute);
@@ -252,9 +251,9 @@ class DynamicQueryMethodReturnTest {
 
 
         var dynamicReturn = DynamicQueryMethodReturn.builder()
-                .withTypeClass(Person.class)
-                .withMethod(method)
-                .withPrepareConverter(s -> preparedStatement)
+                .typeClass(Person.class)
+                .method(method)
+                .prepareConverter(s -> preparedStatement)
                 .build();
 
         Object execute = dynamicReturn.execute();
@@ -275,10 +274,10 @@ class DynamicQueryMethodReturnTest {
 
         Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
         var dynamicReturn = DynamicQueryMethodReturn.builder()
-                .withTypeClass(Person.class)
-                .withMethod(method)
-                .withArgs(new Object[]{"Ada", PageRequest.ofPage(10)})
-                .withPrepareConverter(s -> preparedStatement)
+                .typeClass(Person.class)
+                .method(method)
+                .args(new Object[]{"Ada", PageRequest.ofPage(10)})
+                .prepareConverter(s -> preparedStatement)
                 .pageRequest(PageRequest.ofPage(10))
                 .build();
         Object execute = dynamicReturn.execute();

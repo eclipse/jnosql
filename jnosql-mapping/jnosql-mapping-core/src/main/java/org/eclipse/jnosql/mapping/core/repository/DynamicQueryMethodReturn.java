@@ -88,24 +88,24 @@ public final class DynamicQueryMethodReturn<T> implements MethodDynamicExecutabl
         private DynamicQueryMethodReturnBuilder() {
         }
 
-        public DynamicQueryMethodReturnBuilder<T> withMethod(Method method) {
+        public DynamicQueryMethodReturnBuilder<T> method(Method method) {
             this.method = method;
             return this;
         }
 
-        public DynamicQueryMethodReturnBuilder<T> withArgs(Object[] args) {
+        public DynamicQueryMethodReturnBuilder<T> args(Object[] args) {
             if(args != null) {
                 this.args = args.clone();
             }
             return this;
         }
 
-        public DynamicQueryMethodReturnBuilder<T> withTypeClass(Class<?> typeClass) {
+        public DynamicQueryMethodReturnBuilder<T> typeClass(Class<?> typeClass) {
             this.typeClass = typeClass;
             return this;
         }
 
-        public DynamicQueryMethodReturnBuilder<T> withPrepareConverter(Function<String, PreparedStatement> prepareConverter) {
+        public DynamicQueryMethodReturnBuilder<T> prepareConverter(Function<String, PreparedStatement> prepareConverter) {
             this.prepareConverter = prepareConverter;
             return this;
         }
