@@ -21,6 +21,11 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Fix the `Orderby` annotation in the Repository
 - Make the JDQL return the correct type when the select is by field
 
+=== Removed
+
+- Remove Apache Tinkerpop from the project and move it as a driver
+
+
 == [1.1.1] - 2023-05-25
 
 === Changed
