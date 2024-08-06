@@ -15,19 +15,12 @@
 package org.eclipse.jnosql.mapping.core.repository;
 
 
-
-import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 /**
  * This instance has the information to run the JNoSQL native query at {@link jakarta.data.repository.CrudRepository}
