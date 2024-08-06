@@ -14,7 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.core.repository;
 
+import jakarta.data.page.Page;
+import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.mapping.PreparedStatement;
+import org.eclipse.jnosql.mapping.core.NoSQLPage;
 
 
 import java.lang.reflect.Method;
@@ -67,8 +70,8 @@ enum DynamicReturnConverter {
      *
      * @return the result from the query annotation
      */
-    @SuppressWarnings("unchecked")
-    public Object convert(DynamicQueryMethodReturn dynamicQueryMethod) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public Object convert(DynamicQueryMethodReturn<?> dynamicQueryMethod) {
         Method method = dynamicQueryMethod.method();
         Object[] args = dynamicQueryMethod.args();
         Function<String, PreparedStatement> prepareConverter = dynamicQueryMethod.prepareConverter();
@@ -84,19 +87,21 @@ enum DynamicReturnConverter {
             return prepare.count();
         }
 
-        Stream<?> entities = prepare.result();
-
-        Supplier<Stream<?>> streamSupplier = () -> entities;
-        Supplier<Optional<?>> singleSupplier = DynamicReturn.toSingleResult(method).apply(streamSupplier);
+        var pageRequest = dynamicQueryMethod.pageRequest();
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
-                .withResult(streamSupplier)
-                .withSingleResult(singleSupplier)
-                .build();
+                .withResult(() -> prepare.result())
+                .withSingleResult(() -> prepare.singleResult())
+                .withPagination(pageRequest)
+                .withStreamPagination(p -> prepare.result())
+                .withSingleResultPagination(p -> prepare.singleResult())
+                .withPage(p -> {
+                    Stream<?> entities = prepare.result();
+                    return NoSQLPage.of(entities.toList(), (PageRequest) p);
+                }).build();
 
         return convert(dynamicReturn);
     }
-
 }

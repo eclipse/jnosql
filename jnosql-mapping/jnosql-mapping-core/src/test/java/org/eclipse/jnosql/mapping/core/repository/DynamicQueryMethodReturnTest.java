@@ -15,6 +15,8 @@
 package org.eclipse.jnosql.mapping.core.repository;
 
 import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.data.page.Page;
+import jakarta.data.page.PageRequest;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
@@ -53,12 +55,14 @@ class DynamicQueryMethodReturnTest {
         Assertions.assertFalse(optional.isPresent());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void shouldReturnOptional() throws NoSuchMethodException {
 
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Method method = getMethod(PersonRepository.class, "getOptional");
        Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
+        Mockito.when(preparedStatement.singleResult()).thenReturn(Optional.of(new Person("Ada")));
 
         var dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
@@ -66,8 +70,8 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Optional);
-        Optional<Person> optional = (Optional) execute;
+        Assertions.assertInstanceOf(Optional.class, execute);
+        Optional<Person> optional = (Optional<Person> ) execute;
         Assertions.assertTrue(optional.isPresent());
         Assertions.assertEquals(new Person("Ada"), optional.get());
     }
@@ -80,6 +84,7 @@ class DynamicQueryMethodReturnTest {
 
         Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Poliana"), new
                 Person("Otavio")));
+        Mockito.when(preparedStatement.singleResult()).thenThrow(new NonUniqueResultException(""));
         var dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
                 .withMethod(method)
@@ -96,13 +101,14 @@ class DynamicQueryMethodReturnTest {
         Method method = getMethod(PersonRepository.class, "getInstance");
 
         Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
+        Mockito.when(preparedStatement.singleResult()).thenReturn(Optional.of(new Person("Ada")));
         var dynamicReturn = DynamicQueryMethodReturn.builder()
                 .withTypeClass(Person.class)
                 .withMethod(method)
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Person);
+        Assertions.assertInstanceOf(Person.class, execute);
         Person person = (Person) execute;
         Assertions.assertEquals(new Person("Ada"), person);
     }
@@ -136,7 +142,7 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof List);
+        Assertions.assertInstanceOf(List.class, execute);
         List<Person> persons = (List) execute;
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.get(0));
@@ -156,7 +162,7 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Iterable);
+        Assertions.assertInstanceOf(Iterable.class, execute);
         Iterable<Person> persons = (List) execute;
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
@@ -173,7 +179,7 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Collection);
+        Assertions.assertInstanceOf(Collection.class, execute);
         Collection<Person> persons = (Collection) execute;
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
@@ -192,7 +198,7 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Queue);
+        Assertions.assertInstanceOf(Queue.class, execute);
         Queue<Person> persons = (Queue) execute;
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
@@ -211,7 +217,7 @@ class DynamicQueryMethodReturnTest {
                 .build();
 
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Stream);
+        Assertions.assertInstanceOf(Stream.class, execute);
         Stream<Person> persons = (Stream) execute;
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
@@ -232,7 +238,7 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Iterable);
+        Assertions.assertInstanceOf(Iterable.class, execute);
         Iterable<Person> persons = (List) execute;
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
@@ -255,6 +261,32 @@ class DynamicQueryMethodReturnTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(execute).isInstanceOf(Long.class);
             soft.assertThat(execute).isEqualTo(1L);
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldReturnPage() throws NoSuchMethodException {
+        PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
+        Mockito.when(preparedStatement.<Person>result())
+                .thenReturn(Stream.of(new Person("Ada")));
+
+        Method method = getMethod(PersonRepository.class, "page");
+
+        Mockito.when(preparedStatement.result()).thenReturn(Stream.of(new Person("Ada")));
+        var dynamicReturn = DynamicQueryMethodReturn.builder()
+                .withTypeClass(Person.class)
+                .withMethod(method)
+                .withArgs(new Object[]{"Ada", PageRequest.ofPage(10)})
+                .withPrepareConverter(s -> preparedStatement)
+                .pageRequest(PageRequest.ofPage(10))
+                .build();
+        Object execute = dynamicReturn.execute();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(execute).isInstanceOf(Page.class);
+            Page<Person> page = (Page<Person>) execute;
+            soft.assertThat(page.content()).containsExactly(new Person("Ada"));
+            soft.assertThat(page.pageRequest()).isEqualTo(PageRequest.ofPage(10));
         });
     }
 
@@ -300,6 +332,9 @@ class DynamicQueryMethodReturnTest {
 
         @Query("select count(this) from Person")
         long count();
+
+        @Query("query")
+        Page<Person> page(@Param("name") String name, PageRequest pageRequest);
     }
 
 }

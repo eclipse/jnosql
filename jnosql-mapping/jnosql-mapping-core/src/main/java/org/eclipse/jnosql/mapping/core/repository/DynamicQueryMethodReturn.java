@@ -39,28 +39,16 @@ public final class DynamicQueryMethodReturn<T> implements MethodDynamicExecutabl
     private final Object[] args;
     private final Class<?> typeClass;
     private final Function<String, PreparedStatement> prepareConverter;
-    private final Supplier<SelectQuery> querySupplier;
     private final PageRequest pageRequest;
-    private final BiFunction<PageRequest, SelectQuery, Optional<T>> singleResultPagination;
-    private final BiFunction<PageRequest, SelectQuery, Stream<T>> streamPagination;
-    private final BiFunction<PageRequest, SelectQuery, Page<T>> page;
 
     private DynamicQueryMethodReturn(Method method, Object[] args, Class<?> typeClass,
                                      Function<String, PreparedStatement> prepareConverter,
-                                     Supplier<SelectQuery> querySupplier,
-                                     PageRequest pageRequest,
-                                     BiFunction<PageRequest, SelectQuery, Optional<T>> singleResultPagination,
-                                     BiFunction<PageRequest, SelectQuery, Stream<T>> streamPagination,
-                                     BiFunction<PageRequest, SelectQuery, Page<T>> page) {
+                                     PageRequest pageRequest) {
         this.method = method;
         this.args = args;
         this.typeClass = typeClass;
         this.prepareConverter = prepareConverter;
-        this.querySupplier = querySupplier;
         this.pageRequest = pageRequest;
-        this.singleResultPagination = singleResultPagination;
-        this.streamPagination = streamPagination;
-        this.page = page;
     }
 
     Method method() {
@@ -79,24 +67,12 @@ public final class DynamicQueryMethodReturn<T> implements MethodDynamicExecutabl
         return prepareConverter;
     }
 
-    Supplier<SelectQuery> querySupplier() {
-        return querySupplier;
-    }
-
     PageRequest pageRequest() {
         return pageRequest;
     }
 
-    BiFunction<PageRequest, SelectQuery, Optional<T>> singleResultPagination() {
-        return singleResultPagination;
-    }
-
-    BiFunction<PageRequest, SelectQuery, Stream<T>> streamPagination() {
-        return streamPagination;
-    }
-
-    BiFunction<PageRequest, SelectQuery, Page<T>> page() {
-        return page;
+    boolean hasPagination() {
+        return pageRequest != null;
     }
 
     public static <T> DynamicQueryMethodReturnBuilder<T> builder() {
@@ -114,11 +90,7 @@ public final class DynamicQueryMethodReturn<T> implements MethodDynamicExecutabl
         private Object[] args;
         private Class<?> typeClass;
         private Function<String, PreparedStatement> prepareConverter;
-        private Supplier<SelectQuery> querySupplier;
         private PageRequest pageRequest;
-        private BiFunction<PageRequest, SelectQuery, Optional<T>> singleResultPagination;
-        private BiFunction<PageRequest, SelectQuery, Stream<T>> streamPagination;
-        private  BiFunction<PageRequest, SelectQuery, Page<T>> page;
 
         private DynamicQueryMethodReturnBuilder() {
         }
@@ -145,28 +117,8 @@ public final class DynamicQueryMethodReturn<T> implements MethodDynamicExecutabl
             return this;
         }
 
-        public DynamicQueryMethodReturnBuilder<T> querySupplier(Supplier<SelectQuery> querySupplier) {
-            this.querySupplier = querySupplier;
-            return this;
-        }
-
         public DynamicQueryMethodReturnBuilder<T> pageRequest(PageRequest pageRequest) {
             this.pageRequest = pageRequest;
-            return this;
-        }
-
-        public DynamicQueryMethodReturnBuilder<T> singleResultPagination(BiFunction<PageRequest, SelectQuery, Optional<T>> singleResultPagination) {
-            this.singleResultPagination = singleResultPagination;
-            return this;
-        }
-
-        public DynamicQueryMethodReturnBuilder<T> streamPagination(BiFunction<PageRequest, SelectQuery, Stream<T>> streamPagination) {
-            this.streamPagination = streamPagination;
-            return this;
-        }
-
-        public DynamicQueryMethodReturnBuilder<T> page(BiFunction<PageRequest, SelectQuery, Page<T>> page) {
-            this.page = page;
             return this;
         }
 
@@ -174,8 +126,7 @@ public final class DynamicQueryMethodReturn<T> implements MethodDynamicExecutabl
             Objects.requireNonNull(method, "method is required");
             Objects.requireNonNull(typeClass, "typeClass is required");
             Objects.requireNonNull(prepareConverter, "prepareConverter is required");
-            return new DynamicQueryMethodReturn<>(method, args, typeClass, prepareConverter, querySupplier,
-                    pageRequest, singleResultPagination, streamPagination, page);
+            return new DynamicQueryMethodReturn<>(method, args, typeClass, prepareConverter, pageRequest);
         }
     }
 
