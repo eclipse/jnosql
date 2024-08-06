@@ -25,6 +25,8 @@ import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.communication.semistructured.CriteriaCondition.eq;
@@ -498,7 +500,42 @@ class SelectQueryParserTest {
         });
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"FROM entity WHERE stamina >= -10.23"})
+    void shouldReplaceQuery(String query) {
+        CommunicationPreparedStatement prepare = parser.prepare(query, null, manager, observer);
+        prepare.setSelectMapper(q -> SelectQuery.select().from("entity").build());
+        prepare.result();
+        ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
+        Mockito.verify(manager).select(captor.capture());
+        var selectQuery = captor.getValue();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(selectQuery.columns()).isEmpty();
+            softly.assertThat(selectQuery.sorts()).isEmpty();
+            softly.assertThat(selectQuery.limit()).isZero();
+            softly.assertThat(selectQuery.skip()).isZero();
+            softly.assertThat(selectQuery.name()).isEqualTo("entity");
+            softly.assertThat(selectQuery.condition()).isEmpty();
+        });
+    }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"FROM entity WHERE stamina >= -10.23"})
+    void shouldGetQuery(String query) {
+        CommunicationPreparedStatement prepare = parser.prepare(query, null, manager, observer);
+        prepare.setSelectMapper(q -> SelectQuery.select().from("entity").build());
+        prepare.result();
+        Optional<SelectQuery> select = prepare.select();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(select).isPresent();
+            softly.assertThat(select.orElseThrow().columns()).isEmpty();
+            softly.assertThat(select.orElseThrow().sorts()).isEmpty();
+            softly.assertThat(select.orElseThrow().limit()).isZero();
+            softly.assertThat(select.orElseThrow().skip()).isZero();
+            softly.assertThat(select.orElseThrow().name()).isEqualTo("entity");
+            softly.assertThat(select.orElseThrow().condition()).isNotEmpty();
+        });
+    }
 
     private void checkBaseQuery(SelectQuery selectQuery) {
         assertTrue(selectQuery.columns().isEmpty());

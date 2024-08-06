@@ -98,13 +98,8 @@ public final class CommunicationPreparedStatement {
 
         if(index < 1) {
             throw new IllegalArgumentException("The index should be greater than zero");
-        } else if(index == 1) {
-            if(paramsLeft.contains("?")){
-                paramsLeft.remove("?");
-                params.bind("?", value);
-                return this;
-            }
         }
+
         var name = "?" + index;
         paramsLeft.remove("?" + index);
         params.bind(name, value);
