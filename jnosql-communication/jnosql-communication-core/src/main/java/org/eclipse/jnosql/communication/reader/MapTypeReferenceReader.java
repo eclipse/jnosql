@@ -87,6 +87,10 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
                 collection.stream().forEach(e -> convertEntryToMap(e, map));
                 return map;
             }
+        } if(Entry.class.isInstance(value)) {
+            Map<K, V> map = new HashMap<>();
+            convertEntryToMap(value, map);
+            return map;
         }
         throw new UnsupportedOperationException("There is not supported convert" + value + " a not Map type.");
     }
