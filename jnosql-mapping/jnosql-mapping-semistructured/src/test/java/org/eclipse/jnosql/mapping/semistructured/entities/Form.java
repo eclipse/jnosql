@@ -13,13 +13,13 @@ public class Form {
     private String id;
 
     @Column
-    private Map<String, String> questions;
+    private Map<String, Object> questions;
 
     public String getId() {
         return id;
     }
 
-    public Map<String, String> getQuestions() {
+    public Map<String, Object> getQuestions() {
         return questions;
     }
 }

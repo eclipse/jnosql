@@ -677,8 +677,9 @@ class EntityConverterTest {
 
         SoftAssertions.assertSoftly(softly -> {
             softly.assertThat(form.getId()).isEqualTo("form");
-            softly.assertThat(form.getQuestions()).containsEntry("question1", "true");
-            softly.assertThat(form.getQuestions()).containsEntry("question2", "false");
+            softly.assertThat(form.getQuestions()).containsEntry("question1", true);
+            softly.assertThat(form.getQuestions()).containsEntry("question2", false);
+            softly.assertThat(form.getQuestions()).containsEntry("question3", Map.of("advanced", true, "visible", "true"));
         });
 
     }
