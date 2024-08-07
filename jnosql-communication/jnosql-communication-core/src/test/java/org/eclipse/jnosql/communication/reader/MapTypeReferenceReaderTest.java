@@ -150,6 +150,49 @@ class MapTypeReferenceReaderTest {
         });
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldConvertUsingObject() {
+        Entry subEntry = new EntryTest("key", Value.of("value"));
+        Entry entry = new EntryTest("key", Value.of(subEntry));
+
+        Map<String,Object> map = referenceReader.convert(new TypeReference<>() {
+        }, Collections.singletonList(entry));
+
+        Map<String, String> subMap = (Map<String, String>) map.get("key");
+
+        assertSoftly(softly -> {
+            softly.assertThat(map).as("Map is correctly converted").hasSize(1).contains(entry("key", Map.of("key", "value")));
+            softly.assertThat(subMap).as("SubMap is correctly converted").hasSize(1).contains(entry("key", "value"));
+        });
+    }
+
+    @Test
+    void shouldConvertEntry() {
+        Entry entry = new EntryTest("key", Value.of("value"));
+
+        Map<String,String> map = referenceReader.convert(new TypeReference<>() {
+        }, entry);
+
+        assertSoftly(softly -> softly.assertThat(map).as("Map is correctly converted").hasSize(1).contains(entry("key", "value")));
+    }
+
+    @Test
+    void shouldConvertEntryWithSubEntry() {
+        Entry subEntry = new EntryTest("key", Value.of("value"));
+        Entry entry = new EntryTest("key", Value.of(subEntry));
+
+        Map<String,Object> map = referenceReader.convert(new TypeReference<>() {
+        }, Collections.singletonList(entry));
+
+        Map<String, String> subMap = (Map<String, String>) map.get("key");
+
+        assertSoftly(softly -> {
+            softly.assertThat(map).as("Map is correctly converted").hasSize(1).contains(entry("key", Map.of("key", "value")));
+            softly.assertThat(subMap).as("SubMap is correctly converted").hasSize(1).contains(entry("key", "value"));
+        });
+    }
+
     static Stream<Arguments> compatibleTypeReferences() {
         return Stream.of(
                 arguments(new TypeReference<Map<String, String>>() {
