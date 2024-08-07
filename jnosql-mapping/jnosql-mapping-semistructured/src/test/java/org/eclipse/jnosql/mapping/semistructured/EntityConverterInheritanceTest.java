@@ -426,6 +426,6 @@ class EntityConverterInheritanceTest {
         assertNotNull(large);
         assertEquals("large-project", large.getName());
         assertEquals(BigDecimal.TEN, large.getBudget());
-
     }
+
 }
