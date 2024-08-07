@@ -29,6 +29,7 @@ import org.eclipse.jnosql.mapping.semistructured.entities.Contact;
 import org.eclipse.jnosql.mapping.semistructured.entities.ContactType;
 import org.eclipse.jnosql.mapping.semistructured.entities.Director;
 import org.eclipse.jnosql.mapping.semistructured.entities.Download;
+import org.eclipse.jnosql.mapping.semistructured.entities.Form;
 import org.eclipse.jnosql.mapping.semistructured.entities.Job;
 import org.eclipse.jnosql.mapping.semistructured.entities.MainStepType;
 import org.eclipse.jnosql.mapping.semistructured.entities.Money;
@@ -658,6 +659,28 @@ class EntityConverterTest {
             });
 
         });
+    }
+
+
+    @Test
+    void shouldConvertGenericTypes() {
+        CommunicationEntity communication = CommunicationEntity.of("Form");
+        communication.add("_id", "form");
+        communication.add("questions", Arrays.asList(
+                Element.of("question1", true),
+                Element.of("question2", false),
+                Element.of("question3", List.of(Element.of("advanced", true),
+                        Element.of("visible",  "true")))
+        ));
+
+        Form form = converter.toEntity(communication);
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(form.getId()).isEqualTo("form");
+            softly.assertThat(form.getQuestions()).containsEntry("question1", "true");
+            softly.assertThat(form.getQuestions()).containsEntry("question2", "false");
+        });
+
     }
 
 
