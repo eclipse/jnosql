@@ -19,7 +19,7 @@ import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.entities.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,14 +32,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DefaultGenericFieldMetaDataTest {
 
-    private GenericFieldMetadata fieldMetadata;
+    private CollectionFieldMetadata fieldMetadata;
 
     @BeforeEach
     void setUp(){
         ClassConverter converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(Person.class);
         FieldMetadata phones = entityMetadata.fieldMapping("phones").orElseThrow();
-        this.fieldMetadata = (GenericFieldMetadata) phones;
+        this.fieldMetadata = (CollectionFieldMetadata) phones;
     }
     @Test
     void shouldToString() {

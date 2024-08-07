@@ -20,7 +20,7 @@ import org.eclipse.jnosql.communication.Value;
 import jakarta.nosql.AttributeConverter;
 import jakarta.nosql.Embeddable;
 import org.eclipse.jnosql.mapping.metadata.CollectionSupplier;
-import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.lang.reflect.Field;
@@ -30,13 +30,13 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.ServiceLoader;
 
-final class DefaultGenericFieldMetadata  extends AbstractFieldMetadata implements GenericFieldMetadata {
+final class DefaultCollectionFieldMetadata extends AbstractFieldMetadata implements CollectionFieldMetadata {
 
     private final TypeSupplier<?> typeSupplier;
 
-    DefaultGenericFieldMetadata(MappingType type, Field field, String name, TypeSupplier<?> typeSupplier,
-                         Class<? extends AttributeConverter<?, ?>> converter,
-                                FieldReader reader, FieldWriter writer, String udt) {
+    DefaultCollectionFieldMetadata(MappingType type, Field field, String name, TypeSupplier<?> typeSupplier,
+                                   Class<? extends AttributeConverter<?, ?>> converter,
+                                   FieldReader reader, FieldWriter writer, String udt) {
         super(type, field, name, converter, reader, writer, udt);
         this.typeSupplier = typeSupplier;
     }
@@ -63,7 +63,7 @@ final class DefaultGenericFieldMetadata  extends AbstractFieldMetadata implement
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultGenericFieldMetadata that = (DefaultGenericFieldMetadata) o;
+        DefaultCollectionFieldMetadata that = (DefaultCollectionFieldMetadata) o;
         return mappingType == that.mappingType &&
                 Objects.equals(field, that.field) &&
                 Objects.equals(typeSupplier, that.typeSupplier) &&

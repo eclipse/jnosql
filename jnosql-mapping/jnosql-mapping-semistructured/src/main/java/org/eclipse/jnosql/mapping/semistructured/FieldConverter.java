@@ -20,7 +20,7 @@ import org.eclipse.jnosql.communication.semistructured.Element;
 import jakarta.nosql.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.util.ArrayList;
@@ -83,7 +83,7 @@ enum FieldConverter {
                                       EntityConverter converter) {
 
             if (Objects.nonNull(element)) {
-                GenericFieldMetadata genericField = (GenericFieldMetadata) field;
+                CollectionFieldMetadata genericField = (CollectionFieldMetadata) field;
                 Collection elements = genericField.collectionInstance();
                 List<List<Element>> embeddable = (List<List<Element>>) element.get();
                 if(Objects.isNull(embeddable)) {
@@ -101,7 +101,7 @@ enum FieldConverter {
         @Override
         <X, Y, T> void convert(T instance, List<Element> elements, Element element, FieldMetadata field, EntityConverter converter) {
             if (Objects.nonNull(element)) {
-                GenericFieldMetadata genericField = (GenericFieldMetadata) field;
+                CollectionFieldMetadata genericField = (CollectionFieldMetadata) field;
                return;
             }
         }
@@ -141,7 +141,7 @@ enum FieldConverter {
     }
 
     private static boolean isCollectionEmbeddable(FieldMetadata field) {
-        return MappingType.COLLECTION.equals(field.mappingType()) && ((GenericFieldMetadata) field).isEmbeddable();
+        return MappingType.COLLECTION.equals(field.mappingType()) && ((CollectionFieldMetadata) field).isEmbeddable();
     }
 
     abstract <X, Y, T> void convert(T instance, List<Element> elements, Element element, FieldMetadata field,

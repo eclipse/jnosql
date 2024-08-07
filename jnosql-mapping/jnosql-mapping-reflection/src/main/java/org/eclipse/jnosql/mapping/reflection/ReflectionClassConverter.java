@@ -18,7 +18,7 @@ import jakarta.nosql.Convert;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
@@ -112,8 +112,8 @@ public final class ReflectionClassConverter implements ClassConverter {
                     appendPreparePrefix(nativeField, field.name()));
             case EMBEDDED -> appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField);
             case COLLECTION -> {
-                if (((GenericFieldMetadata) field).isEmbeddable()) {
-                    Class<?> type = ((GenericFieldMetadata) field).elementType();
+                if (((CollectionFieldMetadata) field).isEmbeddable()) {
+                    Class<?> type = ((CollectionFieldMetadata) field).elementType();
                     String nativeFieldAppended = appendPreparePrefix(nativeField, field.name());
                     appendFields(nativeFieldGroupByJavaField, field, javaField, nativeFieldAppended, type);
                     return;

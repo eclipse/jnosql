@@ -27,7 +27,7 @@ import java.util.Collection;
  *
  *  @see ParameterMetaData
  */
-public interface GenericFieldMetadata extends FieldMetadata {
+public interface CollectionFieldMetadata extends FieldMetadata {
     /**
      * Returns true if it is the element has either Entity or Embeddable annotations
      * @return true if the element has Entity or Embeddable annotations
