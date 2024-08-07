@@ -156,7 +156,7 @@ class MapTypeReferenceReaderTest {
         Entry subEntry = new EntryTest("key", Value.of("value"));
         Entry entry = new EntryTest("key", Value.of(subEntry));
 
-        Map<String,Object> map = referenceReader.convert(new TypeReference<>() {
+        Map<String, Object> map = referenceReader.convert(new TypeReference<>() {
         }, Collections.singletonList(entry));
 
         Map<String, String> subMap = (Map<String, String>) map.get("key");
@@ -171,7 +171,7 @@ class MapTypeReferenceReaderTest {
     void shouldConvertEntry() {
         Entry entry = new EntryTest("key", Value.of("value"));
 
-        Map<String,String> map = referenceReader.convert(new TypeReference<>() {
+        Map<String, String> map = referenceReader.convert(new TypeReference<>() {
         }, entry);
 
         assertSoftly(softly -> softly.assertThat(map).as("Map is correctly converted").hasSize(1).contains(entry("key", "value")));
@@ -182,7 +182,7 @@ class MapTypeReferenceReaderTest {
         Entry subEntry = new EntryTest("key", Value.of("value"));
         Entry entry = new EntryTest("key", Value.of(subEntry));
 
-        Map<String,Object> map = referenceReader.convert(new TypeReference<>() {
+        Map<String, Object> map = referenceReader.convert(new TypeReference<>() {
         }, Collections.singletonList(entry));
 
         Map<String, String> subMap = (Map<String, String>) map.get("key");
