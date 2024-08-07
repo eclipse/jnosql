@@ -18,7 +18,7 @@ import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.mapping.metadata.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.metadata.GenericParameterMetaData;
+import org.eclipse.jnosql.mapping.metadata.CollectionParameterMetaData;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ enum ParameterConverter {
         void convert(EntityConverter converter, Element element, ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
-            GenericParameterMetaData genericParameter = (GenericParameterMetaData) metaData;
+            CollectionParameterMetaData genericParameter = (CollectionParameterMetaData) metaData;
             Collection elements = genericParameter.collectionInstance();
             List<List<Element>> embeddable = (List<List<Element>>) element.get();
             for (List<Element> elementsList : embeddable) {
@@ -94,7 +94,7 @@ enum ParameterConverter {
     }
 
     private static ParameterConverter validateCollection(ParameterMetaData parameter, EntitiesMetadata entities) {
-        GenericParameterMetaData genericParameter = (GenericParameterMetaData) parameter;
+        CollectionParameterMetaData genericParameter = (CollectionParameterMetaData) parameter;
         Class<?> type = genericParameter.elementType();
         if (entities.findByClassName(type.getName()).isPresent()) {
             return COLLECTION;

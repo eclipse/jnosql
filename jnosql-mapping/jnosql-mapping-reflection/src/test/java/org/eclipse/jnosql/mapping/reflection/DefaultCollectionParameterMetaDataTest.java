@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.reflection;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
-import org.eclipse.jnosql.mapping.metadata.GenericParameterMetaData;
+import org.eclipse.jnosql.mapping.metadata.CollectionParameterMetaData;
 import org.eclipse.jnosql.mapping.reflection.entities.Book;
 import org.eclipse.jnosql.mapping.reflection.entities.constructor.BookUser;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,16 +29,16 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class DefaultGenericParameterMetaDataTest {
+class DefaultCollectionParameterMetaDataTest {
 
-    private GenericParameterMetaData fieldMetadata;
+    private CollectionParameterMetaData fieldMetadata;
 
     @BeforeEach
     void setUp(){
         ClassConverter converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(BookUser.class);
         ConstructorMetadata constructor = entityMetadata.constructor();
-        this.fieldMetadata = (GenericParameterMetaData)
+        this.fieldMetadata = (CollectionParameterMetaData)
                 constructor.parameters().stream().filter(p -> p.name().equals("books"))
                 .findFirst().orElseThrow();
     }

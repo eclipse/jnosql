@@ -17,15 +17,15 @@ package org.eclipse.jnosql.mapping.metadata;
 import java.util.Collection;
 
 /**
- * The GenericParameterMetaData interface extends the {@link ParameterMetaData} interface and provides
- * additional information about a parameter with a generic type.
+ * The CollectionParameterMetaData interface extends the {@link ParameterMetaData} interface and provides
+ * additional information about a parameter with a generic type for collections.
  *
  * <p>This interface is used to represent parameters of generic types, where the type may be a collection
  * or array containing elements of a specific type.</p>
  *
  *  @see ParameterMetaData
  */
-public interface GenericParameterMetaData extends ParameterMetaData {
+public interface CollectionParameterMetaData extends ParameterMetaData {
 
     /**
      * Returns the {@link Class} representing the type of elements in the collection or array.

@@ -96,7 +96,17 @@ enum FieldConverter {
                 field.write(instance, elements);
             }
         }
-    }, DEFAULT{
+    },
+    MAP {
+        @Override
+        <X, Y, T> void convert(T instance, List<Element> elements, Element element, FieldMetadata field, EntityConverter converter) {
+            if (Objects.nonNull(element)) {
+                GenericFieldMetadata genericField = (GenericFieldMetadata) field;
+               return;
+            }
+        }
+    }
+    , DEFAULT{
         @SuppressWarnings("unchecked")
         @Override
         public <X, Y, T> void convert(T instance, List<Element> elements, Element element,
@@ -123,6 +133,8 @@ enum FieldConverter {
             return ENTITY;
         } else if (isCollectionEmbeddable(field)) {
             return COLLECTION;
+        } else if(MappingType.MAP.equals(field.mappingType())) {
+            return MAP;
         } else {
             return DEFAULT;
         }

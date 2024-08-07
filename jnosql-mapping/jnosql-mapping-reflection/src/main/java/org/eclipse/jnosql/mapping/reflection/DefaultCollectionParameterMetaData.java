@@ -17,21 +17,21 @@ package org.eclipse.jnosql.mapping.reflection;
 import org.eclipse.jnosql.communication.TypeSupplier;
 import jakarta.nosql.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.CollectionSupplier;
-import org.eclipse.jnosql.mapping.metadata.GenericParameterMetaData;
+import org.eclipse.jnosql.mapping.metadata.CollectionParameterMetaData;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.ServiceLoader;
 
-class DefaultGenericParameterMetaData  extends DefaultParameterMetaData implements GenericParameterMetaData {
+class DefaultCollectionParameterMetaData extends DefaultParameterMetaData implements CollectionParameterMetaData {
 
 
     private final TypeSupplier<?> typeSupplier;
 
-    DefaultGenericParameterMetaData(String name, Class<?> type, boolean id,
-                             Class<? extends AttributeConverter<?, ?>> converter,
-                             MappingType mappingType, TypeSupplier<?> typeSupplier) {
+    DefaultCollectionParameterMetaData(String name, Class<?> type, boolean id,
+                                       Class<? extends AttributeConverter<?, ?>> converter,
+                                       MappingType mappingType, TypeSupplier<?> typeSupplier) {
         super(name, type, id, converter, mappingType);
         this.typeSupplier = typeSupplier;
     }
