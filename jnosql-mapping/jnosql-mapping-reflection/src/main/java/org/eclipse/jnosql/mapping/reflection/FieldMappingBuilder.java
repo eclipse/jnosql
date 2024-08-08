@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.reflection;
 import org.eclipse.jnosql.communication.TypeSupplier;
 import jakarta.nosql.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.MapFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.lang.reflect.Field;
@@ -98,8 +99,12 @@ class FieldMappingBuilder {
         return new DefaultFieldMetadata(type, field, name, converter, id, reader, writer, udt);
     }
 
-    public CollectionFieldMetadata buildGeneric() {
+    public CollectionFieldMetadata buildCollection() {
         return new DefaultCollectionFieldMetadata(type, field, name, typeSupplier, converter, reader, writer, udt);
+    }
+
+    public MapFieldMetadata buildMap() {
+        return new DefaultMapFieldMetadata(type, field, name, typeSupplier, converter, reader, writer, udt);
     }
 
     public EmbeddedFieldMetadata buildEmbedded() {
