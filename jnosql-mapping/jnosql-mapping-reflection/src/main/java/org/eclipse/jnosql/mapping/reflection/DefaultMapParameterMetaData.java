@@ -16,15 +16,13 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.AttributeConverter;
 import org.eclipse.jnosql.communication.TypeSupplier;
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.metadata.MapParameterMetaData;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
-import java.util.Map;
 
 class DefaultMapParameterMetaData extends DefaultParameterMetaData implements MapParameterMetaData {
-
 
     private final TypeSupplier<?> typeSupplier;
     private final Class<?> keyType;
@@ -39,11 +37,6 @@ class DefaultMapParameterMetaData extends DefaultParameterMetaData implements Ma
         this.valueType = (Class<?>) ((ParameterizedType) typeSupplier.get()).getActualTypeArguments()[1];
     }
 
-    public Class<?> elementType() {
-        return (Class<?>) ((ParameterizedType) typeSupplier.get()).getActualTypeArguments()[0];
-    }
-
-
     @Override
     public Class<?> keyType() {
        return this.keyType;
@@ -55,8 +48,8 @@ class DefaultMapParameterMetaData extends DefaultParameterMetaData implements Ma
     }
 
     @Override
-    public Map<?, ?> mapInstance() {
-        return new HashMap<>();
+    public Object value(Value value) {
+        return value.get(typeSupplier);
     }
 
 }

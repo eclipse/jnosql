@@ -22,8 +22,6 @@ import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 final class DefaultMapFieldMetadata extends AbstractFieldMetadata implements MapFieldMetadata {
@@ -71,11 +69,6 @@ final class DefaultMapFieldMetadata extends AbstractFieldMetadata implements Map
     @Override
     public Class<?> valueType() {
         return valueType;
-    }
-
-    @Override
-    public Map<?, ?> mapInstance() {
-        return new HashMap<>();
     }
 
 

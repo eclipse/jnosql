@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
@@ -45,12 +46,6 @@ class DefaultMapParameterMetaDataTest {
     }
 
     @Test
-    void shouldMapInstance(){
-        Map<?, ?> map = this.fieldMetadata.mapInstance();
-        assertThat(map).isInstanceOf(Map.class);
-    }
-
-    @Test
     void shouldKeyType(){
         assertThat(fieldMetadata.keyType()).isEqualTo(String.class);
     }
@@ -59,5 +54,11 @@ class DefaultMapParameterMetaDataTest {
     void shouldValueType(){
         Class<?> value = this.fieldMetadata.valueType();
         assertThat(value).isInstanceOf(Object.class);
+    }
+
+    @Test
+    void shouldValueClass(){
+        Map<String, Object> value = Map.of("name", "name");
+        assertThat(fieldMetadata.value(Value.of(value))).isInstanceOf(Map.class);
     }
 }

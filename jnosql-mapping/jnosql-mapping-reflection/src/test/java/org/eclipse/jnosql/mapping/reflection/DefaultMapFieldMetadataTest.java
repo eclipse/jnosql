@@ -34,35 +34,30 @@ class DefaultMapFieldMetadataTest {
     private MapFieldMetadata fieldMetadata;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         ClassConverter converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(Actor.class);
         FieldMetadata movieRating = entityMetadata.fieldMapping("movieRating").orElseThrow();
         this.fieldMetadata = (MapFieldMetadata) movieRating;
     }
+
     @Test
     void shouldToString() {
         assertThat(fieldMetadata.toString()).isNotEmpty().isNotNull();
     }
 
     @Test
-    void shouldGetValueType(){
+    void shouldGetValueType() {
         assertThat(fieldMetadata.valueType()).isEqualTo(Integer.class);
     }
 
     @Test
-    void shouldGetKeyType(){
+    void shouldGetKeyType() {
         assertThat(fieldMetadata.keyType()).isEqualTo(String.class);
     }
 
     @Test
-    void shouldMapInstance(){
-        Map<?, ?> map = this.fieldMetadata.mapInstance();
-        assertThat(map).isInstanceOf(Map.class);
-    }
-
-    @Test
-    void shouldEqualsHashCode(){
+    void shouldEqualsHashCode() {
         Assertions.assertThat(fieldMetadata).isEqualTo(fieldMetadata);
         Assertions.assertThat(fieldMetadata).hasSameHashCodeAs(fieldMetadata);
     }
@@ -82,12 +77,12 @@ class DefaultMapFieldMetadataTest {
     }
 
     @Test
-    void shouldConverter(){
+    void shouldConverter() {
         assertThat(fieldMetadata.converter()).isNotNull().isEmpty();
     }
 
     @Test
-    void shouldNewConverter(){
+    void shouldNewConverter() {
         assertThat(fieldMetadata.newConverter()).isNotNull().isEmpty();
     }
 }
