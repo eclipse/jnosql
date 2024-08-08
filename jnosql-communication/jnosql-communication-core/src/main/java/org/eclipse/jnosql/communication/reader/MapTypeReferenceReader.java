@@ -97,16 +97,35 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
     }
 
     private <K, V> void convertEntryToMap(Object value, Map<K, V> map) {
-        Entry entry = Entry.class.cast(value);
+        Entry entry = (Entry) value;
         Object entryValue = entry.value().get();
-        if (entryValue instanceof Entry) {
-            Map<String, Object> subMap = new HashMap<>();
-            Entry subEntry = Entry.class.cast(entryValue);
-            convertEntryToMap(subEntry, subMap);
-            map.put((K) entry.name(), (V) subMap);
+        if (entryValue instanceof Entry subEntry) {
+            feedEntryValue(map, subEntry, entry);
+        } else if(entryValue instanceof Iterable<?> iterable) {
+            feedIterable(map, iterable, entry);
         } else {
             map.put((K) entry.name(), (V) entryValue);
         }
+    }
+
+    private <K, V> void feedIterable(Map<K, V> map, Iterable<?> iterable, Entry entry) {
+        List<Object> collection = new ArrayList<>();
+        iterable.forEach(collection::add);
+        if (collection.isEmpty()) {
+            map.put((K) entry.name(), (V) Collections.emptyList());
+        } else if (collection.stream().allMatch(Entry.class::isInstance)) {
+            Map<K, V> subMap = new HashMap<>();
+            collection.forEach(e -> convertEntryToMap(e, subMap));
+            map.put((K) entry.name(), (V) subMap);
+        } else {
+            map.put((K) entry.name(), (V) collection);
+        }
+    }
+
+    private <K, V> void feedEntryValue(Map<K, V> map, Entry subEntry, Entry entry) {
+        Map<String, Object> subMap = new HashMap<>();
+        convertEntryToMap(subEntry, subMap);
+        map.put((K) entry.name(), (V) subMap);
     }
 
     private <K, V> Map<K, V> convertToMap(Class<K> keyClass, Class<V> valueClass, Object value) {

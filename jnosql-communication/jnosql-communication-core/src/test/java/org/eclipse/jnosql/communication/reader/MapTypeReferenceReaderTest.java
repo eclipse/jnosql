@@ -193,6 +193,24 @@ class MapTypeReferenceReaderTest {
         });
     }
 
+    @Test
+    void shouldConvertEntryWithSubEntryAsList() {
+        Entry subEntry = new EntryTest("key3", Value.of("value"));
+        Entry subEntry2 = new EntryTest("key2", Value.of("value2"));
+        Entry entry = new EntryTest("key", Value.of(List.of(subEntry, subEntry2)));
+
+        Map<String, Object> map = referenceReader.convert(new TypeReference<>() {
+        }, Collections.singletonList(entry));
+
+        Map<String, Object> subMap = (Map<String, Object>) map.get("key");
+
+        assertSoftly(softly -> {
+            softly.assertThat(map).as("Map is correctly converted").hasSize(1).containsKey("key");
+            softly.assertThat(subMap).as("SubMap is correctly converted").hasSize(2).contains(entry("key2", "value2"),
+                    entry("key3", "value"));
+        });
+    }
+
     static Stream<Arguments> compatibleTypeReferences() {
         return Stream.of(
                 arguments(new TypeReference<Map<String, String>>() {
