@@ -23,6 +23,7 @@ import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.semistructured.entities.Animal;
 import org.eclipse.jnosql.mapping.semistructured.entities.Book;
 import org.eclipse.jnosql.mapping.semistructured.entities.BookRelease;
+import org.eclipse.jnosql.mapping.semistructured.entities.Form;
 import org.eclipse.jnosql.mapping.semistructured.entities.Money;
 import org.eclipse.jnosql.mapping.semistructured.entities.SocialMediaContact;
 import org.eclipse.jnosql.mapping.semistructured.entities.Wine;
@@ -37,6 +38,7 @@ import org.eclipse.jnosql.mapping.semistructured.entities.constructor.SocialMedi
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.SuperHero;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.semistructured.entities.constructor.Survey;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -46,6 +48,7 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -276,6 +279,28 @@ class EntityConverterConstructorTest {
             });
 
         });
+    }
+
+    @Test
+    void shouldConvertGenericTypes() {
+        CommunicationEntity communication = CommunicationEntity.of("Survey");
+        communication.add("_id", "form");
+        communication.add("questions", Arrays.asList(
+                Element.of("question1", true),
+                Element.of("question2", false),
+                Element.of("question3", List.of(Element.of("advanced", true),
+                        Element.of("visible",  "true")))
+        ));
+
+        Survey survey = converter.toEntity(communication);
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(survey.id()).isEqualTo("form");
+            softly.assertThat(survey.questions()).containsEntry("question1", true);
+            softly.assertThat(survey.questions()).containsEntry("question2", false);
+            softly.assertThat(survey.questions()).containsEntry("question3", Map.of("advanced", true, "visible", "true"));
+        });
+
     }
 
 }
