@@ -21,6 +21,7 @@ import jakarta.nosql.AttributeConverter;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.MapFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.util.ArrayList;
@@ -83,14 +84,14 @@ enum FieldConverter {
                                       EntityConverter converter) {
 
             if (Objects.nonNull(element)) {
-                CollectionFieldMetadata genericField = (CollectionFieldMetadata) field;
-                Collection elements = genericField.collectionInstance();
+                var collectionFieldMetadata = (CollectionFieldMetadata) field;
+                Collection elements = collectionFieldMetadata.collectionInstance();
                 List<List<Element>> embeddable = (List<List<Element>>) element.get();
                 if(Objects.isNull(embeddable)) {
                     return;
                 }
                 for (List<Element> elementList : embeddable) {
-                    Object item = converter.toEntity(genericField.elementType(), elementList);
+                    var item = converter.toEntity(collectionFieldMetadata.elementType(), elementList);
                     elements.add(item);
                 }
                 field.write(instance, elements);
@@ -101,8 +102,9 @@ enum FieldConverter {
         @Override
         <X, Y, T> void convert(T instance, List<Element> elements, Element element, FieldMetadata field, EntityConverter converter) {
             if (Objects.nonNull(element)) {
-                CollectionFieldMetadata genericField = (CollectionFieldMetadata) field;
-               return;
+                var mapFieldMetadata = (MapFieldMetadata) field;
+                Object value = mapFieldMetadata.value(element.value());
+                field.write(instance, value);
             }
         }
     }
