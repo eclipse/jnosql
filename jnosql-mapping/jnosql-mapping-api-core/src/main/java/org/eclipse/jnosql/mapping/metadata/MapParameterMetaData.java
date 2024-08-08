@@ -15,6 +15,8 @@
 package org.eclipse.jnosql.mapping.metadata;
 
 
+import org.eclipse.jnosql.communication.Value;
+
 /**
  * The MapParameterMetaData interface extends the {@link ParameterMetaData} interface and provides
  * additional information about a parameter with a generic type for maps.
@@ -41,11 +43,10 @@ public interface MapParameterMetaData extends ParameterMetaData {
     Class<?> valueType();
 
     /**
-     * Reads and returns the field information through the bean.
+     * Returns the object from the field type.
      *
-     * @param bean the bean
-     * @return the property value
-     * @throws NullPointerException when bean is null
+     * @param value the value {@link Value}
+     * @return the instance from the field type
      */
-    Object read(Object bean);
+    Object value(Value value);
 }
