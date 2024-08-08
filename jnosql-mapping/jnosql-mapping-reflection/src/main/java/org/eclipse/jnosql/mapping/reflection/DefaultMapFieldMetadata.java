@@ -15,23 +15,17 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.AttributeConverter;
-import jakarta.nosql.Embeddable;
-import jakarta.nosql.Entity;
 import org.eclipse.jnosql.communication.TypeSupplier;
 import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
-import org.eclipse.jnosql.mapping.metadata.CollectionSupplier;
 import org.eclipse.jnosql.mapping.metadata.MapFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.ServiceLoader;
 
 final class DefaultMapFieldMetadata extends AbstractFieldMetadata implements MapFieldMetadata {
 
@@ -56,11 +50,7 @@ final class DefaultMapFieldMetadata extends AbstractFieldMetadata implements Map
 
     @Override
     public Object value(Value value) {
-        if(value.get() instanceof Iterable) {
-            return value.get(typeSupplier);
-        } else {
-            return Value.of(Collections.singletonList(value.get())).get(typeSupplier);
-        }
+        return value.get(typeSupplier);
     }
 
     @Override
@@ -88,6 +78,7 @@ final class DefaultMapFieldMetadata extends AbstractFieldMetadata implements Map
     public Map<?, ?> mapInstance() {
         return new HashMap<>();
     }
+
 
     @Override
     public boolean equals(Object o) {
