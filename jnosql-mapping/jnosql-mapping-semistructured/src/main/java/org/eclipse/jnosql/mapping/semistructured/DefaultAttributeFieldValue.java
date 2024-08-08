@@ -21,7 +21,7 @@ import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.mapping.metadata.FieldValue;
 import org.eclipse.jnosql.mapping.metadata.DefaultFieldValue;
-import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
+import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +98,7 @@ final class DefaultAttributeFieldValue implements AttributeFieldValue {
     }
 
     private boolean isEmbeddableElement() {
-        return ((GenericFieldMetadata) field()).isEmbeddable();
+        return ((CollectionFieldMetadata) field()).isEmbeddable();
     }
 
     @Override

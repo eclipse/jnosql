@@ -18,7 +18,8 @@ import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.mapping.metadata.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.metadata.GenericParameterMetaData;
+import org.eclipse.jnosql.mapping.metadata.CollectionParameterMetaData;
+import org.eclipse.jnosql.mapping.metadata.MapParameterMetaData;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
 import java.util.ArrayList;
@@ -68,17 +69,23 @@ enum ParameterConverter {
         void convert(EntityConverter converter, Element element, ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
-            GenericParameterMetaData genericParameter = (GenericParameterMetaData) metaData;
-            Collection elements = genericParameter.collectionInstance();
+            var collectionParameterMetaData = (CollectionParameterMetaData) metaData;
+            Collection elements = collectionParameterMetaData.collectionInstance();
             List<List<Element>> embeddable = (List<List<Element>>) element.get();
             for (List<Element> elementsList : embeddable) {
-                Object item = converter.toEntity(genericParameter.elementType(), elementsList);
+                Object item = converter.toEntity(collectionParameterMetaData.elementType(), elementsList);
                 elements.add(item);
             }
             builder.add(elements);
-
         }
 
+    }, MAP {
+        @Override
+        void convert(EntityConverter converter, Element element, ParameterMetaData metaData, ConstructorBuilder builder) {
+            var mapParameterMetaData = (MapParameterMetaData) metaData;
+            Object value = mapParameterMetaData.value(element.value());
+            builder.add(value);
+        }
     };
 
     abstract void convert(EntityConverter converter,
@@ -88,13 +95,14 @@ enum ParameterConverter {
     static ParameterConverter of(ParameterMetaData parameter, EntitiesMetadata entities) {
         return switch (parameter.mappingType()) {
             case COLLECTION -> validateCollection(parameter, entities);
+            case MAP -> MAP;
             case ENTITY, EMBEDDED_GROUP -> ENTITY;
             default -> DEFAULT;
         };
     }
 
     private static ParameterConverter validateCollection(ParameterMetaData parameter, EntitiesMetadata entities) {
-        GenericParameterMetaData genericParameter = (GenericParameterMetaData) parameter;
+        CollectionParameterMetaData genericParameter = (CollectionParameterMetaData) parameter;
         Class<?> type = genericParameter.elementType();
         if (entities.findByClassName(type.getName()).isPresent()) {
             return COLLECTION;

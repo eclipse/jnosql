@@ -29,7 +29,11 @@ import org.eclipse.jnosql.mapping.semistructured.entities.Contact;
 import org.eclipse.jnosql.mapping.semistructured.entities.ContactType;
 import org.eclipse.jnosql.mapping.semistructured.entities.Director;
 import org.eclipse.jnosql.mapping.semistructured.entities.Download;
+import org.eclipse.jnosql.mapping.semistructured.entities.ElectricEngine;
+import org.eclipse.jnosql.mapping.semistructured.entities.Form;
+import org.eclipse.jnosql.mapping.semistructured.entities.GasEngine;
 import org.eclipse.jnosql.mapping.semistructured.entities.Job;
+import org.eclipse.jnosql.mapping.semistructured.entities.Machine;
 import org.eclipse.jnosql.mapping.semistructured.entities.MainStepType;
 import org.eclipse.jnosql.mapping.semistructured.entities.Money;
 import org.eclipse.jnosql.mapping.semistructured.entities.Movie;
@@ -60,6 +64,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
@@ -657,6 +662,74 @@ class EntityConverterTest {
                         .isEqualTo("Napa Valley");
             });
 
+        });
+    }
+
+
+    @Test
+    void shouldConvertGenericTypes() {
+        CommunicationEntity communication = CommunicationEntity.of("Form");
+        communication.add("_id", "form");
+        communication.add("questions", Arrays.asList(
+                Element.of("question1", true),
+                Element.of("question2", false),
+                Element.of("question3", List.of(Element.of("advanced", true),
+                        Element.of("visible",  "true")))
+        ));
+
+        Form form = converter.toEntity(communication);
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(form.getId()).isEqualTo("form");
+            softly.assertThat(form.getQuestions()).containsEntry("question1", true);
+            softly.assertThat(form.getQuestions()).containsEntry("question2", false);
+            softly.assertThat(form.getQuestions()).containsEntry("question3", Map.of("advanced", true, "visible", "true"));
+        });
+    }
+
+    @Test
+    void shouldConvertGenericTypesWithConverterAsElectric() {
+        var communication = CommunicationEntity.of("Machine");
+        communication.add("_id", UUID.randomUUID().toString());
+        communication.add("manufacturer", "Tesla");
+        communication.add("year", 2022);
+        communication.add("engine", Arrays.asList(
+                Element.of("type", "electric"),
+                Element.of("horsepower", 300)
+        ));
+
+        Machine machine = converter.toEntity(communication);
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(machine.getId()).isNotNull();
+            softly.assertThat(machine.getManufacturer()).isEqualTo("Tesla");
+            softly.assertThat(machine.getYear()).isEqualTo(2022);
+            softly.assertThat(machine.getEngine()).isNotNull();
+            softly.assertThat(machine.getEngine().getHorsepower()).isEqualTo(300);
+            softly.assertThat(machine.getEngine()).isInstanceOf(ElectricEngine.class);
+        });
+    }
+
+    @Test
+    void shouldConvertGenericTypesWithConverterGas() {
+        var communication = CommunicationEntity.of("Machine");
+        communication.add("_id", UUID.randomUUID().toString());
+        communication.add("manufacturer", "Mustang");
+        communication.add("year", 2021);
+        communication.add("engine", Arrays.asList(
+                Element.of("type", "gas"),
+                Element.of("horsepower", 450)
+        ));
+
+        Machine machine = converter.toEntity(communication);
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(machine.getId()).isNotNull();
+            softly.assertThat(machine.getManufacturer()).isEqualTo("Mustang");
+            softly.assertThat(machine.getYear()).isEqualTo(2021);
+            softly.assertThat(machine.getEngine()).isNotNull();
+            softly.assertThat(machine.getEngine().getHorsepower()).isEqualTo(450);
+            softly.assertThat(machine.getEngine()).isInstanceOf(GasEngine.class);
         });
     }
 

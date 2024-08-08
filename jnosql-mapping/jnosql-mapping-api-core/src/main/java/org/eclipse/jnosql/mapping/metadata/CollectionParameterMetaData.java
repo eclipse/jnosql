@@ -14,25 +14,18 @@
  */
 package org.eclipse.jnosql.mapping.metadata;
 
-
 import java.util.Collection;
 
-
 /**
- * The GenericFieldMetadata interface extends the {@link FieldMetadata} interface and provides
- * additional information about a parameter with a generic type.
+ * The CollectionParameterMetaData interface extends the {@link ParameterMetaData} interface and provides
+ * additional information about a parameter with a generic type for collections.
  *
  * <p>This interface is used to represent parameters of generic types, where the type may be a collection
  * or array containing elements of a specific type.</p>
  *
  *  @see ParameterMetaData
  */
-public interface GenericFieldMetadata extends FieldMetadata {
-    /**
-     * Returns true if it is the element has either Entity or Embeddable annotations
-     * @return true if the element has Entity or Embeddable annotations
-     */
-    boolean isEmbeddable();
+public interface CollectionParameterMetaData extends ParameterMetaData {
 
     /**
      * Returns the {@link Class} representing the type of elements in the collection or array.

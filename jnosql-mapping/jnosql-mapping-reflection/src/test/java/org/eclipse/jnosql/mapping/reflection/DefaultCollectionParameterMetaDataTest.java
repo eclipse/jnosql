@@ -14,13 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import org.assertj.core.api.Assertions;
-import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
+import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
-import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.metadata.GenericFieldMetadata;
-import org.eclipse.jnosql.mapping.reflection.entities.Person;
+import org.eclipse.jnosql.mapping.metadata.CollectionParameterMetaData;
+import org.eclipse.jnosql.mapping.reflection.entities.Book;
+import org.eclipse.jnosql.mapping.reflection.entities.constructor.BookUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,16 +29,18 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class DefaultGenericFieldMetaDataTest {
+class DefaultCollectionParameterMetaDataTest {
 
-    private GenericFieldMetadata fieldMetadata;
+    private CollectionParameterMetaData fieldMetadata;
 
     @BeforeEach
     void setUp(){
         ClassConverter converter = new ReflectionClassConverter();
-        EntityMetadata entityMetadata = converter.apply(Person.class);
-        FieldMetadata phones = entityMetadata.fieldMapping("phones").orElseThrow();
-        this.fieldMetadata = (GenericFieldMetadata) phones;
+        EntityMetadata entityMetadata = converter.apply(BookUser.class);
+        ConstructorMetadata constructor = entityMetadata.constructor();
+        this.fieldMetadata = (CollectionParameterMetaData)
+                constructor.parameters().stream().filter(p -> p.name().equals("books"))
+                .findFirst().orElseThrow();
     }
     @Test
     void shouldToString() {
@@ -48,35 +49,12 @@ class DefaultGenericFieldMetaDataTest {
 
     @Test
     void shouldGetElementType(){
-        assertThat(fieldMetadata.elementType()).isEqualTo(String.class);
+        assertThat(fieldMetadata.elementType()).isEqualTo(Book.class);
     }
 
     @Test
     void shouldCollectionInstance(){
         Collection<?> collection = this.fieldMetadata.collectionInstance();
         assertThat(collection).isInstanceOf(List.class);
-    }
-
-    @Test
-    void shouldEqualsHashCode(){
-        Assertions.assertThat(fieldMetadata).isEqualTo(fieldMetadata);
-        Assertions.assertThat(fieldMetadata).hasSameHashCodeAs(fieldMetadata);
-    }
-
-    @Test
-    void shouldValue(){
-        List<String> phones = List.of("Ada", "Lovelace");
-        Object value = fieldMetadata.value(Value.of(phones));
-        assertThat(value).isNotNull().isInstanceOf(List.class);
-    }
-
-    @Test
-    void shouldConverter(){
-        assertThat(fieldMetadata.converter()).isNotNull().isEmpty();
-    }
-
-    @Test
-    void shouldNewConverter(){
-        assertThat(fieldMetadata.newConverter()).isNotNull().isEmpty();
     }
 }

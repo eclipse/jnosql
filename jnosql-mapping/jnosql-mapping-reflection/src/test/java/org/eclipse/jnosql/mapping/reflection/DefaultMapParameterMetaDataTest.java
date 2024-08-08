@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2024 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -14,33 +14,31 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
-import org.eclipse.jnosql.mapping.metadata.GenericParameterMetaData;
-import org.eclipse.jnosql.mapping.reflection.entities.Book;
-import org.eclipse.jnosql.mapping.reflection.entities.constructor.BookUser;
+import org.eclipse.jnosql.mapping.metadata.MapParameterMetaData;
+import org.eclipse.jnosql.mapping.reflection.entities.constructor.Form;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+class DefaultMapParameterMetaDataTest {
 
-class DefaultGenericParameterMetaDataTest {
-
-    private GenericParameterMetaData fieldMetadata;
+    private MapParameterMetaData fieldMetadata;
 
     @BeforeEach
     void setUp(){
         ClassConverter converter = new ReflectionClassConverter();
-        EntityMetadata entityMetadata = converter.apply(BookUser.class);
+        EntityMetadata entityMetadata = converter.apply(Form.class);
         ConstructorMetadata constructor = entityMetadata.constructor();
-        this.fieldMetadata = (GenericParameterMetaData)
-                constructor.parameters().stream().filter(p -> p.name().equals("books"))
-                .findFirst().orElseThrow();
+        this.fieldMetadata = (MapParameterMetaData)
+                constructor.parameters().stream().filter(p -> p.name().equals("questions"))
+                        .findFirst().orElseThrow();
     }
     @Test
     void shouldToString() {
@@ -48,13 +46,19 @@ class DefaultGenericParameterMetaDataTest {
     }
 
     @Test
-    void shouldGetElementType(){
-        assertThat(fieldMetadata.elementType()).isEqualTo(Book.class);
+    void shouldKeyType(){
+        assertThat(fieldMetadata.keyType()).isEqualTo(String.class);
     }
 
     @Test
-    void shouldCollectionInstance(){
-        Collection<?> collection = this.fieldMetadata.collectionInstance();
-        assertThat(collection).isInstanceOf(List.class);
+    void shouldValueType(){
+        Class<?> value = this.fieldMetadata.valueType();
+        assertThat(value).isInstanceOf(Object.class);
+    }
+
+    @Test
+    void shouldValueClass(){
+        Map<String, Object> value = Map.of("name", "name");
+        assertThat(fieldMetadata.value(Value.of(value))).isInstanceOf(Map.class);
     }
 }

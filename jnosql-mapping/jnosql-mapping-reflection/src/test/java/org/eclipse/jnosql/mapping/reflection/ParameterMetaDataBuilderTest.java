@@ -113,7 +113,7 @@ class ParameterMetaDataBuilderTest {
         Assertions.assertEquals(List.class, books.type());
         Assertions.assertEquals(MappingType.COLLECTION, books.mappingType());
         Assertions.assertTrue(books.converter().isEmpty());
-        assertEquals(DefaultGenericParameterMetaData.class, books.getClass());
+        assertEquals(DefaultCollectionParameterMetaData.class, books.getClass());
 
     }
 
@@ -127,7 +127,7 @@ class ParameterMetaDataBuilderTest {
         Assertions.assertEquals(Map.class, map.type());
         Assertions.assertEquals(MappingType.MAP, map.mappingType());
         Assertions.assertTrue(map.converter().isEmpty());
-        assertEquals(DefaultGenericParameterMetaData.class, map.getClass());
+        assertEquals(DefaultMapParameterMetaData.class, map.getClass());
     }
 
     @Test
@@ -140,7 +140,7 @@ class ParameterMetaDataBuilderTest {
         Assertions.assertEquals(List.class, powers.type());
         Assertions.assertEquals(MappingType.COLLECTION, powers.mappingType());
         Assertions.assertTrue(powers.converter().isEmpty());
-        assertEquals(DefaultGenericParameterMetaData.class, powers.getClass());
+        assertEquals(DefaultCollectionParameterMetaData.class, powers.getClass());
     }
 
 
