@@ -14,8 +14,48 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import org.eclipse.jnosql.mapping.metadata.ClassConverter;
+import org.eclipse.jnosql.mapping.metadata.CollectionParameterMetaData;
+import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
+import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
+import org.eclipse.jnosql.mapping.metadata.MapParameterMetaData;
+import org.eclipse.jnosql.mapping.reflection.entities.Book;
+import org.eclipse.jnosql.mapping.reflection.entities.constructor.BookUser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.Collection;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DefaultMapParameterMetaDataTest {
 
+    private MapParameterMetaData fieldMetadata;
+
+    @BeforeEach
+    void setUp(){
+        ClassConverter converter = new ReflectionClassConverter();
+        EntityMetadata entityMetadata = converter.apply(BookUser.class);
+        ConstructorMetadata constructor = entityMetadata.constructor();
+        this.fieldMetadata = (MapParameterMetaData)
+                constructor.parameters().stream().filter(p -> p.name().equals("books"))
+                        .findFirst().orElseThrow();
+    }
+    @Test
+    void shouldToString() {
+        assertThat(fieldMetadata.toString()).isNotEmpty().isNotNull();
+    }
+
+    @Test
+    void shouldGetElementType(){
+        assertThat(fieldMetadata.elementType()).isEqualTo(Book.class);
+    }
+
+    @Test
+    void shouldCollectionInstance(){
+        Collection<?> collection = this.fieldMetadata.collectionInstance();
+        assertThat(collection).isInstanceOf(List.class);
+    }
 }
