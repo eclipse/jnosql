@@ -14,8 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.metadata;
 
-import java.util.Map;
-
 /**
  * The MapFieldMetadata interface extends the {@link FieldMetadata} interface and provides
  * additional information about a parameter with a map type.
