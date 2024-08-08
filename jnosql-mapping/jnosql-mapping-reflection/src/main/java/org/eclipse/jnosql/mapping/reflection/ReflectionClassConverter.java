@@ -185,9 +185,12 @@ public final class ReflectionClassConverter implements ClassConverter {
             builder.converter(convert.value());
         }
         switch (mappingType) {
-            case COLLECTION, MAP -> {
+            case COLLECTION -> {
                 builder.typeSupplier(field::getGenericType);
-                return builder.buildGeneric();
+                return builder.buildCollection();
+            }case MAP -> {
+                builder.typeSupplier(field::getGenericType);
+                return builder.buildMap();
             }
             case EMBEDDED -> {
                 return builder.entityName(reflections.getEntityName(field.getType())).buildEmbedded();
