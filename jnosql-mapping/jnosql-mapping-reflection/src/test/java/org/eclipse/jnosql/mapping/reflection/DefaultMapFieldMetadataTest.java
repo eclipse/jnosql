@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import org.assertj.core.api.Assertions;
+import org.eclipse.jnosql.communication.Entry;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
 import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
@@ -31,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class DefaultMapFieldMetadataTest {
 
@@ -72,10 +72,17 @@ class DefaultMapFieldMetadataTest {
     }
 
     @Test
-    void shouldValue(){
-        List<String> phones = List.of("Ada", "Lovelace");
+    void shouldValue() {
+        Map<String, Integer> phones = Map.of("Ada", 5);
         Object value = fieldMetadata.value(Value.of(phones));
-        assertThat(value).isNotNull().isInstanceOf(List.class);
+        assertThat(value).isNotNull().isInstanceOf(Map.class);
+    }
+
+    @Test
+    void shouldValueEntry() {
+        Entry entry = new ReflectionEntry("Ada", Value.of(12));
+        Object value = fieldMetadata.value(Value.of(entry));
+        assertThat(value).isNotNull().isInstanceOf(Map.class);
     }
 
     @Test
