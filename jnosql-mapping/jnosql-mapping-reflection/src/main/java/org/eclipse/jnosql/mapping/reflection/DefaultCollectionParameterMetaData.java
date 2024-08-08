@@ -36,10 +36,12 @@ class DefaultCollectionParameterMetaData extends DefaultParameterMetaData implem
         this.typeSupplier = typeSupplier;
     }
 
+    @Override
     public Class<?> elementType() {
         return (Class<?>) ((ParameterizedType) typeSupplier.get()).getActualTypeArguments()[0];
     }
 
+    @Override
     public Collection<?> collectionInstance() {
         Class<?> type =  type();
         final CollectionSupplier supplier = ServiceLoader.load(CollectionSupplier.class)
