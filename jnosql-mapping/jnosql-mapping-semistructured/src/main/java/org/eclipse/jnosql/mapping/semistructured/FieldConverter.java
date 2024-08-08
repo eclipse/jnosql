@@ -99,12 +99,21 @@ enum FieldConverter {
         }
     },
     MAP {
+        @SuppressWarnings("unchecked")
         @Override
         <X, Y, T> void convert(T instance, List<Element> elements, Element element, FieldMetadata field, EntityConverter converter) {
             if (Objects.nonNull(element)) {
                 var mapFieldMetadata = (MapFieldMetadata) field;
-                Object value = mapFieldMetadata.value(element.value());
-                field.write(instance, value);
+                Y value = (Y) mapFieldMetadata.value(element.value());
+                var optionalConverter = field.converter();
+                if (optionalConverter.isPresent()) {
+                    AttributeConverter<X, Y> attributeConverter = converter.converters().get(field);
+                    attributeConverter.convertToEntityAttribute(value);
+                    Object attributeConverted = attributeConverter.convertToEntityAttribute(value);
+                    field.write(instance, attributeConverted);
+                } else {
+                    field.write(instance, value);
+                }
             }
         }
     }
