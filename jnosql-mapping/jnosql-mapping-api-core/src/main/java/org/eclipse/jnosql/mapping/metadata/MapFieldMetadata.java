@@ -45,12 +45,4 @@ public interface MapFieldMetadata extends FieldMetadata {
      * @return the value type of the map parameter
      */
     Class<?> valueType();
-
-    /**
-     * Returns an instance of the {@link Map} interface representing the map type
-     * for the parameter.
-     *
-     * @return an instance of the map type for the parameter
-     */
-    Map<?, ?> mapInstance();
 }
