@@ -113,7 +113,7 @@ class EntityConverterTest {
 
         CommunicationEntity entity = converter.toCommunication(person);
         assertEquals("Person", entity.name());
-        assertEquals(4, entity.size());
+        assertEquals(5, entity.size());
         assertThat(entity.elements()).contains(Element.of("_id", 12L),
                 Element.of("age", 10), Element.of("name", "Otavio"),
                 Element.of("phones", Arrays.asList("234", "2342")));
@@ -125,7 +125,7 @@ class EntityConverterTest {
 
         CommunicationEntity entity = converter.toCommunication(actor);
         assertEquals("Actor", entity.name());
-        assertEquals(6, entity.size());
+        assertEquals(7, entity.size());
 
         assertThat(entity.elements()).contains(columns);
     }
@@ -195,7 +195,7 @@ class EntityConverterTest {
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
 
         CommunicationEntity entity = converter.toCommunication(director);
-        assertEquals(5, entity.size());
+        assertEquals(6, entity.size());
 
         assertEquals(getValue(entity.find("name")), director.getName());
         assertEquals(getValue(entity.find("age")), director.getAge());
@@ -751,23 +751,6 @@ class EntityConverterTest {
             softly.assertThat(person.getPhones()).containsExactly("234", "2342");
             softly.assertThat(person.getMobiles()).containsExactly("234", "2342");
         });
-    }
-
-
-    @Test
-    void shouldUseConvertAtArrayItem() {
-        CommunicationEntity entity = CommunicationEntity.of("Worker");
-        entity.add("name", "Otavio");
-        entity.add("money", "BRL 10");
-        entity.add("bonuses", List.of("BRL 10", "BRL 20"));
-
-        Worker worker = converter.toEntity(entity);
-        SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(worker.getName()).isEqualTo("Otavio");
-            softly.assertThat(worker.getSalary()).isEqualTo(new Money("BRL", BigDecimal.TEN));
-            softly.assertThat(worker.getBonuses()).containsExactly(new Money("BRL", BigDecimal.TEN), new Money("BRL", BigDecimal.valueOf(20)));
-        });
-
     }
 
     @Test

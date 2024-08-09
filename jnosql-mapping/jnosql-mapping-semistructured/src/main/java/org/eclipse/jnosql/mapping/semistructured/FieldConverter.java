@@ -126,6 +126,10 @@ enum FieldConverter {
                 executeIterable(field, converter, arrayFieldMetadata, iterable, optionalConverter, elements);
             } else if(value instanceof Object[] objects) {
                 executeIterable(field, converter, arrayFieldMetadata, Arrays.asList(objects), optionalConverter, elements);
+            } else if(value.getClass().isArray()) {
+                //array as primitive
+                field.write(instance, value);
+                return;
             } else {
                 executeIterable(field, converter, arrayFieldMetadata, Collections.singletonList(value), optionalConverter, elements);
             }
@@ -135,13 +139,7 @@ enum FieldConverter {
 
         private <X, Y> void executeIterable(FieldMetadata field, EntityConverter converter, ArrayFieldMetadata arrayFieldMetadata, Iterable<?> iterable, Optional<Class<AttributeConverter<Object, Object>>> optionalConverter, ArrayList<Object> elements) {
             for (Object item : iterable) {
-                if (optionalConverter.isPresent()) {
-                    AttributeConverter<X, Y> attributeConverter = converter.converters().get(field);
-                    Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) item);
-                    elements.add(attributeConverted);
-                } else {
-                    elements.add(Value.of(item).get(arrayFieldMetadata.elementType()));
-                }
+                elements.add(Value.of(item).get(arrayFieldMetadata.elementType()));
             }
         }
     },

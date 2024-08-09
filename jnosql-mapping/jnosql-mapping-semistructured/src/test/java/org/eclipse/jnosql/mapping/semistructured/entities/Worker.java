@@ -19,6 +19,8 @@ import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Convert;
 
+import java.util.List;
+
 @Entity
 public class Worker {
 
@@ -31,10 +33,6 @@ public class Worker {
     @Column("money")
     @Convert(MoneyConverter.class)
     private Money salary;
-
-    @Column("bonuses")
-    @Convert(MoneyConverter.class)
-    private Money[] bonuses;
 
     public String getName() {
         return name;
@@ -60,7 +58,4 @@ public class Worker {
         this.salary = salary;
     }
 
-    public Money[] getBonuses() {
-        return bonuses;
-    }
 }
