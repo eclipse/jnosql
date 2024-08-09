@@ -20,6 +20,7 @@ import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 import jakarta.nosql.MappedSuperclass;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,6 +40,9 @@ public class Person {
     @Column
     private List<String> phones;
 
+    @Column
+    private String[] mobiles;
+
     private String ignore;
 
 
@@ -56,6 +60,10 @@ public class Person {
 
     public List<String> getPhones() {
         return phones;
+    }
+
+    public String[] getMobiles() {
+        return mobiles;
     }
 
     public String getIgnore() {
@@ -79,10 +87,12 @@ public class Person {
 
     @Override
     public String toString() {
-        return  "Person{" + "id=" + id +
+        return "Person{" +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", phones=" + phones +
+                ", mobiles=" + Arrays.toString(mobiles) +
                 ", ignore='" + ignore + '\'' +
                 '}';
     }
