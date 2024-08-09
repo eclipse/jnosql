@@ -57,9 +57,10 @@ class DefaultArrayParameterMetaDataTest {
 
     @Test
     void shouldArrayInstance() {
-        List<String> phones = List.of("Ada", "Lovelace");
-        String[] value = (String[]) fieldMetadata.arrayInstance(phones);
-        assertThat(value).containsExactly("Ada", "Lovelace");
+        List<Book> magazines = List.of(Book.builder().build(), Book.builder().build());
+
+        Book[] value = (Book[]) fieldMetadata.arrayInstance(magazines);
+        assertThat(value).containsExactlyElementsOf(magazines);
     }
 
 }
