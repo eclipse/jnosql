@@ -117,7 +117,7 @@ final class DefaultCollectionFieldMetadata extends AbstractFieldMetadata impleme
 
     @Override
     public String toString() {
-        return "GenericFieldMapping{" + "typeSupplier=" + typeSupplier +
+        return "DefaultCollectionFieldMetadata{" + "typeSupplier=" + typeSupplier +
                 ", type=" + mappingType +
                 ", field=" + field +
                 ", name='" + name + '\'' +
