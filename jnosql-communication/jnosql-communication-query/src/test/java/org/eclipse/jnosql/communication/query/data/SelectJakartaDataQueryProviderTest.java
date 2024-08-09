@@ -538,4 +538,122 @@ class SelectJakartaDataQueryProviderTest {
             selectProvider.apply(query, "entity");
         });
     }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "where employeeName LIKE ?1")
+    void shouldUseLike(String query) {
+        var selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.LIKE);
+            soft.assertThat(condition.name()).isEqualTo("employeeName");
+            soft.assertThat(condition.value()).isEqualTo(DefaultQueryValue.of("?1"));
+
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "where employeeName LIKE  :employeeName")
+    void shouldUseLike2(String query) {
+        var selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.LIKE);
+            soft.assertThat(condition.name()).isEqualTo("employeeName");
+            soft.assertThat(condition.value()).isEqualTo(DefaultQueryValue.of(":employeeName"));
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "where employeeName LIKE 'employeeName'")
+    void shouldUseLike3(String query) {
+        var selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.LIKE);
+            soft.assertThat(condition.name()).isEqualTo("employeeName");
+            soft.assertThat(condition.value()).isEqualTo(StringQueryValue.of("employeeName"));
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "where employeeName NOT LIKE 'employeeName'")
+    void shouldUseNotLike(String query) {
+        var selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.NOT);
+            var notCondition = (ConditionQueryValue) condition.value();
+            QueryCondition queryCondition = notCondition.get().get(0);
+            soft.assertThat(queryCondition.name()).isEqualTo("employeeName");
+            soft.assertThat(queryCondition.value()).isEqualTo(StringQueryValue.of("employeeName"));
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "where employeeName NOT LIKE ?1")
+    void shouldUseNotLike2(String query) {
+        var selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.NOT);
+            var notCondition = (ConditionQueryValue) condition.value();
+            QueryCondition queryCondition = notCondition.get().get(0);
+            soft.assertThat(queryCondition.condition()).isEqualTo(Condition.LIKE);
+            soft.assertThat(queryCondition.name()).isEqualTo("employeeName");
+            soft.assertThat(queryCondition.value()).isEqualTo(DefaultQueryValue.of("?1"));
+
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "where employeeName NOT LIKE :employeeName")
+    void shouldUseNotLike3(String query) {
+        var selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.NOT);
+            var notCondition = (ConditionQueryValue) condition.value();
+            QueryCondition queryCondition = notCondition.get().get(0);
+            soft.assertThat(queryCondition.condition()).isEqualTo(Condition.LIKE);
+            soft.assertThat(queryCondition.name()).isEqualTo("employeeName");
+            soft.assertThat(queryCondition.value()).isEqualTo(DefaultQueryValue.of(":employeeName"));
+        });
+    }
 }

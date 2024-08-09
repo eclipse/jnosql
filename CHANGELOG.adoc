@@ -22,6 +22,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Make the JDQL return the correct type when the select is by field
 - Invalid deserialization of maps with generic values
 - Make sure at the serialization to the field, the API does not return any communication layer, but standard Java types
+- Fix the like query at the JDQL
 
 === Removed
 

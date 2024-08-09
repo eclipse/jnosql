@@ -122,13 +122,12 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
         var contexts = ctx.scalar_expression();
         var name = contexts.getText();
         var contextCondition = Condition.LIKE;
-        var likeValueIndex = ctx.getChildCount() - 1;
-        var likeValue = contexts.getParent().getChild(likeValueIndex).getText();
-        var literal = StringQueryValue.of(likeValue.substring(1, likeValue.length() - 1));
+        QueryValue<?> value = likeQueryValue(ctx, contexts);
+
         if (this.condition != null && this.condition.value() instanceof ConditionQueryValue) {
             and = andCondition;
         }
-        checkCondition(new DefaultQueryCondition(name, contextCondition, literal), hasNot);
+        checkCondition(new DefaultQueryCondition(name, contextCondition, value), hasNot);
         and = andCondition;
     }
 
@@ -272,6 +271,16 @@ abstract class AbstractWhere extends AbstractJDQLProvider {
             return new DefaultQueryCondition("_NOT", NOT, conditions);
         } else {
             return condition;
+        }
+    }
+
+    private static QueryValue<?> likeQueryValue(JDQLParser.Like_expressionContext ctx, JDQLParser.Scalar_expressionContext contexts) {
+        if(ctx.input_parameter() != null){
+            return DefaultQueryValue.of(ctx.input_parameter().getText());
+        } else {
+            var likeValueIndex = ctx.getChildCount() - 1;
+            var likeValue = contexts.getParent().getChild(likeValueIndex).getText();
+            return StringQueryValue.of(likeValue.substring(1, likeValue.length() - 1));
         }
     }
 }
