@@ -40,7 +40,7 @@ comparison_expression : scalar_expression comparison_operator scalar_expression;
 comparison_operator : EQ | GT | GTEQ | LT | LTEQ | NEQ;
 
 between_expression : scalar_expression NOT? BETWEEN scalar_expression AND scalar_expression;
-like_expression : scalar_expression NOT? LIKE STRING;
+like_expression : scalar_expression NOT? LIKE (STRING | input_parameter);
 
 in_expression : state_field_path_expression NOT? IN '(' in_item (',' in_item)* ')';
 in_item : literal | enum_literal | input_parameter; // could simplify to just literal
