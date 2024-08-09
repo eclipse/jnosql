@@ -18,6 +18,7 @@ import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.semistructured.Element;
 import jakarta.nosql.AttributeConverter;
+import org.eclipse.jnosql.mapping.metadata.ArrayFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
@@ -86,16 +87,52 @@ enum FieldConverter {
             if (Objects.nonNull(element)) {
                 var collectionFieldMetadata = (CollectionFieldMetadata) field;
                 Collection elements = collectionFieldMetadata.collectionInstance();
+                Class<?> type = collectionFieldMetadata.elementType();
                 List<List<Element>> embeddable = (List<List<Element>>) element.get();
                 if (Objects.isNull(embeddable)) {
                     return;
                 }
                 for (List<Element> elementList : embeddable) {
-                    var item = converter.toEntity(collectionFieldMetadata.elementType(), elementList);
+                    var item = converter.toEntity(type, elementList);
                     elements.add(item);
                 }
                 field.write(instance, elements);
             }
+        }
+    }, ARRAY {
+        @SuppressWarnings("unchecked")
+        @Override
+        public <X, Y, T> void convert(T instance, List<Element> columns, Element element, FieldMetadata field,
+                                      EntityConverter converter) {
+
+            if (Objects.nonNull(element)) {
+                var arrayFieldMetadata = (ArrayFieldMetadata) field;
+                if (arrayFieldMetadata.isEmbeddable()) {
+                    return;
+                }
+                executeNoEmbeddableField(instance, element, field, converter, arrayFieldMetadata);
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        private <X, Y, T> void executeNoEmbeddableField(T instance, Element element, FieldMetadata field, EntityConverter converter,
+                                                        ArrayFieldMetadata arrayFieldMetadata) {
+            var elements = new ArrayList<>();
+            var value = element.get();
+            var optionalConverter = field.converter();
+            if (value instanceof Iterable<?> iterable) {
+                for (Object item : iterable) {
+                    if (optionalConverter.isPresent()) {
+                        AttributeConverter<X, Y> attributeConverter = converter.converters().get(field);
+                        Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) Value.of(item));
+                        elements.add(attributeConverted);
+                    } else {
+                        elements.add(Value.of(item).get(arrayFieldMetadata.elementType()));
+                    }
+                }
+            }
+            var array = arrayFieldMetadata.arrayInstance(elements);
+            field.write(instance, array);
         }
     },
     MAP {
@@ -108,7 +145,6 @@ enum FieldConverter {
                 var optionalConverter = field.converter();
                 if (optionalConverter.isPresent()) {
                     AttributeConverter<X, Y> attributeConverter = converter.converters().get(field);
-                    attributeConverter.convertToEntityAttribute(value);
                     Object attributeConverted = attributeConverter.convertToEntityAttribute(value);
                     field.write(instance, attributeConverted);
                 } else {
@@ -132,11 +168,12 @@ enum FieldConverter {
         }
 
         @SuppressWarnings("unchecked")
-        private <X, Y, T> void executeConverter(T instance, Element element, FieldMetadata field, EntityConverter converter, Value value) {
+        <X, Y, T> void executeConverter(T instance, Element element, FieldMetadata field, EntityConverter converter, Value value) {
             AttributeConverter<X, Y> attributeConverter = converter.converters().get(field);
             Y attr = (Y) (value.isInstanceOf(List.class) ? element : value.get());
             if (isElement(attr)) {
-                var mapValue = value.get(new TypeReference<Map<String, Object>>() {});
+                var mapValue = value.get(new TypeReference<Map<String, Object>>() {
+                });
                 Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) mapValue);
                 field.write(instance, field.value(Value.of(attributeConverted)));
             } else {
@@ -145,10 +182,11 @@ enum FieldConverter {
             }
         }
 
-        private <Y> boolean isElement(Y attr) {
-            return attr instanceof Element;
-        }
     };
+
+    <Y> boolean isElement(Y attr) {
+        return attr instanceof Element;
+    }
 
     static FieldConverter get(FieldMetadata field) {
         if (MappingType.EMBEDDED.equals(field.mappingType())) {
@@ -159,6 +197,8 @@ enum FieldConverter {
             return COLLECTION;
         } else if (MappingType.MAP.equals(field.mappingType())) {
             return MAP;
+        } else if (MappingType.ARRAY.equals(field.mappingType())) {
+            return ARRAY;
         } else {
             return DEFAULT;
         }
