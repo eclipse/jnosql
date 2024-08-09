@@ -16,10 +16,11 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.mapping.metadata.ArrayFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.ClassConverter;
+import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
-import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 import org.eclipse.jnosql.mapping.reflection.entities.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,53 +31,56 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class DefaultCollectionFieldMetadataTest {
+class DefaultArrayFieldMetadataTest {
 
-    private CollectionFieldMetadata fieldMetadata;
+    private ArrayFieldMetadata fieldMetadata;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         ClassConverter converter = new ReflectionClassConverter();
         EntityMetadata entityMetadata = converter.apply(Person.class);
-        FieldMetadata phones = entityMetadata.fieldMapping("phones").orElseThrow();
-        this.fieldMetadata = (CollectionFieldMetadata) phones;
+        var mobile = entityMetadata.fieldMapping("mobile").orElseThrow();
+        this.fieldMetadata = (ArrayFieldMetadata) mobile;
     }
+
     @Test
     void shouldToString() {
         assertThat(fieldMetadata.toString()).isNotEmpty().isNotNull();
     }
 
     @Test
-    void shouldGetElementType(){
+    void shouldGetElementType() {
         assertThat(fieldMetadata.elementType()).isEqualTo(String.class);
     }
 
-    @Test
-    void shouldCollectionInstance(){
-        Collection<?> collection = this.fieldMetadata.collectionInstance();
-        assertThat(collection).isInstanceOf(List.class);
-    }
 
     @Test
-    void shouldEqualsHashCode(){
+    void shouldEqualsHashCode() {
         Assertions.assertThat(fieldMetadata).isEqualTo(fieldMetadata);
         Assertions.assertThat(fieldMetadata).hasSameHashCodeAs(fieldMetadata);
     }
 
     @Test
-    void shouldValue(){
+    void shouldValue() {
         List<String> phones = List.of("Ada", "Lovelace");
         Object value = fieldMetadata.value(Value.of(phones));
-        assertThat(value).isNotNull().isInstanceOf(List.class);
+        assertThat(value).isNotNull().isInstanceOf(Object[].class);
     }
 
     @Test
-    void shouldConverter(){
+    void shouldConverter() {
         assertThat(fieldMetadata.converter()).isNotNull().isEmpty();
     }
 
     @Test
-    void shouldNewConverter(){
+    void shouldNewConverter() {
         assertThat(fieldMetadata.newConverter()).isNotNull().isEmpty();
+    }
+
+    @Test
+    void shouldArrayInstance() {
+        List<String> phones = List.of("Ada", "Lovelace");
+        String[] value = (String[]) fieldMetadata.arrayInstance(phones);
+        assertThat(value).containsExactly("Ada", "Lovelace");
     }
 }
