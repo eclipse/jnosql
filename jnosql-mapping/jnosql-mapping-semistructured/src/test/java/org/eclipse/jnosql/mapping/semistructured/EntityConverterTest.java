@@ -733,6 +733,27 @@ class EntityConverterTest {
         });
     }
 
+    @Test
+    void shouldConvertToArray() {
+        CommunicationEntity entity = CommunicationEntity.of("Person");
+        entity.add("_id", 12L);
+        entity.add("name", "Otavio");
+        entity.add("age", 10);
+        entity.add("phones", asList("234", "2342"));
+        entity.add("mobiles", asList("234", "2342"));
+
+        Person person = this.converter.toEntity(entity);
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(person.getId()).isEqualTo(12L);
+            softly.assertThat(person.getName()).isEqualTo("Otavio");
+            softly.assertThat(person.getAge()).isEqualTo(10);
+            softly.assertThat(person.getPhones()).containsExactly("234", "2342");
+            softly.assertThat(person.getMobiles()).containsExactly("234", "2342");
+        });
+
+    }
+
 
     private Object getValue(Optional<Element> column) {
         return column.map(Element::value).map(Value::get).orElse(null);
