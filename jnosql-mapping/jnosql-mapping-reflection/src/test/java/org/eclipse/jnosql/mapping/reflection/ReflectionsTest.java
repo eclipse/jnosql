@@ -103,7 +103,7 @@ class ReflectionsTest {
                     .hasSize(5);
             softly.assertThat(reflections.getFields(Actor.class))
                     .as("list fields from a class that extends a class with field not annotated with @Column")
-                    .hasSize(6);
+                    .hasSize(7);
             softly.assertThat(reflections.getFields(Smartphone.class))
                     .as("list fields from a record class with all fields annotated with @Id or @Column")
                     .hasSize(2);
