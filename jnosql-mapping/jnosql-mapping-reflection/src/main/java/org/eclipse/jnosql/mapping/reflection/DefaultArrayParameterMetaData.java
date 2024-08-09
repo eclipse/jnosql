@@ -15,16 +15,11 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.AttributeConverter;
-import org.eclipse.jnosql.communication.TypeSupplier;
-import org.eclipse.jnosql.mapping.metadata.ArrayFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.ArrayParameterMetaData;
-import org.eclipse.jnosql.mapping.metadata.CollectionSupplier;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
-import java.util.ServiceLoader;
 
 class DefaultArrayParameterMetaData extends DefaultParameterMetaData implements ArrayParameterMetaData {
 
