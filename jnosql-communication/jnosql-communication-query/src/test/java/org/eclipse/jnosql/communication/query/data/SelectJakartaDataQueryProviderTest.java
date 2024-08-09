@@ -538,4 +538,89 @@ class SelectJakartaDataQueryProviderTest {
             selectProvider.apply(query, "entity");
         });
     }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "where employeeName LIKE  ?1")
+    void shouldUseLike(String query) {
+        var selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
+
+            var conditions = (ConditionQueryValue) condition.value();
+            var negation = (ConditionQueryValue)conditions.get().get(0).value();
+
+            var queryCondition = negation.get().get(0);
+            soft.assertThat(queryCondition.name()).isEqualTo("hexadecimal");
+            soft.assertThat(queryCondition.value()).isEqualTo(StringQueryValue.of(" ORDER BY isn''t a keyword when inside a literal"));
+            var in = conditions.get().get(1);
+            soft.assertThat(in.condition()).isEqualTo(Condition.IN);
+            var value = (DataArrayQueryValue) in.value();
+            soft.assertThat(value.get()).contains(StringQueryValue.of("4a"), StringQueryValue.of("4b"), StringQueryValue.of("4c"));
+            soft.assertThat(selectQuery.isCount()).isFalse();
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "where employeeName LIKE  :employeeName")
+    void shouldUseLike2(String query) {
+        var selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
+
+            var conditions = (ConditionQueryValue) condition.value();
+            var negation = (ConditionQueryValue)conditions.get().get(0).value();
+
+            var queryCondition = negation.get().get(0);
+            soft.assertThat(queryCondition.name()).isEqualTo("hexadecimal");
+            soft.assertThat(queryCondition.value()).isEqualTo(StringQueryValue.of(" ORDER BY isn''t a keyword when inside a literal"));
+            var in = conditions.get().get(1);
+            soft.assertThat(in.condition()).isEqualTo(Condition.IN);
+            var value = (DataArrayQueryValue) in.value();
+            soft.assertThat(value.get()).contains(StringQueryValue.of("4a"), StringQueryValue.of("4b"), StringQueryValue.of("4c"));
+            soft.assertThat(selectQuery.isCount()).isFalse();
+        });
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = "where employeeName LIKE = 'employeeName'")
+    void shouldUseLike3(String query) {
+        var selectQuery = selectProvider.apply(query, "entity");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(selectQuery.fields()).isEmpty();
+            soft.assertThat(selectQuery.entity()).isEqualTo("entity");
+            soft.assertThat(selectQuery.orderBy()).isEmpty();
+            soft.assertThat(selectQuery.where()).isNotEmpty();
+            var where = selectQuery.where().orElseThrow();
+            var condition = where.condition();
+            soft.assertThat(condition.condition()).isEqualTo(Condition.AND);
+
+            var conditions = (ConditionQueryValue) condition.value();
+            var negation = (ConditionQueryValue)conditions.get().get(0).value();
+
+            var queryCondition = negation.get().get(0);
+            soft.assertThat(queryCondition.name()).isEqualTo("hexadecimal");
+            soft.assertThat(queryCondition.value()).isEqualTo(StringQueryValue.of(" ORDER BY isn''t a keyword when inside a literal"));
+            var in = conditions.get().get(1);
+            soft.assertThat(in.condition()).isEqualTo(Condition.IN);
+            var value = (DataArrayQueryValue) in.value();
+            soft.assertThat(value.get()).contains(StringQueryValue.of("4a"), StringQueryValue.of("4b"), StringQueryValue.of("4c"));
+            soft.assertThat(selectQuery.isCount()).isFalse();
+        });
+    }
 }
