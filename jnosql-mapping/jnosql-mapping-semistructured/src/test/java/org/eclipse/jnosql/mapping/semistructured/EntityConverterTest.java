@@ -751,6 +751,22 @@ class EntityConverterTest {
             softly.assertThat(person.getPhones()).containsExactly("234", "2342");
             softly.assertThat(person.getMobiles()).containsExactly("234", "2342");
         });
+    }
+
+
+    @Test
+    void shouldUseConvertAtArrayItem() {
+        CommunicationEntity entity = CommunicationEntity.of("Worker");
+        entity.add("name", "Otavio");
+        entity.add("money", "BRL 10");
+        entity.add("bonuses", List.of("BRL 10", "BRL 20"));
+
+        Worker worker = converter.toEntity(entity);
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(worker.getName()).isEqualTo("Otavio");
+            softly.assertThat(worker.getSalary()).isEqualTo(new Money("BRL", BigDecimal.TEN));
+            softly.assertThat(worker.getBonuses()).containsExactly(new Money("BRL", BigDecimal.TEN), new Money("BRL", BigDecimal.valueOf(20)));
+        });
 
     }
 

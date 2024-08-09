@@ -124,7 +124,7 @@ enum FieldConverter {
                 for (Object item : iterable) {
                     if (optionalConverter.isPresent()) {
                         AttributeConverter<X, Y> attributeConverter = converter.converters().get(field);
-                        Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) Value.of(item));
+                        Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) item);
                         elements.add(attributeConverted);
                     } else {
                         elements.add(Value.of(item).get(arrayFieldMetadata.elementType()));
