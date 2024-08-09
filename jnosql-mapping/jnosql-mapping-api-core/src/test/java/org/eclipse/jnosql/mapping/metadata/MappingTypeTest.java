@@ -60,6 +60,17 @@ class MappingTypeTest {
         assertEquals(MappingType.DEFAULT, MappingType.of(field.getType()));
     }
 
+    @Test
+    void shouldReturnArray() throws NoSuchFieldException {
+        Field field = Person.class.getDeclaredField("mobile");
+        assertEquals(MappingType.ARRAY, MappingType.of(field.getType()));
+    }
+
+    @Test
+    void shouldReturnArrayEntity() throws NoSuchFieldException {
+        Field field = Worker.class.getDeclaredField("freeLancer");
+        assertEquals(MappingType.ARRAY, MappingType.of(field.getType()));
+    }
 
     @Test
     void shouldReturnEmbedded() throws NoSuchFieldException {
@@ -129,6 +140,13 @@ class MappingTypeTest {
         assertEquals(MappingType.EMBEDDED_GROUP, MappingType.of(map.getType()));
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldReturnParameterEmbeddedArray() {
+        Constructor<Contacts> constructor = (Constructor<Contacts>) Contacts.class.getDeclaredConstructors()[0];
+        Parameter map = constructor.getParameters()[1];
+        assertEquals(MappingType.ARRAY, MappingType.of(map.getType()));
+    }
 
     public static class ForClass {
 
@@ -162,5 +180,17 @@ class MappingTypeTest {
 
         @Column("integerAnnotation")
         private Integer integer;
+    }
+
+    public static class Contacts {
+        @Column
+        private String name;
+        @Column
+        private String[] mobile;
+
+        public Contacts(@Column String name, @Column String[] mobile) {
+            this.name = name;
+            this.mobile = mobile;
+        }
     }
 }

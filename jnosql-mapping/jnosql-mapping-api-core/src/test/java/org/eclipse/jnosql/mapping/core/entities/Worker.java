@@ -29,6 +29,9 @@ public class Worker {
     @Column
     private Job job;
 
+    @Column
+    private Job[] freeLancer;
+
     @Column("money")
     @Convert(MoneyConverter.class)
     private Money salary;

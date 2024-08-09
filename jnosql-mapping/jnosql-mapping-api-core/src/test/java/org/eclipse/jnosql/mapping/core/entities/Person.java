@@ -40,6 +40,9 @@ public class Person {
     @Column
     private List<String> phones;
 
+    @Column
+    private String[] mobile;
+
     private String ignore;
 
 
