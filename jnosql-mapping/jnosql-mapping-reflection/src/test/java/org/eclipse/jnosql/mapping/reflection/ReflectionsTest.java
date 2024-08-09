@@ -100,7 +100,7 @@ class ReflectionsTest {
         assertSoftly(softly -> {
             softly.assertThat(reflections.getFields(Person.class))
                     .as("list fields from a class with field not annotated with @Column")
-                    .hasSize(4);
+                    .hasSize(5);
             softly.assertThat(reflections.getFields(Actor.class))
                     .as("list fields from a class that extends a class with field not annotated with @Column")
                     .hasSize(6);

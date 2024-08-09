@@ -83,4 +83,9 @@ class DefaultArrayFieldMetadataTest {
         String[] value = (String[]) fieldMetadata.arrayInstance(phones);
         assertThat(value).containsExactly("Ada", "Lovelace");
     }
+
+    @Test
+    void shouldReturnElementType() {
+        assertThat(fieldMetadata.elementType()).isEqualTo(String.class);
+    }
 }
