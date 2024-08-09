@@ -26,7 +26,9 @@ import org.eclipse.jnosql.mapping.metadata.MapFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -121,18 +123,26 @@ enum FieldConverter {
             var value = element.get();
             var optionalConverter = field.converter();
             if (value instanceof Iterable<?> iterable) {
-                for (Object item : iterable) {
-                    if (optionalConverter.isPresent()) {
-                        AttributeConverter<X, Y> attributeConverter = converter.converters().get(field);
-                        Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) item);
-                        elements.add(attributeConverted);
-                    } else {
-                        elements.add(Value.of(item).get(arrayFieldMetadata.elementType()));
-                    }
-                }
+                executeIterable(field, converter, arrayFieldMetadata, iterable, optionalConverter, elements);
+            } else if(value instanceof Object[] objects) {
+                executeIterable(field, converter, arrayFieldMetadata, Arrays.asList(objects), optionalConverter, elements);
+            } else {
+                executeIterable(field, converter, arrayFieldMetadata, Collections.singletonList(value), optionalConverter, elements);
             }
             var array = arrayFieldMetadata.arrayInstance(elements);
             field.write(instance, array);
+        }
+
+        private <X, Y> void executeIterable(FieldMetadata field, EntityConverter converter, ArrayFieldMetadata arrayFieldMetadata, Iterable<?> iterable, Optional<Class<AttributeConverter<Object, Object>>> optionalConverter, ArrayList<Object> elements) {
+            for (Object item : iterable) {
+                if (optionalConverter.isPresent()) {
+                    AttributeConverter<X, Y> attributeConverter = converter.converters().get(field);
+                    Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) item);
+                    elements.add(attributeConverted);
+                } else {
+                    elements.add(Value.of(item).get(arrayFieldMetadata.elementType()));
+                }
+            }
         }
     },
     MAP {
