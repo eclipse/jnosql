@@ -830,6 +830,26 @@ class EntityConverterTest {
                 .count());
     }
 
+    @Test
+    void shouldConvertEntityFromColumnEntityWithArray() {
+
+        Person person = Person.builder().withAge()
+                .withId(12)
+                .withName("Otavio")
+                .withPhones(asList("234", "2342"))
+                .withMobiles(new String[]{"234", "2342"})
+                .build();
+
+        CommunicationEntity entity = converter.toCommunication(person);
+        assertEquals("Person", entity.name());
+        assertEquals(5, entity.size());
+        assertThat(entity.elements()).contains(Element.of("_id", 12L),
+                Element.of("age", 10), Element.of("name", "Otavio"),
+                Element.of("phones", Arrays.asList("234", "2342")),
+                Element.of("mobiles", Arrays.asList("234", "2342")));
+
+    }
+
 
     private Object getValue(Optional<Element> column) {
         return column.map(Element::value).map(Value::get).orElse(null);

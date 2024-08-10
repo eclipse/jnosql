@@ -77,12 +77,13 @@ public class Person {
     Person() {
     }
 
-    Person(long id, String name, int age, List<String> phones, String ignore) {
+    Person(long id, String name, int age, List<String> phones, String ignore, String[] mobiles) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.phones = phones;
         this.ignore = ignore;
+        this.mobiles = mobiles;
     }
 
     @Override

@@ -22,6 +22,7 @@ public class PersonBuilder {
     private int age;
     private List<String> phones;
     private String ignore;
+    private String[] mobiles;
 
     public PersonBuilder withId(long id) {
         this.id = id;
@@ -43,11 +44,16 @@ public class PersonBuilder {
         return this;
     }
 
-
     public PersonBuilder withPhones(List<String> phones) {
         this.phones = phones;
         return this;
     }
+
+    public PersonBuilder withMobiles(String[] mobiles) {
+        this.mobiles = mobiles;
+        return this;
+    }
+
 
     public PersonBuilder withIgnore() {
         this.ignore = "Just Ignore";
@@ -55,6 +61,6 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(id, name, age, phones, ignore);
+        return new Person(id, name, age, phones, ignore, mobiles);
     }
 }
