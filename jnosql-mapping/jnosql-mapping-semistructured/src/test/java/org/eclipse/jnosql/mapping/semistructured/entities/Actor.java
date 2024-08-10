@@ -33,7 +33,7 @@ public class Actor extends Person {
     private Map<String, Integer> movieRating;
 
     Actor(long id, String name, int age, List<String> phones, String ignore, Map<String, String> movieCharacter, Map<String, Integer> movieRating) {
-        super(id, name, age, phones, ignore);
+        super(id, name, age, phones, ignore, new String[0]);
         this.movieCharacter = movieCharacter;
         this.movieRating = movieRating;
     }

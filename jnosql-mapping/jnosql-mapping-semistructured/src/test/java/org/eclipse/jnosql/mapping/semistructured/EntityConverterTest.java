@@ -833,20 +833,26 @@ class EntityConverterTest {
     @Test
     void shouldConvertEntityFromColumnEntityWithArray() {
 
-        Person person = Person.builder().age()
+        var person = Person.builder().age()
                 .id(12)
                 .name("Otavio")
                 .phones(asList("234", "2342"))
                 .mobiles(new String[]{"234", "2342"})
                 .build();
 
-        CommunicationEntity entity = converter.toCommunication(person);
-        assertEquals("Person", entity.name());
-        assertEquals(5, entity.size());
-        assertThat(entity.elements()).contains(Element.of("_id", 12L),
-                Element.of("age", 10), Element.of("name", "Otavio"),
-                Element.of("phones", Arrays.asList("234", "2342")),
-                Element.of("mobiles", Arrays.asList("234", "2342")));
+        var entity = converter.toCommunication(person);
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(entity).isNotNull();
+            softly.assertThat(entity.name()).isEqualTo("Person");
+            softly.assertThat(entity.size()).isEqualTo(5);
+            softly.assertThat(entity.find("_id").orElseThrow().get()).isEqualTo(12L);
+            softly.assertThat(entity.find("age").orElseThrow().get()).isEqualTo(10);
+            softly.assertThat(entity.find("name").orElseThrow().get()).isEqualTo("Otavio");
+            softly.assertThat(entity.find("phones").orElseThrow().get()).isEqualTo(asList("234", "2342"));
+            softly.assertThat(entity.find("mobiles", new TypeReference<List<String>>() {
+            }).orElseThrow()).contains("234", "2342");
+        });
+
 
     }
 

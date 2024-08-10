@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.semistructured;
 import org.eclipse.jnosql.communication.semistructured.Element;
 import jakarta.nosql.AttributeConverter;
 import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.mapping.metadata.ArrayFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 import org.eclipse.jnosql.mapping.metadata.FieldValue;
@@ -24,6 +25,7 @@ import org.eclipse.jnosql.mapping.metadata.DefaultFieldValue;
 import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,8 +71,10 @@ final class DefaultAttributeFieldValue implements AttributeFieldValue {
             return singletonList(Element.of(name(), converter.toCommunication(value()).elements()));
         } else if (isEmbeddableCollection()) {
             return singletonList(Element.of(name(), columns(converter)));
-        } else if (ARRAY.equals(type())) {
+        } else if (isEmbeddableArray()) {
             return singletonList(Element.of(name(), columnsToArray(converter)));
+        } else if(ARRAY.equals(type())) {
+            return singletonList(Element.of(name(), columnsToArray()));
         }
         Optional<Class<AttributeConverter<Object, Object>>> optionalConverter = field().converter();
         if (optionalConverter.isPresent()) {
@@ -88,6 +92,15 @@ final class DefaultAttributeFieldValue implements AttributeFieldValue {
         return elements;
     }
 
+    private Object columnsToArray() {
+        if(value() instanceof Object[]) {
+           var values = new ArrayList<>();
+            Collections.addAll(values, (Object[]) value());
+            return  values;
+        }
+        return value();
+    }
+
     private List<List<Element>> columnsToArray(EntityConverter converter) {
         List<List<Element>> elements = new ArrayList<>();
         for (Object element : (Object[]) value()) {
@@ -98,6 +111,10 @@ final class DefaultAttributeFieldValue implements AttributeFieldValue {
 
     private boolean isEmbeddableCollection() {
         return COLLECTION.equals(type()) && isEmbeddableElement();
+    }
+
+    private boolean isEmbeddableArray() {
+        return ARRAY.equals(type()) && isArrayEmbeddableElement();
     }
 
     private MappingType type() {
@@ -111,6 +128,11 @@ final class DefaultAttributeFieldValue implements AttributeFieldValue {
     private boolean isEmbeddableElement() {
         return ((CollectionFieldMetadata) field()).isEmbeddable();
     }
+
+    private boolean isArrayEmbeddableElement() {
+        return ((ArrayFieldMetadata) field()).isEmbeddable();
+    }
+
 
     @Override
     public String toString() {

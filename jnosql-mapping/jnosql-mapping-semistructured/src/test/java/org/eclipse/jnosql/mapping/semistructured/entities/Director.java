@@ -32,7 +32,7 @@ public final class Director extends Person {
     }
 
     public Director(long id, String name, int age, List<String> phones, String ignore, Movie movie) {
-        super(id, name, age, phones, ignore);
+        super(id, name, age, phones, ignore, new String[0]);
         this.movie = movie;
     }
 
