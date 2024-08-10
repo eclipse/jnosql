@@ -21,7 +21,6 @@ import jakarta.inject.Inject;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
-import org.eclipse.jnosql.communication.semistructured.CriteriaCondition;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.eclipse.jnosql.mapping.core.Converters;
@@ -76,7 +75,7 @@ class CustomRepositoryHandlerTest {
 
     @Test
     void shouldInsertEntity() {
-        Person person = Person.builder().withAge(26).withName("Ada").build();
+        Person person = Person.builder().age(26).name("Ada").build();
         Mockito.when(template.insert(person)).thenReturn(person);
         Person result = people.insert(person);
 
@@ -87,7 +86,7 @@ class CustomRepositoryHandlerTest {
 
     @Test
     void shouldInsertListEntity() {
-        var persons = List.of(Person.builder().withAge(26).withName("Ada").build());
+        var persons = List.of(Person.builder().age(26).name("Ada").build());
         Mockito.when(template.insert(persons)).thenReturn(persons);
         List<Person> result = people.insert(persons);
 
@@ -98,7 +97,7 @@ class CustomRepositoryHandlerTest {
 
     @Test
     void shouldInsertArrayEntity() {
-        Person ada = Person.builder().withAge(26).withName("Ada").build();
+        Person ada = Person.builder().age(26).name("Ada").build();
         var persons = new Person[]{ada};
         Mockito.when(template.insert(Mockito.any())).thenReturn(List.of(ada));
         Person[] result = people.insert(persons);
@@ -111,7 +110,7 @@ class CustomRepositoryHandlerTest {
 
     @Test
     void shouldUpdateEntity() {
-        Person person = Person.builder().withAge(26).withName("Ada").build();
+        Person person = Person.builder().age(26).name("Ada").build();
         Mockito.when(template.update(person)).thenReturn(person);
         Person result = people.update(person);
 
@@ -122,7 +121,7 @@ class CustomRepositoryHandlerTest {
 
     @Test
     void shouldUpdateListEntity() {
-        var persons = List.of(Person.builder().withAge(26).withName("Ada").build());
+        var persons = List.of(Person.builder().age(26).name("Ada").build());
         Mockito.when(template.update(persons)).thenReturn(persons);
         List<Person> result = people.update(persons);
 
@@ -133,7 +132,7 @@ class CustomRepositoryHandlerTest {
 
     @Test
     void shouldUpdateArrayEntity() {
-        Person ada = Person.builder().withAge(26).withName("Ada").build();
+        Person ada = Person.builder().age(26).name("Ada").build();
         var persons = new Person[]{ada};
         Mockito.when(template.update(Mockito.any())).thenReturn(List.of(ada));
         Person[] result = people.update(persons);
@@ -145,7 +144,7 @@ class CustomRepositoryHandlerTest {
 
     @Test
     void shouldDeleteEntity() {
-        Person person = Person.builder().withId(1).withAge(26).withName("Ada").build();
+        Person person = Person.builder().id(1).age(26).name("Ada").build();
         people.delete(person);
 
         Mockito.verify(template).delete(Person.class, 1L);
@@ -154,7 +153,7 @@ class CustomRepositoryHandlerTest {
 
     @Test
     void shouldDeleteListEntity() {
-        var persons = List.of(Person.builder().withId(12L).withAge(26).withName("Ada").build());
+        var persons = List.of(Person.builder().id(12L).age(26).name("Ada").build());
          people.delete(persons);
 
         Mockito.verify(template).delete(Person.class, 12L);
@@ -163,7 +162,7 @@ class CustomRepositoryHandlerTest {
 
     @Test
     void shouldDeleteArrayEntity() {
-        Person ada = Person.builder().withId(2L).withAge(26).withName("Ada").build();
+        Person ada = Person.builder().id(2L).age(26).name("Ada").build();
         var persons = new Person[]{ada};
         people.delete(persons);
 
@@ -173,7 +172,7 @@ class CustomRepositoryHandlerTest {
 
     @Test
     void shouldSaveEntity() {
-        Person person = Person.builder().withAge(26).withName("Ada").build();
+        Person person = Person.builder().age(26).name("Ada").build();
         Mockito.when(template.insert(person)).thenReturn(person);
         Person result = people.save(person);
 
@@ -184,7 +183,7 @@ class CustomRepositoryHandlerTest {
 
     @Test
     void shouldSaveListEntity() {
-        Person ada = Person.builder().withAge(26).withName("Ada").build();
+        Person ada = Person.builder().age(26).name("Ada").build();
         var persons = List.of(ada);
         Mockito.when(template.insert(persons)).thenReturn(persons);
         Mockito.when(template.insert(ada)).thenReturn(ada);
@@ -197,7 +196,7 @@ class CustomRepositoryHandlerTest {
 
     @Test
     void shouldSaveArrayEntity() {
-        Person ada = Person.builder().withAge(26).withName("Ada").build();
+        Person ada = Person.builder().age(26).name("Ada").build();
         var persons = new Person[]{ada};
         Mockito.when(template.insert(Mockito.any())).thenReturn(List.of(ada));
         Mockito.when(template.insert(ada)).thenReturn(ada);
@@ -224,7 +223,7 @@ class CustomRepositoryHandlerTest {
     @Test
     void shouldExecuteFindByAge() {
         Mockito.when(template.select(Mockito.any(SelectQuery.class)))
-                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+                .thenReturn(Stream.of(Person.builder().age(26).name("Ada").build()));
         var result = people.findByAge(26);
 
         Assertions.assertThat(result).hasSize(1).isNotNull().isInstanceOf(List.class);
@@ -244,7 +243,7 @@ class CustomRepositoryHandlerTest {
     void shouldExecuteFindById() {
 
         Mockito.when(template.singleResult(Mockito.any(SelectQuery.class)))
-                .thenReturn(Optional.of(Person.builder().withAge(26).withName("Ada").build()));
+                .thenReturn(Optional.of(Person.builder().age(26).name("Ada").build()));
 
         var result = people.findById(26L);
 
@@ -265,7 +264,7 @@ class CustomRepositoryHandlerTest {
     void shouldExecuteFindByIdAndName() {
 
         Mockito.when(template.singleResult(Mockito.any(SelectQuery.class)))
-                .thenReturn(Optional.of(Person.builder().withAge(26).withName("Ada").build()));
+                .thenReturn(Optional.of(Person.builder().age(26).name("Ada").build()));
 
         var result = people.findByIdAndName(26L, "Ada");
 
@@ -286,7 +285,7 @@ class CustomRepositoryHandlerTest {
     void shouldExecuteFindPagination() {
 
         Mockito.when(template.select(Mockito.any(SelectQuery.class)))
-                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+                .thenReturn(Stream.of(Person.builder().age(26).name("Ada").build()));
 
         var result = people.findByAge(26, PageRequest.ofSize(2));
 
@@ -329,7 +328,7 @@ class CustomRepositoryHandlerTest {
     void shouldExecutePathParameter() {
 
         Mockito.when(template.select(Mockito.any(SelectQuery.class)))
-                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+                .thenReturn(Stream.of(Person.builder().age(26).name("Ada").build()));
 
         var result = people.name("Ada");
 
@@ -354,7 +353,7 @@ class CustomRepositoryHandlerTest {
         Mockito.when(template.prepare(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(preparedStatement);
         Mockito.when(template.query(Mockito.anyString()))
-                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+                .thenReturn(Stream.of(Person.builder().age(26).name("Ada").build()));
 
         var result = people.queryName("Ada");
 
@@ -373,7 +372,7 @@ class CustomRepositoryHandlerTest {
         var preparedStatement = Mockito.mock(PreparedStatement.class);
         Mockito.when(template.prepare(Mockito.anyString())).thenReturn(preparedStatement);
         Mockito.when(template.query(Mockito.anyString()))
-                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+                .thenReturn(Stream.of(Person.builder().age(26).name("Ada").build()));
 
         people.deleteByName("Ada");
 
@@ -391,7 +390,7 @@ class CustomRepositoryHandlerTest {
         var preparedStatement = Mockito.mock(PreparedStatement.class);
         Mockito.when(template.prepare(Mockito.anyString())).thenReturn(preparedStatement);
         Mockito.when(template.query(Mockito.anyString()))
-                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+                .thenReturn(Stream.of(Person.builder().age(26).name("Ada").build()));
         people.countByIdIn(Set.of(1L, 2L));
 
         ArgumentCaptor<SelectQuery> captor = ArgumentCaptor.forClass(SelectQuery.class);
@@ -417,7 +416,7 @@ class CustomRepositoryHandlerTest {
         var preparedStatement = Mockito.mock(PreparedStatement.class);
         Mockito.when(template.prepare(Mockito.anyString())).thenReturn(preparedStatement);
         Mockito.when(template.query(Mockito.anyString()))
-                .thenReturn(Stream.of(Person.builder().withAge(26).withName("Ada").build()));
+                .thenReturn(Stream.of(Person.builder().age(26).name("Ada").build()));
 
         people.existsByIdIn(Set.of(1L, 2L));
 

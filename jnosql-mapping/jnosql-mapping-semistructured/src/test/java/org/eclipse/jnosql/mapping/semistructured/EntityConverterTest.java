@@ -106,10 +106,10 @@ class EntityConverterTest {
     @Test
     void shouldConvertEntityFromColumnEntity() {
 
-        Person person = Person.builder().withAge()
-                .withId(12)
-                .withName("Otavio")
-                .withPhones(asList("234", "2342")).build();
+        Person person = Person.builder().age()
+                .id(12)
+                .name("Otavio")
+                .phones(asList("234", "2342")).build();
 
         CommunicationEntity entity = converter.toCommunication(person);
         assertEquals("Person", entity.name());
@@ -833,11 +833,11 @@ class EntityConverterTest {
     @Test
     void shouldConvertEntityFromColumnEntityWithArray() {
 
-        Person person = Person.builder().withAge()
-                .withId(12)
-                .withName("Otavio")
-                .withPhones(asList("234", "2342"))
-                .withMobiles(new String[]{"234", "2342"})
+        Person person = Person.builder().age()
+                .id(12)
+                .name("Otavio")
+                .phones(asList("234", "2342"))
+                .mobiles(new String[]{"234", "2342"})
                 .build();
 
         CommunicationEntity entity = converter.toCommunication(person);

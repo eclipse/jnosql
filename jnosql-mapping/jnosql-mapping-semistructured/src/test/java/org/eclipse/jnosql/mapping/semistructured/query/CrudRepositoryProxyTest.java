@@ -126,9 +126,9 @@ class CrudRepositoryProxyTest {
         when(template.find(Person.class, 10L)).thenReturn(Optional.empty());
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = Person.builder().withName("Ada")
-                .withId(10L)
-                .withPhones(singletonList("123123"))
+        Person person = Person.builder().name("Ada")
+                .id(10L)
+                .phones(singletonList("123123"))
                 .build();
         assertNotNull(personRepository.save(person));
         verify(template).insert(captor.capture());
@@ -143,9 +143,9 @@ class CrudRepositoryProxyTest {
         when(template.find(Person.class, 10L)).thenReturn(Optional.of(Person.builder().build()));
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = Person.builder().withName("Ada")
-                .withId(10L)
-                .withPhones(singletonList("123123"))
+        Person person = Person.builder().name("Ada")
+                .id(10L)
+                .phones(singletonList("123123"))
                 .build();
         assertNotNull(personRepository.save(person));
         verify(template).update(captor.capture());
@@ -159,9 +159,9 @@ class CrudRepositoryProxyTest {
         when(personRepository.findById(10L)).thenReturn(Optional.empty());
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = Person.builder().withName("Ada")
-                .withId(10L)
-                .withPhones(singletonList("123123"))
+        Person person = Person.builder().name("Ada")
+                .id(10L)
+                .phones(singletonList("123123"))
                 .build();
 
         personRepository.saveAll(singletonList(person));
@@ -175,9 +175,9 @@ class CrudRepositoryProxyTest {
     void shouldInsert() {
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = Person.builder().withName("Ada")
-                .withId(10L)
-                .withPhones(singletonList("123123"))
+        Person person = Person.builder().name("Ada")
+                .id(10L)
+                .phones(singletonList("123123"))
                 .build();
         assertNotNull(personRepository.insert(person));
         verify(template).insert(captor.capture());
@@ -189,9 +189,9 @@ class CrudRepositoryProxyTest {
     void shouldUpdate() {
 
         ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
-        Person person = Person.builder().withName("Ada")
-                .withId(10L)
-                .withPhones(singletonList("123123"))
+        Person person = Person.builder().name("Ada")
+                .id(10L)
+                .phones(singletonList("123123"))
                 .build();
         personRepository.update(person);
         verify(template).update(captor.capture());
@@ -204,9 +204,9 @@ class CrudRepositoryProxyTest {
     void shouldInsertIterable() {
 
         ArgumentCaptor<List<Person>> captor = ArgumentCaptor.forClass(List.class);
-        Person person = Person.builder().withName("Ada")
-                .withId(10L)
-                .withPhones(singletonList("123123"))
+        Person person = Person.builder().name("Ada")
+                .id(10L)
+                .phones(singletonList("123123"))
                 .build();
         assertNotNull(personRepository.insertAll(List.of(person)));
         verify(template).insert(captor.capture());
@@ -218,9 +218,9 @@ class CrudRepositoryProxyTest {
     void shouldUpdateIterable() {
 
         ArgumentCaptor<List<Person>> captor = ArgumentCaptor.forClass(List.class);
-        Person person = Person.builder().withName("Ada")
-                .withId(10L)
-                .withPhones(singletonList("123123"))
+        Person person = Person.builder().name("Ada")
+                .id(10L)
+                .phones(singletonList("123123"))
                 .build();
         personRepository.updateAll(List.of(person));
         verify(template).update(captor.capture());
@@ -282,7 +282,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindByNameANDAge() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -297,7 +297,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindByAgeANDName() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -312,7 +312,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindByNameANDAgeOrderByName() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -327,7 +327,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindByNameANDAgeOrderByAge() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -400,7 +400,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindAll() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -425,7 +425,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindByNameAndAgeGreaterEqualThan() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -454,7 +454,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindByGreaterThan() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -473,7 +473,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindByAgeLessThanEqual() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -492,7 +492,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindByAgeLessEqual() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -511,7 +511,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindByAgeBetween() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -533,7 +533,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindByNameLike() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -593,7 +593,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldConvertFieldToTheType() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -636,7 +636,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindBySalary_Currency() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -655,7 +655,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindBySalary_CurrencyAndSalary_Value() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
         personRepository.findBySalary_CurrencyAndSalary_Value("USD", BigDecimal.TEN);
@@ -676,7 +676,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindBySalary_CurrencyOrderByCurrency_Name() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -697,7 +697,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindByNameNotEquals() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -717,7 +717,7 @@ class CrudRepositoryProxyTest {
     @Test
     void shouldFindByAgeNotGreaterThan() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
