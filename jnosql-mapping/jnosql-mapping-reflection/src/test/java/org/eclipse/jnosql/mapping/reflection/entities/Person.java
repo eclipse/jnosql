@@ -39,6 +39,9 @@ public class Person {
     @Column
     private List<String> phones;
 
+    @Column
+    private String[] mobile;
+
     private String ignore;
 
 
@@ -64,6 +67,10 @@ public class Person {
 
     public boolean isAdult() {
         return age > 21;
+    }
+
+    public String[] getMobile() {
+        return mobile;
     }
 
     Person() {

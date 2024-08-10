@@ -106,14 +106,14 @@ class EntityConverterTest {
     @Test
     void shouldConvertEntityFromColumnEntity() {
 
-        Person person = Person.builder().withAge()
-                .withId(12)
-                .withName("Otavio")
-                .withPhones(asList("234", "2342")).build();
+        Person person = Person.builder().age()
+                .id(12)
+                .name("Otavio")
+                .phones(asList("234", "2342")).build();
 
         CommunicationEntity entity = converter.toCommunication(person);
         assertEquals("Person", entity.name());
-        assertEquals(4, entity.size());
+        assertEquals(5, entity.size());
         assertThat(entity.elements()).contains(Element.of("_id", 12L),
                 Element.of("age", 10), Element.of("name", "Otavio"),
                 Element.of("phones", Arrays.asList("234", "2342")));
@@ -125,7 +125,7 @@ class EntityConverterTest {
 
         CommunicationEntity entity = converter.toCommunication(actor);
         assertEquals("Actor", entity.name());
-        assertEquals(6, entity.size());
+        assertEquals(7, entity.size());
 
         assertThat(entity.elements()).contains(columns);
     }
@@ -195,7 +195,7 @@ class EntityConverterTest {
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
 
         CommunicationEntity entity = converter.toCommunication(director);
-        assertEquals(5, entity.size());
+        assertEquals(6, entity.size());
 
         assertEquals(getValue(entity.find("name")), director.getName());
         assertEquals(getValue(entity.find("age")), director.getAge());
@@ -731,6 +731,129 @@ class EntityConverterTest {
             softly.assertThat(machine.getEngine().getHorsepower()).isEqualTo(450);
             softly.assertThat(machine.getEngine()).isInstanceOf(GasEngine.class);
         });
+    }
+
+    @Test
+    void shouldConvertToArray() {
+        CommunicationEntity entity = CommunicationEntity.of("Person");
+        entity.add("_id", 12L);
+        entity.add("name", "Otavio");
+        entity.add("age", 10);
+        entity.add("phones", asList("234", "2342"));
+        entity.add("mobiles", asList("234", "2342"));
+
+        Person person = this.converter.toEntity(entity);
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(person.getId()).isEqualTo(12L);
+            softly.assertThat(person.getName()).isEqualTo("Otavio");
+            softly.assertThat(person.getAge()).isEqualTo(10);
+            softly.assertThat(person.getPhones()).containsExactly("234", "2342");
+            softly.assertThat(person.getMobiles()).containsExactly("234", "2342");
+        });
+    }
+
+    @Test
+    void shouldConvertToArrayInArray() {
+        CommunicationEntity entity = CommunicationEntity.of("Person");
+        entity.add("_id", 12L);
+        entity.add("name", "Otavio");
+        entity.add("age", 10);
+        entity.add("phones", asList("234", "2342"));
+        entity.add("mobiles", new String[]{"234", "2342"});
+
+        Person person = this.converter.toEntity(entity);
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(person.getId()).isEqualTo(12L);
+            softly.assertThat(person.getName()).isEqualTo("Otavio");
+            softly.assertThat(person.getAge()).isEqualTo(10);
+            softly.assertThat(person.getPhones()).containsExactly("234", "2342");
+            softly.assertThat(person.getMobiles()).containsExactly("234", "2342");
+        });
+    }
+
+    @Test
+    void shouldConvertFromArrayEmbeddable() {
+        CommunicationEntity entity = CommunicationEntity.of("AppointmentBook");
+        entity.add(Element.of("_id", "ids"));
+        List<List<Element>> columns = new ArrayList<>();
+
+        columns.add(asList(Element.of("contact_name", "Ada"), Element.of("type", ContactType.EMAIL),
+                Element.of("information", "ada@lovelace.com")));
+
+        columns.add(asList(Element.of("contact_name", "Ada"), Element.of("type", ContactType.MOBILE),
+                Element.of("information", "11 1231231 123")));
+
+        columns.add(asList(Element.of("contact_name", "Ada"), Element.of("type", ContactType.PHONE),
+                Element.of("information", "phone")));
+
+        entity.add(Element.of("contacts", columns));
+        entity.add(Element.of("network", columns));
+
+        AppointmentBook appointmentBook = converter.toEntity(entity);
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(appointmentBook.getId()).isEqualTo("ids");
+            softly.assertThat(appointmentBook.getContacts()).hasSize(3);
+            softly.assertThat(appointmentBook.getNetwork()).hasSize(3);
+        });
+    }
+
+    @Test
+    void shouldConvertToArrayEmbeddable() {
+        var email = Contact.builder().withType(ContactType.EMAIL)
+                .withName("Ada").withInformation("ada@lovelace.com").build();
+        var mobile = Contact.builder().withType(ContactType.MOBILE)
+                .withName("Ada").withInformation("11 1231231 123").build();
+        var ada = Contact.builder().withType(ContactType.PHONE)
+                .withName("Ada").withInformation("12 123 1231 123123").build();
+        AppointmentBook appointmentBook = new AppointmentBook("ids");
+        appointmentBook.add(ada);
+        appointmentBook.add(email);
+        appointmentBook.add(mobile);
+        appointmentBook.setNetwork(new Contact[]{ada, email, mobile});
+
+        CommunicationEntity entity = converter.toCommunication(appointmentBook);
+        Element contacts = entity.find("contacts").get();
+        Element network = entity.find("network").get();
+        assertEquals("ids", appointmentBook.getId());
+        List<List<Element>> columns = (List<List<Element>>) contacts.get();
+
+        assertEquals(3L, columns.stream().flatMap(Collection::stream)
+                .filter(c -> c.name().equals("contact_name"))
+                .count());
+
+        List<List<Element>> columns2 = (List<List<Element>>) network.get();
+
+        assertEquals(3L, columns2.stream().flatMap(Collection::stream)
+                .filter(c -> c.name().equals("contact_name"))
+                .count());
+    }
+
+    @Test
+    void shouldConvertEntityFromColumnEntityWithArray() {
+
+        var person = Person.builder().age()
+                .id(12)
+                .name("Otavio")
+                .phones(asList("234", "2342"))
+                .mobiles(new String[]{"234", "2342"})
+                .build();
+
+        var entity = converter.toCommunication(person);
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(entity).isNotNull();
+            softly.assertThat(entity.name()).isEqualTo("Person");
+            softly.assertThat(entity.size()).isEqualTo(5);
+            softly.assertThat(entity.find("_id").orElseThrow().get()).isEqualTo(12L);
+            softly.assertThat(entity.find("age").orElseThrow().get()).isEqualTo(10);
+            softly.assertThat(entity.find("name").orElseThrow().get()).isEqualTo("Otavio");
+            softly.assertThat(entity.find("phones").orElseThrow().get()).isEqualTo(asList("234", "2342"));
+            softly.assertThat(entity.find("mobiles", new TypeReference<List<String>>() {
+            }).orElseThrow()).contains("234", "2342");
+        });
+
+
     }
 
 

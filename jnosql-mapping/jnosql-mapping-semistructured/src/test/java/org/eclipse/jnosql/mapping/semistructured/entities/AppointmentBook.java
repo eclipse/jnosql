@@ -25,14 +25,14 @@ import java.util.Objects;
 @Entity
 public class AppointmentBook {
 
-
     @Id
     private String id;
-
 
     @Column
     private List<Contact> contacts = new ArrayList<>();
 
+    @Column
+    private Contact[] network;
 
     AppointmentBook() {
     }
@@ -45,13 +45,20 @@ public class AppointmentBook {
         return id;
     }
 
-
     public List<Contact> getContacts() {
         return contacts;
     }
 
+    public Contact[] getNetwork() {
+        return network;
+    }
+
     public void add(Contact contact) {
         this.contacts.add(contact);
+    }
+
+    public void setNetwork(Contact[] network) {
+        this.network = network;
     }
 
     @Override

@@ -67,11 +67,11 @@ import static org.mockito.Mockito.verify;
 class DefaultSemiStructuredTemplateTest {
 
     private final Person person = Person.builder().
-            withAge().
-            withPhones(Arrays.asList("234", "432")).
-            withName("Name")
-            .withId(19)
-            .withIgnore().build();
+            age().
+            phones(Arrays.asList("234", "432")).
+            name("Name")
+            .id(19)
+            .ignore().build();
 
     private final Element[] columns = new Element[]{
             Element.of("age", 10),
@@ -124,7 +124,7 @@ class DefaultSemiStructuredTemplateTest {
         verify(eventPersistManager).firePreEntity(any(Person.class));
         CommunicationEntity value = captor.getValue();
         assertEquals("Person", value.name());
-        assertEquals(4, value.elements().size());
+        assertEquals(5, value.elements().size());
     }
 
 
@@ -166,7 +166,7 @@ class DefaultSemiStructuredTemplateTest {
         verify(eventPersistManager).firePreEntity(any(Person.class));
         CommunicationEntity value = captor.getValue();
         assertEquals("Person", value.name());
-        assertEquals(4, value.elements().size());
+        assertEquals(5, value.elements().size());
     }
 
     @Test
@@ -184,7 +184,7 @@ class DefaultSemiStructuredTemplateTest {
         verify(eventPersistManager).firePreEntity(any(Person.class));
         CommunicationEntity value = captor.getValue();
         assertEquals("Person", value.name());
-        assertEquals(4, value.elements().size());
+        assertEquals(5, value.elements().size());
     }
 
     @Test

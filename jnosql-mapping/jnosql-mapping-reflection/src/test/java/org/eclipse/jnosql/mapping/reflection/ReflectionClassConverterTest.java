@@ -61,7 +61,7 @@ class ReflectionClassConverterTest {
 
         assertEquals("Person", entityMetadata.name());
         assertEquals(Person.class, entityMetadata.type());
-        assertEquals(4, entityMetadata.fields().size());
+        assertEquals(5, entityMetadata.fields().size());
         assertThat(entityMetadata.fieldsName()).contains("_id", "name", "age", "phones");
         ConstructorMetadata constructor = entityMetadata.constructor();
         assertNotNull(constructor);
@@ -77,8 +77,8 @@ class ReflectionClassConverterTest {
         assertEquals(Actor.class, entityMetadata.type());
 
         assertThat(entityMetadata.fieldsName())
-                .hasSize(6)
-                .contains("_id", "name", "age", "phones", "movieCharacter", "movieRating");
+                .hasSize(7)
+                .contains("_id", "name", "age", "phones", "movieCharacter", "movieRating", "mobile");
 
     }
 
@@ -87,7 +87,7 @@ class ReflectionClassConverterTest {
         EntityMetadata entityMetadata = converter.apply(Director.class);
         assertEquals("Director", entityMetadata.name());
         assertEquals(Director.class, entityMetadata.type());
-        assertEquals(5, entityMetadata.fields().size());
+        assertEquals(6, entityMetadata.fields().size());
         assertThat(entityMetadata.fieldsName()).contains("_id", "name", "age", "phones", "movie");
 
     }

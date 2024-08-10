@@ -15,6 +15,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Include the `Null`, `NotNull` and `countAll` keywords in the method by query in the Repository
 - Include condition to is NUll and is Not Null in the query
 - Include pagination with Query annotation
+- Add support to array in the fields
 
 === Fixed
 

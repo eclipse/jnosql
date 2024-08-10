@@ -81,8 +81,8 @@ class DefaultEntityMetadataTest {
         Map<String, FieldMetadata> map = entityMetadata.fieldsGroupByName();
 
         assertThat(map).isNotEmpty()
-                .hasSize(4)
-                .containsKeys("_id", "name", "age", "phones");
+                .hasSize(5)
+                .containsKeys("_id", "name", "age", "phones", "mobile");
     }
 
     @Test

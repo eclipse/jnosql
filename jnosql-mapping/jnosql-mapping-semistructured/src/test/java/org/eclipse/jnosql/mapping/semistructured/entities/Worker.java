@@ -19,6 +19,8 @@ import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Convert;
 
+import java.util.List;
+
 @Entity
 public class Worker {
 
@@ -55,6 +57,5 @@ public class Worker {
     public void setSalary(Money salary) {
         this.salary = salary;
     }
-
 
 }

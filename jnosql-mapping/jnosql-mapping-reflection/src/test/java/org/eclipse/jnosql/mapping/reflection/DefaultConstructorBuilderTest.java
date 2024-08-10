@@ -54,6 +54,7 @@ class DefaultConstructorBuilderTest {
         builder.addEmptyParameter();
         builder.addEmptyParameter();
         builder.addEmptyParameter();
+        builder.addEmptyParameter();
         BookUser user = builder.build();
 
         SoftAssertions.assertSoftly(soft -> {
@@ -69,6 +70,7 @@ class DefaultConstructorBuilderTest {
         ConstructorBuilder builder = DefaultConstructorBuilder.of(constructor);
         builder.add("id");
         builder.add("name");
+        builder.addEmptyParameter();
         builder.addEmptyParameter();
 
         BookUser user = builder.build();
@@ -87,7 +89,7 @@ class DefaultConstructorBuilderTest {
         builder.add("name");
         builder.addEmptyParameter();
 
-        assertThat(builder.parameters()).hasSize(3);
+        assertThat(builder.parameters()).hasSize(4);
     }
 
     @Test

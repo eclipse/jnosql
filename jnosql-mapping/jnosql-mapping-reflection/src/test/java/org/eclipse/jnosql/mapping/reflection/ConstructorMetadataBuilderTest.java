@@ -42,7 +42,6 @@ class ConstructorMetadataBuilderTest {
     @Inject
     private Reflections reflections;
 
-
     private ConstructorMetadataBuilder builder;
 
     @BeforeEach
@@ -80,7 +79,7 @@ class ConstructorMetadataBuilderTest {
     void shouldReturnBookUserEntityConstructor() {
         ConstructorMetadata metadata = builder.build(BookUser.class);
         List<ParameterMetaData> parameters = metadata.parameters();
-        assertEquals(3, parameters.size());
+        assertEquals(4, parameters.size());
         List<String> names = parameters.stream()
                 .map(ParameterMetaData::name)
                 .toList();

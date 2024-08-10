@@ -145,7 +145,7 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByNameANDAge() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -166,7 +166,7 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByAgeANDName() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -186,7 +186,7 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByNameANDAgeOrderByName() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -207,7 +207,7 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByNameANDAgeOrderByAge() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -229,7 +229,7 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldFindAll() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.findAll(Person.class))
                 .thenReturn(Stream.of(ada));
@@ -250,7 +250,7 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByNameAndAgeGreaterEqualThan() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -282,7 +282,7 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByGreaterThan() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -304,7 +304,7 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByAgeLessThanEqual() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -326,7 +326,7 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByAgeLessEqual() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -348,7 +348,7 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByAgeBetween() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -373,7 +373,7 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldFindByNameLike() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));
@@ -441,7 +441,7 @@ public class RepositoryProxyPageRequestTest {
     @Test
     public void shouldConvertFieldToTheType() {
         Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+                .age(20).name("Ada").build();
 
         when(template.select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(ada));

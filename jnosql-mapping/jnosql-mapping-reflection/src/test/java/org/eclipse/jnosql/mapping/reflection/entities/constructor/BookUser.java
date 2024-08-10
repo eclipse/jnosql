@@ -20,6 +20,7 @@ import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 import org.eclipse.jnosql.mapping.reflection.entities.Book;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,12 +36,17 @@ public class BookUser {
     @Column
     private final List<Book> books;
 
+    @Column
+    private final Book[] magazines;
+
     BookUser(@Id String nickname,
              @Column("native_name") String name,
-             @Column("books") List<Book> books) {
+             @Column("books") List<Book> books,
+             @Column("magazines") Book[] magazines) {
         this.nickname = nickname;
         this.name = name;
         this.books = books;
+        this.magazines = magazines;
     }
 
     public String getNickname() {
@@ -53,6 +59,10 @@ public class BookUser {
 
     public List<Book> getBooks() {
         return books;
+    }
+
+    public Book[] getMagazines() {
+        return magazines;
     }
 
     @Override
@@ -78,6 +88,7 @@ public class BookUser {
                 "nickname='" + nickname + '\'' +
                 ", name='" + name + '\'' +
                 ", books=" + books +
+                ", magazines=" + Arrays.toString(magazines) +
                 '}';
     }
 }

@@ -51,6 +51,10 @@ class ParameterMetaDataBuilder {
                     id != null,
                     Optional.ofNullable(convert).map(Convert::value).orElse(null),
                     mappingType, parameter::getParameterizedType);
+            case ARRAY -> new DefaultArrayParameterMetaData(name, type,
+                    id != null,
+                    Optional.ofNullable(convert).map(Convert::value).orElse(null),
+                    mappingType, parameter.getType().getComponentType());
             case MAP -> new DefaultMapParameterMetaData(name, type,
                     id != null,
                     Optional.ofNullable(convert).map(Convert::value).orElse(null),

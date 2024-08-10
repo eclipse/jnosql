@@ -18,6 +18,7 @@ import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.semistructured.Element;
 import jakarta.nosql.AttributeConverter;
+import org.eclipse.jnosql.mapping.metadata.ArrayFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.CollectionFieldMetadata;
@@ -25,7 +26,9 @@ import org.eclipse.jnosql.mapping.metadata.MapFieldMetadata;
 import org.eclipse.jnosql.mapping.metadata.MappingType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -78,23 +81,64 @@ enum FieldConverter {
             }
         }
     }, COLLECTION {
-        @SuppressWarnings("unchecked")
         @Override
         public <X, Y, T> void convert(T instance, List<Element> columns, Element element, FieldMetadata field,
                                       EntityConverter converter) {
 
             if (Objects.nonNull(element)) {
                 var collectionFieldMetadata = (CollectionFieldMetadata) field;
-                Collection elements = collectionFieldMetadata.collectionInstance();
-                List<List<Element>> embeddable = (List<List<Element>>) element.get();
-                if (Objects.isNull(embeddable)) {
+                Class<?> type = collectionFieldMetadata.elementType();
+                Collection<?> elements = collectionFieldMetadata.collectionInstance();
+                if (feedEmbeddedList(element, converter, type, elements)) {
                     return;
                 }
-                for (List<Element> elementList : embeddable) {
-                    var item = converter.toEntity(collectionFieldMetadata.elementType(), elementList);
-                    elements.add(item);
-                }
                 field.write(instance, elements);
+            }
+        }
+    }, ARRAY {
+        @Override
+        public <X, Y, T> void convert(T instance, List<Element> columns, Element element, FieldMetadata field,
+                                      EntityConverter converter) {
+
+            if (Objects.nonNull(element)) {
+                var arrayFieldMetadata = (ArrayFieldMetadata) field;
+                if (arrayFieldMetadata.isEmbeddable()) {
+                    Class<?> type = arrayFieldMetadata.elementType();
+                    List<Object> elements = new ArrayList<>();
+                    if (feedEmbeddedList(element, converter, type, elements)) {
+                        return;
+                    }
+                    var array = arrayFieldMetadata.arrayInstance(elements);
+                    field.write(instance, array);
+                } else {
+                    executeNoEmbeddableField(instance, element, field, converter, arrayFieldMetadata);
+                }
+            }
+        }
+
+
+        private <X, Y, T> void executeNoEmbeddableField(T instance, Element element, FieldMetadata field, EntityConverter converter,
+                                                        ArrayFieldMetadata arrayFieldMetadata) {
+            var elements = new ArrayList<>();
+            var value = element.get();
+            if (value instanceof Iterable<?> iterable) {
+                executeIterable(arrayFieldMetadata, iterable, elements);
+            } else if(value instanceof Object[] objects) {
+                executeIterable(arrayFieldMetadata, Arrays.asList(objects), elements);
+            } else if(value.getClass().isArray()) {
+                //array as primitive
+                field.write(instance, value);
+                return;
+            } else {
+                executeIterable(arrayFieldMetadata, Collections.singletonList(value), elements);
+            }
+            var array = arrayFieldMetadata.arrayInstance(elements);
+            field.write(instance, array);
+        }
+
+        private <X, Y> void executeIterable(ArrayFieldMetadata arrayFieldMetadata, Iterable<?> iterable, ArrayList<Object> elements) {
+            for (Object item : iterable) {
+                elements.add(Value.of(item).get(arrayFieldMetadata.elementType()));
             }
         }
     },
@@ -108,7 +152,6 @@ enum FieldConverter {
                 var optionalConverter = field.converter();
                 if (optionalConverter.isPresent()) {
                     AttributeConverter<X, Y> attributeConverter = converter.converters().get(field);
-                    attributeConverter.convertToEntityAttribute(value);
                     Object attributeConverted = attributeConverter.convertToEntityAttribute(value);
                     field.write(instance, attributeConverted);
                 } else {
@@ -132,11 +175,12 @@ enum FieldConverter {
         }
 
         @SuppressWarnings("unchecked")
-        private <X, Y, T> void executeConverter(T instance, Element element, FieldMetadata field, EntityConverter converter, Value value) {
+        <X, Y, T> void executeConverter(T instance, Element element, FieldMetadata field, EntityConverter converter, Value value) {
             AttributeConverter<X, Y> attributeConverter = converter.converters().get(field);
             Y attr = (Y) (value.isInstanceOf(List.class) ? element : value.get());
             if (isElement(attr)) {
-                var mapValue = value.get(new TypeReference<Map<String, Object>>() {});
+                var mapValue = value.get(new TypeReference<Map<String, Object>>() {
+                });
                 Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) mapValue);
                 field.write(instance, field.value(Value.of(attributeConverted)));
             } else {
@@ -145,10 +189,23 @@ enum FieldConverter {
             }
         }
 
-        private <Y> boolean isElement(Y attr) {
-            return attr instanceof Element;
-        }
     };
+
+    private static boolean feedEmbeddedList(Element element, EntityConverter converter, Class<?> type, Collection elements) {
+        List<List<Element>> embeddable = (List<List<Element>>) element.get();
+        if (Objects.isNull(embeddable)) {
+            return true;
+        }
+        for (List<Element> elementList : embeddable) {
+            var item = converter.toEntity(type, elementList);
+            elements.add(item);
+        }
+        return false;
+    }
+
+    <Y> boolean isElement(Y attr) {
+        return attr instanceof Element;
+    }
 
     static FieldConverter get(FieldMetadata field) {
         if (MappingType.EMBEDDED.equals(field.mappingType())) {
@@ -159,6 +216,8 @@ enum FieldConverter {
             return COLLECTION;
         } else if (MappingType.MAP.equals(field.mappingType())) {
             return MAP;
+        } else if (MappingType.ARRAY.equals(field.mappingType())) {
+            return ARRAY;
         } else {
             return DEFAULT;
         }
