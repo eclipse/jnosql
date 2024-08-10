@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.eclipse.jnosql.mapping.metadata.MappingType.ARRAY;
 import static org.eclipse.jnosql.mapping.metadata.MappingType.COLLECTION;
 
 import static org.eclipse.jnosql.mapping.metadata.MappingType.EMBEDDED;
@@ -61,39 +62,49 @@ final class DefaultAttributeFieldValue implements AttributeFieldValue {
     @Override
     public <X, Y> List<Element> toElements(EntityConverter converter, Converters converters) {
         if (value() == null) {
-            return singletonList(Element.of(getName(), null));
-        } else if (EMBEDDED.equals(getType())) {
+            return singletonList(Element.of(name(), null));
+        } else if (EMBEDDED.equals(type())) {
             return converter.toCommunication(value()).elements();
-        } else if (ENTITY.equals(getType())|| EMBEDDED_GROUP.equals(getType())) {
-            return singletonList(Element.of(getName(), converter.toCommunication(value()).elements()));
+        } else if (ENTITY.equals(type())|| EMBEDDED_GROUP.equals(type())) {
+            return singletonList(Element.of(name(), converter.toCommunication(value()).elements()));
         } else if (isEmbeddableCollection()) {
-            return singletonList(Element.of(getName(), getColumns(converter)));
+            return singletonList(Element.of(name(), columns(converter)));
+        } else if (ARRAY.equals(type())) {
+            return singletonList(Element.of(name(), columnsToArray(converter)));
         }
         Optional<Class<AttributeConverter<Object, Object>>> optionalConverter = field().converter();
         if (optionalConverter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters.get(field());
-            return singletonList(Element.of(getName(), attributeConverter.convertToDatabaseColumn((X) value())));
+            return singletonList(Element.of(name(), attributeConverter.convertToDatabaseColumn((X) value())));
         }
-        return singletonList(Element.of(getName(), value()));
+        return singletonList(Element.of(name(), value()));
     }
 
-    private List<List<Element>> getColumns(EntityConverter converter) {
-        List<List<Element>> columns = new ArrayList<>();
+    private List<List<Element>> columns(EntityConverter converter) {
+        List<List<Element>> elements = new ArrayList<>();
         for (Object element : (Iterable<?>) value()) {
-            columns.add(converter.toCommunication(element).elements());
+            elements.add(converter.toCommunication(element).elements());
         }
-        return columns;
+        return elements;
+    }
+
+    private List<List<Element>> columnsToArray(EntityConverter converter) {
+        List<List<Element>> elements = new ArrayList<>();
+        for (Object element : (Object[]) value()) {
+            elements.add(converter.toCommunication(element).elements());
+        }
+        return elements;
     }
 
     private boolean isEmbeddableCollection() {
-        return COLLECTION.equals(getType()) && isEmbeddableElement();
+        return COLLECTION.equals(type()) && isEmbeddableElement();
     }
 
-    private MappingType getType() {
+    private MappingType type() {
         return field().mappingType();
     }
 
-    private String getName() {
+    private String name() {
         return field().name();
     }
 

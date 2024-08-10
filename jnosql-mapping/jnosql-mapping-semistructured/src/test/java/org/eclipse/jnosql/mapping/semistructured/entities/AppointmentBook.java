@@ -57,6 +57,10 @@ public class AppointmentBook {
         this.contacts.add(contact);
     }
 
+    public void setNetwork(Contact[] network) {
+        this.network = network;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

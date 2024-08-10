@@ -799,6 +799,37 @@ class EntityConverterTest {
         });
     }
 
+    @Test
+    void shouldConvertToArrayEmbeddable() {
+        var email = Contact.builder().withType(ContactType.EMAIL)
+                .withName("Ada").withInformation("ada@lovelace.com").build();
+        var mobile = Contact.builder().withType(ContactType.MOBILE)
+                .withName("Ada").withInformation("11 1231231 123").build();
+        var ada = Contact.builder().withType(ContactType.PHONE)
+                .withName("Ada").withInformation("12 123 1231 123123").build();
+        AppointmentBook appointmentBook = new AppointmentBook("ids");
+        appointmentBook.add(ada);
+        appointmentBook.add(email);
+        appointmentBook.add(mobile);
+        appointmentBook.setNetwork(new Contact[]{ada, email, mobile});
+
+        CommunicationEntity entity = converter.toCommunication(appointmentBook);
+        Element contacts = entity.find("contacts").get();
+        Element network = entity.find("network").get();
+        assertEquals("ids", appointmentBook.getId());
+        List<List<Element>> columns = (List<List<Element>>) contacts.get();
+
+        assertEquals(3L, columns.stream().flatMap(Collection::stream)
+                .filter(c -> c.name().equals("contact_name"))
+                .count());
+
+        List<List<Element>> columns2 = (List<List<Element>>) network.get();
+
+        assertEquals(3L, columns2.stream().flatMap(Collection::stream)
+                .filter(c -> c.name().equals("contact_name"))
+                .count());
+    }
+
 
     private Object getValue(Optional<Element> column) {
         return column.map(Element::value).map(Value::get).orElse(null);
