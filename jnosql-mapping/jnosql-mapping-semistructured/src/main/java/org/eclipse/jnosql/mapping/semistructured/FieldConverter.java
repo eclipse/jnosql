@@ -89,7 +89,7 @@ enum FieldConverter {
                 var collectionFieldMetadata = (CollectionFieldMetadata) field;
                 Class<?> type = collectionFieldMetadata.elementType();
                 Collection<?> elements = collectionFieldMetadata.collectionInstance();
-                if (feedEmbeededList(element, converter, type, elements)) {
+                if (feedEmbeddedList(element, converter, type, elements)) {
                     return;
                 }
                 field.write(instance, elements);
@@ -105,7 +105,7 @@ enum FieldConverter {
                 if (arrayFieldMetadata.isEmbeddable()) {
                     Class<?> type = arrayFieldMetadata.elementType();
                     List<Object> elements = new ArrayList<>();
-                    if (feedEmbeededList(element, converter, type, elements)) {
+                    if (feedEmbeddedList(element, converter, type, elements)) {
                         return;
                     }
                     var array = arrayFieldMetadata.arrayInstance(elements);
@@ -121,23 +121,22 @@ enum FieldConverter {
                                                         ArrayFieldMetadata arrayFieldMetadata) {
             var elements = new ArrayList<>();
             var value = element.get();
-            var optionalConverter = field.converter();
             if (value instanceof Iterable<?> iterable) {
-                executeIterable(field, converter, arrayFieldMetadata, iterable, optionalConverter, elements);
+                executeIterable(arrayFieldMetadata, iterable, elements);
             } else if(value instanceof Object[] objects) {
-                executeIterable(field, converter, arrayFieldMetadata, Arrays.asList(objects), optionalConverter, elements);
+                executeIterable(arrayFieldMetadata, Arrays.asList(objects), elements);
             } else if(value.getClass().isArray()) {
                 //array as primitive
                 field.write(instance, value);
                 return;
             } else {
-                executeIterable(field, converter, arrayFieldMetadata, Collections.singletonList(value), optionalConverter, elements);
+                executeIterable(arrayFieldMetadata, Collections.singletonList(value), elements);
             }
             var array = arrayFieldMetadata.arrayInstance(elements);
             field.write(instance, array);
         }
 
-        private <X, Y> void executeIterable(FieldMetadata field, EntityConverter converter, ArrayFieldMetadata arrayFieldMetadata, Iterable<?> iterable, Optional<Class<AttributeConverter<Object, Object>>> optionalConverter, ArrayList<Object> elements) {
+        private <X, Y> void executeIterable(ArrayFieldMetadata arrayFieldMetadata, Iterable<?> iterable, ArrayList<Object> elements) {
             for (Object item : iterable) {
                 elements.add(Value.of(item).get(arrayFieldMetadata.elementType()));
             }
@@ -192,7 +191,7 @@ enum FieldConverter {
 
     };
 
-    private static boolean feedEmbeededList(Element element, EntityConverter converter, Class<?> type, Collection elements) {
+    private static boolean feedEmbeddedList(Element element, EntityConverter converter, Class<?> type, Collection elements) {
         List<List<Element>> embeddable = (List<List<Element>>) element.get();
         if (Objects.isNull(embeddable)) {
             return true;
