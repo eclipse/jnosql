@@ -124,7 +124,7 @@ class DefaultSemiStructuredTemplateTest {
         verify(eventPersistManager).firePreEntity(any(Person.class));
         CommunicationEntity value = captor.getValue();
         assertEquals("Person", value.name());
-        assertEquals(4, value.elements().size());
+        assertEquals(5, value.elements().size());
     }
 
 
@@ -166,7 +166,7 @@ class DefaultSemiStructuredTemplateTest {
         verify(eventPersistManager).firePreEntity(any(Person.class));
         CommunicationEntity value = captor.getValue();
         assertEquals("Person", value.name());
-        assertEquals(4, value.elements().size());
+        assertEquals(5, value.elements().size());
     }
 
     @Test
@@ -184,7 +184,7 @@ class DefaultSemiStructuredTemplateTest {
         verify(eventPersistManager).firePreEntity(any(Person.class));
         CommunicationEntity value = captor.getValue();
         assertEquals("Person", value.name());
-        assertEquals(4, value.elements().size());
+        assertEquals(5, value.elements().size());
     }
 
     @Test
