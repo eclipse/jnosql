@@ -773,6 +773,32 @@ class EntityConverterTest {
         });
     }
 
+    @Test
+    void shouldConvertFromArrayEmbeddable() {
+        CommunicationEntity entity = CommunicationEntity.of("AppointmentBook");
+        entity.add(Element.of("_id", "ids"));
+        List<List<Element>> columns = new ArrayList<>();
+
+        columns.add(asList(Element.of("contact_name", "Ada"), Element.of("type", ContactType.EMAIL),
+                Element.of("information", "ada@lovelace.com")));
+
+        columns.add(asList(Element.of("contact_name", "Ada"), Element.of("type", ContactType.MOBILE),
+                Element.of("information", "11 1231231 123")));
+
+        columns.add(asList(Element.of("contact_name", "Ada"), Element.of("type", ContactType.PHONE),
+                Element.of("information", "phone")));
+
+        entity.add(Element.of("contacts", columns));
+        entity.add(Element.of("network", columns));
+
+        AppointmentBook appointmentBook = converter.toEntity(entity);
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(appointmentBook.getId()).isEqualTo("ids");
+            softly.assertThat(appointmentBook.getContacts()).hasSize(3);
+            softly.assertThat(appointmentBook.getNetwork()).hasSize(3);
+        });
+    }
+
 
     private Object getValue(Optional<Element> column) {
         return column.map(Element::value).map(Value::get).orElse(null);
