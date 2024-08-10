@@ -81,28 +81,21 @@ enum FieldConverter {
             }
         }
     }, COLLECTION {
-        @SuppressWarnings("unchecked")
         @Override
         public <X, Y, T> void convert(T instance, List<Element> columns, Element element, FieldMetadata field,
                                       EntityConverter converter) {
 
             if (Objects.nonNull(element)) {
                 var collectionFieldMetadata = (CollectionFieldMetadata) field;
-                Collection elements = collectionFieldMetadata.collectionInstance();
                 Class<?> type = collectionFieldMetadata.elementType();
-                List<List<Element>> embeddable = (List<List<Element>>) element.get();
-                if (Objects.isNull(embeddable)) {
+                Collection<?> elements = collectionFieldMetadata.collectionInstance();
+                if (feedEmbeededList(element, converter, type, elements)) {
                     return;
-                }
-                for (List<Element> elementList : embeddable) {
-                    var item = converter.toEntity(type, elementList);
-                    elements.add(item);
                 }
                 field.write(instance, elements);
             }
         }
     }, ARRAY {
-        @SuppressWarnings("unchecked")
         @Override
         public <X, Y, T> void convert(T instance, List<Element> columns, Element element, FieldMetadata field,
                                       EntityConverter converter) {
@@ -110,13 +103,20 @@ enum FieldConverter {
             if (Objects.nonNull(element)) {
                 var arrayFieldMetadata = (ArrayFieldMetadata) field;
                 if (arrayFieldMetadata.isEmbeddable()) {
-                    return;
+                    Class<?> type = arrayFieldMetadata.elementType();
+                    List<Object> elements = new ArrayList<>();
+                    if (feedEmbeededList(element, converter, type, elements)) {
+                        return;
+                    }
+                    var array = arrayFieldMetadata.arrayInstance(elements);
+                    field.write(instance, array);
+                } else {
+                    executeNoEmbeddableField(instance, element, field, converter, arrayFieldMetadata);
                 }
-                executeNoEmbeddableField(instance, element, field, converter, arrayFieldMetadata);
             }
         }
 
-        @SuppressWarnings("unchecked")
+
         private <X, Y, T> void executeNoEmbeddableField(T instance, Element element, FieldMetadata field, EntityConverter converter,
                                                         ArrayFieldMetadata arrayFieldMetadata) {
             var elements = new ArrayList<>();
@@ -191,6 +191,18 @@ enum FieldConverter {
         }
 
     };
+
+    private static boolean feedEmbeededList(Element element, EntityConverter converter, Class<?> type, Collection elements) {
+        List<List<Element>> embeddable = (List<List<Element>>) element.get();
+        if (Objects.isNull(embeddable)) {
+            return true;
+        }
+        for (List<Element> elementList : embeddable) {
+            var item = converter.toEntity(type, elementList);
+            elements.add(item);
+        }
+        return false;
+    }
 
     <Y> boolean isElement(Y attr) {
         return attr instanceof Element;
