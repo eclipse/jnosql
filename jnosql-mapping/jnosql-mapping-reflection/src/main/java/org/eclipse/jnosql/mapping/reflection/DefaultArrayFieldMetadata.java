@@ -44,6 +44,7 @@ final class DefaultArrayFieldMetadata extends AbstractFieldMetadata implements A
 
     @Override
     public Object value(Value value) {
+        Objects.requireNonNull(value, "value is required");
         if(value.get() instanceof Iterable) {
             return value.get(TYPE_SUPPLIER).toArray();
         } else {
