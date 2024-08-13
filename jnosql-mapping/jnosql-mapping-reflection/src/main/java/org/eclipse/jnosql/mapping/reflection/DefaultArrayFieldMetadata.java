@@ -32,7 +32,7 @@ import java.util.Objects;
 
 final class DefaultArrayFieldMetadata extends AbstractFieldMetadata implements ArrayFieldMetadata {
 
-    public static final TypeReference<List<Object>> TYPE_SUPPLIER = new TypeReference<>() {};
+    private static final TypeReference<List<Object>> TYPE_SUPPLIER = new TypeReference<>() {};
     private final Class<?> elementType;
 
     DefaultArrayFieldMetadata(MappingType type, Field field, String name, Class<?> elementType,
