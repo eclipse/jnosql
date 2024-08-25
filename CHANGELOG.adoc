@@ -16,6 +16,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Include condition to is NUll and is Not Null in the query
 - Include pagination with Query annotation
 - Add support to array in the fields
+- Add support to array in the fields of java record classes
 
 === Fixed
 
