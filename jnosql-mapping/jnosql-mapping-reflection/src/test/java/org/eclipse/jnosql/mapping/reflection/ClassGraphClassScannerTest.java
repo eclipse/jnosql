@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.BasicRepository;
 import org.eclipse.jnosql.mapping.NoSQLRepository;
 import org.eclipse.jnosql.mapping.reflection.entities.AnimalRepository;
 import org.eclipse.jnosql.mapping.reflection.entities.Contact;
@@ -40,7 +39,7 @@ class ClassGraphClassScannerTest {
     void shouldReturnEntities() {
         Set<Class<?>> entities = classScanner.entities();
         Assertions.assertNotNull(entities);
-        assertThat(entities).hasSize(29)
+        assertThat(entities).hasSize(31)
                 .contains(Person.class);
     }
 

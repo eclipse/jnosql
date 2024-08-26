@@ -20,24 +20,21 @@ import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
 import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.semistructured.entities.Animal;
 import org.eclipse.jnosql.mapping.semistructured.entities.Book;
 import org.eclipse.jnosql.mapping.semistructured.entities.BookRelease;
-import org.eclipse.jnosql.mapping.semistructured.entities.Form;
 import org.eclipse.jnosql.mapping.semistructured.entities.Money;
-import org.eclipse.jnosql.mapping.semistructured.entities.SocialMediaContact;
-import org.eclipse.jnosql.mapping.semistructured.entities.Wine;
-import org.eclipse.jnosql.mapping.semistructured.entities.WineFactory;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.Beer;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.BeerFactory;
+import org.eclipse.jnosql.mapping.semistructured.entities.constructor.BookBag;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.Computer;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.PetOwner;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.SocialMediaFollowers;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.SocialMediaFollowersRecord;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.SuperHero;
-import org.eclipse.jnosql.mapping.reflection.Reflections;
-import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.Survey;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
@@ -120,7 +117,8 @@ class EntityConverterConstructorTest {
         assertNotNull(communication);
         assertEquals(10L, communication.find("_id", Long.class).get());
         assertEquals("Poliana", communication.find("name", String.class).get());
-        List<Element> columns = communication.find("animal", new TypeReference<List<Element>>() {})
+        List<Element> columns = communication.find("animal", new TypeReference<List<Element>>() {
+                })
                 .get();
         assertThat(columns).contains(Element.of("name", "Ada"));
     }
@@ -208,35 +206,35 @@ class EntityConverterConstructorTest {
     }
 
     @Test
-    void shouldIgnoreWhenNullAtConstructor(){
+    void shouldIgnoreWhenNullAtConstructor() {
         CommunicationEntity entity = CommunicationEntity.of("SocialMediaFollowers");
         entity.add("_id", "id");
         entity.add("followers", null);
 
         SocialMediaFollowers socialMediaContact = converter.toEntity(entity);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(socialMediaContact).isNotNull();
             soft.assertThat(socialMediaContact.getId()).isEqualTo("id");
         });
     }
 
     @Test
-    void shouldIgnoreWhenNullAtRecord(){
+    void shouldIgnoreWhenNullAtRecord() {
         CommunicationEntity entity = CommunicationEntity.of("SocialMediaFollowersRecord");
         entity.add("_id", "id");
         entity.add("followers", null);
 
         SocialMediaFollowersRecord socialMediaContact = converter.toEntity(entity);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(socialMediaContact).isNotNull();
             soft.assertThat(socialMediaContact.id()).isEqualTo("id");
         });
     }
 
     @Test
-    void shouldConvertGroupEmbeddable(){
+    void shouldConvertGroupEmbeddable() {
         CommunicationEntity entity = CommunicationEntity.of("Beer");
         entity.add("_id", "id");
         entity.add("name", "Vin Blanc");
@@ -245,7 +243,7 @@ class EntityConverterConstructorTest {
 
         Beer beer = converter.toEntity(entity);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             var factory = beer.factory();
             soft.assertThat(beer).isNotNull();
             soft.assertThat(beer.id()).isEqualTo("id");
@@ -257,20 +255,21 @@ class EntityConverterConstructorTest {
     }
 
     @Test
-    void shouldConvertGroupEmbeddableToCommunication(){
+    void shouldConvertGroupEmbeddableToCommunication() {
 
         var wine = Beer.of("id", "Vin Blanc", BeerFactory.of("Napa Valley Factory", "Napa Valley"));
 
 
         var communication = converter.toCommunication(wine);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(communication).isNotNull();
             soft.assertThat(communication.name()).isEqualTo("Beer");
             soft.assertThat(communication.find("_id").orElseThrow().get()).isEqualTo("id");
             soft.assertThat(communication.find("name").orElseThrow().get()).isEqualTo("Vin Blanc");
             communication.find("factory").ifPresent(e -> {
-                List<Element> elements = e.get(new TypeReference<>(){});
+                List<Element> elements = e.get(new TypeReference<>() {
+                });
                 soft.assertThat(elements).hasSize(2);
                 soft.assertThat(elements.stream().filter(c -> "name".equals(c.name())).findFirst().orElseThrow().get())
                         .isEqualTo("Napa Valley Factory");
@@ -289,7 +288,7 @@ class EntityConverterConstructorTest {
                 Element.of("question1", true),
                 Element.of("question2", false),
                 Element.of("question3", List.of(Element.of("advanced", true),
-                        Element.of("visible",  "true")))
+                        Element.of("visible", "true")))
         ));
 
         Survey survey = converter.toEntity(communication);
@@ -299,6 +298,65 @@ class EntityConverterConstructorTest {
             softly.assertThat(survey.questions()).containsEntry("question1", true);
             softly.assertThat(survey.questions()).containsEntry("question2", false);
             softly.assertThat(survey.questions()).containsEntry("question3", Map.of("advanced", true, "visible", "true"));
+        });
+
+    }
+
+    @Test
+    void shouldConvertArrayTypes() {
+
+        var effectiveJava = Book.builder()
+                .withId(10L)
+                .withName("Effective Java")
+                .withAge(Year.now().minusYears(2018).getValue())
+                .build();
+
+        var cleanCode = Book.builder()
+                .withId(12L)
+                .withName("Clean Code")
+                .withAge(Year.now().minusYears(2008).getValue())
+                .build();
+
+        CommunicationEntity communication = CommunicationEntity.of(BookBag.class.getSimpleName());
+        communication.add("_id", "Max");
+        List<List<Element>> columns = new ArrayList<>();
+        columns.add(Arrays.asList(
+                Element.of("_id", effectiveJava.getId()),
+                Element.of("name", effectiveJava.getName()),
+                Element.of("age", effectiveJava.getAge())));
+        columns.add(Arrays.asList(
+                Element.of("_id", cleanCode.getId()),
+                Element.of("name", cleanCode.getName()),
+                Element.of("age", cleanCode.getAge())));
+
+        communication.add("books", columns);
+
+        BookBag bookBag = converter.toEntity(communication);
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(bookBag.owner())
+                    .as("invalid first level String field conversion")
+                    .isEqualTo("Max");
+
+            List<Book> names = Arrays.asList(bookBag.books());
+
+            Book[] books = bookBag.books();
+
+            softly.assertThat(books)
+                    .as("invalid first level Array field conversion: check size")
+                    .isNotNull()
+                    .hasSize(2);
+
+            softly.assertThat(books[0])
+                    .as("invalid first level Array field conversion: check first element")
+                    .usingRecursiveComparison()
+                    .isEqualTo(effectiveJava);
+
+            softly.assertThat(books[1])
+                    .as("invalid first level Array field conversion: check second element")
+                    .usingRecursiveComparison()
+                    .isEqualTo(cleanCode);
+
         });
 
     }
