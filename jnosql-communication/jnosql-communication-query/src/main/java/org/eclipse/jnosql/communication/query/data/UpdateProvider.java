@@ -32,7 +32,7 @@ import java.util.function.Function;
  */
 public final class UpdateProvider extends AbstractWhere implements Function<String, UpdateQuery> {
 
-    private List<UpdateItem> items = new ArrayList<>();
+    private final List<UpdateItem> items = new ArrayList<>();
 
     @Override
     public UpdateQuery apply(String query) {

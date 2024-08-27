@@ -66,7 +66,7 @@ enum DynamicReturnConverter {
      *
      * @return the result from the query annotation
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({"unchecked"})
     public Object convert(DynamicQueryMethodReturn<?> dynamicQueryMethod) {
         Method method = dynamicQueryMethod.method();
         Object[] args = dynamicQueryMethod.args();
