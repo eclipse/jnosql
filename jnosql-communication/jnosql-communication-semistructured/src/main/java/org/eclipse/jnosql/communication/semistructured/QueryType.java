@@ -10,6 +10,8 @@
  */
 package org.eclipse.jnosql.communication.semistructured;
 
+import java.util.Objects;
+
 /**
  * Enum representing the different types of queries supported in Jakarta Data.
  *
@@ -64,6 +66,7 @@ public enum QueryType {
      * @return the {@code QueryType} corresponding to the query command
      */
     public static QueryType parse(String query) {
+        Objects.requireNonNull(query, "Query string cannot be null");
         String command = QueryType.extractQueryCommand(query);
         return switch (command) {
             case "DELETE" -> DELETE;
