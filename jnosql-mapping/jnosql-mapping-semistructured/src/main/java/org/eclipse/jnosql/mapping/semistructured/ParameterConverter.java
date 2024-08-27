@@ -11,17 +11,20 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Maximillian Arruda
  */
 package org.eclipse.jnosql.mapping.semistructured;
 
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.semistructured.Element;
+import org.eclipse.jnosql.mapping.metadata.ArrayParameterMetaData;
+import org.eclipse.jnosql.mapping.metadata.CollectionParameterMetaData;
 import org.eclipse.jnosql.mapping.metadata.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.metadata.CollectionParameterMetaData;
 import org.eclipse.jnosql.mapping.metadata.MapParameterMetaData;
 import org.eclipse.jnosql.mapping.metadata.ParameterMetaData;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -58,7 +61,8 @@ enum ParameterConverter {
                 builder.add(entity);
 
             } else {
-                List<Element> columns = element.get(new TypeReference<>() {});
+                List<Element> columns = element.get(new TypeReference<>() {
+                });
                 Object entity = converter.toEntity(metaData.type(), columns);
                 builder.add(entity);
             }
@@ -86,6 +90,21 @@ enum ParameterConverter {
             Object value = mapParameterMetaData.value(element.value());
             builder.add(value);
         }
+
+    }, ARRAY {
+        @SuppressWarnings("unchecked")
+        @Override
+        void convert(EntityConverter converter, Element element, ParameterMetaData metaData, ConstructorBuilder builder) {
+            var arrayParameterMetaData = (ArrayParameterMetaData) metaData;
+            List<List<Element>> embeddable = (List<List<Element>>) element.get();
+            var elements = Array.newInstance(arrayParameterMetaData.elementType(), embeddable.size());
+            int index = 0;
+            for (List<Element> elementsList : embeddable) {
+                Object item = converter.toEntity(arrayParameterMetaData.elementType(), elementsList);
+                Array.set(elements, index++, item);
+            }
+            builder.add(elements);
+        }
     };
 
     abstract void convert(EntityConverter converter,
@@ -94,19 +113,30 @@ enum ParameterConverter {
 
     static ParameterConverter of(ParameterMetaData parameter, EntitiesMetadata entities) {
         return switch (parameter.mappingType()) {
-            case COLLECTION -> validateCollection(parameter, entities);
+            case COLLECTION -> collectionConverter(parameter, entities);
+            case ARRAY -> arrayConverter(parameter, entities);
             case MAP -> MAP;
             case ENTITY, EMBEDDED_GROUP -> ENTITY;
             default -> DEFAULT;
         };
     }
 
-    private static ParameterConverter validateCollection(ParameterMetaData parameter, EntitiesMetadata entities) {
-        CollectionParameterMetaData genericParameter = (CollectionParameterMetaData) parameter;
+    private static ParameterConverter collectionConverter(ParameterMetaData parameter, EntitiesMetadata entities) {
+        var genericParameter = (CollectionParameterMetaData) parameter;
         Class<?> type = genericParameter.elementType();
         if (entities.findByClassName(type.getName()).isPresent()) {
             return COLLECTION;
         }
         return DEFAULT;
     }
+
+    private static ParameterConverter arrayConverter(ParameterMetaData parameter, EntitiesMetadata entities) {
+        var genericParameter = (ArrayParameterMetaData) parameter;
+        Class<?> type = genericParameter.elementType();
+        if (entities.findByClassName(type.getName()).isPresent()) {
+            return ARRAY;
+        }
+        return DEFAULT;
+    }
+
 }

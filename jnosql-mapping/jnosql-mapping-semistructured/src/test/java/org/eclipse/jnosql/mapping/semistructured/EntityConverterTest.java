@@ -21,9 +21,12 @@ import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
 import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.mapping.core.Converters;
+import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.semistructured.entities.Actor;
 import org.eclipse.jnosql.mapping.semistructured.entities.Address;
 import org.eclipse.jnosql.mapping.semistructured.entities.AppointmentBook;
+import org.eclipse.jnosql.mapping.semistructured.entities.Book;
 import org.eclipse.jnosql.mapping.semistructured.entities.Citizen;
 import org.eclipse.jnosql.mapping.semistructured.entities.Contact;
 import org.eclipse.jnosql.mapping.semistructured.entities.ContactType;
@@ -46,8 +49,7 @@ import org.eclipse.jnosql.mapping.semistructured.entities.WineFactory;
 import org.eclipse.jnosql.mapping.semistructured.entities.Worker;
 import org.eclipse.jnosql.mapping.semistructured.entities.WorkflowStep;
 import org.eclipse.jnosql.mapping.semistructured.entities.ZipCode;
-import org.eclipse.jnosql.mapping.reflection.Reflections;
-import org.eclipse.jnosql.mapping.core.spi.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.semistructured.entities.constructor.BookBag;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -56,6 +58,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -65,13 +68,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.mapping.semistructured.entities.StepTransitionReason.REPEAT;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @EnableAutoWeld
 @AddPackages(value = {Converters.class, EntityConverter.class})
@@ -485,9 +493,9 @@ class EntityConverterTest {
 
         UserScope user = converter.toEntity(entity);
         Assertions.assertNotNull(user);
-        Assertions.assertEquals("userName",user.getUserName());
-        Assertions.assertEquals("scope",user.getScope());
-        Assertions.assertEquals(Collections.singletonMap("halo", "weld"),user.getProperties());
+        Assertions.assertEquals("userName", user.getUserName());
+        Assertions.assertEquals("scope", user.getScope());
+        Assertions.assertEquals(Collections.singletonMap("halo", "weld"), user.getProperties());
 
     }
 
@@ -500,9 +508,9 @@ class EntityConverterTest {
 
         UserScope user = converter.toEntity(entity);
         Assertions.assertNotNull(user);
-        Assertions.assertEquals("userName",user.getUserName());
-        Assertions.assertEquals("scope",user.getScope());
-        Assertions.assertEquals(Collections.singletonMap("halo", "weld"),user.getProperties());
+        Assertions.assertEquals("userName", user.getUserName());
+        Assertions.assertEquals("scope", user.getScope());
+        Assertions.assertEquals(Collections.singletonMap("halo", "weld"), user.getProperties());
 
     }
 
@@ -535,7 +543,7 @@ class EntityConverterTest {
     }
 
     @Test
-    void shouldConvertWorkflow(){
+    void shouldConvertWorkflow() {
         var workflowStep = WorkflowStep.builder()
                 .id("id")
                 .key("key")
@@ -551,7 +559,7 @@ class EntityConverterTest {
 
         var document = this.converter.toCommunication(workflowStep);
         WorkflowStep result = this.converter.toEntity(document);
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(result).isNotNull();
             soft.assertThat(result.id()).isEqualTo("id");
             soft.assertThat(result.key()).isEqualTo("key");
@@ -586,7 +594,7 @@ class EntityConverterTest {
                 .build();
         var document = this.converter.toCommunication(workflowStep);
         WorkflowStep result = this.converter.toEntity(document);
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(result).isNotNull();
             soft.assertThat(result.id()).isEqualTo("id");
             soft.assertThat(result.key()).isEqualTo("key");
@@ -603,7 +611,7 @@ class EntityConverterTest {
     }
 
     @Test
-    void shouldIgnoreWhenNull(){
+    void shouldIgnoreWhenNull() {
         CommunicationEntity entity = CommunicationEntity.of("SocialMediaContact");
         entity.add("_id", "id");
         entity.add("name", "Twitter");
@@ -611,7 +619,7 @@ class EntityConverterTest {
 
         SocialMediaContact socialMediaContact = converter.toEntity(entity);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(socialMediaContact).isNotNull();
             soft.assertThat(socialMediaContact.getId()).isEqualTo("id");
             soft.assertThat(socialMediaContact.getName()).isEqualTo("Twitter");
@@ -620,7 +628,7 @@ class EntityConverterTest {
     }
 
     @Test
-    void shouldConvertGroupEmbeddable(){
+    void shouldConvertGroupEmbeddable() {
         CommunicationEntity entity = CommunicationEntity.of("Wine");
         entity.add("_id", "id");
         entity.add("name", "Vin Blanc");
@@ -629,7 +637,7 @@ class EntityConverterTest {
 
         Wine wine = converter.toEntity(entity);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             WineFactory factory = wine.getFactory();
             soft.assertThat(wine).isNotNull();
             soft.assertThat(wine.getId()).isEqualTo("id");
@@ -641,20 +649,21 @@ class EntityConverterTest {
     }
 
     @Test
-    void shouldConvertGroupEmbeddableToCommunication(){
+    void shouldConvertGroupEmbeddableToCommunication() {
 
         Wine wine = Wine.of("id", "Vin Blanc", WineFactory.of("Napa Valley Factory", "Napa Valley"));
 
 
         var communication = converter.toCommunication(wine);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(communication).isNotNull();
             soft.assertThat(communication.name()).isEqualTo("Wine");
             soft.assertThat(communication.find("_id").orElseThrow().get()).isEqualTo("id");
             soft.assertThat(communication.find("name").orElseThrow().get()).isEqualTo("Vin Blanc");
             communication.find("factory").ifPresent(e -> {
-                List<Element> elements = e.get(new TypeReference<>(){});
+                List<Element> elements = e.get(new TypeReference<>() {
+                });
                 soft.assertThat(elements).hasSize(2);
                 soft.assertThat(elements.stream().filter(c -> "name".equals(c.name())).findFirst().orElseThrow().get())
                         .isEqualTo("Napa Valley Factory");
@@ -674,7 +683,7 @@ class EntityConverterTest {
                 Element.of("question1", true),
                 Element.of("question2", false),
                 Element.of("question3", List.of(Element.of("advanced", true),
-                        Element.of("visible",  "true")))
+                        Element.of("visible", "true")))
         ));
 
         Form form = converter.toEntity(communication);
@@ -853,6 +862,77 @@ class EntityConverterTest {
             }).orElseThrow()).contains("234", "2342");
         });
 
+
+    }
+
+    @Test
+    void shouldConvertEntityFromRecordEntityWithColumnArray() {
+
+        var effectiveJava = Book.builder()
+                .withId(10L)
+                .withName("Effective Java")
+                .withAge(2018 - Year.now().getValue())
+                .build();
+        var cleanCode = Book.builder()
+                .withId(1L)
+                .withName("Clen Code")
+                .withAge(2008 - Year.now().getValue())
+                .build();
+
+        var bagBook = new BookBag("Max",
+                new Book[]{effectiveJava, cleanCode});
+
+        var entity = converter.toCommunication(bagBook);
+
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(entity).isNotNull();
+            softly.assertThat(entity.name()).isEqualTo(BookBag.class.getSimpleName());
+            softly.assertThat(entity.size()).isEqualTo(2);
+            softly.assertThat(entity.find("_id").orElseThrow().get()).isEqualTo(bagBook.owner());
+
+            var books = entity.find("books", new TypeReference<List<List>>() {
+            }).orElseThrow();
+
+            softly.assertThat(books)
+                    .hasSize(2);
+
+            BiConsumer<CommunicationEntity, Book> itemsAssertions = (actualBook, expectedBook) -> {
+
+                softly.assertThat(actualBook.find("_id"))
+                        .as("should found the entity's _id field")
+                        .isPresent()
+                        .get()
+                        .as("invalid field type of the entity's _id field")
+                        .isInstanceOf(Element.class)
+                        .extracting(Element::get)
+                        .as("invalid Book's id")
+                        .isEqualTo(expectedBook.getId());
+
+                softly.assertThat(actualBook.find("name"))
+                        .as("should found the entity's name field")
+                        .isPresent()
+                        .get()
+                        .as("invalid field type of the entity's name field")
+                        .isInstanceOf(Element.class)
+                        .extracting(Element::get)
+                        .as("invalid Book's name")
+                        .isEqualTo(expectedBook.getName());
+
+                softly.assertThat(actualBook.find("age"))
+                        .as("should found the entity's age field")
+                        .isPresent()
+                        .get()
+                        .as("invalid field type of the entity's age field")
+                        .isInstanceOf(Element.class)
+                        .extracting(Element::get)
+                        .as("invalid Book's age")
+                        .isEqualTo(expectedBook.getAge());
+            };
+
+            itemsAssertions.accept(CommunicationEntity.of("effectiveJava", books.get(0)), effectiveJava);
+            itemsAssertions.accept(CommunicationEntity.of("cleanCode", books.get(1)), cleanCode);
+
+        });
 
     }
 

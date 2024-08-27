@@ -11,56 +11,30 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Maximillian Arruda
  */
 package org.eclipse.jnosql.mapping.reflection;
 
 import org.eclipse.jnosql.mapping.metadata.ArrayParameterMetaData;
-import org.eclipse.jnosql.mapping.metadata.ClassConverter;
-import org.eclipse.jnosql.mapping.metadata.CollectionParameterMetaData;
-import org.eclipse.jnosql.mapping.metadata.ConstructorMetadata;
-import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.entities.Book;
-import org.eclipse.jnosql.mapping.reflection.entities.constructor.BookUser;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class DefaultArrayParameterMetaDataTest {
+interface DefaultArrayParameterMetaDataTest {
 
-    private ArrayParameterMetaData fieldMetadata;
-
-    @BeforeEach
-    void setUp(){
-        ClassConverter converter = new ReflectionClassConverter();
-        EntityMetadata entityMetadata = converter.apply(BookUser.class);
-        ConstructorMetadata constructor = entityMetadata.constructor();
-        this.fieldMetadata = (ArrayParameterMetaData)
-                constructor.parameters().stream().filter(p -> p.name().equals("magazines"))
-                .findFirst().orElseThrow();
-    }
+    ArrayParameterMetaData fieldMetadata();
 
     @Test
-    void shouldToString() {
-        assertThat(fieldMetadata.toString()).isNotEmpty().isNotNull();
+    default void shouldToString() {
+        assertThat(fieldMetadata().toString()).isNotEmpty().isNotNull();
     }
 
-    @Test
-    void shouldGetElementType(){
-        assertThat(fieldMetadata.elementType()).isEqualTo(Book.class);
-    }
+    Class<?> expectedElementType();
 
     @Test
-    void shouldArrayInstance() {
-        List<Book> magazines = List.of(Book.builder().build(), Book.builder().build());
-
-        Book[] value = (Book[]) fieldMetadata.arrayInstance(magazines);
-        assertThat(value).containsExactlyElementsOf(magazines);
+    default void shouldGetElementType() {
+        assertThat(fieldMetadata().elementType()).isEqualTo(expectedElementType());
     }
 
 }
