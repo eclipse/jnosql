@@ -10,6 +10,7 @@
  */
 package org.eclipse.jnosql.communication.semistructured;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -66,5 +67,12 @@ class QueryTypeTest {
         String query = null;
         assertThatThrownBy(() -> QueryType.parse(query))
                 .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void shouldReturnIsNotSelect() {
+        Assertions.assertThat(QueryType.SELECT.isNotSelect()).isFalse();
+        Assertions.assertThat(QueryType.DELETE.isNotSelect()).isTrue();
+        Assertions.assertThat(QueryType.UPDATE.isNotSelect()).isTrue();
     }
 }
