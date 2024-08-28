@@ -75,6 +75,10 @@ public enum QueryType {
         };
     }
 
+    public boolean isNotSelect() {
+        return this != SELECT;
+    }
+
     private static String extractQueryCommand(String query){
         if(query.length() < 6){
             return "";
