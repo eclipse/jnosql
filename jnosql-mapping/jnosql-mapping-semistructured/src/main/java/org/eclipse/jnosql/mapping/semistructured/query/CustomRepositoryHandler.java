@@ -19,6 +19,7 @@ import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.repository.Query;
 import jakarta.enterprise.inject.spi.CDI;
+import org.eclipse.jnosql.communication.semistructured.QueryType;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.core.query.AnnotationOperation;
@@ -127,6 +128,8 @@ public class CustomRepositoryHandler implements InvocationHandler {
                 var repositoryMetadata = repositoryMetadata(method);
                 if (repositoryMetadata.metadata().isEmpty()) {
                     var query = method.getAnnotation(Query.class);
+                    var queryType = QueryType.parse(query.value());
+                    LOGGER.fine("Executing the query " + query.value() + " with the type " + queryType);
                     Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getParams(method, params);
                     var prepare = template.prepare(query.value());
                     parameters.forEach(prepare::bind);
@@ -134,9 +137,14 @@ public class CustomRepositoryHandler implements InvocationHandler {
                         return prepare.count();
                     }
                     Stream<?> entities = prepare.result();
-                    if (method.getReturnType().equals(long.class) || method.getReturnType().equals(Long.class)) {
+                    if(isLong(method)) {
+                        if(queryType.isNotSelect()) {
+                            throw new UnsupportedOperationException("Because of eventual persistence consistency, " +
+                                    "it is not possible to execute a query that is not a SELECT query and return a long value, query: " + query.value());
+                        }
                         return entities.count();
                     }
+
                     return Void.class;
                 }
                 return unwrapInvocationTargetException(() -> repository(method).invoke(instance, method, params));
@@ -268,6 +276,10 @@ public class CustomRepositoryHandler implements InvocationHandler {
             }
         }
         throw new IllegalArgumentException("Cannot determine generic type from parameter");
+    }
+
+    private static boolean isLong(Method method) {
+        return method.getReturnType().equals(long.class) || method.getReturnType().equals(Long.class);
     }
 
 
