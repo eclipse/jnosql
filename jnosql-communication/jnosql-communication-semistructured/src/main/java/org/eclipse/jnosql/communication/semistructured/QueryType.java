@@ -75,6 +75,16 @@ public enum QueryType {
         };
     }
 
+    /**
+     * Checks if the current {@code QueryType} is not a {@code SELECT} operation.
+     * This method is useful for determining whether the query is intended to modify data
+     * (i.e., either a {@code DELETE} or {@code UPDATE} operation) rather than retrieve it.
+     * It can be employed in scenarios where different logic is applied based on whether
+     * a query modifies data. For example, {@code if (queryType.isNotSelect())} can be used
+     * to trigger actions specific to non-SELECT queries. This method returns {@code true}
+     * if the current {@code QueryType} is either {@code DELETE} or {@code UPDATE},
+     * and {@code false} if it is {@code SELECT}.
+     */
     public boolean isNotSelect() {
         return this != SELECT;
     }
