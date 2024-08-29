@@ -75,4 +75,15 @@ class QueryTypeTest {
         Assertions.assertThat(QueryType.DELETE.isNotSelect()).isTrue();
         Assertions.assertThat(QueryType.UPDATE.isNotSelect()).isTrue();
     }
+
+    @Test
+    void shouldCheckValidReturn() {
+        QueryType.SELECT.checkValidReturn(String.class, "SELECT * FROM table");
+        QueryType.DELETE.checkValidReturn(Void.class, "DELETE FROM table WHERE id = 1");
+        QueryType.UPDATE.checkValidReturn(Void.class, "UPDATE table SET name = 'newName' WHERE id = 1");
+        assertThatThrownBy(() -> QueryType.DELETE.checkValidReturn(String.class, "DELETE FROM table WHERE id = 1"))
+                .isInstanceOf(UnsupportedOperationException.class);
+        assertThatThrownBy(() -> QueryType.UPDATE.checkValidReturn(String.class, "UPDATE table SET name = 'newName' WHERE id = 1"))
+                .isInstanceOf(UnsupportedOperationException.class);
+    }
 }
