@@ -129,8 +129,10 @@ public class CustomRepositoryHandler implements InvocationHandler {
                 if (repositoryMetadata.metadata().isEmpty()) {
                     var query = method.getAnnotation(Query.class);
                     var queryType = QueryType.parse(query.value());
-                    LOGGER.fine("Executing the query " + query.value() + " with the type " + queryType);
+                    var returnType = method.getReturnType();
+                    LOGGER.fine("Executing the query " + query.value() + " with the type " + queryType + " and the return type " + returnType);
                     Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getParams(method, params);
+                    LOGGER.fine("Parameters: " + parameters);
                     var prepare = template.prepare(query.value());
                     parameters.forEach(prepare::bind);
                     if (prepare.isCount()) {
@@ -138,10 +140,6 @@ public class CustomRepositoryHandler implements InvocationHandler {
                     }
                     Stream<?> entities = prepare.result();
                     if(isLong(method)) {
-                        if(queryType.isNotSelect()) {
-                            throw new UnsupportedOperationException("Because of eventual persistence consistency, " +
-                                    "it is not possible to execute a query that is not a SELECT query and return a long value, query: " + query.value());
-                        }
                         return entities.count();
                     }
 
