@@ -105,10 +105,14 @@ public enum QueryType {
      *                                       and the return type is not {@code Void}
      */
     public void checkValidReturn(Class<?> returnType, String query) {
-        if (isNotSelect() && returnType != Void.class) {
+        if (isNotSelect() && !isVoid(returnType)) {
             throw new UnsupportedOperationException("The return type must be Void when the query is not a SELECT operation, due to the nature" +
                     " of DELETE and UPDATE operations. The query: " + query);
         }
+    }
+
+    private boolean isVoid(Class<?> returnType) {
+        return returnType == Void.class || returnType == Void.TYPE;
     }
 
     private static String extractQueryCommand(String query){
