@@ -141,10 +141,12 @@ public final class SpecialParameters {
                 Arrays.stream(sortArray).map(s -> mapper(s, sortParser)).forEach(sorts::add);
             } else if (parameter instanceof PageRequest request) {
                pageRequest = request;
-            } else if (parameter instanceof Iterable<?> iterable) {
-                for (Object value : iterable) {
-                    if (value instanceof Sort<?> sortValue) {
-                        sorts.add(mapper(sortValue, sortParser));
+            }else {
+                if (parameter instanceof Iterable<?> iterable) {
+                    for (Object value : iterable) {
+                        if (value instanceof Sort<?> sortValue) {
+                            sorts.add(mapper(sortValue, sortParser));
+                        }
                     }
                 }
             }
@@ -162,7 +164,8 @@ public final class SpecialParameters {
         return parameter instanceof Sort<?>
                 || parameter instanceof Limit
                 || parameter instanceof Order<?>
-                || parameter instanceof PageRequest;
+                || parameter instanceof PageRequest
+                || parameter instanceof Sort<?>[];
     }
 
     /**
@@ -185,7 +188,8 @@ public final class SpecialParameters {
         return Sort.class.isAssignableFrom(parameter)
                 || Limit.class.isAssignableFrom(parameter)
                 || Order.class.isAssignableFrom(parameter)
-                || PageRequest.class.isAssignableFrom(parameter);
+                || PageRequest.class.isAssignableFrom(parameter)
+                || parameter.isArray() && Sort.class.isAssignableFrom(parameter.getComponentType());
     }
 
     /**
