@@ -131,6 +131,7 @@ public class CustomRepositoryHandler implements InvocationHandler {
                     var queryType = QueryType.parse(query.value());
                     var returnType = method.getReturnType();
                     LOGGER.fine("Executing the query " + query.value() + " with the type " + queryType + " and the return type " + returnType);
+                    queryType.checkValidReturn(returnType, query.value());
                     Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getParams(method, params);
                     LOGGER.fine("Parameters: " + parameters);
                     var prepare = template.prepare(query.value());
