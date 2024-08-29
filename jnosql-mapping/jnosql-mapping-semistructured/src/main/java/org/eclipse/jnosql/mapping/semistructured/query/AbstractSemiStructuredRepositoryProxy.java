@@ -19,6 +19,7 @@ import jakarta.data.repository.Find;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
 import org.eclipse.jnosql.communication.semistructured.DeleteQuery;
+import org.eclipse.jnosql.communication.semistructured.QueryType;
 import org.eclipse.jnosql.mapping.core.repository.DynamicQueryMethodReturn;
 import org.eclipse.jnosql.mapping.core.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.core.repository.RepositoryReflectionUtils;
@@ -28,6 +29,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 /**
@@ -38,11 +40,20 @@ import java.util.stream.Stream;
  */
 public abstract class AbstractSemiStructuredRepositoryProxy<T, K> extends BaseSemiStructuredRepository<T, K> {
 
+    private static final Logger LOGGER = Logger.getLogger(AbstractSemiStructuredRepositoryProxy.class.getName());
+
     @Override
     protected Object executeQuery(Object instance, Method method, Object[] params) {
+        LOGGER.finest("Executing query on method: " + method);
         Class<?> type = entityMetadata().type();
         var entity = entityMetadata().name();
         var pageRequest = DynamicReturn.findPageRequest(params);
+        var queryValue = method.getAnnotation(Query.class).value();
+        var queryType = QueryType.parse(queryValue);
+        var returnType = method.getReturnType();
+        LOGGER.finest("Query: " + queryValue + " with type: " + queryType + " and return type: " + returnType);
+        queryType.checkValidReturn(returnType, queryValue);
+
         var methodReturn = DynamicQueryMethodReturn.builder()
                 .args(params)
                 .method(method)
