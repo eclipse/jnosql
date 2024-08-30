@@ -66,7 +66,7 @@ public class NoSQLPage<T> implements Page<T> {
 
     @Override
     public boolean hasNext() {
-      return hasContent();
+      return hasContent() && this.entities.size() == this.pageRequest.size();
     }
 
     @Override
