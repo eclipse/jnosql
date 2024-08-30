@@ -54,9 +54,22 @@ class NoSQLPageTest {
     @Test
     void shouldReturnTrueHasNext(){
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
-                PageRequest.ofPage(2));
+                PageRequest.ofPage(2).size(1));
 
         org.assertj.core.api.Assertions.assertThat(page.hasNext()).isTrue();
+    }
+
+    @Test
+    void shouldReturnFalseHasNextWhenIsEmpty(){
+        var page = NoSQLPage.of(Collections.emptyList(), PageRequest.ofPage(2).size(1));
+        org.assertj.core.api.Assertions.assertThat(page.hasNext()).isFalse();
+    }
+
+    @Test
+    void shouldReturnFalseHasNextWhenElementHasLessThanSize(){
+        var page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
+                PageRequest.ofPage(2).size(2));
+        org.assertj.core.api.Assertions.assertThat(page.hasNext()).isFalse();
     }
 
     @Test
