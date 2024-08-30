@@ -97,4 +97,10 @@ public interface People {
     default String defaultMethod() {
         return "default";
     }
+
+    @Query("delete from Person where name = :name")
+    long deleteByNameReturnInt();
+
+    @Query("update Person where name = :name")
+    long updateReturnInt();
 }

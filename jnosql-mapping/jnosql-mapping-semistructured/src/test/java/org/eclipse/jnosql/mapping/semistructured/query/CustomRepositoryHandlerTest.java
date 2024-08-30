@@ -436,4 +436,24 @@ class CustomRepositoryHandlerTest {
         });
 
     }
+
+    @Test
+    void shouldReturnNotSupportedWhenQueryIsNotSelectAsDelete() {
+        var preparedStatement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
+        Mockito.when(template.prepare(Mockito.anyString())).thenReturn(preparedStatement);
+        Mockito.when(template.query(Mockito.anyString()))
+                .thenReturn(Stream.of(Person.builder().age(26).name("Ada").build()));
+        Assertions.assertThatThrownBy(() ->people.deleteByNameReturnInt())
+                .isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test
+    void shouldReturnNotSupportedWhenQueryIsNotSelectAsUpdate() {
+        var preparedStatement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
+        Mockito.when(template.prepare(Mockito.anyString())).thenReturn(preparedStatement);
+        Mockito.when(template.query(Mockito.anyString()))
+                .thenReturn(Stream.of(Person.builder().age(26).name("Ada").build()));
+        Assertions.assertThatThrownBy(() ->people.updateReturnInt())
+                .isInstanceOf(UnsupportedOperationException.class);
+    }
 }

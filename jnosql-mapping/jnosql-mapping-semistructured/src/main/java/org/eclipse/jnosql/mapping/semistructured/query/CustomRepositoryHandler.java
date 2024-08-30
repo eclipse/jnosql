@@ -19,6 +19,7 @@ import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.repository.Query;
 import jakarta.enterprise.inject.spi.CDI;
+import org.eclipse.jnosql.communication.semistructured.QueryType;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
 import org.eclipse.jnosql.mapping.core.query.AnnotationOperation;
@@ -127,16 +128,22 @@ public class CustomRepositoryHandler implements InvocationHandler {
                 var repositoryMetadata = repositoryMetadata(method);
                 if (repositoryMetadata.metadata().isEmpty()) {
                     var query = method.getAnnotation(Query.class);
+                    var queryType = QueryType.parse(query.value());
+                    var returnType = method.getReturnType();
+                    LOGGER.fine("Executing the query " + query.value() + " with the type " + queryType + " and the return type " + returnType);
+                    queryType.checkValidReturn(returnType, query.value());
                     Map<String, Object> parameters = RepositoryReflectionUtils.INSTANCE.getParams(method, params);
+                    LOGGER.fine("Parameters: " + parameters);
                     var prepare = template.prepare(query.value());
                     parameters.forEach(prepare::bind);
                     if (prepare.isCount()) {
                         return prepare.count();
                     }
                     Stream<?> entities = prepare.result();
-                    if (method.getReturnType().equals(long.class) || method.getReturnType().equals(Long.class)) {
+                    if(isLong(method)) {
                         return entities.count();
                     }
+
                     return Void.class;
                 }
                 return unwrapInvocationTargetException(() -> repository(method).invoke(instance, method, params));
@@ -268,6 +275,10 @@ public class CustomRepositoryHandler implements InvocationHandler {
             }
         }
         throw new IllegalArgumentException("Cannot determine generic type from parameter");
+    }
+
+    private static boolean isLong(Method method) {
+        return method.getReturnType().equals(long.class) || method.getReturnType().equals(Long.class);
     }
 
 

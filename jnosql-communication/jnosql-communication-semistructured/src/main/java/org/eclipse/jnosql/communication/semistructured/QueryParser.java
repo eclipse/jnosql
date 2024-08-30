@@ -38,10 +38,10 @@ public final class QueryParser {
      */
     public Stream<CommunicationEntity> query(String query, String entity, DatabaseManager manager, CommunicationObserverParser observer) {
         validation(query, manager, observer);
-        String command = extractQueryCommand(query);
+        var command = QueryType.parse(query);
         return switch (command) {
-            case "DELETE" -> delete.query(query, manager, observer);
-            case "UPDATE" -> update.query(query, manager, observer);
+            case DELETE -> delete.query(query, manager, observer);
+            case UPDATE -> update.query(query, manager, observer);
             default -> select.query(query, entity, manager, observer);
         };
     }
@@ -60,19 +60,12 @@ public final class QueryParser {
      */
     public CommunicationPreparedStatement prepare(String query, String entity, DatabaseManager manager, CommunicationObserverParser observer) {
         validation(query, manager, observer);
-        String command = extractQueryCommand(query);
+        var command = QueryType.parse(query);
         return switch (command) {
-            case "DELETE" -> delete.prepare(query, manager, observer);
-            case "UPDATE" -> update.prepare(query, manager, observer);
+            case DELETE -> delete.prepare(query, manager, observer);
+            case UPDATE -> update.prepare(query, manager, observer);
             default -> select.prepare(query, entity, manager, observer);
         };
-    }
-
-    private String extractQueryCommand(String query){
-        if(query.length() < 6){
-           return "";
-        }
-        return query.substring(0, 6).toUpperCase();
     }
 
     private void validation(String query, DatabaseManager manager, CommunicationObserverParser observer) {
