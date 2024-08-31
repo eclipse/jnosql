@@ -146,7 +146,7 @@ public class CustomRepositoryHandler implements InvocationHandler {
 
                     return Void.class;
                 }
-                return unwrapInvocationTargetException(() -> repository(method).invoke(instance, method, params));
+                return unwrapInvocationTargetException(() -> repository(method).executeQuery(instance, method, params));
 
             }
             case COUNT_BY, COUNT_ALL -> {
