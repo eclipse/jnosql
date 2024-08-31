@@ -31,6 +31,7 @@ import org.eclipse.jnosql.mapping.semistructured.EntityConverter;
 import org.eclipse.jnosql.mapping.semistructured.MockProducer;
 import org.eclipse.jnosql.mapping.semistructured.SemiStructuredTemplate;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
+import org.eclipse.jnosql.mapping.semistructured.entities.Task;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -62,15 +63,29 @@ class CustomRepositoryHandlerTest {
 
     private People people;
 
+    private Tasks tasks;
+
     @BeforeEach
     void setUp() {
         template = Mockito.mock(SemiStructuredTemplate.class);
-        CustomRepositoryHandler customRepositoryHandler = CustomRepositoryHandler.builder()
+        CustomRepositoryHandler customRepositoryHandlerForPeople = CustomRepositoryHandler.builder()
                 .entitiesMetadata(entitiesMetadata)
-                .template(template).customRepositoryType(People.class)
+                .template(template)
+                .customRepositoryType(People.class)
                 .converters(converters).build();
+
         people = (People) Proxy.newProxyInstance(People.class.getClassLoader(), new Class[]{People.class},
-                customRepositoryHandler);
+                customRepositoryHandlerForPeople);
+
+        CustomRepositoryHandler customRepositoryHandlerForTasks = CustomRepositoryHandler.builder()
+                .entitiesMetadata(entitiesMetadata)
+                .template(template)
+                .customRepositoryType(Tasks.class)
+                .converters(converters).build();
+
+        tasks = (Tasks) Proxy.newProxyInstance(Tasks.class.getClassLoader(), new Class[]{Tasks.class},
+                customRepositoryHandlerForTasks);
+
     }
 
     @Test
@@ -382,6 +397,27 @@ class CustomRepositoryHandlerTest {
         var query = captor.getValue();
 
         Assertions.assertThat(query).isEqualTo("delete from Person where name = :name");
+    }
+
+    @Test
+    void shouldExecuteFixedQuery() {
+
+        var preparedStatement = Mockito.mock(org.eclipse.jnosql.mapping.semistructured.PreparedStatement.class);
+        Mockito.when(template.prepare(Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(preparedStatement);
+        Mockito.when(template.query(Mockito.anyString()))
+                .thenReturn(Stream.of(Task.builder().description("refactor project A").build()));
+
+        var result = tasks.listActiveTasks();
+
+        Assertions.assertThat(result).isNotNull().isInstanceOf(List.class);
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(template).prepare(captor.capture(), Mockito.eq("Task"));
+        Mockito.verifyNoMoreInteractions(template);
+        var query = captor.getValue();
+
+        Assertions.assertThat(query).isEqualTo("from Task where active = true");
+
     }
 
     @Test
