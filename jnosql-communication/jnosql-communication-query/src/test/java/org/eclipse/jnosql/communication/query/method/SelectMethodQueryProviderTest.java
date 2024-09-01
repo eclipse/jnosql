@@ -574,6 +574,8 @@ class SelectMethodQueryProviderTest {
         String entity = "entity";
         Assertions.assertThrows(UnsupportedOperationException.class, () -> queryProvider.apply(query, entity));
     }
+
+
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByIdBetweenOrderByNumTypeOrdinalAsc"})
     void shouldFindByIdBetweenOrderByNumTypeOrdinalAsc(String query){
