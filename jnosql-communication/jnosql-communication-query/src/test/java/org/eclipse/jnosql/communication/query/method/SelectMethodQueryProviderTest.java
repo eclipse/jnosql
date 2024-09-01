@@ -13,6 +13,7 @@ package org.eclipse.jnosql.communication.query.method;
 
 import jakarta.data.Direction;
 import jakarta.data.Sort;
+import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.BooleanQueryValue;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
@@ -575,6 +576,17 @@ class SelectMethodQueryProviderTest {
     }
 
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findByIdBetweenOrderByNumTypeOrdinalAsc"})
+    void shouldFindByIdBetweenOrderByNumTypeOrdinalAsc(String query){
+        String entity = "entity";
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
+
+        SoftAssertions.assertSoftly(soft ->{
+            soft.assertThat(selectQuery).isNotNull();
+            soft.assertThat(selectQuery.entity()).isEqualTo(entity);
+        });
+    }
 
     private void checkOrderBy(String query, Direction direction, Direction direction2) {
         String entity = "entity";

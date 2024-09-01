@@ -78,8 +78,9 @@ public final class QueryTokenizer implements Supplier<String> {
     public static QueryTokenizer of(String query) {
         Objects.requireNonNull(query, "query is required");
         return new QueryTokenizer(CACHE.computeIfAbsent(query, q -> {
-            String tokenized = TOKENIZER_PATTERN.matcher(q).replaceAll(" $0 ").trim().replaceAll("\\s+", " ");
-            return adjustFirstKeywordPosition(tokenized);
+            var tokenized = TOKENIZER_PATTERN.matcher(q).replaceAll(" $0 ").trim().replaceAll("\\s+", " ");
+            tokenized = adjustFirstKeywordPosition(tokenized);
+            return processOrderBy(tokenized);
         }));
     }
 
@@ -94,6 +95,41 @@ public final class QueryTokenizer implements Supplier<String> {
             }
             currentPosition += token.length();
         }
+        return result.toString().trim();
+    }
+
+    private static String processOrderBy(String query) {
+        StringBuilder result = new StringBuilder();
+        String[] tokens = query.split(" ");
+        boolean afterOrderBy = false;
+
+        for (int i = 0; i < tokens.length; i++) {
+            String token = tokens[i];
+
+            if (token.equals("OrderBy")) {
+                afterOrderBy = true;
+                result.append(token).append(" ");
+            } else if (afterOrderBy) {
+                // Only separate Asc and Desc, keep everything else intact
+                if (token.equals("Asc") || token.equals("Desc")) {
+                    result.append(token).append(" ");
+                } else {
+                    // Combine all tokens until "Asc" or "Desc"
+                    while (i < tokens.length && !tokens[i].equals("Asc") && !tokens[i].equals("Desc")) {
+                        result.append(tokens[i]);
+                        i++;
+                    }
+                    // Add the final Asc or Desc if present
+                    if (i < tokens.length) {
+                        result.append(" ").append(tokens[i]).append(" ");
+                    }
+                }
+                afterOrderBy = false; // Processed the relevant tokens after OrderBy
+            } else {
+                result.append(token).append(" ");
+            }
+        }
+
         return result.toString().trim();
     }
 }
