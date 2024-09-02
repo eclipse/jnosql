@@ -11,6 +11,7 @@
 package org.eclipse.jnosql.mapping.semistructured;
 
 import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import jakarta.nosql.Template;
@@ -225,4 +226,26 @@ public interface SemiStructuredTemplate extends Template {
      *                                  the sort size
      */
     <T> CursoredPage<T> selectCursor(SelectQuery query, PageRequest pageRequest);
+
+    /**
+     * Select entities using pagination with offset-based paging.
+     *
+     * <p>This method retrieves entities using traditional offset-based pagination. The results are determined by the offset and limit values
+     * specified in the provided {@link PageRequest}. This method is suitable when you want to paginate through a result set using an explicit
+     * starting point (offset) and a defined page size.</p>
+     *
+     * <p>The {@link SelectQuery} may be modified based on the provided {@link PageRequest}, specifically using the offset and limit to adjust
+     * the query accordingly. Unlike cursor-based pagination, the offset value in {@link PageRequest} is utilized to skip the specified number
+     * of rows before retrieving the next set of results.</p>
+     *
+     * <p>It is important to note that offset-based pagination may have performance implications on large datasets because it requires the database
+     * to scan and count a potentially large number of rows before returning the requested page.</p>
+     *
+     * @param query         the query to retrieve entities
+     * @param pageRequest   the page request defining the offset-based paging, including the offset and page size
+     * @param <T>           the entity type
+     * @return a {@link Page} instance containing the entities within the specified page, along with paging information
+     * @throws NullPointerException if the query or pageRequest is null
+     */
+    <T> Page<T> selectOffSet(SelectQuery query, PageRequest pageRequest);
 }
