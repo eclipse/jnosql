@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.semistructured;
 
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.page.impl.CursoredPageRecord;
 import jakarta.enterprise.inject.Instance;
@@ -30,6 +31,7 @@ import org.eclipse.jnosql.communication.semistructured.Element;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
+import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.semistructured.entities.Job;
 import org.eclipse.jnosql.mapping.semistructured.entities.Person;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
@@ -115,7 +117,7 @@ class DefaultSemiStructuredTemplateTest {
         communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
-                .insert(any(CommunicationEntity.class)))
+                        .insert(any(CommunicationEntity.class)))
                 .thenReturn(communicationEntity);
 
         template.insert(this.person);
@@ -134,7 +136,7 @@ class DefaultSemiStructuredTemplateTest {
         communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
-                .insert(any(CommunicationEntity.class)))
+                        .insert(any(CommunicationEntity.class)))
                 .thenReturn(communicationEntity);
 
         Person person = Person.builder().build();
@@ -143,11 +145,9 @@ class DefaultSemiStructuredTemplateTest {
         verify(eventPersistManager).firePostEntity(any(Person.class));
         verify(eventPersistManager).firePreEntity(any(Person.class));
         assertSame(person, result);
-       assertEquals(10, person.getAge());
+        assertEquals(10, person.getAge());
 
     }
-
-
 
 
     @Test
@@ -156,8 +156,8 @@ class DefaultSemiStructuredTemplateTest {
         communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
-                .insert(any(CommunicationEntity.class),
-                        any(Duration.class)))
+                        .insert(any(CommunicationEntity.class),
+                                any(Duration.class)))
                 .thenReturn(communicationEntity);
 
         template.insert(this.person, Duration.ofHours(2));
@@ -175,7 +175,7 @@ class DefaultSemiStructuredTemplateTest {
         communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
-                .update(any(CommunicationEntity.class)))
+                        .update(any(CommunicationEntity.class)))
                 .thenReturn(communicationEntity);
 
         template.update(this.person);
@@ -193,7 +193,7 @@ class DefaultSemiStructuredTemplateTest {
         communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
-                .update(any(CommunicationEntity.class)))
+                        .update(any(CommunicationEntity.class)))
                 .thenReturn(communicationEntity);
 
         Person person = Person.builder().build();
@@ -213,7 +213,7 @@ class DefaultSemiStructuredTemplateTest {
         Duration duration = Duration.ofHours(2);
 
         Mockito.when(managerMock
-                .insert(any(CommunicationEntity.class), Mockito.eq(duration)))
+                        .insert(any(CommunicationEntity.class), Mockito.eq(duration)))
                 .thenReturn(communicationEntity);
 
         template.insert(Arrays.asList(person, person), duration);
@@ -226,7 +226,7 @@ class DefaultSemiStructuredTemplateTest {
         communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
-                .insert(any(CommunicationEntity.class)))
+                        .insert(any(CommunicationEntity.class)))
                 .thenReturn(communicationEntity);
 
         template.insert(Arrays.asList(person, person));
@@ -239,7 +239,7 @@ class DefaultSemiStructuredTemplateTest {
         communicationEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
-                .update(any(CommunicationEntity.class)))
+                        .update(any(CommunicationEntity.class)))
                 .thenReturn(communicationEntity);
 
         template.update(Arrays.asList(person, person));
@@ -281,7 +281,7 @@ class DefaultSemiStructuredTemplateTest {
         columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
         Mockito.when(managerMock
-                .select(any(SelectQuery.class)))
+                        .select(any(SelectQuery.class)))
                 .thenReturn(Stream.of(columnEntity));
 
         SelectQuery query = select().from("person").build();
@@ -293,7 +293,7 @@ class DefaultSemiStructuredTemplateTest {
     @Test
     void shouldReturnSingleResultIsEmpty() {
         Mockito.when(managerMock
-                .select(any(SelectQuery.class)))
+                        .select(any(SelectQuery.class)))
                 .thenReturn(Stream.empty());
 
         SelectQuery query = select().from("person").build();
@@ -332,7 +332,7 @@ class DefaultSemiStructuredTemplateTest {
             columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
             Mockito.when(managerMock
-                    .select(any(SelectQuery.class)))
+                            .select(any(SelectQuery.class)))
                     .thenReturn(Stream.of(columnEntity, columnEntity));
 
             SelectQuery query = select().from("person").build();
@@ -430,8 +430,8 @@ class DefaultSemiStructuredTemplateTest {
     }
 
     @Test
-    void shouldConvertConvertFromAnnotationEntity(){
-        template.query("FROM Vendor" );
+    void shouldConvertConvertFromAnnotationEntity() {
+        template.query("FROM Vendor");
         ArgumentCaptor<SelectQuery> queryCaptor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         SelectQuery query = queryCaptor.getValue();
@@ -472,26 +472,26 @@ class DefaultSemiStructuredTemplateTest {
         var captor = ArgumentCaptor.forClass(SelectQuery.class);
         verify(managerMock).count(captor.capture());
         var query = captor.getValue();
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(query.condition()).isEmpty();
         });
     }
 
 
     @Test
-    void shouldFindAll(){
+    void shouldFindAll() {
         template.findAll(Person.class);
         verify(managerMock).select(select().from("Person").build());
     }
 
     @Test
-    void shouldDeleteAll(){
+    void shouldDeleteAll() {
         template.deleteAll(Person.class);
         verify(managerMock).delete(delete().from("Person").build());
     }
 
     @Test
-    void shouldSelectCursor(){
+    void shouldSelectCursor() {
         PageRequest request = PageRequest.ofSize(2);
 
         PageRequest afterKey = PageRequest.afterCursor(PageRequest.Cursor.forKey("Ada"), 1, 2, false);
@@ -504,7 +504,7 @@ class DefaultSemiStructuredTemplateTest {
         PageRequest personRequest = PageRequest.ofSize(2);
         CursoredPage<Person> result = template.selectCursor(query, personRequest);
 
-        SoftAssertions.assertSoftly(soft ->{
+        SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(result).isNotNull();
             soft.assertThat(result.content()).hasSize(1);
             soft.assertThat(result.hasNext()).isTrue();
@@ -517,8 +517,33 @@ class DefaultSemiStructuredTemplateTest {
 
     }
 
+    @Test
+    void shouldSelectOffSet() {
+        PageRequest request = PageRequest.ofPage(2).size(10);
 
-    private List<CommunicationEntity> content(){
+        SelectQuery query = select().from("Person").orderBy("name").asc().build();
+
+        Mockito.when(managerMock.select(Mockito.any())).thenReturn(Stream.empty());
+
+        Page<Person> result = template.selectOffSet(query, request);
+        var captor = ArgumentCaptor.forClass(SelectQuery.class);
+        Mockito.verify(managerMock).select(captor.capture());
+        SelectQuery value = captor.getValue();
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(result).isNotNull();
+            soft.assertThat(result.content()).isEmpty();
+            soft.assertThat(result.hasNext()).isFalse();
+            soft.assertThat(value.columns()).isEmpty();
+            soft.assertThat(value.name()).isEqualTo("Person");
+            soft.assertThat(value.sorts()).isNotEmpty();
+            soft.assertThat(value.skip()).isEqualTo(10);
+            soft.assertThat(value.limit()).isEqualTo(10);
+
+        });
+    }
+
+
+    private List<CommunicationEntity> content() {
         CommunicationEntity columnEntity = CommunicationEntity.of("Person");
         columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
         return List.of(columnEntity);
