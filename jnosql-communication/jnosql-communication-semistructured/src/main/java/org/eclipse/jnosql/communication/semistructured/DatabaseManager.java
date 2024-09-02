@@ -13,6 +13,7 @@ package org.eclipse.jnosql.communication.semistructured;
 
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 
 import java.time.Duration;
@@ -308,8 +309,7 @@ public interface DatabaseManager extends AutoCloseable {
      *
      * <p>This method retrieves entities based on cursor-based paging, where the cursor acts as a bookmark for the next or previous page of results.
      * The method strictly supports cursor-based pagination and does not handle offset-based pagination. If the provided {@link PageRequest} is
-     * in {@link jakarta.data.page.PageRequest.Mode#OFFSET}, this method should not be used; instead, use {@link #selectOffSet} for offset-based
-     * pagination.</p>
+     * in {@link jakarta.data.page.PageRequest.Mode#OFFSET}, this method should not be used.</p>
      *
      * <p>The {@link SelectQuery} parameter will be overwritten based on the {@link PageRequest}, specifically using the cursor information to
      * adjust the query condition accordingly. This method ignores the skip value in {@link PageRequest} since skip is not applicable in cursor-based
