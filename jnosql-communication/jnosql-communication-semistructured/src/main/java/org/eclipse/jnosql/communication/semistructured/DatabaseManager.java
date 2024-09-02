@@ -306,21 +306,24 @@ public interface DatabaseManager extends AutoCloseable {
     /**
      * Select entities using pagination with cursor-based paging.
      *
-     * <p>This method retrieves entities based on cursor-based paging, where the cursor acts as a bookmark for the next page of results.
-     * If the provided {@link PageRequest} has a mode of {@link jakarta.data.page.PageRequest.Mode#OFFSET}, the method will consider
-     * the initial request as an offset-based pagination and extract the order key to create a new {@link PageRequest} with
-     * {@link jakarta.data.page.PageRequest.Mode#CURSOR_NEXT}. If the initial request is already cursor-based, the method will proceed as instructed.
-     * </p>
-     * <p>
-     * If the cursor-based pagination is used, at least one order key is required to be specified in the {@link SelectQuery} order
-     * clause; otherwise, an {@link IllegalStateException} will be thrown.
-     * </p>
+     * <p>This method retrieves entities based on cursor-based paging, where the cursor acts as a bookmark for the next or previous page of results.
+     * The method strictly supports cursor-based pagination and does not handle offset-based pagination. If the provided {@link PageRequest} is
+     * in {@link jakarta.data.page.PageRequest.Mode#OFFSET}, this method should not be used; instead, use {@link #selectOffSet} for offset-based
+     * pagination.</p>
+     *
+     * <p>The {@link SelectQuery} parameter will be overwritten based on the {@link PageRequest}, specifically using the cursor information to
+     * adjust the query condition accordingly. This method ignores the skip value in {@link PageRequest} since skip is not applicable in cursor-based
+     * pagination.</p>
+     *
+     * <p>For cursor-based pagination, at least one sort field must be specified in the {@link SelectQuery} order clause; otherwise, an
+     * {@link IllegalArgumentException} will be thrown.</p>
      *
      * @param query         the query to retrieve entities
      * @param pageRequest   the page request defining the cursor-based paging
      * @return a {@link CursoredPage} instance containing the entities within the specified page
      * @throws NullPointerException     if the query or pageRequest is null
-     * @throws IllegalStateException    if the cursor-based pagination is used without any order key specified
+     * @throws IllegalArgumentException if cursor-based pagination is used without any sort field specified or if the cursor size does not match
+     *                                  the sort size
      */
     default CursoredPage<CommunicationEntity> selectCursor(SelectQuery query, PageRequest pageRequest){
         Objects.requireNonNull(query, "query is required");
