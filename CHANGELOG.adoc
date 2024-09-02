@@ -17,6 +17,8 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Include pagination with Query annotation
 - Add support to array in the fields
 - Add support to array in the fields of java record classes
+- Include `selectOffSet` to pagination queryies at the `SemiStructuredTemplate`
+
 
 === Fixed
 
@@ -26,6 +28,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Make sure at the serialization to the field, the API does not return any communication layer, but standard Java types
 - Fix the like query at the JDQL
 - Fix recursion calling to avoid stack overflow on the custom repository's query methods with @Query annotation with predefined queries
+- Fix documentation at `SemiStructuredTemplate` explaining how the cursor works.
 
 === Removed
 
