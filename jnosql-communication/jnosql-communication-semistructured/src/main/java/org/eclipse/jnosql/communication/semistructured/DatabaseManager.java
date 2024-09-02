@@ -13,7 +13,6 @@ package org.eclipse.jnosql.communication.semistructured;
 
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.page.CursoredPage;
-import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 
 import java.time.Duration;
