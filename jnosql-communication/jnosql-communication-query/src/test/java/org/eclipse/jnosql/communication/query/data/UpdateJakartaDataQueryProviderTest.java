@@ -204,4 +204,11 @@ class UpdateJakartaDataQueryProviderTest {
                 .isInstanceOf(UnsupportedOperationException.class);
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"UPDATE Coordinate SET x = :newX, y = y / :yDivisor WHERE id = :id"})
+    void shouldReturnErrorWhenHaveOperation(String query) {
+        Assertions.assertThatThrownBy(() ->updateProvider.apply(query))
+                .isInstanceOf(UnsupportedOperationException.class);
+    }
+
 }
