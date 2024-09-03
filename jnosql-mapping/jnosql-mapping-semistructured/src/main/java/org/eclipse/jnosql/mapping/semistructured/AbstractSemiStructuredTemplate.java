@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.semistructured;
 
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.page.impl.CursoredPageRecord;
 import jakarta.nosql.QueryMapper;
@@ -28,6 +29,7 @@ import org.eclipse.jnosql.communication.semistructured.QueryParser;
 import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
+import org.eclipse.jnosql.mapping.core.NoSQLPage;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
@@ -331,6 +333,16 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
         PageRequest beforePageRequest = cursoredPage.hasPrevious()? cursoredPage.previousPageRequest() : null;
         List<PageRequest.Cursor> cursors = ((CursoredPageRecord<CommunicationEntity>) cursoredPage).cursors();
         return new CursoredPageRecord<>(entities, cursors, -1, pageRequest, nextPageRequest, beforePageRequest);
+    }
+
+    @Override
+    public <T> Page<T> selectOffSet(SelectQuery query, PageRequest pageRequest) {
+        Objects.requireNonNull(query, "query is required");
+        Objects.requireNonNull(pageRequest, "pageRequest is required");
+        var queryPage = new MappingQuery(query.sorts(), pageRequest.size(), NoSQLPage.skip(pageRequest),
+                query.condition().orElse(null), query.name());
+        Stream<T> result = select(queryPage);
+        return NoSQLPage.of(result.toList(), pageRequest);
     }
 
     protected <T> T persist(T entity, UnaryOperator<CommunicationEntity> persistAction) {

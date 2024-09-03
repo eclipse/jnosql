@@ -11,6 +11,7 @@
 package org.eclipse.jnosql.mapping.semistructured;
 
 import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import jakarta.nosql.Template;
@@ -204,22 +205,47 @@ public interface SemiStructuredTemplate extends Template {
     /**
      * Select entities using pagination with cursor-based paging.
      *
-     * <p>This method retrieves entities based on cursor-based paging, where the cursor acts as a bookmark for the next page of results.
-     * If the provided {@link PageRequest} has a mode of {@link jakarta.data.page.PageRequest.Mode#OFFSET}, the method will consider
-     * the initial request as an offset-based pagination and extract the order key to create a new {@link PageRequest} with
-     * {@link jakarta.data.page.PageRequest.Mode#CURSOR_NEXT}. If the initial request is already cursor-based, the method will proceed as instructed.
-     * </p>
-     * <p>
-     * If the cursor-based pagination is used, at least one order key is required to be specified in the {@link SelectQuery} order
-     * clause; otherwise, an {@link IllegalStateException} will be thrown.
-     * </p>
+     * <p>This method retrieves entities based on cursor-based paging, where the cursor acts as a bookmark for the next or previous page of results.
+     * The method strictly supports cursor-based pagination and does not handle offset-based pagination. If the provided {@link PageRequest} is
+     * in {@link jakarta.data.page.PageRequest.Mode#OFFSET}, this method should not be used; instead, use {@link #selectOffSet} for offset-based
+     * pagination.</p>
+     *
+     * <p>The {@link SelectQuery} parameter will be overwritten based on the {@link PageRequest}, specifically using the cursor information to
+     * adjust the query condition accordingly. This method ignores the skip value in {@link PageRequest} since skip is not applicable in cursor-based
+     * pagination.</p>
+     *
+     * <p>For cursor-based pagination, at least one sort field must be specified in the {@link SelectQuery} order clause; otherwise, an
+     * {@link IllegalArgumentException} will be thrown.</p>
      *
      * @param query         the query to retrieve entities
      * @param pageRequest   the page request defining the cursor-based paging
      * @param <T>           the entity type
      * @return a {@link CursoredPage} instance containing the entities within the specified page
      * @throws NullPointerException     if the query or pageRequest is null
-     * @throws IllegalStateException    if the cursor-based pagination is used without any order key specified
+     * @throws IllegalArgumentException if cursor-based pagination is used without any sort field specified or if the cursor size does not match
+     *                                  the sort size
      */
     <T> CursoredPage<T> selectCursor(SelectQuery query, PageRequest pageRequest);
+
+    /**
+     * Select entities using pagination with offset-based paging.
+     *
+     * <p>This method retrieves entities using traditional offset-based pagination. The results are determined by the offset and limit values
+     * specified in the provided {@link PageRequest}. This method is suitable when you want to paginate through a result set using an explicit
+     * starting point (offset) and a defined page size.</p>
+     *
+     * <p>The {@link SelectQuery} may be modified based on the provided {@link PageRequest}, specifically using the offset and limit to adjust
+     * the query accordingly. Unlike cursor-based pagination, the offset value in {@link PageRequest} is utilized to skip the specified number
+     * of rows before retrieving the next set of results.</p>
+     *
+     * <p>It is important to note that offset-based pagination may have performance implications on large datasets because it requires the database
+     * to scan and count a potentially large number of rows before returning the requested page.</p>
+     *
+     * @param query         the query to retrieve entities
+     * @param pageRequest   the page request defining the offset-based paging, including the offset and page size
+     * @param <T>           the entity type
+     * @return a {@link Page} instance containing the entities within the specified page, along with paging information
+     * @throws NullPointerException if the query or pageRequest is null
+     */
+    <T> Page<T> selectOffSet(SelectQuery query, PageRequest pageRequest);
 }
