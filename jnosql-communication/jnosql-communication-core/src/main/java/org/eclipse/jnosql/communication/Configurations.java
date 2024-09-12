@@ -39,7 +39,12 @@ public enum Configurations implements Supplier<String> {
     /**
      * A configuration to set the encryption to settings property.
      */
-    ENCRYPTION("jakarta.nosql.settings.encryption");
+    ENCRYPTION("jakarta.nosql.settings.encryption"),
+
+    /**
+     * A configuration to enable cursor pagination in a NoSQL database using multiple sorting.
+     */
+    CURSOR_PAGINATION_MULTIPLE_SORTING("org.eclipse.jnosql.pagination.cursor");
 
     private final String configuration;
 
