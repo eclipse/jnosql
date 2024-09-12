@@ -202,6 +202,7 @@ public interface SemiStructuredTemplate extends Template {
      */
     <T> void deleteAll(Class<T> type);
 
+    e
     /**
      * Select entities using pagination with cursor-based paging.
      *
@@ -216,6 +217,14 @@ public interface SemiStructuredTemplate extends Template {
      *
      * <p>For cursor-based pagination, at least one sort field must be specified in the {@link SelectQuery} order clause; otherwise, an
      * {@link IllegalArgumentException} will be thrown.</p>
+     *
+     * <p>By default, multiple sorting is disabled due to the behavior of NoSQL databases. In NoSQL systems, sorting by multiple fields can result
+     * in unpredictable or inconsistent results, particularly when those fields contain duplicate values. Relational databases are more deterministic
+     * in their sorting algorithms, but NoSQL systems such as MongoDB may return results in varying order if there is no unique field, such as `_id`,
+     * to break ties. This behavior makes it difficult to guarantee stable pagination across requests.</p>
+     *
+     * <p>To enable multiple sorting, set the property <b>org.eclipse.jnosql.pagination.cursor=true</b>. For more details, refer to
+     * {@link org.eclipse.jnosql.communication.Configurations#CURSOR_PAGINATION_MULTIPLE_SORTING}.</p>
      *
      * @param query         the query to retrieve entities
      * @param pageRequest   the page request defining the cursor-based paging
