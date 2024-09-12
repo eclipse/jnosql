@@ -30,6 +30,7 @@ import org.eclipse.jnosql.communication.semistructured.SelectQuery;
 import org.eclipse.jnosql.mapping.core.Converters;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.core.NoSQLPage;
+import org.eclipse.jnosql.mapping.core.config.MicroProfileSettings;
 import org.eclipse.jnosql.mapping.metadata.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
@@ -44,11 +45,13 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
+import static org.eclipse.jnosql.communication.Configurations.CURSOR_PAGINATION_MULTIPLE_SORTING;
 
 /**
  * An abstract implementation of the {@link SemiStructuredTemplate} interface providing
@@ -58,6 +61,8 @@ import static java.util.Objects.requireNonNull;
  * @see SemiStructuredTemplate
  */
 public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTemplate {
+
+    private static final Logger LOGGER = Logger.getLogger(AbstractSemiStructuredTemplate.class.getName());
 
     private static final QueryParser PARSER = new QueryParser();
 
@@ -327,6 +332,15 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
     public <T> CursoredPage<T> selectCursor(SelectQuery query, PageRequest pageRequest){
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(pageRequest, "pageRequest is required");
+        LOGGER.finest(() -> "Executing query: " + query);
+        var enableMultipleSorting = MicroProfileSettings.INSTANCE.get(CURSOR_PAGINATION_MULTIPLE_SORTING, Boolean.class)
+                .orElse(false);
+        LOGGER.finest(() -> "Cursor pagination with multiple sorting is enabled: " + enableMultipleSorting);
+
+        if (!enableMultipleSorting && query.sorts().size() > 1) {
+            throw new UnsupportedOperationException("Cursor pagination with multiple sorting is not supported, " +
+                    "enable it by setting the property " + CURSOR_PAGINATION_MULTIPLE_SORTING.get() + " to true");
+        }
         CursoredPage<CommunicationEntity> cursoredPage = this.manager().selectCursor(query, pageRequest);
         List<T> entities = cursoredPage.stream().<T>map(c -> converter().toEntity(c)).toList();
         PageRequest nextPageRequest = cursoredPage.hasNext()? cursoredPage.nextPageRequest() : null;
