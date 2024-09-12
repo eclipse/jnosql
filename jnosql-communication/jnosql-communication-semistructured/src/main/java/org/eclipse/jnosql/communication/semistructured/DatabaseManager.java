@@ -317,6 +317,15 @@ public interface DatabaseManager extends AutoCloseable {
      * <p>For cursor-based pagination, at least one sort field must be specified in the {@link SelectQuery} order clause; otherwise, an
      * {@link IllegalArgumentException} will be thrown.</p>
      *
+     * <p>By default, multiple sorting is disabled because in NoSQL databases, sorting by multiple fields can lead to unpredictable and inconsistent
+     * results. Unlike relational databases, which have a deterministic approach to sorting, NoSQL databases such as MongoDB may return inconsistent
+     * orderings when multiple fields contain duplicate values. This is due to the way NoSQL databases store and retrieve data, without strict ordering
+     * guarantees unless a unique field (like `_id`) is included in the sort criteria.</p>
+     *
+     * <p>If multiple sorting is required, it can be explicitly enabled by setting the property:
+     * <b>org.eclipse.jnosql.pagination.cursor=true</b>. For additional configurations, refer to
+     * {@link org.eclipse.jnosql.communication.Configurations#CURSOR_PAGINATION_MULTIPLE_SORTING}.</p>
+     *
      * @param query         the query to retrieve entities
      * @param pageRequest   the page request defining the cursor-based paging
      * @return a {@link CursoredPage} instance containing the entities within the specified page
