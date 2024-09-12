@@ -44,6 +44,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -58,6 +59,8 @@ import static java.util.Objects.requireNonNull;
  * @see SemiStructuredTemplate
  */
 public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTemplate {
+
+    private static final Logger LOGGER = Logger.getLogger(AbstractSemiStructuredTemplate.class.getName());
 
     private static final QueryParser PARSER = new QueryParser();
 
@@ -327,6 +330,7 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
     public <T> CursoredPage<T> selectCursor(SelectQuery query, PageRequest pageRequest){
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(pageRequest, "pageRequest is required");
+        LOGGER.finest(() -> "Executing query: " + query);
         CursoredPage<CommunicationEntity> cursoredPage = this.manager().selectCursor(query, pageRequest);
         List<T> entities = cursoredPage.stream().<T>map(c -> converter().toEntity(c)).toList();
         PageRequest nextPageRequest = cursoredPage.hasNext()? cursoredPage.nextPageRequest() : null;
