@@ -333,7 +333,7 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(pageRequest, "pageRequest is required");
         LOGGER.finest(() -> "Executing query: " + query);
-        var enableMultipleSorting = !MicroProfileSettings.INSTANCE.get(CURSOR_PAGINATION_MULTIPLE_SORTING, Boolean.class)
+        var enableMultipleSorting = MicroProfileSettings.INSTANCE.get(CURSOR_PAGINATION_MULTIPLE_SORTING, Boolean.class)
                 .orElse(false);
         LOGGER.finest(() -> "Cursor pagination with multiple sorting is enabled: " + enableMultipleSorting);
 

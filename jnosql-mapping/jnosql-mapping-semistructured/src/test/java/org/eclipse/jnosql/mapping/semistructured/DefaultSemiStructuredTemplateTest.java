@@ -21,6 +21,7 @@ import jakarta.data.page.PageRequest;
 import jakarta.data.page.impl.CursoredPageRecord;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.communication.Configurations;
 import org.eclipse.jnosql.mapping.PreparedStatement;
 import org.assertj.core.api.SoftAssertions;
 import org.eclipse.jnosql.communication.semistructured.CommunicationEntity;
@@ -515,6 +516,41 @@ class DefaultSemiStructuredTemplateTest {
             soft.assertThat(person.getPhones()).containsExactly("234", "432");
         });
 
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCursorHasMultipleSorts() {
+        System.setProperty(Configurations.CURSOR_PAGINATION_MULTIPLE_SORTING.get(), "true");
+        PageRequest request = PageRequest.ofSize(2);
+
+        PageRequest afterKey = PageRequest.afterCursor(PageRequest.Cursor.forKey("Ada"), 1, 2, false);
+        SelectQuery query = select().from("Person").orderBy("name").asc().orderBy("age").desc().build();
+
+        Mockito.when(managerMock.selectCursor(query, request))
+                .thenReturn(new CursoredPageRecord<>(content(),
+                        Collections.emptyList(), -1, request, afterKey, null));
+
+        PageRequest personRequest = PageRequest.ofSize(2);
+
+        CursoredPage<Person> result = template.selectCursor(query, personRequest);
+        org.assertj.core.api.Assertions.assertThat(result).isNotNull();
+        System.clearProperty(Configurations.CURSOR_PAGINATION_MULTIPLE_SORTING.get());
+    }
+
+    @Test
+    void shouldExecuteMultipleSortsWhenEnableIt() {
+        PageRequest request = PageRequest.ofSize(2);
+
+        PageRequest afterKey = PageRequest.afterCursor(PageRequest.Cursor.forKey("Ada"), 1, 2, false);
+        SelectQuery query = select().from("Person").orderBy("name").asc().orderBy("age").desc().build();
+
+        Mockito.when(managerMock.selectCursor(query, request))
+                .thenReturn(new CursoredPageRecord<>(content(),
+                        Collections.emptyList(), -1, request, afterKey, null));
+
+        PageRequest personRequest = PageRequest.ofSize(2);
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> template.selectCursor(query, personRequest))
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 
     @Test
