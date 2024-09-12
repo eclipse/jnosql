@@ -202,7 +202,6 @@ public interface SemiStructuredTemplate extends Template {
      */
     <T> void deleteAll(Class<T> type);
 
-    e
     /**
      * Select entities using pagination with cursor-based paging.
      *
