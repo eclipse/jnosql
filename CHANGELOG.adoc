@@ -34,6 +34,9 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Remove Apache Tinkerpop from the project and move it as a driver
 
+=== Changed
+
+- by default disable Cursor pagination in the `SemiStructuredTemplate` when there is more than one sort
 
 == [1.1.1] - 2023-05-25
 
