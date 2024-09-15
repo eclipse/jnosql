@@ -8,6 +8,8 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+== [1.1.2] - 2023-09-15
+
 === Added
 
 - Enables custom Repository
