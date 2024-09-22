@@ -39,6 +39,7 @@ public abstract class TypeReference<T> implements TypeSupplier<T> {
      *
      * @return the type
      */
+    @Override
     public Type get() {
         return type;
     }

@@ -30,7 +30,7 @@ import java.util.List;
  */
 public final class ValueWriterDecorator<T, S> implements ValueWriter<T, S> {
 
-    private static final ValueWriter INSTANCE = new ValueWriterDecorator();
+    private static final ValueWriter INSTANCE = new ValueWriterDecorator<>();
 
     private final List<ValueWriter> writers = new ArrayList<>();
 

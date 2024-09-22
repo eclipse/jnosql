@@ -23,6 +23,7 @@ import org.eclipse.jnosql.communication.ValueReader;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Class to reads and converts to {@link Enum}
@@ -35,6 +36,7 @@ public final class EnumReader implements ValueReader {
         return Enum.class.isAssignableFrom(type);
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public <T> T read(Class<T> type, Object value) {
 
@@ -57,10 +59,10 @@ public final class EnumReader implements ValueReader {
                 .orElseThrow(() -> new IllegalArgumentException("There isn't name in enum to value: " + name));
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private <T> List<Enum> getEnumList(Class<Enum> type) {
-        EnumSet enumSet = EnumSet.allOf(type);
+        Set<Enum> enumSet = EnumSet.allOf(type);
         return new ArrayList<>(enumSet);
     }
-
 
 }

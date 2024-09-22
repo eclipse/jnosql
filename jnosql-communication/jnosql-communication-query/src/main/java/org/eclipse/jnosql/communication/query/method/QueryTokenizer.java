@@ -103,8 +103,8 @@ public final class QueryTokenizer implements Supplier<String> {
         String[] tokens = query.split(" ");
         boolean afterOrderBy = false;
 
-        for (int i = 0; i < tokens.length; i++) {
-            String token = tokens[i];
+        for (int index = 0; index < tokens.length; index++) {
+            String token = tokens[index];
 
             if (token.equals("OrderBy")) {
                 afterOrderBy = true;
@@ -115,13 +115,13 @@ public final class QueryTokenizer implements Supplier<String> {
                     result.append(token).append(" ");
                 } else {
                     // Combine all tokens until "Asc" or "Desc"
-                    while (i < tokens.length && !tokens[i].equals("Asc") && !tokens[i].equals("Desc")) {
-                        result.append(tokens[i]);
-                        i++;
+                    while (index < tokens.length && !tokens[index].equals("Asc") && !tokens[index].equals("Desc")) {
+                        result.append(tokens[index]);
+                        index++;
                     }
                     // Add the final Asc or Desc if present
-                    if (i < tokens.length) {
-                        result.append(" ").append(tokens[i]).append(" ");
+                    if (index < tokens.length) {
+                        result.append(" ").append(tokens[index]).append(" ");
                     }
                 }
                 afterOrderBy = false; // Processed the relevant tokens after OrderBy

@@ -78,5 +78,6 @@ public interface BucketManagerFactory extends Function<String, BucketManager>, A
     /**
      * closes a resource
      */
+    @Override
     void close();
 }
