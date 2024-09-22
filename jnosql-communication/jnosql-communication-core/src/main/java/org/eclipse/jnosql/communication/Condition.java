@@ -93,7 +93,7 @@ public enum Condition {
      */
     public static Condition parse(String condition) {
         Objects.requireNonNull(condition, "condition is required");
-        return Arrays.stream(Condition.values())
+        return Arrays.stream(values())
                 .filter(c -> c.getNameField()
                         .equals(condition)).findFirst()
                 .orElseThrow(() ->
