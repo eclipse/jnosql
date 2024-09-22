@@ -81,7 +81,7 @@ public final class CriteriaCondition {
             Element newElement = getConditions(condition, Condition.AND);
             return new CriteriaCondition(newElement, Condition.AND);
         }
-        return CriteriaCondition.and(this, condition);
+        return and(this, condition);
     }
 
     /**
@@ -115,11 +115,11 @@ public final class CriteriaCondition {
             Element newElement = getConditions(condition, Condition.OR);
             return new CriteriaCondition(newElement, Condition.OR);
         }
-        return CriteriaCondition.or(this, condition);
+        return or(this, condition);
     }
 
     private Element getConditions(CriteriaCondition criteriaCondition, Condition condition) {
-        List<CriteriaCondition> conditions = new ArrayList<>(element.get(new TypeReference<List<CriteriaCondition>>() {
+        var conditions = new ArrayList<>(element.get(new TypeReference<List<CriteriaCondition>>() {
         }));
         conditions.add(criteriaCondition);
         return Element.of(condition.getNameField(), conditions);
@@ -429,7 +429,7 @@ public final class CriteriaCondition {
     public static CriteriaCondition and(CriteriaCondition... conditions) {
         Objects.requireNonNull(conditions, "Condition is required");
         Element element = Element.of(Condition.AND.getNameField(), Arrays.asList(conditions));
-        return CriteriaCondition.of(element, Condition.AND);
+        return of(element, Condition.AND);
     }
 
     /**
@@ -451,7 +451,7 @@ public final class CriteriaCondition {
     public static CriteriaCondition or(CriteriaCondition... conditions) {
         Objects.requireNonNull(conditions, "Condition is required");
         Element element = Element.of(Condition.OR.getNameField(), Arrays.asList(conditions));
-        return CriteriaCondition.of(element, Condition.OR);
+        return of(element, Condition.OR);
     }
 
     private static void checkInClause(Value value) {
