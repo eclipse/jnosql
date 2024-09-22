@@ -50,6 +50,7 @@ class DefaultFluentSelectQueryBuilderElements extends BaseQueryBuilder implement
 
 
     DefaultFluentSelectQueryBuilderElements(List<String> columns) {
+        super();
         this.columns = columns;
     }
 

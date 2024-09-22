@@ -36,5 +36,6 @@ public interface DatabaseManagerFactory extends Function<String, DatabaseManager
      *
      * <p>Note: Some databases may not perform any specific actions upon closing.</p>
      */
+    @Override
     void close();
 }

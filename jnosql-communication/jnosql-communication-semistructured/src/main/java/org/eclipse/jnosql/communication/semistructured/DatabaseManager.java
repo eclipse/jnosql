@@ -348,5 +348,6 @@ public interface DatabaseManager extends AutoCloseable {
     /**
      * Closes the database manager and releases any associated resources.
      */
+    @Override
     void close();
 }

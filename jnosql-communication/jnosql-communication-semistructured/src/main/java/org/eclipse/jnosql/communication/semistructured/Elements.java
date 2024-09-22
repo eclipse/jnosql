@@ -64,7 +64,7 @@ public final class Elements {
     private static Object getValue(Object value) {
 
         if (value instanceof Map) {
-            List list = Elements.of((Map.class.cast(value)));
+            List list = of(Map.class.cast(value));
             if(list.size() == 1) {
                 return list.get(0);
             }
