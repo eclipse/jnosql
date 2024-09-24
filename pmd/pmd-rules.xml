@@ -27,6 +27,7 @@ and then referenced by URL https://nexus.cicd.portit.io/repository/portit-webapp
         <exclude name="UnnecessaryBoxing" />
         <exclude name="UnnecessaryCast" />
         <exclude name="TooManyStaticImports" />
+        <exclude name="CallSuperInConstructor" />
     </rule>
     <rule ref="category/java/security.xml" />
     <rule ref="category/java/performance.xml" />
