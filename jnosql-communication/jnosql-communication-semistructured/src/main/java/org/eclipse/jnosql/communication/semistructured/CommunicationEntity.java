@@ -61,7 +61,7 @@ public class CommunicationEntity {
      * @throws NullPointerException if the specified list is {@code null}
      */
     public void addAll(List<Element> elements) {
-        Objects.requireNonNull(elements, "The object column is required");
+        requireNonNull(elements, "The object column is required");
         elements.forEach(this::add);
     }
 
@@ -72,7 +72,7 @@ public class CommunicationEntity {
      * @throws NullPointerException if the specified element is {@code null}
      */
     public void add(Element element) {
-        Objects.requireNonNull(element, "Column is required");
+        requireNonNull(element, "Column is required");
         this.elements.put(element.name(), element);
     }
 
@@ -183,8 +183,8 @@ public class CommunicationEntity {
      * @throws NullPointerException if either the specified name or type is {@code null}
      */
     public <T> Optional<T> find(String elementName, Class<T> type) {
-        Objects.requireNonNull(elementName, "elementName is required");
-        Objects.requireNonNull(type, "type is required");
+        requireNonNull(elementName, "elementName is required");
+        requireNonNull(type, "type is required");
         return ofNullable(elements.get(elementName))
                 .map(c -> c.get(type));
     }
@@ -200,8 +200,8 @@ public class CommunicationEntity {
      * @throws NullPointerException if either the specified name or type supplier is {@code null}
      */
     public <T> Optional<T> find(String elementName, TypeSupplier<T> type) {
-        Objects.requireNonNull(elementName, "elementName is required");
-        Objects.requireNonNull(type, "type is required");
+        requireNonNull(elementName, "elementName is required");
+        requireNonNull(type, "type is required");
         return ofNullable(elements.get(elementName))
                 .map(v -> v.get(type));
     }

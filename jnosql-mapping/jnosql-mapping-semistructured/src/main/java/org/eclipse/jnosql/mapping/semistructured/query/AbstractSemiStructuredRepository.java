@@ -37,6 +37,7 @@ import java.util.stream.Stream;
  */
 public abstract class AbstractSemiStructuredRepository<T, K> extends AbstractRepository<T, K> {
 
+    @Override
     protected abstract SemiStructuredTemplate template();
 
     @Override

@@ -144,10 +144,12 @@ public enum RepositoryType {
      */
     public static RepositoryType of(Method method, Class<?> repositoryType) {
         Objects.requireNonNull(method, "method is required");
-        Class<?> declaringClass = method.getDeclaringClass();
+
         if (method.isDefault()) {
             return DEFAULT_METHOD;
         }
+
+        Class<?> declaringClass = method.getDeclaringClass();
         if (Object.class.equals(declaringClass)) {
             return OBJECT_METHOD;
         }

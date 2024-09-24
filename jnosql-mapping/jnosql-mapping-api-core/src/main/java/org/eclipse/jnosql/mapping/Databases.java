@@ -47,13 +47,13 @@ public final class Databases {
         Optional<Database> databaseOptional = annotations.stream().filter(a -> a instanceof Database)
                 .map(Database.class::cast).findFirst();
         databaseOptional.ifPresent(database -> {
-            if (!type.equals(database.value())) {
-                String simpleName = processProducer.getAnnotatedMember().getDeclaringType().getJavaClass().getSimpleName();
-                LOGGER.info(String.format("Ignoring because the %s is producing a wrong manager for %s type", simpleName, type));
-            } else {
+            if (type.equals(database.value())) {
                 final DatabaseMetadata metadata = DatabaseMetadata.of(database);
                 LOGGER.info(String.format("Found the type %s to metadata %s", type, metadata));
                 databases.add(metadata);
+            } else {
+                String simpleName = processProducer.getAnnotatedMember().getDeclaringType().getJavaClass().getSimpleName();
+                LOGGER.info(String.format("Ignoring because the %s is producing a wrong manager for %s type", simpleName, type));
             }
         });
     }

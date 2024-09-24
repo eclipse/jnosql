@@ -33,6 +33,7 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Entity
 
 
     DefaultFluentDeleteQueryBuilder(List<String> columns) {
+        super();
         this.columns = columns;
     }
 

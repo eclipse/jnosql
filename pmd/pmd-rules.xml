@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<!--
+This file is uploaded to https://nexus.cicd.portit.io/#browse/upload:portit-webapps (`/pmd-ruleset/` dir)
+and then referenced by URL https://nexus.cicd.portit.io/repository/portit-webapps/pmd-ruleset/pmd-ruleset.xml
+-->
+<ruleset name="Custom Rules"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+    <description>Remove rules</description>
+    <rule ref="category/java/bestpractices.xml">
+        <exclude name="GuardLogStatement" />
+        <exclude name="AbstractClassWithoutAbstractMethod" />
+        <exclude name="JUnitTestsShouldIncludeAssert" />
+        <exclude name="UseVarargs" />
+        <exclude name="MethodReturnsInternalArray" />
+    </rule>
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="LongVariable" />
+        <exclude name="MethodArgumentCouldBeFinal" />
+        <exclude name="ShortMethodName" />
+        <exclude name="ShortVariable" />
+        <exclude name="AtLeastOneConstructor" />
+        <exclude name="LocalVariableCouldBeFinal" />
+        <exclude name="UseExplicitTypes" />
+        <exclude name="OnlyOneReturn" />
+        <exclude name="CommentDefaultAccessModifier" />
+        <exclude name="UnnecessaryBoxing" />
+        <exclude name="UnnecessaryCast" />
+        <exclude name="TooManyStaticImports" />
+        <exclude name="CallSuperInConstructor" />
+        <exclude name="LinguisticNaming" />
+        <exclude name="EmptyMethodInAbstractClassShouldBeAbstract" />
+        <exclude name="LambdaCanBeMethodReference" />
+    </rule>
+    <rule ref="category/java/security.xml" />
+    <rule ref="category/java/performance.xml" />
+
+</ruleset>

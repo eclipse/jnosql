@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * An implementation of {@link CollectionSupplier} to {@link HashSet}
  */
-public class SetSupplier implements CollectionSupplier<HashSet<?>> {
+public class SetSupplier implements CollectionSupplier<Set<?>> {
 
     @Override
     public boolean test(Class<?> type) {

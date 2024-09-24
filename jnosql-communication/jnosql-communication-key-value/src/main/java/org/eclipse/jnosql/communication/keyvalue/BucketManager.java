@@ -123,6 +123,7 @@ public interface BucketManager extends AutoCloseable {
     /**
      * closes a resource
      */
+    @Override
     void close();
 
 }

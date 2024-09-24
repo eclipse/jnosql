@@ -39,7 +39,7 @@ class DefaultQueryBuilder implements SelectQuery.QueryBuilder {
 
     @Override
     public SelectQuery.QueryBuilder select(String column) {
-        Objects.requireNonNull(column, "column is required");
+        requireNonNull(column, "column is required");
         this.columns.add(column);
         return this;
     }
@@ -54,7 +54,7 @@ class DefaultQueryBuilder implements SelectQuery.QueryBuilder {
 
     @Override
     public SelectQuery.QueryBuilder sort(Sort<?> sort) {
-        Objects.requireNonNull(sort, "sort is required");
+        requireNonNull(sort, "sort is required");
         this.sorts.add(sort);
         return this;
     }
@@ -69,14 +69,14 @@ class DefaultQueryBuilder implements SelectQuery.QueryBuilder {
 
     @Override
     public SelectQuery.QueryBuilder from(String entity) {
-        Objects.requireNonNull(entity, "entity is required");
+        requireNonNull(entity, "entity is required");
         this.entity = entity;
         return this;
     }
 
     @Override
     public SelectQuery.QueryBuilder where(CriteriaCondition condition) {
-        Objects.requireNonNull(condition, "condition is required");
+        requireNonNull(condition, "condition is required");
         this.condition = condition;
         return this;
     }
@@ -110,13 +110,13 @@ class DefaultQueryBuilder implements SelectQuery.QueryBuilder {
 
     @Override
     public Stream<CommunicationEntity> getResult(DatabaseManager manager) {
-        Objects.requireNonNull(manager, "manager is required");
+        requireNonNull(manager, "manager is required");
         return manager.select(build());
     }
 
     @Override
     public Optional<CommunicationEntity> getSingleResult(DatabaseManager manager) {
-        Objects.requireNonNull(manager, "manager is required");
+        requireNonNull(manager, "manager is required");
         return manager.singleResult(build());
     }
 

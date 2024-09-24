@@ -48,9 +48,9 @@ public class NavigableSetTypeReferenceReader implements TypeReferenceReader {
             Type collectionType = parameterizedType.getRawType();
             Type elementType = parameterizedType.getActualTypeArguments()[0];
 
-            boolean isNavigableSet = (NavigableSet.class.equals(collectionType)
+            boolean isNavigableSet = NavigableSet.class.equals(collectionType)
                     ||
-                    SortedSet.class.equals(collectionType));
+                    SortedSet.class.equals(collectionType);
             boolean isElementCompatible = elementType instanceof Class
                     && Comparable.class.isAssignableFrom((Class<?>) elementType);
 

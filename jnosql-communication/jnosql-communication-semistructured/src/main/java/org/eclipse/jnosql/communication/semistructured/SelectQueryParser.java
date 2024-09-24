@@ -20,7 +20,6 @@ import org.eclipse.jnosql.communication.query.data.SelectProvider;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -28,11 +27,6 @@ import static java.util.stream.Collectors.toList;
 public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.communication.query.SelectQuery, CommunicationObserverParser, QueryParams> {
 
 
-    /**
-     * The default constructor
-     */
-    public SelectQueryParser() {
-    }
 
     Stream<CommunicationEntity> query(String query, String entity, DatabaseManager manager, CommunicationObserverParser observer) {
 
@@ -71,8 +65,7 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
         var limit = selectQuery.limit();
         var skip = selectQuery.skip();
         var columns = selectQuery.fields().stream()
-                .map(f -> observer.fireSelectField(entityName, f))
-                .collect(Collectors.toList());
+                .map(f -> observer.fireSelectField(entityName, f)).toList();
         List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, entityName))
                 .collect(toList());
 
@@ -94,7 +87,7 @@ public final class SelectQueryParser implements BiFunction<org.eclipse.jnosql.co
         long skip = selectQuery.skip();
         List<String> columns = selectQuery.fields().stream()
                 .map(f -> observer.fireSelectField(entity, f))
-                .collect(Collectors.toList());
+                .toList();
 
         List<Sort<?>> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, entity)).collect(toList());
         CriteriaCondition condition = selectQuery.where()

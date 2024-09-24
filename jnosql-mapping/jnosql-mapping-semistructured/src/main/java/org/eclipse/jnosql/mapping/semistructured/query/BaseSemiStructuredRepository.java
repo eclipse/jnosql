@@ -60,6 +60,11 @@ public abstract class BaseSemiStructuredRepository<T, K> extends AbstractReposit
     private static final DeleteQueryParser DELETE_PARSER = new DeleteQueryParser();
     private static final Object[] EMPTY_PARAM = new Object[0];
 
+    private CommunicationObserverParser parser;
+
+    private ParamsBinder paramsBinder;
+
+
     /**
      * Retrieves the Converters instance responsible for converting data types.
      *
@@ -72,6 +77,7 @@ public abstract class BaseSemiStructuredRepository<T, K> extends AbstractReposit
      *
      * @return The EntityMetadata instance.
      */
+    @Override
     protected abstract EntityMetadata entityMetadata();
 
     /**
@@ -80,10 +86,6 @@ public abstract class BaseSemiStructuredRepository<T, K> extends AbstractReposit
      * @return The SemistructuredTemplate instance.
      */
     protected abstract SemiStructuredTemplate template();
-
-    private CommunicationObserverParser parser;
-
-    private ParamsBinder paramsBinder;
 
 
     protected org.eclipse.jnosql.communication.semistructured.SelectQuery query(Method method, Object[] args) {

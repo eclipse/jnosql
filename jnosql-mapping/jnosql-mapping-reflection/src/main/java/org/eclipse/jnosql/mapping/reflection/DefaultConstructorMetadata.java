@@ -22,6 +22,7 @@ import java.util.List;
 record DefaultConstructorMetadata(Constructor<?> constructor,
                                   List<ParameterMetaData> parameters) implements ConstructorMetadata {
 
+    @Override
     public boolean isDefault() {
         return parameters.isEmpty();
     }

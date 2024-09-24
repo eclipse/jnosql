@@ -26,6 +26,7 @@ public abstract class AbstractKeyValueRepositoryProxy<T, K> extends AbstractRepo
 
     protected abstract Class<T> type();
 
+    @Override
     protected abstract Class<?> repositoryType();
 
 

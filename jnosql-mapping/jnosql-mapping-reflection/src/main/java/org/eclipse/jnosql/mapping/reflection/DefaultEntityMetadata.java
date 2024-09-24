@@ -107,7 +107,7 @@ class DefaultEntityMetadata implements EntityMetadata {
 
     @Override
     public Optional<InheritanceMetadata> inheritance() {
-        return Optional.ofNullable(inheritance);
+        return ofNullable(inheritance);
     }
 
     @Override
@@ -157,7 +157,7 @@ class DefaultEntityMetadata implements EntityMetadata {
 
     @Override
     public Optional<FieldMetadata> id() {
-        return Optional.ofNullable(id);
+        return ofNullable(id);
     }
 
     @Override

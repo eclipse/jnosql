@@ -66,6 +66,7 @@ public interface FieldMetadata extends FieldParameterMetadata {
      *
      * @return true if annotated with {@link Id}
      */
+    @Override
     boolean isId();
 
     /**

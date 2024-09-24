@@ -48,24 +48,30 @@ public final class RepositoryObserverParser {
      * @return the field result
      */
     public String field(String field) {
-        if (metadata.fieldMapping(field).isPresent()) {
+        // Early return if direct field mapping is available
+        Optional<FieldMetadata> directMapping = metadata.fieldMapping(field);
+        if (directMapping.isPresent()) {
             return metadata.columnField(field);
-        } else {
-            String currentField = "";
-            String[] fields = field.split(CAMEL_CASE);
-            for (int index = 0; index < fields.length; index++) {
-                if (currentField.isEmpty()) {
-                    currentField = capitalize(fields[index], false);
-                } else {
-                    currentField = currentField + capitalize(fields[index], true);
-                }
-                Optional<FieldMetadata> mapping = metadata.fieldMapping(currentField);
-                if (mapping.isPresent()) {
-                    String name = mapping.map(FieldMetadata::name).orElseThrow();
-                    return name + concat(index, fields);
-                }
+        }
+
+        StringBuilder currentField = new StringBuilder();
+        String[] fieldParts = field.split(CAMEL_CASE);
+
+        // Iterate through parts of the field to find the mapped field name
+        for (int index = 0; index < fieldParts.length; index++) {
+            if (currentField.isEmpty()) {
+                currentField.append(capitalize(fieldParts[index], false));
+            } else {
+                currentField.append(capitalize(fieldParts[index], true));
+            }
+            Optional<FieldMetadata> mappedField = metadata.fieldMapping(currentField.toString());
+            if (mappedField.isPresent()) {
+                String mappedName = mappedField.map(FieldMetadata::name).orElseThrow();
+                return mappedName + concat(index, fieldParts);
             }
         }
+
+        // No mapping found, return the original field
         return field;
     }
 

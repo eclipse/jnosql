@@ -23,6 +23,7 @@ import org.eclipse.jnosql.mapping.core.query.AbstractRepository;
  */
 public abstract class AbstractKeyValueRepository<T, K> extends AbstractRepository<T, K> {
 
+    @Override
     protected abstract KeyValueTemplate template();
 
     @Override

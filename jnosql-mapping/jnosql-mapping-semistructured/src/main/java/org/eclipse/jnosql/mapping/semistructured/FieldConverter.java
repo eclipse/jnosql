@@ -111,13 +111,13 @@ enum FieldConverter {
                     var array = arrayFieldMetadata.arrayInstance(elements);
                     field.write(instance, array);
                 } else {
-                    executeNoEmbeddableField(instance, element, field, converter, arrayFieldMetadata);
+                    executeNoEmbeddableField(instance, element, field, arrayFieldMetadata);
                 }
             }
         }
 
 
-        private <X, Y, T> void executeNoEmbeddableField(T instance, Element element, FieldMetadata field, EntityConverter converter,
+        private <X, Y, T> void executeNoEmbeddableField(T instance, Element element, FieldMetadata field,
                                                         ArrayFieldMetadata arrayFieldMetadata) {
             var elements = new ArrayList<>();
             var value = element.get();
@@ -136,7 +136,7 @@ enum FieldConverter {
             field.write(instance, array);
         }
 
-        private <X, Y> void executeIterable(ArrayFieldMetadata arrayFieldMetadata, Iterable<?> iterable, ArrayList<Object> elements) {
+        private <X, Y> void executeIterable(ArrayFieldMetadata arrayFieldMetadata, Iterable<?> iterable, List<Object> elements) {
             for (Object item : iterable) {
                 elements.add(Value.of(item).get(arrayFieldMetadata.elementType()));
             }

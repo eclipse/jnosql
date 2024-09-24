@@ -67,7 +67,7 @@ public enum QueryType {
      */
     public static QueryType parse(String query) {
         Objects.requireNonNull(query, "Query string cannot be null");
-        String command = QueryType.extractQueryCommand(query);
+        String command = extractQueryCommand(query);
         return switch (command) {
             case "DELETE" -> DELETE;
             case "UPDATE" -> UPDATE;

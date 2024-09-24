@@ -95,6 +95,7 @@
         <datafaker.version>2.3.1</datafaker.version>
         <pi-test.version>1.16.1</pi-test.version>
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
+        <apache.pdm.plugin.version>3.24.0</apache.pdm.plugin.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -543,6 +544,29 @@
                         <excludedMethod>toString</excludedMethod>
                     </excludedMethods>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${apache.pdm.plugin.version}</version>
+                <configuration>
+                    <rulesets>
+                        <ruleset>pmd/pmd-rules.xml</ruleset>
+                    </rulesets>
+                    <excludes>
+                        <exclude>**/org/eclipse/jnosql/query/**/*.java</exclude>
+                        <exclude>**/org/eclipse/jnosql/communication/query/**/*.java</exclude>
+                    </excludes>
+                    <failOnViolation>true</failOnViolation>
+                    <printFailingErrors>true</printFailingErrors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <pluginManagement>

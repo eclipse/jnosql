@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * An implementation of {@link CollectionSupplier} to {@link ArrayList}
  */
-public class ListSupplier implements CollectionSupplier<ArrayList<?>> {
+public class ListSupplier implements CollectionSupplier<List<?>> {
     @Override
     public boolean test(Class<?> type) {
         return List.class.equals(type) ||

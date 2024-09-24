@@ -41,21 +41,21 @@ public enum MappingType {
      */
     public static MappingType of(Class<?> type) {
         if (Collection.class.isAssignableFrom(type)) {
-            return MappingType.COLLECTION;
+            return COLLECTION;
         }
         if (Map.class.isAssignableFrom(type)) {
-            return MappingType.MAP;
+            return MAP;
         }
         if (type.isAnnotationPresent(Entity.class)) {
-            return MappingType.ENTITY;
+            return ENTITY;
         }
         if (type.isAnnotationPresent(Embeddable.class)) {
             var value = type.getAnnotation(Embeddable.class).value();
-            return value == Embeddable.EmbeddableType.FLAT ? MappingType.EMBEDDED : MappingType.EMBEDDED_GROUP;
+            return value == Embeddable.EmbeddableType.FLAT ? EMBEDDED : EMBEDDED_GROUP;
         }
         if(type.isArray()) {
-            return MappingType.ARRAY;
+            return ARRAY;
         }
-        return MappingType.DEFAULT;
+        return DEFAULT;
     }
 }

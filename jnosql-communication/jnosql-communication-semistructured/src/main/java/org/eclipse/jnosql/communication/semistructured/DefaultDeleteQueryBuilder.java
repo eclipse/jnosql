@@ -34,7 +34,7 @@ class DefaultDeleteQueryBuilder implements DeleteQueryBuilder {
 
     @Override
     public DeleteQueryBuilder delete(String column) {
-        Objects.requireNonNull(column, "column is required");
+        requireNonNull(column, "column is required");
         this.columns.add(column);
         return this;
     }
@@ -49,14 +49,14 @@ class DefaultDeleteQueryBuilder implements DeleteQueryBuilder {
 
     @Override
     public DeleteQueryBuilder from(String entity) {
-        Objects.requireNonNull(entity, "entity is required");
+        requireNonNull(entity, "entity is required");
         this.entity = entity;
         return this;
     }
 
     @Override
     public DeleteQueryBuilder where(CriteriaCondition condition) {
-        Objects.requireNonNull(condition, "condition is required");
+        requireNonNull(condition, "condition is required");
         this.condition = condition;
         return this;
     }
@@ -71,7 +71,7 @@ class DefaultDeleteQueryBuilder implements DeleteQueryBuilder {
 
     @Override
     public void delete(DatabaseManager manager) {
-        Objects.requireNonNull(manager, "manager is required");
+        requireNonNull(manager, "manager is required");
         manager.delete(build());
     }
 
