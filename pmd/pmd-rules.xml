@@ -13,6 +13,8 @@ and then referenced by URL https://nexus.cicd.portit.io/repository/portit-webapp
         <exclude name="GuardLogStatement" />
         <exclude name="AbstractClassWithoutAbstractMethod" />
         <exclude name="JUnitTestsShouldIncludeAssert" />
+        <exclude name="UseVarargs" />
+        <exclude name="MethodReturnsInternalArray" />
     </rule>
     <rule ref="category/java/codestyle.xml">
         <exclude name="LongVariable" />
@@ -28,6 +30,7 @@ and then referenced by URL https://nexus.cicd.portit.io/repository/portit-webapp
         <exclude name="UnnecessaryCast" />
         <exclude name="TooManyStaticImports" />
         <exclude name="CallSuperInConstructor" />
+        <exclude name="LinguisticNaming" />
     </rule>
     <rule ref="category/java/security.xml" />
     <rule ref="category/java/performance.xml" />
