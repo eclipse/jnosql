@@ -70,12 +70,13 @@ public class RepositoryKeyValueBean<T extends CrudRepository> extends AbstractBe
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public T create(CreationalContext<T> creationalContext) {
         KeyValueTemplate template = provider.isEmpty() ? getInstance(KeyValueTemplate.class) :
                 getInstance(KeyValueTemplate.class, DatabaseQualifier.ofKeyValue(provider));
         EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
-        KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(type, entities, template);
+        var handler = new KeyValueRepositoryProxy<>(type, entities, template);
         return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

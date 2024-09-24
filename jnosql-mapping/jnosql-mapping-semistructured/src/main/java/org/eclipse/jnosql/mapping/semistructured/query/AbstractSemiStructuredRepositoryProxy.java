@@ -26,11 +26,12 @@ import org.eclipse.jnosql.mapping.core.repository.RepositoryReflectionUtils;
 import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Template method to Repository proxy on column
@@ -138,12 +139,15 @@ public abstract class AbstractSemiStructuredRepositoryProxy<T, K> extends BaseSe
     }
 
     private static List<Sort<?>> getSorts(Method method, EntityMetadata metadata) {
-        List<Sort<?>> sorts = new ArrayList<>();
-        OrderBy[] orders = method.getAnnotationsByType(OrderBy.class);
-        Stream.of(orders)
-                .map(o -> (o.descending() ? Sort.desc(metadata.columnField(o.value())) : Sort.asc(metadata.columnField(o.value()))))
-                .forEach(sorts::add);
-        return sorts;
+        return Stream.of(method.getAnnotationsByType(OrderBy.class))
+                .map(order -> {
+                    String column = metadata.columnField(order.value());
+                    if (column == null || column.isEmpty()) {
+                        throw new IllegalArgumentException("Invalid field in @OrderBy: " + order.value());
+                    }
+                    return order.descending() ? Sort.desc(column) : Sort.asc(column);
+                })
+                .collect(toList());
     }
 
 }
