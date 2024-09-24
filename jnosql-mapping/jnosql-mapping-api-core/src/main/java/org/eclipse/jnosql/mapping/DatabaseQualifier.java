@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping;
 
 
 import jakarta.enterprise.util.AnnotationLiteral;
+import org.eclipse.jnosql.communication.util.StringUtils;
 
 import java.util.Objects;
 
@@ -78,7 +79,7 @@ public final class DatabaseQualifier extends AnnotationLiteral<Database> impleme
      */
     public static DatabaseQualifier ofDocument(String provider) {
         Objects.requireNonNull(provider, "provider is required");
-        if (provider.trim().isEmpty()) {
+        if (StringUtils.isBlank(provider)) {
             return DEFAULT_DOCUMENT_PROVIDER;
         }
         return new DatabaseQualifier(provider, DOCUMENT);
@@ -104,7 +105,7 @@ public final class DatabaseQualifier extends AnnotationLiteral<Database> impleme
      */
     public static DatabaseQualifier ofColumn(String provider) {
         Objects.requireNonNull(provider, "provider is required");
-        if (provider.trim().isEmpty()) {
+        if (StringUtils.isBlank(provider)) {
             return DEFAULT_COLUMN_PROVIDER;
         }
         return new DatabaseQualifier(provider, COLUMN);
@@ -129,7 +130,7 @@ public final class DatabaseQualifier extends AnnotationLiteral<Database> impleme
      */
     public static DatabaseQualifier ofKeyValue(String provider) {
         Objects.requireNonNull(provider, "provider is required");
-        if (provider.trim().isEmpty()) {
+        if (StringUtils.isBlank(provider)) {
             return DEFAULT_KEY_VALUE_PROVIDER;
         }
         return new DatabaseQualifier(provider, KEY_VALUE);
@@ -155,7 +156,7 @@ public final class DatabaseQualifier extends AnnotationLiteral<Database> impleme
      */
     public static DatabaseQualifier ofGraph(String provider) {
         Objects.requireNonNull(provider, "provider is required");
-        if (provider.trim().isEmpty()) {
+        if (StringUtils.isBlank(provider)) {
             return DEFAULT_KEY_VALUE_PROVIDER;
         }
         return new DatabaseQualifier(provider, GRAPH);

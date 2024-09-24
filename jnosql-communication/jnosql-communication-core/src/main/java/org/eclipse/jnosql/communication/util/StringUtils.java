@@ -14,7 +14,10 @@
  */
 package org.eclipse.jnosql.communication.util;
 
-public class StringUtils {
+public final class StringUtils {
+
+    private StringUtils() {
+    }
 
     public static boolean isBlank(final CharSequence cs) {
         final int strLen = length(cs);
