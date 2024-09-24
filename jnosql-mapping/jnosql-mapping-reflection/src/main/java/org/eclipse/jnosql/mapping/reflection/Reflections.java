@@ -35,7 +35,6 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -317,7 +316,7 @@ public class Reflections {
      * @throws NullPointerException when type is null
      */
     Optional<InheritanceMetadata> getInheritance(Class<?> type) {
-        Objects.requireNonNull(type, "entity is required");
+        requireNonNull(type, "entity is required");
         if (isInheritance(type)) {
             Class<?> parent = type.getSuperclass();
             String discriminatorColumn = getDiscriminatorColumn(parent);
@@ -340,7 +339,7 @@ public class Reflections {
      * @return true if it has the {@link Inheritance} annotation
      */
     boolean hasInheritanceAnnotation(Class<?> entity) {
-        Objects.requireNonNull(entity, "entity is required");
+        requireNonNull(entity, "entity is required");
         return entity.getAnnotation(Inheritance.class) != null;
     }
 
@@ -358,7 +357,7 @@ public class Reflections {
      * @throws NullPointerException if the field is null
      */
     public String getUDTName(Field field) {
-        Objects.requireNonNull(field, "field is required");
+        requireNonNull(field, "field is required");
         return Optional.ofNullable(field.getAnnotation(Column.class))
                 .map(Column::udt)
                 .filter(StringUtils::isNotBlank)

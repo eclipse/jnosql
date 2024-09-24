@@ -23,7 +23,7 @@ import java.util.TreeSet;
 /**
  * An implementation of {@link CollectionSupplier} to {@link TreeSet}
  */
-public class TreeSetSupplier implements CollectionSupplier<TreeSet<?>> {
+public class TreeSetSupplier implements CollectionSupplier<SortedSet<?>> {
 
     @Override
     public boolean test(Class<?> type) {

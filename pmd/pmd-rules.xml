@@ -31,6 +31,8 @@ and then referenced by URL https://nexus.cicd.portit.io/repository/portit-webapp
         <exclude name="TooManyStaticImports" />
         <exclude name="CallSuperInConstructor" />
         <exclude name="LinguisticNaming" />
+        <exclude name="EmptyMethodInAbstractClassShouldBeAbstract" />
+        <exclude name="LambdaCanBeMethodReference" />
     </rule>
     <rule ref="category/java/security.xml" />
     <rule ref="category/java/performance.xml" />

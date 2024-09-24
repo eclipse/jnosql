@@ -24,7 +24,6 @@ import org.eclipse.jnosql.mapping.metadata.EntityMetadata;
 import org.eclipse.jnosql.mapping.metadata.FieldMetadata;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -104,7 +103,7 @@ public abstract class AbstractRepository<T, K> implements NoSQLRepository<T, K> 
 
     @Override
     public <S extends T> S save(S entity) {
-        Objects.requireNonNull(entity, "Entity is required");
+        requireNonNull(entity, "Entity is required");
         Object id = getIdField().read(entity);
         if (nonNull(id) && existsById((K) id)) {
             return template().update(entity);
@@ -153,7 +152,7 @@ public abstract class AbstractRepository<T, K> implements NoSQLRepository<T, K> 
 
     @Override
     public void delete(T entity) {
-        Objects.requireNonNull(entity, "entity is required");
+        requireNonNull(entity, "entity is required");
         EntityMetadata metadata = entityMetadata();
         FieldMetadata id = metadata.id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
         template().delete(metadata.type(), id.read(entity));
@@ -161,32 +160,32 @@ public abstract class AbstractRepository<T, K> implements NoSQLRepository<T, K> 
 
     @Override
     public void deleteAll(List<? extends T>  entities) {
-        Objects.requireNonNull(entities, "entities is required");
+        requireNonNull(entities, "entities is required");
         entities.forEach(this::delete);
     }
 
     @Override
     public <S extends T> S insert(S entity) {
-        Objects.requireNonNull(entity, "entity is required");
+        requireNonNull(entity, "entity is required");
         return template().insert(entity);
     }
 
     @Override
     public <S extends T> List<S> insertAll(List<S> entities) {
-        Objects.requireNonNull(entities, "entities is required");
+        requireNonNull(entities, "entities is required");
         return stream(template().insert(entities).spliterator(), false)
                 .toList();
     }
 
     @Override
     public <S extends T> S update(S entity) {
-        Objects.requireNonNull(entity, "entity is required");
+        requireNonNull(entity, "entity is required");
         return template().update(entity);
     }
 
     @Override
     public <S extends T> List<S> updateAll(List<S> entities) {
-        Objects.requireNonNull(entities, "entities is required");
+        requireNonNull(entities, "entities is required");
         return stream(template().update(entities).spliterator(), false)
                 .toList();
     }

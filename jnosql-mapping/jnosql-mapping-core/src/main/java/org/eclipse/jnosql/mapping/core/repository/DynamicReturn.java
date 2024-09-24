@@ -37,6 +37,22 @@ import static java.util.Objects.requireNonNull;
  */
 public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
+    private final Class<T> classSource;
+
+    private final Method methodSource;
+
+    private final Supplier<Optional<T>> singleResult;
+
+    private final Supplier<Stream<T>> result;
+
+    private final PageRequest pageRequest;
+
+    private final Function<PageRequest, Optional<T>> singleResultPagination;
+
+    private final Function<PageRequest, Stream<T>> streamPagination;
+
+    private final Function<PageRequest, Page<T>> page;
+
     /**
      * A predicate to check it the object is instance of {@link PageRequest}
      */
@@ -51,7 +67,6 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     public static Function<Supplier<Stream<?>>, Supplier<Optional<?>>> toSingleResult(final Method method) {
         return new SupplierConverter(method);
     }
-
 
     /**
      * Finds {@link SpecialParameters} from array object
@@ -108,22 +123,6 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
             }
         }
 
-
-    private final Class<T> classSource;
-
-    private final Method methodSource;
-
-    private final Supplier<Optional<T>> singleResult;
-
-    private final Supplier<Stream<T>> result;
-
-    private final PageRequest pageRequest;
-
-    private final Function<PageRequest, Optional<T>> singleResultPagination;
-
-    private final Function<PageRequest, Stream<T>> streamPagination;
-
-    private final Function<PageRequest, Page<T>> page;
 
     private DynamicReturn(Class<T> classSource, Method methodSource,
                           Supplier<Optional<T>> singleResult,

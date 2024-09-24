@@ -40,7 +40,6 @@ import org.eclipse.jnosql.mapping.metadata.InheritanceMetadata;
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -65,6 +64,10 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
     private static final Logger LOGGER = Logger.getLogger(AbstractSemiStructuredTemplate.class.getName());
 
     private static final QueryParser PARSER = new QueryParser();
+
+    private final UnaryOperator<CommunicationEntity> insert = e -> manager().insert(e);
+
+    private final UnaryOperator<CommunicationEntity> update = e -> manager().update(e);
 
     /**
      * Retrieves the converter used to convert between entity objects and communication entities.
@@ -100,10 +103,6 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
      * @return the converters
      */
     protected abstract Converters converters();
-
-    private final UnaryOperator<CommunicationEntity> insert = e -> manager().insert(e);
-
-    private final UnaryOperator<CommunicationEntity> update = e -> manager().update(e);
 
     @Override
     public <T> T insert(T entity) {
@@ -294,27 +293,27 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
 
     @Override
     public <T> QueryMapper.MapperFrom select(Class<T> type) {
-        Objects.requireNonNull(type, "type is required");
+        requireNonNull(type, "type is required");
         EntityMetadata metadata = entities().get(type);
         return new MapperSelect(metadata, converters(), this);
     }
 
     @Override
     public <T> QueryMapper.MapperDeleteFrom delete(Class<T> type) {
-        Objects.requireNonNull(type, "type is required");
+        requireNonNull(type, "type is required");
         EntityMetadata metadata = entities().get(type);
         return new MapperDelete(metadata, converters(), this);
     }
 
     @Override
     public <T> Stream<T> findAll(Class<T> type) {
-        Objects.requireNonNull(type, "type is required");
+        requireNonNull(type, "type is required");
         return select(findAllQuery(type));
     }
 
     @Override
     public <T> void deleteAll(Class<T> type) {
-        Objects.requireNonNull(type, "type is required");
+        requireNonNull(type, "type is required");
         EntityMetadata metadata = entities().get(type);
         if(metadata.inheritance().isPresent()){
             InheritanceMetadata inheritanceMetadata = metadata.inheritance().orElseThrow();
@@ -330,8 +329,8 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
 
     @Override
     public <T> CursoredPage<T> selectCursor(SelectQuery query, PageRequest pageRequest){
-        Objects.requireNonNull(query, "query is required");
-        Objects.requireNonNull(pageRequest, "pageRequest is required");
+        requireNonNull(query, "query is required");
+        requireNonNull(pageRequest, "pageRequest is required");
         LOGGER.finest(() -> "Executing query: " + query);
         var enableMultipleSorting = MicroProfileSettings.INSTANCE.get(CURSOR_PAGINATION_MULTIPLE_SORTING, Boolean.class)
                 .orElse(false);
@@ -351,8 +350,8 @@ public abstract class AbstractSemiStructuredTemplate implements SemiStructuredTe
 
     @Override
     public <T> Page<T> selectOffSet(SelectQuery query, PageRequest pageRequest) {
-        Objects.requireNonNull(query, "query is required");
-        Objects.requireNonNull(pageRequest, "pageRequest is required");
+        requireNonNull(query, "query is required");
+        requireNonNull(pageRequest, "pageRequest is required");
         var queryPage = new MappingQuery(query.sorts(), pageRequest.size(), NoSQLPage.skip(pageRequest),
                 query.condition().orElse(null), query.name());
         Stream<T> result = select(queryPage);

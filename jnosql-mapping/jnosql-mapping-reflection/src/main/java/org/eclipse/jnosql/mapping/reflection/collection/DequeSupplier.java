@@ -23,7 +23,7 @@ import java.util.Queue;
 /**
  * An implementation of {@link CollectionSupplier} to {@link LinkedList}
  */
-public class DequeSupplier implements CollectionSupplier<LinkedList<?>> {
+public class DequeSupplier implements CollectionSupplier<Deque<?>> {
 
     @Override
     public boolean test(Class<?> type) {
