@@ -116,7 +116,7 @@ enum ParameterConverter {
             case COLLECTION -> collectionConverter(parameter, entities);
             case ARRAY -> arrayConverter(parameter, entities);
             case MAP -> MAP;
-            case ENTITY, EMBEDDED_GROUP -> ENTITY;
+            case ENTITY, EMBEDDED_GROUP, EMBEDDED -> ENTITY;
             default -> DEFAULT;
         };
     }
