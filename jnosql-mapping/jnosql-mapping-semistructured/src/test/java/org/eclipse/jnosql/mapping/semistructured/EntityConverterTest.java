@@ -952,7 +952,7 @@ class EntityConverterTest {
             softly.assertThat(entity.getStudent()).isNotNull();
             softly.assertThat(entity.getStudent().getStudentId()).isEqualTo("123");
             softly.assertThat(entity.getStudent().getFullName()).isEqualTo("Ada");
-            softly.assertThat(entity.getId()).isEqualTo(12);
+            softly.assertThat(entity.getId()).isEqualTo("12");
         });
     }
 
