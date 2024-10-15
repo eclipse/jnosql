@@ -364,7 +364,7 @@ class EntityConverterConstructorTest {
     }
 
     @Test
-    void shouldConvertFromFlat() {
+    void shouldConvertFromFlatCommunicationFromEntity() {
 
         CommunicationEntity communication = CommunicationEntity.of(Room.class.getSimpleName());
         communication.add("_id", 12);
@@ -378,6 +378,19 @@ class EntityConverterConstructorTest {
             softly.assertThat(entity.guest().documentNumber()).isEqualTo("123");
             softly.assertThat(entity.guest().name()).isEqualTo("Ada");
             softly.assertThat(entity.number()).isEqualTo(12);
+        });
+    }
+
+    @Test
+    void shouldConvertFromFlatCommunicationFromEntityToCommunication() {
+        var room = new Room(12, new Guest("123", "Ada"));
+        CommunicationEntity communication = converter.toCommunication(room);
+
+        SoftAssertions.assertSoftly(softly->{
+            softly.assertThat(communication).isNotNull();
+            softly.assertThat(communication.find("_id").orElseThrow().get()).isEqualTo(12);
+            softly.assertThat(communication.find("documentNumber").orElseThrow().get()).isEqualTo("123");
+            softly.assertThat(communication.find("name").orElseThrow().get()).isEqualTo("Ada");
         });
     }
 
