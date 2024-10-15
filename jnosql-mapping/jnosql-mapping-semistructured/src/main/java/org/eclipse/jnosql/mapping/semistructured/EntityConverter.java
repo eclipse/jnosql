@@ -179,12 +179,18 @@ public abstract class EntityConverter {
     private <T> T convertEntityByConstructor(List<Element> elements, EntityMetadata mapping) {
         ConstructorBuilder builder = ConstructorBuilder.of(mapping.constructor());
         for (ParameterMetaData parameter : builder.parameters()) {
+            Predicate<Element> matchName = c -> c.name().equals(parameter.name());
+            boolean isFlatEmbedded = EMBEDDED.equals(parameter.mappingType());
             Optional<Element> element = elements.stream()
-                    .filter(c -> c.name().equals(parameter.name()))
+                    .filter(matchName.or(e -> isFlatEmbedded))
                     .findFirst();
             element.ifPresentOrElse(c -> {
-                ParameterConverter converter = ParameterConverter.of(parameter, entities());
-                converter.convert(this, c, parameter, builder);
+                var converter = ParameterConverter.of(parameter, entities());
+                if (isFlatEmbedded) {
+                    converter.convert(this, Element.of("_", elements), parameter, builder);
+                } else {
+                    converter.convert(this, c, parameter, builder);
+                }
             }, builder::addEmptyParameter);
         }
         return builder.build();

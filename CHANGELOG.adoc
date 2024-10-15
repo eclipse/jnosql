@@ -8,6 +8,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+=== Fixed
+
+- Fix flat embeddable in the constructor builder
+
 == [1.1.2] - 2023-09-15
 
 === Added

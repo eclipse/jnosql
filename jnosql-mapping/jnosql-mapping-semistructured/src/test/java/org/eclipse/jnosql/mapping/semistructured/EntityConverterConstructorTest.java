@@ -31,7 +31,9 @@ import org.eclipse.jnosql.mapping.semistructured.entities.constructor.BeerFactor
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.BookBag;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.Computer;
+import org.eclipse.jnosql.mapping.semistructured.entities.constructor.Guest;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.PetOwner;
+import org.eclipse.jnosql.mapping.semistructured.entities.constructor.Room;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.SocialMediaFollowers;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.SocialMediaFollowersRecord;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.SuperHero;
@@ -359,6 +361,37 @@ class EntityConverterConstructorTest {
 
         });
 
+    }
+
+    @Test
+    void shouldConvertFromFlatCommunicationFromEntity() {
+
+        CommunicationEntity communication = CommunicationEntity.of(Room.class.getSimpleName());
+        communication.add("_id", 12);
+        communication.add("documentNumber", "123");
+        communication.add("name", "Ada");
+        Room entity = converter.toEntity(communication);
+
+        SoftAssertions.assertSoftly(softly->{
+            softly.assertThat(entity).isNotNull();
+            softly.assertThat(entity.guest()).isNotNull();
+            softly.assertThat(entity.guest().documentNumber()).isEqualTo("123");
+            softly.assertThat(entity.guest().name()).isEqualTo("Ada");
+            softly.assertThat(entity.number()).isEqualTo(12);
+        });
+    }
+
+    @Test
+    void shouldConvertFromFlatCommunicationFromEntityToCommunication() {
+        var room = new Room(12, new Guest("123", "Ada"));
+        CommunicationEntity communication = converter.toCommunication(room);
+
+        SoftAssertions.assertSoftly(softly->{
+            softly.assertThat(communication).isNotNull();
+            softly.assertThat(communication.find("_id").orElseThrow().get()).isEqualTo(12);
+            softly.assertThat(communication.find("documentNumber").orElseThrow().get()).isEqualTo("123");
+            softly.assertThat(communication.find("name").orElseThrow().get()).isEqualTo("Ada");
+        });
     }
 
 }

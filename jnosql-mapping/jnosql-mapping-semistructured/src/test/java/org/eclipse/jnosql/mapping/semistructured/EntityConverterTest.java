@@ -50,6 +50,8 @@ import org.eclipse.jnosql.mapping.semistructured.entities.Worker;
 import org.eclipse.jnosql.mapping.semistructured.entities.WorkflowStep;
 import org.eclipse.jnosql.mapping.semistructured.entities.ZipCode;
 import org.eclipse.jnosql.mapping.semistructured.entities.constructor.BookBag;
+import org.eclipse.jnosql.mapping.semistructured.entities.constructor.Guest;
+import org.eclipse.jnosql.mapping.semistructured.entities.constructor.Room;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
@@ -934,6 +936,37 @@ class EntityConverterTest {
 
         });
 
+    }
+
+    @Test
+    void shouldConvertFromFlatCommunicationFromEntity() {
+
+        CommunicationEntity communication = CommunicationEntity.of(Course.class.getSimpleName());
+        communication.add("_id", 12);
+        communication.add("studentId", "123");
+        communication.add("fullName", "Ada");
+        Course entity = converter.toEntity(communication);
+
+        SoftAssertions.assertSoftly(softly->{
+            softly.assertThat(entity).isNotNull();
+            softly.assertThat(entity.getStudent()).isNotNull();
+            softly.assertThat(entity.getStudent().getStudentId()).isEqualTo("123");
+            softly.assertThat(entity.getStudent().getFullName()).isEqualTo("Ada");
+            softly.assertThat(entity.getId()).isEqualTo("12");
+        });
+    }
+
+    @Test
+    void shouldConvertFromFlatCommunicationFromEntityToCommunication() {
+        var course = new Course("12", new Student("123", "Ada"));
+        CommunicationEntity communication = converter.toCommunication(course);
+
+        SoftAssertions.assertSoftly(softly->{
+            softly.assertThat(communication).isNotNull();
+            softly.assertThat(communication.find("_id").orElseThrow().get()).isEqualTo("12");
+            softly.assertThat(communication.find("studentId").orElseThrow().get()).isEqualTo("123");
+            softly.assertThat(communication.find("fullName").orElseThrow().get()).isEqualTo("Ada");
+        });
     }
 
 
