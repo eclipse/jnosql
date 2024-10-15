@@ -27,6 +27,14 @@ public class Course {
     @Column
     private Student student;
 
+    public Course(String id, Student student) {
+        this.id = id;
+        this.student = student;
+    }
+
+    public Course() {
+    }
+
     public String getId() {
         return id;
     }

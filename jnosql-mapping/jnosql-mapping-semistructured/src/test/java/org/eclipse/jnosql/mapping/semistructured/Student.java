@@ -26,6 +26,14 @@ public class Student {
     @Column
     private String fullName;
 
+    public Student(String studentId, String fullName) {
+        this.studentId = studentId;
+        this.fullName = fullName;
+    }
+
+    public Student() {
+    }
+
     public String getStudentId() {
         return studentId;
     }
