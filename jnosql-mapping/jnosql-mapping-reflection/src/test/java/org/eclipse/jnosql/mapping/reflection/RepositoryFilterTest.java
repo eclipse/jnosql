@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -35,12 +35,15 @@ class RepositoryFilterTest {
 
     private Predicate<Class<?>> valid;
 
-    private Predicate<Class<?>> invalid;
+    private Predicate<Class<?>> supported;
+    
+    private Predicate<Class<?>> validAndSupported;
 
     @BeforeEach
     void setUp() {
-        this.valid = RepositoryFilter.INSTANCE;
-        this.invalid = RepositoryFilter.INSTANCE::isInvalid;
+        this.valid = RepositoryFilter.INSTANCE::isValid;
+        this.supported = RepositoryFilter.INSTANCE::isSupported;
+        this.validAndSupported = RepositoryFilter.INSTANCE;
     }
 
     @Test
@@ -58,27 +61,49 @@ class RepositoryFilterTest {
         assertThat(valid.test(StringSupplier.class)).isFalse();
         assertThat(valid.test(Repository.class)).isFalse();
     }
-
+    
     @Test
-    void shouldReturnInvalid(){
-        assertThat(invalid.test(PersonRepository.class)).isFalse();
-        assertThat(invalid.test(People.class)).isFalse();
-        assertThat(invalid.test(Persons.class)).isFalse();
-        assertThat(invalid.test(NoSQLVendor.class)).isTrue();
-        assertThat(invalid.test(Server.class)).isTrue();
+    void shouldReturnSupportedWhenAnnotatedWithRepositoryANY_PROVIDER() {
+        assertThat(supported.test(PersonRepository.class)).isTrue();
+        assertThat(supported.test(Persons.class)).isTrue();
+    }
+    
+    @Test
+    void shouldReturnSupportedWhenAnnotatedWithRepositoryEclipse_JNoSQL() {
+        assertThat(supported.test(Server.class)).isTrue();
     }
 
-
+    @Test
+    void shouldReturnUnsupportedWhenNotAnnotatedWithRepository() {
+        assertThat(supported.test(NoSQLVendor.class)).isFalse();
+        assertThat(supported.test(People.class)).isFalse();
+        assertThat(supported.test(StringSupplier.class)).isFalse();
+        assertThat(supported.test(Repository.class)).isFalse();
+    }
+    
+    @Test
+    void shouldReturnValidAndSupported() {
+        assertThat(validAndSupported.test(PersonRepository.class)).isTrue();
+        assertThat(validAndSupported.test(Persons.class)).isTrue();
+    }
+    
+    @Test
+    void shouldReturnReturnNotValidAndSupported() {
+        assertThat(validAndSupported.test(People.class)).isFalse();
+        assertThat(validAndSupported.test(Server.class)).isFalse();
+        assertThat(validAndSupported.test(StringSupplier.class)).isFalse();
+    }
+    
     private interface People extends BasicRepository<Person, Long> {
 
     }
 
-    private interface Persons extends BasicRepository<Person, Long> {
-
+    @jakarta.data.repository.Repository
+    public interface Persons extends BasicRepository<Person, Long> {
     }
-
+	
+    @jakarta.data.repository.Repository(provider = "Eclipse JNoSQL")
     private interface Server extends BasicRepository<Computer, String> {
-
     }
 
     private interface StringSupplier extends Supplier<String> {

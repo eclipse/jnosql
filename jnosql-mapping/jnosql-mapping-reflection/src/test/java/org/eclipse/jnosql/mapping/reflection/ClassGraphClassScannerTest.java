@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.data.repository.CrudRepository;
 import org.eclipse.jnosql.mapping.NoSQLRepository;
+import org.eclipse.jnosql.mapping.reflection.RepositoryFilterTest.Persons;
 import org.eclipse.jnosql.mapping.reflection.entities.AnimalRepository;
 import org.eclipse.jnosql.mapping.reflection.entities.Contact;
 import org.eclipse.jnosql.mapping.reflection.entities.Job;
@@ -57,8 +58,9 @@ class ClassGraphClassScannerTest {
         Set<Class<?>> reepositores = classScanner.repositories();
         Assertions.assertNotNull(reepositores);
 
-        assertThat(reepositores).hasSize(3)
-                .contains(AnimalRepository.class,
+        assertThat(reepositores).hasSize(4)
+                .contains(Persons.class,
+                		AnimalRepository.class,
                         PersonRepository.class,
                         MovieRepository.class);
     }
@@ -92,8 +94,8 @@ class ClassGraphClassScannerTest {
     @Test
     void shouldReturnStandardRepositories() {
         Set<Class<?>> repositories = classScanner.repositoriesStandard();
-        assertThat(repositories).hasSize(2)
-                .contains(PersonRepository.class, MovieRepository.class);
+        assertThat(repositories).hasSize(3)
+                .contains(Persons.class, PersonRepository.class, MovieRepository.class);
     }
 
     @Test
