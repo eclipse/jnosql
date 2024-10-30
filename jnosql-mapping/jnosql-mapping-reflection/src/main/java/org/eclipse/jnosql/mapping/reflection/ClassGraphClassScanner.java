@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import static java.util.Collections.unmodifiableSet;
@@ -139,7 +140,7 @@ enum ClassGraphClassScanner implements ClassScanner {
                 .getInterfaces()
                 .filter(c -> c.implementsInterface(DataRepository.class))
                 .loadClasses(DataRepository.class)
-                .stream().filter(RepositoryFilter.INSTANCE::isInvalid)
+                .stream().filter(Predicate.not(RepositoryFilter.INSTANCE))
                 .toList();
     }
 
