@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -14,13 +14,15 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-
+import jakarta.data.repository.Repository;
 import jakarta.nosql.Entity;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * A filter validate Repository that Eclipse JNoSQL supports. It will check the first parameter
@@ -31,17 +33,46 @@ enum RepositoryFilter implements Predicate<Class<?>> {
 
     INSTANCE;
 
+    private static final String PROVIDER = "Eclipse JNoSQL"; //TODO move this to a public location accessible to users
+
     @Override
     public boolean test(Class<?> type) {
+        return isSupported(type) && isValid(type);
+    }
+
+    /**
+     * Supported if the provided repository type is Annotated with
+     * {@link Repository} and has a provider of 
+     * {@link RepositoryFilter#PROVIDER} or {@link Repository#ANY_PROVIDER}
+     * 
+     * @param type The repository type
+     * @return
+     */
+    public boolean isSupported(Class<?> type) {
+        Optional<String> provider = getProvider(type);
+        return provider.map(p -> p.equals(Repository.ANY_PROVIDER) || p.equalsIgnoreCase(PROVIDER))
+                .isPresent();
+    }
+
+    /**
+     * Invalid if the provided repository type is parameterized with
+     * an entity type that is not annotated with the {@link Entity} annotation
+     * 
+     * @param type The repository type
+     * @return
+     */
+    public boolean isValid(Class<?> type) {
         Optional<Class<?>> entity = getEntity(type);
         return entity.map(c -> c.getAnnotation(Entity.class))
                 .isPresent();
     }
 
-    public boolean isInvalid(Class<?> type) {
-        Optional<Class<?>> entity = getEntity(type);
-        return entity.map(c -> c.getAnnotation(Entity.class))
-                .isEmpty();
+    private Optional<String> getProvider(Class<?> repository) {
+        Annotation[] annos = repository.getAnnotations();       
+        return Stream.of(annos)
+                .filter(a -> Repository.class.isInstance(a))
+                .map(a -> ((Repository) a).provider())
+                .findAny(); // @Repostiory and provider are not repeatable and thus only 1 or 0 can be present
     }
 
 
