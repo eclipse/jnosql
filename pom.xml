@@ -67,8 +67,8 @@
         <jakarta.data.api.version>1.0.0</jakarta.data.api.version>
         <jakarta.nosql.version>1.0.0-M1</jakarta.nosql.version>
         <jakarta.validation.version>3.1.0</jakarta.validation.version>
-        <maven-javadoc-plugin.vesion>3.10.0</maven-javadoc-plugin.vesion>
-        <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
+        <maven-javadoc-plugin.vesion>3.11.1</maven-javadoc-plugin.vesion>
+        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
         <maven.checkstyle.plugin.version>3.5.0</maven.checkstyle.plugin.version>
         <maven.compile.version>3.13.0</maven.compile.version>
         <maven.compiler.source>17</maven.compiler.source>
@@ -76,8 +76,8 @@
         <maven.surefire.plugin.version>3.5.0</maven.surefire.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.maven.version>3.10.0.2594</sonar.maven.version>
-        <commons.io.version>2.16.1</commons.io.version>
+        <sonar.maven.version>5.0.0.4389</sonar.maven.version>
+        <commons.io.version>2.17.0</commons.io.version>
         <checkstyle.excludes>**/jnosql/query/grammar/**</checkstyle.excludes>
         <weld.se.core.version>5.1.2.Final</weld.se.core.version>
         <yasson.version>3.0.4</yasson.version>
