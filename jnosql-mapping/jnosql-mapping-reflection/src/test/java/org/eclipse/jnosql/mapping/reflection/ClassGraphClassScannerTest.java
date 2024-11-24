@@ -60,7 +60,7 @@ class ClassGraphClassScannerTest {
 
         assertThat(reepositores).hasSize(4)
                 .contains(Persons.class,
-                		AnimalRepository.class,
+                        AnimalRepository.class,
                         PersonRepository.class,
                         MovieRepository.class);
     }

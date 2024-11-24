@@ -33,7 +33,7 @@ enum RepositoryFilter implements Predicate<Class<?>> {
 
     INSTANCE;
 
-    private static final String PROVIDER = "Eclipse JNoSQL"; //TODO move this to a public location accessible to users
+    private static final String PROVIDER = "Eclipse_JNoSQL"; //TODO move this to a public location accessible to users
 
     @Override
     public boolean test(Class<?> type) {
