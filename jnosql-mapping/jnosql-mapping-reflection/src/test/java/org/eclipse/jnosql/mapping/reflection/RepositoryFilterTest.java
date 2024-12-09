@@ -20,9 +20,6 @@ import jakarta.nosql.Id;
 import org.eclipse.jnosql.mapping.reflection.entities.NoSQLVendor;
 import org.eclipse.jnosql.mapping.reflection.entities.Person;
 import org.eclipse.jnosql.mapping.reflection.entities.PersonRepository;
-import org.eclipse.jnosql.mapping.reflection.entities.NoSQLVendor;
-import org.eclipse.jnosql.mapping.reflection.entities.Person;
-import org.eclipse.jnosql.mapping.reflection.entities.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -102,7 +99,7 @@ class RepositoryFilterTest {
     public interface Persons extends BasicRepository<Person, Long> {
     }
 	
-    @jakarta.data.repository.Repository(provider = "Eclipse JNoSQL")
+    @jakarta.data.repository.Repository(provider = "Eclipse_JNoSQL")
     private interface Server extends BasicRepository<Computer, String> {
     }
 
