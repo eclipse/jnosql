@@ -16,6 +16,7 @@
  */
 package org.eclipse.jnosql.communication.reader;
 
+import org.eclipse.jnosql.communication.CommunicationException;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -42,7 +43,7 @@ class UUIDValueReaderTest {
     @Test
     void shouldReturnNullForInvalidString() {
         String invalidUUID = "invalid-uuid";
-        assertThrows(IllegalArgumentException.class, () -> valueReader.read(UUID.class, invalidUUID));
+        assertThrows(CommunicationException.class, () -> valueReader.read(UUID.class, invalidUUID));
     }
 
     @Test
