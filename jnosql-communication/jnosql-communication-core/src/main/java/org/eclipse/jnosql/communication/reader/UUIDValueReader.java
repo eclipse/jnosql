@@ -39,7 +39,7 @@ public class UUIDValueReader implements ValueReader {
         try {
             return UUID.fromString(value.toString());
         } catch (IllegalArgumentException exp) {
-            throw new CommunicationException("There is an error to convert to UUID, because the value is not UUID format: " + value);
+            throw new CommunicationException("There is an error to convert to UUID, because the value is not UUID format: " + value, exp);
         }
     }
 
