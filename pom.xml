@@ -551,7 +551,7 @@
                 <version>${apache.pdm.plugin.version}</version>
                 <configuration>
                     <rulesets>
-                        <ruleset>pmd/pmd-rules.xml</ruleset>
+                        <ruleset>https://raw.githubusercontent.com/eclipse/jnosql/refs/heads/main/pmd/pmd-rules.xml</ruleset>
                     </rulesets>
                     <excludes>
                         <exclude>**/org/eclipse/jnosql/query/**/*.java</exclude>

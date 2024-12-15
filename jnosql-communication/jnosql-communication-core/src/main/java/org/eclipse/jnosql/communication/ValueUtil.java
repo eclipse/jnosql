@@ -35,74 +35,105 @@ public final class ValueUtil {
     @SuppressWarnings("rawtypes")
     private static final Function CONVERT = o -> {
         if (o instanceof Value) {
-            return convert(Value.class.cast(o));
+            return convert((Value) o);
         }
-        return getObject(o);
+        return getObject(o, VALUE_WRITER);
     };
 
     private ValueUtil() {
     }
 
     /**
-     * converter a {@link Value} to Object
+     * Converts a {@link Value} to Object
      *
      * @param value the value
-     * @return a object converted
+     * @return an object converted
      */
     public static Object convert(Value value) {
-        Objects.requireNonNull(value, "value is required");
-        Object val = value.get();
-        if (val instanceof Iterable) {
-            return getObjects(val);
-        }
-        return getObject(val);
+        return convert(value, VALUE_WRITER);
     }
 
+    /**
+     * Converts a {@link Value} using a custom {@link ValueWriter}.
+     *
+     * @param value       the value to be converted
+     * @param valueWriter the custom ValueWriter to use for conversion
+     * @return the converted object
+     */
+    public static Object convert(Value value, ValueWriter<?, ?> valueWriter) {
+        Objects.requireNonNull(value, "value is required");
+        Objects.requireNonNull(valueWriter, "valueWriter is required");
+        Object val = value.get();
+        if (val instanceof Iterable) {
+            return getObjects(val, valueWriter);
+        }
+        return getObject(val, valueWriter);
+    }
 
     /**
-     * Converts the {@link Value} to {@link List}
+     * Converts a {@link Value} to {@link List}
      *
      * @param value the value
      * @return a list object
      */
-    @SuppressWarnings("unchecked")
     public static List<Object> convertToList(Value value) {
+        return convertToList(value, VALUE_WRITER);
+    }
+
+    /**
+     * Converts a {@link Value} to {@link List} using a custom {@link ValueWriter}.
+     *
+     * @param value       the value
+     * @param valueWriter the custom ValueWriter to use for conversion
+     * @return a list object
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Object> convertToList(Value value, ValueWriter<?, ?> valueWriter) {
         Objects.requireNonNull(value, "value is required");
+        Objects.requireNonNull(valueWriter, "valueWriter is required");
         Object val = value.get();
         if (val instanceof Iterable) {
             List<Object> items = new ArrayList<>();
             Iterable.class.cast(val).forEach(items::add);
             if (items.size() == 1) {
                 Object item = items.get(0);
-                //check if it is dynamic params
+                // check if it is dynamic params
                 if (PARAM_CLASS_NAME.equals(item.getClass().getName())) {
                     Object params = Value.class.cast(item).get();
                     if (params instanceof Iterable) {
-                        return getObjects(Iterable.class.cast(params));
+                        return getObjects(Iterable.class.cast(params), valueWriter);
                     } else {
-                        return Collections.singletonList(getObject(params));
+                        return Collections.singletonList(getObject(params, valueWriter));
                     }
                 }
             }
-            return (List<Object>) items.stream().map(CONVERT).collect(toList());
-
+            return (List<Object>) items.stream().map(o -> getObject(o, valueWriter)).collect(toList());
         }
-        return Collections.singletonList(getObject(val));
+        return Collections.singletonList(getObject(val, valueWriter));
     }
 
-    @SuppressWarnings("unchecked")
-    private static List<Object> getObjects(Object val) {
-        return (List<Object>) StreamSupport.stream(Iterable.class.cast(val).spliterator(), false)
-                .map(CONVERT).collect(toList());
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static List<Object> getObjects(Object val, ValueWriter<?, ?> valueWriter) {
+        return (List<Object>) StreamSupport.stream(((Iterable) val).spliterator(), false)
+                .map(o -> {
+                    if (o instanceof Value) {
+                        return convert((Value) o, valueWriter);
+                    }
+                    return getObject(o, valueWriter);
+                })
+                .collect(toList());
     }
 
-    @SuppressWarnings("unchecked")
-    private static Object getObject(Object val) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static Object getObject(Object val, ValueWriter valueWriter) {
         if (val == null) {
             return null;
-        } else if (VALUE_WRITER.test(val.getClass())) {
-            return VALUE_WRITER.write(val);
+        } else if (val instanceof Value) {
+            return convert(Value.class.cast(val), valueWriter);
+        } else if (valueWriter.test(val.getClass())) {
+            return valueWriter.write(val);
         }
         return val;
     }
 }
+
