@@ -20,7 +20,7 @@ import org.eclipse.jnosql.communication.ValueReader;
 
 import java.util.UUID;
 
-public class UUIDValueReader  implements ValueReader {
+public class UUIDValueReader implements ValueReader {
 
     @SuppressWarnings("unchecked")
     @Override
