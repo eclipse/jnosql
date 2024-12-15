@@ -34,8 +34,8 @@ public final class ValueUtil {
     private static final ValueWriter VALUE_WRITER = ValueWriterDecorator.getInstance();
     @SuppressWarnings("rawtypes")
     private static final Function CONVERT = o -> {
-        if (o instanceof Value value) {
-            return convert(value);
+        if (o instanceof Value) {
+            return convert((Value) o);
         }
         return getObject(o, VALUE_WRITER);
     };
@@ -112,10 +112,15 @@ public final class ValueUtil {
         return Collections.singletonList(getObject(val, valueWriter));
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private static List<Object> getObjects(Object val, ValueWriter<?, ?> valueWriter) {
-        return (List<Object>) StreamSupport.stream(Iterable.class.cast(val).spliterator(), false)
-                .map(o -> getObject(o, valueWriter))
+        return (List<Object>) StreamSupport.stream(((Iterable) val).spliterator(), false)
+                .map(o -> {
+                    if (o instanceof Value) {
+                        return convert((Value) o, valueWriter);
+                    }
+                    return getObject(o, valueWriter);
+                })
                 .collect(toList());
     }
 
@@ -123,9 +128,12 @@ public final class ValueUtil {
     private static Object getObject(Object val, ValueWriter valueWriter) {
         if (val == null) {
             return null;
+        } else if (val instanceof Value) {
+            return convert(Value.class.cast(val), valueWriter);
         } else if (valueWriter.test(val.getClass())) {
             return valueWriter.write(val);
         }
         return val;
     }
 }
+
