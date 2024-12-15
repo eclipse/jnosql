@@ -74,4 +74,76 @@ class ValueUtilTest {
         Object result = ValueUtil.convert(Value.ofNull());
         Assertions.assertNull(result);
     }
+
+    @Test
+    void shouldConvertWithCustomWriter() {
+        ValueWriter<Integer, String> customWriter = new ValueWriter<>() {
+            @Override
+            public String write(Integer object) {
+                return "Custom-" + object;
+            }
+
+            @Override
+            public boolean test(Class<?> aClass) {
+                return Integer.class.equals(aClass);
+            }
+        };
+
+        Value value = Value.of(42);
+        assertEquals("Custom-42", ValueUtil.convert(value, customWriter));
+    }
+
+    @Test
+    void shouldConvertListWithCustomWriter() {
+        ValueWriter<Integer, String> customWriter = new ValueWriter<>() {
+            @Override
+            public String write(Integer object) {
+                return "Custom-" + object;
+            }
+
+            @Override
+            public boolean test(Class<?> aClass) {
+                return Integer.class.equals(aClass);
+            }
+        };
+
+        Value value = Value.of(Arrays.asList(10, 20));
+        assertEquals(Arrays.asList("Custom-10", "Custom-20"), ValueUtil.convertToList(value, customWriter));
+    }
+
+    @Test
+    void shouldConvertNestedValueWithCustomWriter() {
+        ValueWriter<Integer, String> customWriter = new ValueWriter<>() {
+            @Override
+            public String write(Integer object) {
+                return "Custom-" + object;
+            }
+
+            @Override
+            public boolean test(Class<?> aClass) {
+                return Integer.class.equals(aClass);
+            }
+        };
+
+        Value value = Value.of(Arrays.asList(Value.of(10), Value.of(20)));
+        assertEquals(Arrays.asList("Custom-10", "Custom-20"), ValueUtil.convert(value, customWriter));
+    }
+
+    @Test
+    void shouldConvertNestedListWithCustomWriter() {
+        ValueWriter<Integer, String> customWriter = new ValueWriter<>() {
+            @Override
+            public String write(Integer object) {
+                return "Custom-" + object;
+            }
+
+            @Override
+            public boolean test(Class<?> aClass) {
+                return Integer.class.equals(aClass);
+            }
+        };
+
+        Value value = Value.of(Arrays.asList(Value.of(10), Value.of(20)));
+        assertEquals(Arrays.asList("Custom-10", "Custom-20"), ValueUtil.convertToList(value, customWriter));
+    }
 }
