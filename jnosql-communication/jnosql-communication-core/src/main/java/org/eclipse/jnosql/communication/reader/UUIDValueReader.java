@@ -16,6 +16,7 @@
  */
 package org.eclipse.jnosql.communication.reader;
 
+import org.eclipse.jnosql.communication.CommunicationException;
 import org.eclipse.jnosql.communication.ValueReader;
 
 import java.util.UUID;
@@ -29,9 +30,17 @@ public class UUIDValueReader implements ValueReader {
             return (T) value;
         }
         if (value instanceof CharSequence) {
-            return (T) UUID.fromString((String) value);
+            return (T) getUuid(value);
         }
         return null;
+    }
+
+    private static UUID getUuid(Object value) {
+        try {
+            return UUID.fromString(value.toString());
+        } catch (IllegalArgumentException exp) {
+            throw new CommunicationException("There is an error to convert to UUID, because the value is not UUID format: " + value);
+        }
     }
 
     @Override
